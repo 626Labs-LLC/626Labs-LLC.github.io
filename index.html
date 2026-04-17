@@ -11,6 +11,9 @@
   <meta property="og:description" content="Native apps & Claude Code plugins. Fort Worth, TX." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://626labs.dev/" />
+  <meta property="og:image" content="https://626labs.dev/logo.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:image" content="https://626labs.dev/logo.png" />
 
   <style>
     :root {
@@ -80,10 +83,11 @@
       letter-spacing: -0.005em;
     }
     header.site .brand:hover { text-decoration: none; color: var(--cyan-pale); }
-    header.site .brand .dot {
-      width: 9px; height: 9px; border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan);
+    header.site .brand img {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: block;
     }
     header.site nav { display: flex; gap: 22px; font-size: 14px; }
     header.site nav a { color: var(--text-sec); }
@@ -96,6 +100,15 @@
     section.hero {
       padding: 80px 0 64px;
       text-align: center;
+    }
+    section.hero .crest {
+      width: 112px;
+      height: 112px;
+      border-radius: 24px;
+      display: block;
+      margin: 0 auto 24px;
+      box-shadow: 0 18px 48px -12px rgba(59, 180, 217, 0.35),
+                  0 0 0 1px rgba(59, 180, 217, 0.12);
     }
     section.hero h1 {
       font-size: clamp(40px, 7vw, 68px);
@@ -264,7 +277,7 @@
 <body>
   <header class="site">
     <div class="container inner">
-      <a href="#" class="brand"><span class="dot"></span> 626 Labs</a>
+      <a href="#" class="brand"><img src="logo.png" alt="626 Labs logo"> 626 Labs</a>
       <nav>
         <a href="#products">Products</a>
         <a href="#about">About</a>
@@ -275,6 +288,7 @@
 
   <section class="hero">
     <div class="container">
+      <img class="crest" src="logo.png" alt="626 Labs LLC" />
       <h1>Ship what you vibe&#x2011;code.</h1>
       <p class="tag">Native desktop apps and open-source Claude Code plugins for builders who want AI-assisted workflows that actually land in production.</p>
       <p class="sub">Fort Worth, TX &middot; 817 &middot; 626 exchange</p>
