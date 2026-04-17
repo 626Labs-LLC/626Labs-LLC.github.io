@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sanduhr für Claude — native usage widget for claude.ai power users · 626 Labs</title>
+  <meta name="description" content="Native desktop widget for pacing your claude.ai subscription usage. Burn-rate projection, pace markers, sparklines, five glass themes. Mac + Windows." />
+  <link rel="icon" type="image/png" href="icon.png" />
+
+  <meta property="og:title" content="Sanduhr für Claude" />
+  <meta property="og:description" content="Native desktop widget for pacing your claude.ai subscription usage. By 626 Labs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://626labs.dev/sanduhr/" />
+  <meta property="og:image" content="https://626labs.dev/sanduhr/icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root {
+      --navy-deep: #0f182b;
+      --navy-mid:  #162033;
+      --navy-hi:   #1a2540;
+      --navy-line: #2a3a5c;
+      --cyan:      #3bb4d9;
+      --cyan-pale: #7ae0f5;
+      --magenta:   #e13aa0;
+      --text:      #e8f2ff;
+      --text-sec:  #a8c2d9;
+      --text-dim:  #6a849e;
+      --text-mute: #4a5f7a;
+      --ok:        #4ade80;
+      --warn:      #fb923c;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(ellipse at top, var(--navy-hi), var(--navy-deep) 70%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI",
+                   Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { color: var(--cyan-pale); text-decoration: underline; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── header (breadcrumb + back-to-hub) ─────────────── */
+    header.site {
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(42, 58, 92, 0.4);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      background: rgba(15, 24, 43, 0.72);
+      z-index: 20;
+    }
+    header.site .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    header.site .crumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--text-sec);
+    }
+    header.site .crumb a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-sec);
+    }
+    header.site .crumb a:hover { color: var(--cyan-pale); text-decoration: none; }
+    header.site .crumb img { width: 24px; height: 24px; border-radius: 5px; display: block; }
+    header.site .crumb .sep { color: var(--text-mute); }
+    header.site .crumb .current { color: var(--text); font-weight: 600; }
+    header.site nav { display: flex; gap: 20px; font-size: 14px; }
+    header.site nav a { color: var(--text-sec); }
+    header.site nav a:hover { color: var(--cyan); text-decoration: none; }
+    @media (max-width: 620px) {
+      header.site nav { display: none; }
+    }
+
+    /* ── hero ──────────────────────────────────────────── */
+    section.hero {
+      padding: 72px 0 48px;
+      text-align: center;
+    }
+    section.hero .app-icon {
+      width: 128px;
+      height: 128px;
+      border-radius: 28px;
+      display: block;
+      margin: 0 auto 24px;
+      box-shadow: 0 24px 60px -16px rgba(59, 180, 217, 0.35),
+                  0 0 0 1px rgba(59, 180, 217, 0.12);
+    }
+    section.hero h1 {
+      font-size: clamp(36px, 6vw, 56px);
+      margin: 0 0 14px;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      padding-bottom: 0.06em;
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--cyan-pale) 45%, var(--magenta) 100%);
+      background: linear-gradient(in oklch, var(--cyan) 0%, var(--cyan-pale) 45%, var(--magenta) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    section.hero p.tag {
+      font-size: 18px;
+      color: var(--text-sec);
+      max-width: 640px;
+      margin: 0 auto 8px;
+      line-height: 1.55;
+    }
+    section.hero p.sub {
+      font-size: 14px;
+      color: var(--text-dim);
+      max-width: 620px;
+      margin: 0 auto 32px;
+    }
+    section.hero .ctas {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      border: 1px solid transparent;
+      transition: transform .12s ease, background .15s ease, border-color .15s ease;
+      cursor: pointer;
+    }
+    .btn.primary {
+      color: var(--navy-deep);
+      background: linear-gradient(135deg, var(--cyan-pale) 0%, var(--cyan) 50%, var(--magenta) 100%);
+      background: linear-gradient(in oklch, var(--cyan-pale) 0%, var(--cyan) 50%, var(--magenta) 100%);
+    }
+    .btn.primary:hover { transform: translateY(-1px); text-decoration: none; }
+    .btn.secondary {
+      color: var(--text);
+      background: rgba(26, 37, 64, 0.55);
+      border-color: var(--navy-line);
+    }
+    .btn.secondary:hover {
+      border-color: var(--cyan);
+      background: rgba(59, 180, 217, 0.1);
+      text-decoration: none;
+    }
+
+    /* ── platforms ─────────────────────────────────────── */
+    section.platforms {
+      padding: 40px 0 64px;
+    }
+    section.platforms h2,
+    section.features h2,
+    section.themes h2 {
+      font-size: 26px;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    section.platforms p.lead,
+    section.features p.lead,
+    section.themes p.lead {
+      color: var(--text-dim);
+      margin: 0 0 28px;
+      font-size: 15px;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .platform-card {
+      display: flex;
+      flex-direction: column;
+      padding: 22px 24px;
+      background: rgba(26, 37, 64, 0.4);
+      border: 1px solid var(--navy-line);
+      border-radius: 14px;
+      transition: border-color .15s ease, background .15s ease, transform .15s ease;
+    }
+    .platform-card:hover {
+      border-color: var(--cyan);
+      background: rgba(59, 180, 217, 0.06);
+      transform: translateY(-2px);
+    }
+    .platform-card h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .platform-card .status {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cyan-pale);
+      background: rgba(59, 180, 217, 0.12);
+      border: 1px solid rgba(59, 180, 217, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+      vertical-align: middle;
+      font-weight: 500;
+    }
+    .platform-card p {
+      margin: 0 0 12px;
+      color: var(--text-sec);
+      font-size: 13.5px;
+      line-height: 1.55;
+      flex: 1;
+    }
+    .platform-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 14px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .platform-card ul li {
+      padding-left: 18px;
+      position: relative;
+      margin: 4px 0;
+    }
+    .platform-card ul li::before {
+      content: "→";
+      color: var(--cyan);
+      position: absolute;
+      left: 0;
+    }
+    .platform-card .platform-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--cyan);
+    }
+
+    /* ── features ──────────────────────────────────────── */
+    section.features {
+      padding: 48px 0;
+      border-top: 1px solid rgba(42, 58, 92, 0.5);
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .feature {
+      padding: 18px 20px;
+      background: rgba(26, 37, 64, 0.3);
+      border: 1px solid var(--navy-line);
+      border-radius: 12px;
+    }
+    .feature h4 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--cyan-pale);
+    }
+    .feature p {
+      margin: 0;
+      color: var(--text-sec);
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    /* ── themes (screenshot strip) ─────────────────────── */
+    section.themes {
+      padding: 48px 0;
+      border-top: 1px solid rgba(42, 58, 92, 0.5);
+    }
+    .theme-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .theme-shot {
+      border: 1px solid var(--navy-line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(26, 37, 64, 0.3);
+    }
+    .theme-shot img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .theme-shot .caption {
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--text-sec);
+      border-top: 1px solid var(--navy-line);
+    }
+    .theme-shot .caption strong { color: var(--text); font-weight: 600; }
+
+    /* ── privacy callout ───────────────────────────────── */
+    section.privacy {
+      padding: 48px 0;
+      border-top: 1px solid rgba(42, 58, 92, 0.5);
+    }
+    .privacy-card {
+      padding: 26px 28px;
+      background: linear-gradient(135deg, rgba(74, 222, 128, 0.08), rgba(59, 180, 217, 0.05));
+      border: 1px solid rgba(74, 222, 128, 0.3);
+      border-radius: 14px;
+    }
+    .privacy-card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: var(--ok);
+    }
+    .privacy-card p {
+      margin: 0 0 10px;
+      color: var(--text-sec);
+      font-size: 14.5px;
+      line-height: 1.6;
+    }
+    .privacy-card p:last-child { margin-bottom: 0; }
+    .privacy-card a { color: var(--cyan-pale); }
+
+    /* ── deeper-docs CTA ───────────────────────────────── */
+    section.deeper {
+      padding: 32px 0 56px;
+      text-align: center;
+    }
+    section.deeper p {
+      color: var(--text-dim);
+      margin: 0 0 14px;
+      font-size: 14px;
+    }
+
+    /* ── footer ────────────────────────────────────────── */
+    footer {
+      margin-top: 40px;
+      border-top: 1px solid var(--navy-line);
+      padding: 28px 0 48px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    footer .inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    footer a { color: var(--text-sec); }
+    footer .legal { max-width: 720px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="container inner">
+      <div class="crumb">
+        <a href="/"><img src="../logo.png" alt="626 Labs"> 626 Labs</a>
+        <span class="sep">/</span>
+        <span class="current">Sanduhr für Claude</span>
+      </div>
+      <nav>
+        <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude">GitHub</a>
+        <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <img class="app-icon" src="icon.png" alt="Sanduhr app icon" />
+      <h1>Sanduhr für Claude</h1>
+      <p class="tag">Native desktop widget that turns your claude.ai subscription usage into something you can actually pace yourself by.</p>
+      <p class="sub">Burn-rate projection, pace markers, sparkline trends, and five hand-tuned glass themes. Mac + Windows. No telemetry.</p>
+      <div class="ctas">
+        <a class="btn primary" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Download from GitHub</a>
+        <a class="btn secondary" href="https://estevanhernandez-stack-ed.github.io/Sanduhr_f-r_Claude/">Full product page &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="platforms">
+    <div class="container">
+      <h2>Pick your platform</h2>
+      <p class="lead">Three builds. Pick the one that matches your OS.</p>
+
+      <div class="platform-grid">
+        <article class="platform-card">
+          <h3>macOS</h3>
+          <p>Native SwiftUI. Developer ID signed + Apple-notarized, so no Gatekeeper warnings. Sparkle auto-updates.</p>
+          <ul>
+            <li>NSVisualEffectView vibrancy</li>
+            <li>Keychain credentials</li>
+            <li>Requires macOS 11 (Big Sur) or newer</li>
+          </ul>
+          <a class="platform-link" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Get Sanduhr.dmg &rarr;</a>
+        </article>
+
+        <article class="platform-card">
+          <h3>Windows 11 <span class="status">MS Store: in review</span></h3>
+          <p>Native PySide6 with real Win11 Mica glass. Windows Credential Manager for the session cookie.</p>
+          <ul>
+            <li>Mica backdrop on Win11 (solid fallback on Win10)</li>
+            <li>Inno Setup installer (SmartScreen warning until Store cert clears)</li>
+            <li>Full source under /windows/</li>
+          </ul>
+          <a class="platform-link" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Get Sanduhr-Setup.exe &rarr;</a>
+        </article>
+
+        <article class="platform-card">
+          <h3>Python (any OS)</h3>
+          <p>Single-file tkinter app with auto-installing <code>cloudscraper</code> dep. Runs on Mac, Windows, and Linux. For folks who prefer running from source.</p>
+          <ul>
+            <li>Just <code>python sanduhr.py</code></li>
+            <li>Requires Python 3.8+</li>
+            <li>MIT-licensed, audit the whole thing</li>
+          </ul>
+          <a class="platform-link" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/sanduhr.py">View sanduhr.py &rarr;</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2>Not just a mirror of the numbers.</h2>
+      <p class="lead">Sanduhr does the pacing math so you don't have to.</p>
+
+      <div class="feature-grid">
+        <div class="feature">
+          <h4>Burn-rate projection</h4>
+          <p>"Hits 100% in ~4h 22m at current pace" warns you before you run dry, not after.</p>
+        </div>
+        <div class="feature">
+          <h4>Pace markers on every bar</h4>
+          <p>Colored ticks show where "on pace" is right now — pace by eye, not by math.</p>
+        </div>
+        <div class="feature">
+          <h4>2-hour sparkline history</h4>
+          <p>Per-tier velocity trends so you can see whether you're accelerating or cooling off.</p>
+        </div>
+        <div class="feature">
+          <h4>Five hand-tuned themes</h4>
+          <p>Obsidian, Aurora, Ember, Mint, Matrix — plus unlimited user-authored JSON themes via Settings or a drop-in file.</p>
+        </div>
+        <div class="feature">
+          <h4>AI-agent theme prompt</h4>
+          <p>Hand any chat agent a reference image or vibe description. Get back a drop-in theme JSON.</p>
+        </div>
+        <div class="feature">
+          <h4>Real native vibrancy</h4>
+          <p>Win11 Mica glass. macOS NSVisualEffectView. No Electron. No WebView.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="themes">
+    <div class="container">
+      <h2>Five themes. Or infinite.</h2>
+      <p class="lead">A taste of what ships in the box.</p>
+      <div class="theme-strip">
+        <div class="theme-shot">
+          <img src="screenshot-obsidian.png" alt="Obsidian theme">
+          <div class="caption"><strong>Obsidian</strong> &middot; deep black &middot; purple accent</div>
+        </div>
+        <div class="theme-shot">
+          <img src="screenshot-aurora.png" alt="Aurora theme">
+          <div class="caption"><strong>Aurora</strong> &middot; dark blue &middot; cyan glow</div>
+        </div>
+        <div class="theme-shot">
+          <img src="screenshot-matrix.png" alt="Matrix theme">
+          <div class="caption"><strong>Matrix</strong> &middot; phosphor &middot; CRT corners</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy">
+    <div class="container">
+      <div class="privacy-card">
+        <h3>✓ No data comes back to us.</h3>
+        <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr — even in principle.</p>
+        <p>The app's only outbound network call is HTTPS to <code>claude.ai</code>, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers. Your cookie lives in your OS's native secure credential store (Keychain on macOS, Credential Manager on Windows) and is wiped on uninstall.</p>
+        <p><a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md">Security policy</a> &middot; <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md">Privacy policy</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="deeper">
+    <div class="container">
+      <p>Looking for the full pitch with all the screenshots, themes gallery, and docs?</p>
+      <a class="btn secondary" href="https://estevanhernandez-stack-ed.github.io/Sanduhr_f-r_Claude/">Open the full landing page &rarr;</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container inner">
+      <div class="legal">
+        &copy; 2026 626 Labs LLC. Independent studio. &ldquo;Claude&rdquo; and &ldquo;claude.ai&rdquo; are trademarks of Anthropic PBC, used nominatively to describe integration. Sanduhr für Claude is an independent third-party tool.
+      </div>
+      <div>
+        <a href="/">626 Labs home</a>
+        &middot;
+        <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
