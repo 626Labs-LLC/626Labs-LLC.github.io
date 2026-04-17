@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>626 Labs — native apps & Claude Code plugins</title>
+  <meta name="description" content="626 Labs builds native desktop apps and open-source Claude Code plugins for people who want to ship with AI." />
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <meta property="og:title" content="626 Labs" />
+  <meta property="og:description" content="Native apps & Claude Code plugins. Fort Worth, TX." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://626labs.dev/" />
+
+  <style>
+    :root {
+      --navy-deep: #0f182b;
+      --navy-mid:  #162033;
+      --navy-hi:   #1a2540;
+      --navy-line: #2a3a5c;
+      --cyan:      #3bb4d9;
+      --cyan-pale: #7ae0f5;
+      --magenta:   #e13aa0;
+      --text:      #e8f2ff;
+      --text-sec:  #a8c2d9;
+      --text-dim:  #6a849e;
+      --text-mute: #4a5f7a;
+      --ok:        #4ade80;
+      --warn:      #fb923c;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(ellipse at top, var(--navy-hi), var(--navy-deep) 70%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI",
+                   Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { color: var(--cyan-pale); text-decoration: underline; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── header ────────────────────────────────────── */
+    header.site {
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(42, 58, 92, 0.4);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      background: rgba(15, 24, 43, 0.72);
+      z-index: 20;
+    }
+    header.site .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    header.site .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: -0.005em;
+    }
+    header.site .brand:hover { text-decoration: none; color: var(--cyan-pale); }
+    header.site .brand .dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+    }
+    header.site nav { display: flex; gap: 22px; font-size: 14px; }
+    header.site nav a { color: var(--text-sec); }
+    header.site nav a:hover { color: var(--cyan); text-decoration: none; }
+    @media (max-width: 560px) {
+      header.site nav { display: none; }
+    }
+
+    /* ── hero ──────────────────────────────────────── */
+    section.hero {
+      padding: 80px 0 64px;
+      text-align: center;
+    }
+    section.hero h1 {
+      font-size: clamp(40px, 7vw, 68px);
+      margin: 0 0 18px;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      padding-bottom: 0.08em;
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--cyan-pale) 45%, var(--magenta) 100%);
+      background: linear-gradient(in oklch, var(--cyan) 0%, var(--cyan-pale) 45%, var(--magenta) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    section.hero p.tag {
+      font-size: 18px;
+      color: var(--text-sec);
+      max-width: 620px;
+      margin: 0 auto 28px;
+      line-height: 1.55;
+    }
+    section.hero p.sub {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin: 14px 0 0;
+      letter-spacing: 0.02em;
+    }
+    section.hero p.sub a { color: var(--text-sec); }
+
+    /* ── products ──────────────────────────────────── */
+    section.products { padding: 40px 0 64px; }
+    section.products h2,
+    section.about h2 {
+      font-size: 26px;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    section.products p.lead,
+    section.about p.lead {
+      color: var(--text-dim);
+      margin: 0 0 28px;
+      font-size: 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      padding: 22px 24px;
+      background: rgba(26, 37, 64, 0.4);
+      border: 1px solid var(--navy-line);
+      border-radius: 14px;
+      color: var(--text);
+      transition: border-color .15s ease, background .15s ease, transform .15s ease;
+    }
+    .card:hover {
+      border-color: var(--cyan);
+      background: rgba(59, 180, 217, 0.06);
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+
+    .card.flagship {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(59, 180, 217, 0.08), rgba(225, 58, 160, 0.05));
+      border-color: rgba(59, 180, 217, 0.35);
+    }
+    .card.flagship h3 { font-size: 22px; }
+
+    .card h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+    }
+    .card .tagline {
+      margin: 0 0 12px;
+      color: var(--cyan-pale);
+      font-size: 13px;
+      font-style: italic;
+    }
+    .card p.desc {
+      margin: 0 0 14px;
+      color: var(--text-sec);
+      font-size: 14px;
+      line-height: 1.55;
+      flex: 1;
+    }
+    .card .badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 0 0 14px;
+    }
+    .card .badges img { height: 18px; }
+    .card .links {
+      font-size: 13.5px;
+      color: var(--text-dim);
+    }
+    .card .links a { color: var(--cyan); }
+    .card .links a:hover { color: var(--cyan-pale); }
+    .card .status {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(59, 180, 217, 0.12);
+      color: var(--cyan-pale);
+      border: 1px solid rgba(59, 180, 217, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+      vertical-align: middle;
+      font-weight: 500;
+    }
+    .card.coming-soon { opacity: 0.82; }
+
+    /* ── about ─────────────────────────────────────── */
+    section.about {
+      padding: 48px 0;
+      border-top: 1px solid rgba(42, 58, 92, 0.5);
+    }
+    section.about p {
+      color: var(--text-sec);
+      font-size: 15.5px;
+      max-width: 720px;
+    }
+    section.about .tags {
+      margin-top: 18px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    section.about .tag {
+      font-size: 12px;
+      color: var(--text-dim);
+      border: 1px solid var(--navy-line);
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── footer ────────────────────────────────────── */
+    footer {
+      margin-top: 56px;
+      border-top: 1px solid var(--navy-line);
+      padding: 28px 0 48px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    footer .inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    footer a { color: var(--text-sec); }
+    footer .legal { max-width: 680px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="container inner">
+      <a href="#" class="brand"><span class="dot"></span> 626 Labs</a>
+      <nav>
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+        <a href="https://github.com/626Labs-LLC">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Ship what you vibe&#x2011;code.</h1>
+      <p class="tag">Native desktop apps and open-source Claude Code plugins for builders who want AI-assisted workflows that actually land in production.</p>
+      <p class="sub">Fort Worth, TX &middot; 817 &middot; 626 exchange</p>
+    </div>
+  </section>
+
+  <section class="products" id="products">
+    <div class="container">
+      <h2>Products</h2>
+      <p class="lead">Everything 626 Labs ships.</p>
+
+      <div class="grid">
+
+        <article class="card flagship">
+          <h3>⏳ Sanduhr für Claude</h3>
+          <p class="tagline">Pace yourself on claude.ai.</p>
+          <p class="desc">Native desktop widget that turns your Claude.ai subscription usage into something you can actually pace yourself by — burn-rate projection, pace markers, sparkline trends, and five hand-tuned glass themes. Mac + Windows. Microsoft Store listing in review.</p>
+          <div class="links">
+            <a href="https://estevanhernandez-stack-ed.github.io/Sanduhr_f-r_Claude/">Landing page</a> &middot;
+            <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude">GitHub</a> &middot;
+            <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Download</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>🗺️ Vibe Cartographer</h3>
+          <p class="tagline">Plot your course from idea to shipped app.</p>
+          <p class="desc">A Claude Code plugin for vibe coding with purpose and direction — 11 slash commands walk you from onboarding through reflection, with self-evolving memory built in.</p>
+          <div class="badges">
+            <img src="https://img.shields.io/npm/v/@esthernandez/vibe-cartographer?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="npm version">
+            <img src="https://img.shields.io/npm/dw/@esthernandez/vibe-cartographer?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="weekly downloads">
+            <img src="https://img.shields.io/npm/l/@esthernandez/vibe-cartographer?color=4ade80&labelColor=0f182b&style=flat-square" alt="MIT license">
+          </div>
+          <div class="links">
+            <a href="https://github.com/estevanhernandez-stack-ed/vibe-cartographer">GitHub</a> &middot;
+            <a href="https://www.npmjs.com/package/@esthernandez/vibe-cartographer">npm</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>📖 Vibe Doc</h3>
+          <p class="tagline">Close the documentation vacuum.</p>
+          <p class="desc">AI-powered documentation gap analyzer. Scans your codebase, classifies what you've built, and generates the ADRs, runbooks, threat models, and specs you're missing.</p>
+          <div class="badges">
+            <img src="https://img.shields.io/npm/v/@esthernandez/vibe-doc?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="npm version">
+            <img src="https://img.shields.io/npm/dw/@esthernandez/vibe-doc?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="weekly downloads">
+            <img src="https://img.shields.io/npm/l/@esthernandez/vibe-doc?color=4ade80&labelColor=0f182b&style=flat-square" alt="MIT license">
+          </div>
+          <div class="links">
+            <a href="https://github.com/estevanhernandez-stack-ed/Vibe-Doc">GitHub</a> &middot;
+            <a href="https://www.npmjs.com/package/@esthernandez/vibe-doc">npm</a>
+          </div>
+        </article>
+
+        <article class="card coming-soon">
+          <h3>🧪 Vibe Test <span class="status">coming soon</span></h3>
+          <p class="tagline">Tests that match what your app actually does.</p>
+          <p class="desc">Reads a vibe-coded app, classifies its maturity tier, and generates the tests it genuinely needs — smoke, behavioral, edge, integration, performance — proportional to deployment risk.</p>
+          <div class="links">
+            <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-test">Framework doc</a>
+          </div>
+        </article>
+
+        <article class="card coming-soon">
+          <h3>🛡️ Vibe Sec <span class="status">coming soon</span></h3>
+          <p class="tagline">Fix the AI-prototyped security gaps.</p>
+          <p class="desc">Security scanner for vibe-coded apps. Detects the predictable gaps AI prototyping leaves behind — secrets, auth, input validation, dependencies — and generates fixes proportional to your app's deployment context.</p>
+          <div class="links">
+            <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-sec">Framework doc</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="container">
+      <h2>About 626 Labs</h2>
+      <p class="lead">Independent software studio. Fort Worth, TX.</p>
+      <p>Building native desktop apps and open-source Claude Code plugins. Builder mentality — ship then polish. Native over Electron, Python over JavaScript, and talking it through over spec'ing it out.</p>
+      <div class="tags">
+        <span class="tag">native apps</span>
+        <span class="tag">Claude Code plugins</span>
+        <span class="tag">open source</span>
+        <span class="tag">MIT</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container inner">
+      <div class="legal">
+        &copy; 2026 626 Labs LLC. Independent studio. &ldquo;Claude&rdquo; and &ldquo;claude.ai&rdquo; are trademarks of Anthropic PBC, used nominatively.
+      </div>
+      <div>
+        <a href="https://github.com/626Labs-LLC">GitHub</a>
+        &middot;
+        <a href="https://github.com/estevanhernandez-stack-ed">Este</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
