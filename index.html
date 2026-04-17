@@ -230,6 +230,40 @@
     }
     .card.coming-soon { opacity: 0.82; }
 
+    .card .install {
+      margin: 0 0 14px;
+      padding: 10px 12px;
+      background: rgba(15, 24, 43, 0.7);
+      border: 1px solid var(--navy-line);
+      border-radius: 8px;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+                   "Liberation Mono", monospace;
+      font-size: 12.5px;
+      color: var(--cyan-pale);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .card .install .label {
+      display: block;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI",
+                   Roboto, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+    .card .install code {
+      color: var(--cyan-pale);
+      background: transparent;
+      padding: 0;
+    }
+    .card .install code .prompt {
+      color: var(--text-dim);
+      user-select: none;
+      margin-right: 6px;
+    }
+
     /* ── about ─────────────────────────────────────── */
     section.about {
       padding: 48px 0;
@@ -322,6 +356,10 @@
             <img src="https://img.shields.io/npm/dw/@esthernandez/vibe-cartographer?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="weekly downloads">
             <img src="https://img.shields.io/npm/l/@esthernandez/vibe-cartographer?color=4ade80&labelColor=0f182b&style=flat-square" alt="MIT license">
           </div>
+          <div class="install">
+            <span class="label">Install in Claude Code</span>
+            <code><span class="prompt">&gt;</span>/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer</code>
+          </div>
           <div class="links">
             <a href="https://github.com/estevanhernandez-stack-ed/vibe-cartographer">GitHub</a> &middot;
             <a href="https://www.npmjs.com/package/@esthernandez/vibe-cartographer">npm</a>
@@ -336,6 +374,10 @@
             <img src="https://img.shields.io/npm/v/@esthernandez/vibe-doc?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="npm version">
             <img src="https://img.shields.io/npm/dw/@esthernandez/vibe-doc?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="weekly downloads">
             <img src="https://img.shields.io/npm/l/@esthernandez/vibe-doc?color=4ade80&labelColor=0f182b&style=flat-square" alt="MIT license">
+          </div>
+          <div class="install">
+            <span class="label">Install in Claude Code</span>
+            <code><span class="prompt">&gt;</span>/plugin marketplace add estevanhernandez-stack-ed/Vibe-Doc</code>
           </div>
           <div class="links">
             <a href="https://github.com/estevanhernandez-stack-ed/Vibe-Doc">GitHub</a> &middot;
