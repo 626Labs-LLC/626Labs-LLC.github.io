@@ -1,0 +1,13 @@
+# Tool artifacts
+.qodo/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+
+# Python build leftovers (from scripts/)
+__pycache__/
+*.pyc
+.venv/

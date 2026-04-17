@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>626 Labs — native apps & Claude Code plugins</title>
   <meta name="description" content="626 Labs builds native desktop apps and open-source Claude Code plugins for people who want to ship with AI." />
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/png" href="favicon-626.png" />
 
   <meta property="og:title" content="626 Labs" />
   <meta property="og:description" content="Native apps & Claude Code plugins. Fort Worth, TX." />
@@ -51,9 +51,15 @@
     a:hover { color: var(--cyan-pale); text-decoration: underline; }
 
     .container {
-      max-width: 1100px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 32px;
+    }
+
+    /* Hero keeps a narrower container so the crest + text stay centered
+       and text lines don't become unreadably long on ultra-wide screens. */
+    .container.narrow {
+      max-width: 880px;
     }
 
     /* ── header ────────────────────────────────────── */
@@ -176,11 +182,10 @@
     }
 
     .card.flagship {
-      grid-column: 1 / -1;
       background: linear-gradient(135deg, rgba(59, 180, 217, 0.08), rgba(225, 58, 160, 0.05));
       border-color: rgba(59, 180, 217, 0.35);
     }
-    .card.flagship h3 { font-size: 22px; }
+    .card.flagship h3 { font-size: 20px; }
 
     .card h3 {
       margin: 0 0 4px;
@@ -239,9 +244,11 @@
       font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
                    "Liberation Mono", monospace;
       font-size: 12.5px;
+      line-height: 1.5;
       color: var(--cyan-pale);
-      overflow-x: auto;
-      white-space: nowrap;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     .card .install .label {
       display: block;
@@ -289,6 +296,289 @@
       letter-spacing: 0.02em;
     }
 
+    /* ── thinking ──────────────────────────────────── */
+    section.thinking {
+      padding: 64px 0;
+      border-top: 1px solid rgba(42, 58, 92, 0.5);
+    }
+    section.thinking h2 {
+      font-size: 26px;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    section.thinking p.lead {
+      color: var(--text-dim);
+      margin: 0 0 24px;
+      font-size: 15px;
+    }
+    section.thinking blockquote {
+      margin: 0 0 24px;
+      padding: 18px 22px;
+      border-left: 3px solid var(--cyan);
+      background: rgba(59, 180, 217, 0.05);
+      color: var(--cyan-pale);
+      font-style: italic;
+      font-size: 17px;
+      line-height: 1.5;
+      border-radius: 4px;
+      max-width: 780px;
+    }
+    section.thinking p {
+      color: var(--text-sec);
+      font-size: 15px;
+      max-width: 780px;
+      margin: 0 0 14px;
+    }
+    section.thinking .links {
+      margin-top: 18px;
+      font-size: 14px;
+    }
+
+    /* ── how the lab runs ──────────────────────────── */
+    section.lab-runs {
+      padding: 64px 0;
+      border-top: 1px solid rgba(42, 58, 92, 0.5);
+    }
+    section.lab-runs h2 {
+      font-size: 26px;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    section.lab-runs p.lead {
+      color: var(--text-dim);
+      margin: 0 0 28px;
+      font-size: 15px;
+    }
+    section.lab-runs .frames {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 760px) {
+      section.lab-runs .frames { grid-template-columns: 1fr; }
+    }
+    section.lab-runs .frame {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(59, 180, 217, 0.25);
+      background: linear-gradient(135deg, rgba(59, 180, 217, 0.06), rgba(225, 58, 160, 0.04));
+      box-shadow: 0 24px 72px -24px rgba(0, 0, 0, 0.5),
+                  0 0 0 1px rgba(59, 180, 217, 0.08);
+    }
+    section.lab-runs .frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    section.lab-runs .frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 80px rgba(15, 24, 43, 0.4);
+      border-radius: 14px;
+    }
+    section.lab-runs .frame .frame-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(15, 24, 43, 0.75);
+      color: var(--cyan-pale);
+      border: 1px solid rgba(59, 180, 217, 0.3);
+      padding: 3px 9px;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+      font-weight: 500;
+    }
+    section.lab-runs .caption {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+    section.lab-runs .caption p {
+      color: var(--text-sec);
+      font-size: 14.5px;
+      line-height: 1.55;
+      max-width: 540px;
+      margin: 0;
+    }
+
+    /* ── also from the lab ─────────────────────────── */
+    section.lab {
+      padding: 56px 0;
+      border-top: 1px solid rgba(42, 58, 92, 0.5);
+    }
+    section.lab h2 {
+      font-size: 26px;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    section.lab p.lead {
+      color: var(--text-dim);
+      margin: 0 0 24px;
+      font-size: 15px;
+    }
+    section.lab .shelf {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    section.lab .lab-card {
+      display: flex;
+      flex-direction: column;
+      padding: 18px 20px;
+      background: rgba(22, 32, 51, 0.5);
+      border: 1px solid var(--navy-line);
+      border-radius: 12px;
+      transition: border-color .15s ease, background .15s ease, transform .15s ease;
+    }
+    section.lab .lab-card:hover {
+      border-color: var(--cyan);
+      background: rgba(59, 180, 217, 0.04);
+      transform: translateY(-2px);
+    }
+    section.lab .lab-card .thumb {
+      position: relative;
+      display: block;
+      margin: -2px -4px 14px;
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      background: var(--navy-deep);
+      border: 1px solid var(--navy-line);
+    }
+    section.lab .lab-card .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .25s ease, filter .15s ease;
+    }
+    section.lab .lab-card .thumb:hover img {
+      transform: scale(1.03);
+      filter: brightness(1.08);
+    }
+    section.lab .lab-card .thumb::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 44px; height: 44px;
+      margin: -22px 0 0 -22px;
+      border-radius: 999px;
+      background: rgba(15, 24, 43, 0.78) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%23e8f2ff' d='M5.5 3.5v9l7-4.5z'/></svg>") center/18px no-repeat;
+      border: 1.5px solid rgba(232, 242, 255, 0.8);
+      pointer-events: none;
+      transition: background-color .15s ease;
+    }
+    section.lab .lab-card .thumb:hover::after {
+      background-color: rgba(225, 58, 160, 0.85);
+    }
+    section.lab .lab-card h4 {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.005em;
+    }
+    section.lab .lab-card .meta {
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin: 0 0 10px;
+    }
+    section.lab .lab-card p {
+      margin: 0 0 12px;
+      color: var(--text-sec);
+      font-size: 13px;
+      line-height: 1.5;
+      flex: 1;
+    }
+    section.lab .lab-card .links {
+      font-size: 12.5px;
+      color: var(--text-dim);
+    }
+    section.lab .lab-card .links a { color: var(--cyan); }
+    section.lab .lab-card .links a:hover { color: var(--cyan-pale); }
+    section.lab .shuffle-note {
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--text-mute);
+      text-align: right;
+    }
+    section.lab .shuffle-note button {
+      background: none;
+      border: none;
+      color: var(--cyan);
+      font: inherit;
+      cursor: pointer;
+      padding: 0;
+    }
+    section.lab .shuffle-note button:hover {
+      color: var(--cyan-pale);
+      text-decoration: underline;
+    }
+
+    /* ── support ────────────────────────────────────── */
+    section.support {
+      padding: 48px 0;
+      border-top: 1px solid rgba(42, 58, 92, 0.5);
+    }
+    section.support .support-box {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 22px;
+      padding: 24px 28px;
+      background: linear-gradient(135deg, rgba(225, 58, 160, 0.08), rgba(59, 180, 217, 0.05));
+      border: 1px solid rgba(225, 58, 160, 0.25);
+      border-radius: 14px;
+    }
+    section.support .support-copy { flex: 1; min-width: 260px; }
+    section.support h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      color: var(--text);
+      letter-spacing: -0.005em;
+    }
+    section.support p {
+      margin: 0;
+      color: var(--text-sec);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 640px;
+    }
+    section.support .sponsor-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: rgba(225, 58, 160, 0.15);
+      border: 1px solid rgba(225, 58, 160, 0.5);
+      color: var(--text);
+      border-radius: 999px;
+      font-weight: 500;
+      font-size: 14px;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+    }
+    section.support .sponsor-cta:hover {
+      background: rgba(225, 58, 160, 0.25);
+      border-color: var(--magenta);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+    section.support .sponsor-cta svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--magenta);
+    }
+
     /* ── footer ────────────────────────────────────── */
     footer {
       margin-top: 56px;
@@ -311,20 +601,23 @@
 <body>
   <header class="site">
     <div class="container inner">
-      <a href="#" class="brand"><img src="logo.png" alt="626 Labs logo"> 626 Labs</a>
+      <a href="#" class="brand"><img src="assets/icon-626.png" alt="626 Labs mark"> 626 Labs</a>
       <nav>
         <a href="#products">Products</a>
+        <a href="#thinking">Thinking</a>
+        <a href="#lab-runs">Lab</a>
         <a href="#about">About</a>
+        <a href="https://github.com/sponsors/estevanhernandez-stack-ed">Sponsor</a>
         <a href="https://github.com/626Labs-LLC">GitHub</a>
       </nav>
     </div>
   </header>
 
   <section class="hero">
-    <div class="container">
+    <div class="container narrow">
       <img class="crest" src="logo.png" alt="626 Labs LLC" />
       <h1>Ship what you vibe&#x2011;code.</h1>
-      <p class="tag">Open-source Claude Code plugins and a native Claude usage widget with burn-rate monitor, for builders who want AI-assisted workflows that actually land in production.</p>
+      <p class="tag">Open-source Claude Code plugins for turning a vibe-coded afternoon into an app that actually holds up in production — planning, docs, tests, security. Plus a native desktop widget for pacing your Claude.ai usage.</p>
       <p class="sub">Made in Fort Worth, TX</p>
     </div>
   </section>
@@ -332,25 +625,14 @@
   <section class="products" id="products">
     <div class="container">
       <h2>Products</h2>
-      <p class="lead">Everything 626 Labs ships.</p>
+      <p class="lead">What we've shipped so far.</p>
 
       <div class="grid">
 
         <article class="card flagship">
-          <h3>⏳ Sanduhr für Claude</h3>
-          <p class="tagline">Pace yourself on claude.ai.</p>
-          <p class="desc">Native desktop widget that turns your Claude.ai subscription usage into something you can actually pace yourself by — burn-rate projection, pace markers, sparkline trends, and five hand-tuned glass themes. Mac + Windows. Microsoft Store listing in review.</p>
-          <div class="links">
-            <a href="/sanduhr/"><strong>Open product page &rarr;</strong></a> &middot;
-            <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude">GitHub</a> &middot;
-            <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Download</a>
-          </div>
-        </article>
-
-        <article class="card">
           <h3>🗺️ Vibe Cartographer</h3>
           <p class="tagline">Plot your course from idea to shipped app.</p>
-          <p class="desc">A Claude Code plugin for vibe coding with purpose and direction — 11 slash commands walk you from onboarding through reflection, with self-evolving memory built in.</p>
+          <p class="desc">Vibe coding with a map. Eleven slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect — and the plugin remembers where you left off so you don't lose the thread between sessions.</p>
           <div class="badges">
             <img src="https://img.shields.io/npm/v/@esthernandez/vibe-cartographer?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="npm version">
             <img src="https://img.shields.io/npm/dw/@esthernandez/vibe-cartographer?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="weekly downloads">
@@ -366,10 +648,10 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card flagship">
           <h3>📖 Vibe Doc</h3>
           <p class="tagline">Close the documentation vacuum.</p>
-          <p class="desc">AI-powered documentation gap analyzer. Scans your codebase, classifies what you've built, and generates the ADRs, runbooks, threat models, and specs you're missing.</p>
+          <p class="desc">Point it at your codebase and it tells you which docs you're missing — ADRs, runbooks, threat models, specs — then writes them. Basically, the documentation pass you keep meaning to do.</p>
           <div class="badges">
             <img src="https://img.shields.io/npm/v/@esthernandez/vibe-doc?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="npm version">
             <img src="https://img.shields.io/npm/dw/@esthernandez/vibe-doc?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="weekly downloads">
@@ -385,10 +667,21 @@
           </div>
         </article>
 
+        <article class="card">
+          <h3>⏳ Sanduhr für Claude</h3>
+          <p class="tagline">Pace yourself on claude.ai.</p>
+          <p class="desc">Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Burn-rate projection, pace markers, sparkline trends, and five hand-tuned glass themes. Mac + Windows — Microsoft Store listing is in review.</p>
+          <div class="links">
+            <a href="/sanduhr/"><strong>Open product page &rarr;</strong></a> &middot;
+            <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude">GitHub</a> &middot;
+            <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Download</a>
+          </div>
+        </article>
+
         <article class="card coming-soon">
           <h3>🧪 Vibe Test <span class="status">coming soon</span></h3>
           <p class="tagline">Tests that match what your app actually does.</p>
-          <p class="desc">Reads a vibe-coded app, classifies its maturity tier, and generates the tests it genuinely needs — smoke, behavioral, edge, integration, performance — proportional to deployment risk.</p>
+          <p class="desc">Reads your app, figures out how mature it actually is, and writes the tests it actually needs — smoke, behavioral, edge, integration, performance. More coverage the closer you get to production, instead of a blanket 100% rule that nobody keeps.</p>
           <div class="links">
             <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-test">Framework doc</a>
           </div>
@@ -396,8 +689,8 @@
 
         <article class="card coming-soon">
           <h3>🛡️ Vibe Sec <span class="status">coming soon</span></h3>
-          <p class="tagline">Fix the AI-prototyped security gaps.</p>
-          <p class="desc">Security scanner for vibe-coded apps. Detects the predictable gaps AI prototyping leaves behind — secrets, auth, input validation, dependencies — and generates fixes proportional to your app's deployment context.</p>
+          <p class="tagline">Close the gaps AI prototyping leaves behind.</p>
+          <p class="desc">The security gaps AI prototyping leaves behind are pretty predictable — leaked secrets, sketchy auth, missing input validation, stale dependencies. Vibe Sec finds them and writes the fix, scaled to where your app actually runs.</p>
           <div class="links">
             <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-sec">Framework doc</a>
           </div>
@@ -407,16 +700,79 @@
     </div>
   </section>
 
+  <section class="thinking" id="thinking">
+    <div class="container">
+      <h2>The thinking behind it</h2>
+      <p class="lead">Every Vibe plugin follows the same architectural playbook.</p>
+      <blockquote>
+        A plugin should be more useful on its tenth run than on its first —
+        not because the user learned it, but because it learned the user.
+      </blockquote>
+      <p>The <strong>Self-Evolving Plugin Framework</strong> is 626 Labs' open-source thesis on how AI plugins should get sharper over time. Three pillars — self-repair, self-teach, self-evolve. A five-level maturity ladder from static tools to autonomous adaptation. Sixteen named patterns with concrete implementation playbooks.</p>
+      <p>Vibe Cartographer currently sits at <strong>Level 3.5</strong> — it reads its own usage, surfaces friction patterns, proposes changes to its own behavior, and runs self-diagnostic health checks. The framework doc drives every plugin's roadmap.</p>
+      <div class="links">
+        <a href="https://github.com/estevanhernandez-stack-ed/vibe-cartographer/blob/main/docs/self-evolving-plugins-framework.md"><strong>Read the framework doc &rarr;</strong></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="lab-runs" id="lab-runs">
+    <div class="container">
+      <h2>How the lab runs</h2>
+      <p class="lead">Every project above lives inside a purpose-built agent OS.</p>
+      <div class="frames">
+        <div class="frame">
+          <span class="frame-tag">Universe</span>
+          <img src="assets/dashboard-universe.png" alt="The Lab Dashboard — Universe view, showing every 626 Labs project as a node in a constellation." loading="lazy" />
+        </div>
+        <div class="frame">
+          <span class="frame-tag">Operations</span>
+          <img src="assets/dashboard-projects.png" alt="The Lab Dashboard — project list with live health, recent decisions, and autopilot status." loading="lazy" />
+        </div>
+      </div>
+      <div class="caption">
+        <p>The 626 Labs Dashboard is a private agent OS for running the studio — a constellation of 50+ projects, every architectural decision logged, plugin work coordinated with an AI called The Architect, and a scan/voice/whiteboard surface for capturing context fast. It's the thing that makes shipping this many parallel products feasible from one builder.</p>
+        <p>Not open source yet. The plugins shipping out of the hub are the open-source distillation of what the dashboard taught us about how tools should adapt to the person using them.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lab" id="lab">
+    <div class="container">
+      <h2>Also from the lab</h2>
+      <p class="lead">Other things we've shipped while figuring out the plugins. Reloads shuffle the set.</p>
+      <div class="shelf" id="lab-shelf"></div>
+      <div class="shuffle-note">
+        <button type="button" id="shuffle-btn">↻ shuffle</button>
+      </div>
+    </div>
+  </section>
+
   <section class="about" id="about">
     <div class="container">
       <h2>About 626 Labs</h2>
       <p class="lead">Independent software studio. Fort Worth, TX.</p>
-      <p>Building native desktop apps and open-source Claude Code plugins. Builder mentality — ship then polish. Native over Electron, Python over JavaScript, and talking it through over spec'ing it out.</p>
+      <p>Native desktop apps and open-source Claude Code plugins, mostly. Builder mentality — ship then polish. Native over Electron, Python over JavaScript, talking it through over spec'ing it out. Things get released when they work, not when they're pretty.</p>
       <div class="tags">
         <span class="tag">native apps</span>
         <span class="tag">Claude Code plugins</span>
         <span class="tag">open source</span>
         <span class="tag">MIT</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="support" id="support">
+    <div class="container">
+      <div class="support-box">
+        <div class="support-copy">
+          <h3>Keep the lab running</h3>
+          <p>Every 626 Labs plugin is MIT-licensed and maintained on nights and weekends. If the Vibe ecosystem is saving you time, GitHub Sponsors is the cleanest way to say thanks — and to keep the next plugin on track.</p>
+        </div>
+        <a class="sponsor-cta" href="https://github.com/sponsors/estevanhernandez-stack-ed">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 008 13.393a20.561 20.561 0 003.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.749.749 0 01-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5zM8 14.25l-.345.666-.002-.001-.006-.003-.018-.01a7.643 7.643 0 01-.31-.17 22.075 22.075 0 01-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.08 22.08 0 01-3.744 2.584l-.018.01-.006.003h-.002L8 14.25z"/></svg>
+          Sponsor on GitHub
+        </a>
       </div>
     </div>
   </section>
@@ -427,11 +783,164 @@
         &copy; 2026 626 Labs LLC. Independent studio. &ldquo;Claude&rdquo; and &ldquo;claude.ai&rdquo; are trademarks of Anthropic PBC, used nominatively.
       </div>
       <div>
+        <a href="https://github.com/sponsors/estevanhernandez-stack-ed">Sponsor</a>
+        &middot;
         <a href="https://github.com/626Labs-LLC">GitHub</a>
         &middot;
         <a href="https://github.com/estevanhernandez-stack-ed">Este</a>
       </div>
     </div>
   </footer>
+
+  <script>
+    const LAB_POOL = [
+      {
+        name: "Celestia 3",
+        meta: "AI Technomancer · Hackathon",
+        desc: "Gemini 3 + Swiss Ephemeris WASM + React Three Fiber. Readings of the actual sky with conversational narration — a Devpost hackathon entry with NASA-grade ephemeris data under the hood.",
+        video: "HV8dUMReNgI",
+        links: [
+          { label: "Watch demo", href: "https://www.youtube.com/watch?v=HV8dUMReNgI" },
+          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/Celestia3" }
+        ]
+      },
+      {
+        name: "Project L.A.D.D.E.R.",
+        meta: "Local-first education · Gemma",
+        desc: "Multimodal learning framework that runs local-first with Gemma — built to bridge the access gap when connectivity isn't a given.",
+        links: [
+          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/LADDER" }
+        ]
+      },
+      {
+        name: "Reel Battles",
+        meta: "Film trivia · Replit",
+        desc: "Head-to-head film trivia — a Replit-hosted CineGame project. Jump in and play it in the browser.",
+        links: [
+          { label: "Replit", href: "https://replit.com/@esteH777/Reel-Battles" },
+          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/Reel-Battles" }
+        ]
+      },
+      {
+        name: "Safety Assistant",
+        meta: "Deployed app · Replit",
+        desc: "AI-assisted safety data helper — analyzes incident logs, surfaces patterns, charts trends. Deployed live on Replit.",
+        links: [
+          { label: "Launch", href: "https://safety-assistant.replit.app" },
+          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/Safety_Assistant" }
+        ]
+      },
+      {
+        name: "Cleanup Ranger",
+        meta: "Civic tech · Community",
+        desc: "Community-driven park-cleanup app. Track hazards and trash at local parks; pin what you've cleaned.",
+        video: "TsYYHhk8qtE",
+        links: [
+          { label: "Watch demo", href: "https://youtu.be/TsYYHhk8qtE" },
+          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/Cleanup-Ranger" }
+        ]
+      },
+      {
+        name: "Tag That Line",
+        meta: "Word game · AI",
+        desc: "A tag-the-line word game — built fast, videoed, shipped. Watch the demo to see it in motion.",
+        video: "XoMzjYhVLgE",
+        links: [
+          { label: "Watch demo", href: "https://youtu.be/XoMzjYhVLgE" },
+          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/tagthatline" }
+        ]
+      },
+      {
+        name: "Anote That",
+        meta: "Handwriting AI · Vision",
+        desc: "Bridges analog notes and digital intelligence — live scanning, adaptive font learning, OpenCV + Gemini agent pipeline.",
+        links: [
+          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/Anote-That" }
+        ]
+      },
+      {
+        name: "WriterStudio",
+        meta: "Creative tooling · VS Code",
+        desc: "A VS Code workspace template for AI-assisted iterative fiction writing. Fork it, fill it, write. A Doctor Who special shipped on Wattpad from this scaffold.",
+        links: [
+          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/WriterStudio" }
+        ]
+      },
+      {
+        name: "rotemplate",
+        meta: "Roblox · AI generative",
+        desc: "Uses AI to generate classic T-shirts and pants for Roblox avatars. Expo + OpenAI + Sharp image pipeline.",
+        links: [
+          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/rotemplate" }
+        ]
+      },
+      {
+        name: "Replit Certification",
+        meta: "Credential · Replit",
+        desc: "Public certification page. Receipts for being taken seriously on the Replit platform.",
+        links: [
+          { label: "View", href: "https://replit-certifications.replit.app/esteH777" }
+        ]
+      }
+    ];
+
+    function shuffle(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function el(tag, opts) {
+      const node = document.createElement(tag);
+      if (opts && opts.className) node.className = opts.className;
+      if (opts && opts.text != null) node.textContent = opts.text;
+      if (opts && opts.href) node.setAttribute('href', opts.href);
+      return node;
+    }
+
+    function renderLabShelf() {
+      const shelf = document.getElementById('lab-shelf');
+      if (!shelf) return;
+      shelf.textContent = '';
+      const picks = shuffle(LAB_POOL).slice(0, 4);
+      picks.forEach(p => {
+        const card = el('article', { className: 'lab-card' });
+        if (p.video) {
+          const thumb = el('a', {
+            className: 'thumb',
+            href: 'https://www.youtube.com/watch?v=' + p.video
+          });
+          thumb.setAttribute('target', '_blank');
+          thumb.setAttribute('rel', 'noopener');
+          thumb.setAttribute('aria-label', 'Watch ' + p.name + ' demo on YouTube');
+          const img = document.createElement('img');
+          img.src = 'https://img.youtube.com/vi/' + encodeURIComponent(p.video) + '/hqdefault.jpg';
+          img.alt = p.name + ' demo thumbnail';
+          img.loading = 'lazy';
+          thumb.appendChild(img);
+          card.appendChild(thumb);
+        }
+        card.appendChild(el('h4', { text: p.name }));
+        card.appendChild(el('p', { className: 'meta', text: p.meta }));
+        card.appendChild(el('p', { text: p.desc }));
+        const links = el('div', { className: 'links' });
+        p.links.forEach((l, i) => {
+          if (i > 0) links.appendChild(document.createTextNode(' \u00B7 '));
+          links.appendChild(el('a', { href: l.href, text: l.label }));
+        });
+        card.appendChild(links);
+        shelf.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderLabShelf();
+      const btn = document.getElementById('shuffle-btn');
+      if (btn) btn.addEventListener('click', renderLabShelf);
+    });
+  </script>
 </body>
 </html>
