@@ -479,7 +479,10 @@
     section.lab .lab-card .thumb.video:hover::after {
       background-color: rgba(225, 58, 160, 0.85);
     }
-    section.lab .lab-card .thumb.static { cursor: default; }
+    section.lab .lab-card .thumb.static { cursor: default; background: var(--navy-deep); }
+    section.lab .lab-card .thumb.static img {
+      object-fit: contain;
+    }
     section.lab .lab-card .thumb.static:hover img { transform: none; filter: none; }
     section.lab .lab-card h4 {
       margin: 0 0 4px;
