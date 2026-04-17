@@ -11,3 +11,6 @@ Thumbs.db
 __pycache__/
 *.pyc
 .venv/
+
+# Large source assets — processed thumbnails live in repo, sources do not
+assets/level_3 Este.gif

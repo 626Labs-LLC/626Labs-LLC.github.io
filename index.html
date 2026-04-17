@@ -464,7 +464,7 @@
       transform: scale(1.03);
       filter: brightness(1.08);
     }
-    section.lab .lab-card .thumb::after {
+    section.lab .lab-card .thumb.video::after {
       content: "";
       position: absolute;
       top: 50%; left: 50%;
@@ -476,9 +476,11 @@
       pointer-events: none;
       transition: background-color .15s ease;
     }
-    section.lab .lab-card .thumb:hover::after {
+    section.lab .lab-card .thumb.video:hover::after {
       background-color: rgba(225, 58, 160, 0.85);
     }
+    section.lab .lab-card .thumb.static { cursor: default; }
+    section.lab .lab-card .thumb.static:hover img { transform: none; filter: none; }
     section.lab .lab-card h4 {
       margin: 0 0 4px;
       font-size: 15px;
@@ -816,6 +818,7 @@
         name: "Reel Battles",
         meta: "Film trivia · Replit",
         desc: "Head-to-head film trivia — a Replit-hosted CineGame project. Jump in and play it in the browser.",
+        image: "assets/thumb-reel-battles.png",
         links: [
           { label: "Replit", href: "https://replit.com/@esteH777/Reel-Battles" },
           { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/Reel-Battles" }
@@ -851,33 +854,20 @@
         ]
       },
       {
-        name: "Anote That",
-        meta: "Handwriting AI · Vision",
-        desc: "Bridges analog notes and digital intelligence — live scanning, adaptive font learning, OpenCV + Gemini agent pipeline.",
-        links: [
-          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/Anote-That" }
-        ]
-      },
-      {
-        name: "WriterStudio",
+        name: "Writer's Studio",
         meta: "Creative tooling · VS Code",
-        desc: "A VS Code workspace template for AI-assisted iterative fiction writing. Fork it, fill it, write. A Doctor Who special shipped on Wattpad from this scaffold.",
+        desc: "A VS Code workspace template for AI-assisted iterative fiction writing. Fork it, fill it, write. The Tenth Doctor / Rose Tyler special \"The Beat That Shook the Void\" shipped on Wattpad from this scaffold.",
+        image: "assets/thumb-writer-studio.jpg",
         links: [
+          { label: "Read on Wattpad", href: "https://www.wattpad.com/myworks/409598532-the-beat-that-shook-the-void-a-doctor-who-special" },
           { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/WriterStudio" }
-        ]
-      },
-      {
-        name: "rotemplate",
-        meta: "Roblox · AI generative",
-        desc: "Uses AI to generate classic T-shirts and pants for Roblox avatars. Expo + OpenAI + Sharp image pipeline.",
-        links: [
-          { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/rotemplate" }
         ]
       },
       {
         name: "Replit Certification",
         meta: "Credential · Replit",
-        desc: "Public certification page. Receipts for being taken seriously on the Replit platform.",
+        desc: "Replit Level 3 \"Proficient Builder\" certification — public receipts for being taken seriously on the platform.",
+        image: "assets/thumb-replit-cert.jpg",
         links: [
           { label: "View", href: "https://replit-certifications.replit.app/esteH777" }
         ]
@@ -910,7 +900,7 @@
         const card = el('article', { className: 'lab-card' });
         if (p.video) {
           const thumb = el('a', {
-            className: 'thumb',
+            className: 'thumb video',
             href: 'https://www.youtube.com/watch?v=' + p.video
           });
           thumb.setAttribute('target', '_blank');
@@ -919,6 +909,14 @@
           const img = document.createElement('img');
           img.src = 'https://img.youtube.com/vi/' + encodeURIComponent(p.video) + '/hqdefault.jpg';
           img.alt = p.name + ' demo thumbnail';
+          img.loading = 'lazy';
+          thumb.appendChild(img);
+          card.appendChild(thumb);
+        } else if (p.image) {
+          const thumb = el('div', { className: 'thumb static' });
+          const img = document.createElement('img');
+          img.src = p.image;
+          img.alt = p.name + ' thumbnail';
           img.loading = 'lazy';
           thumb.appendChild(img);
           card.appendChild(thumb);
