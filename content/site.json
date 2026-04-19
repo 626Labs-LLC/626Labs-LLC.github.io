@@ -16,16 +16,16 @@
     },
     "meta": [
       {
-        "label": "Shipped",
-        "value": "3 plugins · 1 widget"
+        "label": "Deployed",
+        "value": "3 plugins · 1 widget · 8 webapps"
       },
       {
         "label": "Stack",
-        "value": "TypeScript · Swift · Python"
+        "value": "TypeScript · Swift · Python · C# · Luau"
       },
       {
         "label": "Distribution",
-        "value": "Claude Code · macOS · Windows"
+        "value": "Claude Code · macOS · Windows · Replit"
       }
     ],
     "chips": [
