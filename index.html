@@ -16,20 +16,37 @@
   <meta name="twitter:image" content="https://626labs.dev/logo.png" />
 
   <style>
+    /* 626 Labs Design System — see ~/.claude/skills/626labs-design */
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
     :root {
-      --navy-deep: #0f182b;
-      --navy-mid:  #162033;
-      --navy-hi:   #1a2540;
-      --navy-line: #2a3a5c;
-      --cyan:      #3bb4d9;
-      --cyan-pale: #7ae0f5;
-      --magenta:   #e13aa0;
+      /* Brand surfaces — aligned to 626 Labs Design System */
+      --navy-deep: #0f1f31;  /* brand-navy-deep (page "void") */
+      --navy-mid:  #192e44;  /* brand-navy (primary surface, logo field) */
+      --navy-hi:   #223a54;  /* brand-navy-soft (raised card) */
+      --navy-line: #2a3a5c;  /* hairline border */
+      --cyan:      #17d4fa;  /* brand-cyan — logic / circuitry */
+      --cyan-pale: #5ce6ff;  /* brand-cyan-bright */
+      --magenta:   #f22f89;  /* brand-magenta — imagination / energy */
       --text:      #e8f2ff;
       --text-sec:  #a8c2d9;
       --text-dim:  #6a849e;
       --text-mute: #4a5f7a;
-      --ok:        #4ade80;
-      --warn:      #fb923c;
+      --ok:        #2bd99a;  /* brand success */
+      --warn:      #ffb454;  /* brand warning */
+
+      /* Signature duo gradient — the "swoosh" from the logo */
+      --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+
+      /* Neon glow elevation (dark-surface elevation via glow, not drop-shadow) */
+      --glow-cyan: 0 0 0 1px rgba(23,212,250,.35), 0 0 24px rgba(23,212,250,.35);
+      --glow-magenta: 0 0 0 1px rgba(242,47,137,.35), 0 0 24px rgba(242,47,137,.35);
+      --glow-duo: 0 0 24px rgba(23,212,250,.22), 0 0 48px rgba(242,47,137,.16);
+
+      /* Type stack */
+      --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI Variable', 'Segoe UI', sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
     }
 
     * { box-sizing: border-box; }
@@ -39,13 +56,15 @@
       padding: 0;
       background: radial-gradient(ellipse at top, var(--navy-hi), var(--navy-deep) 70%);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI",
-                   Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: var(--font-body);
       font-size: 16px;
       line-height: 1.6;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
+
+    /* Display-font headings per design system (Space Grotesk) */
+    h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
 
     a { color: var(--cyan); text-decoration: none; }
     a:hover { color: var(--cyan-pale); text-decoration: underline; }
@@ -70,7 +89,7 @@
       top: 0;
       backdrop-filter: blur(18px) saturate(140%);
       -webkit-backdrop-filter: blur(18px) saturate(140%);
-      background: rgba(15, 24, 43, 0.72);
+      background: rgba(15, 31, 49, 0.72);
       z-index: 20;
     }
     header.site .inner {
@@ -113,8 +132,8 @@
       border-radius: 24px;
       display: block;
       margin: 0 auto 24px;
-      box-shadow: 0 18px 48px -12px rgba(59, 180, 217, 0.35),
-                  0 0 0 1px rgba(59, 180, 217, 0.12);
+      box-shadow: 0 18px 48px -12px rgba(23, 212, 250, 0.35),
+                  0 0 0 1px rgba(23, 212, 250, 0.12);
     }
     section.hero h1 {
       font-size: clamp(40px, 7vw, 68px);
@@ -168,7 +187,7 @@
       display: flex;
       flex-direction: column;
       padding: 22px 24px;
-      background: rgba(26, 37, 64, 0.4);
+      background: rgba(34, 58, 84, 0.4);
       border: 1px solid var(--navy-line);
       border-radius: 14px;
       color: var(--text);
@@ -176,14 +195,14 @@
     }
     .card:hover {
       border-color: var(--cyan);
-      background: rgba(59, 180, 217, 0.06);
+      background: rgba(23, 212, 250, 0.06);
       transform: translateY(-2px);
       text-decoration: none;
     }
 
     .card.flagship {
-      background: linear-gradient(135deg, rgba(59, 180, 217, 0.08), rgba(225, 58, 160, 0.05));
-      border-color: rgba(59, 180, 217, 0.35);
+      background: linear-gradient(135deg, rgba(23, 212, 250, 0.08), rgba(242, 47, 137, 0.05));
+      border-color: rgba(23, 212, 250, 0.35);
     }
     .card.flagship h3 { font-size: 20px; }
 
@@ -225,9 +244,9 @@
       font-size: 10px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      background: rgba(59, 180, 217, 0.12);
+      background: rgba(23, 212, 250, 0.12);
       color: var(--cyan-pale);
-      border: 1px solid rgba(59, 180, 217, 0.3);
+      border: 1px solid rgba(23, 212, 250, 0.3);
       padding: 2px 8px;
       border-radius: 4px;
       margin-left: 8px;
@@ -239,11 +258,10 @@
     .card .install {
       margin: 0 0 14px;
       padding: 10px 12px;
-      background: rgba(15, 24, 43, 0.7);
+      background: rgba(15, 31, 49, 0.7);
       border: 1px solid var(--navy-line);
       border-radius: 8px;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-                   "Liberation Mono", monospace;
+      font-family: var(--font-mono);
       font-size: 12.5px;
       line-height: 1.5;
       color: var(--cyan-pale);
@@ -265,6 +283,7 @@
       color: var(--cyan-pale);
       background: transparent;
       padding: 0;
+      font-family: var(--font-mono);
     }
     .card .install code .prompt {
       color: var(--text-dim);
@@ -316,7 +335,7 @@
       margin: 0 0 24px;
       padding: 18px 22px;
       border-left: 3px solid var(--cyan);
-      background: rgba(59, 180, 217, 0.05);
+      background: rgba(23, 212, 250, 0.05);
       color: var(--cyan-pale);
       font-style: italic;
       font-size: 17px;
@@ -363,10 +382,10 @@
       position: relative;
       border-radius: 14px;
       overflow: hidden;
-      border: 1px solid rgba(59, 180, 217, 0.25);
-      background: linear-gradient(135deg, rgba(59, 180, 217, 0.06), rgba(225, 58, 160, 0.04));
+      border: 1px solid rgba(23, 212, 250, 0.25);
+      background: linear-gradient(135deg, rgba(23, 212, 250, 0.06), rgba(242, 47, 137, 0.04));
       box-shadow: 0 24px 72px -24px rgba(0, 0, 0, 0.5),
-                  0 0 0 1px rgba(59, 180, 217, 0.08);
+                  0 0 0 1px rgba(23, 212, 250, 0.08);
     }
     section.lab-runs .frame img {
       display: block;
@@ -378,7 +397,7 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      box-shadow: inset 0 0 80px rgba(15, 24, 43, 0.4);
+      box-shadow: inset 0 0 80px rgba(15, 31, 49, 0.4);
       border-radius: 14px;
     }
     section.lab-runs .frame .frame-tag {
@@ -388,9 +407,9 @@
       font-size: 10.5px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      background: rgba(15, 24, 43, 0.75);
+      background: rgba(15, 31, 49, 0.75);
       color: var(--cyan-pale);
-      border: 1px solid rgba(59, 180, 217, 0.3);
+      border: 1px solid rgba(23, 212, 250, 0.3);
       padding: 3px 9px;
       border-radius: 999px;
       backdrop-filter: blur(6px);
@@ -434,14 +453,14 @@
       display: flex;
       flex-direction: column;
       padding: 18px 20px;
-      background: rgba(22, 32, 51, 0.5);
+      background: rgba(25, 46, 68, 0.5);
       border: 1px solid var(--navy-line);
       border-radius: 12px;
       transition: border-color .15s ease, background .15s ease, transform .15s ease;
     }
     section.lab .lab-card:hover {
       border-color: var(--cyan);
-      background: rgba(59, 180, 217, 0.04);
+      background: rgba(23, 212, 250, 0.04);
       transform: translateY(-2px);
     }
     section.lab .lab-card .thumb {
@@ -472,13 +491,13 @@
       width: 44px; height: 44px;
       margin: -22px 0 0 -22px;
       border-radius: 999px;
-      background: rgba(15, 24, 43, 0.78) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%23e8f2ff' d='M5.5 3.5v9l7-4.5z'/></svg>") center/18px no-repeat;
+      background: rgba(15, 31, 49, 0.78) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%23e8f2ff' d='M5.5 3.5v9l7-4.5z'/></svg>") center/18px no-repeat;
       border: 1.5px solid rgba(232, 242, 255, 0.8);
       pointer-events: none;
       transition: background-color .15s ease;
     }
     section.lab .lab-card .thumb.video:hover::after {
-      background-color: rgba(225, 58, 160, 0.85);
+      background-color: rgba(242, 47, 137, 0.85);
     }
     section.lab .lab-card .thumb.static { cursor: default; background: var(--navy-deep); }
     section.lab .lab-card .thumb.static img {
@@ -542,8 +561,8 @@
       align-items: center;
       gap: 22px;
       padding: 24px 28px;
-      background: linear-gradient(135deg, rgba(225, 58, 160, 0.08), rgba(59, 180, 217, 0.05));
-      border: 1px solid rgba(225, 58, 160, 0.25);
+      background: linear-gradient(135deg, rgba(242, 47, 137, 0.08), rgba(23, 212, 250, 0.05));
+      border: 1px solid rgba(242, 47, 137, 0.25);
       border-radius: 14px;
     }
     section.support .support-copy { flex: 1; min-width: 260px; }
@@ -565,8 +584,8 @@
       align-items: center;
       gap: 8px;
       padding: 10px 18px;
-      background: rgba(225, 58, 160, 0.15);
-      border: 1px solid rgba(225, 58, 160, 0.5);
+      background: rgba(242, 47, 137, 0.15);
+      border: 1px solid rgba(242, 47, 137, 0.5);
       color: var(--text);
       border-radius: 999px;
       font-weight: 500;
@@ -574,7 +593,7 @@
       transition: background .15s ease, border-color .15s ease, transform .15s ease;
     }
     section.support .sponsor-cta:hover {
-      background: rgba(225, 58, 160, 0.25);
+      background: rgba(242, 47, 137, 0.25);
       border-color: var(--magenta);
       text-decoration: none;
       transform: translateY(-1px);
@@ -640,9 +659,9 @@
           <p class="tagline">Plot your course from idea to shipped app.</p>
           <p class="desc">Vibe coding with a map. Eleven slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect — and the plugin remembers where you left off so you don't lose the thread between sessions.</p>
           <div class="badges">
-            <img src="https://img.shields.io/npm/v/@esthernandez/vibe-cartographer?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="npm version">
-            <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-cartographer?color=e13aa0&labelColor=0f182b&style=flat-square&label=downloads" alt="total downloads">
-            <img src="https://img.shields.io/npm/l/@esthernandez/vibe-cartographer?color=4ade80&labelColor=0f182b&style=flat-square" alt="MIT license">
+            <img src="https://img.shields.io/npm/v/@esthernandez/vibe-cartographer?color=17d4fa&labelColor=0f1f31&style=flat-square" alt="npm version">
+            <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-cartographer?color=f22f89&labelColor=0f1f31&style=flat-square&label=downloads" alt="total downloads">
+            <img src="https://img.shields.io/npm/l/@esthernandez/vibe-cartographer?color=2bd99a&labelColor=0f1f31&style=flat-square" alt="MIT license">
           </div>
           <div class="install">
             <span class="label">Install in Claude Code</span>
@@ -659,9 +678,9 @@
           <p class="tagline">Close the documentation vacuum.</p>
           <p class="desc">Point it at your codebase and it tells you which docs you're missing — ADRs, runbooks, threat models, specs — then writes them. Basically, the documentation pass you keep meaning to do.</p>
           <div class="badges">
-            <img src="https://img.shields.io/npm/v/@esthernandez/vibe-doc?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="npm version">
-            <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-doc?color=e13aa0&labelColor=0f182b&style=flat-square&label=downloads" alt="total downloads">
-            <img src="https://img.shields.io/npm/l/@esthernandez/vibe-doc?color=4ade80&labelColor=0f182b&style=flat-square" alt="MIT license">
+            <img src="https://img.shields.io/npm/v/@esthernandez/vibe-doc?color=17d4fa&labelColor=0f1f31&style=flat-square" alt="npm version">
+            <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-doc?color=f22f89&labelColor=0f1f31&style=flat-square&label=downloads" alt="total downloads">
+            <img src="https://img.shields.io/npm/l/@esthernandez/vibe-doc?color=2bd99a&labelColor=0f1f31&style=flat-square" alt="MIT license">
           </div>
           <div class="install">
             <span class="label">Install in Claude Code</span>
@@ -689,9 +708,9 @@
           <p class="tagline">Tests that match what your app actually does.</p>
           <p class="desc">Reads your vibe-coded app, classifies it by maturity tier and deployment risk, and generates the tests that actually matter. Catches the broken harnesses every other test tool assumes away — vitest configs that silently report 0%, coverage tools cherry-picking denominators, test scripts pointing at uninstalled binaries.</p>
           <div class="badges">
-            <img src="https://img.shields.io/npm/v/@esthernandez/vibe-test?color=3bb4d9&labelColor=0f182b&style=flat-square" alt="npm version">
-            <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-test?color=e13aa0&labelColor=0f182b&style=flat-square&label=downloads" alt="total downloads">
-            <img src="https://img.shields.io/npm/l/@esthernandez/vibe-test?color=4ade80&labelColor=0f182b&style=flat-square" alt="MIT license">
+            <img src="https://img.shields.io/npm/v/@esthernandez/vibe-test?color=17d4fa&labelColor=0f1f31&style=flat-square" alt="npm version">
+            <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-test?color=f22f89&labelColor=0f1f31&style=flat-square&label=downloads" alt="total downloads">
+            <img src="https://img.shields.io/npm/l/@esthernandez/vibe-test?color=2bd99a&labelColor=0f1f31&style=flat-square" alt="MIT license">
           </div>
           <div class="install">
             <span class="label">Install in Claude Code</span>
