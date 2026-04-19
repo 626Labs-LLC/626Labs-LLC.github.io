@@ -302,6 +302,14 @@
       max-width: 720px;
       margin: 0 0 14px;
     }
+    section.about p.lead {
+      color: var(--cyan-pale);
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      margin: 0 0 22px;
+      max-width: 720px;
+    }
     section.about p strong {
       color: var(--text);
       font-weight: 600;
@@ -647,7 +655,7 @@
     <div class="container narrow">
       <img class="crest" src="logo.png" alt="626 Labs LLC" />
       <h1>Ship what you vibe&#x2011;code.</h1>
-      <p class="tag">Open-source Claude Code plugins for turning a vibe-coded afternoon into an app that actually holds up in production — planning, docs, tests, security. Plus a native desktop widget for pacing your Claude.ai usage.</p>
+      <p class="tag">Claude Code plugins for builders who vibe-code fast and still ship for real. Planning, docs, tests, security — with a native Windows/macOS widget for pacing your usage.</p>
       <p class="sub">Made in Fort Worth, TX</p>
     </div>
   </section>
@@ -749,8 +757,8 @@
         A plugin should be more useful on its tenth run than on its first —
         not because the user learned it, but because it learned the user.
       </blockquote>
-      <p>The <strong>Self-Evolving Plugin Framework</strong> is 626 Labs' open-source thesis on how AI plugins should get sharper over time. Three pillars — self-repair, self-teach, self-evolve. A five-level maturity ladder from static tools to autonomous adaptation. Sixteen named patterns with concrete implementation playbooks.</p>
-      <p>Vibe Cartographer currently sits at <strong>Level 3.5</strong> — it reads its own usage, surfaces friction patterns, proposes changes to its own behavior, and runs self-diagnostic health checks. The framework doc drives every plugin's roadmap.</p>
+      <p>The <strong>Self-Evolving Plugin Framework</strong> is three disciplines stacked on top of each other: self-repair, self-teach, self-evolve. A plugin that can fix itself when it breaks, teach itself what the user actually wanted, and rewrite its own guidance when the pattern repeats. Each discipline earns its rung on a five-level maturity ladder — sixteen named patterns across the climb, one Apache-licensed spec, and a scorecard so the claims are checkable, not aspirational.</p>
+      <p>Vibe Cartographer sits at <strong>Level 3.5</strong> right now — the highest rung any public plugin has reached — and every new plugin we ship gets benchmarked against the same ladder. The framework isn't marketing. It's how we keep the work honest when nobody's watching.</p>
       <div class="links">
         <a href="https://github.com/estevanhernandez-stack-ed/vibe-cartographer/blob/main/docs/self-evolving-plugins-framework.md"><strong>Read the framework doc &rarr;</strong></a>
       </div>
@@ -772,8 +780,8 @@
         </div>
       </div>
       <div class="caption">
-        <p>The 626 Labs Dashboard is a private agent OS for running the studio — a constellation of 50+ projects, every architectural decision logged, plugin work coordinated with an AI called The Architect, and a scan/voice/whiteboard surface for capturing context fast. It's the thing that makes shipping this many parallel products feasible from one builder.</p>
-        <p>Not open source yet. The plugins shipping out of the hub are the open-source distillation of what the dashboard taught us about how tools should adapt to the person using them.</p>
+        <p>The 626 Labs Dashboard is a private agent OS — Operation Center, decisions log, Architect AI, and Scanner / Voice / Whiteboard inputs — running as one surface across every active project. It watches the work, logs the decisions, and keeps the threads connected when we context-switch between a hotel app, a theater tool, and a plugin release in the same afternoon.</p>
+        <p>The Dashboard itself isn't open source. The Vibe plugins are — they're the lessons the Dashboard taught us, refactored so any builder on Claude Code gets the same tailwind.</p>
       </div>
     </div>
   </section>
@@ -792,13 +800,26 @@
   <section class="about" id="about">
     <div class="container">
       <h2>About 626 Labs</h2>
-      <p class="lead">Independent software studio. Fort Worth, TX.</p>
-      <p>Native desktop apps and open-source Claude Code plugins, mostly. Builder mentality — ship then polish. Native over Electron, Python over JavaScript, talking it through over spec'ing it out. Things get released when they work, not when they're pretty.</p>
+      <p class="lead">New ideas to old logic.</p>
+
+      <p>626 Labs builds modern tools for practices that have been running on spreadsheets, paper, and inherited habits for decades — or, in the case of astrology, a few thousand years. The brief is simple: look at a field that everyone assumes is "fine the way it is," and ship the version it should have had all along.</p>
+
+      <p>The proof case is <strong>Celestia 3</strong>. AI joined with tarot, numerology, and astrology in one surface. Partway through the build, we discovered the default Swiss Ephemeris engine drifted at the second-precision level. We didn't ship around it. We repaired the engine ourselves and met the NASA-grade bar. The point isn't the math — it's the posture. When the bar moves mid-build, we move with it.</p>
+
+      <p>That posture is what pulled us into the old empires — theater operations, safety inspections, hotels, cinema exhibition. Off-the-shelf vendors build for the brochure. We build operator-first — the domain expert in the loop, the AI coder on the keyboard — and ship the tool the shift manager actually needed.</p>
+
+      <p>The Vibe plugins — <strong>Cartographer, Doc, Test, Sec</strong> — are the other half of the work. Vibe coding is the fastest way to turn an idea into running software right now. It's also the easiest way to end up with something that can't survive production. The plugins close that gap: planning, docs, tests, security, all built so a vibe-coded afternoon holds up in front of real users.</p>
+
+      <p><strong>We See You at the Movies</strong> is the gaming wedge. Trivia and head-to-head card battles are warm-ups for bigger things on deck.</p>
+
+      <p>Every 626 Labs app is built like it might be seen by a thousand pairs of eyes, even when it may only ever be seen by one. That's the standard. I've deployed more apps to production than I ever imagined, and the bar keeps going up.</p>
+
       <div class="tags">
         <span class="tag">native apps</span>
         <span class="tag">Claude Code plugins</span>
         <span class="tag">open source</span>
         <span class="tag">MIT</span>
+        <span class="tag">Fort Worth, TX</span>
       </div>
     </div>
   </section>
@@ -808,7 +829,7 @@
       <div class="support-box">
         <div class="support-copy">
           <h3>Keep the lab running</h3>
-          <p>Every 626 Labs plugin is MIT-licensed and maintained on nights and weekends. If the Vibe ecosystem is saving you time, GitHub Sponsors is the cleanest way to say thanks — and to keep the next plugin on track.</p>
+          <p>Every 626 Labs plugin is MIT-licensed and maintained on nights and weekends. If the Vibe ecosystem is saving you time, GitHub Sponsors is the cleanest way to say thanks — and to keep the next plugin on schedule.</p>
         </div>
         <a class="sponsor-cta" href="https://github.com/sponsors/estevanhernandez-stack-ed">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 008 13.393a20.561 20.561 0 003.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.749.749 0 01-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5zM8 14.25l-.345.666-.002-.001-.006-.003-.018-.01a7.643 7.643 0 01-.31-.17 22.075 22.075 0 01-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.08 22.08 0 01-3.744 2.584l-.018.01-.006.003h-.002L8 14.25z"/></svg>
