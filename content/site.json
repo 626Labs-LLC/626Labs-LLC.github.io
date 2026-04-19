@@ -1,0 +1,199 @@
+{
+  "$schema": "https://626labs.dev/content/site.schema.json",
+  "version": 1,
+  "hero": {
+    "eyebrow": "626 Labs LLC · Fort Worth, TX",
+    "headline": "Vibe coded.",
+    "headlineAccent": "Shipped at enterprise grade.",
+    "subhead": "Claude Code plugins for builders who vibe-code fast and still ship for real. Planning, docs, tests, security — with a native Windows/macOS widget for pacing your usage.",
+    "primaryCta": { "label": "See the work", "href": "#work" },
+    "secondaryCta": { "label": "Read the thesis", "href": "#thinking" },
+    "meta": [
+      { "label": "Shipped", "value": "3 plugins · 1 widget" },
+      { "label": "Stack", "value": "TypeScript · Swift · Python" },
+      { "label": "Distribution", "value": "Claude Code · macOS · Windows" }
+    ],
+    "chips": [
+      { "label": "vibe-cartographer", "tone": "cyan" },
+      { "label": "vibe-doc", "tone": "magenta" },
+      { "label": "vibe-test · live", "tone": "success" },
+      { "label": "claude-code", "tone": "cyan" }
+    ]
+  },
+  "sections": {
+    "thinking": { "enabled": true },
+    "labRuns":  { "enabled": true },
+    "lab":      { "enabled": true },
+    "support":  { "enabled": true },
+    "contact":  { "enabled": true }
+  },
+  "products": [
+    {
+      "id": "vibe-cartographer",
+      "flagship": true,
+      "title": "Vibe Cartographer",
+      "tagline": "Vibe coding with a map.",
+      "description": "Eleven slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect — and the plugin remembers where you left off so you don't lose the thread between sessions.",
+      "tags": [
+        { "label": "Flagship", "tone": "magenta" },
+        { "label": "Live", "tone": "live" },
+        { "label": "Claude Code plugin", "tone": "cyan" }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-cartographer",
+      "npm": "@esthernandez/vibe-cartographer",
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-doc",
+      "title": "Vibe Doc",
+      "description": "Point it at your codebase and it tells you which docs you're missing — ADRs, runbooks, threat models, specs — then writes them. Basically, the documentation pass you keep meaning to do.",
+      "tags": [
+        { "label": "Plugin", "tone": "cyan" },
+        { "label": "documentation", "tone": "magenta" },
+        { "label": "Live", "tone": "live" }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/Vibe-Doc",
+      "npm": "@esthernandez/vibe-doc",
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Doc",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-test",
+      "title": "Vibe Test",
+      "description": "Reads your vibe-coded app, classifies maturity tier and deployment risk, generates the tests that actually matter. Catches the broken harnesses every other test tool assumes away — vitest configs silently reporting 0%, coverage tools cherry-picking denominators.",
+      "tags": [
+        { "label": "Plugin", "tone": "cyan" },
+        { "label": "tests", "tone": "magenta" },
+        { "label": "Live", "tone": "live" }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "npm": "@esthernandez/vibe-test",
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "screenshots": []
+    },
+    {
+      "id": "sanduhr",
+      "title": "Sanduhr für Claude",
+      "description": "Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Burn-rate projection, pace markers, sparkline trends, five hand-tuned glass themes.",
+      "tags": [
+        { "label": "macOS", "tone": "cyan" },
+        { "label": "Windows", "tone": "cyan" },
+        { "label": "native", "tone": "magenta" },
+        { "label": "Live", "tone": "live" }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
+      "npm": null,
+      "install": null,
+      "productPage": "/sanduhr/",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-sec",
+      "title": "Vibe Sec",
+      "description": "The security gaps AI prototyping leaves behind are pretty predictable — leaked secrets, sketchy auth, missing input validation, stale dependencies. Vibe Sec finds them and writes the fix, scaled to where your app actually runs.",
+      "tags": [
+        { "label": "Plugin", "tone": "cyan" },
+        { "label": "security", "tone": "magenta" },
+        { "label": "Coming soon", "tone": "wip" }
+      ],
+      "status": "wip",
+      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "npm": "@esthernandez/vibe-sec",
+      "install": null,
+      "screenshots": []
+    }
+  ],
+  "lab": [
+    {
+      "id": "celestia-3",
+      "name": "Celestia 3",
+      "meta": "AI Technomancer · Hackathon",
+      "desc": "Gemini 3 + Swiss Ephemeris WASM + React Three Fiber. Readings of the actual sky with conversational narration — a Devpost hackathon entry with NASA-grade ephemeris data under the hood.",
+      "video": "HV8dUMReNgI",
+      "links": [
+        { "label": "Watch demo", "href": "https://www.youtube.com/watch?v=HV8dUMReNgI" },
+        { "label": "GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Celestia3" }
+      ]
+    },
+    {
+      "id": "ladder",
+      "name": "Project L.A.D.D.E.R.",
+      "meta": "Local-first education · Gemma",
+      "desc": "Multimodal learning framework that runs local-first with Gemma — built to bridge the access gap when connectivity isn't a given. Teacher dashboard rolls up live engagement, subject-level averages, and behavioral flags so interventions happen in-class, not after grading.",
+      "image": "assets/thumb-ladder.png",
+      "links": [
+        { "label": "GitHub", "href": "https://github.com/estevanhernandez-stack-ed/LADDER" }
+      ]
+    },
+    {
+      "id": "lobby-engagement-suite",
+      "name": "Lobby Engagement Suite",
+      "meta": "Cinema + hotel kiosks · Firebase",
+      "desc": "Seven movie-themed engagement apps on a shared monorepo — CinePerks trivia kiosks for cinemas, GuestBuzz trivia for hotels, Reel Battles head-to-head, Reel Words puzzles, Birthday Bacon Trail, and Box Office Heads Up. Built to turn lobby idle time into loyalty signups and brand touch.",
+      "image": "assets/thumb-cinegame.png",
+      "links": [
+        { "label": "Play Reel Battles demo", "href": "https://replit.com/@esteH777/Reel-Battles" },
+        { "label": "GitHub", "href": "https://github.com/estevanhernandez-stack-ed/QuizShow" }
+      ]
+    },
+    {
+      "id": "safety-assistant",
+      "name": "Safety Assistant",
+      "meta": "Deployed app · Replit",
+      "desc": "Stop drowning in unread inspection PDFs. Drop a messy PDF, incident form, or screenshot — the AI extracts hazards, ranks severity, and returns a prioritized action plan in seconds. Deployed live on Replit.",
+      "image": "assets/thumb-safety-assistant.png",
+      "links": [
+        { "label": "Launch", "href": "https://safety-assistant.replit.app" },
+        { "label": "GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Safety_Assistant" }
+      ]
+    },
+    {
+      "id": "cleanup-ranger",
+      "name": "Cleanup Ranger",
+      "meta": "Civic tech · Community",
+      "desc": "Community-driven park-cleanup app. Track hazards and trash at local parks; pin what you've cleaned.",
+      "video": "TsYYHhk8qtE",
+      "links": [
+        { "label": "Watch demo", "href": "https://youtu.be/TsYYHhk8qtE" },
+        { "label": "GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Cleanup-Ranger" }
+      ]
+    },
+    {
+      "id": "tag-that-line",
+      "name": "Tag That Line",
+      "meta": "Word game · AI",
+      "desc": "A tag-the-line word game — built fast, videoed, shipped. Watch the demo to see it in motion.",
+      "video": "XoMzjYhVLgE",
+      "links": [
+        { "label": "Watch demo", "href": "https://youtu.be/XoMzjYhVLgE" },
+        { "label": "GitHub", "href": "https://github.com/estevanhernandez-stack-ed/tagthatline" }
+      ]
+    },
+    {
+      "id": "writers-studio",
+      "name": "Writer's Studio",
+      "meta": "Creative tooling · VS Code",
+      "desc": "A VS Code workspace template for AI-assisted iterative fiction writing. Fork it, fill it, write. The Tenth Doctor / Rose Tyler special \"The Beat That Shook the Void\" shipped on Wattpad from this scaffold.",
+      "image": "assets/thumb-writer-studio.jpg",
+      "links": [
+        { "label": "Read on Wattpad", "href": "https://www.wattpad.com/myworks/409598532-the-beat-that-shook-the-void-a-doctor-who-special" },
+        { "label": "GitHub", "href": "https://github.com/estevanhernandez-stack-ed/WriterStudio" }
+      ]
+    },
+    {
+      "id": "replit-cert",
+      "name": "Replit Certification",
+      "meta": "Credential · Replit",
+      "desc": "Replit Level 3 \"Proficient Builder\" certification — public receipts for being taken seriously on the platform.",
+      "image": "assets/thumb-replit-cert.jpg",
+      "links": [
+        { "label": "View", "href": "https://replit-certifications.replit.app/esteH777" }
+      ]
+    }
+  ]
+}

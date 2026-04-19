@@ -14,3 +14,10 @@ __pycache__/
 
 # Large source assets — processed thumbnails live in repo, sources do not
 assets/level_3 Este.gif
+
+# Admin dashboard — LOCAL ONLY, never served from Pages
+# Run via: python3 -m http.server 8080 → http://127.0.0.1:8080/admin-dashboard.html
+# The admin writes to content/site.json (which IS tracked — that's the public
+# content). PAT stored in localStorage on your machine only.
+/admin-dashboard.html
+/admin/
