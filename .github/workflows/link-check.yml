@@ -1,0 +1,70 @@
+name: Check Links
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - '**/*.md'
+      - '.github/workflows/link-check.yml'
+  schedule:
+    # Mondays 13:00 UTC ≈ 8am CST / 7am CDT
+    - cron: '0 13 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore lychee cache
+        uses: actions/cache@v4
+        with:
+          path: .lycheecache
+          key: cache-lychee-${{ github.sha }}
+          restore-keys: cache-lychee-
+
+      - name: Run Lychee
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --cache
+            --max-cache-age 1d
+            --verbose
+            --no-progress
+            --exclude-path Design/uploads
+            --exclude '^https?://img\.shields\.io/'
+            --exclude '^https?://img\.youtube\.com/'
+            --accept '200,204,301,302,307,308,429'
+            './**/*.html'
+            './**/*.md'
+          fail: false
+          output: ./lychee.md
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lychee-report
+          path: ./lychee.md
+          retention-days: 14
+
+      - name: Open issue on broken links (scheduled runs only)
+        if: >-
+          steps.lychee.outputs.exit_code != '0' &&
+          github.event_name == 'schedule'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: 'Link checker found broken links'
+          content-filepath: ./lychee.md
+          labels: broken-links, automated
