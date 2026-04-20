@@ -265,11 +265,30 @@ PRODUCT_FOOT_META = {
 }
 
 
+CLAUDE_CODE_BADGE = (
+    # Claude Code skill — Anthropic-orange (D97757), dark label (141414),
+    # Anthropic sparkle loaded via shields.io's simpleicons integration.
+    'https://img.shields.io/badge/Claude%20Code-skill-D97757?'
+    'style=flat-square&logo=anthropic&logoColor=F5F5F0&labelColor=141414'
+)
+
+
 def render_badges(p: dict) -> str:
-    """npm version + downloads (maskable) + release + license."""
+    """Claude Code skill (if applicable) + npm version + downloads (maskable) + release + license."""
     npm = p.get("npm")
-    if not npm:
+    claude_code = bool(p.get("claudeCode"))
+
+    # WIP plugins that aren't on npm still get the Claude Code signal if flagged.
+    if not npm and not claude_code:
         return ""
+
+    # When there's no npm but the product is a Claude Code plugin (wip/coming-soon),
+    # show only the Claude Code badge.
+    if not npm:
+        return f"""\
+        <div class="badges">
+          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">
+        </div>"""
     repo = p.get("repo") or ""
     pid = p.get("id", "")
     filt = SHIELDS_RELEASE_FILTER.get(pid, "")
@@ -291,9 +310,13 @@ def render_badges(p: dict) -> str:
             f"https://img.shields.io/github/v/release/{repo}"
             f"?color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=release"
         )
+    cc_badge = (
+        f'          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">\n'
+        if claude_code else ""
+    )
     return f"""\
         <div class="badges">
-          <img src="https://img.shields.io/npm/v/{attr(npm)}?color={BADGE_COLOR_CYAN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="npm version">
+{cc_badge}          <img src="https://img.shields.io/npm/v/{attr(npm)}?color={BADGE_COLOR_CYAN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="npm version">
           <img data-maskable="true" src="https://img.shields.io/npm/dt/{attr(npm)}?color={BADGE_COLOR_MAGENTA}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=downloads" alt="total downloads">
           <img src="{attr(release_url)}" alt="latest release">
           <img src="https://img.shields.io/npm/l/{attr(npm)}?color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="MIT license">

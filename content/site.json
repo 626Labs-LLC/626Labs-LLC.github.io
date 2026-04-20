@@ -89,6 +89,7 @@
       "repo": "estevanhernandez-stack-ed/vibe-cartographer",
       "npm": "@esthernandez/vibe-cartographer",
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer",
+      "claudeCode": true,
       "screenshots": []
     },
     {
@@ -113,6 +114,7 @@
       "repo": "estevanhernandez-stack-ed/Vibe-Doc",
       "npm": "@esthernandez/vibe-doc",
       "install": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Doc",
+      "claudeCode": true,
       "screenshots": []
     },
     {
@@ -137,6 +139,7 @@
       "repo": "estevanhernandez-stack-ed/vibe-plugins",
       "npm": "@esthernandez/vibe-test",
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
       "screenshots": []
     },
     {
@@ -190,6 +193,7 @@
       "repo": "estevanhernandez-stack-ed/vibe-plugins",
       "npm": "@esthernandez/vibe-sec",
       "install": null,
+      "claudeCode": true,
       "screenshots": []
     }
   ],
