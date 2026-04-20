@@ -325,6 +325,42 @@
           "href": "https://replit-certifications.replit.app/esteH777"
         }
       ]
+    },
+    {
+      "id": "beatsmasher",
+      "name": "BeatsMasher",
+      "meta": "Audio · AI-assisted production",
+      "desc": "Browser-based beat-slicing and mash-up tool. Tone.js + wavesurfer + essentia.js for beat detection, SoundTouch for time-stretch, lamejs for export. React front, Express back, Replit Agent 4 built the scaffold.",
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/estevanhernandez-stack-ed/BeatsMasher"
+        }
+      ]
+    },
+    {
+      "id": "poster-colorizer",
+      "name": "Poster-Colorizer",
+      "meta": "Film posters · Generative",
+      "desc": "Breathes color into vintage black-and-white theater posters. The visual companion to the poster-planning tooling that runs the exhibition side of the lab.",
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/estevanhernandez-stack-ed/Poster-Colorizer"
+        }
+      ]
+    },
+    {
+      "id": "626labs-mcp",
+      "name": "626Labs MCP · VS Code",
+      "meta": "Developer tooling · MCP",
+      "desc": "VS Code extension that wires the 626 Labs Dashboard into the editor via MCP — projects, tasks, decisions, and agent actions available without leaving the IDE. The bridge that makes the agent OS feel like it lives in your terminal.",
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/estevanhernandez-stack-ed/626MCP-VsCodeExtension"
+        }
+      ]
     }
   ]
 }

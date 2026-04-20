@@ -1504,7 +1504,7 @@
         <div class="eyebrow"><span>04 · Also from the lab</span><span class="line"></span></div>
         <h2>Other things we've shipped.</h2>
       </div>
-      <p>While figuring out the plugins. Reloads shuffle the set — hit shuffle to see the rest.</p>
+      <p>While figuring out the plugins. Eight projects per load, reshuffled from a larger pool — hit shuffle for a fresh slate.</p>
     </div>
     <div class="shelf" id="lab-shelf"></div>
     <div class="shuffle-note">
@@ -1763,6 +1763,39 @@
                         "href": "https://replit-certifications.replit.app/esteH777"
                   }
             ]
+      },
+      {
+            "name": "BeatsMasher",
+            "meta": "Audio · AI-assisted production",
+            "desc": "Browser-based beat-slicing and mash-up tool. Tone.js + wavesurfer + essentia.js for beat detection, SoundTouch for time-stretch, lamejs for export. React front, Express back, Replit Agent 4 built the scaffold.",
+            "links": [
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/BeatsMasher"
+                  }
+            ]
+      },
+      {
+            "name": "Poster-Colorizer",
+            "meta": "Film posters · Generative",
+            "desc": "Breathes color into vintage black-and-white theater posters. The visual companion to the poster-planning tooling that runs the exhibition side of the lab.",
+            "links": [
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/Poster-Colorizer"
+                  }
+            ]
+      },
+      {
+            "name": "626Labs MCP · VS Code",
+            "meta": "Developer tooling · MCP",
+            "desc": "VS Code extension that wires the 626 Labs Dashboard into the editor via MCP — projects, tasks, decisions, and agent actions available without leaving the IDE. The bridge that makes the agent OS feel like it lives in your terminal.",
+            "links": [
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/626MCP-VsCodeExtension"
+                  }
+            ]
       }
     // SITE_JSON:lab-pool:end
   ];
@@ -1788,7 +1821,7 @@
     const shelf = document.getElementById('lab-shelf');
     if (!shelf) return;
     shelf.textContent = '';
-    const picks = shuffle(LAB_POOL).slice(0, 4);
+    const picks = shuffle(LAB_POOL).slice(0, 8);
     picks.forEach(p => {
       const card = el('article', { className: 'lab-card' });
       if (p.video) {
