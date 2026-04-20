@@ -331,6 +331,7 @@
       "name": "BeatsMasher",
       "meta": "Deployed app · Replit",
       "desc": "Browser-based beat-slicing and mash-up tool. Tone.js + wavesurfer + essentia.js for beat detection, SoundTouch for time-stretch, lamejs for export. React front, Express back, Replit Agent 4 built the scaffold.",
+      "image": "assets/thumb-beatsmasher.png",
       "links": [
         {
           "label": "Launch",
