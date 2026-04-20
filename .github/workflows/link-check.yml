@@ -41,7 +41,7 @@ jobs:
             --max-cache-age 1d
             --verbose
             --no-progress
-            --base .
+            --root-dir ${{ github.workspace }}
             --exclude-path Design/uploads
             --exclude '^https?://img\.shields\.io/'
             --exclude '^https?://img\.youtube\.com/'
