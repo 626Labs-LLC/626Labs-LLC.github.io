@@ -1217,6 +1217,7 @@
   </div>
   <div class="wrap hero-inner">
     <div>
+      <!-- SITE_JSON:hero:start -->
       <div class="eyebrow">
         <span class="pulse"></span>
         <span>626 Labs LLC · Fort Worth, TX</span>
@@ -1230,19 +1231,15 @@
         Claude Code plugins for builders who vibe-code fast and still ship for real. Planning, docs, tests, security — with a native Windows/macOS widget for pacing your usage.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#work">
-          See the work
-          <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </a>
-        <a class="btn btn-ghost" href="#thinking">
-          Read the thesis
-        </a>
+        <a class="btn btn-primary" href="#work">See the work<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a class="btn btn-ghost" href="#thinking">Read the thesis</a>
       </div>
       <div class="hero-meta">
         <div>Deployed<b>3 plugins · 1 widget · 8 webapps</b></div>
         <div>Stack<b>TypeScript · Swift · Python · C# · Luau</b></div>
         <div>Distribution<b>Claude Code · macOS · Windows · Replit</b></div>
       </div>
+      <!-- SITE_JSON:hero:end -->
     </div>
 
     <div class="mark-stage" aria-hidden="true">
@@ -1254,12 +1251,14 @@
       <div class="mark-logo">
         <img src="logo.png" alt="626 Labs — Imagine Something Else"/>
       </div>
+      <!-- SITE_JSON:hero-chips:start -->
       <div class="mark-chips">
         <div class="mark-chip chip-a"><span class="dot"></span>vibe-cartographer</div>
         <div class="mark-chip magenta chip-b"><span class="dot"></span>vibe-doc</div>
         <div class="mark-chip success chip-c"><span class="dot"></span>vibe-test · live</div>
         <div class="mark-chip chip-d"><span class="dot"></span>claude-code</div>
       </div>
+      <!-- SITE_JSON:hero-chips:end -->
     </div>
   </div>
 </header>
@@ -1278,22 +1277,16 @@
     </div>
 
     <div class="products">
-
-      <!-- FLAGSHIP · VIBE CARTOGRAPHER -->
+      <!-- SITE_JSON:products:start -->
       <article class="product flagship">
         <div class="product-head">
           <div style="display:flex;align-items:center;gap:16px">
             <div class="product-sigil">
-              <svg class="ic-xl ic" viewBox="0 0 24 24">
-                <path d="M1 6v16l7-3 8 3 7-3V3l-7 3-8-3-7 3z"/>
-                <path d="M8 3v16M16 6v16"/>
-              </svg>
+              <svg class="ic-xl ic" viewBox="0 0 24 24"><path d="M1 6v16l7-3 8 3 7-3V3l-7 3-8-3-7 3z"/><path d="M8 3v16M16 6v16"/></svg>
             </div>
             <div>
               <div class="product-tags" style="margin-bottom:4px">
-                <span class="tag magenta">Flagship</span>
-                <span class="tag live">Live</span>
-                <span class="tag cyan">Claude Code plugin</span>
+                <span class="tag magenta">Flagship</span><span class="tag live">Live</span><span class="tag cyan">Claude Code plugin</span>
               </div>
               <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-muted);letter-spacing:.08em">SPEC-DRIVEN · SELF-EVOLVING</div>
             </div>
@@ -1303,19 +1296,14 @@
             <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
           </a>
         </div>
-
         <h3>Vibe Cartographer</h3>
-        <p class="product-desc">
-          Vibe coding with a map. Eleven slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect — and the plugin remembers where you left off so you don't lose the thread between sessions.
-        </p>
-
+        <p class="product-desc">Eleven slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect — and the plugin remembers where you left off so you don't lose the thread between sessions.</p>
         <div class="badges">
           <img src="https://img.shields.io/npm/v/@esthernandez/vibe-cartographer?color=17d4fa&labelColor=0f1f31&style=flat-square" alt="npm version">
           <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-cartographer?color=f22f89&labelColor=0f1f31&style=flat-square&label=downloads" alt="total downloads">
-          <img src="https://img.shields.io/github/v/release/estevanhernandez-stack-ed/vibe-cartographer?color=2bd99a&labelColor=0f1f31&style=flat-square&label=release" alt="latest release">
+          <img src="https://img.shields.io/github/v/release/estevanhernandez-stack-ed/vibe-cartographer?color=2bd99a&amp;labelColor=0f1f31&amp;style=flat-square&amp;label=release" alt="latest release">
           <img src="https://img.shields.io/npm/l/@esthernandez/vibe-cartographer?color=2bd99a&labelColor=0f1f31&style=flat-square" alt="MIT license">
         </div>
-
         <div class="install">
           <span class="label">Install in Claude Code</span>
           <code><span class="prompt">&gt;</span>/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer</code>
@@ -1355,29 +1343,21 @@
         </div>
       </article>
 
-      <!-- Vibe Doc -->
       <article class="product">
         <div class="product-head">
           <div class="product-sigil">
-            <svg class="ic-lg ic" viewBox="0 0 24 24">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-            </svg>
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
           </div>
           <div class="product-tags">
-            <span class="tag cyan">Plugin</span>
-            <span class="tag magenta">documentation</span>
-            <span class="tag live">Live</span>
+            <span class="tag cyan">Plugin</span><span class="tag magenta">documentation</span><span class="tag live">Live</span>
           </div>
         </div>
         <h3>Vibe Doc</h3>
-        <p class="product-body product-desc">
-          Point it at your codebase and it tells you which docs you're missing — ADRs, runbooks, threat models, specs — then writes them. Basically, the documentation pass you keep meaning to do.
-        </p>
+        <p class="product-desc">Point it at your codebase and it tells you which docs you're missing — ADRs, runbooks, threat models, specs — then writes them. Basically, the documentation pass you keep meaning to do.</p>
         <div class="badges">
           <img src="https://img.shields.io/npm/v/@esthernandez/vibe-doc?color=17d4fa&labelColor=0f1f31&style=flat-square" alt="npm version">
           <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-doc?color=f22f89&labelColor=0f1f31&style=flat-square&label=downloads" alt="total downloads">
-          <img src="https://img.shields.io/github/v/release/estevanhernandez-stack-ed/Vibe-Doc?color=2bd99a&labelColor=0f1f31&style=flat-square&label=release" alt="latest release">
+          <img src="https://img.shields.io/github/v/release/estevanhernandez-stack-ed/Vibe-Doc?color=2bd99a&amp;labelColor=0f1f31&amp;style=flat-square&amp;label=release" alt="latest release">
           <img src="https://img.shields.io/npm/l/@esthernandez/vibe-doc?color=2bd99a&labelColor=0f1f31&style=flat-square" alt="MIT license">
         </div>
         <div class="install">
@@ -1386,34 +1366,25 @@
         </div>
         <div class="product-foot">
           <div class="product-meta"><code>/vibe-doc</code> · gap analyzer</div>
-          <a class="product-link" href="https://github.com/estevanhernandez-stack-ed/Vibe-Doc">
-            Open repo <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </a>
+          <a class="product-link" href="https://github.com/estevanhernandez-stack-ed/Vibe-Doc">Open repo <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
         </div>
       </article>
 
-      <!-- Vibe Test -->
       <article class="product">
         <div class="product-head">
           <div class="product-sigil">
-            <svg class="ic-lg ic" viewBox="0 0 24 24">
-              <path d="M10 2v7.31M14 9.3V2M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0M7 18h10"/>
-            </svg>
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M10 2v7.31M14 9.3V2M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0M7 18h10"/></svg>
           </div>
           <div class="product-tags">
-            <span class="tag cyan">Plugin</span>
-            <span class="tag magenta">tests</span>
-            <span class="tag live">Live</span>
+            <span class="tag cyan">Plugin</span><span class="tag magenta">tests</span><span class="tag live">Live</span>
           </div>
         </div>
         <h3>Vibe Test</h3>
-        <p class="product-body product-desc">
-          Reads your vibe-coded app, classifies maturity tier and deployment risk, generates the tests that actually matter. Catches the broken harnesses every other test tool assumes away — vitest configs silently reporting 0%, coverage tools cherry-picking denominators.
-        </p>
+        <p class="product-desc">Reads your vibe-coded app, classifies maturity tier and deployment risk, generates the tests that actually matter. Catches the broken harnesses every other test tool assumes away — vitest configs silently reporting 0%, coverage tools cherry-picking denominators.</p>
         <div class="badges">
           <img src="https://img.shields.io/npm/v/@esthernandez/vibe-test?color=17d4fa&labelColor=0f1f31&style=flat-square" alt="npm version">
           <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-test?color=f22f89&labelColor=0f1f31&style=flat-square&label=downloads" alt="total downloads">
-          <img src="https://img.shields.io/github/v/release/estevanhernandez-stack-ed/vibe-plugins?filter=vibe-test-v*&color=2bd99a&labelColor=0f1f31&style=flat-square&label=release" alt="latest release">
+          <img src="https://img.shields.io/github/v/release/estevanhernandez-stack-ed/vibe-plugins?filter=vibe-test-v*&amp;color=2bd99a&amp;labelColor=0f1f31&amp;style=flat-square&amp;label=release" alt="latest release">
           <img src="https://img.shields.io/npm/l/@esthernandez/vibe-test?color=2bd99a&labelColor=0f1f31&style=flat-square" alt="MIT license">
         </div>
         <div class="install">
@@ -1422,65 +1393,50 @@
         </div>
         <div class="product-foot">
           <div class="product-meta"><code>/vibe-test:audit</code> · harness-aware</div>
-          <a class="product-link" href="https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-test">
-            Open repo <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </a>
+          <a class="product-link" href="https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-test">Open repo <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
         </div>
       </article>
 
-      <!-- Sanduhr -->
       <article class="product">
         <div class="product-head">
           <div class="product-sigil">
-            <svg class="ic-lg ic" viewBox="0 0 24 24">
-              <path d="M6 2h12M6 22h12M6 2v4c0 2.5 6 4 6 6s-6 1.5-6 4v6M18 2v4c0 2.5-6 4-6 6s6 1.5 6 4v6"/>
-            </svg>
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M6 2h12M6 22h12M6 2v4c0 2.5 6 4 6 6s-6 1.5-6 4v6M18 2v4c0 2.5-6 4-6 6s6 1.5 6 4v6"/></svg>
           </div>
           <div class="product-tags">
-            <span class="tag cyan">macOS</span>
-            <span class="tag cyan">Windows</span>
-            <span class="tag magenta">native</span>
-            <span class="tag live">Live</span>
+            <span class="tag cyan">macOS</span><span class="tag cyan">Windows</span><span class="tag magenta">native</span><span class="tag live">Live</span>
           </div>
         </div>
         <h3>Sanduhr für Claude</h3>
-        <p class="product-body product-desc">
-          Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Burn-rate projection, pace markers, sparkline trends, five hand-tuned glass themes.
-        </p>
+        <p class="product-desc">Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Burn-rate projection, pace markers, sparkline trends, five hand-tuned glass themes.</p>
         <div class="product-foot">
           <div class="product-meta">SwiftUI · WinUI · menu bar</div>
-          <a class="product-link" href="/sanduhr/">
-            Open product page <svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </a>
+          <a class="product-link" href="/sanduhr/">Open product page <svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
         </div>
       </article>
 
-      <!-- Vibe Sec (WIP) -->
       <article class="product wip">
         <div class="product-head">
           <div class="product-sigil">
-            <svg class="ic-lg ic" viewBox="0 0 24 24">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
           <div class="product-tags">
-            <span class="tag cyan">Plugin</span>
-            <span class="tag magenta">security</span>
-            <span class="tag wip">Coming soon</span>
+            <span class="tag cyan">Plugin</span><span class="tag magenta">security</span><span class="tag wip">Coming soon</span>
           </div>
         </div>
         <h3>Vibe Sec</h3>
-        <p class="product-body product-desc">
-          The security gaps AI prototyping leaves behind are pretty predictable — leaked secrets, sketchy auth, missing input validation, stale dependencies. Vibe Sec finds them and writes the fix, scaled to where your app actually runs.
-        </p>
+        <p class="product-desc">The security gaps AI prototyping leaves behind are pretty predictable — leaked secrets, sketchy auth, missing input validation, stale dependencies. Vibe Sec finds them and writes the fix, scaled to where your app actually runs.</p>
+        <div class="badges">
+          <img src="https://img.shields.io/npm/v/@esthernandez/vibe-sec?color=17d4fa&labelColor=0f1f31&style=flat-square" alt="npm version">
+          <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-sec?color=f22f89&labelColor=0f1f31&style=flat-square&label=downloads" alt="total downloads">
+          <img src="https://img.shields.io/github/v/release/estevanhernandez-stack-ed/vibe-plugins?color=2bd99a&amp;labelColor=0f1f31&amp;style=flat-square&amp;label=release" alt="latest release">
+          <img src="https://img.shields.io/npm/l/@esthernandez/vibe-sec?color=2bd99a&labelColor=0f1f31&style=flat-square" alt="MIT license">
+        </div>
         <div class="product-foot">
           <div class="product-meta">/vibe-sec · drafting</div>
-          <a class="product-link" href="https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-sec">
-            Framework doc <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </a>
+          <a class="product-link" href="https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-sec">Framework doc <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
         </div>
       </article>
-
+      <!-- SITE_JSON:products:end -->
     </div>
   </div>
 </section>
@@ -1682,84 +1638,129 @@
   //  LAB_POOL — JS-shuffled "Also from the lab" shelf
   // ============================================================
   const LAB_POOL = [
-    {
-      name: "Celestia 3",
-      meta: "AI Technomancer · Hackathon",
-      desc: "Gemini 3 + Swiss Ephemeris WASM + React Three Fiber. Readings of the actual sky with conversational narration — a Devpost hackathon entry with NASA-grade ephemeris data under the hood.",
-      video: "HV8dUMReNgI",
-      links: [
-        { label: "Watch demo", href: "https://www.youtube.com/watch?v=HV8dUMReNgI" },
-        { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/Celestia3" }
-      ]
-    },
-    {
-      name: "Project L.A.D.D.E.R.",
-      meta: "Local-first education · Gemma",
-      desc: "Multimodal learning framework that runs local-first with Gemma — built to bridge the access gap when connectivity isn't a given. Teacher dashboard rolls up live engagement, subject-level averages, and behavioral flags so interventions happen in-class, not after grading.",
-      image: "assets/thumb-ladder.png",
-      links: [
-        { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/LADDER" }
-      ]
-    },
-    {
-      name: "Lobby Engagement Suite",
-      meta: "Cinema + hotel kiosks · Firebase",
-      desc: "Seven movie-themed engagement apps on a shared monorepo — CinePerks trivia kiosks for cinemas, GuestBuzz trivia for hotels, Reel Battles head-to-head, Reel Words puzzles, Birthday Bacon Trail, and Box Office Heads Up. Built to turn lobby idle time into loyalty signups and brand touch.",
-      image: "assets/thumb-cinegame.png",
-      links: [
-        { label: "Play Reel Battles demo", href: "https://replit.com/@esteH777/Reel-Battles" },
-        { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/QuizShow" }
-      ]
-    },
-    {
-      name: "Safety Assistant",
-      meta: "Deployed app · Replit",
-      desc: "Stop drowning in unread inspection PDFs. Drop a messy PDF, incident form, or screenshot — the AI extracts hazards, ranks severity, and returns a prioritized action plan in seconds. Deployed live on Replit.",
-      image: "assets/thumb-safety-assistant.png",
-      links: [
-        { label: "Launch", href: "https://safety-assistant.replit.app" },
-        { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/Safety_Assistant" }
-      ]
-    },
-    {
-      name: "Cleanup Ranger",
-      meta: "Civic tech · Community",
-      desc: "Community-driven park-cleanup app. Track hazards and trash at local parks; pin what you've cleaned.",
-      video: "TsYYHhk8qtE",
-      links: [
-        { label: "Watch demo", href: "https://youtu.be/TsYYHhk8qtE" },
-        { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/Cleanup-Ranger" }
-      ]
-    },
-    {
-      name: "Tag That Line",
-      meta: "Word game · AI",
-      desc: "A tag-the-line word game — built fast, videoed, shipped. Watch the demo to see it in motion.",
-      video: "XoMzjYhVLgE",
-      links: [
-        { label: "Watch demo", href: "https://youtu.be/XoMzjYhVLgE" },
-        { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/tagthatline" }
-      ]
-    },
-    {
-      name: "Writer's Studio",
-      meta: "Creative tooling · VS Code",
-      desc: "A VS Code workspace template for AI-assisted iterative fiction writing. Fork it, fill it, write. The Tenth Doctor / Rose Tyler special \"The Beat That Shook the Void\" shipped on Wattpad from this scaffold.",
-      image: "assets/thumb-writer-studio.jpg",
-      links: [
-        { label: "Read on Wattpad", href: "https://www.wattpad.com/myworks/409598532-the-beat-that-shook-the-void-a-doctor-who-special" },
-        { label: "GitHub", href: "https://github.com/estevanhernandez-stack-ed/WriterStudio" }
-      ]
-    },
-    {
-      name: "Replit Certification",
-      meta: "Credential · Replit",
-      desc: "Replit Level 3 \"Proficient Builder\" certification — public receipts for being taken seriously on the platform.",
-      image: "assets/thumb-replit-cert.jpg",
-      links: [
-        { label: "View", href: "https://replit-certifications.replit.app/esteH777" }
-      ]
-    }
+    // SITE_JSON:lab-pool:start
+
+      {
+            "name": "Celestia 3",
+            "meta": "AI Technomancer · Hackathon",
+            "desc": "Gemini 3 + Swiss Ephemeris WASM + React Three Fiber. Readings of the actual sky with conversational narration — a Devpost hackathon entry with NASA-grade ephemeris data under the hood.",
+            "video": "HV8dUMReNgI",
+            "links": [
+                  {
+                        "label": "Watch demo",
+                        "href": "https://www.youtube.com/watch?v=HV8dUMReNgI"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/Celestia3"
+                  }
+            ]
+      },
+      {
+            "name": "Project L.A.D.D.E.R.",
+            "meta": "Local-first education · Gemma",
+            "desc": "Multimodal learning framework that runs local-first with Gemma — built to bridge the access gap when connectivity isn't a given. Teacher dashboard rolls up live engagement, subject-level averages, and behavioral flags so interventions happen in-class, not after grading.",
+            "image": "assets/thumb-ladder.png",
+            "links": [
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/LADDER"
+                  }
+            ]
+      },
+      {
+            "name": "Lobby Engagement Suite",
+            "meta": "Cinema + hotel kiosks · Firebase",
+            "desc": "Seven movie-themed engagement apps on a shared monorepo — CinePerks trivia kiosks for cinemas, GuestBuzz trivia for hotels, Reel Battles head-to-head, Reel Words puzzles, Birthday Bacon Trail, and Box Office Heads Up. Built to turn lobby idle time into loyalty signups and brand touch.",
+            "image": "assets/thumb-cinegame.png",
+            "links": [
+                  {
+                        "label": "Play Reel Battles demo",
+                        "href": "https://replit.com/@esteH777/Reel-Battles"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/QuizShow"
+                  }
+            ]
+      },
+      {
+            "name": "Safety Assistant",
+            "meta": "Deployed app · Replit",
+            "desc": "Stop drowning in unread inspection PDFs. Drop a messy PDF, incident form, or screenshot — the AI extracts hazards, ranks severity, and returns a prioritized action plan in seconds. Deployed live on Replit.",
+            "image": "assets/thumb-safety-assistant.png",
+            "links": [
+                  {
+                        "label": "Launch",
+                        "href": "https://safety-assistant.replit.app"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/Safety_Assistant"
+                  }
+            ]
+      },
+      {
+            "name": "Cleanup Ranger",
+            "meta": "Civic tech · Community",
+            "desc": "Community-driven park-cleanup app. Track hazards and trash at local parks; pin what you've cleaned.",
+            "video": "TsYYHhk8qtE",
+            "links": [
+                  {
+                        "label": "Watch demo",
+                        "href": "https://youtu.be/TsYYHhk8qtE"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/Cleanup-Ranger"
+                  }
+            ]
+      },
+      {
+            "name": "Tag That Line",
+            "meta": "Word game · AI",
+            "desc": "A tag-the-line word game — built fast, videoed, shipped. Watch the demo to see it in motion.",
+            "video": "XoMzjYhVLgE",
+            "links": [
+                  {
+                        "label": "Watch demo",
+                        "href": "https://youtu.be/XoMzjYhVLgE"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/tagthatline"
+                  }
+            ]
+      },
+      {
+            "name": "Writer's Studio",
+            "meta": "Creative tooling · VS Code",
+            "desc": "A VS Code workspace template for AI-assisted iterative fiction writing. Fork it, fill it, write. The Tenth Doctor / Rose Tyler special \"The Beat That Shook the Void\" shipped on Wattpad from this scaffold.",
+            "image": "assets/thumb-writer-studio.jpg",
+            "links": [
+                  {
+                        "label": "Read on Wattpad",
+                        "href": "https://www.wattpad.com/myworks/409598532-the-beat-that-shook-the-void-a-doctor-who-special"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/WriterStudio"
+                  }
+            ]
+      },
+      {
+            "name": "Replit Certification",
+            "meta": "Credential · Replit",
+            "desc": "Replit Level 3 \"Proficient Builder\" certification — public receipts for being taken seriously on the platform.",
+            "image": "assets/thumb-replit-cert.jpg",
+            "links": [
+                  {
+                        "label": "View",
+                        "href": "https://replit-certifications.replit.app/esteH777"
+                  }
+            ]
+      }
+    // SITE_JSON:lab-pool:end
   ];
 
   function shuffle(arr) {
