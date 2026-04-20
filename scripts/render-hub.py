@@ -274,17 +274,23 @@ CLAUDE_CODE_BADGE = (
 
 
 def render_badges(p: dict) -> str:
-    """Claude Code skill (if applicable) + npm version + downloads (maskable) + release + license."""
+    """Claude Code skill (if applicable) + npm version + downloads (maskable) + release + license.
+
+    WIP products with a reserved-but-not-published npm name get ONLY the
+    Claude Code badge — rendering version/license badges for unpublished
+    packages makes shields.io return "package not found" copy.
+    """
     npm = p.get("npm")
     claude_code = bool(p.get("claudeCode"))
+    is_wip = p.get("status") == "wip"
 
-    # WIP plugins that aren't on npm still get the Claude Code signal if flagged.
-    if not npm and not claude_code:
+    if not claude_code and (not npm or is_wip):
         return ""
 
-    # When there's no npm but the product is a Claude Code plugin (wip/coming-soon),
-    # show only the Claude Code badge.
-    if not npm:
+    # WIP or no-npm → Claude Code badge alone (skip version/license).
+    if is_wip or not npm:
+        if not claude_code:
+            return ""
         return f"""\
         <div class="badges">
           <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">
