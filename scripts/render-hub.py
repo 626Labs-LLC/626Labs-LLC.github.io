@@ -272,37 +272,27 @@ CLAUDE_CODE_BADGE = (
     'style=flat-square&logo=anthropic&logoColor=F5F5F0&labelColor=141414'
 )
 
-# Static MIT license badge — doesn't depend on npm publishing state.
-# Uses shields.io's /badge/ endpoint (vs /npm/l/) so it always renders
-# even for products whose npm package name is reserved but not yet pushed.
-MIT_BADGE = (
-    f"https://img.shields.io/badge/license-MIT-{BADGE_COLOR_GREEN}?"
-    f"labelColor={BADGE_LABEL_BG}&style=flat-square"
-)
-
 
 def render_badges(p: dict) -> str:
-    """Claude Code skill (if applicable) + npm version + downloads (maskable) + release + MIT.
+    """Claude Code skill (if applicable) + npm version + downloads (maskable) + release + npm license.
 
-    WIP products skip the npm/release badges (shields would return stale /
-    "package not found" copy), but keep the Claude Code + MIT identity
-    badges so the card still reads as a real product.
+    License comes from the npm metadata (/npm/l/) so it reflects the
+    actual published state — unpublished packages get auto-hidden by
+    maskStaleBadges() on the client.
     """
     npm = p.get("npm")
     claude_code = bool(p.get("claudeCode"))
-    is_wip = p.get("status") == "wip"
 
     # If it's not a Claude Code plugin AND has no npm, nothing to show.
     if not claude_code and not npm:
         return ""
 
-    # WIP or no-npm → Claude Code (if applicable) + static MIT.
-    if is_wip or not npm:
-        items = []
-        if claude_code:
-            items.append(f'<img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">')
-        items.append(f'<img src="{attr(MIT_BADGE)}" alt="MIT license">')
-        return "        <div class=\"badges\">\n          " + "\n          ".join(items) + "\n        </div>"
+    # No npm (pure Claude Code plugin) → just the Claude Code badge.
+    if not npm:
+        return f"""\
+        <div class="badges">
+          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">
+        </div>"""
     repo = p.get("repo") or ""
     pid = p.get("id", "")
     filt = SHIELDS_RELEASE_FILTER.get(pid, "")
@@ -330,10 +320,10 @@ def render_badges(p: dict) -> str:
     )
     return f"""\
         <div class="badges">
-{cc_badge}          <img src="https://img.shields.io/npm/v/{attr(npm)}?color={BADGE_COLOR_CYAN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="npm version">
+{cc_badge}          <img data-maskable="true" src="https://img.shields.io/npm/v/{attr(npm)}?color={BADGE_COLOR_CYAN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="npm version">
           <img data-maskable="true" src="https://img.shields.io/npm/dt/{attr(npm)}?color={BADGE_COLOR_MAGENTA}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=downloads" alt="total downloads">
-          <img src="{attr(release_url)}" alt="latest release">
-          <img src="{attr(MIT_BADGE)}" alt="MIT license">
+          <img data-maskable="true" src="{attr(release_url)}" alt="latest release">
+          <img data-maskable="true" src="https://img.shields.io/npm/l/{attr(npm)}?color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="MIT license">
         </div>"""
 
 
