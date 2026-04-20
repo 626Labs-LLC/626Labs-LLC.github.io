@@ -120,13 +120,81 @@ const INITIAL_CONTENT = {
   ],
 };
 
-// Mock live data — the real backend agent would fetch these.
-const MOCK_LIVE = {
-  "@esthernandez/vibe-cartographer": { weekly: 631, stars: 14, release: "v1.5.0" },
-  "@esthernandez/vibe-doc": { weekly: 1130, stars: 22, release: "v0.5.0" },
-  "@esthernandez/vibe-test": { weekly: 47, stars: 3, release: "v0.1.0" },
-  "@esthernandez/vibe-sec": { weekly: 0, stars: 1, release: "—" },
+// Live data — fetched from npm + GitHub at runtime. See fetchLiveStats.
+// Stats map shape (per npm package key):
+//   { weekly: number | null, stars: number | null, release: string | null, ok: bool }
+// Keys are product.npm values (e.g. "@esthernandez/vibe-cartographer").
+
+// Monorepo release-tag prefixes — release fetch filters to the package's tags.
+const RELEASE_TAG_PREFIX = {
+  "vibe-test": "vibe-test-v",
+  "vibe-sec": "vibe-sec-v",
 };
+
+async function fetchNpmWeekly(pkg) {
+  try {
+    const res = await fetch(`https://api.npmjs.org/downloads/point/last-week/${encodeURIComponent(pkg)}`);
+    if (!res.ok) return null;
+    const body = await res.json();
+    return typeof body.downloads === "number" ? body.downloads : null;
+  } catch { return null; }
+}
+
+async function fetchRepoMeta(repo, token) {
+  try {
+    const headers = token
+      ? { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" }
+      : { Accept: "application/vnd.github+json" };
+    const res = await fetch(`https://api.github.com/repos/${repo}`, { headers });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch { return null; }
+}
+
+async function fetchLatestRelease(repo, token, tagPrefix) {
+  try {
+    const headers = token
+      ? { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" }
+      : { Accept: "application/vnd.github+json" };
+    if (tagPrefix) {
+      const res = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=30`, { headers });
+      if (!res.ok) return null;
+      const arr = await res.json();
+      const match = Array.isArray(arr) ? arr.find(r => r.tag_name?.startsWith(tagPrefix)) : null;
+      return match?.tag_name || null;
+    }
+    const res = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, { headers });
+    if (!res.ok) return null;
+    const body = await res.json();
+    return body.tag_name || null;
+  } catch { return null; }
+}
+
+async function fetchLiveStats(products, token) {
+  const stats = {};
+  const tasks = [];
+  for (const p of products) {
+    if (!p.npm) continue;
+    stats[p.npm] = { weekly: null, stars: null, release: null, ok: false };
+    const task = (async () => {
+      const weeklyP = fetchNpmWeekly(p.npm);
+      const repoP = p.repo ? fetchRepoMeta(p.repo, token) : Promise.resolve(null);
+      const relP = p.repo
+        ? fetchLatestRelease(p.repo, token, RELEASE_TAG_PREFIX[p.id])
+        : Promise.resolve(null);
+      const [weekly, repo, release] = await Promise.all([weeklyP, repoP, relP]);
+      stats[p.npm] = {
+        weekly,
+        stars: repo?.stargazers_count ?? null,
+        release,
+        ok: true,
+      };
+    })();
+    tasks.push(task);
+  }
+  await Promise.all(tasks);
+  return stats;
+}
 
 const TONE_COLORS = {
   cyan: { fg: "#17d4fa", bg: "rgba(23,212,250,.08)", br: "rgba(23,212,250,.32)" },
@@ -184,4 +252,4 @@ const Ic = {
   link: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 1 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 1 0 7 7l1.7-1.7"/></svg>,
 };
 
-Object.assign(window, { INITIAL_CONTENT, MOCK_LIVE, TONE_COLORS, Chip, StatusDot, Ic });
+Object.assign(window, { INITIAL_CONTENT, TONE_COLORS, Chip, StatusDot, Ic, fetchLiveStats });

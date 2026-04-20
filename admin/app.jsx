@@ -20,6 +20,7 @@ function AdminApp({ token, login, onSignOut }) {
   const [loadError, setLoadError] = React.useState(null);
   const [saving, setSaving] = React.useState(false);
   const [reloadTick, setReloadTick] = React.useState(0);
+  const [liveStats, setLiveStats] = React.useState({});
   const [nav, setNav] = React.useState("home");
   const [selProduct, setSelProduct] = React.useState("vibe-cartographer");
   const [palette, setPalette] = React.useState(false);
@@ -52,6 +53,17 @@ function AdminApp({ token, login, onSignOut }) {
     })();
     return () => { cancelled = true; };
   }, [token, reloadTick]);
+
+  // Fetch real npm + GitHub stats whenever products change.
+  React.useEffect(() => {
+    if (!content?.products?.length) return;
+    let cancelled = false;
+    (async () => {
+      const stats = await fetchLiveStats(content.products, token);
+      if (!cancelled) setLiveStats(stats);
+    })();
+    return () => { cancelled = true; };
+  }, [content?.products, token]);
 
   const dirty = React.useMemo(() => {
     if (!content || !original) return false;
@@ -123,14 +135,14 @@ function AdminApp({ token, login, onSignOut }) {
       <Sidebar nav={nav} onNav={safeNav} content={content}/>
 
       <div style={{ overflow: "auto", background: A.bg, position: "relative" }}>
-        {nav === "home" && <HomeView content={content} onNav={safeNav} onAddProduct={addProduct} onSelect={(id)=>{setSelProduct(id); safeNav("products");}}/>}
+        {nav === "home" && <HomeView content={content} liveStats={liveStats} onNav={safeNav} onAddProduct={addProduct} onSelect={(id)=>{setSelProduct(id); safeNav("products");}}/>}
         {nav === "hero" && <HeroView hero={content.hero} onChange={h => setContent(c => ({...c, hero: h}))}/>}
-        {nav === "products" && <ProductsView products={content.products} selectedId={selProduct} onSelect={setSelProduct} onUpdate={updateProduct} onAdd={addProduct} onDelete={deleteProduct}/>}
+        {nav === "products" && <ProductsView products={content.products} liveStats={liveStats} selectedId={selProduct} onSelect={setSelProduct} onUpdate={updateProduct} onAdd={addProduct} onDelete={deleteProduct}/>}
         {nav === "lab" && <LabView lab={content.lab} onChange={l => setContent(c => ({...c, lab: l}))}/>}
         {nav === "sections" && <SectionsView sections={content.sections} onChange={s => setContent(c => ({...c, sections: s}))}/>}
       </div>
 
-      <RightRail content={content} nav={nav} selectedId={selProduct} dirty={dirty} original={original} onPreview={()=>setPreview(true)} onSave={save}/>
+      <RightRail content={content} liveStats={liveStats} nav={nav} selectedId={selProduct} dirty={dirty} original={original} onPreview={()=>setPreview(true)} onSave={save}/>
 
       {palette && <CommandPalette close={()=>setPalette(false)} onNav={(n)=>{setPalette(false); safeNav(n);}} onPreview={()=>{setPalette(false); setPreview(true);}} onAddProduct={()=>{setPalette(false); addProduct();}} products={content.products} onSelectProduct={(id)=>{setPalette(false); setSelProduct(id); safeNav("products");}}/>}
       {preview && <PreviewOverlay content={content} close={()=>setPreview(false)}/>}
@@ -268,20 +280,21 @@ function PanelHeader({ title, subtitle, actions }) {
   );
 }
 
-function HomeView({ content, onNav, onAddProduct, onSelect }) {
+function HomeView({ content, liveStats, onNav, onAddProduct, onSelect }) {
   const totals = {
-    weekly: Object.values(MOCK_LIVE).reduce((a,b)=>a+b.weekly, 0),
-    stars: Object.values(MOCK_LIVE).reduce((a,b)=>a+b.stars, 0),
-    live: content.products.filter(p=>p.status==="live").length,
+    weekly: Object.values(liveStats || {}).reduce((a, b) => a + (b.weekly || 0), 0),
+    stars: Object.values(liveStats || {}).reduce((a, b) => a + (b.stars || 0), 0),
+    live: content.products.filter(p => p.status === "live").length,
   };
+  const liveLoaded = Object.keys(liveStats || {}).length > 0;
   return (
     <div>
       <PanelHeader title="Overview" subtitle="Snapshot of 626labs.dev"/>
       <div style={{ padding: "18px 26px", display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14 }}>
         <StatTile label="Products live" value={totals.live} sub={`${content.products.length - totals.live} in progress`} c={A.green}/>
         <StatTile label="Lab cards" value={content.lab.length} sub="on the shelf" c={A.cyan}/>
-        <StatTile label="Weekly npm" value={totals.weekly.toLocaleString()} sub="+12% vs last" c={A.magenta}/>
-        <StatTile label="GitHub stars" value={totals.stars} sub="+3 this week" c={A.amber}/>
+        <StatTile label="Weekly npm" value={liveLoaded ? totals.weekly.toLocaleString() : "…"} sub={liveLoaded ? "across all plugins" : "fetching"} c={A.magenta}/>
+        <StatTile label="GitHub stars" value={liveLoaded ? totals.stars : "…"} sub={liveLoaded ? "across plugin repos" : "fetching"} c={A.amber}/>
       </div>
 
       <div style={{ padding: "0 26px 18px" }}>
@@ -313,7 +326,7 @@ function HomeView({ content, onNav, onAddProduct, onSelect }) {
               </div>
               <div style={{ fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", display: "flex", alignItems: "center", gap: 14 }}>
                 <span>{(p.screenshots||[]).length} shots</span>
-                {p.npm && MOCK_LIVE[p.npm] && <span style={{ color: A.cyan }}>{MOCK_LIVE[p.npm].weekly.toLocaleString()}/wk</span>}
+                {p.npm && liveStats[p.npm]?.weekly != null && <span style={{ color: A.cyan }}>{liveStats[p.npm].weekly.toLocaleString()}/wk</span>}
               </div>
               <span style={{ color: A.dim2 }}>{Ic.arrowR}</span>
             </button>
@@ -359,7 +372,7 @@ function Quick({ ic, title, sub, tone, onClick }) {
 // ─────────────────────────────────────────────────────────────
 // Products / editor with drag-drop screenshots
 // ─────────────────────────────────────────────────────────────
-function ProductsView({ products, selectedId, onSelect, onUpdate, onAdd, onDelete }) {
+function ProductsView({ products, liveStats, selectedId, onSelect, onUpdate, onAdd, onDelete }) {
   const selected = products.find(p => p.id === selectedId) || products[0];
   return (
     <div>
@@ -372,7 +385,7 @@ function ProductsView({ products, selectedId, onSelect, onUpdate, onAdd, onDelet
         <div style={{ borderRight: `1px solid ${A.line}`, padding: "10px 8px", minHeight: 700 }}>
           {products.map((p) => {
             const active = p.id === selected?.id;
-            const live = p.npm && MOCK_LIVE[p.npm];
+            const live = p.npm && liveStats?.[p.npm];
             return (
               <button key={p.id} onClick={()=>onSelect(p.id)} style={{
                 display: "flex", alignItems: "center", gap: 10, width: "100%",
@@ -803,10 +816,11 @@ function LabView({ lab, onChange }) {
 
 function SectionsView({ sections, onChange }) {
   const rows = [
-    { key: "thinking", label: "Thinking", desc: "Essays and notes" },
-    { key: "lab", label: "Lab", desc: "Exploratory project shelf" },
-    { key: "support", label: "Support / Sponsor", desc: "GitHub sponsors box" },
-    { key: "contact", label: "Contact", desc: "Email + socials" },
+    { key: "thinking", label: "Thinking behind it", desc: "Framework thesis + Self-Evolving Plugin Framework link" },
+    { key: "labRuns", label: "How the lab runs", desc: "Private Agent OS dashboard screenshots + caption" },
+    { key: "lab", label: "Also from the lab", desc: "JS-shuffled shelf of 8 other projects" },
+    { key: "support", label: "Keep the lab running", desc: "GitHub Sponsors CTA block" },
+    { key: "contact", label: "Contact", desc: "Email + GitHub + support rows" },
   ];
   return (
     <div>
@@ -841,9 +855,9 @@ function Toggle({ on, onChange }) {
 // ─────────────────────────────────────────────────────────────
 // Right rail — live preview, live data, pending diff
 // ─────────────────────────────────────────────────────────────
-function RightRail({ content, nav, selectedId, dirty, original, onPreview, onSave }) {
+function RightRail({ content, liveStats, nav, selectedId, dirty, original, onPreview, onSave }) {
   const p = content.products.find(x => x.id === selectedId);
-  const live = p?.npm ? MOCK_LIVE[p.npm] : null;
+  const live = p?.npm ? (liveStats?.[p.npm] || null) : null;
   const diff = React.useMemo(() => computeDiff(original, content), [original, content]);
 
   return (

@@ -450,6 +450,47 @@ def render_lab_pool(lab: list[dict]) -> str:
     return inner
 
 
+# ─── section toggles ────────────────────────────────────────────────
+# Maps sections keys in site.json → DOM id of the <section> element.
+SECTION_IDS = {
+    "thinking": "thinking",
+    "labRuns":  "lab-runs",
+    "lab":      "lab",
+    "support":  "support",
+    "contact":  "contact",
+}
+
+
+def toggle_section(html: str, section_id: str, enabled: bool) -> str:
+    """Add or strip the HTML `hidden` attribute on the section with this id.
+
+    Native `<section hidden>` gets display:none in every browser. Preserves
+    the section's content so toggling back on restores it instantly — no
+    regeneration needed.
+    """
+    pattern = re.compile(
+        r"(<section\s[^>]*id=\"" + re.escape(section_id) + r"\"[^>]*>)",
+        re.IGNORECASE,
+    )
+
+    def replace(m: re.Match) -> str:
+        tag = m.group(1)
+        # Strip any existing `hidden` attribute (idempotent).
+        tag = re.sub(r'\s+hidden(?=[\s>])', "", tag)
+        if not enabled:
+            tag = tag[:-1] + " hidden>"
+        return tag
+
+    return pattern.sub(replace, html, count=1)
+
+
+def apply_section_toggles(html: str, sections: dict) -> str:
+    for key, dom_id in SECTION_IDS.items():
+        enabled = bool((sections.get(key) or {}).get("enabled", True))
+        html = toggle_section(html, dom_id, enabled)
+    return html
+
+
 # ─── main ───────────────────────────────────────────────────────────
 def main(argv: list[str]) -> int:
     content = json.loads(SITE_JSON.read_text(encoding="utf-8"))
@@ -460,6 +501,7 @@ def main(argv: list[str]) -> int:
     out = substitute_zone(out, "hero-chips", render_chips(content["hero"]["chips"]))
     out = substitute_zone(out, "products", render_products(content["products"]))
     out = substitute_zone(out, "lab-pool", render_lab_pool(content["lab"]), js=True)
+    out = apply_section_toggles(out, content.get("sections") or {})
 
     changed = out != src
     if "--check" in argv:
