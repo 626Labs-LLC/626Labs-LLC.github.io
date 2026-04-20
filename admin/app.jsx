@@ -542,6 +542,27 @@ function TagEditor({ tags, onChange }) {
 }
 
 // ─────────────────────────────────────────────────────────────
+// MetaEditor: label/value rows for hero stat strip
+// ─────────────────────────────────────────────────────────────
+function MetaEditor({ meta, onChange }) {
+  const update = (i, patch) => onChange(meta.map((m, j) => j === i ? { ...m, ...patch } : m));
+  const remove = (i) => onChange(meta.filter((_, j) => j !== i));
+  const add = () => onChange([...meta, { label: "", value: "" }]);
+  return (
+    <div style={{ padding: 8, border: `1px dashed ${A.line2}`, borderRadius: 5, display: "flex", flexDirection: "column", gap: 8 }}>
+      {meta.map((m, i) => (
+        <div key={i} style={{ display: "grid", gridTemplateColumns: "180px 1fr auto", gap: 8, alignItems: "center" }}>
+          <Input mono value={m.label} onChange={v => update(i, { label: v })} placeholder="label"/>
+          <Input value={m.value} onChange={v => update(i, { value: v })} placeholder="value"/>
+          <button onClick={() => remove(i)} style={{ background: "transparent", border: "none", color: A.dim2, cursor: "pointer", padding: 4 }}>{Ic.trash}</button>
+        </div>
+      ))}
+      <button onClick={add} style={{ padding: "6px 10px", background: "transparent", border: `1px dashed ${A.line2}`, color: A.dim, borderRadius: 5, fontSize: 10.5, cursor: "pointer", fontFamily: "JetBrains Mono, monospace", letterSpacing: ".08em", textTransform: "uppercase", alignSelf: "flex-start" }}>+ ADD ROW</button>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
 // Screenshots: drag-drop + paste + reorder + crop + set cover
 // ─────────────────────────────────────────────────────────────
 function ScreenshotsEditor({ shots, onChange }) {
@@ -778,6 +799,9 @@ function HeroView({ hero, onChange }) {
           <Field label="Secondary CTA label"><Input value={hero.secondaryCta.label} onChange={v=>u({secondaryCta:{...hero.secondaryCta,label:v}})}/></Field>
           <Field label="Secondary CTA link" mono><Input mono value={hero.secondaryCta.href} onChange={v=>u({secondaryCta:{...hero.secondaryCta,href:v}})}/></Field>
         </div>
+        <Field label="Stat rows" hint="the three label/value pairs under the hero">
+          <MetaEditor meta={hero.meta||[]} onChange={meta => u({meta})}/>
+        </Field>
         <Field label="Chips" hint="shown in the hero surround">
           <TagEditor tags={hero.chips} onChange={chips => u({chips})}/>
         </Field>

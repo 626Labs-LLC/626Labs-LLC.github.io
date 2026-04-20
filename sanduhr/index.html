@@ -255,6 +255,61 @@
       color: var(--cyan);
     }
 
+    /* ── download badges (matched pair: MS Store + GitHub) ─ */
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .store-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      width: 216px;
+      height: 60px;
+      padding: 0 18px;
+      background: rgba(15, 24, 43, 0.6);
+      border: 1px solid var(--navy-line);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      transition: border-color .15s ease, background .15s ease, transform .15s ease;
+      box-sizing: border-box;
+    }
+    .store-badge:hover {
+      border-color: var(--cyan);
+      background: rgba(59, 180, 217, 0.08);
+      color: var(--text);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+    .store-badge svg {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      color: var(--text);
+    }
+    .store-badge-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+      min-width: 0;
+    }
+    .store-badge-top {
+      font-size: 9.5px;
+      font-weight: 500;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .store-badge-bottom {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.005em;
+    }
+
     /* ── features ──────────────────────────────────────── */
     section.features {
       padding: 48px 0;
@@ -378,7 +433,7 @@
       </div>
       <nav>
         <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude">GitHub</a>
-        <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Download</a>
+        <a href="https://apps.microsoft.com/detail/9NH3NK2RGCF5">Download</a>
       </nav>
     </div>
   </header>
@@ -410,18 +465,41 @@
             <li>Keychain credentials</li>
             <li>Requires macOS 11 (Big Sur) or newer</li>
           </ul>
-          <a class="platform-link" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Get Sanduhr.dmg &rarr;</a>
+          <div class="badge-row">
+            <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              <div class="store-badge-text">
+                <span class="store-badge-top">Download from</span>
+                <span class="store-badge-bottom">GitHub Releases</span>
+              </div>
+            </a>
+          </div>
         </article>
 
         <article class="platform-card">
-          <h3>Windows 11 <span class="status">MS Store: in review</span></h3>
+          <h3>Windows 11</h3>
           <p>Native PySide6 with real Win11 Mica glass. Windows Credential Manager for the session cookie.</p>
           <ul>
             <li>Mica backdrop on Win11 (solid fallback on Win10)</li>
-            <li>Inno Setup installer (SmartScreen warning until Store cert clears)</li>
+            <li>Free on the Microsoft Store — no SmartScreen warnings</li>
             <li>Full source under /windows/</li>
           </ul>
-          <a class="platform-link" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Get Sanduhr-Setup.exe &rarr;</a>
+          <div class="badge-row">
+            <a class="store-badge" href="https://apps.microsoft.com/detail/9NH3NK2RGCF5" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+              <div class="store-badge-text">
+                <span class="store-badge-top">Get it from</span>
+                <span class="store-badge-bottom">Microsoft Store</span>
+              </div>
+            </a>
+            <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              <div class="store-badge-text">
+                <span class="store-badge-top">Download from</span>
+                <span class="store-badge-bottom">GitHub Releases</span>
+              </div>
+            </a>
+          </div>
         </article>
 
         <article class="platform-card">
