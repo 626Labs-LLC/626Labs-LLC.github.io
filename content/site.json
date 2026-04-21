@@ -360,6 +360,7 @@
       "name": "RBX15 Classic Shirt and Pants Maker",
       "meta": "Roblox creator tooling · Microsoft Store",
       "desc": "Visual editor for Roblox R15 shirt and pants templates. Electron UI, Python Pillow compositing engine. Drag-and-drop layers, fullbleed / mirror / meme-tee presets, word art. Free on the Microsoft Store.",
+      "image": "assets/thumb-rbx15.png",
       "links": [
         {
           "label": "Get from Microsoft Store",
