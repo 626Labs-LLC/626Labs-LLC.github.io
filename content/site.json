@@ -115,6 +115,7 @@
       "npm": "@esthernandez/vibe-doc",
       "install": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Doc",
       "claudeCode": true,
+      "meta": "<code>/vibe-doc</code> · gap analyzer",
       "screenshots": []
     },
     {
@@ -140,6 +141,7 @@
       "npm": "@esthernandez/vibe-test",
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
+      "meta": "<code>/vibe-test:audit</code> · harness-aware",
       "screenshots": []
     },
     {
@@ -169,6 +171,9 @@
       "npm": null,
       "install": null,
       "productPage": "/sanduhr/",
+      "storeUrl": "https://apps.microsoft.com/detail/9NH3NK2RGCF5",
+      "banner": "assets/sanduhr-card-shot.png",
+      "meta": "macOS · Windows · native",
       "screenshots": []
     },
     {
@@ -194,6 +199,69 @@
       "npm": "@esthernandez/vibe-sec",
       "install": null,
       "claudeCode": true,
+      "meta": "/vibe-sec · drafting",
+      "screenshots": []
+    },
+    {
+      "id": "rbx15-shirt-pants",
+      "title": "RBX15 Classic Shirt and Pants Maker",
+      "description": "Visual editor for Roblox R15 shirt and pants templates. Electron UI, Python Pillow compositing engine. Drag-and-drop layers, fullbleed / mirror / meme-tee presets, word art. Free on the Microsoft Store.",
+      "tags": [
+        {
+          "label": "Windows",
+          "tone": "cyan"
+        },
+        {
+          "label": "native",
+          "tone": "magenta"
+        },
+        {
+          "label": "Roblox tooling",
+          "tone": "cyan"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/RBX15-Shirt-and-Pants",
+      "npm": null,
+      "install": null,
+      "storeUrl": "https://apps.microsoft.com/detail/9mv9g4xfj8s0",
+      "banner": "assets/thumb-rbx15.png",
+      "meta": "Windows · Roblox creator tooling",
+      "screenshots": []
+    },
+    {
+      "id": "rtclickpng",
+      "title": "Right Click PNG",
+      "description": "Adds 'Convert to PNG' and 'Copy as PNG' to the File Explorer right-click menu — decodes .webp / .avif / .heic / .bmp / .tif / .gif locally, no network round trip. C++/WinRT shell extension plus a .NET 9 AOT engine, seven bundled decoders, 85 tests green. Idea to Microsoft Store in 24 hours, built with Vibe Cartographer.",
+      "tags": [
+        {
+          "label": "Windows",
+          "tone": "cyan"
+        },
+        {
+          "label": "shell extension",
+          "tone": "magenta"
+        },
+        {
+          "label": "native",
+          "tone": "cyan"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/RTClickPng",
+      "npm": null,
+      "install": null,
+      "storeUrl": "https://apps.microsoft.com/detail/9PKKLK6R5WFL",
+      "banner": "assets/thumb-rtclickpng.png",
+      "meta": "Windows shell extension · 24h build",
       "screenshots": []
     }
   ],
@@ -353,40 +421,6 @@
         {
           "label": "Launch",
           "href": "https://replit.com/@esteH777/Poster-Colorizer"
-        }
-      ]
-    },
-    {
-      "id": "rbx15-shirt-pants",
-      "name": "RBX15 Classic Shirt and Pants Maker",
-      "meta": "Roblox creator tooling · Microsoft Store",
-      "desc": "Visual editor for Roblox R15 shirt and pants templates. Electron UI, Python Pillow compositing engine. Drag-and-drop layers, fullbleed / mirror / meme-tee presets, word art. Free on the Microsoft Store.",
-      "image": "assets/thumb-rbx15.png",
-      "links": [
-        {
-          "label": "Get from Microsoft Store",
-          "href": "https://apps.microsoft.com/detail/9mv9g4xfj8s0"
-        },
-        {
-          "label": "GitHub",
-          "href": "https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants"
-        }
-      ]
-    },
-    {
-      "id": "rtclickpng",
-      "name": "Right Click PNG",
-      "meta": "Windows shell extension · Microsoft Store",
-      "desc": "Adds 'Convert to PNG' and 'Copy as PNG' to the File Explorer right-click menu — decodes .webp / .avif / .heic / .bmp / .tif / .gif locally, no network round trip. C++/WinRT shell extension plus a .NET 9 AOT engine, seven bundled decoders, 85 tests green. Idea to Microsoft Store in 24 hours, built with Vibe Cartographer.",
-      "image": "assets/thumb-rtclickpng.png",
-      "links": [
-        {
-          "label": "Get from Microsoft Store",
-          "href": "https://apps.microsoft.com/detail/9PKKLK6R5WFL"
-        },
-        {
-          "label": "GitHub",
-          "href": "https://github.com/estevanhernandez-stack-ed/RTClickPng"
         }
       ]
     }

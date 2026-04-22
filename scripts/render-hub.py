@@ -197,6 +197,16 @@ PRODUCT_SIGILS = {
         '<svg class="ic-lg ic" viewBox="0 0 24 24">'
         '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
     ),
+    "rbx15-shirt-pants": (
+        # T-shirt outline
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<path d="M4 7l5-3 3 2 3-2 5 3-2 3-2-1v11H8V9L6 10z"/></svg>'
+    ),
+    "rtclickpng": (
+        # Cursor arrow
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<path d="M5 3v17l4.5-3.5 2.5 5 2-1-2.5-5h5.5z"/></svg>'
+    ),
 }
 
 # Flagship-only decorative preview (terminal mock + bullets), keyed by id.
@@ -255,14 +265,20 @@ PRODUCT_CATEGORY_LABELS = {
     "vibe-cartographer": "SPEC-DRIVEN · SELF-EVOLVING",
 }
 
-# Foot-row meta text per product id (left half of product-foot).
-# Wrapped in <code>…</code> if the pattern is a slash command.
-PRODUCT_FOOT_META = {
-    "vibe-doc": "<code>/vibe-doc</code> · gap analyzer",
-    "vibe-test": "<code>/vibe-test:audit</code> · harness-aware",
-    "sanduhr": "SwiftUI · WinUI · menu bar",
-    "vibe-sec": "/vibe-sec · drafting",
-}
+# Foot-row meta text now lives on each product entry in site.json as `meta`.
+# (Previously hardcoded here; moved so admin-dash edits flow through.)
+
+# Icons used by the Microsoft Store + GitHub download badges.
+MS_STORE_ICON_SVG = (
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+    '<path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/>'
+    '</svg>'
+)
+GITHUB_ICON_SVG = (
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+    '<path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>'
+    '</svg>'
+)
 
 
 CLAUDE_CODE_BADGE = (
@@ -346,12 +362,64 @@ def render_tags(tags: list[dict]) -> str:
     return "".join(out)
 
 
+def render_product_visual(p: dict) -> str:
+    """Banner image at the top of the card, bleeding to card edges.
+
+    Rendered only when the product has a `banner` field. CSS (.product-visual)
+    already lives in index.html and handles the negative margin + border.
+    """
+    banner = p.get("banner")
+    if not banner:
+        return ""
+    alt = f"{p.get('title', '')} — card banner screenshot"
+    return (
+        '        <div class="product-visual">\n'
+        f'          <img src="{attr(banner)}" alt="{attr(alt)}" loading="lazy" />\n'
+        '        </div>'
+    )
+
+
+def render_store_badges(p: dict) -> str:
+    """Matched Microsoft Store + GitHub badge pair.
+
+    Rendered only when the product has a `storeUrl`. The GitHub half appears
+    only when `repo` is set and public.
+    """
+    store_url = p.get("storeUrl")
+    if not store_url:
+        return ""
+    repo = p.get("repo") or ""
+    parts = [
+        '        <div class="badge-row">',
+        f'          <a class="store-badge" href="{attr(store_url)}" rel="noopener">',
+        f'            {MS_STORE_ICON_SVG}',
+        '            <div class="store-badge-text">',
+        '              <span class="store-badge-top">Get it from</span>',
+        '              <span class="store-badge-bottom">Microsoft Store</span>',
+        '            </div>',
+        '          </a>',
+    ]
+    if repo:
+        parts.extend([
+            f'          <a class="store-badge" href="https://github.com/{attr(repo)}" rel="noopener">',
+            f'            {GITHUB_ICON_SVG}',
+            '            <div class="store-badge-text">',
+            '              <span class="store-badge-top">View on</span>',
+            '              <span class="store-badge-bottom">GitHub</span>',
+            '            </div>',
+            '          </a>',
+        ])
+    parts.append('        </div>')
+    return "\n".join(parts)
+
+
 def render_product_foot(p: dict) -> str:
     """Foot row: product-meta + product-link."""
     pid = p.get("id", "")
     repo = p.get("repo", "")
     product_page = p.get("productPage")
-    meta = PRODUCT_FOOT_META.get(pid, "")
+    store_url = p.get("storeUrl")
+    meta = p.get("meta", "")
 
     if product_page:
         link = (
@@ -360,6 +428,9 @@ def render_product_foot(p: dict) -> str:
             '<svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>'
             "</a>"
         )
+    elif store_url:
+        # Store badge pair is already the CTA; a repo link here is redundant.
+        link = ""
     elif p.get("status") == "wip":
         link = (
             f'<a class="product-link" href="https://github.com/{attr(repo)}/tree/main/packages/{attr(pid)}">'
@@ -378,10 +449,15 @@ def render_product_foot(p: dict) -> str:
             "</a>"
         )
 
-    return f"""\
+    if link:
+        return f"""\
         <div class="product-foot">
           <div class="product-meta">{meta}</div>
           {link}
+        </div>"""
+    return f"""\
+        <div class="product-foot">
+          <div class="product-meta">{meta}</div>
         </div>"""
 
 
@@ -402,6 +478,8 @@ def render_product(p: dict) -> str:
     tags_html = render_tags(p.get("tags", []))
     badges_html = render_badges(p)
     install_html = render_install(p)
+    visual_html = render_product_visual(p)
+    store_badges_html = render_store_badges(p)
     preview_html = FLAGSHIP_PREVIEWS.get(pid, "") if flagship else ""
     foot_html = "" if flagship else render_product_foot(p)
 
@@ -437,12 +515,17 @@ def render_product(p: dict) -> str:
           </div>
         </div>"""
 
-    parts = [f'      <article class="{class_attr}">', head, f"        <h3>{title}</h3>"]
+    parts = [f'      <article class="{class_attr}">']
+    if visual_html:
+        parts.append(visual_html)
+    parts.extend([head, f"        <h3>{title}</h3>"])
     parts.append(f'        <p class="product-desc">{description}</p>')
     if badges_html:
         parts.append(badges_html)
     if install_html:
         parts.append(install_html)
+    if store_badges_html:
+        parts.append(store_badges_html)
     if preview_html:
         parts.append(preview_html)
     if foot_html:

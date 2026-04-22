@@ -494,6 +494,59 @@
       width: 100%;
       height: auto;
     }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 var(--s-5);
+    }
+    .store-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1 1 180px;
+      min-width: 180px;
+      height: 54px;
+      padding: 0 16px;
+      background: rgba(15, 31, 49, 0.55);
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-md);
+      color: var(--fg-1);
+      text-decoration: none;
+      transition: border-color var(--dur-med) var(--ease-out), background var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+      box-sizing: border-box;
+    }
+    .store-badge:hover {
+      border-color: var(--border-accent);
+      background: rgba(23, 212, 250, 0.08);
+      color: var(--fg-1);
+      transform: translateY(-1px);
+    }
+    .store-badge svg {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      color: var(--fg-1);
+    }
+    .store-badge-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+      min-width: 0;
+    }
+    .store-badge-top {
+      font-size: 9.5px;
+      font-weight: 500;
+      color: var(--fg-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .store-badge-bottom {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--fg-1);
+      letter-spacing: -0.005em;
+    }
     @media (max-width: 960px) {
       .products { grid-template-columns: repeat(2, 1fr); }
       article.product, article.product.flagship { grid-column: span 2; min-height: 280px; }
@@ -1412,6 +1465,9 @@
       </article>
 
       <article class="product">
+        <div class="product-visual">
+          <img src="assets/sanduhr-card-shot.png" alt="Sanduhr für Claude — card banner screenshot" loading="lazy" />
+        </div>
         <div class="product-head">
           <div class="product-sigil">
             <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M6 2h12M6 22h12M6 2v4c0 2.5 6 4 6 6s-6 1.5-6 4v6M18 2v4c0 2.5-6 4-6 6s6 1.5 6 4v6"/></svg>
@@ -1422,8 +1478,24 @@
         </div>
         <h3>Sanduhr für Claude</h3>
         <p class="product-desc">Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Burn-rate projection, pace markers, sparkline trends, five hand-tuned glass themes.</p>
+        <div class="badge-row">
+          <a class="store-badge" href="https://apps.microsoft.com/detail/9NH3NK2RGCF5" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">Get it from</span>
+              <span class="store-badge-bottom">Microsoft Store</span>
+            </div>
+          </a>
+          <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">View on</span>
+              <span class="store-badge-bottom">GitHub</span>
+            </div>
+          </a>
+        </div>
         <div class="product-foot">
-          <div class="product-meta">SwiftUI · WinUI · menu bar</div>
+          <div class="product-meta">macOS · Windows · native</div>
           <a class="product-link" href="/sanduhr/">Open product page <svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
         </div>
       </article>
@@ -1449,6 +1521,76 @@
         <div class="product-foot">
           <div class="product-meta">/vibe-sec · drafting</div>
           <a class="product-link" href="https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-sec">Framework doc <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-visual">
+          <img src="assets/thumb-rbx15.png" alt="RBX15 Classic Shirt and Pants Maker — card banner screenshot" loading="lazy" />
+        </div>
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M4 7l5-3 3 2 3-2 5 3-2 3-2-1v11H8V9L6 10z"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">Windows</span><span class="tag magenta">native</span><span class="tag cyan">Roblox tooling</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>RBX15 Classic Shirt and Pants Maker</h3>
+        <p class="product-desc">Visual editor for Roblox R15 shirt and pants templates. Electron UI, Python Pillow compositing engine. Drag-and-drop layers, fullbleed / mirror / meme-tee presets, word art. Free on the Microsoft Store.</p>
+        <div class="badge-row">
+          <a class="store-badge" href="https://apps.microsoft.com/detail/9mv9g4xfj8s0" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">Get it from</span>
+              <span class="store-badge-bottom">Microsoft Store</span>
+            </div>
+          </a>
+          <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">View on</span>
+              <span class="store-badge-bottom">GitHub</span>
+            </div>
+          </a>
+        </div>
+        <div class="product-foot">
+          <div class="product-meta">Windows · Roblox creator tooling</div>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-visual">
+          <img src="assets/thumb-rtclickpng.png" alt="Right Click PNG — card banner screenshot" loading="lazy" />
+        </div>
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M5 3v17l4.5-3.5 2.5 5 2-1-2.5-5h5.5z"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">Windows</span><span class="tag magenta">shell extension</span><span class="tag cyan">native</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>Right Click PNG</h3>
+        <p class="product-desc">Adds 'Convert to PNG' and 'Copy as PNG' to the File Explorer right-click menu — decodes .webp / .avif / .heic / .bmp / .tif / .gif locally, no network round trip. C++/WinRT shell extension plus a .NET 9 AOT engine, seven bundled decoders, 85 tests green. Idea to Microsoft Store in 24 hours, built with Vibe Cartographer.</p>
+        <div class="badge-row">
+          <a class="store-badge" href="https://apps.microsoft.com/detail/9PKKLK6R5WFL" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">Get it from</span>
+              <span class="store-badge-bottom">Microsoft Store</span>
+            </div>
+          </a>
+          <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/RTClickPng" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">View on</span>
+              <span class="store-badge-bottom">GitHub</span>
+            </div>
+          </a>
+        </div>
+        <div class="product-foot">
+          <div class="product-meta">Windows shell extension · 24h build</div>
         </div>
       </article>
       <!-- SITE_JSON:products:end -->
@@ -1800,38 +1942,6 @@
                   {
                         "label": "Launch",
                         "href": "https://replit.com/@esteH777/Poster-Colorizer"
-                  }
-            ]
-      },
-      {
-            "name": "RBX15 Classic Shirt and Pants Maker",
-            "meta": "Roblox creator tooling · Microsoft Store",
-            "desc": "Visual editor for Roblox R15 shirt and pants templates. Electron UI, Python Pillow compositing engine. Drag-and-drop layers, fullbleed / mirror / meme-tee presets, word art. Free on the Microsoft Store.",
-            "image": "assets/thumb-rbx15.png",
-            "links": [
-                  {
-                        "label": "Get from Microsoft Store",
-                        "href": "https://apps.microsoft.com/detail/9mv9g4xfj8s0"
-                  },
-                  {
-                        "label": "GitHub",
-                        "href": "https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants"
-                  }
-            ]
-      },
-      {
-            "name": "Right Click PNG",
-            "meta": "Windows shell extension · Microsoft Store",
-            "desc": "Adds 'Convert to PNG' and 'Copy as PNG' to the File Explorer right-click menu — decodes .webp / .avif / .heic / .bmp / .tif / .gif locally, no network round trip. C++/WinRT shell extension plus a .NET 9 AOT engine, seven bundled decoders, 85 tests green. Idea to Microsoft Store in 24 hours, built with Vibe Cartographer.",
-            "image": "assets/thumb-rtclickpng.png",
-            "links": [
-                  {
-                        "label": "Get from Microsoft Store",
-                        "href": "https://apps.microsoft.com/detail/9PKKLK6R5WFL"
-                  },
-                  {
-                        "label": "GitHub",
-                        "href": "https://github.com/estevanhernandez-stack-ed/RTClickPng"
                   }
             ]
       }
