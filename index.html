@@ -483,6 +483,17 @@
       border: 1px solid rgba(23,212,250,.32);
     }
     article.product.wip { opacity: 0.85; }
+    .product-visual {
+      margin: calc(var(--s-8) * -1) calc(var(--s-8) * -1) var(--s-6);
+      background: var(--bg-1);
+      border-bottom: 1px solid var(--border-1);
+      overflow: hidden;
+    }
+    .product-visual img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
     @media (max-width: 960px) {
       .products { grid-template-columns: repeat(2, 1fr); }
       article.product, article.product.flagship { grid-column: span 2; min-height: 280px; }
@@ -1401,6 +1412,9 @@
       </article>
 
       <article class="product">
+        <div class="product-visual">
+          <img src="assets/sanduhr-card-shot.png" alt="Sanduhr tracker detail: Weekly All Models at 57% with sparkline climbing, on-pace with a 2% surplus" loading="lazy" />
+        </div>
         <div class="product-head">
           <div class="product-sigil">
             <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M6 2h12M6 22h12M6 2v4c0 2.5 6 4 6 6s-6 1.5-6 4v6M18 2v4c0 2.5-6 4-6 6s6 1.5 6 4v6"/></svg>
