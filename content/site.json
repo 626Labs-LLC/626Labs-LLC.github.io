@@ -372,6 +372,23 @@
           "href": "https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants"
         }
       ]
+    },
+    {
+      "id": "rtclickpng",
+      "name": "Right Click PNG",
+      "meta": "Windows shell extension · Microsoft Store",
+      "desc": "Adds 'Convert to PNG' and 'Copy as PNG' to the File Explorer right-click menu — decodes .webp / .avif / .heic / .bmp / .tif / .gif locally, no network round trip. C++/WinRT shell extension plus a .NET 9 AOT engine, seven bundled decoders, 85 tests green. Idea to Microsoft Store in 24 hours, built with Vibe Cartographer.",
+      "image": "assets/thumb-rtclickpng.png",
+      "links": [
+        {
+          "label": "Get from Microsoft Store",
+          "href": "https://apps.microsoft.com/detail/9PKKLK6R5WFL"
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/estevanhernandez-stack-ed/RTClickPng"
+        }
+      ]
     }
   ]
 }
