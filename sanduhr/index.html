@@ -255,6 +255,27 @@
       color: var(--cyan);
     }
 
+    /* ── showcase (expanded-view hero shot) ───────────────── */
+    section.showcase {
+      padding: 28px 0 8px;
+      text-align: center;
+    }
+    .showcase-frame {
+      display: inline-block;
+      max-width: 480px;
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--navy-line);
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      background: var(--navy-deep);
+    }
+    .showcase-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
     /* ── download badges (matched pair: MS Store + GitHub) ─ */
     .badge-row {
       display: flex;
@@ -447,6 +468,14 @@
       <div class="ctas">
         <a class="btn primary" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Download from GitHub</a>
         <a class="btn secondary" href="https://estevanhernandez-stack-ed.github.io/Sanduhr_f-r_Claude/">Full product page &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="showcase">
+    <div class="container">
+      <div class="showcase-frame">
+        <img src="screenshot-full-view.png" alt="Sanduhr expanded view: Session, Weekly All Models, Weekly Sonnet, and Weekly Routines trackers with pace markers and sparklines" />
       </div>
     </div>
   </section>

@@ -344,14 +344,15 @@
       ]
     },
     {
-      "id": "poster-colorizer",
-      "name": "Poster-Colorizer",
-      "meta": "Film posters · Generative",
-      "desc": "Breathes color into vintage black-and-white theater posters. The visual companion to the poster-planning tooling that runs the exhibition side of the lab.",
+      "id": "colorcast",
+      "name": "ColorCast",
+      "meta": "Coloring sheets · React Native",
+      "desc": "Turns movie posters into coloring sheets. Scan a poster or pick from your gallery, choose Simple / Medium / Advanced detail, then export as free-color line art or paint-by-number. Mobile app, deployed on Replit.",
+      "image": "assets/thumb-colorcast.png",
       "links": [
         {
-          "label": "GitHub",
-          "href": "https://github.com/estevanhernandez-stack-ed/Poster-Colorizer"
+          "label": "Launch",
+          "href": "https://replit.com/@esteH777/Poster-Colorizer"
         }
       ]
     },
