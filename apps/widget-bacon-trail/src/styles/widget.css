@@ -68,47 +68,105 @@
   font-weight: 600;
 }
 
-/* ─── Trail breadcrumb (horizontal scroll) ───────────────────────── */
+/* ─── Trail: "Your Path" two-row layout (films top, actors bottom) ─ */
 .btw-trail {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 6px;
-  overflow-x: auto;
-  padding: 6px 2px;
-  min-height: 38px;
-  scrollbar-width: thin;
-}
-.btw-trail::-webkit-scrollbar { height: 4px; }
-.btw-trail::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: var(--r-pill); }
-.btw-trail-step {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 8px 4px 4px;
+  padding: var(--s-3);
   background: var(--bg-2);
   border: 1px solid var(--border-1);
-  border-radius: var(--r-pill);
-  font-size: var(--t-caption);
-  color: var(--fg-2);
-  white-space: nowrap;
-  flex-shrink: 0;
+  border-radius: var(--r-md);
+  box-shadow: var(--inner-stroke);
 }
-.btw-trail-step.is-bacon {
-  border-color: var(--success);
-  color: var(--success);
-  background: rgba(43, 217, 154, 0.08);
+.btw-trail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btw-trail-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.btw-trail-grid {
+  display: grid;
+  grid-template-rows: auto auto;
+  column-gap: 4px;
+  row-gap: 4px;
+  overflow-x: auto;
+  padding: 2px 0;
+  position: relative;
+  /* Hide scrollbar when content fits; show thin bar only on overflow. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+.btw-trail-grid::-webkit-scrollbar { height: 0; background: transparent; }
+.btw-trail-grid:hover::-webkit-scrollbar { height: 3px; }
+.btw-trail-grid:hover::-webkit-scrollbar-thumb {
+  background: var(--border-2); border-radius: var(--r-pill);
+}
+
+/* Dashed connector between the two rows, behind the cells. */
+.btw-trail-connector {
+  grid-column: 1 / -1;
+  grid-row: 1 / span 2;
+  align-self: center;
+  border-top: 1px dashed var(--border-2);
+  margin: 0 12px;
+  height: 0;
+  z-index: 0;
+}
+
+.btw-trail-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  z-index: 1;
+  min-width: 0;
 }
 .btw-trail-thumb {
-  width: 24px;
-  height: 24px;
-  border-radius: var(--r-sm);
-  object-fit: cover;
+  width: 36px;
+  height: 36px;
   background: var(--bg-3);
-}
-.btw-trail-sep {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   color: var(--fg-muted);
+  border: 1px solid var(--border-1);
   flex-shrink: 0;
 }
+.btw-trail-thumb.actor {
+  border-radius: var(--r-pill);
+  border-color: var(--border-accent);
+}
+.btw-trail-thumb.movie {
+  width: 28px;
+  height: 42px;
+  border-radius: var(--r-sm);
+}
+.btw-trail-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.btw-trail-label-text {
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--fg-2);
+  max-width: 56px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+.btw-trail-cell.is-bacon .btw-trail-thumb {
+  border-color: var(--success);
+  box-shadow: 0 0 0 1px var(--success), 0 0 12px rgba(43,217,154,.35);
+}
+.btw-trail-cell.is-bacon .btw-trail-label-text { color: var(--success); }
 
 /* ─── Screen container (flex-grows between header + footer) ──────── */
 .btw-screen {

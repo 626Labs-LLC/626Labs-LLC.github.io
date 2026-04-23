@@ -1,4 +1,4 @@
-import { ChevronRight, Film, Users } from 'lucide-react';
+import { Film, Users } from 'lucide-react';
 import type { TrailStep } from '../types';
 import { tmdbImageUrl } from '../services/tmdbService';
 
@@ -6,17 +6,32 @@ interface Props {
   trail: TrailStep[];
 }
 
-// Horizontally-scrolling breadcrumb of the walk so far. Each step is a
-// chip; the film step that contains Bacon gets the success-color treatment.
+// Two-row "Your Path" layout. Films live on the top row, actors on the
+// bottom row, each placed in a grid column per step so the chain reads
+// left-to-right with a dashed connector between them.
+//
+// Shape:
+//   row 1 (top):    [     ][  F1  ][      ][  F2  ][      ][  F3  ]
+//   row 2 (bottom): [  A0 ][      ][  A1  ][      ][  A2  ][      ]
 export function TrailBreadcrumb({ trail }: Props) {
   if (trail.length === 0) return null;
 
   return (
-    <nav className="btw-trail" aria-label="Bacon trail">
-      {trail.map((step, i) => (
-        <StepChip key={`${step.kind}-${stepId(step)}-${i}`} step={step} isLast={i === trail.length - 1} />
-      ))}
-    </nav>
+    <section className="btw-trail" aria-label="Your path">
+      <div className="btw-trail-head">
+        <span className="btw-trail-label">Your Path</span>
+      </div>
+      <div
+        className="btw-trail-grid"
+        style={{ gridTemplateColumns: `repeat(${trail.length}, minmax(56px, 1fr))` }}
+      >
+        {trail.map((step, i) => (
+          <StepCell key={`${step.kind}-${stepId(step)}-${i}`} step={step} column={i + 1} />
+        ))}
+        {/* Dashed connector behind the cells */}
+        <span className="btw-trail-connector" aria-hidden="true" />
+      </div>
+    </section>
   );
 }
 
@@ -24,26 +39,33 @@ function stepId(step: TrailStep): number {
   return step.kind === 'actor' ? step.actor.id : step.movie.id;
 }
 
-function StepChip({ step, isLast }: { step: TrailStep; isLast: boolean }) {
-  const isBacon = step.kind === 'movie' && step.baconInCast;
-  const imageUrl =
-    step.kind === 'actor' ? tmdbImageUrl(step.actor.profilePath, 'w92') : tmdbImageUrl(step.movie.posterPath, 'w92');
-  const label = step.kind === 'actor' ? step.actor.name : step.movie.title;
+function StepCell({ step, column }: { step: TrailStep; column: number }) {
+  const isActor = step.kind === 'actor';
+  const isBaconFilm = !isActor && step.baconInCast;
+
+  const imageUrl = isActor
+    ? tmdbImageUrl(step.actor.profilePath, 'w92')
+    : tmdbImageUrl(step.movie.posterPath, 'w92');
+  const label = isActor ? step.actor.name : step.movie.title;
 
   return (
-    <>
-      <span className={`btw-trail-step${isBacon ? ' is-bacon' : ''}`}>
+    <div
+      className={`btw-trail-cell ${isActor ? 'actor' : 'movie'}${isBaconFilm ? ' is-bacon' : ''}`}
+      style={{ gridColumn: column, gridRow: isActor ? 2 : 1 }}
+    >
+      <div className={`btw-trail-thumb ${isActor ? 'actor' : 'movie'}`}>
         {imageUrl ? (
-          <img className="btw-trail-thumb" src={imageUrl} alt="" loading="lazy" onError={hideOnError} />
+          <img src={imageUrl} alt="" loading="lazy" onError={hideOnError} />
+        ) : isActor ? (
+          <Users size={14} aria-hidden="true" />
         ) : (
-          <span className="btw-trail-thumb" aria-hidden="true" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-            {step.kind === 'actor' ? <Users size={14} /> : <Film size={14} />}
-          </span>
+          <Film size={14} aria-hidden="true" />
         )}
-        <span>{truncate(label, 18)}</span>
+      </div>
+      <span className="btw-trail-label-text" title={label}>
+        {truncate(label, 12)}
       </span>
-      {!isLast && <ChevronRight size={14} className="btw-trail-sep" aria-hidden="true" />}
-    </>
+    </div>
   );
 }
 

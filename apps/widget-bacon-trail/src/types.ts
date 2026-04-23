@@ -124,8 +124,12 @@ export const BIRTHDAY_GRID_SIZE = 6;
 // Top cast members shown per film (total across all pages).
 export const CAST_GRID_SIZE = 27;
 
-// Top movies shown per actor (total across all pages).
-export const MOVIE_LIST_SIZE = 27;
+// Top movies shown per actor (total across all pages). TMDB's `popularity`
+// field is noisy — a 27-movie cap can drop stable classics below newer
+// lesser films, which bites for Bacon-connected titles like X-Men: First
+// Class. 45 = 5 pages of 9 keeps the widget discoverable without scrolling
+// forever.
+export const MOVIE_LIST_SIZE = 45;
 
 // Items per page in any paginated 3×3 grid (movies, cast).
 export const ITEMS_PER_PAGE = 9;

@@ -43,11 +43,13 @@ function assertKey(): string {
 }
 
 // Fetch an actor's movie credits, return top N sorted by popularity desc.
-// Default limit is 27 = 3 pages of 9 in the UI's paginated grid.
+// Default limit is 45 = 5 pages of 9 in the UI's paginated grid. Kept
+// generous because TMDB's `popularity` field can drop classic titles
+// (e.g., X-Men: First Class) below newer lesser ones.
 // `GET /person/{id}/movie_credits`.
 export async function fetchMovieCreditsForActor(
   actorId: number,
-  limit = 27
+  limit = 45
 ): Promise<Movie[]> {
   const key = assertKey();
   const url = `${TMDB_BASE_URL}/person/${actorId}/movie_credits?api_key=${key}`;

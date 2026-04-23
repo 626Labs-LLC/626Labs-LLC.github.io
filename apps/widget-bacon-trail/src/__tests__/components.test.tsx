@@ -76,9 +76,10 @@ describe('TrailBreadcrumb', () => {
       { kind: 'actor', actor: mkActor(2, 'Samuel L. Jackson') },
     ];
     render(<TrailBreadcrumb trail={trail} />);
-    expect(screen.getByText('Harvey Keitel')).toBeInTheDocument();
-    expect(screen.getByText('Pulp Fiction')).toBeInTheDocument();
-    expect(screen.getByText('Samuel L. Jackson')).toBeInTheDocument();
+    // Full name lives on the cell's `title` attr; visible label is truncated.
+    expect(screen.getByTitle('Harvey Keitel')).toBeInTheDocument();
+    expect(screen.getByTitle('Pulp Fiction')).toBeInTheDocument();
+    expect(screen.getByTitle('Samuel L. Jackson')).toBeInTheDocument();
   });
 
   it('applies is-bacon class to the winning movie step', () => {
