@@ -111,8 +111,10 @@ export function Widget({ ctaUrl = DEFAULT_CTA_URL, ctaLabel = DEFAULT_CTA_LABEL,
 
   const onPlayAgain = useCallback(() => dispatch({ type: 'PLAY_AGAIN' }), []);
 
+  const celebrating = state.status === 'result' && state.outcome === 'found';
+
   return (
-    <div className="bacon-trail-widget" data-theme={theme}>
+    <div className={`bacon-trail-widget${celebrating ? ' is-celebrating' : ''}`} data-theme={theme}>
       <Header state={state} />
       <ScreenRouter state={state} dispatch={dispatch} onPlayAgain={onPlayAgain} ctaUrl={ctaUrl} ctaLabel={ctaLabel} />
       <LiveRegion state={state} />

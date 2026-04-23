@@ -28,6 +28,49 @@
   box-sizing: border-box;
 }
 
+/* ─── Edge-glow celebration (brand-sanctioned neon-pulse) ────────── */
+/* Plays once on transition to result=found. Cycles cyan → magenta →
+ * success-green around the widget perimeter, then fades back to rest.
+ * The 100% keyframe matches the default box-shadow so the animation
+ * leaves no residue when it completes.
+ */
+@keyframes btw-edge-glow {
+  0% {
+    box-shadow: var(--inner-stroke);
+  }
+  15% {
+    box-shadow:
+      var(--inner-stroke),
+      0 0 0 2px rgba(23, 212, 250, 0.7),
+      0 0 28px rgba(23, 212, 250, 0.55),
+      0 0 64px rgba(242, 47, 137, 0.35);
+  }
+  45% {
+    box-shadow:
+      var(--inner-stroke),
+      0 0 0 2px rgba(242, 47, 137, 0.6),
+      0 0 32px rgba(242, 47, 137, 0.45),
+      0 0 70px rgba(43, 217, 154, 0.3);
+  }
+  75% {
+    box-shadow:
+      var(--inner-stroke),
+      0 0 0 1.5px rgba(43, 217, 154, 0.55),
+      0 0 26px rgba(43, 217, 154, 0.45);
+  }
+  100% {
+    box-shadow: var(--inner-stroke);
+  }
+}
+.bacon-trail-widget.is-celebrating {
+  animation: btw-edge-glow 2600ms var(--ease-out) 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bacon-trail-widget.is-celebrating {
+    animation: none;
+  }
+}
+
 /* ─── Header ──────────────────────────────────────────────────────── */
 .btw-header {
   display: flex;
