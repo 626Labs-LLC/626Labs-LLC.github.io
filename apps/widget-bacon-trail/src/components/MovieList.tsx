@@ -1,5 +1,7 @@
-import { Film } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Film } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import type { Movie } from '../types';
+import { MOVIES_PER_PAGE } from '../types';
 import { tmdbImageUrl } from '../services/tmdbService';
 import { SkeletonCard } from './SkeletonCard';
 
@@ -9,11 +11,21 @@ interface Props {
   onPick: (movie: Movie) => void;
 }
 
-// Epic 3 — pick a movie from the current subject's filmography. 3-col grid
-// of poster cards. The Bacon win-check fires in the parent after the user
-// picks.
+// Epic 3 — pick a movie from the current subject's filmography. 3×3 grid of
+// poster cards, paginated. 9 movies per page × up to 3 pages = 27 top films
+// sorted by popularity. Bacon win-check fires in the parent after pick.
 export function MovieList({ movies, subjectName, onPick }: Props) {
+  const [page, setPage] = useState(0);
   const isLoading = movies.length === 0;
+  const totalPages = Math.max(1, Math.ceil(movies.length / MOVIES_PER_PAGE));
+
+  // Reset to page 0 when the subject (and therefore the movies prop) changes.
+  useEffect(() => {
+    setPage(0);
+  }, [movies]);
+
+  const start = page * MOVIES_PER_PAGE;
+  const pageMovies = movies.slice(start, start + MOVIES_PER_PAGE);
 
   return (
     <div className="btw-screen">
@@ -24,11 +36,54 @@ export function MovieList({ movies, subjectName, onPick }: Props) {
 
       <div className="btw-grid cols-3" role="group" aria-label={`Films starring ${subjectName}`}>
         {isLoading
-          ? Array.from({ length: 9 }).map((_, i) => <SkeletonCard key={i} />)
-          : movies.map((movie) => (
+          ? Array.from({ length: MOVIES_PER_PAGE }).map((_, i) => <SkeletonCard key={i} />)
+          : pageMovies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} onPick={onPick} />
             ))}
       </div>
+
+      {!isLoading && totalPages > 1 && (
+        <Pager page={page} totalPages={totalPages} onChange={setPage} />
+      )}
+    </div>
+  );
+}
+
+function Pager({
+  page,
+  totalPages,
+  onChange,
+}: {
+  page: number;
+  totalPages: number;
+  onChange: (p: number) => void;
+}) {
+  const canPrev = page > 0;
+  const canNext = page < totalPages - 1;
+
+  return (
+    <div className="btw-pager" role="group" aria-label="Film pagination">
+      <button
+        type="button"
+        className="btw-pager-btn"
+        onClick={() => onChange(page - 1)}
+        disabled={!canPrev}
+        aria-label="Previous page"
+      >
+        <ChevronLeft size={16} strokeWidth={2} aria-hidden="true" />
+      </button>
+      <span className="btw-pager-label" aria-live="polite">
+        Page <strong>{page + 1}</strong> / {totalPages}
+      </span>
+      <button
+        type="button"
+        className="btw-pager-btn"
+        onClick={() => onChange(page + 1)}
+        disabled={!canNext}
+        aria-label="Next page"
+      >
+        <ChevronRight size={16} strokeWidth={2} aria-hidden="true" />
+      </button>
     </div>
   );
 }
@@ -63,9 +118,7 @@ function MovieCard({ movie, onPick }: { movie: Movie; onPick: (m: Movie) => void
 // Best-effort shortener for TMDB titles without a compact variant.
 // - WWE WrestleMania X – Day → "WrestleMania X · Sun/Sat/Etc".
 // - Long titles containing ":" / "–" / "—" → keep just the head if it's
-//   a ≥2-word phrase. (e.g., "Teenage Mutant Ninja Turtles: Mutant Mayhem"
-//   → "Teenage Mutant Ninja Turtles"; "Star Wars: Episode IV – A New Hope"
-//   → "Star Wars".)
+//   a ≥2-word phrase.
 // - Otherwise pass through; the card's `title` attribute surfaces the
 //   full name on hover.
 export function shortTitle(title: string): string {

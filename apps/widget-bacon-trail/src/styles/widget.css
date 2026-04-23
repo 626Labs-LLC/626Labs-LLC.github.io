@@ -417,6 +417,57 @@
   align-items: center;
 }
 
+/* ─── Pager (prev/next controls for movie grid) ──────────────────── */
+.btw-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  padding: 4px 0 0;
+}
+.btw-pager-btn {
+  appearance: none;
+  border: 1px solid var(--border-1);
+  background: var(--bg-2);
+  color: var(--fg-2);
+  border-radius: var(--r-pill);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color var(--dur-med) var(--ease-out),
+              background var(--dur-med) var(--ease-out),
+              color var(--dur-med) var(--ease-out);
+}
+.btw-pager-btn:hover:not(:disabled) {
+  border-color: var(--border-accent);
+  color: var(--brand-cyan);
+  background: rgba(23, 212, 250, 0.08);
+}
+.btw-pager-btn:focus-visible {
+  outline: 2px solid var(--brand-cyan);
+  outline-offset: 2px;
+}
+.btw-pager-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.btw-pager-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  min-width: 72px;
+  text-align: center;
+}
+.btw-pager-label strong {
+  color: var(--fg-1);
+  font-weight: 600;
+}
+
 /* ─── Utility ─────────────────────────────────────────────────────── */
 .btw-sr-only {
   position: absolute;

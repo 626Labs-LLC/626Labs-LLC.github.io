@@ -145,6 +145,41 @@ describe('MovieList', () => {
     expect(shortTitle('Pulp Fiction')).toBe('Pulp Fiction');
     expect(shortTitle('Teenage Mutant Ninja Turtles: Mutant Mayhem')).toBe('Teenage Mutant Ninja Turtles');
   });
+
+  it('paginates at 9 films per page and renders prev/next controls', () => {
+    const movies = Array.from({ length: 20 }, (_, i) => mkMovie(i + 1, `Film ${i + 1}`));
+    render(<MovieList movies={movies} subjectName="Anyone" onPick={() => {}} />);
+
+    // Page 1 shows the first 9
+    expect(screen.getByLabelText(/Pick Film 1,/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pick Film 9,/)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Pick Film 10,/)).not.toBeInTheDocument();
+
+    // Pager shows "Page 1 / 3" (20 films = ceil(20/9) = 3 pages). Scoped to
+    // the pager group so "1" / "3" don't match card titles.
+    const pager = screen.getByLabelText('Film pagination');
+    expect(pager).toHaveTextContent(/Page\s*1\s*\/\s*3/);
+
+    // Prev is disabled on page 0
+    const prev = screen.getByLabelText('Previous page');
+    expect(prev).toBeDisabled();
+
+    // Click Next → page 2 shows films 10-18
+    fireEvent.click(screen.getByLabelText('Next page'));
+    expect(screen.getByLabelText(/Pick Film 10,/)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Pick Film 1,/)).not.toBeInTheDocument();
+
+    // Click Next → page 3 shows films 19-20, Next is disabled
+    fireEvent.click(screen.getByLabelText('Next page'));
+    expect(screen.getByLabelText(/Pick Film 19,/)).toBeInTheDocument();
+    expect(screen.getByLabelText('Next page')).toBeDisabled();
+  });
+
+  it('hides the pager when movies fit on one page', () => {
+    const movies = Array.from({ length: 5 }, (_, i) => mkMovie(i + 1));
+    render(<MovieList movies={movies} subjectName="Anyone" onPick={() => {}} />);
+    expect(screen.queryByLabelText('Next page')).not.toBeInTheDocument();
+  });
 });
 
 describe('CoActorGrid', () => {

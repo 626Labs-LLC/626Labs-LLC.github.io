@@ -124,5 +124,8 @@ export const BIRTHDAY_GRID_SIZE = 6;
 // Top cast members shown per film.
 export const CAST_GRID_SIZE = 15;
 
-// Top movies shown per actor.
-export const MOVIE_LIST_SIZE = 20;
+// Top movies shown per actor (total across all pages).
+export const MOVIE_LIST_SIZE = 27;
+
+// Movies per page in the paginated film picker (3×3 grid).
+export const MOVIES_PER_PAGE = 9;
