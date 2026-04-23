@@ -184,6 +184,40 @@ describe('MovieList', () => {
     expect(screen.queryByLabelText(/Pick Barbie/)).not.toBeInTheDocument();
     expect(screen.getByLabelText(/Pick Fight Club/)).toBeInTheDocument();
   });
+
+  it('filters movies live via the search input', () => {
+    const movies = [
+      mkMovie(1, 'Pulp Fiction'),
+      mkMovie(2, 'Reservoir Dogs'),
+      mkMovie(3, 'Kill Bill'),
+    ];
+    render(<MovieList movies={movies} subjectName="Quentin" trail={[]} onPick={() => {}} />);
+    const search = screen.getByLabelText(/Search Quentin's films/);
+    fireEvent.change(search, { target: { value: 'pulp' } });
+    expect(screen.getByLabelText(/Pick Pulp Fiction/)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Pick Reservoir Dogs/)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/Pick Kill Bill/)).not.toBeInTheDocument();
+  });
+
+  it('shows a no-results message when the search finds nothing', () => {
+    const movies = [mkMovie(1, 'Pulp Fiction')];
+    render(<MovieList movies={movies} subjectName="Quentin" trail={[]} onPick={() => {}} />);
+    fireEvent.change(screen.getByLabelText(/Search Quentin's films/), {
+      target: { value: 'first class' },
+    });
+    expect(screen.getByText(/No films matching "first class"/)).toBeInTheDocument();
+  });
+
+  it('clears the search via the X button', () => {
+    const movies = [mkMovie(1, 'Pulp Fiction'), mkMovie(2, 'Reservoir Dogs')];
+    render(<MovieList movies={movies} subjectName="Quentin" trail={[]} onPick={() => {}} />);
+    fireEvent.change(screen.getByLabelText(/Search Quentin's films/), {
+      target: { value: 'pulp' },
+    });
+    fireEvent.click(screen.getByLabelText('Clear search'));
+    expect(screen.getByLabelText(/Pick Pulp Fiction/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pick Reservoir Dogs/)).toBeInTheDocument();
+  });
 });
 
 describe('CoActorGrid', () => {

@@ -62,9 +62,17 @@ export async function fetchMovieCreditsForActor(
     posterPath: m.poster_path,
     releaseYear: m.release_date ? Number.parseInt(m.release_date.slice(0, 4), 10) : null,
     popularity: m.popularity,
+    voteCount: m.vote_count,
   }));
 
-  movies.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0));
+  // Blend popularity with vote_count so low-vote derivative entries
+  // (rereleases, 35mm specials, documentaries) sink below legit titles.
+  // Score: popularity × log(voteCount + 1). A film with 0 votes scores 0
+  // regardless of TMDB's popularity rating; a popular well-known film
+  // with thousands of votes ranks correctly.
+  const score = (m: Movie) =>
+    (m.popularity ?? 0) * Math.log(1 + Math.max(0, m.voteCount ?? 0));
+  movies.sort((a, b) => score(b) - score(a));
   return movies.slice(0, limit);
 }
 

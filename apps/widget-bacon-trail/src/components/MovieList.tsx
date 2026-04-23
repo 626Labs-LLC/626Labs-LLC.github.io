@@ -1,4 +1,4 @@
-import { Film } from 'lucide-react';
+import { Film, Search, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import type { Movie, TrailStep } from '../types';
 import { ITEMS_PER_PAGE } from '../types';
@@ -13,30 +13,43 @@ interface Props {
   onPick: (movie: Movie) => void;
 }
 
-// Epic 3 — pick a film for the current subject. 3×3 grid, paginated.
-// Films already walked (present in the trail) are filtered out — re-walking
-// a film you already came through can't form a new Bacon link, so they'd
-// just be dead options.
+// Epic 3 — pick a film for the current subject. 3×3 grid, paginated, with
+// a small search input for when the user knows what they're looking for
+// (matches the sibling app's UX). Films already walked in the trail are
+// hidden from the pool.
 export function MovieList({ movies, subjectName, trail, onPick }: Props) {
   const [page, setPage] = useState(0);
+  const [search, setSearch] = useState('');
 
   const trailMovieIds = useMemo(
     () => new Set(trail.filter((s): s is TrailStep & { kind: 'movie' } => s.kind === 'movie').map((s) => s.movie.id)),
     [trail]
   );
 
-  const filtered = useMemo(() => movies.filter((m) => !trailMovieIds.has(m.id)), [movies, trailMovieIds]);
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return movies
+      .filter((m) => !trailMovieIds.has(m.id))
+      .filter((m) => !q || m.title.toLowerCase().includes(q));
+  }, [movies, trailMovieIds, search]);
 
   const isLoading = movies.length === 0;
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
 
-  // Reset page when the underlying movies prop changes (new subject).
+  // Reset page + search when the underlying movies prop changes (new subject).
   useEffect(() => {
     setPage(0);
+    setSearch('');
   }, [movies]);
+
+  // If search narrows the set below the current page, snap back to page 0.
+  useEffect(() => {
+    if (page > 0 && page >= totalPages) setPage(0);
+  }, [page, totalPages]);
 
   const start = page * ITEMS_PER_PAGE;
   const pageItems = filtered.slice(start, start + ITEMS_PER_PAGE);
+  const showNoResults = !isLoading && search.trim() !== '' && filtered.length === 0;
 
   return (
     <div className="btw-screen">
@@ -45,13 +58,49 @@ export function MovieList({ movies, subjectName, trail, onPick }: Props) {
         <p className="btw-screen-sub">If Kevin Bacon's in the cast, you win this round.</p>
       </div>
 
-      <div className="btw-grid cols-3" role="group" aria-label={`Films starring ${subjectName}`}>
-        {isLoading
-          ? Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => <SkeletonCard key={i} />)
-          : pageItems.map((movie) => <MovieCard key={movie.id} movie={movie} onPick={onPick} />)}
-      </div>
+      {!isLoading && (
+        <div className="btw-search-wrap">
+          <Search size={14} strokeWidth={2} className="btw-search-icon" aria-hidden="true" />
+          <input
+            type="search"
+            className="btw-search"
+            placeholder="Search films…"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(0);
+            }}
+            aria-label={`Search ${subjectName}'s films`}
+          />
+          {search && (
+            <button
+              type="button"
+              className="btw-search-clear"
+              onClick={() => {
+                setSearch('');
+                setPage(0);
+              }}
+              aria-label="Clear search"
+            >
+              <X size={14} strokeWidth={2} aria-hidden="true" />
+            </button>
+          )}
+        </div>
+      )}
 
-      {!isLoading && totalPages > 1 && (
+      {showNoResults ? (
+        <div className="btw-empty">
+          <p>No films matching "{search}".</p>
+        </div>
+      ) : (
+        <div className="btw-grid cols-3" role="group" aria-label={`Films starring ${subjectName}`}>
+          {isLoading
+            ? Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => <SkeletonCard key={i} />)
+            : pageItems.map((movie) => <MovieCard key={movie.id} movie={movie} onPick={onPick} />)}
+        </div>
+      )}
+
+      {!isLoading && totalPages > 1 && !showNoResults && (
         <Pager page={page} totalPages={totalPages} onChange={setPage} ariaLabel="Film pagination" />
       )}
     </div>

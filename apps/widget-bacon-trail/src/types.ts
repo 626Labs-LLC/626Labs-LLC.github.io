@@ -19,6 +19,7 @@ export interface Movie {
   posterPath: string | null;
   releaseYear: number | null;
   popularity?: number;
+  voteCount?: number;
 }
 
 export type TrailStep =
@@ -97,6 +98,7 @@ export interface TMDBPersonCreditsResponse {
     poster_path: string | null;
     release_date?: string;
     popularity?: number;
+    vote_count?: number;
   }>;
 }
 

@@ -282,6 +282,67 @@
   text-overflow: ellipsis;
 }
 
+/* ─── Search (film picker) ───────────────────────────────────────── */
+.btw-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.btw-search {
+  width: 100%;
+  padding: 8px 30px 8px 30px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-pill);
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-body-sm);
+  outline: none;
+  transition: border-color var(--dur-med) var(--ease-out),
+              background var(--dur-med) var(--ease-out);
+}
+.btw-search::placeholder { color: var(--fg-muted); }
+.btw-search:focus {
+  border-color: var(--border-accent);
+  background: rgba(23, 212, 250, 0.04);
+}
+/* Kill the native clear button in Edge/Chrome — we render our own. */
+.btw-search::-webkit-search-cancel-button { display: none; }
+.btw-search-icon {
+  position: absolute;
+  left: 10px;
+  color: var(--fg-muted);
+  pointer-events: none;
+}
+.btw-search-clear {
+  position: absolute;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-pill);
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.btw-search-clear:hover { color: var(--fg-1); background: rgba(255,255,255,0.05); }
+.btw-search-clear:focus-visible { outline: 2px solid var(--brand-cyan); outline-offset: 2px; }
+
+.btw-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-3);
+  font-size: var(--t-body-sm);
+  padding: var(--s-6);
+  text-align: center;
+}
+.btw-empty p { margin: 0; }
+
 /* ─── Movie list (vertical list, not a grid) ─────────────────────── */
 .btw-list {
   display: flex;
