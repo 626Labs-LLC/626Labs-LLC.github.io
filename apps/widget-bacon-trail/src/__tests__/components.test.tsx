@@ -124,17 +124,26 @@ describe('BirthdayActorGrid', () => {
 });
 
 describe('MovieList', () => {
-  it('shows skeleton rows when movies is empty (loading)', () => {
+  it('shows skeleton cards when movies is empty (loading)', () => {
     render(<MovieList movies={[]} subjectName="Harvey Keitel" onPick={() => {}} />);
-    expect(screen.getAllByTestId('skeleton-list-row').length).toBeGreaterThan(0);
+    expect(screen.getAllByTestId('skeleton-poster').length).toBeGreaterThan(0);
   });
 
-  it('renders movie rows and fires onPick', () => {
+  it('renders movie cards and fires onPick', () => {
     const movies = [mkMovie(100, 'Pulp Fiction'), mkMovie(101, 'Reservoir Dogs')];
     const onPick = vi.fn();
     render(<MovieList movies={movies} subjectName="Harvey Keitel" onPick={onPick} />);
     fireEvent.click(screen.getByLabelText(/Pick Pulp Fiction/));
     expect(onPick).toHaveBeenCalledWith(movies[0]);
+  });
+
+  it('shortens WWE WrestleMania titles and long colon-split titles', async () => {
+    const { shortTitle } = await import('../components/MovieList');
+    expect(shortTitle('WWE WrestleMania 42 – Sunday')).toBe('WrestleMania 42 · Sun');
+    expect(shortTitle('WWE WrestleMania 42 – Saturday')).toBe('WrestleMania 42 · Sat');
+    expect(shortTitle('Star Wars: Episode IV – A New Hope')).toBe('Star Wars');
+    expect(shortTitle('Pulp Fiction')).toBe('Pulp Fiction');
+    expect(shortTitle('Teenage Mutant Ninja Turtles: Mutant Mayhem')).toBe('Teenage Mutant Ninja Turtles');
   });
 });
 
