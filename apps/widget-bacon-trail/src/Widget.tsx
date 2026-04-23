@@ -4,6 +4,7 @@ import { CoActorGrid } from './components/CoActorGrid';
 import { ErrorCard } from './components/ErrorCard';
 import { FilmCounter } from './components/FilmCounter';
 import { MovieList } from './components/MovieList';
+import { ResultBanner } from './components/ResultBanner';
 import { ResultCard } from './components/ResultCard';
 import { SkeletonCard } from './components/SkeletonCard';
 import { TrailBreadcrumb } from './components/TrailBreadcrumb';
@@ -129,7 +130,11 @@ function Header({ state }: { state: WidgetState }) {
         <h2 className="btw-title">Birthday Bacon Trail</h2>
         <FilmCounter filmCount={filmCount} />
       </div>
-      <TrailBreadcrumb trail={trail} />
+      {state.status === 'result' ? (
+        <ResultBanner outcome={state.outcome} filmCount={state.filmCount} />
+      ) : (
+        <TrailBreadcrumb trail={trail} />
+      )}
     </>
   );
 }

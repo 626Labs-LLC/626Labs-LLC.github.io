@@ -68,6 +68,31 @@
   font-weight: 600;
 }
 
+/* ─── Result banner (replaces trail in the top slot on result) ──── */
+.btw-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 2px 0;
+  font-family: var(--font-body);
+  font-size: var(--t-body-sm);
+  color: var(--fg-2);
+  align-self: center;
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+}
+.btw-banner strong {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--fg-1);
+  padding: 0 2px;
+}
+.btw-banner.success { color: var(--success); }
+.btw-banner.success strong { color: var(--success); }
+.btw-banner.miss { color: var(--fg-3); }
+
 /* ─── Trail: "Your Path" two-row layout (films top, actors bottom) ─ */
 .btw-trail {
   display: flex;
