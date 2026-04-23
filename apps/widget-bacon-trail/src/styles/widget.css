@@ -1,9 +1,429 @@
-/* Widget-scoped styles. Filled out in Item 4 once the components land.
- * Kept as a proper CSS file (not Tailwind-only) so Vite emits a companion
- * widget.css alongside widget.js during the library build.
- */
+@import './tokens.css';
 
+/* ─── Root container ─────────────────────────────────────────────── */
 .bacon-trail-widget {
-  /* token imports + scoped vars arrive in Item 4. */
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 420px;
+  min-height: 580px;
+  margin: 0 auto;
+  padding: var(--s-5);
+  background: var(--bg-0);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-lg);
+  box-shadow: var(--inner-stroke);
+  color: var(--fg-1);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: var(--lh-normal);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  /* Create a containing block so inner overflow behaves predictably */
+  position: relative;
+}
+.bacon-trail-widget *,
+.bacon-trail-widget *::before,
+.bacon-trail-widget *::after {
+  box-sizing: border-box;
+}
+
+/* ─── Header ──────────────────────────────────────────────────────── */
+.btw-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+.btw-title {
+  font-family: var(--font-display);
+  font-size: var(--t-subhead);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ─── Film counter (mono, uppercase, tracking) ───────────────────── */
+.btw-film-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 4px 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-pill);
+}
+.btw-film-counter-number {
+  color: var(--brand-cyan);
+  font-weight: 600;
+}
+
+/* ─── Trail breadcrumb (horizontal scroll) ───────────────────────── */
+.btw-trail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 6px 2px;
+  min-height: 38px;
+  scrollbar-width: thin;
+}
+.btw-trail::-webkit-scrollbar { height: 4px; }
+.btw-trail::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: var(--r-pill); }
+.btw-trail-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 4px 4px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-pill);
+  font-size: var(--t-caption);
+  color: var(--fg-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btw-trail-step.is-bacon {
+  border-color: var(--success);
+  color: var(--success);
+  background: rgba(43, 217, 154, 0.08);
+}
+.btw-trail-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-sm);
+  object-fit: cover;
+  background: var(--bg-3);
+}
+.btw-trail-sep {
+  color: var(--fg-muted);
+  flex-shrink: 0;
+}
+
+/* ─── Screen container (flex-grows between header + footer) ──────── */
+.btw-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  min-height: 0;
+}
+.btw-screen-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.btw-screen-lead {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--fg-1);
+  line-height: var(--lh-tight);
+}
+.btw-screen-sub {
+  font-size: var(--t-body-sm);
+  color: var(--fg-3);
+  margin: 0;
+}
+
+/* ─── Grids ──────────────────────────────────────────────────────── */
+.btw-grid {
+  display: grid;
+  gap: var(--s-3);
+  overflow-y: auto;
+  padding-right: 2px;
+  flex: 1;
+  min-height: 0;
+}
+.btw-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.btw-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+/* ─── Card buttons (actor / movie / co-actor) ────────────────────── */
+.btw-card {
+  appearance: none;
+  border: 1px solid var(--border-1);
+  background: var(--bg-2);
+  border-radius: var(--r-md);
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color var(--dur-med) var(--ease-out),
+              background var(--dur-med) var(--ease-out),
+              transform var(--dur-med) var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.btw-card:hover:not(:disabled) {
+  border-color: var(--border-accent);
+  background: rgba(23, 212, 250, 0.06);
+  transform: translateY(-1px);
+}
+.btw-card:focus-visible {
+  outline: 2px solid var(--brand-cyan);
+  outline-offset: 2px;
+}
+.btw-card:active { transform: translateY(0); }
+.btw-card:disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+.btw-card-image-wrap {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: var(--bg-3);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-muted);
+}
+.btw-card-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.btw-card-meta {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.btw-card-title {
+  font-size: var(--t-body-sm);
+  font-weight: 500;
+  color: var(--fg-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.btw-card-sub {
+  font-size: var(--t-caption);
+  color: var(--fg-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── Movie list (vertical list, not a grid) ─────────────────────── */
+.btw-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  overflow-y: auto;
+  padding-right: 2px;
+  flex: 1;
+  min-height: 0;
+}
+.btw-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-2);
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: border-color var(--dur-med) var(--ease-out),
+              background var(--dur-med) var(--ease-out);
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  appearance: none;
+  width: 100%;
+}
+.btw-list-item:hover:not(:disabled) {
+  border-color: var(--border-accent);
+  background: rgba(23, 212, 250, 0.06);
+}
+.btw-list-item:focus-visible {
+  outline: 2px solid var(--brand-cyan);
+  outline-offset: 2px;
+}
+.btw-list-thumb {
+  width: 48px;
+  height: 72px;
+  border-radius: var(--r-sm);
+  background: var(--bg-3);
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-muted);
+}
+.btw-list-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.btw-list-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ─── Skeleton cards ─────────────────────────────────────────────── */
+.btw-skeleton {
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  position: relative;
+}
+.btw-skeleton-image {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: linear-gradient(90deg, var(--bg-2) 0%, var(--bg-3) 50%, var(--bg-2) 100%);
+  background-size: 200% 100%;
+  animation: btw-shimmer 1.4s ease-in-out infinite;
+}
+.btw-skeleton-line {
+  height: 10px;
+  margin: 8px 10px;
+  background: linear-gradient(90deg, var(--bg-2) 0%, var(--bg-3) 50%, var(--bg-2) 100%);
+  background-size: 200% 100%;
+  border-radius: var(--r-sm);
+  animation: btw-shimmer 1.4s ease-in-out infinite;
+}
+.btw-skeleton-line.short { width: 50%; }
+@keyframes btw-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── Error card ─────────────────────────────────────────────────── */
+.btw-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-6);
+  text-align: center;
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-md);
+  margin: auto 0;
+}
+.btw-error-icon { color: var(--danger); }
+.btw-error-message {
+  color: var(--fg-2);
+  font-size: var(--t-body-sm);
+  margin: 0;
+}
+
+/* ─── Buttons ─────────────────────────────────────────────────────── */
+.btw-btn {
+  appearance: none;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--r-md);
+  padding: 10px 16px;
+  transition: transform var(--dur-med) var(--ease-out),
+              filter var(--dur-med) var(--ease-out),
+              border-color var(--dur-med) var(--ease-out),
+              background var(--dur-med) var(--ease-out);
+  font-family: var(--font-body);
+}
+.btw-btn:focus-visible {
+  outline: 2px solid var(--brand-cyan);
+  outline-offset: 2px;
+}
+.btw-btn.primary {
+  background: var(--brand-gradient);
+  color: var(--bg-0);
+  border: none;
+}
+.btw-btn.primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btw-btn.secondary {
+  background: transparent;
+  color: var(--fg-2);
+  border: 1px solid var(--border-2);
+}
+.btw-btn.secondary:hover {
+  border-color: var(--border-accent);
+  color: var(--fg-1);
+}
+.btw-btn.ghost {
+  background: transparent;
+  color: var(--brand-cyan);
+  border: none;
+  padding: 8px 10px;
+  font-size: var(--t-body-sm);
+}
+.btw-btn.ghost:hover { color: var(--brand-cyan-bright); }
+
+/* ─── Result card ─────────────────────────────────────────────────── */
+.btw-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  padding: var(--s-5);
+  background: var(--bg-2);
+  border: 1px solid var(--border-1);
+  border-radius: var(--r-md);
+  text-align: center;
+  flex: 1;
+  justify-content: center;
+}
+.btw-result.is-found {
+  border-color: rgba(43, 217, 154, 0.3);
+  background:
+    radial-gradient(60% 80% at 50% 0%, rgba(43, 217, 154, 0.08) 0%, transparent 70%),
+    var(--bg-2);
+}
+.btw-result.is-miss {
+  border-color: rgba(255, 84, 114, 0.25);
+}
+.btw-result-icon { margin: 0 auto; }
+.btw-result-icon.found { color: var(--success); }
+.btw-result-icon.miss { color: var(--danger); }
+.btw-result-headline {
+  font-family: var(--font-display);
+  font-size: var(--t-headline);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--fg-1);
+  line-height: var(--lh-tight);
+}
+.btw-result-headline .count {
+  color: var(--success);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+.btw-result-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  align-items: center;
+}
+
+/* ─── Utility ─────────────────────────────────────────────────────── */
+.btw-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
