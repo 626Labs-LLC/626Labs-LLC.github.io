@@ -1,5 +1,6 @@
 import {
   BIRTHDAY_GRID_SIZE,
+  KEVIN_BACON_TMDB_ID,
   MAX_FILMS,
   type Actor,
   type Movie,
@@ -109,6 +110,12 @@ export function reducer(state: WidgetState, action: Action): WidgetState {
       ];
 
       if (baconInCast) {
+        // Append Kevin Bacon's actor card as the final trail step so the
+        // "Your Path" viz ends on his portrait — the reward moment.
+        const bacon = action.cast.find((a) => a.id === KEVIN_BACON_TMDB_ID);
+        if (bacon) {
+          trail.push({ kind: 'actor', actor: bacon });
+        }
         return {
           status: 'result',
           outcome: 'found',

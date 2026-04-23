@@ -160,14 +160,21 @@ describe('reducer', () => {
 
     it('transitions to result=found when Bacon is in cast', () => {
       const state = setup(1);
+      const bacon = mkActor(KEVIN_BACON_TMDB_ID, 'Kevin Bacon');
       const next = reducer(state, {
         type: 'CAST_LOADED',
-        cast: [mkActor(1), mkActor(KEVIN_BACON_TMDB_ID, 'Kevin Bacon')],
+        cast: [mkActor(1), bacon],
       });
       expect(next.status).toBe('result');
       if (next.status === 'result') {
         expect(next.outcome).toBe('found');
         expect(next.filmCount).toBe(1);
+        // Trail ends on Kevin Bacon's actor card, not on the winning film.
+        const last = next.trail[next.trail.length - 1];
+        expect(last?.kind).toBe('actor');
+        if (last?.kind === 'actor') {
+          expect(last.actor.id).toBe(KEVIN_BACON_TMDB_ID);
+        }
       }
     });
 

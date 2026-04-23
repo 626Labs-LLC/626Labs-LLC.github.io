@@ -1,5 +1,5 @@
 import { Film, Users } from 'lucide-react';
-import type { TrailStep } from '../types';
+import { KEVIN_BACON_TMDB_ID, type TrailStep } from '../types';
 import { tmdbImageUrl } from '../services/tmdbService';
 
 interface Props {
@@ -42,6 +42,8 @@ function stepId(step: TrailStep): number {
 function StepCell({ step, column }: { step: TrailStep; column: number }) {
   const isActor = step.kind === 'actor';
   const isBaconFilm = !isActor && step.baconInCast;
+  const isBaconActor = isActor && step.actor.id === KEVIN_BACON_TMDB_ID;
+  const isBacon = isBaconFilm || isBaconActor;
 
   const imageUrl = isActor
     ? tmdbImageUrl(step.actor.profilePath, 'w92')
@@ -50,7 +52,7 @@ function StepCell({ step, column }: { step: TrailStep; column: number }) {
 
   return (
     <div
-      className={`btw-trail-cell ${isActor ? 'actor' : 'movie'}${isBaconFilm ? ' is-bacon' : ''}`}
+      className={`btw-trail-cell ${isActor ? 'actor' : 'movie'}${isBacon ? ' is-bacon' : ''}`}
       style={{ gridColumn: column, gridRow: isActor ? 2 : 1 }}
     >
       <div className={`btw-trail-thumb ${isActor ? 'actor' : 'movie'}`}>
