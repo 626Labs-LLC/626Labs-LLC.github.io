@@ -38,32 +38,38 @@
   0% {
     box-shadow: var(--inner-stroke);
   }
-  15% {
+  8% {
     box-shadow:
       var(--inner-stroke),
       0 0 0 2px rgba(23, 212, 250, 0.7),
       0 0 28px rgba(23, 212, 250, 0.55),
       0 0 64px rgba(242, 47, 137, 0.35);
   }
-  45% {
+  35% {
     box-shadow:
       var(--inner-stroke),
       0 0 0 2px rgba(242, 47, 137, 0.6),
       0 0 32px rgba(242, 47, 137, 0.45),
       0 0 70px rgba(43, 217, 154, 0.3);
   }
-  75% {
+  60% {
     box-shadow:
       var(--inner-stroke),
-      0 0 0 1.5px rgba(43, 217, 154, 0.55),
-      0 0 26px rgba(43, 217, 154, 0.45);
+      0 0 0 1.8px rgba(43, 217, 154, 0.55),
+      0 0 30px rgba(43, 217, 154, 0.5);
+  }
+  80% {
+    box-shadow:
+      var(--inner-stroke),
+      0 0 0 1.2px rgba(43, 217, 154, 0.3),
+      0 0 20px rgba(43, 217, 154, 0.25);
   }
   100% {
     box-shadow: var(--inner-stroke);
   }
 }
 .bacon-trail-widget.is-celebrating {
-  animation: btw-edge-glow 2600ms var(--ease-out) 1;
+  animation: btw-edge-glow 8000ms var(--ease-out) 1;
 }
 @media (prefers-reduced-motion: reduce) {
   .bacon-trail-widget.is-celebrating {
