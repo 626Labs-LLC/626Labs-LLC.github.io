@@ -1,0 +1,167 @@
+{
+  "date": "07-03",
+  "actors": [
+    {
+      "id": 500,
+      "name": "Tom Cruise",
+      "profilePath": "/3mShHjSQR7NXOVbdTu5rT2Qd0MN.jpg",
+      "birthday": "1962-07-03",
+      "popularity": 13.2069,
+      "baconNumber": 1
+    },
+    {
+      "id": 935,
+      "name": "Connie Nielsen",
+      "profilePath": "/lvQypTfeH2Gn2PTbzq6XkT2PLmn.jpg",
+      "birthday": "1965-07-03",
+      "popularity": 5.1891,
+      "baconNumber": 2
+    },
+    {
+      "id": 30082,
+      "name": "Benedict Wong",
+      "profilePath": "/yYfLyrC2CE6vBWSJfkpuVKL2POM.jpg",
+      "birthday": "1971-07-03",
+      "popularity": 3.4841,
+      "baconNumber": 2
+    },
+    {
+      "id": 17178,
+      "name": "Patrick Wilson",
+      "profilePath": "/oym6H2QD9esk4yABjCHaUoNAOa8.jpg",
+      "birthday": "1973-07-03",
+      "popularity": 3.3396,
+      "baconNumber": 2
+    },
+    {
+      "id": 8694,
+      "name": "Corey Reynolds",
+      "profilePath": "/bLtKPVOoWcdvilRGTiVGXDpbH7X.jpg",
+      "birthday": "1974-07-03",
+      "popularity": 3.1389,
+      "baconNumber": 2
+    },
+    {
+      "id": 2478,
+      "name": "Tommy Flanagan",
+      "profilePath": "/5OnvT1KpEk3juZavqOCSAEYOtwl.jpg",
+      "birthday": "1965-07-03",
+      "popularity": 2.7804,
+      "baconNumber": 2
+    },
+    {
+      "id": 2138,
+      "name": "Shawnee Smith",
+      "profilePath": "/s2Ouz4b7xqDH72aU48TSW5zS40v.jpg",
+      "birthday": "1969-07-03",
+      "popularity": 2.5869,
+      "baconNumber": 2
+    },
+    {
+      "id": 81364,
+      "name": "Olivia Munn",
+      "profilePath": "/ha4W3WfxBopQK2FZmVochNrN1GT.jpg",
+      "birthday": "1980-07-03",
+      "popularity": 2.5215,
+      "baconNumber": 2
+    },
+    {
+      "id": 229302,
+      "name": "Ku Feng",
+      "profilePath": "/u33ldLRAVBoZ8D9EUArNW9jChNw.jpg",
+      "birthday": "1930-07-03",
+      "popularity": 2.2453,
+      "baconNumber": 2
+    },
+    {
+      "id": 13638,
+      "name": "Thomas Gibson",
+      "profilePath": "/cnTJvFNtQW3HqlBSwkXAgvjXDi2.jpg",
+      "birthday": "1962-07-03",
+      "popularity": 2.18,
+      "baconNumber": 2
+    },
+    {
+      "id": 43265,
+      "name": "Corey Sevier",
+      "profilePath": "/wKt1pHZ5Q6kgkmZsNz53lNPzLR3.jpg",
+      "birthday": "1984-07-03",
+      "popularity": 2.1463,
+      "baconNumber": 2
+    },
+    {
+      "id": 5586,
+      "name": "Yeardley Smith",
+      "profilePath": "/9AjPwbb3uz4GfgOPBYsy2ILvwkB.jpg",
+      "birthday": "1964-07-03",
+      "popularity": 2.0971,
+      "baconNumber": 2
+    },
+    {
+      "id": 65353,
+      "name": "Jacklyn Wu Chien-Lien",
+      "profilePath": "/e1Aj6GR2jV2PrINeVljfyWiOT9V.jpg",
+      "birthday": "1968-07-03",
+      "popularity": 1.9635,
+      "baconNumber": 2
+    },
+    {
+      "id": 2115,
+      "name": "Kurtwood Smith",
+      "profilePath": "/7dqsk4NYbNZNnmppv2zPuf1hKBn.jpg",
+      "birthday": "1943-07-03",
+      "popularity": 1.8998,
+      "baconNumber": 2
+    },
+    {
+      "id": 1305494,
+      "name": "Sara Waisglass",
+      "profilePath": "/fKW6CPPc8My4YqNcAbX46ohrHXr.jpg",
+      "birthday": "1998-07-03",
+      "popularity": 1.8281,
+      "baconNumber": 3
+    },
+    {
+      "id": 31074,
+      "name": "Kinji Fukasaku",
+      "profilePath": "/mrDEkUwgZOQz8ES5oMwTBfN4n7q.jpg",
+      "birthday": "1930-07-03",
+      "popularity": 2.4716
+    },
+    {
+      "id": 1041465,
+      "name": "Kento Kaku",
+      "profilePath": "/1c7WZIRaQTUoKlD0LSDWB5n15X6.jpg",
+      "birthday": "1989-07-03",
+      "popularity": 2.119
+    },
+    {
+      "id": 2920776,
+      "name": "Bertan Asllani",
+      "profilePath": "/ov5Fr8PS0gctEHXvkoj9Z5zsVWu.jpg",
+      "birthday": "1990-07-03",
+      "popularity": 2.0959
+    },
+    {
+      "id": 3567884,
+      "name": "Yan Peilun",
+      "profilePath": "/djiIoMHzXKaSZ7wcAzcN50HJs8s.jpg",
+      "birthday": "1992-07-03",
+      "popularity": 1.9375
+    },
+    {
+      "id": 2840756,
+      "name": "Alper Çankaya",
+      "profilePath": "/xzdImGqRZvt9tYXCQAn4Y71HFPJ.jpg",
+      "birthday": "1990-07-03",
+      "popularity": 1.7815
+    },
+    {
+      "id": 553590,
+      "name": "Ryuji Yamamoto",
+      "profilePath": "/1jQpLJ5LGQ29WLq1FaglPc85CC2.jpg",
+      "birthday": "1954-07-03",
+      "popularity": 1.7782
+    }
+  ]
+}
