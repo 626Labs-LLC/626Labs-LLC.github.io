@@ -255,8 +255,12 @@ BADGE_COLOR_GREEN = "2bd99a"
 BADGE_LABEL_BG = "0f1f31"
 
 SHIELDS_RELEASE_FILTER = {
-    # Monorepo: filter by tag prefix for the package releases.
+    # Monorepo: filter by tag prefix so each package's card shows its own
+    # latest release — without this, shields.io returns the repo's newest
+    # tag across all packages (e.g. vibe-sec's card was showing
+    # vibe-test-v0.2.3).
     "vibe-test": "?filter=vibe-test-v*",
+    "vibe-sec": "?filter=vibe-sec-v*",
 }
 
 # Category label that sits under the flagship tag row ("SPEC-DRIVEN · SELF-EVOLVING").

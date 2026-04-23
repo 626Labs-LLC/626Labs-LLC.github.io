@@ -197,7 +197,7 @@
       "status": "wip",
       "repo": "estevanhernandez-stack-ed/vibe-plugins",
       "npm": "@esthernandez/vibe-sec",
-      "install": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
       "meta": "/vibe-sec · drafting",
       "screenshots": []
