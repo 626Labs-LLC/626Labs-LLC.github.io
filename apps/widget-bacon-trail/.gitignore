@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+
+# Vite / Vitest artifacts
+.vite/
+coverage/
+*.tsbuildinfo
+
+# Service account material must never be committed — the nightly Action
+# reads from GitHub secret `FIREBASE_SA_JSON`, not from disk.
+*-service-account.json
+*firebase-adminsdk*.json
+/tmp/

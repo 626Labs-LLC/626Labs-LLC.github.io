@@ -1,0 +1,2 @@
+!function(i){"use strict";function n(i){console.info("[BaconTrailWidget] init — scaffold only, real mount lands in Item 5.",i)}function o(i){console.info("[BaconTrailWidget] destroy",i)}"undefined"!=typeof window&&(window.BaconTrailWidget={init:n,destroy:o}),i.destroy=o,i.init=n,Object.defineProperty(i,Symbol.toStringTag,{value:"Module"})}(this.BaconTrailWidget=this.BaconTrailWidget||{});
+//# sourceMappingURL=widget.js.map

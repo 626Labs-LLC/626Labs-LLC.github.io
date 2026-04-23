@@ -1,0 +1,9 @@
+/* Widget-scoped styles. Filled out in Item 4 once the components land.
+ * Kept as a proper CSS file (not Tailwind-only) so Vite emits a companion
+ * widget.css alongside widget.js during the library build.
+ */
+
+.bacon-trail-widget {
+  /* token imports + scoped vars arrive in Item 4. */
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
