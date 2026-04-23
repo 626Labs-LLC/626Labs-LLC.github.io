@@ -67,8 +67,9 @@ export async function fetchMovieCreditsForActor(
 }
 
 // Fetch a movie's cast, return top N by billing order.
+// Default 27 = 3 pages of 9 in the UI's paginated grid.
 // `GET /movie/{id}/credits`.
-export async function fetchCastForMovie(movieId: number, limit = 15): Promise<Actor[]> {
+export async function fetchCastForMovie(movieId: number, limit = 27): Promise<Actor[]> {
   const key = assertKey();
   const url = `${TMDB_BASE_URL}/movie/${movieId}/credits?api_key=${key}`;
   const res = await fetchWithRetry(url);

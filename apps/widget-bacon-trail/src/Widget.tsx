@@ -180,6 +180,7 @@ function ScreenRouter({
         <MovieList
           movies={state.movies}
           subjectName={state.subject.name}
+          trail={state.trail}
           onPick={(movie) => dispatch({ type: 'MOVIE_PICKED', movie })}
         />
       );

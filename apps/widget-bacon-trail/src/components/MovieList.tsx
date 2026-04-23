@@ -1,31 +1,42 @@
-import { ChevronLeft, ChevronRight, Film } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import type { Movie } from '../types';
-import { MOVIES_PER_PAGE } from '../types';
+import { Film } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import type { Movie, TrailStep } from '../types';
+import { ITEMS_PER_PAGE } from '../types';
 import { tmdbImageUrl } from '../services/tmdbService';
 import { SkeletonCard } from './SkeletonCard';
+import { Pager } from './Pager';
 
 interface Props {
   movies: Movie[];
   subjectName: string;
+  trail: TrailStep[];
   onPick: (movie: Movie) => void;
 }
 
-// Epic 3 — pick a movie from the current subject's filmography. 3×3 grid of
-// poster cards, paginated. 9 movies per page × up to 3 pages = 27 top films
-// sorted by popularity. Bacon win-check fires in the parent after pick.
-export function MovieList({ movies, subjectName, onPick }: Props) {
+// Epic 3 — pick a film for the current subject. 3×3 grid, paginated.
+// Films already walked (present in the trail) are filtered out — re-walking
+// a film you already came through can't form a new Bacon link, so they'd
+// just be dead options.
+export function MovieList({ movies, subjectName, trail, onPick }: Props) {
   const [page, setPage] = useState(0);
-  const isLoading = movies.length === 0;
-  const totalPages = Math.max(1, Math.ceil(movies.length / MOVIES_PER_PAGE));
 
-  // Reset to page 0 when the subject (and therefore the movies prop) changes.
+  const trailMovieIds = useMemo(
+    () => new Set(trail.filter((s): s is TrailStep & { kind: 'movie' } => s.kind === 'movie').map((s) => s.movie.id)),
+    [trail]
+  );
+
+  const filtered = useMemo(() => movies.filter((m) => !trailMovieIds.has(m.id)), [movies, trailMovieIds]);
+
+  const isLoading = movies.length === 0;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+
+  // Reset page when the underlying movies prop changes (new subject).
   useEffect(() => {
     setPage(0);
   }, [movies]);
 
-  const start = page * MOVIES_PER_PAGE;
-  const pageMovies = movies.slice(start, start + MOVIES_PER_PAGE);
+  const start = page * ITEMS_PER_PAGE;
+  const pageItems = filtered.slice(start, start + ITEMS_PER_PAGE);
 
   return (
     <div className="btw-screen">
@@ -36,54 +47,13 @@ export function MovieList({ movies, subjectName, onPick }: Props) {
 
       <div className="btw-grid cols-3" role="group" aria-label={`Films starring ${subjectName}`}>
         {isLoading
-          ? Array.from({ length: MOVIES_PER_PAGE }).map((_, i) => <SkeletonCard key={i} />)
-          : pageMovies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} onPick={onPick} />
-            ))}
+          ? Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => <SkeletonCard key={i} />)
+          : pageItems.map((movie) => <MovieCard key={movie.id} movie={movie} onPick={onPick} />)}
       </div>
 
       {!isLoading && totalPages > 1 && (
-        <Pager page={page} totalPages={totalPages} onChange={setPage} />
+        <Pager page={page} totalPages={totalPages} onChange={setPage} ariaLabel="Film pagination" />
       )}
-    </div>
-  );
-}
-
-function Pager({
-  page,
-  totalPages,
-  onChange,
-}: {
-  page: number;
-  totalPages: number;
-  onChange: (p: number) => void;
-}) {
-  const canPrev = page > 0;
-  const canNext = page < totalPages - 1;
-
-  return (
-    <div className="btw-pager" role="group" aria-label="Film pagination">
-      <button
-        type="button"
-        className="btw-pager-btn"
-        onClick={() => onChange(page - 1)}
-        disabled={!canPrev}
-        aria-label="Previous page"
-      >
-        <ChevronLeft size={16} strokeWidth={2} aria-hidden="true" />
-      </button>
-      <span className="btw-pager-label" aria-live="polite">
-        Page <strong>{page + 1}</strong> / {totalPages}
-      </span>
-      <button
-        type="button"
-        className="btw-pager-btn"
-        onClick={() => onChange(page + 1)}
-        disabled={!canNext}
-        aria-label="Next page"
-      >
-        <ChevronRight size={16} strokeWidth={2} aria-hidden="true" />
-      </button>
     </div>
   );
 }

@@ -125,14 +125,14 @@ describe('BirthdayActorGrid', () => {
 
 describe('MovieList', () => {
   it('shows skeleton cards when movies is empty (loading)', () => {
-    render(<MovieList movies={[]} subjectName="Harvey Keitel" onPick={() => {}} />);
+    render(<MovieList movies={[]} subjectName="Harvey Keitel" trail={[]} onPick={() => {}} />);
     expect(screen.getAllByTestId('skeleton-poster').length).toBeGreaterThan(0);
   });
 
   it('renders movie cards and fires onPick', () => {
     const movies = [mkMovie(100, 'Pulp Fiction'), mkMovie(101, 'Reservoir Dogs')];
     const onPick = vi.fn();
-    render(<MovieList movies={movies} subjectName="Harvey Keitel" onPick={onPick} />);
+    render(<MovieList movies={movies} subjectName="Harvey Keitel" trail={[]} onPick={onPick} />);
     fireEvent.click(screen.getByLabelText(/Pick Pulp Fiction/));
     expect(onPick).toHaveBeenCalledWith(movies[0]);
   });
@@ -148,28 +148,20 @@ describe('MovieList', () => {
 
   it('paginates at 9 films per page and renders prev/next controls', () => {
     const movies = Array.from({ length: 20 }, (_, i) => mkMovie(i + 1, `Film ${i + 1}`));
-    render(<MovieList movies={movies} subjectName="Anyone" onPick={() => {}} />);
+    render(<MovieList movies={movies} subjectName="Anyone" trail={[]} onPick={() => {}} />);
 
-    // Page 1 shows the first 9
     expect(screen.getByLabelText(/Pick Film 1,/)).toBeInTheDocument();
     expect(screen.getByLabelText(/Pick Film 9,/)).toBeInTheDocument();
     expect(screen.queryByLabelText(/Pick Film 10,/)).not.toBeInTheDocument();
 
-    // Pager shows "Page 1 / 3" (20 films = ceil(20/9) = 3 pages). Scoped to
-    // the pager group so "1" / "3" don't match card titles.
     const pager = screen.getByLabelText('Film pagination');
     expect(pager).toHaveTextContent(/Page\s*1\s*\/\s*3/);
+    expect(screen.getByLabelText('Previous page')).toBeDisabled();
 
-    // Prev is disabled on page 0
-    const prev = screen.getByLabelText('Previous page');
-    expect(prev).toBeDisabled();
-
-    // Click Next → page 2 shows films 10-18
     fireEvent.click(screen.getByLabelText('Next page'));
     expect(screen.getByLabelText(/Pick Film 10,/)).toBeInTheDocument();
     expect(screen.queryByLabelText(/Pick Film 1,/)).not.toBeInTheDocument();
 
-    // Click Next → page 3 shows films 19-20, Next is disabled
     fireEvent.click(screen.getByLabelText('Next page'));
     expect(screen.getByLabelText(/Pick Film 19,/)).toBeInTheDocument();
     expect(screen.getByLabelText('Next page')).toBeDisabled();
@@ -177,24 +169,32 @@ describe('MovieList', () => {
 
   it('hides the pager when movies fit on one page', () => {
     const movies = Array.from({ length: 5 }, (_, i) => mkMovie(i + 1));
-    render(<MovieList movies={movies} subjectName="Anyone" onPick={() => {}} />);
+    render(<MovieList movies={movies} subjectName="Anyone" trail={[]} onPick={() => {}} />);
     expect(screen.queryByLabelText('Next page')).not.toBeInTheDocument();
+  });
+
+  it('filters out films already in the trail', () => {
+    const barbie = mkMovie(100, 'Barbie');
+    const fight = mkMovie(101, 'Fight Club');
+    const trail: TrailStep[] = [{ kind: 'movie', movie: barbie, baconInCast: false }];
+    render(
+      <MovieList movies={[barbie, fight]} subjectName="Someone" trail={trail} onPick={() => {}} />
+    );
+    expect(screen.queryByLabelText(/Pick Barbie/)).not.toBeInTheDocument();
+    expect(screen.getByLabelText(/Pick Fight Club/)).toBeInTheDocument();
   });
 });
 
 describe('CoActorGrid', () => {
-  it('deemphasizes (disables) actors already in the trail', () => {
+  it('filters out actors already in the trail (not just disables them)', () => {
     const already = mkActor(42, 'Harvey');
     const next = mkActor(43, 'Sam');
-    const cast = [already, next];
     const trail: TrailStep[] = [{ kind: 'actor', actor: already }];
     render(
-      <CoActorGrid cast={cast} movieTitle="Pulp Fiction" trail={trail} onPick={() => {}} />
+      <CoActorGrid cast={[already, next]} movieTitle="Pulp Fiction" trail={trail} onPick={() => {}} />
     );
-    const harvey = screen.getByLabelText(/Harvey.*already on trail/);
-    expect(harvey).toBeDisabled();
-    const sam = screen.getByLabelText(/Pick Sam/);
-    expect(sam).not.toBeDisabled();
+    expect(screen.queryByLabelText(/Pick Harvey/)).not.toBeInTheDocument();
+    expect(screen.getByLabelText(/Pick Sam/)).toBeInTheDocument();
   });
 
   it('fires onPick when a fresh co-actor is clicked', () => {
@@ -206,20 +206,41 @@ describe('CoActorGrid', () => {
   });
 
   it('handles cast fully contained in trail with a fallback message', () => {
-    const alreadyA = mkActor(1, 'A');
-    const alreadyB = mkActor(2, 'B');
+    const a = mkActor(1, 'A');
+    const b = mkActor(2, 'B');
     render(
       <CoActorGrid
-        cast={[alreadyA, alreadyB]}
+        cast={[a, b]}
         movieTitle="X"
         trail={[
-          { kind: 'actor', actor: alreadyA },
-          { kind: 'actor', actor: alreadyB },
+          { kind: 'actor', actor: a },
+          { kind: 'actor', actor: b },
         ]}
         onPick={() => {}}
       />
     );
     expect(screen.getByText(/already on your trail/i)).toBeInTheDocument();
+  });
+
+  it('paginates the cast at 9 per page', () => {
+    const cast = Array.from({ length: 20 }, (_, i) => mkActor(i + 1, `Actor ${i + 1}`));
+    render(<CoActorGrid cast={cast} movieTitle="X" trail={[]} onPick={() => {}} />);
+
+    expect(screen.getByLabelText(/Pick Actor 1/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pick Actor 9/)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Pick Actor 10$/)).not.toBeInTheDocument();
+
+    const pager = screen.getByLabelText('Cast pagination');
+    expect(pager).toHaveTextContent(/Page\s*1\s*\/\s*3/);
+
+    fireEvent.click(screen.getByLabelText('Next page'));
+    expect(screen.getByLabelText(/Pick Actor 10/)).toBeInTheDocument();
+  });
+
+  it('hides the pager when available cast fits on one page', () => {
+    const cast = Array.from({ length: 5 }, (_, i) => mkActor(i + 1));
+    render(<CoActorGrid cast={cast} movieTitle="X" trail={[]} onPick={() => {}} />);
+    expect(screen.queryByLabelText('Next page')).not.toBeInTheDocument();
   });
 });
 
