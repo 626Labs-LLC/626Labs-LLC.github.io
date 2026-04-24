@@ -135,7 +135,7 @@ function AdminApp({ token, login, onSignOut }) {
       overflow: "hidden",
     }}>
       <TopBar dirty={dirty} saving={saving} login={login} onSave={save} onDiscard={discard} onPreview={()=>setPreview(true)} onPalette={()=>setPalette(true)} onHelp={()=>setCheatsheet(true)} onSignOut={onSignOut}/>
-      <Sidebar nav={nav} onNav={safeNav} content={content}/>
+      <Sidebar nav={nav} onNav={safeNav} content={content} token={token}/>
 
       <div style={{ overflow: "auto", background: A.bg, position: "relative" }}>
         {nav === "home" && <HomeView content={content} liveStats={liveStats} onNav={safeNav} onAddProduct={addProduct} onSelect={(id)=>{setSelProduct(id); safeNav("products");}}/>}
@@ -149,6 +149,7 @@ function AdminApp({ token, login, onSignOut }) {
         {nav === "support" && <SupportView support={content.support || {}} onChange={s => setContent(c => ({...c, support: s}))}/>}
         {nav === "contact" && <ContactView contact={content.contact || {}} onChange={ct => setContent(c => ({...c, contact: ct}))}/>}
         {nav === "sections" && <SectionsView sections={content.sections} onChange={s => setContent(c => ({...c, sections: s}))}/>}
+        {nav === "ops" && <OpsView token={token}/>}
       </div>
 
       <RightRail content={content} liveStats={liveStats} nav={nav} selectedId={selProduct} dirty={dirty} original={original} onPreview={()=>setPreview(true)} onSave={save}/>
@@ -226,7 +227,26 @@ function Btn({ children, primary, ghost, danger, size = "md", onClick, disabled,
   );
 }
 
-function Sidebar({ nav, onNav, content }) {
+function Sidebar({ nav, onNav, content, token }) {
+  const [head, setHead] = React.useState(null);
+  React.useEffect(() => {
+    let cancelled = false;
+    const headers = { Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/commits/${REPO_BRANCH}`, { headers })
+      .then(r => r.ok ? r.json() : null)
+      .then(body => {
+        if (cancelled || !body?.sha) return;
+        setHead({
+          sha: body.sha.slice(0, 7),
+          msg: (body.commit?.message || "").split("\n")[0],
+          at: body.commit?.author?.date || null,
+        });
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [token]);
+
   const items = [
     { id: "home", label: "Overview", ic: Ic.home, kbd: "1" },
     { id: "hero", label: "Hero", ic: Ic.sparkle, kbd: "2" },
@@ -239,6 +259,7 @@ function Sidebar({ nav, onNav, content }) {
     { id: "support", label: "Support", ic: Ic.star, kbd: "9" },
     { id: "contact", label: "Contact", ic: Ic.mail, badge: content.contact?.rows?.length ?? 0 },
     { id: "sections", label: "Sections", ic: Ic.eye },
+    { id: "ops", label: "Ops", ic: Ic.activity },
   ];
   return (
     <div style={{
@@ -268,8 +289,14 @@ function Sidebar({ nav, onNav, content }) {
         <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 99, background: A.green, boxShadow: `0 0 8px ${A.green}` }}/>
         626labs.dev
       </div>
-      <div style={{ padding: "2px 12px 4px", fontSize: 10, color: A.dim2, fontFamily: "JetBrains Mono, monospace" }}>build #247 · main@a3f912e</div>
-      <a href="https://626labs.dev" target="_blank" style={{ padding: "2px 12px", fontSize: 10, color: A.cyan, fontFamily: "JetBrains Mono, monospace", textDecoration: "none" }}>open site ↗</a>
+      <a
+        href={head ? `https://github.com/${REPO_OWNER}/${REPO_NAME}/commit/${head.sha}` : `https://github.com/${REPO_OWNER}/${REPO_NAME}/commits/${REPO_BRANCH}`}
+        target="_blank"
+        rel="noopener"
+        title={head?.msg || ""}
+        style={{ padding: "2px 12px 4px", fontSize: 10, color: A.dim2, fontFamily: "JetBrains Mono, monospace", textDecoration: "none", display: "block" }}
+      >main@{head?.sha || "…"}</a>
+      <a href="https://626labs.dev" target="_blank" rel="noopener" style={{ padding: "2px 12px", fontSize: 10, color: A.cyan, fontFamily: "JetBrains Mono, monospace", textDecoration: "none" }}>open site ↗</a>
 
       <div style={{ flex: 1 }}/>
       <div style={{ margin: "8px 4px 0", padding: "10px 12px", border: `1px dashed ${A.line2}`, borderRadius: 6, fontSize: 11, color: A.dim, lineHeight: 1.5 }}>
@@ -1341,6 +1368,135 @@ function ContactView({ contact, onChange }) {
   );
 }
 
+// ─────────────────────────────────────────────────────────────
+// Ops — GitHub Actions bot-runs dashboard
+// ─────────────────────────────────────────────────────────────
+const BOT_WORKFLOWS = [
+  { file: "build-widget.yml",         label: "Build widget",        trigger: "on widget src push" },
+  { file: "refresh-bacon-shards.yml", label: "Refresh bacon shards", trigger: "daily · 06:00 UTC" },
+  { file: "rebuild-hub.yml",          label: "Rebuild hub",          trigger: "on content/site.json push" },
+  { file: "track-traffic.yml",        label: "Track traffic",        trigger: "daily · 06:00 UTC" },
+];
+
+async function fetchWorkflowRuns(file, token) {
+  const headers = token
+    ? { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" }
+    : { Accept: "application/vnd.github+json" };
+  const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/${encodeURIComponent(file)}/runs?per_page=10`;
+  const res = await fetch(url, { headers });
+  if (!res.ok) throw new Error(`${file} → ${res.status}`);
+  const body = await res.json();
+  return body.workflow_runs || [];
+}
+
+function OpsView({ token }) {
+  const [runs, setRuns] = React.useState({});   // { [file]: run[] }
+  const [errors, setErrors] = React.useState({}); // { [file]: message }
+  const [loading, setLoading] = React.useState(true);
+  const [reloadKey, setReloadKey] = React.useState(0);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setErrors({});
+    Promise.allSettled(BOT_WORKFLOWS.map(w => fetchWorkflowRuns(w.file, token))).then(results => {
+      if (cancelled) return;
+      const nextRuns = {};
+      const nextErrors = {};
+      results.forEach((r, i) => {
+        const file = BOT_WORKFLOWS[i].file;
+        if (r.status === "fulfilled") nextRuns[file] = r.value;
+        else nextErrors[file] = r.reason?.message || String(r.reason);
+      });
+      setRuns(nextRuns);
+      setErrors(nextErrors);
+      setLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, [token, reloadKey]);
+
+  return (
+    <div>
+      <PanelHeader
+        title="Ops"
+        subtitle="Bot workflows pushing to main — build-widget, refresh-bacon-shards, rebuild-hub, track-traffic"
+        actions={<Btn ghost size="sm" onClick={()=>setReloadKey(k=>k+1)} disabled={loading}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} {loading ? "loading…" : "Refresh"}</span></Btn>}
+      />
+      <div style={{ padding: "18px 26px", maxWidth: 960 }}>
+        {BOT_WORKFLOWS.map(w => (
+          <WorkflowCard key={w.file} meta={w} runs={runs[w.file]} error={errors[w.file]} loading={loading}/>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function WorkflowCard({ meta, runs, error, loading }) {
+  const latest = runs?.[0];
+  const latestTone =
+    latest?.conclusion === "success" ? A.green :
+    latest?.conclusion === "failure" || latest?.conclusion === "cancelled" || latest?.conclusion === "timed_out" ? A.danger :
+    latest?.status === "in_progress" || latest?.status === "queued" ? A.amber :
+    A.dim2;
+
+  return (
+    <div style={{ padding: 16, background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, marginBottom: 14 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+        <span style={{ display: "inline-block", width: 9, height: 9, borderRadius: 99, background: latestTone, boxShadow: `0 0 10px ${latestTone}` }}/>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: A.text }}>{meta.label}</div>
+          <div style={{ fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".04em", marginTop: 2 }}>{meta.file} · {meta.trigger}</div>
+        </div>
+        <a href={`https://github.com/${REPO_OWNER}/${REPO_NAME}/actions/workflows/${meta.file}`} target="_blank" rel="noopener" style={{ fontSize: 10.5, color: A.cyan, fontFamily: "JetBrains Mono, monospace", textDecoration: "none" }}>open in GitHub ↗</a>
+      </div>
+
+      {error && (
+        <div style={{ padding: "10px 12px", background: "rgba(255,107,107,.08)", border: `1px solid rgba(255,107,107,.32)`, borderRadius: 5, color: A.danger, fontSize: 11.5, fontFamily: "JetBrains Mono, monospace" }}>{error}</div>
+      )}
+
+      {!error && (runs === undefined || loading) && (
+        <div style={{ fontSize: 11, color: A.dim2, fontFamily: "JetBrains Mono, monospace" }}>loading runs…</div>
+      )}
+
+      {!error && runs && runs.length === 0 && (
+        <div style={{ fontSize: 11, color: A.dim2 }}>No runs yet.</div>
+      )}
+
+      {!error && runs && runs.length > 0 && (
+        <>
+          <div style={{ display: "flex", gap: 4, marginBottom: 10 }}>
+            {runs.map(r => {
+              const tone =
+                r.conclusion === "success" ? A.green :
+                r.conclusion === "failure" || r.conclusion === "cancelled" || r.conclusion === "timed_out" ? A.danger :
+                r.status === "in_progress" || r.status === "queued" ? A.amber :
+                A.dim2;
+              return (
+                <a key={r.id} href={r.html_url} target="_blank" rel="noopener"
+                   title={`${r.conclusion || r.status} · ${new Date(r.created_at).toLocaleString()} · ${r.head_commit?.message?.split("\n")[0] || r.head_sha?.slice(0,7)}`}
+                   style={{ width: 22, height: 22, background: tone, borderRadius: 3, cursor: "pointer", opacity: 0.85, transition: "opacity .1s" }}
+                   onMouseEnter={(e)=>e.currentTarget.style.opacity = "1"}
+                   onMouseLeave={(e)=>e.currentTarget.style.opacity = "0.85"}
+                />
+              );
+            })}
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "80px 1fr auto", gap: 10, fontSize: 11, alignItems: "center" }}>
+            <span style={{ color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".06em", textTransform: "uppercase" }}>Latest</span>
+            <span style={{ color: A.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {latest.head_commit?.message?.split("\n")[0] || "(no message)"}
+            </span>
+            <span style={{ color: A.dim, fontFamily: "JetBrains Mono, monospace", fontSize: 10.5 }}>
+              {new Date(latest.created_at).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+            </span>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function SectionsView({ sections, onChange }) {
   const rows = [
     { key: "thinking", label: "Thinking behind it", desc: "Framework thesis + Self-Evolving Plugin Framework link" },
@@ -1517,6 +1673,7 @@ function CommandPalette({ close, onNav, onPreview, onAddProduct, products, onSel
     { label: "Edit Support", kind: "nav", ic: Ic.star, run: () => onNav("support") },
     { label: "Edit Contact", kind: "nav", ic: Ic.mail, run: () => onNav("contact") },
     { label: "Edit Sections", kind: "nav", ic: Ic.eye, run: () => onNav("sections") },
+    { label: "Go to Ops", kind: "nav", ic: Ic.activity, run: () => onNav("ops") },
     { label: "Preview site", kind: "action", ic: Ic.eye, run: onPreview },
     { label: "Add new product…", kind: "action", ic: Ic.plus, run: onAddProduct },
     ...products.map(p => ({ label: `Jump to product · ${p.title}`, kind: "product", ic: Ic.grid, run: () => onSelectProduct(p.id) })),
