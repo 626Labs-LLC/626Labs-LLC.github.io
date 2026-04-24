@@ -636,6 +636,50 @@ def render_play_section(play: dict) -> str:
 </section>"""
 
 
+# ─── lab runs (behind the scenes) ───────────────────────────────────
+def render_lab_runs(lab_runs: dict) -> str:
+    """Render the `.lab-runs` section — Dashboard screenshots + caption.
+
+    `frames` is a list of { tag, src, alt } — 1 to 4 images shown as the
+    private-Dashboard montage. `caption` is a list of plain text paragraphs
+    shown below the frames.
+    """
+    eyebrow = esc(lab_runs.get("eyebrow", ""))
+    headline = esc(lab_runs.get("headline", ""))
+    lead = esc(lab_runs.get("lead", ""))
+    frames = lab_runs.get("frames") or []
+    caption = lab_runs.get("caption") or []
+
+    frames_html = "\n".join(
+        f"""      <div class="frame">
+        <span class="frame-tag">{esc(f.get("tag", ""))}</span>
+        <img src="{attr(f.get("src", ""))}" alt="{attr(f.get("alt", ""))}" loading="lazy"/>
+      </div>"""
+        for f in frames
+    )
+
+    caption_html = "\n".join(f"      <p>{esc(p)}</p>" for p in caption)
+
+    return f"""\
+<section class="section lab-runs" id="lab-runs">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>{eyebrow}</span><span class="line"></span></div>
+        <h2>{headline}</h2>
+      </div>
+      <p>{lead}</p>
+    </div>
+    <div class="frames">
+{frames_html}
+    </div>
+    <div class="caption">
+{caption_html}
+    </div>
+  </div>
+</section>"""
+
+
 # ─── thinking / thesis ──────────────────────────────────────────────
 def render_thinking(thinking: dict) -> str:
     """Render the `.thinking` section — the Self-Evolving Plugin Framework pitch.
@@ -879,6 +923,8 @@ def main(argv: list[str]) -> int:
     out = substitute_zone(out, "lab-pool", render_lab_pool(content["lab"]), js=True)
     if "thinking" in content:
         out = substitute_zone(out, "thinking", render_thinking(content["thinking"]))
+    if "labRuns" in content:
+        out = substitute_zone(out, "lab-runs", render_lab_runs(content["labRuns"]))
     if "play" in content:
         out = substitute_zone(out, "play", render_play_section(content["play"]))
     if "about" in content:

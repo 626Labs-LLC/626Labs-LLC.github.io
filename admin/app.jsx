@@ -145,6 +145,7 @@ function AdminApp({ token, login, onSignOut }) {
         {nav === "play" && <PlayView play={content.play || {}} onChange={p => setContent(c => ({...c, play: p}))}/>}
         {nav === "about" && <AboutView about={content.about || {}} onChange={a => setContent(c => ({...c, about: a}))}/>}
         {nav === "thinking" && <ThinkingView thinking={content.thinking || {}} onChange={t => setContent(c => ({...c, thinking: t}))}/>}
+        {nav === "labRuns" && <LabRunsView labRuns={content.labRuns || {}} onChange={lr => setContent(c => ({...c, labRuns: lr}))} token={token} onToast={toast}/>}
         {nav === "support" && <SupportView support={content.support || {}} onChange={s => setContent(c => ({...c, support: s}))}/>}
         {nav === "contact" && <ContactView contact={content.contact || {}} onChange={ct => setContent(c => ({...c, contact: ct}))}/>}
         {nav === "sections" && <SectionsView sections={content.sections} onChange={s => setContent(c => ({...c, sections: s}))}/>}
@@ -231,12 +232,13 @@ function Sidebar({ nav, onNav, content }) {
     { id: "hero", label: "Hero", ic: Ic.sparkle, kbd: "2" },
     { id: "products", label: "Products", ic: Ic.grid, kbd: "3", badge: content.products.length },
     { id: "thinking", label: "Thinking", ic: Ic.brain, kbd: "4" },
-    { id: "lab", label: "Lab shelf", ic: Ic.flask, kbd: "5", badge: content.lab.length },
-    { id: "play", label: "Play", ic: Ic.rocket, kbd: "6", badge: content.play?.widgets?.length ?? 0 },
-    { id: "about", label: "About", ic: Ic.heart, kbd: "7", badge: content.about?.paragraphs?.length ?? 0 },
-    { id: "support", label: "Support", ic: Ic.star, kbd: "8" },
-    { id: "contact", label: "Contact", ic: Ic.mail, kbd: "9", badge: content.contact?.rows?.length ?? 0 },
-    { id: "sections", label: "Sections", ic: Ic.eye, kbd: "0" },
+    { id: "labRuns", label: "Lab runs", ic: Ic.image, kbd: "5", badge: content.labRuns?.frames?.length ?? 0 },
+    { id: "lab", label: "Lab shelf", ic: Ic.flask, kbd: "6", badge: content.lab.length },
+    { id: "play", label: "Play", ic: Ic.rocket, kbd: "7", badge: content.play?.widgets?.length ?? 0 },
+    { id: "about", label: "About", ic: Ic.heart, kbd: "8", badge: content.about?.paragraphs?.length ?? 0 },
+    { id: "support", label: "Support", ic: Ic.star, kbd: "9" },
+    { id: "contact", label: "Contact", ic: Ic.mail, badge: content.contact?.rows?.length ?? 0 },
+    { id: "sections", label: "Sections", ic: Ic.eye },
   ];
   return (
     <div style={{
@@ -1071,6 +1073,147 @@ function KVEditor({ kv, onChange }) {
   );
 }
 
+function LabRunsView({ labRuns, onChange, token, onToast }) {
+  const u = (patch) => onChange({ ...labRuns, ...patch });
+  const frames = labRuns.frames || [];
+  const caption = labRuns.caption || [];
+
+  const updateFrame = (i, patch) => u({ frames: frames.map((f, j) => j === i ? { ...f, ...patch } : f) });
+  const addFrame = () => u({ frames: [...frames, { tag: "", src: "", alt: "" }] });
+  const removeFrame = (i) => u({ frames: frames.filter((_, j) => j !== i) });
+  const moveFrame = (i, dir) => {
+    const next = [...frames];
+    const j = i + dir;
+    if (j < 0 || j >= next.length) return;
+    [next[i], next[j]] = [next[j], next[i]];
+    u({ frames: next });
+  };
+
+  const updateCap = (i, v) => u({ caption: caption.map((p, j) => j === i ? v : p) });
+  const addCap = () => u({ caption: [...caption, ""] });
+  const removeCap = (i) => u({ caption: caption.filter((_, j) => j !== i) });
+  const moveCap = (i, dir) => {
+    const next = [...caption];
+    const j = i + dir;
+    if (j < 0 || j >= next.length) return;
+    [next[i], next[j]] = [next[j], next[i]];
+    u({ caption: next });
+  };
+
+  return (
+    <div>
+      <PanelHeader title="Lab runs" subtitle="Behind-the-scenes montage — Dashboard screenshots + caption" actions={<Btn primary onClick={addFrame}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.plus} Add frame</span></Btn>}/>
+      <div style={{ padding: "18px 26px", maxWidth: 820 }}>
+        <Field label="Eyebrow"><Input value={labRuns.eyebrow||""} onChange={v=>u({eyebrow:v})}/></Field>
+        <Field label="Headline"><Input value={labRuns.headline||""} onChange={v=>u({headline:v})}/></Field>
+        <Field label="Lead"><Input multiline value={labRuns.lead||""} onChange={v=>u({lead:v})}/></Field>
+
+        <div style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", margin: "22px 0 10px" }}>Frames</div>
+        {frames.length === 0 && (
+          <div style={{ padding: "14px 18px", border: `1px dashed ${A.line2}`, borderRadius: 6, color: A.dim, fontSize: 12, marginBottom: 10 }}>
+            No frames. Add one to show a screenshot montage.
+          </div>
+        )}
+        {frames.map((f, i) => (
+          <FrameRow
+            key={i}
+            frame={f}
+            index={i}
+            count={frames.length}
+            token={token}
+            onToast={onToast}
+            onChange={(patch) => updateFrame(i, patch)}
+            onMove={(dir) => moveFrame(i, dir)}
+            onRemove={() => removeFrame(i)}
+          />
+        ))}
+
+        <div style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", margin: "26px 0 10px" }}>Caption paragraphs</div>
+        {caption.map((p, i) => (
+          <div key={i} style={{ padding: 12, background: A.panel, border: `1px solid ${A.line}`, borderRadius: 6, marginBottom: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+              <span style={{ fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".08em" }}>#{i + 1}</span>
+              <div style={{ flex: 1 }}/>
+              <button onClick={()=>moveCap(i, -1)} disabled={i === 0} style={{ background: "transparent", border: "none", color: i === 0 ? A.line2 : A.dim2, cursor: i === 0 ? "default" : "pointer", padding: 4, transform: "rotate(180deg)" }}>{Ic.chev}</button>
+              <button onClick={()=>moveCap(i, 1)} disabled={i === caption.length - 1} style={{ background: "transparent", border: "none", color: i === caption.length - 1 ? A.line2 : A.dim2, cursor: i === caption.length - 1 ? "default" : "pointer", padding: 4 }}>{Ic.chev}</button>
+              <button onClick={()=>removeCap(i)} style={{ background: "transparent", border: "none", color: A.dim2, cursor: "pointer", padding: 4 }}>{Ic.trash}</button>
+            </div>
+            <Input multiline value={p} onChange={v=>updateCap(i, v)} placeholder="Caption paragraph"/>
+          </div>
+        ))}
+        <button onClick={addCap} style={{ padding: "8px 12px", background: "transparent", border: `1px dashed ${A.line2}`, color: A.dim, fontSize: 12, cursor: "pointer", borderRadius: 4, fontFamily: "inherit" }}>+ add paragraph</button>
+      </div>
+    </div>
+  );
+}
+
+function FrameRow({ frame, index, count, token, onToast, onChange, onMove, onRemove }) {
+  const [uploading, setUploading] = React.useState(false);
+  const fileRef = React.useRef(null);
+  const src = frame.src || "";
+  const previewSrc = src.startsWith("http") ? src : (src ? rawUrl(src) : null);
+
+  const upload = async (file) => {
+    if (!file || !token) { onToast?.("Missing file or token.", "red", 4500); return; }
+    if (!file.type.startsWith("image/")) { onToast?.("Not an image.", "amber", 3500); return; }
+    setUploading(true);
+    onToast?.("Uploading frame image…", "cyan", 2000);
+    try {
+      const extMatch = (file.name || "").match(/\.[a-z0-9]+$/i);
+      const ext = (extMatch?.[0] || ".png").toLowerCase();
+      const base = (file.name || "frame")
+        .replace(/\.[a-z0-9]+$/i, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "") || "frame";
+      const fname = `${Date.now()}-${base}${ext}`;
+      const repoPath = `assets/lab-runs/${fname}`;
+      const b64 = await fileToBase64(file);
+      const { path } = await uploadAsset(token, repoPath, b64, "admin: upload lab-runs frame image");
+      onChange({ src: path });
+      onToast?.("Frame image uploaded. Save to deploy.", "green", 3500);
+    } catch (ex) {
+      onToast?.(`Upload failed: ${ex.message}`, "red", 6000);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div style={{ padding: 14, background: A.panel, border: `1px solid ${A.line}`, borderRadius: 6, marginBottom: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+        <span style={{ fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".08em" }}>#{index + 1}</span>
+        <div style={{ flex: 1 }}/>
+        <button onClick={()=>onMove(-1)} disabled={index === 0} style={{ background: "transparent", border: "none", color: index === 0 ? A.line2 : A.dim2, cursor: index === 0 ? "default" : "pointer", padding: 4, transform: "rotate(180deg)" }}>{Ic.chev}</button>
+        <button onClick={()=>onMove(1)} disabled={index === count - 1} style={{ background: "transparent", border: "none", color: index === count - 1 ? A.line2 : A.dim2, cursor: index === count - 1 ? "default" : "pointer", padding: 4 }}>{Ic.chev}</button>
+        <button onClick={onRemove} style={{ background: "transparent", border: "none", color: A.dim2, cursor: "pointer", padding: 4 }}>{Ic.trash}</button>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "180px 1fr", gap: 14 }}>
+        <div style={{ aspectRatio: "16/10", background: A.panel2, border: `1px solid ${A.line2}`, borderRadius: 5, overflow: "hidden", display: "grid", placeItems: "center" }}>
+          {uploading ? (
+            <div style={{ fontSize: 10.5, color: A.cyan, fontFamily: "JetBrains Mono, monospace" }}>uploading…</div>
+          ) : previewSrc ? (
+            <img src={previewSrc} alt={frame.alt || ""} style={{ width: "100%", height: "100%", objectFit: "cover" }}/>
+          ) : (
+            <div style={{ color: A.dim2, fontSize: 11, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>{Ic.image}<span>no image</span></div>
+          )}
+        </div>
+        <div>
+          <Field label="Tag" hint="short label on the image"><Input value={frame.tag||""} onChange={v=>onChange({tag:v})} placeholder="Universe"/></Field>
+          <Field label="Image path" mono hint="assets/… or https://…">
+            <div style={{ display: "flex", gap: 8 }}>
+              <Input mono value={frame.src||""} onChange={v=>onChange({src:v})} placeholder="assets/lab-runs/…"/>
+              <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e=>{ if (!uploading) upload(e.target.files?.[0]); e.target.value = ""; }}/>
+              <Btn ghost size="sm" onClick={()=>{ if (!uploading) fileRef.current?.click(); }} disabled={uploading}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.upload} Upload</span></Btn>
+            </div>
+          </Field>
+          <Field label="Alt text" hint="accessibility + SEO"><Input multiline value={frame.alt||""} onChange={v=>onChange({alt:v})}/></Field>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ThinkingView({ thinking, onChange }) {
   const u = (patch) => onChange({ ...thinking, ...patch });
   const paragraphs = thinking.paragraphs || [];
@@ -1368,6 +1511,7 @@ function CommandPalette({ close, onNav, onPreview, onAddProduct, products, onSel
     { label: "Edit Products", kind: "nav", ic: Ic.grid, run: () => onNav("products") },
     { label: "Edit Lab shelf", kind: "nav", ic: Ic.flask, run: () => onNav("lab") },
     { label: "Edit Thinking", kind: "nav", ic: Ic.brain, run: () => onNav("thinking") },
+    { label: "Edit Lab runs", kind: "nav", ic: Ic.image, run: () => onNav("labRuns") },
     { label: "Edit Play", kind: "nav", ic: Ic.rocket, run: () => onNav("play") },
     { label: "Edit About", kind: "nav", ic: Ic.heart, run: () => onNav("about") },
     { label: "Edit Support", kind: "nav", ic: Ic.star, run: () => onNav("support") },

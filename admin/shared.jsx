@@ -61,6 +61,13 @@ const INITIAL_CONTENT = {
     paragraphs: [],
     cta: { label: "", href: "" },
   },
+  labRuns: {
+    eyebrow: "03 · Behind the scenes",
+    headline: "How the lab runs.",
+    lead: "",
+    frames: [],
+    caption: [],
+  },
   support: {
     headline: "Keep the lab running.",
     body: "",

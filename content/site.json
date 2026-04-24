@@ -84,6 +84,27 @@
       "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer/blob/main/docs/self-evolving-plugins-framework.md"
     }
   },
+  "labRuns": {
+    "eyebrow": "03 · Behind the scenes",
+    "headline": "How the lab runs.",
+    "lead": "Every project above lives inside a purpose-built agent OS — private, not yet open source. The plugins are the lessons it taught us.",
+    "frames": [
+      {
+        "tag": "Universe",
+        "src": "assets/dashboard-universe.png",
+        "alt": "The Lab Dashboard — Universe view, every 626 Labs project as a node in a constellation."
+      },
+      {
+        "tag": "Operations",
+        "src": "assets/dashboard-projects.png",
+        "alt": "The Lab Dashboard — project list with live health, recent decisions, and autopilot status."
+      }
+    ],
+    "caption": [
+      "The 626 Labs Dashboard is a private agent OS — Operation Center, decisions log, Architect AI, and Scanner / Voice / Whiteboard inputs — running as one surface across every active project. It watches the work, logs the decisions, and keeps the threads connected when we context-switch between a hotel app, a theater tool, and a plugin release in the same afternoon.",
+      "The Dashboard itself isn't open source. The Vibe plugins are — they're the lessons the Dashboard taught us, refactored so any builder on Claude Code gets the same tailwind."
+    ]
+  },
   "products": [
     {
       "id": "vibe-cartographer",
