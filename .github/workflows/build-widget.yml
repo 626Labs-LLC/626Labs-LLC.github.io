@@ -89,12 +89,24 @@ jobs:
 
       - name: Commit + push if bundle changed
         run: |
-          if [[ -n "$(git status --porcelain widget-bacon-trail/)" ]]; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add widget-bacon-trail/
-            git commit -m "chore(widget): rebuild bundle $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            git push
-          else
+          if [[ -z "$(git status --porcelain widget-bacon-trail/)" ]]; then
             echo "No bundle changes."
+            exit 0
           fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add widget-bacon-trail/
+          git commit -m "chore(widget): rebuild bundle $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          # Retry push — another bot job (refresh-bacon-shards, rebuild-hub,
+          # track-traffic) may have pushed first while we were building.
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; rebasing onto remote main and retrying..."
+            git pull --rebase origin main
+            sleep $((attempt * 3))
+          done
+          echo "::error::Failed to push after 5 attempts."
+          exit 1

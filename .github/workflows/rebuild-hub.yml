@@ -54,7 +54,19 @@ jobs:
           git commit -m "hub: rebuild index.html from site.json
 
           Triggered by commit ${{ github.sha }}"
-          git push origin main
+          # Retry push — another bot job (build-widget, refresh-bacon-shards,
+          # track-traffic) may have pushed first while we were rendering.
+          for attempt in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; rebasing onto remote main and retrying..."
+            git pull --rebase origin main
+            sleep $((attempt * 3))
+          done
+          echo "::error::Failed to push after 5 attempts."
+          exit 1
 
       - name: Summary
         run: |
