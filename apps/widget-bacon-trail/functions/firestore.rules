@@ -1,0 +1,26 @@
+rules_version = '2';
+
+// Firestore rules scoped to the Birthday Bacon Trail widget's stats
+// surface. Merge into your project-wide rules; don't replace them
+// outright unless this is a dedicated stats-only project.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Anonymous lifetime counter. Writes come ONLY from the
+    // `logPlay` Cloud Function (which uses firebase-admin and
+    // bypasses rules). Client-side write attempts get rejected.
+    match /stats/{statsDoc} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // actorDatabase is already configured elsewhere in this project;
+    // repeating the read-allow rule here as a reminder, don't keep
+    // this block if the project-level rules already cover it.
+    match /actorDatabase/{actorId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

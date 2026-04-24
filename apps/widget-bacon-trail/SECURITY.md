@@ -10,11 +10,13 @@ The Birthday Bacon Trail widget is designed to leak nothing. Two deliberate arch
 ## External calls the widget makes
 
 1. **Shard fetch**: `GET /widget-bacon-trail/data/birthdays/{MM-DD}.json` from the same origin as the embedding page. Static JSON; cacheable; public.
-2. **TMDB `GET /person/{id}/movie_credits`**: triggered only when a visitor picks an actor.
-3. **TMDB `GET /movie/{id}/credits`**: triggered only when a visitor picks a film.
-4. **TMDB image CDN (`image.tmdb.org`)**: for actor and movie posters as they render.
+2. **Stats snapshot**: `GET /widget-bacon-trail/data/stats.json` from same origin — nightly-regenerated lifetime counters for ambient display.
+3. **TMDB `GET /person/{id}/movie_credits`**: triggered only when a visitor picks an actor.
+4. **TMDB `GET /movie/{id}/credits`**: triggered only when a visitor picks a film.
+5. **TMDB image CDN (`image.tmdb.org`)**: for actor and movie posters as they render.
+6. **Anonymous beacon** (v0.2.0+): `POST` to the `logPlay` Cloud Function on round end. Body is literally `{outcome, filmCount}` — no visitor data. Function validates shape and rejects anything else with a 400. See [`PRIVACY.md`](./PRIVACY.md) for the full story.
 
-No POST requests. No authenticated requests (TMDB v3 accepts an API key as a query param; see below). Every outbound origin is explicit and public.
+No authenticated requests (TMDB v3 accepts an API key as a query param; see below). Every outbound origin is explicit and public.
 
 ## Secrets in the widget bundle
 
@@ -32,9 +34,10 @@ If a TMDB key is ever suspected compromised:
 
 ## Secrets outside the widget bundle
 
-- `FIREBASE_SA_JSON` — Firebase service account for the `guestbuzz-cineperks` project, scoped to `Cloud Datastore User` (read-only). Used only by the nightly shard-refresh Action. Never baked into the widget bundle. Rotate via Firebase console → Service accounts → new key, then update the GitHub secret.
+- `FIREBASE_SA_JSON` — Firebase service account for the `guestbuzz-cineperks` project, scoped to `Cloud Datastore User` (read-only). Used only by the nightly shard-refresh Action. Never baked into the widget bundle. Rotate via Firebase console → Service accounts → new key, then update the GitHub secret. As of v0.2.0 the same action reads `stats/play-counters` and writes `widget-bacon-trail/data/stats.json` — same read-only scope.
+- `VITE_STATS_ENDPOINT` (v0.2.0+) — URL of the `logPlay` Cloud Function. Baked into the widget bundle at build time, same pattern as `VITE_TMDB_API_KEY`. A POST-only URL is acceptable to expose client-side because the function rejects anything but the fixed `{outcome, filmCount}` shape; rotation means redeploying the function under a new URL and swapping the secret.
 
-Both secrets live in GitHub Actions repository secrets and are never printed to logs (the workflows echo presence checks without surfacing contents).
+All secrets live in GitHub Actions repository secrets and are never printed to logs (the workflows echo presence checks without surfacing contents).
 
 ## Content Security Policy
 
@@ -65,6 +68,7 @@ We'll respond within 5 business days. Responsible disclosure is welcomed — ple
 | TMDB key abuse | Read-only scope; rate-limited per IP; rotatable |
 | Firestore credential abuse | Server-side only; scoped to read-only Cloud Datastore User on one project |
 | Supply-chain attack on dependencies | Mitigated by `npm audit --prod` gate + small dep tree (react, react-dom, lucide-react — no runtime Firebase) |
+| Beacon abuse (v0.2.0+) | Cloud Function validates `{outcome, filmCount}` strictly; all other shapes rejected with 400. Firestore write is atomic `FieldValue.increment(1)` scoped to one doc. No per-visitor fields are accepted or stored. Rate-limited by GCP's built-in per-IP throttling on Cloud Functions. |
 
 ## Dependencies
 

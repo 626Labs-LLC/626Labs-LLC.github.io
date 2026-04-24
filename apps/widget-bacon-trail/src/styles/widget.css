@@ -661,6 +661,20 @@
   font-weight: 600;
 }
 
+/* ─── Ambient lifetime-stats caption ─────────────────────────────── */
+.btw-stats-line {
+  margin: 6px 0 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--fg-muted);
+}
+.btw-stats-line .num {
+  color: var(--fg-2);
+  font-weight: 600;
+}
+
 /* ─── Utility ─────────────────────────────────────────────────────── */
 .btw-sr-only {
   position: absolute;

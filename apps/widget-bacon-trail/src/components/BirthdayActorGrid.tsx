@@ -2,6 +2,7 @@ import { Users, Shuffle } from 'lucide-react';
 import type { Actor } from '../types';
 import { BIRTHDAY_GRID_SIZE } from '../types';
 import { tmdbImageUrl } from '../services/tmdbService';
+import { StatsLine } from './StatsLine';
 
 interface Props {
   actors: Actor[];
@@ -49,6 +50,8 @@ export function BirthdayActorGrid({ actors, shardSize, onPick, onShuffle }: Prop
           </button>
         </div>
       )}
+
+      <StatsLine />
     </div>
   );
 }

@@ -57,6 +57,10 @@ jobs:
         working-directory: apps/widget-bacon-trail
         env:
           VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
+          # Optional — widget degrades gracefully if unset (no play
+          # counters recorded). Populate after deploying the logPlay
+          # Cloud Function.
+          VITE_STATS_ENDPOINT: ${{ secrets.VITE_STATS_ENDPOINT }}
         run: npm run build
 
       - name: Report bundle size

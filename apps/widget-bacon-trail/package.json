@@ -1,7 +1,7 @@
 {
   "name": "@626labs/widget-bacon-trail",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Birthday Bacon Trail — embeddable widget for 626labs.dev.",
   "license": "MIT",

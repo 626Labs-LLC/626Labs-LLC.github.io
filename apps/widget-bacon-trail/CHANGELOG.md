@@ -2,6 +2,40 @@
 
 All notable changes to the Birthday Bacon Trail widget. Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.0] — 2026-04-24
+
+Anonymous lifetime play counters. No visitor identity captured — the beacon payload is strictly `{outcome, filmCount}` and the Cloud Function rejects anything else with a 400. See [`PRIVACY.md`](./PRIVACY.md) for the full posture.
+
+### Added
+
+- `functions/logPlay` — Firebase Cloud Function. Validates payload shape, atomically increments a single `stats/play-counters` doc in Firestore via `FieldValue.increment(1)`. Single dependency-light file (~60 lines); dedicated `functions/package.json`; companion `firestore.rules` for client-write lockdown.
+- `src/services/statsService.ts` — `fetchLifetimeStats()` reads a nightly-regenerated static snapshot at `/widget-bacon-trail/data/stats.json`. `logPlay(outcome, filmCount)` fires a fire-and-forget POST to the Cloud Function. Both swallow errors and degrade gracefully — widget works identically if the endpoint or snapshot is missing.
+- `src/components/StatsLine.tsx` — ambient mono-caption line on the pick-actor screen. Renders *"5,432 rounds · 1,876 found Bacon"* once stats load. Hides itself when counters are all zero (fresh deploy with nothing logged yet).
+- `scripts/refresh-bacon-shards.mjs` extended to also read the `stats/play-counters` doc and dump it to `widget-bacon-trail/data/stats.json` on the same nightly schedule as the shards.
+- Widget build pipeline bakes a new optional secret `VITE_STATS_ENDPOINT`. Widget gracefully no-ops telemetry writes if the secret is empty (e.g., during initial bring-up before the function is deployed).
+- 5 new tests for `statsService` (happy path + 404 + network error + malformed JSON + coercion), bringing the suite to **62 tests green**.
+
+### Changed
+
+- `PRIVACY.md` — reshaped to document the v0.2.0 beacon explicitly. Still honest: zero visitor identity on the wire, no cookies, no storage, no fingerprint. The only thing that changed is an atomic `+1` increment per completed round.
+- `SECURITY.md` — added the beacon to the threat-model table (validated shape, atomic scoped write, GCP-level rate limiting); documented `VITE_STATS_ENDPOINT` alongside the other secrets.
+
+### Not yet
+
+- Real-time display of lifetime counts. Snapshot updates once per day via the nightly action; ambient display is intentional.
+- Roll-up of `stats/play-counters` into month/year buckets. Firestore doc-size caps are years away at expected traffic; deferred.
+- Client-side optimistic increment of the shown counter when the local player wins. Considered, decided against — keeps the display honest to the snapshot.
+
+### Deploy checklist for this release
+
+1. Merge / push to `main`. The `build-widget` CI job runs but `VITE_STATS_ENDPOINT` is still empty, so writes no-op.
+2. In `apps/widget-bacon-trail/functions/`: `npm ci && firebase deploy --only functions:logPlay`.
+3. Grab the function URL, add it as the repo secret `VITE_STATS_ENDPOINT`.
+4. Trigger `build-widget.yml` manually (or push any widget source change) to rebuild with the endpoint baked in.
+5. Trigger `refresh-bacon-shards.yml` once to seed `stats.json` as `{totalPlayed: 0, …}`.
+
+---
+
 ## [0.1.0] — 2026-04-23
 
 First shippable version of the widget. Embedded live on [626labs.dev/#play](https://626labs.dev/#play).

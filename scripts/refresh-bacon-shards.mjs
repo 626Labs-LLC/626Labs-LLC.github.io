@@ -24,8 +24,11 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, '..');
 const SRC_DIR = path.join(REPO_ROOT, 'apps', 'widget-bacon-trail', 'data', 'birthdays');
 const OUT_DIR = path.join(REPO_ROOT, 'widget-bacon-trail', 'data', 'birthdays');
+const STATS_SRC = path.join(REPO_ROOT, 'apps', 'widget-bacon-trail', 'data', 'stats.json');
+const STATS_OUT = path.join(REPO_ROOT, 'widget-bacon-trail', 'data', 'stats.json');
 
 const COLLECTION = 'actorDatabase';
+const STATS_DOC = 'stats/play-counters';
 
 function fmtDateKey(month, day) {
   return `${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -99,6 +102,38 @@ async function main() {
   console.log(`[refresh-bacon-shards] wrote ${written} shards × 2 locations`);
   console.log(`[refresh-bacon-shards] src: ${SRC_DIR}`);
   console.log(`[refresh-bacon-shards] out: ${OUT_DIR}`);
+
+  // Dump lifetime stats snapshot for the widget's ambient counter line.
+  // Same two-location write pattern as the shards. Safe no-op if the
+  // counter doc doesn't exist yet (fresh deploy, nothing logged yet).
+  try {
+    const statsDocRef = db.doc(STATS_DOC);
+    const statsSnap = await statsDocRef.get();
+    const data = statsSnap.exists ? (statsSnap.data() ?? {}) : {};
+
+    const num = (v) => (typeof v === 'number' && Number.isFinite(v) ? v : 0);
+
+    const winsByFilms = {};
+    for (let i = 1; i <= 6; i++) {
+      const val = num(data[`wins${i}`]);
+      if (val > 0) winsByFilms[String(i)] = val;
+    }
+
+    const payload = {
+      totalPlayed: num(data.totalPlayed),
+      totalFound: num(data.totalFound),
+      totalOutOfFilms: num(data.totalOutOfFilms),
+      winsByFilms,
+      updatedAt: new Date().toISOString(),
+    };
+
+    const body = `${JSON.stringify(payload, null, 2)}\n`;
+    await writeFile(STATS_SRC, body, 'utf8');
+    await writeFile(STATS_OUT, body, 'utf8');
+    console.log(`[refresh-bacon-shards] stats.json updated (played=${payload.totalPlayed}, found=${payload.totalFound})`);
+  } catch (err) {
+    console.warn('[refresh-bacon-shards] stats dump failed (non-fatal):', err?.message ?? err);
+  }
 }
 
 main().catch((err) => {

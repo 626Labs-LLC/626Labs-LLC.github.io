@@ -11,6 +11,7 @@ import { TrailBreadcrumb } from './components/TrailBreadcrumb';
 import { initialState, reducer, type Action } from './state';
 import { fetchCastForMovie, fetchMovieCreditsForActor } from './services/tmdbService';
 import { fetchTodayShard } from './services/shardService';
+import { logPlay } from './services/statsService';
 import type { BaconTrailWidgetConfig, WidgetState } from './types';
 
 type Props = Pick<BaconTrailWidgetConfig, 'theme' | 'brandColor' | 'brandLogo' | 'ctaUrl' | 'ctaLabel'>;
@@ -112,6 +113,17 @@ export function Widget({ ctaUrl = DEFAULT_CTA_URL, ctaLabel = DEFAULT_CTA_LABEL,
   const onPlayAgain = useCallback(() => dispatch({ type: 'PLAY_AGAIN' }), []);
 
   const celebrating = state.status === 'result' && state.outcome === 'found';
+
+  // Fire the anonymous play-logger exactly once per reached `result` state.
+  // Fire-and-forget; service swallows its own errors so this never blocks.
+  // Guard via a ref so React's strict-mode double-effect doesn't double-log.
+  const loggedRoundRef = useRef<number>(-1);
+  useEffect(() => {
+    if (state.status !== 'result') return;
+    if (loggedRoundRef.current === roundRef.current) return;
+    loggedRoundRef.current = roundRef.current;
+    logPlay(state.outcome, state.filmCount);
+  }, [state.status]);
 
   return (
     <div className={`bacon-trail-widget${celebrating ? ' is-celebrating' : ''}`} data-theme={theme}>
