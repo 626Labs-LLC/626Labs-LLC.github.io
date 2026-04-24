@@ -18,10 +18,19 @@ One-time setup (you'll do this once):
 
 ```sh
 cd apps/widget-bacon-trail/functions
-npm ci
-firebase use guestbuzz-cineperks
+
+# First-time install — generates package-lock.json (no `npm ci` yet because
+# the lockfile hasn't been created).
+npm install
+
+# firebase.json and .firebaserc in this directory already pin the project
+# to guestbuzz-cineperks, so `firebase use` + `firebase login` are the
+# only interactive steps.
+firebase login          # if you haven't authenticated the CLI before
 firebase deploy --only functions:logPlay
 ```
+
+Subsequent deploys from the same directory can use `npm ci` normally once `package-lock.json` exists.
 
 You'll get back a URL like:
 
