@@ -1,0 +1,542 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "626Labs" [ref=e4] [cursor=pointer]:
+        - /url: "#top"
+        - img [ref=e5]
+        - generic [ref=e9]: 626Labs
+      - generic [ref=e10]:
+        - link "Work" [ref=e11] [cursor=pointer]:
+          - /url: "#work"
+        - link "Thinking" [ref=e12] [cursor=pointer]:
+          - /url: "#thinking"
+        - link "Lab" [ref=e13] [cursor=pointer]:
+          - /url: "#lab"
+        - link "About" [ref=e14] [cursor=pointer]:
+          - /url: "#about"
+        - link "Sponsor" [ref=e15] [cursor=pointer]:
+          - /url: https://github.com/sponsors/estevanhernandez-stack-ed
+      - link "Get in touch" [ref=e16] [cursor=pointer]:
+        - /url: "#contact"
+        - text: Get in touch
+        - img [ref=e17]
+  - banner [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - generic [ref=e24]: 626 Labs LLC · Fort Worth, TX
+        - heading "Vibe coded to existence..... Always aiming for enterprise grade." [level=1] [ref=e25]:
+          - text: Vibe coded to existence.....
+          - text: Always aiming for enterprise grade.
+        - paragraph [ref=e26]: Claude Code plugins for builders who vibe-code fast and still ship for real. Planning, docs, tests, security — with a native Windows/macOS widget for pacing your usage.
+        - generic [ref=e27]:
+          - link "See the work" [ref=e28] [cursor=pointer]:
+            - /url: "#work"
+            - text: See the work
+            - img [ref=e29]
+          - link "Read the thesis" [ref=e31] [cursor=pointer]:
+            - /url: "#thinking"
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - text: Deployed
+            - generic [ref=e34]: 3 plugins · 1 widget · 8 webapps
+          - generic [ref=e35]:
+            - text: Stack
+            - generic [ref=e36]: TypeScript · Swift · Python · C#
+          - generic [ref=e37]:
+            - text: Distribution
+            - generic [ref=e38]: Claude Code · macOS · Windows · Replit
+      - generic [ref=e39]:
+        - img [ref=e41]
+        - generic:
+          - generic: vibe-cartographer
+          - generic: vibe-doc
+          - generic: vibe-test · live
+          - generic: claude-code
+  - separator [ref=e42]
+  - generic [ref=e44]:
+    - generic [ref=e45]:
+      - generic [ref=e46]:
+        - generic [ref=e48]: 01 · Portfolio
+        - heading "The work, shipping." [level=2] [ref=e49]
+      - paragraph [ref=e50]: "Four shipped products plus one in-flight. All MIT, all open source. The plugins built on a shared spine: an opinionated agent that reads the code before it touches it."
+    - generic [ref=e51]:
+      - article [ref=e52]:
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - img [ref=e56]
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - generic [ref=e61]: Flagship
+                - generic [ref=e62]: Live
+                - generic [ref=e63]: Claude Code plugin
+              - generic [ref=e64]: SPEC-DRIVEN · SELF-EVOLVING
+          - link "Open repo" [ref=e65] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/vibe-cartographer
+            - text: Open repo
+            - img [ref=e66]
+        - heading "Vibe Cartographer" [level=3] [ref=e68]
+        - paragraph [ref=e69]: Eleven slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect — and the plugin remembers where you left off so you don't lose the thread between sessions.
+        - generic [ref=e70]:
+          - img "Claude Code skill" [ref=e71]
+          - img "npm version" [ref=e72]
+          - img "total downloads" [ref=e73]
+          - img "latest release" [ref=e74]
+          - img "MIT license" [ref=e75]
+        - generic [ref=e76]:
+          - generic [ref=e77]: Install in Claude Code
+          - code [ref=e78]: ">/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer"
+        - generic [ref=e79]:
+          - generic [ref=e85]:
+            - generic [ref=e86]: /vibe-cartographer // session state
+            - generic [ref=e87]: ✓ onboard · builder profile loaded
+            - generic [ref=e88]: ✓ scope · focused project brief
+            - generic [ref=e89]: ✓ prd · acceptance criteria drafted
+            - generic [ref=e90]: ✓ spec · technical blueprint
+            - generic [ref=e91]: → checklist · build · iterate · reflect
+            - generic [ref=e92]: level 3.5 · self-evolving memory · 16 patterns
+          - generic [ref=e93]:
+            - generic [ref=e94]:
+              - generic [ref=e95]: "01"
+              - generic [ref=e96]: Spec-driven. Eleven commands walk idea → shipped app without losing the thread.
+            - generic [ref=e97]:
+              - generic [ref=e98]: "02"
+              - generic [ref=e99]: Self-evolving. Reads its own usage, surfaces friction, rewrites its own guidance.
+            - generic [ref=e100]:
+              - generic [ref=e101]: "03"
+              - generic [ref=e102]: Level 3.5. Highest rung any public plugin has reached on the maturity ladder.
+            - generic [ref=e103]:
+              - generic [ref=e104]: "04"
+              - generic [ref=e105]: Stack. Claude Code · SKILL files · npm · Apache-licensed framework spec.
+      - article [ref=e106]:
+        - generic [ref=e107]:
+          - img [ref=e109]
+          - generic [ref=e112]:
+            - generic [ref=e113]: Plugin
+            - generic [ref=e114]: documentation
+            - generic [ref=e115]: Live
+        - heading "Vibe Doc" [level=3] [ref=e116]
+        - paragraph [ref=e117]: Point it at your codebase and it tells you which docs you're missing — ADRs, runbooks, threat models, specs — then writes them. Basically, the documentation pass you keep meaning to do.
+        - generic [ref=e118]:
+          - img "Claude Code skill" [ref=e119]
+          - img "npm version" [ref=e120]
+          - img "total downloads" [ref=e121]
+          - img "latest release" [ref=e122]
+          - img "MIT license" [ref=e123]
+        - generic [ref=e124]:
+          - generic [ref=e125]: Install in Claude Code
+          - code [ref=e126]: ">/plugin marketplace add estevanhernandez-stack-ed/Vibe-Doc"
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - code [ref=e129]: /vibe-doc
+            - text: · gap analyzer
+          - link "Open repo" [ref=e130] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/Vibe-Doc
+            - text: Open repo
+            - img [ref=e131]
+      - article [ref=e133]:
+        - generic [ref=e134]:
+          - img [ref=e136]
+          - generic [ref=e138]:
+            - generic [ref=e139]: Plugin
+            - generic [ref=e140]: tests
+            - generic [ref=e141]: Live
+        - heading "Vibe Test" [level=3] [ref=e142]
+        - paragraph [ref=e143]: Reads your vibe-coded app, classifies maturity tier and deployment risk, generates the tests that actually matter. Catches the broken harnesses every other test tool assumes away — vitest configs silently reporting 0%, coverage tools cherry-picking denominators.
+        - generic [ref=e144]:
+          - img "Claude Code skill" [ref=e145]
+          - img "npm version" [ref=e146]
+          - img "total downloads" [ref=e147]
+          - img "latest release" [ref=e148]
+          - img "MIT license" [ref=e149]
+        - generic [ref=e150]:
+          - generic [ref=e151]: Install in Claude Code
+          - code [ref=e152]: ">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins"
+        - generic [ref=e153]:
+          - generic [ref=e154]:
+            - code [ref=e155]: /vibe-test:audit
+            - text: · harness-aware
+          - link "Open repo" [ref=e156] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-test
+            - text: Open repo
+            - img [ref=e157]
+      - article [ref=e159]:
+        - img "Sanduhr für Claude — card banner screenshot" [ref=e161]
+        - generic [ref=e162]:
+          - img [ref=e164]
+          - generic [ref=e166]:
+            - generic [ref=e167]: macOS
+            - generic [ref=e168]: Windows
+            - generic [ref=e169]: native
+            - generic [ref=e170]: Live
+        - heading "Sanduhr für Claude" [level=3] [ref=e171]
+        - paragraph [ref=e172]: Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Burn-rate projection, pace markers, sparkline trends, five hand-tuned glass themes.
+        - generic [ref=e173]:
+          - link "Get it from Microsoft Store" [ref=e174] [cursor=pointer]:
+            - /url: https://apps.microsoft.com/detail/9NH3NK2RGCF5
+            - img [ref=e175]
+            - generic [ref=e177]:
+              - generic [ref=e178]: Get it from
+              - generic [ref=e179]: Microsoft Store
+          - link "View on GitHub" [ref=e180] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude
+            - img [ref=e181]
+            - generic [ref=e183]:
+              - generic [ref=e184]: View on
+              - generic [ref=e185]: GitHub
+        - generic [ref=e186]:
+          - generic [ref=e187]: macOS · Windows · native
+          - link "Open product page" [ref=e188] [cursor=pointer]:
+            - /url: /sanduhr/
+            - text: Open product page
+            - img [ref=e189]
+      - article [ref=e191]:
+        - generic [ref=e192]:
+          - img [ref=e194]
+          - generic [ref=e196]:
+            - generic [ref=e197]: Plugin
+            - generic [ref=e198]: security
+            - generic [ref=e199]: Coming soon
+        - heading "Vibe Sec" [level=3] [ref=e200]
+        - paragraph [ref=e201]: The security gaps AI prototyping leaves behind are pretty predictable — leaked secrets, sketchy auth, missing input validation, stale dependencies. Vibe Sec finds them and writes the fix, scaled to where your app actually runs.
+        - generic [ref=e202]:
+          - img "Claude Code skill" [ref=e203]
+          - img "npm version" [ref=e204]
+          - img "total downloads" [ref=e205]
+          - img "latest release" [ref=e206]
+          - img "MIT license" [ref=e207]
+        - generic [ref=e208]:
+          - generic [ref=e209]: Install in Claude Code
+          - code [ref=e210]: ">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins"
+        - generic [ref=e211]:
+          - generic [ref=e212]: /vibe-sec · drafting
+          - link "Framework doc" [ref=e213] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/vibe-plugins/tree/main/packages/vibe-sec
+            - text: Framework doc
+            - img [ref=e214]
+      - article [ref=e216]:
+        - img "RBX15 Classic Shirt and Pants Maker — card banner screenshot" [ref=e541]
+        - generic [ref=e218]:
+          - img [ref=e220]
+          - generic [ref=e222]:
+            - generic [ref=e223]: Windows
+            - generic [ref=e224]: native
+            - generic [ref=e225]: Roblox tooling
+            - generic [ref=e226]: Live
+        - heading "RBX15 Classic Shirt and Pants Maker" [level=3] [ref=e227]
+        - paragraph [ref=e228]: Visual editor for Roblox R15 shirt and pants templates. Electron UI, Python Pillow compositing engine. Drag-and-drop layers, fullbleed / mirror / meme-tee presets, word art. Free on the Microsoft Store.
+        - generic [ref=e229]:
+          - link "Get it from Microsoft Store" [ref=e230] [cursor=pointer]:
+            - /url: https://apps.microsoft.com/detail/9mv9g4xfj8s0
+            - img [ref=e231]
+            - generic [ref=e233]:
+              - generic [ref=e234]: Get it from
+              - generic [ref=e235]: Microsoft Store
+          - link "View on GitHub" [ref=e236] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants
+            - img [ref=e237]
+            - generic [ref=e239]:
+              - generic [ref=e240]: View on
+              - generic [ref=e241]: GitHub
+        - generic [ref=e243]: Windows · Roblox creator tooling
+      - article [ref=e244]:
+        - img "Right Click PNG — card banner screenshot" [ref=e542]
+        - generic [ref=e246]:
+          - img [ref=e248]
+          - generic [ref=e250]:
+            - generic [ref=e251]: Windows
+            - generic [ref=e252]: shell extension
+            - generic [ref=e253]: native
+            - generic [ref=e254]: Live
+        - heading "Right Click PNG" [level=3] [ref=e255]
+        - paragraph [ref=e256]: Adds 'Convert to PNG' and 'Copy as PNG' to the File Explorer right-click menu — decodes .webp / .avif / .heic / .bmp / .tif / .gif locally, no network round trip. C++/WinRT shell extension plus a .NET 9 AOT engine, seven bundled decoders, 85 tests green. Idea to Microsoft Store in 24 hours, built with Vibe Cartographer.
+        - generic [ref=e257]:
+          - link "Get it from Microsoft Store" [ref=e258] [cursor=pointer]:
+            - /url: https://apps.microsoft.com/detail/9PKKLK6R5WFL
+            - img [ref=e259]
+            - generic [ref=e261]:
+              - generic [ref=e262]: Get it from
+              - generic [ref=e263]: Microsoft Store
+          - link "View on GitHub" [ref=e264] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/RTClickPng
+            - img [ref=e265]
+            - generic [ref=e267]:
+              - generic [ref=e268]: View on
+              - generic [ref=e269]: GitHub
+        - generic [ref=e271]: Windows shell extension · 24h build
+  - generic [ref=e273]:
+    - generic [ref=e274]:
+      - generic [ref=e275]:
+        - generic [ref=e277]: 02 · The thesis
+        - heading "The thinking behind it." [level=2] [ref=e278]
+      - paragraph [ref=e279]: Every Vibe plugin follows the same architectural playbook — an Apache-licensed spec that makes the claims checkable, not aspirational.
+    - blockquote [ref=e280]: A plugin should be more useful on its tenth run than on its first — not because the user learned it, but because it learned the user.
+    - paragraph [ref=e281]:
+      - text: The
+      - strong [ref=e282]: Self-Evolving Plugin Framework
+      - text: "is three disciplines stacked on top of each other: self-repair, self-teach, self-evolve. A plugin that can fix itself when it breaks, teach itself what the user actually wanted, and rewrite its own guidance when the pattern repeats. Each discipline earns its rung on a five-level maturity ladder — sixteen named patterns across the climb, one Apache-licensed spec, and a scorecard so the claims are checkable, not aspirational."
+    - paragraph [ref=e283]:
+      - text: Vibe Cartographer sits at
+      - strong [ref=e284]: Level 3.5
+      - text: right now — the highest rung any public plugin has reached — and every new plugin we ship gets benchmarked against the same ladder. The framework isn't marketing. It's how we keep the work honest when nobody's watching.
+    - link "Read the framework doc" [ref=e286] [cursor=pointer]:
+      - /url: https://github.com/estevanhernandez-stack-ed/vibe-cartographer/blob/main/docs/self-evolving-plugins-framework.md
+      - text: Read the framework doc
+      - img [ref=e287]
+  - generic [ref=e290]:
+    - generic [ref=e291]:
+      - generic [ref=e292]:
+        - generic [ref=e294]: 03 · Behind the scenes
+        - heading "How the lab runs." [level=2] [ref=e295]
+      - paragraph [ref=e296]: Every project above lives inside a purpose-built agent OS — private, not yet open source. The plugins are the lessons it taught us.
+    - generic [ref=e297]:
+      - generic [ref=e298]:
+        - generic [ref=e299]: Universe
+        - img "The Lab Dashboard — Universe view, every 626 Labs project as a node in a constellation." [ref=e543]
+      - generic [ref=e300]:
+        - generic [ref=e301]: Operations
+        - img "The Lab Dashboard — project list with live health, recent decisions, and autopilot status." [ref=e544]
+    - generic [ref=e302]:
+      - paragraph [ref=e303]: The 626 Labs Dashboard is a private agent OS — Operation Center, decisions log, Architect AI, and Scanner / Voice / Whiteboard inputs — running as one surface across every active project. It watches the work, logs the decisions, and keeps the threads connected when we context-switch between a hotel app, a theater tool, and a plugin release in the same afternoon.
+      - paragraph [ref=e304]: The Dashboard itself isn't open source. The Vibe plugins are — they're the lessons the Dashboard taught us, refactored so any builder on Claude Code gets the same tailwind.
+  - generic [ref=e306]:
+    - generic [ref=e307]:
+      - generic [ref=e308]:
+        - generic [ref=e310]: 04 · Also from the lab
+        - heading "Other things we've shipped." [level=2] [ref=e311]
+      - paragraph [ref=e312]: While figuring out the plugins. Eight projects per load, reshuffled from a larger pool — hit shuffle for a fresh slate.
+    - generic [ref=e313]:
+      - article [ref=e314]:
+        - link "Watch Celestia 3 demo on YouTube" [ref=e315] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=HV8dUMReNgI
+          - img "Celestia 3 demo thumbnail" [ref=e316]
+        - heading "Celestia 3" [level=4] [ref=e317]
+        - paragraph [ref=e318]: AI Technomancer · Hackathon
+        - paragraph [ref=e319]: Gemini 3 + Swiss Ephemeris WASM + React Three Fiber. Readings of the actual sky with conversational narration — a Devpost hackathon entry with NASA-grade ephemeris data under the hood.
+        - generic [ref=e320]:
+          - link "Watch demo" [ref=e321] [cursor=pointer]:
+            - /url: https://www.youtube.com/watch?v=HV8dUMReNgI
+          - text: ·
+          - link "GitHub" [ref=e322] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/Celestia3
+      - article [ref=e323]:
+        - img "BeatsMasher thumbnail" [ref=e325]
+        - heading "BeatsMasher" [level=4] [ref=e326]
+        - paragraph [ref=e327]: Deployed app · Replit
+        - paragraph [ref=e328]: Browser-based beat-slicing and mash-up tool. Tone.js + wavesurfer + essentia.js for beat detection, SoundTouch for time-stretch, lamejs for export. React front, Express back, Replit Agent 4 built the scaffold.
+        - generic [ref=e329]:
+          - link "Launch" [ref=e330] [cursor=pointer]:
+            - /url: https://BeatsMasher-esteH777.replit.app
+          - text: ·
+          - link "GitHub" [ref=e331] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/BeatsMasher
+      - article [ref=e332]:
+        - img "Writer's Studio thumbnail" [ref=e334]
+        - heading "Writer's Studio" [level=4] [ref=e335]
+        - paragraph [ref=e336]: Creative tooling · VS Code
+        - paragraph [ref=e337]: A VS Code workspace template for AI-assisted iterative fiction writing. Fork it, fill it, write. The Tenth Doctor / Rose Tyler special "The Beat That Shook the Void" shipped on Wattpad from this scaffold.
+        - generic [ref=e338]:
+          - link "Read on Wattpad" [ref=e339] [cursor=pointer]:
+            - /url: https://www.wattpad.com/myworks/409598532-the-beat-that-shook-the-void-a-doctor-who-special
+          - text: ·
+          - link "GitHub" [ref=e340] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/WriterStudio
+      - article [ref=e341]:
+        - img "Lobby Engagement Suite thumbnail" [ref=e343]
+        - heading "Lobby Engagement Suite" [level=4] [ref=e344]
+        - paragraph [ref=e345]: Cinema + hotel kiosks · Firebase
+        - paragraph [ref=e346]: Seven movie-themed engagement apps on a shared monorepo — CinePerks trivia kiosks for cinemas, GuestBuzz trivia for hotels, Reel Battles head-to-head, Reel Words puzzles, Birthday Bacon Trail, and Box Office Heads Up. Built to turn lobby idle time into loyalty signups and brand touch.
+        - generic [ref=e347]:
+          - link "Play Reel Battles demo" [ref=e348] [cursor=pointer]:
+            - /url: https://replit.com/@esteH777/Reel-Battles
+          - text: ·
+          - link "GitHub" [ref=e349] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/QuizShow
+      - article [ref=e350]:
+        - link "Watch Tag That Line demo on YouTube" [ref=e351] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=XoMzjYhVLgE
+          - img "Tag That Line demo thumbnail" [ref=e352]
+        - heading "Tag That Line" [level=4] [ref=e353]
+        - paragraph [ref=e354]: Word game · AI
+        - paragraph [ref=e355]: A tag-the-line word game — built fast, videoed, shipped. Watch the demo to see it in motion.
+        - generic [ref=e356]:
+          - link "Watch demo" [ref=e357] [cursor=pointer]:
+            - /url: https://youtu.be/XoMzjYhVLgE
+          - text: ·
+          - link "GitHub" [ref=e358] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/tagthatline
+      - article [ref=e359]:
+        - link "Watch Cleanup Ranger demo on YouTube" [ref=e360] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=TsYYHhk8qtE
+          - img "Cleanup Ranger demo thumbnail" [ref=e361]
+        - heading "Cleanup Ranger" [level=4] [ref=e362]
+        - paragraph [ref=e363]: Civic tech · Community
+        - paragraph [ref=e364]: Community-driven park-cleanup app. Track hazards and trash at local parks; pin what you've cleaned.
+        - generic [ref=e365]:
+          - link "Watch demo" [ref=e366] [cursor=pointer]:
+            - /url: https://youtu.be/TsYYHhk8qtE
+          - text: ·
+          - link "GitHub" [ref=e367] [cursor=pointer]:
+            - /url: https://github.com/estevanhernandez-stack-ed/Cleanup-Ranger
+      - article [ref=e368]:
+        - img "Replit Certification thumbnail" [ref=e370]
+        - heading "Replit Certification" [level=4] [ref=e371]
+        - paragraph [ref=e372]: Credential · Replit
+        - paragraph [ref=e373]: Replit Level 3 "Proficient Builder" certification — public receipts for being taken seriously on the platform.
+        - link "View" [ref=e375] [cursor=pointer]:
+          - /url: https://replit-certifications.replit.app/esteH777
+      - article [ref=e376]:
+        - img "Project L.A.D.D.E.R. thumbnail" [ref=e378]
+        - heading "Project L.A.D.D.E.R." [level=4] [ref=e379]
+        - paragraph [ref=e380]: Local-first education · Gemma
+        - paragraph [ref=e381]: Multimodal learning framework that runs local-first with Gemma — built to bridge the access gap when connectivity isn't a given. Teacher dashboard rolls up live engagement, subject-level averages, and behavioral flags so interventions happen in-class, not after grading.
+        - link "GitHub" [ref=e383] [cursor=pointer]:
+          - /url: https://github.com/estevanhernandez-stack-ed/LADDER
+    - button "↻ shuffle" [ref=e385] [cursor=pointer]
+  - generic [ref=e387]:
+    - generic [ref=e388]:
+      - generic [ref=e389]:
+        - generic [ref=e391]: 05 · Play
+        - heading "Also, we make games." [level=2] [ref=e392]
+      - paragraph [ref=e393]: A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).
+    - generic [ref=e396]:
+      - generic [ref=e397]:
+        - heading "Birthday Bacon Trail" [level=2] [ref=e398]
+        - generic "Film 0 of 6" [ref=e399]:
+          - generic [ref=e400]: Film
+          - generic [ref=e401]: "0"
+          - generic [ref=e402]: /
+          - generic [ref=e403]: "6"
+      - generic [ref=e404]:
+        - generic [ref=e405]:
+          - heading "Who's born today?" [level=3] [ref=e406]
+          - paragraph [ref=e407]: Pick a starting actor. Find Kevin Bacon within six films.
+        - group "Birthday actors" [ref=e408]:
+          - button "Pick John Cena, born 1977" [ref=e409] [cursor=pointer]:
+            - generic [ref=e411]:
+              - generic [ref=e412]: John Cena
+              - generic [ref=e413]: Born 1977
+          - button "Pick Sally Bretton, born 1980" [ref=e414] [cursor=pointer]:
+            - generic [ref=e416]:
+              - generic [ref=e417]: Sally Bretton
+              - generic [ref=e418]: Born 1980
+          - button "Pick John Hannah, born 1962" [ref=e419] [cursor=pointer]:
+            - generic [ref=e421]:
+              - generic [ref=e422]: John Hannah
+              - generic [ref=e423]: Born 1962
+          - button "Pick Lee Majors, born 1939" [ref=e424] [cursor=pointer]:
+            - generic [ref=e426]:
+              - generic [ref=e427]: Lee Majors
+              - generic [ref=e428]: Born 1939
+          - button "Pick Jack Kao, born 1958" [ref=e429] [cursor=pointer]:
+            - generic [ref=e431]:
+              - generic [ref=e432]: Jack Kao
+              - generic [ref=e433]: Born 1958
+          - button "Pick Tonie Perensky, born 1959" [ref=e434] [cursor=pointer]:
+            - generic [ref=e436]:
+              - generic [ref=e437]: Tonie Perensky
+              - generic [ref=e438]: Born 1959
+        - button "Different actors" [ref=e440] [cursor=pointer]:
+          - generic [ref=e441]:
+            - img [ref=e442]
+            - generic [ref=e448]: Different actors
+      - status [ref=e449]
+  - generic [ref=e450]:
+    - generic [ref=e451]:
+      - generic [ref=e452]:
+        - generic [ref=e454]: 06 · About 626 Labs
+        - heading "New ideas to old logic." [level=2] [ref=e455]:
+          - text: New ideas to
+          - emphasis [ref=e456]: old logic.
+        - generic [ref=e457]:
+          - generic [ref=e458]: TypeScript
+          - generic [ref=e459]: Swift
+          - generic [ref=e460]: Python
+          - generic [ref=e461]: Claude Code
+          - generic [ref=e462]: React 19
+          - generic [ref=e463]: Fort Worth, TX
+      - generic [ref=e464]:
+        - paragraph [ref=e465]: "626 Labs builds modern tools for practices that have been running on spreadsheets, paper, and inherited habits for decades — or, in the case of astrology, a few thousand years. The brief is simple: look at a field that everyone assumes is \"fine the way it is,\" and ship the version it should have had all along."
+        - paragraph [ref=e466]:
+          - text: The proof case is
+          - strong [ref=e467]: Celestia 3
+          - text: . AI joined with tarot, numerology, and astrology in one surface. Partway through the build, we discovered the default Swiss Ephemeris engine drifted at the second-precision level. We didn't ship around it. We repaired the engine ourselves and met the NASA-grade bar. The point isn't the math — it's the posture. When the bar moves mid-build, we move with it.
+        - paragraph [ref=e468]: That posture is what pulled us into the old empires — theater operations, safety inspections, hotels, cinema exhibition. Off-the-shelf vendors build for the brochure. We build operator-first — the domain expert in the loop, the AI coder on the keyboard — and ship the tool the shift manager actually needed.
+        - paragraph [ref=e469]:
+          - text: The Vibe plugins —
+          - strong [ref=e470]: Cartographer, Doc, Test, Sec
+          - text: "— are the other half of the work. Vibe coding is the fastest way to turn an idea into running software right now. It's also the easiest way to end up with something that can't survive production. The plugins close that gap: planning, docs, tests, security, all built so a vibe-coded afternoon holds up in front of real users."
+        - paragraph [ref=e471]:
+          - strong [ref=e472]: We See You at the Movies
+          - text: is the gaming wedge. Trivia and head-to-head card battles are warm-ups for bigger things on deck.
+        - paragraph [ref=e473]: Every 626 Labs app is built like it might be seen by a thousand pairs of eyes, even when it may only ever be seen by one. That's the standard. I've deployed more apps to production than I ever imagined, and the bar keeps going up.
+    - generic [ref=e475]:
+      - generic [ref=e476]:
+        - generic [ref=e477]: P/01
+        - heading "Agents read first." [level=4] [ref=e478]
+        - paragraph [ref=e479]: No plugin touches a codebase before it's read the codebase. Context over cleverness — always.
+      - generic [ref=e480]:
+        - generic [ref=e481]: P/02
+        - heading "Operator in the loop." [level=4] [ref=e482]
+        - paragraph [ref=e483]: The shift manager knows what the tool needs. We build with them, not at them. The domain expert stays on the keyboard.
+      - generic [ref=e484]:
+        - generic [ref=e485]: P/03
+        - heading "Built for a thousand eyes." [level=4] [ref=e486]
+        - paragraph [ref=e487]: Enterprise grade even when the app may only ever be seen by one. That's the standard. It keeps the work honest.
+  - generic [ref=e490]:
+    - generic [ref=e491]:
+      - heading "Keep the lab running." [level=3] [ref=e492]
+      - paragraph [ref=e493]: Every 626 Labs plugin is MIT-licensed and maintained on nights and weekends. If the Vibe ecosystem is saving you time, GitHub Sponsors is the cleanest way to say thanks — and to keep the next plugin on schedule.
+    - link "Sponsor on GitHub" [ref=e494] [cursor=pointer]:
+      - /url: https://github.com/sponsors/estevanhernandez-stack-ed
+      - img [ref=e495]
+      - text: Sponsor on GitHub
+  - generic [ref=e498]:
+    - generic [ref=e499]:
+      - generic [ref=e501]: 07 · Contact
+      - heading "Build something with us." [level=2] [ref=e502]
+      - paragraph [ref=e503]: Got a codebase that needs rounding out? Want early access to the Dashboard? Email is the fastest way in. GitHub works too — we answer both.
+      - link "estevan@626labs.dev" [ref=e504] [cursor=pointer]:
+        - /url: mailto:estevan@626labs.dev
+        - text: estevan@626labs.dev
+        - img [ref=e505]
+    - generic [ref=e507]:
+      - link "github org @626Labs-LLC" [ref=e508] [cursor=pointer]:
+        - /url: https://github.com/626Labs-LLC
+        - generic [ref=e509]:
+          - generic [ref=e510]: github org
+          - generic [ref=e511]: "@626Labs-LLC"
+        - img [ref=e512]
+      - link "maintainer @estevanhernandez-stack-ed" [ref=e514] [cursor=pointer]:
+        - /url: https://github.com/estevanhernandez-stack-ed
+        - generic [ref=e515]:
+          - generic [ref=e516]: maintainer
+          - generic [ref=e517]: "@estevanhernandez-stack-ed"
+        - img [ref=e518]
+      - link "email estevan@626labs.dev" [ref=e520] [cursor=pointer]:
+        - /url: mailto:estevan@626labs.dev
+        - generic [ref=e521]:
+          - generic [ref=e522]: email
+          - generic [ref=e523]: estevan@626labs.dev
+        - img [ref=e524]
+      - link "support github sponsors" [ref=e526] [cursor=pointer]:
+        - /url: https://github.com/sponsors/estevanhernandez-stack-ed
+        - generic [ref=e527]:
+          - generic [ref=e528]: support
+          - generic [ref=e529]: github sponsors
+        - img [ref=e530]
+  - contentinfo [ref=e532]:
+    - generic [ref=e533]:
+      - generic [ref=e534]:
+        - text: © 2026 626 Labs LLC · Imagine Something Else.
+        - text: “Claude” and “claude.ai” are trademarks of Anthropic PBC, used nominatively.
+      - generic [ref=e535]:
+        - link "Work" [ref=e536] [cursor=pointer]:
+          - /url: "#work"
+        - link "Thinking" [ref=e537] [cursor=pointer]:
+          - /url: "#thinking"
+        - link "About" [ref=e538] [cursor=pointer]:
+          - /url: "#about"
+        - link "Contact" [ref=e539] [cursor=pointer]:
+          - /url: "#contact"
+        - link "GitHub ↗" [ref=e540] [cursor=pointer]:
+          - /url: https://github.com/626Labs-LLC
