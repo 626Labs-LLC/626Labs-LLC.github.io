@@ -85,6 +85,91 @@ async function uploadAsset(token, repoPath, base64Content, message) {
   return { path: body.content.path, sha: body.content.sha, downloadUrl: body.content.download_url };
 }
 
+// List files in a directory at the repo default branch. Used by the
+// stories editor. Returns [] for 404 (missing dir) so the caller can
+// treat "empty dir" and "not yet created" the same.
+async function listDir(token, path) {
+  const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${REPO_BRANCH}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+    cache: "no-store",
+  });
+  if (res.status === 404) return [];
+  if (!res.ok) throw new Error(`list ${path}: ${res.status}`);
+  const body = await res.json();
+  return (Array.isArray(body) ? body : []).map(f => ({ name: f.name, path: f.path, sha: f.sha, size: f.size, type: f.type }));
+}
+
+// Fetch a text file at a given path. Returns { content, sha }.
+async function fetchFileText(token, path) {
+  const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${REPO_BRANCH}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`fetch ${path}: ${res.status}`);
+  const body = await res.json();
+  const text = decodeURIComponent(escape(window.atob(body.content.replace(/\n/g, ""))));
+  return { content: text, sha: body.sha };
+}
+
+// Create or update a text file at a given path. Pass `sha` to update,
+// omit for create. Each call is one commit on main.
+async function writeFileText(token, path, content, sha, message) {
+  const b64 = window.btoa(unescape(encodeURIComponent(content)));
+  const payload = {
+    message: message || `admin: update ${path}`,
+    content: b64,
+    branch: REPO_BRANCH,
+  };
+  if (sha) payload.sha = sha;
+  const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`write ${path}: ${res.status} ${txt}`);
+  }
+  const body = await res.json();
+  return { sha: body.content.sha, commit: body.commit.sha };
+}
+
+// Delete a file at a given path. Destructive — caller must confirm.
+async function deleteFile(token, path, sha, message) {
+  const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      message: message || `admin: delete ${path}`,
+      sha,
+      branch: REPO_BRANCH,
+    }),
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`delete ${path}: ${res.status} ${txt}`);
+  }
+  return true;
+}
+
 // Write site.json back via the Contents API — a single commit on main.
 async function writeSiteJson(token, content, prevSha, message) {
   const b64 = window.btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2) + "\n")));
@@ -326,5 +411,6 @@ Object.assign(window, {
   REPO_OWNER, REPO_NAME, REPO_BRANCH, CONTENT_PATH, TOKEN_KEY,
   getStoredToken, storeToken, validateToken,
   fetchSiteJson, writeSiteJson, uploadAsset, rawUrl,
+  listDir, fetchFileText, writeFileText, deleteFile,
   LockScreen, LoadingScreen, LoadError, AdminGate,
 });

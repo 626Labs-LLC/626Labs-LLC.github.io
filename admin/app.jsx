@@ -149,6 +149,7 @@ function AdminApp({ token, login, onSignOut }) {
         {nav === "support" && <SupportView support={content.support || {}} onChange={s => setContent(c => ({...c, support: s}))}/>}
         {nav === "contact" && <ContactView contact={content.contact || {}} onChange={ct => setContent(c => ({...c, contact: ct}))}/>}
         {nav === "sections" && <SectionsView sections={content.sections} onChange={s => setContent(c => ({...c, sections: s}))}/>}
+        {nav === "stories" && <StoriesView token={token} onToast={toast}/>}
         {nav === "ops" && <OpsView token={token}/>}
       </div>
 
@@ -259,6 +260,7 @@ function Sidebar({ nav, onNav, content, token }) {
     { id: "support", label: "Support", ic: Ic.star, kbd: "9" },
     { id: "contact", label: "Contact", ic: Ic.mail, badge: content.contact?.rows?.length ?? 0 },
     { id: "sections", label: "Sections", ic: Ic.eye },
+    { id: "stories", label: "Stories", ic: Ic.edit },
     { id: "ops", label: "Ops", ic: Ic.activity },
   ];
   return (
@@ -1369,6 +1371,198 @@ function ContactView({ contact, onChange }) {
 }
 
 // ─────────────────────────────────────────────────────────────
+// Stories — markdown files under content/stories/
+// ─────────────────────────────────────────────────────────────
+const STORIES_DIR = "content/stories";
+const NEW_KEY = "__new__";
+
+function StoriesView({ token, onToast }) {
+  const [files, setFiles] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [selected, setSelected] = React.useState(null); // filename or NEW_KEY
+  const [text, setText] = React.useState("");
+  const [origText, setOrigText] = React.useState("");
+  const [sha, setSha] = React.useState(null);
+  const [loadingFile, setLoadingFile] = React.useState(false);
+  const [saving, setSaving] = React.useState(false);
+  const [newName, setNewName] = React.useState("");
+
+  const dirty = selected !== null && text !== origText;
+
+  const loadList = React.useCallback(async () => {
+    setLoading(true);
+    try {
+      const items = (await listDir(token, STORIES_DIR)).filter(f => f.type === "file" && f.name.endsWith(".md"));
+      items.sort((a, b) => a.name.localeCompare(b.name));
+      setFiles(items);
+    } catch (ex) {
+      onToast?.(`Failed to list stories: ${ex.message}`, "red", 6000);
+    } finally {
+      setLoading(false);
+    }
+  }, [token, onToast]);
+
+  React.useEffect(() => { loadList(); }, [loadList]);
+
+  const openFile = async (f) => {
+    if (dirty && !window.confirm("Discard unsaved changes?")) return;
+    setSelected(f.name);
+    setLoadingFile(true);
+    setText(""); setOrigText(""); setSha(null);
+    try {
+      const { content, sha: s } = await fetchFileText(token, f.path);
+      setText(content);
+      setOrigText(content);
+      setSha(s);
+    } catch (ex) {
+      onToast?.(`Failed to load ${f.name}: ${ex.message}`, "red", 6000);
+    } finally {
+      setLoadingFile(false);
+    }
+  };
+
+  const startNew = () => {
+    if (dirty && !window.confirm("Discard unsaved changes?")) return;
+    setSelected(NEW_KEY);
+    setNewName("");
+    setText("# New story\n\n");
+    setOrigText("");
+    setSha(null);
+  };
+
+  const save = async () => {
+    if (saving) return;
+    let path, filename;
+    if (selected === NEW_KEY) {
+      filename = newName.trim().toLowerCase().replace(/[^a-z0-9.-]+/g, "-").replace(/^-|-$/g, "");
+      if (!filename) { onToast?.("Enter a filename.", "amber", 3000); return; }
+      if (!filename.endsWith(".md")) filename += ".md";
+      if (files.some(f => f.name === filename)) { onToast?.(`${filename} already exists.`, "amber", 3500); return; }
+      path = `${STORIES_DIR}/${filename}`;
+    } else {
+      filename = selected;
+      path = `${STORIES_DIR}/${filename}`;
+    }
+    setSaving(true);
+    try {
+      const { sha: newSha } = await writeFileText(token, path, text, sha, sha ? `admin: update ${path}` : `admin: create ${path}`);
+      setSha(newSha);
+      setOrigText(text);
+      if (selected === NEW_KEY) {
+        setSelected(filename);
+      }
+      onToast?.(sha ? `Saved ${filename}.` : `Created ${filename}.`, "green", 3000);
+      await loadList();
+    } catch (ex) {
+      onToast?.(`Save failed: ${ex.message}`, "red", 6000);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const removeFile = async () => {
+    if (!selected || selected === NEW_KEY || !sha) return;
+    if (!window.confirm(`Delete ${selected}? This creates a delete commit on main.`)) return;
+    setSaving(true);
+    try {
+      await deleteFile(token, `${STORIES_DIR}/${selected}`, sha, `admin: delete ${STORIES_DIR}/${selected}`);
+      onToast?.(`Deleted ${selected}.`, "green", 3000);
+      setSelected(null); setText(""); setOrigText(""); setSha(null);
+      await loadList();
+    } catch (ex) {
+      onToast?.(`Delete failed: ${ex.message}`, "red", 6000);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div>
+      <PanelHeader
+        title="Stories"
+        subtitle={`Markdown files in ${STORIES_DIR}/ — long-form case studies, handoff write-ups, sub-pages`}
+        actions={<Btn primary onClick={startNew}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.plus} New story</span></Btn>}
+      />
+      <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", minHeight: 600 }}>
+        <div style={{ borderRight: `1px solid ${A.line}`, padding: "10px 8px", overflow: "auto" }}>
+          {loading && <div style={{ padding: "10px 12px", fontSize: 11, color: A.dim2, fontFamily: "JetBrains Mono, monospace" }}>loading…</div>}
+          {!loading && files.length === 0 && (
+            <div style={{ padding: "14px 18px", color: A.dim2, fontSize: 11.5, lineHeight: 1.55 }}>
+              No stories yet. Click "New story" to create one.
+            </div>
+          )}
+          {files.map(f => {
+            const active = selected === f.name;
+            return (
+              <button key={f.name} onClick={()=>openFile(f)} style={{
+                display: "flex", flexDirection: "column", gap: 2, width: "100%",
+                padding: "8px 10px", background: active ? "rgba(23,212,250,.06)" : "transparent",
+                border: "none", borderLeft: `2px solid ${active ? A.cyan : "transparent"}`,
+                cursor: "pointer", textAlign: "left", borderRadius: 0,
+                color: active ? A.text : A.dim, fontFamily: "inherit", marginBottom: 2,
+              }}>
+                <span style={{ fontSize: 12.5, fontFamily: "JetBrains Mono, monospace" }}>{f.name}</span>
+                <span style={{ fontSize: 10, color: A.dim2, fontFamily: "JetBrains Mono, monospace" }}>{Math.round(f.size / 1024 * 10) / 10} KB</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div style={{ padding: "16px 20px", display: "flex", flexDirection: "column", minHeight: 0 }}>
+          {selected === null && (
+            <div style={{ color: A.dim, fontSize: 12.5, lineHeight: 1.6, padding: "8px 0" }}>
+              Pick a story on the left to edit, or start a new one.
+            </div>
+          )}
+
+          {selected !== null && (
+            <>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                {selected === NEW_KEY ? (
+                  <>
+                    <span style={{ fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".08em", textTransform: "uppercase" }}>New · {STORIES_DIR}/</span>
+                    <Input mono value={newName} onChange={setNewName} placeholder="filename.md"/>
+                  </>
+                ) : (
+                  <span style={{ fontSize: 12, fontFamily: "JetBrains Mono, monospace", color: A.text }}>{STORIES_DIR}/{selected}</span>
+                )}
+                <div style={{ flex: 1 }}/>
+                {selected !== NEW_KEY && (
+                  <Btn danger size="sm" onClick={removeFile} disabled={saving}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.trash} Delete</span></Btn>
+                )}
+                <Btn primary size="sm" onClick={save} disabled={saving || (!dirty && selected !== NEW_KEY) || loadingFile}>
+                  <span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.save} {saving ? "saving…" : dirty || selected === NEW_KEY ? "Save" : "Saved"}</span>
+                </Btn>
+              </div>
+
+              {loadingFile ? (
+                <div style={{ padding: 20, color: A.dim2, fontSize: 12, fontFamily: "JetBrains Mono, monospace" }}>loading file…</div>
+              ) : (
+                <textarea
+                  value={text}
+                  onChange={e => setText(e.target.value)}
+                  spellCheck
+                  style={{
+                    flex: 1, minHeight: 420,
+                    padding: "14px 16px",
+                    background: "#05070b", color: A.text,
+                    border: `1px solid ${A.line2}`, borderRadius: 6,
+                    fontFamily: "JetBrains Mono, ui-monospace, monospace",
+                    fontSize: 12.5, lineHeight: 1.65,
+                    outline: "none", resize: "vertical",
+                  }}
+                />
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+// ─────────────────────────────────────────────────────────────
 // Ops — GitHub Actions bot-runs dashboard
 // ─────────────────────────────────────────────────────────────
 const BOT_WORKFLOWS = [
@@ -1673,6 +1867,7 @@ function CommandPalette({ close, onNav, onPreview, onAddProduct, products, onSel
     { label: "Edit Support", kind: "nav", ic: Ic.star, run: () => onNav("support") },
     { label: "Edit Contact", kind: "nav", ic: Ic.mail, run: () => onNav("contact") },
     { label: "Edit Sections", kind: "nav", ic: Ic.eye, run: () => onNav("sections") },
+    { label: "Edit Stories", kind: "nav", ic: Ic.edit, run: () => onNav("stories") },
     { label: "Go to Ops", kind: "nav", ic: Ic.activity, run: () => onNav("ops") },
     { label: "Preview site", kind: "action", ic: Ic.eye, run: onPreview },
     { label: "Add new product…", kind: "action", ic: Ic.plus, run: onAddProduct },
