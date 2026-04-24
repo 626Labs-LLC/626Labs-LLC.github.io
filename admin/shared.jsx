@@ -24,9 +24,25 @@ const INITIAL_CONTENT = {
   },
   sections: {
     thinking: { enabled: true },
+    labRuns: { enabled: true },
     lab: { enabled: true },
+    play: { enabled: true },
     support: { enabled: true },
     contact: { enabled: true },
+  },
+  play: {
+    eyebrow: "05 · Play",
+    headline: "Also, we make games.",
+    lead: "A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).",
+    widgets: [
+      {
+        id: "bacon-widget",
+        script: "/widget-bacon-trail/widget.js",
+        stylesheet: "/widget-bacon-trail/widget.css",
+        initFn: "BaconTrailWidget.init",
+        config: { ctaUrl: "#work", ctaLabel: "See the full suite →" },
+      },
+    ],
   },
   products: [
     {

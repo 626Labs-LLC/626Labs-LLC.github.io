@@ -139,6 +139,7 @@ function AdminApp({ token, login, onSignOut }) {
         {nav === "hero" && <HeroView hero={content.hero} onChange={h => setContent(c => ({...c, hero: h}))}/>}
         {nav === "products" && <ProductsView products={content.products} liveStats={liveStats} selectedId={selProduct} onSelect={setSelProduct} onUpdate={updateProduct} onAdd={addProduct} onDelete={deleteProduct}/>}
         {nav === "lab" && <LabView lab={content.lab} onChange={l => setContent(c => ({...c, lab: l}))}/>}
+        {nav === "play" && <PlayView play={content.play || {}} onChange={p => setContent(c => ({...c, play: p}))}/>}
         {nav === "sections" && <SectionsView sections={content.sections} onChange={s => setContent(c => ({...c, sections: s}))}/>}
       </div>
 
@@ -223,7 +224,8 @@ function Sidebar({ nav, onNav, content }) {
     { id: "hero", label: "Hero", ic: Ic.sparkle, kbd: "2" },
     { id: "products", label: "Products", ic: Ic.grid, kbd: "3", badge: content.products.length },
     { id: "lab", label: "Lab shelf", ic: Ic.flask, kbd: "4", badge: content.lab.length },
-    { id: "sections", label: "Sections", ic: Ic.brain, kbd: "5" },
+    { id: "play", label: "Play", ic: Ic.rocket, kbd: "5", badge: content.play?.widgets?.length ?? 0 },
+    { id: "sections", label: "Sections", ic: Ic.brain, kbd: "6" },
   ];
   return (
     <div style={{
@@ -838,11 +840,84 @@ function LabView({ lab, onChange }) {
   );
 }
 
+function PlayView({ play, onChange }) {
+  const u = (patch) => onChange({ ...play, ...patch });
+  const widgets = play.widgets || [];
+  const addWidget = () => u({ widgets: [...widgets, { id: `widget-${Date.now().toString(36)}`, script: "", stylesheet: "", initFn: "", config: {} }] });
+  const updateWidget = (i, patch) => u({ widgets: widgets.map((w, j) => j === i ? { ...w, ...patch } : w) });
+  const removeWidget = (i) => u({ widgets: widgets.filter((_, j) => j !== i) });
+  return (
+    <div>
+      <PanelHeader title="Play" subtitle="Embedded game widgets on the homepage" actions={<Btn primary onClick={addWidget}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.plus} Add widget</span></Btn>}/>
+      <div style={{ padding: "18px 26px", maxWidth: 820 }}>
+        <Field label="Eyebrow"><Input value={play.eyebrow||""} onChange={v=>u({eyebrow:v})}/></Field>
+        <Field label="Headline"><Input value={play.headline||""} onChange={v=>u({headline:v})}/></Field>
+        <Field label="Lead"><Input multiline value={play.lead||""} onChange={v=>u({lead:v})}/></Field>
+
+        <div style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", margin: "22px 0 10px" }}>Widgets</div>
+        {widgets.length === 0 && (
+          <div style={{ padding: "18px 22px", border: `1px dashed ${A.line2}`, borderRadius: 6, color: A.dim, fontSize: 12 }}>
+            No widgets. Add one to embed a playable game on the homepage.
+          </div>
+        )}
+        {widgets.map((w, i) => (
+          <div key={i} style={{ padding: 16, background: A.panel, border: `1px solid ${A.line}`, borderRadius: 6, marginBottom: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <span style={{ color: A.dim2 }}>{Ic.rocket}</span>
+              <div style={{ flex: 1, fontSize: 12, fontFamily: "JetBrains Mono, monospace", color: A.cyan }}>{w.id || `widget ${i+1}`}</div>
+              <button onClick={()=>removeWidget(i)} style={{ background: "transparent", border: "none", color: A.dim2, cursor: "pointer", padding: 4 }}>{Ic.trash}</button>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <Field label="ID" mono><Input mono value={w.id||""} onChange={v=>updateWidget(i,{id:v})}/></Field>
+              <Field label="Init fn" mono hint="global function the page calls"><Input mono value={w.initFn||""} onChange={v=>updateWidget(i,{initFn:v})}/></Field>
+            </div>
+            <Field label="Script URL" mono><Input mono value={w.script||""} onChange={v=>updateWidget(i,{script:v})}/></Field>
+            <Field label="Stylesheet URL" mono><Input mono value={w.stylesheet||""} onChange={v=>updateWidget(i,{stylesheet:v})}/></Field>
+            <Field label="Config" hint="key/value pairs passed to init fn">
+              <KVEditor kv={w.config||{}} onChange={kv=>updateWidget(i,{config:kv})}/>
+            </Field>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function KVEditor({ kv, onChange }) {
+  const entries = Object.entries(kv);
+  const setKey = (oldK, newK) => {
+    if (oldK === newK || !newK) return;
+    const next = {};
+    for (const [k, v] of entries) next[k === oldK ? newK : k] = v;
+    onChange(next);
+  };
+  const setVal = (k, v) => onChange({ ...kv, [k]: v });
+  const addRow = () => {
+    let base = "key", n = entries.length + 1, key = `${base}${n}`;
+    while (key in kv) { n += 1; key = `${base}${n}`; }
+    onChange({ ...kv, [key]: "" });
+  };
+  const removeRow = (k) => { const next = { ...kv }; delete next[k]; onChange(next); };
+  return (
+    <div>
+      {entries.map(([k, v], i) => (
+        <div key={i} style={{ display: "grid", gridTemplateColumns: "180px 1fr 34px", gap: 8, marginBottom: 6 }}>
+          <Input mono value={k} onChange={nk=>setKey(k, nk)} placeholder="key"/>
+          <Input value={String(v ?? "")} onChange={nv=>setVal(k, nv)} placeholder="value"/>
+          <button onClick={()=>removeRow(k)} style={{ background: "transparent", border: `1px solid ${A.line}`, color: A.dim2, cursor: "pointer", borderRadius: 4 }}>{Ic.trash}</button>
+        </div>
+      ))}
+      <button onClick={addRow} style={{ marginTop: 6, padding: "6px 10px", background: "transparent", border: `1px dashed ${A.line2}`, color: A.dim, fontSize: 11, cursor: "pointer", borderRadius: 4, fontFamily: "inherit" }}>+ add pair</button>
+    </div>
+  );
+}
+
 function SectionsView({ sections, onChange }) {
   const rows = [
     { key: "thinking", label: "Thinking behind it", desc: "Framework thesis + Self-Evolving Plugin Framework link" },
     { key: "labRuns", label: "How the lab runs", desc: "Private Agent OS dashboard screenshots + caption" },
     { key: "lab", label: "Also from the lab", desc: "JS-shuffled shelf of 8 other projects" },
+    { key: "play", label: "Play", desc: "Embedded games — Birthday Bacon Trail widget" },
     { key: "support", label: "Keep the lab running", desc: "GitHub Sponsors CTA block" },
     { key: "contact", label: "Contact", desc: "Email + GitHub + support rows" },
   ];
@@ -1005,6 +1080,7 @@ function CommandPalette({ close, onNav, onPreview, onAddProduct, products, onSel
     { label: "Edit Hero", kind: "nav", ic: Ic.sparkle, run: () => onNav("hero") },
     { label: "Edit Products", kind: "nav", ic: Ic.grid, run: () => onNav("products") },
     { label: "Edit Lab shelf", kind: "nav", ic: Ic.flask, run: () => onNav("lab") },
+    { label: "Edit Play", kind: "nav", ic: Ic.rocket, run: () => onNav("play") },
     { label: "Edit Sections", kind: "nav", ic: Ic.brain, run: () => onNav("sections") },
     { label: "Preview site", kind: "action", ic: Ic.eye, run: onPreview },
     { label: "Add new product…", kind: "action", ic: Ic.plus, run: onAddProduct },
