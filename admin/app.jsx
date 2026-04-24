@@ -86,7 +86,7 @@ function AdminApp({ token, login, onSignOut }) {
     else setNav(target);
   };
 
-  const toast = React.useCallback((msg, tone = "cyan", duration = 3500) => {
+  const showToast = React.useCallback((msg, tone = "cyan", duration = 3500) => {
     setToast({ msg, tone });
     if (duration > 0) setTimeout(() => setToast(null), duration);
   }, []);
@@ -99,9 +99,9 @@ function AdminApp({ token, login, onSignOut }) {
       const { sha } = await writeSiteJson(token, content, contentSha, msg);
       setContentSha(sha);
       setOriginal(content);
-      toast("Saved. Pages will redeploy shortly.", "green", 3500);
+      showToast("Saved. Pages will redeploy shortly.", "green", 3500);
     } catch (ex) {
-      toast(`Save failed: ${ex.message}`, "red", 6000);
+      showToast(`Save failed: ${ex.message}`, "red", 6000);
     } finally {
       setSaving(false);
     }
@@ -140,16 +140,16 @@ function AdminApp({ token, login, onSignOut }) {
       <div style={{ overflow: "auto", background: A.bg, position: "relative" }}>
         {nav === "home" && <HomeView content={content} liveStats={liveStats} onNav={safeNav} onAddProduct={addProduct} onSelect={(id)=>{setSelProduct(id); safeNav("products");}}/>}
         {nav === "hero" && <HeroView hero={content.hero} onChange={h => setContent(c => ({...c, hero: h}))}/>}
-        {nav === "products" && <ProductsView products={content.products} liveStats={liveStats} selectedId={selProduct} onSelect={setSelProduct} onUpdate={updateProduct} onAdd={addProduct} onDelete={deleteProduct} token={token} onToast={toast}/>}
+        {nav === "products" && <ProductsView products={content.products} liveStats={liveStats} selectedId={selProduct} onSelect={setSelProduct} onUpdate={updateProduct} onAdd={addProduct} onDelete={deleteProduct} token={token} onToast={showToast}/>}
         {nav === "lab" && <LabView lab={content.lab} onChange={l => setContent(c => ({...c, lab: l}))}/>}
         {nav === "play" && <PlayView play={content.play || {}} onChange={p => setContent(c => ({...c, play: p}))}/>}
         {nav === "about" && <AboutView about={content.about || {}} onChange={a => setContent(c => ({...c, about: a}))}/>}
         {nav === "thinking" && <ThinkingView thinking={content.thinking || {}} onChange={t => setContent(c => ({...c, thinking: t}))}/>}
-        {nav === "labRuns" && <LabRunsView labRuns={content.labRuns || {}} onChange={lr => setContent(c => ({...c, labRuns: lr}))} token={token} onToast={toast}/>}
+        {nav === "labRuns" && <LabRunsView labRuns={content.labRuns || {}} onChange={lr => setContent(c => ({...c, labRuns: lr}))} token={token} onToast={showToast}/>}
         {nav === "support" && <SupportView support={content.support || {}} onChange={s => setContent(c => ({...c, support: s}))}/>}
         {nav === "contact" && <ContactView contact={content.contact || {}} onChange={ct => setContent(c => ({...c, contact: ct}))}/>}
         {nav === "sections" && <SectionsView sections={content.sections} onChange={s => setContent(c => ({...c, sections: s}))}/>}
-        {nav === "stories" && <StoriesView token={token} onToast={toast}/>}
+        {nav === "stories" && <StoriesView token={token} onToast={showToast}/>}
         {nav === "ops" && <OpsView token={token}/>}
       </div>
 
