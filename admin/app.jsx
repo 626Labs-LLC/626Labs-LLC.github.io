@@ -144,6 +144,9 @@ function AdminApp({ token, login, onSignOut }) {
         {nav === "lab" && <LabView lab={content.lab} onChange={l => setContent(c => ({...c, lab: l}))}/>}
         {nav === "play" && <PlayView play={content.play || {}} onChange={p => setContent(c => ({...c, play: p}))}/>}
         {nav === "about" && <AboutView about={content.about || {}} onChange={a => setContent(c => ({...c, about: a}))}/>}
+        {nav === "thinking" && <ThinkingView thinking={content.thinking || {}} onChange={t => setContent(c => ({...c, thinking: t}))}/>}
+        {nav === "support" && <SupportView support={content.support || {}} onChange={s => setContent(c => ({...c, support: s}))}/>}
+        {nav === "contact" && <ContactView contact={content.contact || {}} onChange={ct => setContent(c => ({...c, contact: ct}))}/>}
         {nav === "sections" && <SectionsView sections={content.sections} onChange={s => setContent(c => ({...c, sections: s}))}/>}
       </div>
 
@@ -227,10 +230,13 @@ function Sidebar({ nav, onNav, content }) {
     { id: "home", label: "Overview", ic: Ic.home, kbd: "1" },
     { id: "hero", label: "Hero", ic: Ic.sparkle, kbd: "2" },
     { id: "products", label: "Products", ic: Ic.grid, kbd: "3", badge: content.products.length },
-    { id: "lab", label: "Lab shelf", ic: Ic.flask, kbd: "4", badge: content.lab.length },
-    { id: "play", label: "Play", ic: Ic.rocket, kbd: "5", badge: content.play?.widgets?.length ?? 0 },
-    { id: "about", label: "About", ic: Ic.heart, kbd: "6", badge: content.about?.paragraphs?.length ?? 0 },
-    { id: "sections", label: "Sections", ic: Ic.brain, kbd: "7" },
+    { id: "thinking", label: "Thinking", ic: Ic.brain, kbd: "4" },
+    { id: "lab", label: "Lab shelf", ic: Ic.flask, kbd: "5", badge: content.lab.length },
+    { id: "play", label: "Play", ic: Ic.rocket, kbd: "6", badge: content.play?.widgets?.length ?? 0 },
+    { id: "about", label: "About", ic: Ic.heart, kbd: "7", badge: content.about?.paragraphs?.length ?? 0 },
+    { id: "support", label: "Support", ic: Ic.star, kbd: "8" },
+    { id: "contact", label: "Contact", ic: Ic.mail, kbd: "9", badge: content.contact?.rows?.length ?? 0 },
+    { id: "sections", label: "Sections", ic: Ic.eye, kbd: "0" },
   ];
   return (
     <div style={{
@@ -1065,6 +1071,133 @@ function KVEditor({ kv, onChange }) {
   );
 }
 
+function ThinkingView({ thinking, onChange }) {
+  const u = (patch) => onChange({ ...thinking, ...patch });
+  const paragraphs = thinking.paragraphs || [];
+  const cta = thinking.cta || {};
+  const updatePara = (i, v) => u({ paragraphs: paragraphs.map((p, j) => j === i ? v : p) });
+  const addPara = () => u({ paragraphs: [...paragraphs, ""] });
+  const removePara = (i) => u({ paragraphs: paragraphs.filter((_, j) => j !== i) });
+  const movePara = (i, dir) => {
+    const next = [...paragraphs];
+    const j = i + dir;
+    if (j < 0 || j >= next.length) return;
+    [next[i], next[j]] = [next[j], next[i]];
+    u({ paragraphs: next });
+  };
+  return (
+    <div>
+      <PanelHeader title="Thinking" subtitle="The thesis section — Self-Evolving Plugin Framework pitch"/>
+      <div style={{ padding: "18px 26px", maxWidth: 820 }}>
+        <Field label="Eyebrow"><Input value={thinking.eyebrow||""} onChange={v=>u({eyebrow:v})}/></Field>
+        <Field label="Headline"><Input value={thinking.headline||""} onChange={v=>u({headline:v})}/></Field>
+        <Field label="Lead" hint="short paragraph next to the headline"><Input multiline value={thinking.lead||""} onChange={v=>u({lead:v})}/></Field>
+        <Field label="Pull quote" hint="rendered in <blockquote> — leave empty to hide"><Input multiline value={thinking.quote||""} onChange={v=>u({quote:v})}/></Field>
+
+        <div style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", margin: "22px 0 10px" }}>
+          Paragraphs <span style={{ color: A.cyan, textTransform: "none", letterSpacing: 0, fontStyle: "italic" }}>— inline &lt;strong&gt; / &lt;em&gt; allowed</span>
+        </div>
+        {paragraphs.map((p, i) => (
+          <div key={i} style={{ padding: 12, background: A.panel, border: `1px solid ${A.line}`, borderRadius: 6, marginBottom: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+              <span style={{ fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".08em" }}>#{i + 1}</span>
+              <div style={{ flex: 1 }}/>
+              <button onClick={()=>movePara(i, -1)} disabled={i === 0} style={{ background: "transparent", border: "none", color: i === 0 ? A.line2 : A.dim2, cursor: i === 0 ? "default" : "pointer", padding: 4, transform: "rotate(180deg)" }}>{Ic.chev}</button>
+              <button onClick={()=>movePara(i, 1)} disabled={i === paragraphs.length - 1} style={{ background: "transparent", border: "none", color: i === paragraphs.length - 1 ? A.line2 : A.dim2, cursor: i === paragraphs.length - 1 ? "default" : "pointer", padding: 4 }}>{Ic.chev}</button>
+              <button onClick={()=>removePara(i)} style={{ background: "transparent", border: "none", color: A.dim2, cursor: "pointer", padding: 4 }}>{Ic.trash}</button>
+            </div>
+            <Input multiline value={p} onChange={v=>updatePara(i, v)} placeholder="Paragraph text (HTML <strong>/<em> allowed)"/>
+          </div>
+        ))}
+        <button onClick={addPara} style={{ padding: "8px 12px", background: "transparent", border: `1px dashed ${A.line2}`, color: A.dim, fontSize: 12, cursor: "pointer", borderRadius: 4, fontFamily: "inherit" }}>+ add paragraph</button>
+
+        <div style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", margin: "26px 0 10px" }}>Call-to-action</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+          <Field label="CTA label"><Input value={cta.label||""} onChange={v=>u({cta: {...cta, label: v}})}/></Field>
+          <Field label="CTA link" mono><Input mono value={cta.href||""} onChange={v=>u({cta: {...cta, href: v}})}/></Field>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SupportView({ support, onChange }) {
+  const u = (patch) => onChange({ ...support, ...patch });
+  const cta = support.cta || {};
+  return (
+    <div>
+      <PanelHeader title="Support" subtitle="Sponsor CTA band above the contact footer"/>
+      <div style={{ padding: "18px 26px", maxWidth: 820 }}>
+        <Field label="Headline"><Input value={support.headline||""} onChange={v=>u({headline:v})}/></Field>
+        <Field label="Body"><Input multiline value={support.body||""} onChange={v=>u({body:v})}/></Field>
+
+        <div style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", margin: "22px 0 10px" }}>Call-to-action</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+          <Field label="CTA label"><Input value={cta.label||""} onChange={v=>u({cta: {...cta, label: v}})}/></Field>
+          <Field label="CTA link" mono hint="e.g. github.com/sponsors/…"><Input mono value={cta.href||""} onChange={v=>u({cta: {...cta, href: v}})}/></Field>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ContactView({ contact, onChange }) {
+  const u = (patch) => onChange({ ...contact, ...patch });
+  const pcta = contact.primaryCta || {};
+  const rows = contact.rows || [];
+  const updateRow = (i, patch) => u({ rows: rows.map((r, j) => j === i ? { ...r, ...patch } : r) });
+  const addRow = () => u({ rows: [...rows, { label: "", value: "", href: "" }] });
+  const removeRow = (i) => u({ rows: rows.filter((_, j) => j !== i) });
+  const moveRow = (i, dir) => {
+    const next = [...rows];
+    const j = i + dir;
+    if (j < 0 || j >= next.length) return;
+    [next[i], next[j]] = [next[j], next[i]];
+    u({ rows: next });
+  };
+  return (
+    <div>
+      <PanelHeader title="Contact" subtitle="Email CTA + contact rows (github, email, sponsors, etc.)" actions={<Btn primary onClick={addRow}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.plus} Add row</span></Btn>}/>
+      <div style={{ padding: "18px 26px", maxWidth: 820 }}>
+        <Field label="Eyebrow"><Input value={contact.eyebrow||""} onChange={v=>u({eyebrow:v})}/></Field>
+        <Field label="Headline"><Input value={contact.headline||""} onChange={v=>u({headline:v})}/></Field>
+        <Field label="Lead"><Input multiline value={contact.lead||""} onChange={v=>u({lead:v})}/></Field>
+
+        <div style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", margin: "22px 0 10px" }}>Primary CTA</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+          <Field label="CTA label"><Input value={pcta.label||""} onChange={v=>u({primaryCta: {...pcta, label: v}})}/></Field>
+          <Field label="CTA link" mono><Input mono value={pcta.href||""} onChange={v=>u({primaryCta: {...pcta, href: v}})}/></Field>
+        </div>
+
+        <div style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", margin: "22px 0 10px" }}>
+          Contact rows <span style={{ color: A.cyan, textTransform: "none", letterSpacing: 0, fontStyle: "italic" }}>— https:// links open in new tab, mailto:/tel: stay in-window</span>
+        </div>
+        {rows.length === 0 && (
+          <div style={{ padding: "14px 18px", border: `1px dashed ${A.line2}`, borderRadius: 6, color: A.dim, fontSize: 12, marginBottom: 10 }}>
+            No rows. Add one to populate the contact sidebar.
+          </div>
+        )}
+        {rows.map((r, i) => (
+          <div key={i} style={{ padding: 12, background: A.panel, border: `1px solid ${A.line}`, borderRadius: 6, marginBottom: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+              <span style={{ fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".08em" }}>#{i + 1}</span>
+              <div style={{ flex: 1 }}/>
+              <button onClick={()=>moveRow(i, -1)} disabled={i === 0} style={{ background: "transparent", border: "none", color: i === 0 ? A.line2 : A.dim2, cursor: i === 0 ? "default" : "pointer", padding: 4, transform: "rotate(180deg)" }}>{Ic.chev}</button>
+              <button onClick={()=>moveRow(i, 1)} disabled={i === rows.length - 1} style={{ background: "transparent", border: "none", color: i === rows.length - 1 ? A.line2 : A.dim2, cursor: i === rows.length - 1 ? "default" : "pointer", padding: 4 }}>{Ic.chev}</button>
+              <button onClick={()=>removeRow(i)} style={{ background: "transparent", border: "none", color: A.dim2, cursor: "pointer", padding: 4 }}>{Ic.trash}</button>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 10, marginBottom: 8 }}>
+              <Input value={r.label||""} onChange={v=>updateRow(i,{label:v})} placeholder="label (e.g. email)"/>
+              <Input value={r.value||""} onChange={v=>updateRow(i,{value:v})} placeholder="display value"/>
+            </div>
+            <Input mono value={r.href||""} onChange={v=>updateRow(i,{href:v})} placeholder="https://… or mailto:…"/>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SectionsView({ sections, onChange }) {
   const rows = [
     { key: "thinking", label: "Thinking behind it", desc: "Framework thesis + Self-Evolving Plugin Framework link" },
@@ -1234,9 +1367,12 @@ function CommandPalette({ close, onNav, onPreview, onAddProduct, products, onSel
     { label: "Edit Hero", kind: "nav", ic: Ic.sparkle, run: () => onNav("hero") },
     { label: "Edit Products", kind: "nav", ic: Ic.grid, run: () => onNav("products") },
     { label: "Edit Lab shelf", kind: "nav", ic: Ic.flask, run: () => onNav("lab") },
+    { label: "Edit Thinking", kind: "nav", ic: Ic.brain, run: () => onNav("thinking") },
     { label: "Edit Play", kind: "nav", ic: Ic.rocket, run: () => onNav("play") },
     { label: "Edit About", kind: "nav", ic: Ic.heart, run: () => onNav("about") },
-    { label: "Edit Sections", kind: "nav", ic: Ic.brain, run: () => onNav("sections") },
+    { label: "Edit Support", kind: "nav", ic: Ic.star, run: () => onNav("support") },
+    { label: "Edit Contact", kind: "nav", ic: Ic.mail, run: () => onNav("contact") },
+    { label: "Edit Sections", kind: "nav", ic: Ic.eye, run: () => onNav("sections") },
     { label: "Preview site", kind: "action", ic: Ic.eye, run: onPreview },
     { label: "Add new product…", kind: "action", ic: Ic.plus, run: onAddProduct },
     ...products.map(p => ({ label: `Jump to product · ${p.title}`, kind: "product", ic: Ic.grid, run: () => onSelectProduct(p.id) })),

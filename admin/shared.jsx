@@ -53,6 +53,26 @@ const INITIAL_CONTENT = {
     paragraphs: [],
     principles: [],
   },
+  thinking: {
+    eyebrow: "02 · The thesis",
+    headline: "The thinking behind it.",
+    lead: "",
+    quote: "",
+    paragraphs: [],
+    cta: { label: "", href: "" },
+  },
+  support: {
+    headline: "Keep the lab running.",
+    body: "",
+    cta: { label: "Sponsor on GitHub", href: "https://github.com/sponsors/estevanhernandez-stack-ed" },
+  },
+  contact: {
+    eyebrow: "07 · Contact",
+    headline: "Build something with us.",
+    lead: "",
+    primaryCta: { label: "", href: "" },
+    rows: [],
+  },
   products: [
     {
       id: "vibe-cartographer",

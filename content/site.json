@@ -70,60 +70,19 @@
       "enabled": true
     }
   },
-  "play": {
-    "eyebrow": "05 · Play",
-    "headline": "Also, we make games.",
-    "lead": "A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).",
-    "widgets": [
-      {
-        "id": "bacon-widget",
-        "script": "/widget-bacon-trail/widget.js",
-        "stylesheet": "/widget-bacon-trail/widget.css",
-        "initFn": "BaconTrailWidget.init",
-        "config": {
-          "ctaUrl": "#work",
-          "ctaLabel": "See the full suite →"
-        }
-      }
-    ]
-  },
-  "about": {
-    "eyebrow": "06 · About 626 Labs",
-    "headline": "New ideas to",
-    "headlineAccent": "old logic.",
-    "stack": [
-      "TypeScript",
-      "Swift",
-      "Python",
-      "Claude Code",
-      "React 19",
-      "Fort Worth, TX"
-    ],
+  "thinking": {
+    "eyebrow": "02 · The thesis",
+    "headline": "The thinking behind it.",
+    "lead": "Every Vibe plugin follows the same architectural playbook — an Apache-licensed spec that makes the claims checkable, not aspirational.",
+    "quote": "A plugin should be more useful on its tenth run than on its first — not because the user learned it, but because it learned the user.",
     "paragraphs": [
-      "626 Labs builds modern tools for practices that have been running on spreadsheets, paper, and inherited habits for decades — or, in the case of astrology, a few thousand years. The brief is simple: look at a field that everyone assumes is \"fine the way it is,\" and ship the version it should have had all along.",
-      "The proof case is <strong>Celestia 3</strong>. AI joined with tarot, numerology, and astrology in one surface. Partway through the build, we discovered the default Swiss Ephemeris engine drifted at the second-precision level. We didn't ship around it. We repaired the engine ourselves and met the NASA-grade bar. The point isn't the math — it's the posture. When the bar moves mid-build, we move with it.",
-      "That posture is what pulled us into the old empires — theater operations, safety inspections, hotels, cinema exhibition. Off-the-shelf vendors build for the brochure. We build operator-first — the domain expert in the loop, the AI coder on the keyboard — and ship the tool the shift manager actually needed.",
-      "The Vibe plugins — <strong>Cartographer, Doc, Test, Sec</strong> — are the other half of the work. Vibe coding is the fastest way to turn an idea into running software right now. It's also the easiest way to end up with something that can't survive production. The plugins close that gap: planning, docs, tests, security, all built so a vibe-coded afternoon holds up in front of real users.",
-      "<strong>We See You at the Movies</strong> is the gaming wedge. Trivia and head-to-head card battles are warm-ups for bigger things on deck.",
-      "Every 626 Labs app is built like it might be seen by a thousand pairs of eyes, even when it may only ever be seen by one. That's the standard. I've deployed more apps to production than I ever imagined, and the bar keeps going up."
+      "The <strong>Self-Evolving Plugin Framework</strong> is three disciplines stacked on top of each other: self-repair, self-teach, self-evolve. A plugin that can fix itself when it breaks, teach itself what the user actually wanted, and rewrite its own guidance when the pattern repeats. Each discipline earns its rung on a five-level maturity ladder — sixteen named patterns across the climb, one Apache-licensed spec, and a scorecard so the claims are checkable, not aspirational.",
+      "Vibe Cartographer sits at <strong>Level 3.5</strong> right now — the highest rung any public plugin has reached — and every new plugin we ship gets benchmarked against the same ladder. The framework isn't marketing. It's how we keep the work honest when nobody's watching."
     ],
-    "principles": [
-      {
-        "num": "P/01",
-        "heading": "Agents read first.",
-        "body": "No plugin touches a codebase before it's read the codebase. Context over cleverness — always."
-      },
-      {
-        "num": "P/02",
-        "heading": "Operator in the loop.",
-        "body": "The shift manager knows what the tool needs. We build with them, not at them. The domain expert stays on the keyboard."
-      },
-      {
-        "num": "P/03",
-        "heading": "Built for a thousand eyes.",
-        "body": "Enterprise grade even when the app may only ever be seen by one. That's the standard. It keeps the work honest."
-      }
-    ]
+    "cta": {
+      "label": "Read the framework doc",
+      "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer/blob/main/docs/self-evolving-plugins-framework.md"
+    }
   },
   "products": [
     {
@@ -485,5 +444,99 @@
         }
       ]
     }
-  ]
+  ],
+  "play": {
+    "eyebrow": "05 · Play",
+    "headline": "Also, we make games.",
+    "lead": "A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).",
+    "widgets": [
+      {
+        "id": "bacon-widget",
+        "script": "/widget-bacon-trail/widget.js",
+        "stylesheet": "/widget-bacon-trail/widget.css",
+        "initFn": "BaconTrailWidget.init",
+        "config": {
+          "ctaUrl": "#work",
+          "ctaLabel": "See the full suite →"
+        }
+      }
+    ]
+  },
+  "about": {
+    "eyebrow": "06 · About 626 Labs",
+    "headline": "New ideas to",
+    "headlineAccent": "old logic.",
+    "stack": [
+      "TypeScript",
+      "Swift",
+      "Python",
+      "Claude Code",
+      "React 19",
+      "Fort Worth, TX"
+    ],
+    "paragraphs": [
+      "626 Labs builds modern tools for practices that have been running on spreadsheets, paper, and inherited habits for decades — or, in the case of astrology, a few thousand years. The brief is simple: look at a field that everyone assumes is \"fine the way it is,\" and ship the version it should have had all along.",
+      "The proof case is <strong>Celestia 3</strong>. AI joined with tarot, numerology, and astrology in one surface. Partway through the build, we discovered the default Swiss Ephemeris engine drifted at the second-precision level. We didn't ship around it. We repaired the engine ourselves and met the NASA-grade bar. The point isn't the math — it's the posture. When the bar moves mid-build, we move with it.",
+      "That posture is what pulled us into the old empires — theater operations, safety inspections, hotels, cinema exhibition. Off-the-shelf vendors build for the brochure. We build operator-first — the domain expert in the loop, the AI coder on the keyboard — and ship the tool the shift manager actually needed.",
+      "The Vibe plugins — <strong>Cartographer, Doc, Test, Sec</strong> — are the other half of the work. Vibe coding is the fastest way to turn an idea into running software right now. It's also the easiest way to end up with something that can't survive production. The plugins close that gap: planning, docs, tests, security, all built so a vibe-coded afternoon holds up in front of real users.",
+      "<strong>We See You at the Movies</strong> is the gaming wedge. Trivia and head-to-head card battles are warm-ups for bigger things on deck.",
+      "Every 626 Labs app is built like it might be seen by a thousand pairs of eyes, even when it may only ever be seen by one. That's the standard. I've deployed more apps to production than I ever imagined, and the bar keeps going up."
+    ],
+    "principles": [
+      {
+        "num": "P/01",
+        "heading": "Agents read first.",
+        "body": "No plugin touches a codebase before it's read the codebase. Context over cleverness — always."
+      },
+      {
+        "num": "P/02",
+        "heading": "Operator in the loop.",
+        "body": "The shift manager knows what the tool needs. We build with them, not at them. The domain expert stays on the keyboard."
+      },
+      {
+        "num": "P/03",
+        "heading": "Built for a thousand eyes.",
+        "body": "Enterprise grade even when the app may only ever be seen by one. That's the standard. It keeps the work honest."
+      }
+    ]
+  },
+  "support": {
+    "headline": "Keep the lab running.",
+    "body": "Every 626 Labs plugin is MIT-licensed and maintained on nights and weekends. If the Vibe ecosystem is saving you time, GitHub Sponsors is the cleanest way to say thanks — and to keep the next plugin on schedule.",
+    "cta": {
+      "label": "Sponsor on GitHub",
+      "href": "https://github.com/sponsors/estevanhernandez-stack-ed"
+    }
+  },
+  "contact": {
+    "eyebrow": "07 · Contact",
+    "headline": "Build something with us.",
+    "lead": "Got a codebase that needs rounding out? Want early access to the Dashboard? Email is the fastest way in. GitHub works too — we answer both.",
+    "primaryCta": {
+      "label": "estevan@626labs.dev",
+      "href": "mailto:estevan@626labs.dev"
+    },
+    "rows": [
+      {
+        "label": "github org",
+        "value": "@626Labs-LLC",
+        "href": "https://github.com/626Labs-LLC"
+      },
+      {
+        "label": "maintainer",
+        "value": "@estevanhernandez-stack-ed",
+        "href": "https://github.com/estevanhernandez-stack-ed"
+      },
+      {
+        "label": "email",
+        "value": "estevan@626labs.dev",
+        "href": "mailto:estevan@626labs.dev"
+      },
+      {
+        "label": "support",
+        "value": "github sponsors",
+        "href": "https://github.com/sponsors/estevanhernandez-stack-ed"
+      }
+    ]
+  }
 }

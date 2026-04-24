@@ -636,6 +636,137 @@ def render_play_section(play: dict) -> str:
 </section>"""
 
 
+# ─── thinking / thesis ──────────────────────────────────────────────
+def render_thinking(thinking: dict) -> str:
+    """Render the `.thinking` section — the Self-Evolving Plugin Framework pitch.
+
+    paragraphs[] are emitted as raw HTML so inline <strong>/<em> carry
+    through. CTA is optional — omit the block entirely when absent.
+    """
+    eyebrow = esc(thinking.get("eyebrow", ""))
+    headline = esc(thinking.get("headline", ""))
+    lead = esc(thinking.get("lead", ""))
+    quote = esc(thinking.get("quote", ""))
+    paragraphs = thinking.get("paragraphs") or []
+    cta = thinking.get("cta") or {}
+
+    para_html = "\n".join(f"    <p>{p}</p>" for p in paragraphs)  # raw HTML on purpose
+
+    cta_html = ""
+    if cta.get("label") and cta.get("href"):
+        cta_html = (
+            '    <div class="thinking-link">\n'
+            f'      <a href="{attr(cta["href"])}">\n'
+            f'        {esc(cta["label"])}\n'
+            '        <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>\n'
+            '      </a>\n'
+            '    </div>'
+        )
+
+    blockquote_html = f'    <blockquote>\n      {quote}\n    </blockquote>' if quote else ""
+
+    parts = [
+        '<section class="section thinking" id="thinking">',
+        '  <div class="wrap">',
+        '    <div class="section-head">',
+        '      <div>',
+        f'        <div class="eyebrow"><span>{eyebrow}</span><span class="line"></span></div>',
+        f'        <h2>{headline}</h2>',
+        '      </div>',
+        f'      <p>{lead}</p>',
+        '    </div>',
+    ]
+    if blockquote_html:
+        parts.append(blockquote_html)
+    if para_html:
+        parts.append(para_html)
+    if cta_html:
+        parts.append(cta_html)
+    parts.append('  </div>')
+    parts.append('</section>')
+    return "\n".join(parts)
+
+
+# ─── support / sponsors CTA ─────────────────────────────────────────
+SPONSOR_HEART_SVG = (
+    '<svg viewBox="0 0 16 16" aria-hidden="true">'
+    '<path d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 008 13.393a20.561 20.561 0 003.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.749.749 0 01-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5zM8 14.25l-.345.666-.002-.001-.006-.003-.018-.01a7.643 7.643 0 01-.31-.17 22.075 22.075 0 01-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.08 22.08 0 01-3.744 2.584l-.018.01-.006.003h-.002L8 14.25z"/>'
+    '</svg>'
+)
+
+
+def render_support(support: dict) -> str:
+    """Render the `.support` section — sponsor CTA band."""
+    headline = esc(support.get("headline", ""))
+    body = esc(support.get("body", ""))
+    cta = support.get("cta") or {}
+    cta_label = esc(cta.get("label", ""))
+    cta_href = attr(cta.get("href", "#"))
+    return f"""\
+<section class="support" id="support">
+  <div class="wrap">
+    <div class="support-box">
+      <div class="support-copy">
+        <h3>{headline}</h3>
+        <p>{body}</p>
+      </div>
+      <a class="sponsor-cta" href="{cta_href}">
+        {SPONSOR_HEART_SVG}
+        {cta_label}
+      </a>
+    </div>
+  </div>
+</section>"""
+
+
+# ─── contact ────────────────────────────────────────────────────────
+def render_contact(contact: dict) -> str:
+    """Render the `.contact` section — primary CTA + info rows."""
+    eyebrow = esc(contact.get("eyebrow", ""))
+    headline = esc(contact.get("headline", ""))
+    lead = esc(contact.get("lead", ""))
+    pcta = contact.get("primaryCta") or {}
+    pcta_label = esc(pcta.get("label", ""))
+    pcta_href = attr(pcta.get("href", "#"))
+    rows = contact.get("rows") or []
+
+    arrow_svg = '<svg class="ic arrow ic-lg" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>'
+    mail_svg = '<svg class="ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 4l8 8 8-8"/></svg>'
+
+    def row_html(r: dict) -> str:
+        href = r.get("href", "#")
+        is_external = href.startswith("http://") or href.startswith("https://")
+        target_attrs = ' target="_blank" rel="noopener"' if is_external else ""
+        return (
+            f'      <a class="contact-row" href="{attr(href)}"{target_attrs}>\n'
+            '        <div>\n'
+            f'          <div class="label">{esc(r.get("label", ""))}</div>\n'
+            f'          <div class="value">{esc(r.get("value", ""))}</div>\n'
+            '        </div>\n'
+            f'        {arrow_svg}\n'
+            '      </a>'
+        )
+    rows_html = "\n".join(row_html(r) for r in rows)
+
+    return f"""\
+<section class="section contact" id="contact">
+  <div class="wrap contact-inner">
+    <div>
+      <div class="eyebrow"><span>{eyebrow}</span><span class="line"></span></div>
+      <h2>{headline}</h2>
+      <p class="contact-sub">{lead}</p>
+      <a class="btn btn-gradient" href="{pcta_href}">
+        {pcta_label}
+        {mail_svg}
+      </a>
+    </div>
+    <div class="contact-list">
+{rows_html}
+    </div>
+  </div>
+</section>"""
+
+
 # ─── about / manifesto ──────────────────────────────────────────────
 def render_about(about: dict) -> str:
     """Render the `.manifesto` section — 'About 626 Labs'.
@@ -746,10 +877,16 @@ def main(argv: list[str]) -> int:
     out = substitute_zone(out, "hero-chips", render_chips(content["hero"]["chips"]))
     out = substitute_zone(out, "products", render_products(content["products"]))
     out = substitute_zone(out, "lab-pool", render_lab_pool(content["lab"]), js=True)
+    if "thinking" in content:
+        out = substitute_zone(out, "thinking", render_thinking(content["thinking"]))
     if "play" in content:
         out = substitute_zone(out, "play", render_play_section(content["play"]))
     if "about" in content:
         out = substitute_zone(out, "about", render_about(content["about"]))
+    if "support" in content:
+        out = substitute_zone(out, "support", render_support(content["support"]))
+    if "contact" in content:
+        out = substitute_zone(out, "contact", render_contact(content["contact"]))
     out = apply_section_toggles(out, content.get("sections") or {})
 
     changed = out != src
