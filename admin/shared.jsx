@@ -27,6 +27,7 @@ const INITIAL_CONTENT = {
     labRuns: { enabled: true },
     lab: { enabled: true },
     play: { enabled: true },
+    about: { enabled: true },
     support: { enabled: true },
     contact: { enabled: true },
   },
@@ -43,6 +44,14 @@ const INITIAL_CONTENT = {
         config: { ctaUrl: "#work", ctaLabel: "See the full suite →" },
       },
     ],
+  },
+  about: {
+    eyebrow: "06 · About 626 Labs",
+    headline: "New ideas to",
+    headlineAccent: "old logic.",
+    stack: ["TypeScript", "Swift", "Python", "Claude Code", "React 19", "Fort Worth, TX"],
+    paragraphs: [],
+    principles: [],
   },
   products: [
     {

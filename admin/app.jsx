@@ -140,6 +140,7 @@ function AdminApp({ token, login, onSignOut }) {
         {nav === "products" && <ProductsView products={content.products} liveStats={liveStats} selectedId={selProduct} onSelect={setSelProduct} onUpdate={updateProduct} onAdd={addProduct} onDelete={deleteProduct}/>}
         {nav === "lab" && <LabView lab={content.lab} onChange={l => setContent(c => ({...c, lab: l}))}/>}
         {nav === "play" && <PlayView play={content.play || {}} onChange={p => setContent(c => ({...c, play: p}))}/>}
+        {nav === "about" && <AboutView about={content.about || {}} onChange={a => setContent(c => ({...c, about: a}))}/>}
         {nav === "sections" && <SectionsView sections={content.sections} onChange={s => setContent(c => ({...c, sections: s}))}/>}
       </div>
 
@@ -225,7 +226,8 @@ function Sidebar({ nav, onNav, content }) {
     { id: "products", label: "Products", ic: Ic.grid, kbd: "3", badge: content.products.length },
     { id: "lab", label: "Lab shelf", ic: Ic.flask, kbd: "4", badge: content.lab.length },
     { id: "play", label: "Play", ic: Ic.rocket, kbd: "5", badge: content.play?.widgets?.length ?? 0 },
-    { id: "sections", label: "Sections", ic: Ic.brain, kbd: "6" },
+    { id: "about", label: "About", ic: Ic.heart, kbd: "6", badge: content.about?.paragraphs?.length ?? 0 },
+    { id: "sections", label: "Sections", ic: Ic.brain, kbd: "7" },
   ];
   return (
     <div style={{
@@ -840,6 +842,96 @@ function LabView({ lab, onChange }) {
   );
 }
 
+function AboutView({ about, onChange }) {
+  const u = (patch) => onChange({ ...about, ...patch });
+  const stack = about.stack || [];
+  const paragraphs = about.paragraphs || [];
+  const principles = about.principles || [];
+
+  const updateStack = (i, v) => u({ stack: stack.map((s, j) => j === i ? v : s) });
+  const addStack = () => u({ stack: [...stack, ""] });
+  const removeStack = (i) => u({ stack: stack.filter((_, j) => j !== i) });
+
+  const updatePara = (i, v) => u({ paragraphs: paragraphs.map((p, j) => j === i ? v : p) });
+  const addPara = () => u({ paragraphs: [...paragraphs, ""] });
+  const removePara = (i) => u({ paragraphs: paragraphs.filter((_, j) => j !== i) });
+  const movePara = (i, dir) => {
+    const next = [...paragraphs];
+    const j = i + dir;
+    if (j < 0 || j >= next.length) return;
+    [next[i], next[j]] = [next[j], next[i]];
+    u({ paragraphs: next });
+  };
+
+  const updatePrin = (i, patch) => u({ principles: principles.map((p, j) => j === i ? { ...p, ...patch } : p) });
+  const addPrin = () => u({ principles: [...principles, { num: `P/${String(principles.length + 1).padStart(2, "0")}`, heading: "", body: "" }] });
+  const removePrin = (i) => u({ principles: principles.filter((_, j) => j !== i) });
+
+  return (
+    <div>
+      <PanelHeader title="About" subtitle="Manifesto — who 626 Labs is and the principles behind the work"/>
+      <div style={{ padding: "18px 26px", maxWidth: 820 }}>
+        <Field label="Eyebrow" hint="e.g. '06 · About 626 Labs'"><Input value={about.eyebrow||""} onChange={v=>u({eyebrow:v})}/></Field>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+          <Field label="Headline"><Input value={about.headline||""} onChange={v=>u({headline:v})}/></Field>
+          <Field label="Headline accent" hint="rendered in <em>"><Input value={about.headlineAccent||""} onChange={v=>u({headlineAccent:v})}/></Field>
+        </div>
+
+        <Field label="Stack chips" hint="short labels above the manifesto body">
+          <div>
+            {stack.map((s, i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 34px", gap: 8, marginBottom: 6 }}>
+                <Input value={s} onChange={v=>updateStack(i, v)} placeholder="TypeScript"/>
+                <button onClick={()=>removeStack(i)} style={{ background: "transparent", border: `1px solid ${A.line}`, color: A.dim2, cursor: "pointer", borderRadius: 4 }}>{Ic.trash}</button>
+              </div>
+            ))}
+            <button onClick={addStack} style={{ marginTop: 4, padding: "6px 10px", background: "transparent", border: `1px dashed ${A.line2}`, color: A.dim, fontSize: 11, cursor: "pointer", borderRadius: 4, fontFamily: "inherit" }}>+ add chip</button>
+          </div>
+        </Field>
+
+        <div style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", margin: "22px 0 10px" }}>
+          Paragraphs <span style={{ color: A.cyan, textTransform: "none", letterSpacing: 0, fontStyle: "italic" }}>— inline &lt;strong&gt; / &lt;em&gt; allowed</span>
+        </div>
+        {paragraphs.length === 0 && (
+          <div style={{ padding: "14px 18px", border: `1px dashed ${A.line2}`, borderRadius: 6, color: A.dim, fontSize: 12, marginBottom: 12 }}>
+            No paragraphs. Add one to populate the manifesto body.
+          </div>
+        )}
+        {paragraphs.map((p, i) => (
+          <div key={i} style={{ padding: 12, background: A.panel, border: `1px solid ${A.line}`, borderRadius: 6, marginBottom: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+              <span style={{ fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".08em" }}>#{i + 1}</span>
+              <div style={{ flex: 1 }}/>
+              <button onClick={()=>movePara(i, -1)} disabled={i === 0} style={{ background: "transparent", border: "none", color: i === 0 ? A.line2 : A.dim2, cursor: i === 0 ? "default" : "pointer", padding: 4, transform: "rotate(180deg)" }}>{Ic.chev}</button>
+              <button onClick={()=>movePara(i, 1)} disabled={i === paragraphs.length - 1} style={{ background: "transparent", border: "none", color: i === paragraphs.length - 1 ? A.line2 : A.dim2, cursor: i === paragraphs.length - 1 ? "default" : "pointer", padding: 4 }}>{Ic.chev}</button>
+              <button onClick={()=>removePara(i)} style={{ background: "transparent", border: "none", color: A.dim2, cursor: "pointer", padding: 4 }}>{Ic.trash}</button>
+            </div>
+            <Input multiline value={p} onChange={v=>updatePara(i, v)} placeholder="Paragraph text (HTML <strong>/<em> allowed)"/>
+          </div>
+        ))}
+        <button onClick={addPara} style={{ padding: "8px 12px", background: "transparent", border: `1px dashed ${A.line2}`, color: A.dim, fontSize: 12, cursor: "pointer", borderRadius: 4, fontFamily: "inherit" }}>+ add paragraph</button>
+
+        <div style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", margin: "26px 0 10px" }}>Principles</div>
+        {principles.map((pr, i) => (
+          <div key={i} style={{ padding: 14, background: A.panel, border: `1px solid ${A.line}`, borderRadius: 6, marginBottom: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+              <span style={{ fontSize: 11, color: A.cyan, fontFamily: "JetBrains Mono, monospace" }}>{pr.num || `P/${String(i+1).padStart(2, "0")}`}</span>
+              <div style={{ flex: 1 }}/>
+              <button onClick={()=>removePrin(i)} style={{ background: "transparent", border: "none", color: A.dim2, cursor: "pointer", padding: 4 }}>{Ic.trash}</button>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "100px 1fr", gap: 10, marginBottom: 8 }}>
+              <Input mono value={pr.num||""} onChange={v=>updatePrin(i,{num:v})} placeholder="P/01"/>
+              <Input value={pr.heading||""} onChange={v=>updatePrin(i,{heading:v})} placeholder="Heading"/>
+            </div>
+            <Input multiline value={pr.body||""} onChange={v=>updatePrin(i,{body:v})} placeholder="Body"/>
+          </div>
+        ))}
+        <button onClick={addPrin} style={{ padding: "8px 12px", background: "transparent", border: `1px dashed ${A.line2}`, color: A.dim, fontSize: 12, cursor: "pointer", borderRadius: 4, fontFamily: "inherit" }}>+ add principle</button>
+      </div>
+    </div>
+  );
+}
+
 function PlayView({ play, onChange }) {
   const u = (patch) => onChange({ ...play, ...patch });
   const widgets = play.widgets || [];
@@ -918,6 +1010,7 @@ function SectionsView({ sections, onChange }) {
     { key: "labRuns", label: "How the lab runs", desc: "Private Agent OS dashboard screenshots + caption" },
     { key: "lab", label: "Also from the lab", desc: "JS-shuffled shelf of 8 other projects" },
     { key: "play", label: "Play", desc: "Embedded games — Birthday Bacon Trail widget" },
+    { key: "about", label: "About 626 Labs", desc: "Manifesto — paragraphs + 3 guiding principles" },
     { key: "support", label: "Keep the lab running", desc: "GitHub Sponsors CTA block" },
     { key: "contact", label: "Contact", desc: "Email + GitHub + support rows" },
   ];
@@ -1081,6 +1174,7 @@ function CommandPalette({ close, onNav, onPreview, onAddProduct, products, onSel
     { label: "Edit Products", kind: "nav", ic: Ic.grid, run: () => onNav("products") },
     { label: "Edit Lab shelf", kind: "nav", ic: Ic.flask, run: () => onNav("lab") },
     { label: "Edit Play", kind: "nav", ic: Ic.rocket, run: () => onNav("play") },
+    { label: "Edit About", kind: "nav", ic: Ic.heart, run: () => onNav("about") },
     { label: "Edit Sections", kind: "nav", ic: Ic.brain, run: () => onNav("sections") },
     { label: "Preview site", kind: "action", ic: Ic.eye, run: onPreview },
     { label: "Add new product…", kind: "action", ic: Ic.plus, run: onAddProduct },

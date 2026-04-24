@@ -636,6 +636,63 @@ def render_play_section(play: dict) -> str:
 </section>"""
 
 
+# ─── about / manifesto ──────────────────────────────────────────────
+def render_about(about: dict) -> str:
+    """Render the `.manifesto` section — 'About 626 Labs'.
+
+    paragraphs[] are emitted as raw HTML (not escaped) so the caller can
+    include inline <strong>/<em> tags freely. Trust boundary is fine —
+    only admins with repo push rights can edit this field.
+    """
+    eyebrow = esc(about.get("eyebrow", ""))
+    headline = esc(about.get("headline", ""))
+    accent = esc(about.get("headlineAccent", ""))
+    stack = about.get("stack") or []
+    paragraphs = about.get("paragraphs") or []
+    principles = about.get("principles") or []
+
+    stack_html = "\n".join(
+        f'        <span class="stack-chip">{esc(s)}</span>'
+        for s in stack
+    )
+    para_html = "\n".join(
+        f"      <p>{p}</p>"  # raw HTML passthrough on purpose
+        for p in paragraphs
+    )
+    principles_html = "\n".join(
+        f"""      <div class="principle">
+        <div class="num">{esc(pr.get("num", ""))}</div>
+        <h4>{esc(pr.get("heading", ""))}</h4>
+        <p>{esc(pr.get("body", ""))}</p>
+      </div>"""
+        for pr in principles
+    )
+
+    accent_html = f" <em>{accent}</em>" if accent else ""
+
+    return f"""\
+<section class="section manifesto" id="about">
+  <div class="wrap manifesto-inner">
+    <div>
+      <div class="eyebrow"><span>{eyebrow}</span><span class="line"></span></div>
+      <h2>{headline}{accent_html}</h2>
+      <div class="stack">
+{stack_html}
+      </div>
+    </div>
+    <div class="manifesto-body">
+{para_html}
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="principles">
+{principles_html}
+    </div>
+  </div>
+</section>"""
+
+
 # ─── section toggles ────────────────────────────────────────────────
 # Maps sections keys in site.json → DOM id of the <section> element.
 SECTION_IDS = {
@@ -643,6 +700,7 @@ SECTION_IDS = {
     "labRuns":  "lab-runs",
     "lab":      "lab",
     "play":     "play",
+    "about":    "about",
     "support":  "support",
     "contact":  "contact",
 }
@@ -690,6 +748,8 @@ def main(argv: list[str]) -> int:
     out = substitute_zone(out, "lab-pool", render_lab_pool(content["lab"]), js=True)
     if "play" in content:
         out = substitute_zone(out, "play", render_play_section(content["play"]))
+    if "about" in content:
+        out = substitute_zone(out, "about", render_about(content["about"]))
     out = apply_section_toggles(out, content.get("sections") or {})
 
     changed = out != src

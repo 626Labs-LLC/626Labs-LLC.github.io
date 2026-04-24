@@ -65,6 +65,9 @@
     },
     "contact": {
       "enabled": true
+    },
+    "about": {
+      "enabled": true
     }
   },
   "play": {
@@ -81,6 +84,44 @@
           "ctaUrl": "#work",
           "ctaLabel": "See the full suite →"
         }
+      }
+    ]
+  },
+  "about": {
+    "eyebrow": "06 · About 626 Labs",
+    "headline": "New ideas to",
+    "headlineAccent": "old logic.",
+    "stack": [
+      "TypeScript",
+      "Swift",
+      "Python",
+      "Claude Code",
+      "React 19",
+      "Fort Worth, TX"
+    ],
+    "paragraphs": [
+      "626 Labs builds modern tools for practices that have been running on spreadsheets, paper, and inherited habits for decades — or, in the case of astrology, a few thousand years. The brief is simple: look at a field that everyone assumes is \"fine the way it is,\" and ship the version it should have had all along.",
+      "The proof case is <strong>Celestia 3</strong>. AI joined with tarot, numerology, and astrology in one surface. Partway through the build, we discovered the default Swiss Ephemeris engine drifted at the second-precision level. We didn't ship around it. We repaired the engine ourselves and met the NASA-grade bar. The point isn't the math — it's the posture. When the bar moves mid-build, we move with it.",
+      "That posture is what pulled us into the old empires — theater operations, safety inspections, hotels, cinema exhibition. Off-the-shelf vendors build for the brochure. We build operator-first — the domain expert in the loop, the AI coder on the keyboard — and ship the tool the shift manager actually needed.",
+      "The Vibe plugins — <strong>Cartographer, Doc, Test, Sec</strong> — are the other half of the work. Vibe coding is the fastest way to turn an idea into running software right now. It's also the easiest way to end up with something that can't survive production. The plugins close that gap: planning, docs, tests, security, all built so a vibe-coded afternoon holds up in front of real users.",
+      "<strong>We See You at the Movies</strong> is the gaming wedge. Trivia and head-to-head card battles are warm-ups for bigger things on deck.",
+      "Every 626 Labs app is built like it might be seen by a thousand pairs of eyes, even when it may only ever be seen by one. That's the standard. I've deployed more apps to production than I ever imagined, and the bar keeps going up."
+    ],
+    "principles": [
+      {
+        "num": "P/01",
+        "heading": "Agents read first.",
+        "body": "No plugin touches a codebase before it's read the codebase. Context over cleverness — always."
+      },
+      {
+        "num": "P/02",
+        "heading": "Operator in the loop.",
+        "body": "The shift manager knows what the tool needs. We build with them, not at them. The domain expert stays on the keyboard."
+      },
+      {
+        "num": "P/03",
+        "heading": "Built for a thousand eyes.",
+        "body": "Enterprise grade even when the app may only ever be seen by one. That's the standard. It keeps the work honest."
       }
     ]
   },
