@@ -564,12 +564,85 @@ def render_lab_pool(lab: list[dict]) -> str:
     return inner
 
 
+# ─── play section (embedded games) ──────────────────────────────────
+def render_play_section(play: dict) -> str:
+    """Render the `.play` section — 'Also, we make games.'
+
+    Emits the section markup + a <link>/<script>/init sequence for each
+    widget listed in `play.widgets`. Forward-compatible: to add the
+    CinePerks widget alongside the bacon trail one, append a second entry
+    to `play.widgets` in site.json.
+    """
+    eyebrow = esc(play.get("eyebrow", "05 · Play"))
+    headline = esc(play.get("headline", "Also, we make games."))
+    lead = esc(play.get("lead", "Try one."))
+    widgets = play.get("widgets") or []
+
+    # Widget mount-points (empty <div>s keyed by id).
+    mounts = "\n        ".join(
+        f'<div id="{attr(w.get("id", ""))}" class="play-widget"></div>'
+        for w in widgets
+    )
+
+    # Stylesheets loaded first (before the script that mounts).
+    stylesheets = "\n      ".join(
+        f'<link rel="stylesheet" href="{attr(w.get("stylesheet", ""))}" />'
+        for w in widgets if w.get("stylesheet")
+    )
+
+    # Scripts + inline init calls, one per widget.
+    script_blocks: list[str] = []
+    for w in widgets:
+        src = w.get("script")
+        init_fn = w.get("initFn")
+        widget_id = w.get("id")
+        cfg = w.get("config") or {}
+        if not (src and init_fn and widget_id):
+            continue
+        # Inline config object serialized to JS-object literal.
+        cfg_entries = [
+            f'container: document.getElementById({json.dumps(widget_id)})',
+            *(f"{json.dumps(k)}: {json.dumps(v)}" for k, v in cfg.items()),
+        ]
+        cfg_js = ", ".join(cfg_entries)
+        script_blocks.append(
+            f'<script src="{attr(src)}" defer></script>\n      '
+            f'<script>window.addEventListener("DOMContentLoaded", function(){{'
+            f'if(window.{init_fn.split(".")[0]})'
+            f'{{{init_fn}({{{cfg_js}}});}}'
+            f'}});</script>'
+        )
+    scripts = "\n      ".join(script_blocks)
+
+    grid_class = "play-grid" + (" two-up" if len(widgets) >= 2 else "")
+
+    return f"""\
+<section class="section play" id="play">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>{eyebrow}</span><span class="line"></span></div>
+        <h2>{headline}</h2>
+      </div>
+      <p>{esc(lead)}</p>
+    </div>
+    <div class="{grid_class}">
+        {mounts}
+    </div>
+    <!-- widget assets -->
+    {stylesheets}
+    {scripts}
+  </div>
+</section>"""
+
+
 # ─── section toggles ────────────────────────────────────────────────
 # Maps sections keys in site.json → DOM id of the <section> element.
 SECTION_IDS = {
     "thinking": "thinking",
     "labRuns":  "lab-runs",
     "lab":      "lab",
+    "play":     "play",
     "support":  "support",
     "contact":  "contact",
 }
@@ -615,6 +688,8 @@ def main(argv: list[str]) -> int:
     out = substitute_zone(out, "hero-chips", render_chips(content["hero"]["chips"]))
     out = substitute_zone(out, "products", render_products(content["products"]))
     out = substitute_zone(out, "lab-pool", render_lab_pool(content["lab"]), js=True)
+    if "play" in content:
+        out = substitute_zone(out, "play", render_play_section(content["play"]))
     out = apply_section_toggles(out, content.get("sections") or {})
 
     changed = out != src

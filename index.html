@@ -984,6 +984,34 @@
     }
     section.lab .shuffle-note button:hover { color: var(--cyan-pale); text-decoration: underline; }
 
+    /* ========== Play (embedded games) ========== */
+    section.play {
+      background:
+        radial-gradient(70% 50% at 50% 0%, rgba(23,212,250,.06) 0%, transparent 60%),
+        var(--bg-0);
+      border-top: 1px solid var(--border-1);
+    }
+    .play-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: var(--s-6);
+      max-width: 480px;
+      margin: var(--s-8) auto 0;
+    }
+    .play-grid.two-up {
+      max-width: 900px;
+    }
+    @media (min-width: 960px) {
+      .play-grid.two-up {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .play-widget {
+      width: 100%;
+      max-width: 420px;
+    }
+
     /* ========== About / Manifesto ========== */
     section.manifesto {
       background:
@@ -1670,11 +1698,33 @@
   </div>
 </section>
 
+<!-- =============== PLAY (embedded games) =============== -->
+<!-- SITE_JSON:play:start -->
+<section class="section play" id="play">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>05 · Play</span><span class="line"></span></div>
+        <h2>Also, we make games.</h2>
+      </div>
+      <p>A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).</p>
+    </div>
+    <div class="play-grid">
+        <div id="bacon-widget" class="play-widget"></div>
+    </div>
+    <!-- widget assets -->
+    <link rel="stylesheet" href="/widget-bacon-trail/widget.css" />
+    <script src="/widget-bacon-trail/widget.js" defer></script>
+      <script>window.addEventListener("DOMContentLoaded", function(){if(window.BaconTrailWidget){BaconTrailWidget.init({container: document.getElementById("bacon-widget"), "ctaUrl": "#work", "ctaLabel": "See the full suite \u2192"});}});</script>
+  </div>
+</section>
+<!-- SITE_JSON:play:end -->
+
 <!-- =============== ABOUT / MANIFESTO =============== -->
 <section class="section manifesto" id="about">
   <div class="wrap manifesto-inner">
     <div>
-      <div class="eyebrow"><span>05 · About 626 Labs</span><span class="line"></span></div>
+      <div class="eyebrow"><span>06 · About 626 Labs</span><span class="line"></span></div>
       <h2>New ideas to <em>old logic.</em></h2>
       <div class="stack">
         <span class="stack-chip">TypeScript</span>
@@ -1736,7 +1786,7 @@
 <section class="section contact" id="contact">
   <div class="wrap contact-inner">
     <div>
-      <div class="eyebrow"><span>06 · Contact</span><span class="line"></span></div>
+      <div class="eyebrow"><span>07 · Contact</span><span class="line"></span></div>
       <h2>Build something with us.</h2>
       <p class="contact-sub">Got a codebase that needs rounding out? Want early access to the Dashboard? Email is the fastest way in. GitHub works too — we answer both.</p>
       <a class="btn btn-gradient" href="mailto:estevan@626labs.dev">
