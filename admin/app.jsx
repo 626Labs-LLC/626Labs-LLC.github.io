@@ -86,6 +86,11 @@ function AdminApp({ token, login, onSignOut }) {
     else setNav(target);
   };
 
+  const toast = React.useCallback((msg, tone = "cyan", duration = 3500) => {
+    setToast({ msg, tone });
+    if (duration > 0) setTimeout(() => setToast(null), duration);
+  }, []);
+
   const save = async () => {
     if (!dirty || saving || !content) return;
     setSaving(true);
@@ -94,11 +99,9 @@ function AdminApp({ token, login, onSignOut }) {
       const { sha } = await writeSiteJson(token, content, contentSha, msg);
       setContentSha(sha);
       setOriginal(content);
-      setToast({ msg: "Saved. Pages will redeploy shortly.", tone: "green" });
-      setTimeout(() => setToast(null), 3500);
+      toast("Saved. Pages will redeploy shortly.", "green", 3500);
     } catch (ex) {
-      setToast({ msg: `Save failed: ${ex.message}`, tone: "red" });
-      setTimeout(() => setToast(null), 6000);
+      toast(`Save failed: ${ex.message}`, "red", 6000);
     } finally {
       setSaving(false);
     }
@@ -137,7 +140,7 @@ function AdminApp({ token, login, onSignOut }) {
       <div style={{ overflow: "auto", background: A.bg, position: "relative" }}>
         {nav === "home" && <HomeView content={content} liveStats={liveStats} onNav={safeNav} onAddProduct={addProduct} onSelect={(id)=>{setSelProduct(id); safeNav("products");}}/>}
         {nav === "hero" && <HeroView hero={content.hero} onChange={h => setContent(c => ({...c, hero: h}))}/>}
-        {nav === "products" && <ProductsView products={content.products} liveStats={liveStats} selectedId={selProduct} onSelect={setSelProduct} onUpdate={updateProduct} onAdd={addProduct} onDelete={deleteProduct}/>}
+        {nav === "products" && <ProductsView products={content.products} liveStats={liveStats} selectedId={selProduct} onSelect={setSelProduct} onUpdate={updateProduct} onAdd={addProduct} onDelete={deleteProduct} token={token} onToast={toast}/>}
         {nav === "lab" && <LabView lab={content.lab} onChange={l => setContent(c => ({...c, lab: l}))}/>}
         {nav === "play" && <PlayView play={content.play || {}} onChange={p => setContent(c => ({...c, play: p}))}/>}
         {nav === "about" && <AboutView about={content.about || {}} onChange={a => setContent(c => ({...c, about: a}))}/>}
@@ -376,7 +379,7 @@ function Quick({ ic, title, sub, tone, onClick }) {
 // ─────────────────────────────────────────────────────────────
 // Products / editor with drag-drop screenshots
 // ─────────────────────────────────────────────────────────────
-function ProductsView({ products, liveStats, selectedId, onSelect, onUpdate, onAdd, onDelete }) {
+function ProductsView({ products, liveStats, selectedId, onSelect, onUpdate, onAdd, onDelete, token, onToast }) {
   const selected = products.find(p => p.id === selectedId) || products[0];
   return (
     <div>
@@ -413,13 +416,13 @@ function ProductsView({ products, liveStats, selectedId, onSelect, onUpdate, onA
             );
           })}
         </div>
-        {selected && <ProductEditor key={selected.id} p={selected} onUpdate={(patch)=>onUpdate(selected.id, patch)} onDelete={()=>onDelete(selected.id)}/>}
+        {selected && <ProductEditor key={selected.id} p={selected} onUpdate={(patch)=>onUpdate(selected.id, patch)} onDelete={()=>onDelete(selected.id)} token={token} onToast={onToast}/>}
       </div>
     </div>
   );
 }
 
-function ProductEditor({ p, onUpdate, onDelete }) {
+function ProductEditor({ p, onUpdate, onDelete, token, onToast }) {
   const derivedInstall = React.useMemo(() => {
     if (!p.repo) return "";
     return `/plugin marketplace add ${p.repo}`;
@@ -472,7 +475,16 @@ function ProductEditor({ p, onUpdate, onDelete }) {
 
       <ScreenshotsEditor
         shots={p.screenshots || []}
-        onChange={(s) => onUpdate({ screenshots: s })}
+        token={token}
+        productId={p.id}
+        onToast={onToast}
+        onChange={(s) => {
+          const firstPath = s[0]?.path;
+          const desiredBanner = firstPath ? `/${firstPath}` : "";
+          const patch = { screenshots: s };
+          if ((p.banner || "") !== desiredBanner) patch.banner = desiredBanner;
+          onUpdate(patch);
+        }}
       />
     </div>
   );
@@ -569,31 +581,69 @@ function MetaEditor({ meta, onChange }) {
 // ─────────────────────────────────────────────────────────────
 // Screenshots: drag-drop + paste + reorder + crop + set cover
 // ─────────────────────────────────────────────────────────────
-function ScreenshotsEditor({ shots, onChange }) {
+function ScreenshotsEditor({ shots, onChange, token, productId, onToast }) {
   const [over, setOver] = React.useState(false);
   const [dragIdx, setDragIdx] = React.useState(null);
   const [cropping, setCropping] = React.useState(null);
+  const [uploading, setUploading] = React.useState(null); // { done, total } | null
   const fileRef = React.useRef(null);
 
   const ingestFiles = async (files) => {
-    const next = [...shots];
-    for (const f of files) {
-      if (!f.type.startsWith("image/")) continue;
-      const url = URL.createObjectURL(f);
-      next.push({ id: `shot-${Date.now()}-${Math.random().toString(36).slice(2,6)}`, url, name: f.name || "pasted.png", size: f.size });
-      if (next.length >= 6) break;
+    const imgs = [...files].filter(f => f.type.startsWith("image/"));
+    if (imgs.length === 0) return;
+    const remaining = Math.max(0, 6 - shots.length);
+    const batch = imgs.slice(0, remaining);
+    if (batch.length === 0) {
+      onToast?.("Already have 6 screenshots — remove one first.", "amber", 3500);
+      return;
     }
-    onChange(next);
+    if (!token || !productId) {
+      onToast?.("Missing token or product id — can't upload.", "red", 4500);
+      return;
+    }
+    setUploading({ done: 0, total: batch.length });
+    const next = [...shots];
+    try {
+      for (let i = 0; i < batch.length; i++) {
+        const f = batch[i];
+        const extMatch = (f.name || "").match(/\.[a-z0-9]+$/i);
+        const ext = (extMatch?.[0] || ".png").toLowerCase();
+        const base = (f.name || "shot")
+          .replace(/\.[a-z0-9]+$/i, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "") || "shot";
+        const fname = `${Date.now()}-${base}${ext}`;
+        const repoPath = `assets/screenshots/${productId}/${fname}`;
+        const b64 = await fileToBase64(f);
+        const { path } = await uploadAsset(token, repoPath, b64, `admin: upload screenshot for ${productId}`);
+        next.push({
+          id: `shot-${Date.now()}-${Math.random().toString(36).slice(2,6)}`,
+          path,
+          name: f.name || `shot${ext}`,
+          size: f.size,
+        });
+        setUploading({ done: i + 1, total: batch.length });
+      }
+      onChange(next);
+      onToast?.(`Uploaded ${batch.length} screenshot${batch.length>1?"s":""}. Hit save to deploy.`, "green", 3500);
+    } catch (ex) {
+      onToast?.(`Upload failed: ${ex.message}`, "red", 6000);
+    } finally {
+      setUploading(null);
+    }
   };
 
   const onDrop = (e) => {
     e.preventDefault(); setOver(false);
+    if (uploading) return;
     ingestFiles([...e.dataTransfer.files]);
   };
 
   // Paste handler bound to document while editor is mounted
   React.useEffect(() => {
     const onPaste = (e) => {
+      if (uploading) return;
       const items = [...(e.clipboardData?.items || [])];
       const imgs = items.filter(it => it.type.startsWith("image/")).map(it => it.getAsFile()).filter(Boolean);
       if (imgs.length) {
@@ -603,7 +653,7 @@ function ScreenshotsEditor({ shots, onChange }) {
     };
     window.addEventListener("paste", onPaste);
     return () => window.removeEventListener("paste", onPaste);
-  }, [shots]);
+  }, [shots, uploading, token, productId]);
 
   const setCover = (i) => {
     if (i === 0) return;
@@ -634,28 +684,37 @@ function ScreenshotsEditor({ shots, onChange }) {
         <span style={{ fontSize: 11, color: A.dim2 }}>{shots.length} / 6</span>
         <span style={{ fontSize: 10, color: A.dim2, fontFamily: "JetBrains Mono, monospace", padding: "2px 6px", background: A.panel2, borderRadius: 3 }}>⌘V to paste</span>
         <div style={{ flex: 1 }}/>
-        <input ref={fileRef} type="file" accept="image/*" multiple style={{ display: "none" }} onChange={e=>ingestFiles([...e.target.files])}/>
-        <Btn size="sm" onClick={()=>fileRef.current?.click()}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.upload} Upload</span></Btn>
+        <input ref={fileRef} type="file" accept="image/*" multiple style={{ display: "none" }} onChange={e=>{ if (!uploading) ingestFiles([...e.target.files]); e.target.value = ""; }}/>
+        <Btn size="sm" onClick={()=>{ if (!uploading) fileRef.current?.click(); }} disabled={!!uploading}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.upload} Upload</span></Btn>
       </div>
 
       {/* Dropzone — always visible, taller when empty */}
       <div
-        onDragOver={(e)=>{e.preventDefault(); setOver(true);}}
+        onDragOver={(e)=>{e.preventDefault(); if (!uploading) setOver(true);}}
         onDragLeave={()=>setOver(false)}
         onDrop={onDrop}
-        onClick={()=>fileRef.current?.click()}
+        onClick={()=>{ if (!uploading) fileRef.current?.click(); }}
         style={{
-          border: `2px dashed ${over ? A.cyan : A.line2}`,
-          background: over ? "rgba(23,212,250,.06)" : A.panel,
+          border: `2px dashed ${uploading ? A.cyan : (over ? A.cyan : A.line2)}`,
+          background: uploading ? "rgba(23,212,250,.08)" : (over ? "rgba(23,212,250,.06)" : A.panel),
           borderRadius: 8, padding: shots.length ? "12px 14px" : "28px 20px",
-          marginBottom: 12, cursor: "pointer",
+          marginBottom: 12, cursor: uploading ? "wait" : "pointer",
           display: "flex", alignItems: "center", gap: 14, justifyContent: "center",
           transition: "border-color .12s, background .12s",
         }}>
-        <span style={{ color: over ? A.cyan : A.dim2 }}>{Ic.upload}</span>
+        <span style={{ color: uploading || over ? A.cyan : A.dim2 }}>{Ic.upload}</span>
         <div>
-          <div style={{ fontSize: 12.5, color: A.text, fontWeight: 500 }}>Drop images here, paste from clipboard, or click to browse</div>
-          <div style={{ fontSize: 11, color: A.dim, marginTop: 2 }}>PNG / JPG · max 6 · first image is the card cover</div>
+          {uploading ? (
+            <>
+              <div style={{ fontSize: 12.5, color: A.cyan, fontWeight: 500, fontFamily: "JetBrains Mono, monospace" }}>Uploading {uploading.done} / {uploading.total}…</div>
+              <div style={{ fontSize: 11, color: A.dim, marginTop: 2 }}>Committing to assets/screenshots/{productId}/</div>
+            </>
+          ) : (
+            <>
+              <div style={{ fontSize: 12.5, color: A.text, fontWeight: 500 }}>Drop images here, paste from clipboard, or click to browse</div>
+              <div style={{ fontSize: 11, color: A.dim, marginTop: 2 }}>PNG / JPG · max 6 · first image is the card cover + banner</div>
+            </>
+          )}
         </div>
       </div>
 
@@ -673,7 +732,9 @@ function ScreenshotsEditor({ shots, onChange }) {
                 borderRadius: 6, position: "relative", overflow: "hidden", cursor: "grab",
                 boxShadow: i === 0 ? "0 0 0 1px rgba(255,90,163,.25)" : "none",
               }}>
-              {s.url ? (
+              {s.path ? (
+                <img src={rawUrl(s.path)} alt={s.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}/>
+              ) : s.url ? (
                 <img src={s.url} alt={s.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}/>
               ) : (
                 <div style={{ height: "100%", display: "grid", placeItems: "center", color: A.dim2, fontSize: 11 }}>{Ic.image}</div>
@@ -1355,17 +1416,35 @@ function GuardDialog({ target, onDiscard, onSave, onCancel }) {
 }
 
 function Toast({ msg, tone }) {
-  const c = tone === "green" ? A.green : A.cyan;
+  const c = tone === "green" ? A.green
+          : tone === "red"   ? A.danger
+          : tone === "amber" ? A.amber
+          : A.cyan;
   return (
     <div style={{
       position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)",
       padding: "10px 16px", background: A.panel, border: `1px solid ${A.line2}`, borderLeft: `3px solid ${c}`,
       borderRadius: 6, fontSize: 12.5, color: A.text, boxShadow: "0 16px 32px rgba(0,0,0,.4)",
-      display: "flex", alignItems: "center", gap: 10, zIndex: 60,
+      display: "flex", alignItems: "center", gap: 10, zIndex: 60, maxWidth: "80vw",
     }}>
       <span style={{ color: c }}>●</span>{msg}
     </div>
   );
+}
+
+// Read a File as base64 (strips the "data:…;base64," prefix). Used by
+// ScreenshotsEditor to send binary payloads through the Contents API.
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => {
+      const res = r.result || "";
+      const comma = res.indexOf(",");
+      resolve(comma >= 0 ? res.slice(comma + 1) : res);
+    };
+    r.onerror = () => reject(r.error || new Error("file read failed"));
+    r.readAsDataURL(file);
+  });
 }
 
 Object.assign(window, { AdminApp });

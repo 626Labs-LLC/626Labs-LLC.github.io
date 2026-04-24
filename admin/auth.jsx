@@ -51,6 +51,40 @@ async function fetchSiteJson(token) {
   return { content: json, sha: body.sha };
 }
 
+// Public raw URL for a repo-relative path on the default branch.
+// Works for public repos without auth — used to render admin previews of
+// assets that have already been committed.
+function rawUrl(repoPath) {
+  return `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${REPO_BRANCH}/${repoPath}`;
+}
+
+// Upload an asset (screenshot, OG image, favicon) to a repo path via the
+// Contents API. `base64Content` is the file's bytes, base64-encoded. Each
+// upload is one commit on main. Filenames must be unique — we never PUT
+// with a sha, so a collision would 422.
+async function uploadAsset(token, repoPath, base64Content, message) {
+  const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${repoPath}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      message: message || `admin: upload ${repoPath}`,
+      content: base64Content,
+      branch: REPO_BRANCH,
+    }),
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`upload ${repoPath}: ${res.status} ${txt}`);
+  }
+  const body = await res.json();
+  return { path: body.content.path, sha: body.content.sha, downloadUrl: body.content.download_url };
+}
+
 // Write site.json back via the Contents API — a single commit on main.
 async function writeSiteJson(token, content, prevSha, message) {
   const b64 = window.btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2) + "\n")));
@@ -291,6 +325,6 @@ function AdminGate() {
 Object.assign(window, {
   REPO_OWNER, REPO_NAME, REPO_BRANCH, CONTENT_PATH, TOKEN_KEY,
   getStoredToken, storeToken, validateToken,
-  fetchSiteJson, writeSiteJson,
+  fetchSiteJson, writeSiteJson, uploadAsset, rawUrl,
   LockScreen, LoadingScreen, LoadError, AdminGate,
 });
