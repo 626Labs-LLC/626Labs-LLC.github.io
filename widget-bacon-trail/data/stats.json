@@ -1,7 +1,10 @@
 {
-  "totalPlayed": 0,
-  "totalFound": 0,
+  "totalPlayed": 3,
+  "totalFound": 3,
   "totalOutOfFilms": 0,
-  "winsByFilms": {},
-  "updatedAt": "2026-04-24T07:31:26.711Z"
+  "winsByFilms": {
+    "3": 2,
+    "5": 1
+  },
+  "updatedAt": "2026-04-25T06:59:22.720Z"
 }
