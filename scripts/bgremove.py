@@ -1,18 +1,27 @@
 #!/usr/bin/env python3
 """bgremove — classical-CV background removal for logos and graphics.
 
-No neural net, no model download. Three modes:
+Five modes, four classical + one AI fallback:
 
   color-key   Distance-from-bg matte + alpha unmix. Best on solid bgs.
   contour     Canny edge detect + largest outer contour. Best on
               high-contrast subjects against busy bgs.
+  grabcut     cv2.grabCut iterative segmentation. Takes a bbox
+              (auto: 5% inset). Best on photos / mixed bgs.
+  ai          rembg + U2Net (lazy import). Best on portraits and
+              anything classical CV struggles with. Requires
+              `pip install rembg`.
   auto        Picks color-key when corners agree (uniform bg),
-              otherwise contour.
+              grabcut when they're close-ish (subtle gradient),
+              contour otherwise. Never picks `ai` automatically —
+              that's an explicit opt-in to a heavy dep.
 
 Examples:
   bgremove logo.png                          # auto, write logo-cut.png
-  bgremove banner.jpg -o banner.png --mode color-key --bg-color "#192e44"
+  bgremove banner.jpg -o out.png --mode color-key --bg-color "#192e44"
   bgremove photo.jpg --mode contour --feather 3 -v
+  bgremove photo.jpg --mode grabcut --rect 50,80,400,500 --iters 5
+  bgremove portrait.jpg --mode ai
 """
 from __future__ import annotations
 
@@ -42,6 +51,25 @@ def parse_color(s: str) -> np.ndarray:
     raise ValueError(f"--bg-color: don't know how to parse {s!r}")
 
 
+def parse_rect(s: str, w: int, h: int) -> tuple[int, int, int, int] | None:
+    """Parse 'auto' / 'x,y,w,h' into a cv2 grabCut rect, clamped to image bounds.
+
+    Returns None when caller wants 'auto' so mode_grabcut can compute its
+    own default (5% inset on each edge).
+    """
+    if s == "auto":
+        return None
+    parts = [int(p.strip()) for p in s.split(",")]
+    if len(parts) != 4:
+        raise ValueError(f"--rect expects 4 ints (x,y,w,h), got {s!r}")
+    x, y, rw, rh = parts
+    x = max(0, min(x, w - 2))
+    y = max(0, min(y, h - 2))
+    rw = max(2, min(rw, w - x))
+    rh = max(2, min(rh, h - y))
+    return (x, y, rw, rh)
+
+
 def sample_corner_bg(rgb: np.ndarray, patch: int = 12) -> np.ndarray:
     """Median RGB across the 4 corner patches."""
     h, w = rgb.shape[:2]
@@ -55,10 +83,10 @@ def sample_corner_bg(rgb: np.ndarray, patch: int = 12) -> np.ndarray:
     return np.median(corners, axis=0).astype(np.float64)
 
 
-def corners_agree(rgb: np.ndarray, patch: int = 12, threshold: float = 18.0) -> bool:
-    """True if all 4 corner medians are within `threshold` of each other.
+def corner_disagreement(rgb: np.ndarray, patch: int = 12) -> float:
+    """Max RGB distance between any pair of the 4 corner medians.
 
-    Uniform bg -> trivially true. Mixed bg (gradient, vignette, photo) -> false.
+    0 = solid uniform bg. ~30+ = subtle gradient/vignette. 60+ = photo-like.
     """
     h, w = rgb.shape[:2]
     p = max(2, min(patch, h // 8, w // 8))
@@ -68,12 +96,11 @@ def corners_agree(rgb: np.ndarray, patch: int = 12, threshold: float = 18.0) -> 
         np.median(rgb[-p:, :p].reshape(-1, 3), axis=0),
         np.median(rgb[-p:, -p:].reshape(-1, 3), axis=0),
     ])
-    # Max distance between any pair.
     dists = []
     for i in range(4):
         for j in range(i + 1, 4):
-            dists.append(np.linalg.norm(corner_medians[i] - corner_medians[j]))
-    return max(dists) < threshold
+            dists.append(float(np.linalg.norm(corner_medians[i] - corner_medians[j])))
+    return max(dists)
 
 
 # ─── color-key mode ─────────────────────────────────────────────────
@@ -153,14 +180,91 @@ def mode_contour(
     return rgb, mask.astype(np.float64)
 
 
+# ─── grabcut mode ───────────────────────────────────────────────────
+def mode_grabcut(
+    rgb: np.ndarray,
+    rect: tuple[int, int, int, int] | None = None,
+    iters: int = 5,
+    feather: int = 0,
+) -> tuple[np.ndarray, np.ndarray]:
+    """cv2.grabCut iterative segmentation, initialized from a bbox.
+
+    grabCut models fg/bg as Gaussian mixtures and runs graph-cut
+    iterations to refine the assignment. No training data, no neural
+    net — just the algorithm.
+
+    `rect` is (x, y, width, height). When None, uses a 5% inset on
+    each edge — works when the subject is roughly centered.
+    """
+    import cv2  # lazy
+
+    img_bgr = cv2.cvtColor(rgb.astype(np.uint8), cv2.COLOR_RGB2BGR)
+    h, w = img_bgr.shape[:2]
+    if rect is None:
+        m_x = max(2, int(w * 0.05))
+        m_y = max(2, int(h * 0.05))
+        rect = (m_x, m_y, w - 2 * m_x, h - 2 * m_y)
+
+    mask = np.zeros((h, w), dtype=np.uint8)
+    bgd = np.zeros((1, 65), dtype=np.float64)
+    fgd = np.zeros((1, 65), dtype=np.float64)
+    cv2.grabCut(img_bgr, mask, rect, bgd, fgd, iters, cv2.GC_INIT_WITH_RECT)
+
+    # 4-class mask: 0=sure_bg, 1=sure_fg, 2=prob_bg, 3=prob_fg.
+    alpha_mask = np.where((mask == 1) | (mask == 3), 255, 0).astype(np.uint8)
+
+    if feather > 0:
+        k = max(3, feather * 2 + 1)
+        alpha_mask = cv2.GaussianBlur(alpha_mask, (k, k), 0)
+
+    return rgb, alpha_mask.astype(np.float64)
+
+
+# ─── ai (rembg) mode ────────────────────────────────────────────────
+def mode_ai(rgb: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """rembg + U2Net. Lazy import — graceful error if not installed.
+
+    First call will download the U2Net weights (~170 MB) into the
+    user's cache. Subsequent calls reuse the cached model.
+    """
+    try:
+        from rembg import remove
+    except ImportError as ex:
+        raise RuntimeError(
+            "--mode ai requires rembg. Install: pip install rembg "
+            f"(import error: {ex})"
+        )
+    from io import BytesIO
+
+    src = Image.fromarray(rgb.astype(np.uint8), "RGB")
+    buf = BytesIO()
+    src.save(buf, format="PNG")
+    cut_bytes = remove(buf.getvalue())
+    cut = Image.open(BytesIO(cut_bytes)).convert("RGBA")
+    arr = np.array(cut).astype(np.float64)
+    return arr[..., :3], arr[..., 3]
+
+
 # ─── orchestration ──────────────────────────────────────────────────
 def pick_mode(rgb: np.ndarray, verbose: bool = False) -> str:
-    if corners_agree(rgb, threshold=18.0):
+    """Auto-pick. Stays in classical-CV land — never returns 'ai'.
+
+    Tier picked by corner_disagreement:
+      < 18  -> color-key  (bg is a single color)
+      18-35 -> grabcut    (bg has gradient / vignette / subtle drift)
+      > 35  -> contour    (bg is busy or photo-like)
+    """
+    d = corner_disagreement(rgb)
+    if d < 18:
         if verbose:
-            print("auto: corners agree -> color-key", file=sys.stderr)
+            print(f"auto: corner-disagreement={d:.1f} -> color-key", file=sys.stderr)
         return "color-key"
+    if d < 35:
+        if verbose:
+            print(f"auto: corner-disagreement={d:.1f} -> grabcut", file=sys.stderr)
+        return "grabcut"
     if verbose:
-        print("auto: corners disagree -> contour", file=sys.stderr)
+        print(f"auto: corner-disagreement={d:.1f} -> contour", file=sys.stderr)
     return "contour"
 
 
@@ -173,12 +277,15 @@ def run(
     lo: float = 6.0,
     hi: float = 150.0,
     feather: int = 0,
+    rect: str = "auto",
+    iters: int = 5,
     verbose: bool = False,
 ) -> None:
     img = Image.open(input_path).convert("RGBA")
     arr = np.array(img).astype(np.float64)
     rgb = arr[..., :3]
     src_alpha = arr[..., 3]
+    h, w = rgb.shape[:2]
 
     if mode == "auto":
         mode = pick_mode(rgb, verbose=verbose)
@@ -191,6 +298,16 @@ def run(
         rgb_out, alpha = mode_color_key(rgb, bg_color, lo=lo, hi=hi, unmix=unmix)
     elif mode == "contour":
         rgb_out, alpha = mode_contour(rgb, feather=feather)
+    elif mode == "grabcut":
+        gc_rect = parse_rect(rect, w, h)
+        if verbose:
+            shown = gc_rect or f"auto (5% inset)"
+            print(f"grabcut: rect={shown} iters={iters}", file=sys.stderr)
+        rgb_out, alpha = mode_grabcut(rgb, rect=gc_rect, iters=iters, feather=feather)
+    elif mode == "ai":
+        if verbose:
+            print("ai: handing off to rembg + U2Net", file=sys.stderr)
+        rgb_out, alpha = mode_ai(rgb)
     else:
         raise ValueError(f"unknown mode: {mode!r}")
 
@@ -222,9 +339,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("-o", "--output", type=Path, help="Output PNG (default: <input>-cut.png)")
     ap.add_argument(
         "--mode",
-        choices=["auto", "color-key", "contour"],
+        choices=["auto", "color-key", "contour", "grabcut", "ai"],
         default="auto",
-        help="Which algorithm to run (default: auto)",
+        help="Which algorithm to run (default: auto). 'ai' requires `pip install rembg`.",
     )
     ap.add_argument(
         "--bg-color",
@@ -234,7 +351,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--no-unmix", dest="unmix", action="store_false", help="Disable RGB unmixing in color-key mode")
     ap.add_argument("--lo", type=float, default=6.0, help="color-key: bg distance below this -> fully transparent")
     ap.add_argument("--hi", type=float, default=150.0, help="color-key: bg distance above this -> fully opaque")
-    ap.add_argument("--feather", type=int, default=0, help="contour: Gaussian blur radius for the alpha edge")
+    ap.add_argument("--feather", type=int, default=0, help="contour/grabcut: Gaussian blur radius for the alpha edge")
+    ap.add_argument("--rect", default="auto", help="grabcut: 'auto' (5%% inset) or 'x,y,w,h' bbox")
+    ap.add_argument("--iters", type=int, default=5, help="grabcut: number of refinement iterations (default 5)")
     ap.add_argument("-v", "--verbose", action="store_true", help="Print picked mode + alpha summary to stderr")
     args = ap.parse_args(argv)
 
@@ -255,6 +374,8 @@ def main(argv: list[str] | None = None) -> int:
             lo=args.lo,
             hi=args.hi,
             feather=args.feather,
+            rect=args.rect,
+            iters=args.iters,
             verbose=args.verbose,
         )
     except Exception as ex:
