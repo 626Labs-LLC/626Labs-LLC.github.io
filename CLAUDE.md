@@ -104,10 +104,25 @@ full mode rundown and tradeoffs.
 
 Regenerates `assets/brand/` (transparent icon at 256/512/1024 + banner
 PNGs at 1500x500, 1280x640, 1200x630). Re-run after brand changes.
+No `--check` flag — verify visually by opening `icon-transparent-512.png`
+and one banner.
 
 ### Site renderer — `scripts/render-hub.py`
 
 Rebuilds `index.html` from `content/site.json`. `--check` for drift detection.
+
+### Admin favicon — `scripts/build-admin-favicon.py`
+
+Regenerates `assets/favicon-admin.png` — the gradient-square browser-tab
+icon for the admin dashboard so it reads distinctly from the main site
+favicon. Re-run if the brand cyan/magenta tokens change.
+
+### Local widget dev — `apps/widget-bacon-trail/`
+
+For local iteration on the Bacon Trail widget: `cd apps/widget-bacon-trail
+&& npm run dev` runs Vite's dev server. Push to `main` (any change under
+`src/`) lets `build-widget.yml` rebuild and commit the bundle. Don't
+hand-edit the bundle output at `widget-bacon-trail/`.
 
 ---
 
