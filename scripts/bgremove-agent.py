@@ -54,8 +54,12 @@ Modes available:
 
 1. **color-key** — Distance-from-bg matte + alpha unmix. Use when the bg is a \
 single uniform color (logos on flat fields, generated assets, screenshots \
-with solid backdrops). Optionally specify `bg_color` as `#RRGGBB` if you can \
-see exactly what color to strip; otherwise the tool auto-samples the corners. \
+with solid backdrops). **Leave `bg_color` null** — the tool auto-samples \
+corner pixels, which is more accurate than your visual estimate. Vision \
+can't read pixel-perfect hex from a JPEG-or-PNG view, and color-key is \
+unforgiving about the difference (off by 15 RGB units = ghost-bg in the \
+output instead of clean transparency). Only specify `bg_color` if the bg is \
+NOT in the image corners (rare — e.g., border baked into the file). \
 This is the cleanest cut available when applicable. Picks up interior \
 negative space (e.g. holes inside hexagons get cut too).
 
@@ -101,7 +105,12 @@ class BgRemoveStrategy(BaseModel):
     )
     bg_color: Optional[str] = Field(
         None,
-        description="color-key only: '#RRGGBB' to override auto-detection",
+        description=(
+            "color-key only: '#RRGGBB' to override auto-detection. "
+            "Almost always leave null — the tool's corner-sampler is more "
+            "accurate than visual color estimation. Specify only when the "
+            "bg is NOT in the image corners."
+        ),
     )
     rationale: str = Field(..., description="One sentence describing what you saw and why this mode fits")
     confidence: float = Field(..., ge=0.0, le=1.0, description="0..1 estimate of how clean the cut will be")
