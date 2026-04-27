@@ -230,26 +230,38 @@ def mode_grabcut(
 
 
 # ─── matting mode (refine an existing alpha mask via pymatting) ────
+MATTING_MAX_DIM = 1000  # downsample so the long edge is ≤ this before solving
+
+
 def mode_matting(
     rgb: np.ndarray,
     seed_mode: str = "grabcut",
     seed_kwargs: dict | None = None,
     erode_radius: int | None = None,
     dilate_radius: int | None = None,
+    max_dim: int = MATTING_MAX_DIM,
+    verbose: bool = False,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Closed-form alpha matting via pymatting.
+    """Closed-form alpha matting via pymatting, with downsample+fallback armor.
 
     Matting needs a *trimap* — a 3-class mask of definitely-fg / definitely-bg /
-    unknown. We don't have one, so we generate it from another mode's coarse
-    binary output: erode → sure_fg, dilate-complement → sure_bg, the band in
-    between → unknown. Then `estimate_alpha_cf` solves a closed-form Laplacian
-    over the unknown band to recover sub-pixel-accurate alpha.
+    unknown. We generate it from another mode's coarse binary output: erode
+    → sure_fg, dilate-complement → sure_bg, the band in between → unknown.
+    Then `estimate_alpha_cf` solves a closed-form Laplacian over the unknown
+    band to recover sub-pixel-accurate alpha.
+
+    Two armor layers around the solve:
+      1. **Downsample.** pymatting's preconditioned conjugate gradient solver
+         scales poorly with image size and frequently fails Cholesky on >1500px
+         inputs ('insufficient positive-definiteness'). We downsample to
+         max_dim on the long edge before solving, then bicubic-upsample the
+         alpha back. Alpha is a smooth signal, so the upsample loss is small.
+         4-10× faster, dodges most numerical failures.
+      2. **Catch + fallback.** If the solver still blows up, we fall back to
+         the seed alpha with a warning instead of crashing the whole batch.
 
     Use this when contour or grabcut gives you the right *region* but the
-    edges look chunky and you want soft, hair-friendly cutouts. Slower than
-    grabcut/contour (a few seconds on typical images).
-
-    `seed_mode` is the underlying mode that produces the rough mask.
+    edges look chunky and you want soft, hair-friendly cutouts.
     """
     try:
         from pymatting import estimate_alpha_cf
@@ -266,9 +278,8 @@ def mode_matting(
     elif seed_mode == "contour":
         _, alpha_seed = mode_contour(rgb, **seed_kwargs)
     elif seed_mode == "color-key":
-        # Color-key already produces soft alpha — matting on top of it is
-        # rarely useful, but allow it for completeness. Threshold so the
-        # trimap still has clean fg/bg regions.
+        # Color-key already produces soft alpha — matting on top is rarely
+        # useful, but allow it. The threshold below cleans up the trimap.
         _, alpha_seed = mode_color_key(rgb, **seed_kwargs)
     else:
         raise ValueError(f"matting seed_mode must be grabcut/contour/color-key, got {seed_mode!r}")
@@ -296,13 +307,48 @@ def mode_matting(
     trimap[sure_fg == 255] = 1.0
     trimap[dilated == 0] = 0.0
 
-    # pymatting expects RGB float 0..1
-    rgb_norm = (rgb / 255.0).astype(np.float64)
-    alpha_refined = estimate_alpha_cf(rgb_norm, trimap)
-    alpha_out = np.clip(alpha_refined * 255.0, 0, 255)
+    # ── Armor layer 1: downsample for the solve ──────────────────────
+    long_edge = max(h, w)
+    if long_edge > max_dim:
+        scale = max_dim / long_edge
+        new_w = int(round(w * scale))
+        new_h = int(round(h * scale))
+        rgb_small = cv2.resize(rgb.astype(np.uint8), (new_w, new_h), interpolation=cv2.INTER_AREA)
+        # Trimap downsample: nearest preserves the 3-class structure (0/0.5/1).
+        trimap_small = cv2.resize(trimap, (new_w, new_h), interpolation=cv2.INTER_NEAREST)
+        if verbose:
+            print(f"matting: downsampled {w}x{h} -> {new_w}x{new_h} for solve", file=sys.stderr)
+    else:
+        rgb_small = rgb.astype(np.uint8)
+        trimap_small = trimap
 
-    # Unmix the inferred bg out of the foreground for cleaner edges. Estimate
-    # bg color from the dilation-exterior region.
+    # ── Armor layer 2: catch solver blowups, fall back to seed ───────
+    rgb_norm = (rgb_small / 255.0).astype(np.float64)
+    try:
+        alpha_small = estimate_alpha_cf(rgb_norm, trimap_small)
+    except Exception as ex:
+        # Cholesky / preconditioner failures end up here. Fall back to the
+        # seed mask — same image region, just chunkier edges than matting
+        # would have given us. Better than crashing.
+        msg = str(ex).splitlines()[0] if str(ex) else type(ex).__name__
+        print(
+            f"matting: solver failed ({msg}); falling back to {seed_mode} seed",
+            file=sys.stderr,
+        )
+        return rgb, alpha_seed
+
+    # Upsample alpha back to original resolution. Bicubic preserves smooth
+    # alpha gradients without ringing on the way up.
+    if (alpha_small.shape[1], alpha_small.shape[0]) != (w, h):
+        alpha_full = cv2.resize(alpha_small, (w, h), interpolation=cv2.INTER_CUBIC)
+        alpha_full = np.clip(alpha_full, 0.0, 1.0)
+    else:
+        alpha_full = alpha_small
+
+    alpha_out = np.clip(alpha_full * 255.0, 0, 255)
+
+    # Unmix the inferred bg out of the foreground (using ORIGINAL-resolution
+    # rgb + upsampled alpha — recovers neon edges without resampling artifacts).
     bg_pixels = rgb[dilated == 0]
     if bg_pixels.size > 0:
         bg_color = np.median(bg_pixels.reshape(-1, 3), axis=0)
@@ -411,7 +457,7 @@ def run(
         seed_kwargs = {"rect": parse_rect(rect, w, h), "iters": iters}
         if verbose:
             print("matting: seed_mode=grabcut (refining edges with pymatting)", file=sys.stderr)
-        rgb_out, alpha = mode_matting(rgb, seed_mode="grabcut", seed_kwargs=seed_kwargs)
+        rgb_out, alpha = mode_matting(rgb, seed_mode="grabcut", seed_kwargs=seed_kwargs, verbose=verbose)
     else:
         raise ValueError(f"unknown mode: {mode!r}")
 
