@@ -1,27 +1,36 @@
 #!/usr/bin/env python3
 """bgremove — classical-CV background removal for logos and graphics.
 
-Five modes, four classical + one AI fallback:
+Six modes, five classical + one AI fallback:
 
   color-key   Distance-from-bg matte + alpha unmix. Best on solid bgs.
   contour     Canny edge detect + largest outer contour. Best on
               high-contrast subjects against busy bgs.
   grabcut     cv2.grabCut iterative segmentation. Takes a bbox
               (auto: 5% inset). Best on photos / mixed bgs.
+  matting     Closed-form alpha matting via pymatting. Refines a
+              coarse mask from another mode for sub-pixel-accurate
+              edges (good for hair, fur, anti-aliasing). Slower.
+              Requires `pip install pymatting`.
   ai          rembg + U2Net (lazy import). Best on portraits and
               anything classical CV struggles with. Requires
-              `pip install rembg`.
+              `pip install rembg[cpu]`.
   auto        Picks color-key when corners agree (uniform bg),
               grabcut when they're close-ish (subtle gradient),
-              contour otherwise. Never picks `ai` automatically —
-              that's an explicit opt-in to a heavy dep.
+              contour otherwise. Never picks `matting` or `ai`
+              automatically — heavy deps, explicit opt-in only.
+
+Batch mode: pass a directory as input. Outputs land in <input>-cut/.
 
 Examples:
   bgremove logo.png                          # auto, write logo-cut.png
   bgremove banner.jpg -o out.png --mode color-key --bg-color "#192e44"
   bgremove photo.jpg --mode contour --feather 3 -v
   bgremove photo.jpg --mode grabcut --rect 50,80,400,500 --iters 5
+  bgremove portrait.jpg --mode matting
   bgremove portrait.jpg --mode ai
+  bgremove ./photos/                         # batch, writes ./photos-cut/
+  bgremove ./photos/ -o ./out/ --mode auto -v
 """
 from __future__ import annotations
 
@@ -220,6 +229,92 @@ def mode_grabcut(
     return rgb, alpha_mask.astype(np.float64)
 
 
+# ─── matting mode (refine an existing alpha mask via pymatting) ────
+def mode_matting(
+    rgb: np.ndarray,
+    seed_mode: str = "grabcut",
+    seed_kwargs: dict | None = None,
+    erode_radius: int | None = None,
+    dilate_radius: int | None = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Closed-form alpha matting via pymatting.
+
+    Matting needs a *trimap* — a 3-class mask of definitely-fg / definitely-bg /
+    unknown. We don't have one, so we generate it from another mode's coarse
+    binary output: erode → sure_fg, dilate-complement → sure_bg, the band in
+    between → unknown. Then `estimate_alpha_cf` solves a closed-form Laplacian
+    over the unknown band to recover sub-pixel-accurate alpha.
+
+    Use this when contour or grabcut gives you the right *region* but the
+    edges look chunky and you want soft, hair-friendly cutouts. Slower than
+    grabcut/contour (a few seconds on typical images).
+
+    `seed_mode` is the underlying mode that produces the rough mask.
+    """
+    try:
+        from pymatting import estimate_alpha_cf
+    except ImportError as ex:
+        raise RuntimeError(
+            "--mode matting requires pymatting. Install: pip install pymatting "
+            f"(import error: {ex})"
+        )
+    import cv2
+
+    seed_kwargs = seed_kwargs or {}
+    if seed_mode == "grabcut":
+        _, alpha_seed = mode_grabcut(rgb, **seed_kwargs)
+    elif seed_mode == "contour":
+        _, alpha_seed = mode_contour(rgb, **seed_kwargs)
+    elif seed_mode == "color-key":
+        # Color-key already produces soft alpha — matting on top of it is
+        # rarely useful, but allow it for completeness. Threshold so the
+        # trimap still has clean fg/bg regions.
+        _, alpha_seed = mode_color_key(rgb, **seed_kwargs)
+    else:
+        raise ValueError(f"matting seed_mode must be grabcut/contour/color-key, got {seed_mode!r}")
+
+    # Scale erode/dilate radii to image size so small icons don't erode away.
+    h, w = rgb.shape[:2]
+    auto_radius = max(2, min(h, w) // 80)
+    er = erode_radius if erode_radius is not None else auto_radius
+    dr = dilate_radius if dilate_radius is not None else auto_radius
+
+    # Convert seed to a binary mask, then erode/dilate to build the trimap.
+    binary = (alpha_seed > 127).astype(np.uint8) * 255
+    k_erode = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (er * 2 + 1, er * 2 + 1))
+    k_dilate = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (dr * 2 + 1, dr * 2 + 1))
+    sure_fg = cv2.erode(binary, k_erode)
+    dilated = cv2.dilate(binary, k_dilate)
+
+    # If erosion wiped out all fg (subject too thin for the radius), fall back
+    # to the binary itself as sure_fg — better than a meaningless trimap.
+    if (sure_fg == 255).sum() == 0:
+        sure_fg = binary
+
+    # Trimap encoding for pymatting: 0.0 = bg, 0.5 = unknown, 1.0 = fg
+    trimap = np.full(binary.shape, 0.5, dtype=np.float64)
+    trimap[sure_fg == 255] = 1.0
+    trimap[dilated == 0] = 0.0
+
+    # pymatting expects RGB float 0..1
+    rgb_norm = (rgb / 255.0).astype(np.float64)
+    alpha_refined = estimate_alpha_cf(rgb_norm, trimap)
+    alpha_out = np.clip(alpha_refined * 255.0, 0, 255)
+
+    # Unmix the inferred bg out of the foreground for cleaner edges. Estimate
+    # bg color from the dilation-exterior region.
+    bg_pixels = rgb[dilated == 0]
+    if bg_pixels.size > 0:
+        bg_color = np.median(bg_pixels.reshape(-1, 3), axis=0)
+        a01 = (alpha_out / 255.0)[..., None]
+        safe_a = np.where(a01 > 1e-3, a01, 1.0)
+        rgb_out = np.clip((rgb - (1 - a01) * bg_color) / safe_a, 0, 255)
+    else:
+        rgb_out = rgb
+
+    return rgb_out, alpha_out
+
+
 # ─── ai (rembg) mode ────────────────────────────────────────────────
 def mode_ai(rgb: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """rembg + U2Net. Lazy import — graceful error if not installed.
@@ -308,6 +403,15 @@ def run(
         if verbose:
             print("ai: handing off to rembg + U2Net", file=sys.stderr)
         rgb_out, alpha = mode_ai(rgb)
+    elif mode == "matting":
+        # Matting is a refinement step on top of a binary mask — always seed
+        # from grabcut. (Color-key already produces soft alpha; matting on top
+        # is wasted work.) If the user specifically wants matting on a
+        # uniform-bg image, color-key alone is what they want.
+        seed_kwargs = {"rect": parse_rect(rect, w, h), "iters": iters}
+        if verbose:
+            print("matting: seed_mode=grabcut (refining edges with pymatting)", file=sys.stderr)
+        rgb_out, alpha = mode_matting(rgb, seed_mode="grabcut", seed_kwargs=seed_kwargs)
     else:
         raise ValueError(f"unknown mode: {mode!r}")
 
@@ -330,18 +434,57 @@ def run(
         )
 
 
+def iter_images(d: Path, exts: tuple[str, ...]) -> list[Path]:
+    """Find images in a directory matching the given extensions (non-recursive)."""
+    out = []
+    for child in sorted(d.iterdir()):
+        if child.is_file() and child.suffix.lower() in exts:
+            out.append(child)
+    return out
+
+
+def run_batch(
+    input_dir: Path,
+    output_dir: Path,
+    exts: tuple[str, ...],
+    **kwargs,
+) -> tuple[int, int]:
+    """Run `run` on every image in `input_dir`, writing into `output_dir`.
+
+    Returns (succeeded, failed). Errors are printed to stderr but don't abort
+    the batch — one bad file shouldn't stop the rest.
+    """
+    output_dir.mkdir(parents=True, exist_ok=True)
+    images = iter_images(input_dir, exts)
+    if not images:
+        print(f"no images in {input_dir} matching {exts}", file=sys.stderr)
+        return 0, 0
+    ok = fail = 0
+    for img in images:
+        out_path = output_dir / f"{img.stem}-cut.png"
+        try:
+            run(input_path=img, output_path=out_path, **kwargs)
+            ok += 1
+        except Exception as ex:
+            print(f"  {img.name}: FAILED ({ex})", file=sys.stderr)
+            fail += 1
+    print(f"batch done: {ok} ok, {fail} failed", file=sys.stderr)
+    return ok, fail
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
         prog="bgremove",
         description="Classical-CV background remover. No neural net.",
     )
-    ap.add_argument("input", type=Path, help="Input image (PNG / JPG / etc.)")
-    ap.add_argument("-o", "--output", type=Path, help="Output PNG (default: <input>-cut.png)")
+    ap.add_argument("input", type=Path, help="Input image OR directory (PNG / JPG / etc.)")
+    ap.add_argument("-o", "--output", type=Path, help="Output PNG (default: <input>-cut.png) or output dir for batch")
+    ap.add_argument("--ext", default=".png,.jpg,.jpeg,.webp,.bmp", help="Batch only: comma-separated extensions to include")
     ap.add_argument(
         "--mode",
-        choices=["auto", "color-key", "contour", "grabcut", "ai"],
+        choices=["auto", "color-key", "contour", "grabcut", "matting", "ai"],
         default="auto",
-        help="Which algorithm to run (default: auto). 'ai' requires `pip install rembg`.",
+        help="Which algorithm to run (default: auto). 'matting' requires `pip install pymatting`. 'ai' requires `pip install rembg[cpu]`.",
     )
     ap.add_argument(
         "--bg-color",
@@ -361,23 +504,31 @@ def main(argv: list[str] | None = None) -> int:
         print(f"input not found: {args.input}", file=sys.stderr)
         return 2
 
-    output = args.output or args.input.with_name(f"{args.input.stem}-cut.png")
     bg = parse_color(args.bg_color)
+    common_kwargs = dict(
+        mode=args.mode,
+        bg_color=bg,
+        unmix=args.unmix,
+        lo=args.lo,
+        hi=args.hi,
+        feather=args.feather,
+        rect=args.rect,
+        iters=args.iters,
+        verbose=args.verbose,
+    )
 
+    if args.input.is_dir():
+        out_dir = args.output or args.input.with_name(f"{args.input.name}-cut")
+        if out_dir.exists() and not out_dir.is_dir():
+            print(f"--output must be a directory when input is a directory: {out_dir}", file=sys.stderr)
+            return 2
+        exts = tuple(e.strip().lower() for e in args.ext.split(",") if e.strip())
+        ok, fail = run_batch(args.input, out_dir, exts, **common_kwargs)
+        return 0 if fail == 0 else 1
+
+    output = args.output or args.input.with_name(f"{args.input.stem}-cut.png")
     try:
-        run(
-            input_path=args.input,
-            output_path=output,
-            mode=args.mode,
-            bg_color=bg,
-            unmix=args.unmix,
-            lo=args.lo,
-            hi=args.hi,
-            feather=args.feather,
-            rect=args.rect,
-            iters=args.iters,
-            verbose=args.verbose,
-        )
+        run(input_path=args.input, output_path=output, **common_kwargs)
     except Exception as ex:
         print(f"bgremove: {ex}", file=sys.stderr)
         return 1
