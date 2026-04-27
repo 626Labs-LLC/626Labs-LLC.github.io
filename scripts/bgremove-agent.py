@@ -182,21 +182,47 @@ help. Vary the mode, the rect, or the bg_color.
 """
 
 
-def encode_image(path: Path) -> tuple[str, str, tuple[int, int]]:
-    """Return (base64_data, media_type, (width, height))."""
-    media_type = {
-        ".png": "image/png",
-        ".jpg": "image/jpeg",
-        ".jpeg": "image/jpeg",
-        ".gif": "image/gif",
-        ".webp": "image/webp",
-    }.get(path.suffix.lower(), "image/png")
+def encode_image(path: Path, max_long_edge: int = 2048, max_bytes: int = 4_500_000) -> tuple[str, str, tuple[int, int]]:
+    """Return (base64_data, media_type, (original_width, original_height)).
+
+    Downsamples + re-encodes if the file would exceed the API's 5MB base64
+    image limit. Original-resolution dims are still returned so Claude can
+    pick a `rect` that maps to the full image — bgremove always runs on the
+    original file regardless of what the model saw here.
+    """
+    from io import BytesIO
 
     with Image.open(path) as img:
-        size = img.size
+        orig_size = img.size  # always report the original to Claude
+        w, h = orig_size
+        long_edge = max(w, h)
 
-    data = path.read_bytes()
-    return base64.b64encode(data).decode("ascii"), media_type, size
+        # Fast path: small file already on disk under the byte cap.
+        if path.stat().st_size <= max_bytes and long_edge <= max_long_edge:
+            media_type = {
+                ".png": "image/png",
+                ".jpg": "image/jpeg",
+                ".jpeg": "image/jpeg",
+                ".gif": "image/gif",
+                ".webp": "image/webp",
+            }.get(path.suffix.lower(), "image/png")
+            return base64.b64encode(path.read_bytes()).decode("ascii"), media_type, orig_size
+
+        # Downsample: long edge → max_long_edge, then re-encode as JPEG with
+        # quality steps until we fit under max_bytes. JPEG > PNG for photos
+        # at this stage; the cut runs on the original anyway.
+        scale = min(1.0, max_long_edge / long_edge)
+        new_w = max(1, int(round(w * scale)))
+        new_h = max(1, int(round(h * scale)))
+        small = img.convert("RGB").resize((new_w, new_h), Image.LANCZOS)
+        for quality in (85, 75, 65, 55, 45):
+            buf = BytesIO()
+            small.save(buf, format="JPEG", quality=quality, optimize=True)
+            data = buf.getvalue()
+            if len(data) <= max_bytes:
+                return base64.b64encode(data).decode("ascii"), "image/jpeg", orig_size
+        # Last resort — return the smallest we tried even if still over.
+        return base64.b64encode(data).decode("ascii"), "image/jpeg", orig_size
 
 
 def pick_strategy(client: anthropic.Anthropic, path: Path, verbose: bool = False) -> BgRemoveStrategy:
@@ -321,9 +347,15 @@ def run_bgremove(
     input_path: Path,
     output_path: Path,
     strategy: BgRemoveStrategy,
+    input_alpha: Path | None = None,
     verbose: bool = False,
 ) -> int:
-    """Invoke scripts/bgremove.py with the picked strategy."""
+    """Invoke scripts/bgremove.py with the picked strategy.
+
+    `input_alpha` (optional, matting only) — path to the previous attempt's
+    cut PNG. When passed, matting refines that alpha mask instead of
+    re-running grabcut from scratch.
+    """
     here = Path(__file__).resolve().parent
     cmd = [
         sys.executable,
@@ -338,10 +370,20 @@ def run_bgremove(
         cmd += ["--rect", ",".join(str(int(x)) for x in strategy.rect)]
     if strategy.mode == "color-key" and strategy.bg_color:
         cmd += ["--bg-color", strategy.bg_color]
+    if strategy.mode == "matting" and input_alpha is not None:
+        cmd += ["--input-alpha", str(input_alpha)]
     if verbose:
         cmd.append("-v")
         print(f"agent: $ {' '.join(cmd)}", file=sys.stderr)
     return subprocess.run(cmd).returncode
+
+
+QUALITY_RANK = {"clean": 3, "rough": 2, "broken": 1}
+
+
+def _attempt_path(output_path: Path, n: int) -> Path:
+    """sidecar path for attempt N — output.attempt1.png, output.attempt2.png …"""
+    return output_path.with_suffix(f".attempt{n}{output_path.suffix}")
 
 
 def process_one(
@@ -352,65 +394,89 @@ def process_one(
     evaluate: bool = True,
     max_attempts: int = 2,
 ) -> int:
-    """Pick a strategy, run it, evaluate the result, retry on failure."""
-    strategy = pick_strategy(client, input_path, verbose=verbose)
-    print(
-        f"{input_path.name}: attempt 1 mode={strategy.mode} "
-        f"confidence={strategy.confidence:.2f} — {strategy.rationale}",
-        file=sys.stderr,
-    )
-    rc = run_bgremove(input_path, output_path, strategy, verbose=verbose)
-    if rc != 0:
-        return rc
+    """Pick a strategy, run it, evaluate, retry — and return the best attempt.
 
-    if not evaluate:
-        return 0
-
-    for attempt in range(2, max_attempts + 1):
-        try:
-            evaluation = evaluate_cut(client, input_path, output_path, strategy, verbose=verbose)
-        except Exception as ex:
-            print(f"  eval failed ({ex}); keeping current cut", file=sys.stderr)
-            return 0
-
-        if evaluation.quality == "clean":
-            print(f"  eval: clean ✓", file=sys.stderr)
-            return 0
-
-        if evaluation.next_strategy is None:
-            # Eval said rough/broken but didn't propose a fix — bail.
-            print(
-                f"  eval: {evaluation.quality} (no retry suggested) — issue: {evaluation.issue}",
-                file=sys.stderr,
-            )
-            return 0
-
+    Each attempt writes to <output>.attempt{N}<ext>; after the loop the
+    highest-quality attempt is copied to <output>. If max_attempts == 1 (or
+    --no-evaluate), there's no retry and the output goes straight to <output>
+    with no sidecar files.
+    """
+    # Single-shot path: no per-attempt sidecars, no eval loop.
+    if not evaluate or max_attempts <= 1:
+        strategy = pick_strategy(client, input_path, verbose=verbose)
         print(
-            f"  eval: {evaluation.quality} — {evaluation.issue}",
+            f"{input_path.name}: attempt 1 mode={strategy.mode} "
+            f"confidence={strategy.confidence:.2f} — {strategy.rationale}",
             file=sys.stderr,
         )
-        strategy = evaluation.next_strategy
+        return run_bgremove(input_path, output_path, strategy, verbose=verbose)
+
+    # Eval-on, possibly multi-attempt path. Write each to a sidecar.
+    attempts: list[tuple[int, Path, Optional[CutEvaluation]]] = []  # (n, path, eval)
+    strategy = pick_strategy(client, input_path, verbose=verbose)
+
+    for attempt in range(1, max_attempts + 1):
+        attempt_path = _attempt_path(output_path, attempt)
+        prev_path = attempts[-1][1] if attempts else None
+
+        # If retrying with matting and we have a previous cut, pass it as the
+        # seed alpha so matting actually refines that cut (not a fresh grabcut).
+        input_alpha = prev_path if (strategy.mode == "matting" and prev_path is not None) else None
+        if input_alpha and verbose:
+            print(f"  (refining attempt {attempt - 1} via matting --input-alpha)", file=sys.stderr)
+
         print(
             f"{input_path.name}: attempt {attempt} mode={strategy.mode} "
             f"confidence={strategy.confidence:.2f} — {strategy.rationale}",
             file=sys.stderr,
         )
-        rc = run_bgremove(input_path, output_path, strategy, verbose=verbose)
+        rc = run_bgremove(input_path, attempt_path, strategy, input_alpha=input_alpha, verbose=verbose)
         if rc != 0:
             return rc
 
-    # Final eval after the last attempt — purely informational.
-    try:
-        final = evaluate_cut(client, input_path, output_path, strategy, verbose=verbose)
-        if final.quality == "clean":
-            print(f"  eval: clean ✓", file=sys.stderr)
-        else:
-            print(
-                f"  eval: {final.quality} after {max_attempts} attempts — {final.issue}",
-                file=sys.stderr,
-            )
-    except Exception as ex:
-        print(f"  final eval failed ({ex})", file=sys.stderr)
+        try:
+            evaluation = evaluate_cut(client, input_path, attempt_path, strategy, verbose=verbose)
+        except Exception as ex:
+            print(f"  eval failed ({ex}); accepting current cut", file=sys.stderr)
+            attempts.append((attempt, attempt_path, None))
+            break
+
+        attempts.append((attempt, attempt_path, evaluation))
+        print(
+            f"  eval: {evaluation.quality}"
+            f"{f' — {evaluation.issue}' if evaluation.issue else ''}",
+            file=sys.stderr,
+        )
+
+        if evaluation.quality == "clean":
+            break  # nothing better to find
+        if evaluation.next_strategy is None:
+            break  # eval declined to suggest a retry
+        if attempt == max_attempts:
+            break  # used our budget
+
+        strategy = evaluation.next_strategy
+
+    # Pick the best attempt by quality rank. Ties → earliest attempt
+    # (cheaper to compute is a fair tiebreak).
+    def rank(item: tuple[int, Path, Optional[CutEvaluation]]) -> tuple[int, int]:
+        n, _path, ev = item
+        q = QUALITY_RANK.get(ev.quality, 0) if ev else 0
+        return (q, -n)  # higher quality wins, then earlier attempt
+
+    best = max(attempts, key=rank)
+    best_n, best_path, best_eval = best
+
+    # Copy the best attempt to the user-requested output path.
+    import shutil
+    shutil.copyfile(best_path, output_path)
+
+    summary = f"  → kept attempt {best_n}"
+    if best_eval:
+        summary += f" ({best_eval.quality})"
+    if len(attempts) > 1:
+        summary += f"; sidecars: {', '.join(p.name for _, p, _ in attempts)}"
+    print(summary, file=sys.stderr)
     return 0
 
 

@@ -237,6 +237,7 @@ def mode_matting(
     rgb: np.ndarray,
     seed_mode: str = "grabcut",
     seed_kwargs: dict | None = None,
+    input_alpha: np.ndarray | None = None,
     erode_radius: int | None = None,
     dilate_radius: int | None = None,
     max_dim: int = MATTING_MAX_DIM,
@@ -272,17 +273,31 @@ def mode_matting(
         )
     import cv2
 
-    seed_kwargs = seed_kwargs or {}
-    if seed_mode == "grabcut":
-        _, alpha_seed = mode_grabcut(rgb, **seed_kwargs)
-    elif seed_mode == "contour":
-        _, alpha_seed = mode_contour(rgb, **seed_kwargs)
-    elif seed_mode == "color-key":
-        # Color-key already produces soft alpha — matting on top is rarely
-        # useful, but allow it. The threshold below cleans up the trimap.
-        _, alpha_seed = mode_color_key(rgb, **seed_kwargs)
+    if input_alpha is not None:
+        # Refining an existing cut (typically the previous attempt's output).
+        # Skip the seed mode entirely — the provided alpha IS the seed.
+        if input_alpha.shape[:2] != rgb.shape[:2]:
+            import cv2 as _cv
+            input_alpha = _cv.resize(
+                input_alpha.astype(np.uint8),
+                (rgb.shape[1], rgb.shape[0]),
+                interpolation=_cv.INTER_NEAREST,
+            ).astype(np.float64)
+        alpha_seed = input_alpha
+        if verbose:
+            print("matting: seeding from provided alpha mask", file=sys.stderr)
     else:
-        raise ValueError(f"matting seed_mode must be grabcut/contour/color-key, got {seed_mode!r}")
+        seed_kwargs = seed_kwargs or {}
+        if seed_mode == "grabcut":
+            _, alpha_seed = mode_grabcut(rgb, **seed_kwargs)
+        elif seed_mode == "contour":
+            _, alpha_seed = mode_contour(rgb, **seed_kwargs)
+        elif seed_mode == "color-key":
+            # Color-key already produces soft alpha — matting on top is rarely
+            # useful, but allow it. The threshold below cleans up the trimap.
+            _, alpha_seed = mode_color_key(rgb, **seed_kwargs)
+        else:
+            raise ValueError(f"matting seed_mode must be grabcut/contour/color-key, got {seed_mode!r}")
 
     # Scale erode/dilate radii to image size so small icons don't erode away.
     h, w = rgb.shape[:2]
@@ -420,6 +435,7 @@ def run(
     feather: int = 0,
     rect: str = "auto",
     iters: int = 5,
+    input_alpha_path: Path | None = None,
     verbose: bool = False,
 ) -> None:
     img = Image.open(input_path).convert("RGBA")
@@ -450,14 +466,25 @@ def run(
             print("ai: handing off to rembg + U2Net", file=sys.stderr)
         rgb_out, alpha = mode_ai(rgb)
     elif mode == "matting":
-        # Matting is a refinement step on top of a binary mask — always seed
-        # from grabcut. (Color-key already produces soft alpha; matting on top
-        # is wasted work.) If the user specifically wants matting on a
-        # uniform-bg image, color-key alone is what they want.
-        seed_kwargs = {"rect": parse_rect(rect, w, h), "iters": iters}
-        if verbose:
+        # If the caller passed --input-alpha, refine that. Otherwise re-seed
+        # from grabcut. The agent uses --input-alpha to refine a previous
+        # attempt's output without re-running grabcut from scratch.
+        input_alpha_arr = None
+        if input_alpha_path is not None:
+            with Image.open(input_alpha_path) as ai:
+                input_alpha_arr = np.array(ai.convert("RGBA"))[..., 3].astype(np.float64)
+            if verbose:
+                print(f"matting: loaded seed alpha from {input_alpha_path}", file=sys.stderr)
+        seed_kwargs = {"rect": parse_rect(rect, w, h), "iters": iters} if input_alpha_arr is None else {}
+        if verbose and input_alpha_arr is None:
             print("matting: seed_mode=grabcut (refining edges with pymatting)", file=sys.stderr)
-        rgb_out, alpha = mode_matting(rgb, seed_mode="grabcut", seed_kwargs=seed_kwargs, verbose=verbose)
+        rgb_out, alpha = mode_matting(
+            rgb,
+            seed_mode="grabcut",
+            seed_kwargs=seed_kwargs,
+            input_alpha=input_alpha_arr,
+            verbose=verbose,
+        )
     else:
         raise ValueError(f"unknown mode: {mode!r}")
 
@@ -543,6 +570,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--feather", type=int, default=0, help="contour/grabcut: Gaussian blur radius for the alpha edge")
     ap.add_argument("--rect", default="auto", help="grabcut: 'auto' (5%% inset) or 'x,y,w,h' bbox")
     ap.add_argument("--iters", type=int, default=5, help="grabcut: number of refinement iterations (default 5)")
+    ap.add_argument("--input-alpha", type=Path, dest="input_alpha", help="matting: path to PNG whose alpha channel becomes the seed mask (refine an existing cut)")
     ap.add_argument("-v", "--verbose", action="store_true", help="Print picked mode + alpha summary to stderr")
     args = ap.parse_args(argv)
 
@@ -560,6 +588,7 @@ def main(argv: list[str] | None = None) -> int:
         feather=args.feather,
         rect=args.rect,
         iters=args.iters,
+        input_alpha_path=args.input_alpha,
         verbose=args.verbose,
     )
 
