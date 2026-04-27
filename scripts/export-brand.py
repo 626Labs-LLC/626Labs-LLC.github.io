@@ -24,10 +24,13 @@ FONTS = ROOT / "fonts"
 
 OUT.mkdir(parents=True, exist_ok=True)
 
-BG_NAVY = np.array([25, 46, 69], dtype=np.int16)  # the field color we strip
-KEY_LO = 25   # within this distance → fully transparent
-KEY_HI = 70   # beyond this distance → fully opaque
-                # in between → ramped alpha (anti-aliased edge recovery)
+BG_NAVY = np.array([25, 46, 69], dtype=np.float64)  # the field color we strip
+# Tighter lo + much wider hi gives the ramp room to unmix navy out of glow
+# halos and AA edges. Without unmixing, "fully opaque" pixels at distance ~50
+# would still be a navy-mixed dim cyan — that's the "washed out" effect.
+KEY_LO = 6     # anything within this distance → fully transparent (true bg)
+KEY_HI = 150   # at this distance → fully opaque foreground
+               # in between → ramped alpha + RGB unmix to recover original neon
 
 CYAN = (23, 212, 250)
 MAGENTA = (242, 47, 137)
@@ -37,13 +40,36 @@ DIM = (138, 153, 174)
 
 
 def color_key(img: Image.Image, bg=BG_NAVY, lo=KEY_LO, hi=KEY_HI) -> Image.Image:
-    """Soft color-key: bg pixels → transparent, edges ramp."""
-    arr = np.array(img.convert("RGBA"))
-    rgb = arr[..., :3].astype(np.int16)
+    """Soft color-key + alpha unmix.
+
+    The source PNG has no alpha channel — every visible pixel was rendered
+    on top of the navy field. Naively dropping bg → transparent leaves
+    AA edges with a navy-blended RGB, which looks washed out on a different
+    surface. This routine:
+
+      1. Estimates a matte alpha from the per-pixel distance to the bg color
+         (linear ramp between `lo` and `hi`).
+      2. For each non-transparent pixel, recovers the unmixed foreground:
+            C_obs = α · C_fg + (1-α) · C_bg
+            ⇒ C_fg = (C_obs - (1-α) · C_bg) / α
+         This brightens AA edges and glow halos to their "intended" neon
+         instead of leaving them as muddy navy-cyan.
+    """
+    arr = np.array(img.convert("RGBA")).astype(np.float64)
+    rgb = arr[..., :3]
     dist = np.sqrt(((rgb - bg) ** 2).sum(axis=-1))
-    alpha = np.clip((dist - lo) / (hi - lo) * 255, 0, 255).astype(np.uint8)
-    arr[..., 3] = np.minimum(arr[..., 3], alpha)
-    return Image.fromarray(arr, "RGBA")
+    alpha = np.clip((dist - lo) / (hi - lo), 0, 1)
+    # Unmix bg out of fg, divide-by-zero-safe (alpha=0 pixels become transparent
+    # so their RGB is irrelevant — set to 0 to keep clean color halos).
+    safe_alpha = np.where(alpha > 1e-3, alpha, 1.0)[..., None]
+    fg = (rgb - (1 - alpha[..., None]) * bg) / safe_alpha
+    fg = np.clip(fg, 0, 255)
+    out = np.zeros_like(arr)
+    out[..., :3] = fg
+    # Preserve any pre-existing alpha (multiply with our matte) instead of
+    # blindly overwriting — keeps callers honest if the source ever gains alpha.
+    out[..., 3] = np.minimum(arr[..., 3], alpha * 255)
+    return Image.fromarray(out.astype(np.uint8), "RGBA")
 
 
 def autocrop_alpha(img: Image.Image, margin: int = 4) -> Image.Image:
@@ -65,17 +91,20 @@ def square_pad(img: Image.Image) -> Image.Image:
     return out
 
 
-def find_icon_bottom(keyed: Image.Image, gap_rows: int = 8) -> int:
+def find_icon_bottom(keyed: Image.Image, gap_rows: int = 8, content_alpha: int = 96) -> int:
     """Locate the y where the icon ends and the wordmark begins.
 
     The portrait has icon ↑, blank gap, wordmark ↓. We scan rows of the
     alpha channel from the top and stop at the first contiguous band of
     `gap_rows` empty rows — that's the boundary between the icon and the
     wordmark/slogan below.
+
+    `content_alpha` is the threshold for "meaningful content" — set high
+    enough to ignore glow halos and unmix-noise that bridge the gap.
     """
     arr = np.array(keyed)
     alpha = arr[..., 3]
-    row_has_content = (alpha > 8).any(axis=1)
+    row_has_content = (alpha > content_alpha).any(axis=1)
     in_content = False
     empty_run = 0
     last_content_y = 0
