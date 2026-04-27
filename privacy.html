@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — 626 Labs</title>
+  <meta name="description" content="How 626 Labs handles information on 626labs.dev, in email, and through the Claude Code plugins we publish." />
+  <link rel="icon" type="image/png" href="favicon-626.png" />
+
+  <meta property="og:title" content="Privacy Policy — 626 Labs" />
+  <meta property="og:description" content="How 626 Labs handles information on 626labs.dev, in email, and through the Claude Code plugins we publish." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://626labs.dev/privacy.html" />
+  <meta property="og:image" content="https://626labs.dev/logo.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:image" content="https://626labs.dev/logo.png" />
+  <meta name="robots" content="index, follow" />
+
+  <style>
+    /* 626 Labs Design System — see ~/.claude/skills/626labs-design + /Design */
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --navy-deep: #0f1f31;
+      --navy-mid:  #192e44;
+      --navy-hi:   #223a54;
+      --navy-line: #2a3a5c;
+      --cyan:      #17d4fa;
+      --cyan-pale: #5ce6ff;
+      --cyan-dim:  #0fa8c9;
+      --magenta:   #f22f89;
+      --magenta-pale: #ff5aa3;
+      --ink-0:     #ffffff;
+      --ink-950:   #050c18;
+      --text:      #e8f2ff;
+      --text-sec:  #a8c2d9;
+      --text-dim:  #6a849e;
+      --text-mute: #4a5f7a;
+      --ok:        #2bd99a;
+      --warn:      #ffb454;
+
+      --bg-0: var(--navy-deep);
+      --bg-1: var(--navy-mid);
+      --bg-2: var(--navy-hi);
+      --fg-1: var(--text);
+      --fg-2: var(--text-sec);
+      --fg-3: var(--text-dim);
+      --fg-muted: var(--text-mute);
+
+      --border-1: rgba(255,255,255,.08);
+      --border-2: rgba(255,255,255,.14);
+      --border-strong: rgba(255,255,255,.24);
+      --border-accent: rgba(23,212,250,.45);
+
+      --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+      --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
+      --glow-cyan: 0 0 0 1px rgba(23,212,250,.35), 0 0 24px rgba(23,212,250,.35);
+      --glow-duo: 0 0 24px rgba(23,212,250,.22), 0 0 48px rgba(242,47,137,.16);
+      --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
+
+      --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+      --shadow-3: 0 12px 32px rgba(0,0,0,.55);
+
+      --ease-out: cubic-bezier(.2,.7,.2,1);
+      --dur-fast: 120ms;
+      --dur-med: 220ms;
+
+      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+      --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+      --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+      --r-pill: 999px;
+
+      --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg-0);
+      color: var(--fg-1);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    a.inline-link {
+      color: var(--cyan);
+      border-bottom: 1px solid rgba(23,212,250,.35);
+      transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+    }
+    a.inline-link:hover { color: var(--cyan-pale); border-bottom-color: var(--cyan-pale); }
+    h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
+
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 var(--s-8);
+    }
+
+    /* ========== Nav (mirrors index.html) ========== */
+    nav.nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(15, 31, 49, 0.72);
+      border-bottom: 1px solid var(--border-1);
+    }
+    .nav-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 var(--s-8);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-6);
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+    .nav-brand .brand-626 { color: var(--cyan); }
+    .nav-brand .brand-labs { color: var(--fg-1); }
+    .nav-links {
+      display: flex;
+      gap: var(--s-6);
+      font-size: 14px;
+      color: var(--fg-2);
+    }
+    .nav-links a {
+      position: relative;
+      padding: 6px 2px;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .nav-links a:hover { color: var(--fg-1); }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-950);
+      background: var(--cyan);
+      padding: 8px 14px;
+      border-radius: var(--r-md);
+      border: none;
+      box-shadow: 0 0 0 1px rgba(23,212,250,.4), 0 0 18px rgba(23,212,250,.25);
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .nav-cta:hover {
+      background: var(--cyan-pale);
+      box-shadow: 0 0 0 1px rgba(92,230,255,.55), 0 0 28px rgba(23,212,250,.5);
+    }
+    @media (max-width: 720px) { .nav-links { display: none; } }
+    .ic { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ========== Page header ========== */
+    header.page-hero {
+      position: relative;
+      padding: clamp(56px, 8vw, 96px) 0 var(--s-12);
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-1);
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .page-hero-bg .grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(23,212,250,.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(242,47,137,.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 75%);
+    }
+    .page-hero-bg .glow {
+      position: absolute;
+      top: -30%; right: -20%;
+      width: 70%; height: 100%;
+      background: radial-gradient(closest-side, rgba(23,212,250,.18), transparent 70%);
+      filter: blur(60px);
+    }
+    .page-hero-inner { position: relative; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-3);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--fg-3);
+      margin-bottom: var(--s-5);
+    }
+    .eyebrow .pulse {
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 10px var(--ok);
+    }
+    h1.page-title {
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+      margin: 0 0 var(--s-4);
+      color: var(--fg-1);
+    }
+    h1.page-title .accent {
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .page-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--fg-3);
+      letter-spacing: 0.04em;
+    }
+    .page-meta .sep { margin: 0 var(--s-3); color: var(--text-mute); }
+
+    /* ========== TL;DR callout ========== */
+    .tldr {
+      margin: var(--s-12) 0 var(--s-10);
+      padding: var(--s-6) var(--s-6);
+      border-radius: var(--r-lg);
+      background: var(--brand-gradient-soft);
+      border: 1px solid var(--border-2);
+      box-shadow: var(--inner-stroke);
+    }
+    .tldr-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--cyan);
+      margin-bottom: var(--s-3);
+    }
+    .tldr ul {
+      margin: 0;
+      padding-left: var(--s-5);
+      color: var(--fg-1);
+    }
+    .tldr li { margin: var(--s-2) 0; }
+
+    /* ========== Body sections ========== */
+    main.policy { padding: var(--s-8) 0 var(--s-16); }
+    main.policy h2 {
+      font-size: clamp(22px, 2.4vw, 28px);
+      line-height: 1.2;
+      margin: var(--s-12) 0 var(--s-3);
+      color: var(--fg-1);
+    }
+    main.policy h2 .num {
+      font-family: var(--font-mono);
+      font-size: 0.6em;
+      color: var(--cyan);
+      margin-right: var(--s-3);
+      letter-spacing: 0.04em;
+      vertical-align: 0.15em;
+    }
+    main.policy h3 {
+      font-size: 17px;
+      margin: var(--s-8) 0 var(--s-2);
+      color: var(--fg-1);
+    }
+    main.policy p, main.policy li {
+      color: var(--fg-2);
+      max-width: 68ch;
+    }
+    main.policy ul { padding-left: var(--s-5); }
+    main.policy li { margin: var(--s-2) 0; }
+    main.policy strong { color: var(--fg-1); font-weight: 600; }
+    main.policy code {
+      font-family: var(--font-mono);
+      font-size: 0.92em;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border-1);
+      padding: 1px 6px;
+      border-radius: var(--r-xs);
+      color: var(--fg-1);
+    }
+    main.policy hr {
+      border: 0;
+      height: 1px;
+      background: var(--border-1);
+      margin: var(--s-12) 0;
+    }
+    .contact-card {
+      margin-top: var(--s-6);
+      padding: var(--s-5) var(--s-6);
+      border-radius: var(--r-lg);
+      background: var(--bg-1);
+      border: 1px solid var(--border-1);
+      box-shadow: var(--inner-stroke);
+    }
+    .contact-card .row { display: flex; gap: var(--s-3); align-items: baseline; flex-wrap: wrap; }
+    .contact-card .label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--fg-3);
+      min-width: 90px;
+    }
+    .contact-card .value { color: var(--fg-1); }
+
+    /* ========== Footer (mirrors index.html) ========== */
+    footer {
+      border-top: 1px solid var(--border-1);
+      padding: var(--s-8) 0;
+      background: var(--bg-0);
+    }
+    .footer-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 var(--s-8);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--s-6);
+      flex-wrap: wrap;
+    }
+    .footer-links {
+      display: flex;
+      gap: var(--s-5);
+      font-size: 13px;
+      color: var(--fg-3);
+      flex-wrap: wrap;
+    }
+    .footer-links a { color: var(--fg-3); transition: color var(--dur-fast) var(--ease-out); }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--fg-3);
+      letter-spacing: 0.02em;
+    }
+    .footer-meta .brand-tagline { color: var(--cyan); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html#top">
+      <svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+        <defs>
+          <linearGradient id="navg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#17d4fa"/>
+            <stop offset="100%" stop-color="#f22f89"/>
+          </linearGradient>
+        </defs>
+        <polygon points="16,3 28,10 28,22 16,29 4,22 4,10" fill="none" stroke="url(#navg)" stroke-width="1.6"/>
+        <circle cx="16" cy="16" r="3.2" fill="none" stroke="#17d4fa" stroke-width="1.3"/>
+        <path d="M8 16 L12.5 16 M19.5 16 L24 16 M16 8.5 L16 12.5 M16 19.5 L16 23.5" stroke="#f22f89" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <span><span class="brand-626">626</span><span class="brand-labs">Labs</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#work">Work</a>
+      <a href="index.html#thinking">Thinking</a>
+      <a href="index.html#lab">Lab</a>
+      <a href="index.html#about">About</a>
+      <a href="https://github.com/sponsors/estevanhernandez-stack-ed">Sponsor</a>
+    </div>
+    <a href="index.html#contact" class="nav-cta">
+      Get in touch
+      <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="page-hero-bg">
+    <div class="grid"></div>
+    <div class="glow"></div>
+  </div>
+  <div class="wrap page-hero-inner">
+    <div class="eyebrow">
+      <span class="pulse"></span>
+      <span>Legal · Effective 2026-04-27</span>
+    </div>
+    <h1 class="page-title">Privacy <span class="accent">Policy</span></h1>
+    <p class="page-meta">
+      626 Labs LLC <span class="sep">·</span>
+      Fort Worth, Texas <span class="sep">·</span>
+      Last updated 2026-04-27
+    </p>
+  </div>
+</header>
+
+<main class="policy">
+  <div class="wrap">
+
+    <div class="tldr">
+      <div class="tldr-label">The short version</div>
+      <ul>
+        <li>626 Labs runs a static portfolio site at <strong>626labs.dev</strong>. No analytics. No cookies. No tracking pixels. No forms.</li>
+        <li>The Claude Code plugins we publish run <strong>locally on your machine</strong>. They do not phone home to 626 Labs.</li>
+        <li>Some plugins integrate with third-party services (Discord, Figma, Anthropic's API, etc.) only when you choose to configure them with your own credentials. Those services have their own privacy policies.</li>
+        <li>If you email us, we keep the email so we can reply. We don't sell or share your information.</li>
+      </ul>
+    </div>
+
+    <p>
+      This policy explains how 626 Labs LLC ("<strong>626 Labs</strong>," "<strong>we</strong>," "<strong>us</strong>") handles information across our website, our email correspondence, and the Claude Code plugins we publish. We try to be honest about what we collect and why, in plain language.
+    </p>
+
+    <hr/>
+
+    <h2><span class="num">01</span>Who we are</h2>
+    <p>
+      626 Labs LLC is a Fort Worth, Texas studio that ships native apps, web tools, and Claude Code plugins. You can reach us at <a class="inline-link" href="mailto:estevan@626labs.dev">estevan@626labs.dev</a> for any privacy question, request, or concern covered by this policy.
+    </p>
+
+    <h2><span class="num">02</span>The website (626labs.dev)</h2>
+    <p>
+      <strong>626labs.dev</strong> is a static portfolio site hosted on GitHub Pages. We do not place analytics scripts, advertising trackers, or persistent cookies on the site. We do not run any forms, sign-ups, or accounts.
+    </p>
+
+    <h3>What is collected automatically</h3>
+    <p>
+      When you visit any website &mdash; including ours &mdash; the hosting provider receives standard request information needed to serve the page. For 626labs.dev, that provider is <strong>GitHub Pages</strong>, and the data they collect (such as IP address, user agent, and referrer) is governed by GitHub's privacy practices. See <a class="inline-link" href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's privacy statement</a> for details. We do not see, store, or use that data ourselves.
+    </p>
+
+    <h3>What is not collected</h3>
+    <ul>
+      <li>No analytics (no Google Analytics, Plausible, Fathom, PostHog, or similar).</li>
+      <li>No advertising or remarketing trackers.</li>
+      <li>No first-party cookies set by 626 Labs.</li>
+      <li>No contact forms, comment systems, or account systems.</li>
+    </ul>
+
+    <h3>External links</h3>
+    <p>
+      The site links out to third-party platforms such as GitHub, YouTube, Replit, the Microsoft Store, and Anthropic. Once you follow a link off-site, that destination's own privacy policy applies. We have no control over and take no responsibility for the practices of those services.
+    </p>
+
+    <h2><span class="num">03</span>Email correspondence</h2>
+    <p>
+      The site uses <code>mailto:</code> links rather than embedded forms. When you email us at <a class="inline-link" href="mailto:estevan@626labs.dev">estevan@626labs.dev</a>, your message is delivered to a personal Gmail inbox operated by 626 Labs. We retain the email to respond and to keep a record of the conversation. We do not add you to any marketing list, and we do not share your email with anyone outside 626 Labs.
+    </p>
+    <p>
+      You can ask us to delete an email thread at any time by replying with that request, and we will remove it within a reasonable period subject to backups operated by our email provider.
+    </p>
+
+    <h2><span class="num">04</span>Claude Code plugins published by 626 Labs</h2>
+    <p>
+      626 Labs publishes plugins for <strong>Claude Code</strong> (Anthropic's coding assistant). Examples include Vibe Cartographer, Vibe Test, Vibe Doc, Vibe Thesis, and other tools distributed through Anthropic's plugin ecosystem. This section describes how those plugins handle data.
+    </p>
+
+    <h3>Local-first by design</h3>
+    <p>
+      Our plugins are designed to run locally inside your Claude Code installation on your own machine. They read and write files in your project directory and in your local Claude configuration directory (typically <code>~/.claude</code>) so that they can do useful work &mdash; for example, saving a builder profile, a project plan, or a session log. <strong>626 Labs does not operate a server that receives this data.</strong> We do not collect telemetry, usage analytics, or crash reports from our plugins.
+    </p>
+
+    <h3>What is processed by the plugin on your machine</h3>
+    <ul>
+      <li><strong>Files in the working directory</strong> &mdash; the plugin reads project files you point it at, the same way Claude Code itself does.</li>
+      <li><strong>Plugin profile and state files</strong> &mdash; preferences, session logs, and friction logs may be written to <code>~/.claude/profiles/</code>, <code>~/.claude/projects/</code>, or the plugin's own data directory. These files stay on your machine.</li>
+      <li><strong>Memory files</strong> &mdash; if you use auto-memory, your notes live in your local <code>~/.claude/projects/&lt;project&gt;/memory/</code> directory.</li>
+    </ul>
+
+    <h3>Anthropic and your AI prompts</h3>
+    <p>
+      Our plugins run inside Claude Code. The prompts and responses Claude Code exchanges with Anthropic's API are governed by your agreement with <strong>Anthropic</strong> and Anthropic's own privacy policy &mdash; not by us. We do not see, intercept, or log those exchanges.
+    </p>
+
+    <h3>Third-party integrations you configure</h3>
+    <p>
+      Some plugins offer optional integrations with third-party services &mdash; for example, posting a message to Discord, fetching a Figma design, reading from Google Drive, or rendering a document. These integrations are <strong>opt-in</strong>: they only activate when you provide your own credentials (an API key, an OAuth token, a bot token, etc.).
+    </p>
+    <p>
+      When you use such an integration, your data flows directly between your machine and the third-party service under that service's own privacy policy. 626 Labs does not receive, proxy, or store the credentials or the data exchanged. You should review each service's terms before connecting it.
+    </p>
+
+    <h3>Open source</h3>
+    <p>
+      Our plugins are published as source code across two GitHub accounts operated by 626 Labs: the company organization at <a class="inline-link" href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">github.com/626Labs-LLC</a> and the founder's personal account at <a class="inline-link" href="https://github.com/estevanhernandez-stack-ed" target="_blank" rel="noopener">github.com/estevanhernandez-stack-ed</a>, where most day-to-day work lives. You are welcome to inspect any plugin's code to verify its data behavior. If you find anything that contradicts this policy, please let us know &mdash; we will fix it.
+    </p>
+
+    <h2><span class="num">05</span>Children's privacy</h2>
+    <p>
+      Our website and our plugins are intended for a general developer audience and are not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child has sent us personal information, contact us and we will delete it.
+    </p>
+
+    <h2><span class="num">06</span>Your rights</h2>
+    <p>
+      Depending on where you live, you may have rights under laws such as the EU/UK GDPR or the California Consumer Privacy Act (CCPA) &mdash; for example, the right to access, correct, delete, or port personal information that a business holds about you, and the right to object to certain processing.
+    </p>
+    <p>
+      Because the website does not collect personal information and our plugins keep their data on your own machine, the only personal information we typically hold is the content of email correspondence you have sent us. You can exercise your rights over that information by emailing <a class="inline-link" href="mailto:estevan@626labs.dev">estevan@626labs.dev</a>. We do not sell personal information.
+    </p>
+
+    <h2><span class="num">07</span>Security</h2>
+    <p>
+      We take reasonable steps to protect the limited information we hold &mdash; including using a reputable email provider with two-factor authentication, and storing source code in version control with access controls. No system is perfectly secure, however, and we cannot guarantee absolute security of information transmitted over the internet.
+    </p>
+
+    <h2><span class="num">08</span>Changes to this policy</h2>
+    <p>
+      We may update this policy from time to time as our practices, the products we publish, or applicable law evolves. The "Effective" and "Last updated" dates at the top of the page reflect the current version. Material changes will be reflected by an updated effective date and, where appropriate, a note on the homepage. The previous version's substance can always be reconstructed from this site's git history at <a class="inline-link" href="https://github.com/626Labs-LLC/626Labs-LLC.github.io" target="_blank" rel="noopener">our public repository</a>.
+    </p>
+
+    <h2><span class="num">09</span>Contact</h2>
+    <p>
+      For any privacy question, request, or concern, reach out:
+    </p>
+    <div class="contact-card">
+      <div class="row"><div class="label">Email</div><div class="value"><a class="inline-link" href="mailto:estevan@626labs.dev">estevan@626labs.dev</a></div></div>
+      <div class="row"><div class="label">Entity</div><div class="value">626 Labs LLC</div></div>
+      <div class="row"><div class="label">Location</div><div class="value">Fort Worth, Texas, United States</div></div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-meta">
+      © 2026 626 Labs LLC · <span class="brand-tagline">Imagine Something Else.</span><br/>
+      &ldquo;Claude&rdquo; and &ldquo;claude.ai&rdquo; are trademarks of Anthropic PBC, used nominatively.
+    </div>
+    <div class="footer-links">
+      <a href="index.html#work">Work</a>
+      <a href="index.html#thinking">Thinking</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
