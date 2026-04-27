@@ -1,23 +1,30 @@
 #!/usr/bin/env python3
-"""bgremove-agent — Claude vision picks the best bgremove mode for an image.
+"""bgremove-agent — Claude vision picks + evaluates bgremove cuts.
 
-The agentic layer over scripts/bgremove.py. Workflow:
-  1. Read the image, encode as base64.
-  2. Send to Claude with a system prompt explaining the 5 bgremove modes.
-  3. Claude returns a structured decision: { mode, rect?, bg_color?,
+The closed-loop agentic layer over scripts/bgremove.py. Default workflow:
+
+  1. Read image, encode as base64, send to Claude with a system prompt
+     explaining the 5 bgremove modes.
+  2. Claude returns a structured strategy: { mode, rect?, bg_color?,
      rationale, confidence }.
-  4. We invoke bgremove.py with the chosen args.
+  3. Run bgremove.py with those args.
+  4. Send Claude the original + the cut and ask: "did this work?" Claude
+     returns { quality: clean|rough|broken, issue?, next_strategy? }.
+  5. If quality != "clean" and we have attempts left, run the suggested
+     next_strategy. Cap at --max-attempts (default 2: initial + 1 retry).
 
-This is the genuinely novel layer — no other open-source bg removal tool
-has a vision-based mode picker. Classical CV does the actual cutting; the
-LLM just picks which knife.
+The evaluation step is what makes this different from a naive LLM-routes-
+to-classical-CV wrapper — none of the existing open-source tools close
+the loop on output quality.
+
+Disable the loop with --no-evaluate (single-shot, v3 behavior, lower cost).
 
 Requires `pip install anthropic` and ANTHROPIC_API_KEY in env.
 
 Examples:
-  bgremove-agent logo.png
-  bgremove-agent photo.jpg -o cut.png -v
-  bgremove-agent ./batch/ -o ./batch-cut/   # iterates the dir
+  bgremove-agent logo.png                       # eval on, max 2 attempts
+  bgremove-agent photo.jpg --max-attempts 3 -v
+  bgremove-agent ./batch/ --no-evaluate         # single-shot for cost savings
 """
 from __future__ import annotations
 
@@ -100,6 +107,72 @@ class BgRemoveStrategy(BaseModel):
     confidence: float = Field(..., ge=0.0, le=1.0, description="0..1 estimate of how clean the cut will be")
 
 
+class CutEvaluation(BaseModel):
+    """Claude's verdict on a completed cut."""
+
+    quality: Literal["clean", "rough", "broken"] = Field(
+        ...,
+        description=(
+            "clean = subject preserved + bg fully removed; "
+            "rough = mostly worked but has visible issues (halo, fringe, missed bg patches); "
+            "broken = wrong subject or large failure"
+        ),
+    )
+    issue: Optional[str] = Field(
+        None,
+        description="One sentence describing what's wrong, if anything. None when clean.",
+    )
+    next_strategy: Optional[BgRemoveStrategy] = Field(
+        None,
+        description=(
+            "If quality != 'clean', suggest a different strategy to try next. "
+            "Pick a different mode than the one that just ran — don't suggest "
+            "the same mode that produced this rough/broken output. None when clean."
+        ),
+    )
+
+
+# `from __future__ import annotations` makes Pydantic treat type hints as
+# strings; rebuild now that both BgRemoveStrategy and CutEvaluation exist so
+# the nested forward reference resolves.
+BgRemoveStrategy.model_rebuild()
+CutEvaluation.model_rebuild()
+
+
+EVAL_SYSTEM_PROMPT = """\
+You are evaluating a background-removal result. You see two images:
+
+1. **Original** — the input image, with its original background intact.
+2. **Cut** — the output PNG after bg removal. Transparent areas show as a \
+checkerboard or empty regions in the rendered image; opaque areas are what \
+was kept.
+
+Decide:
+
+- **clean** — Subject is fully preserved AND the background is fully removed. \
+No halo, no fringe, no leftover bg patches, no missing detail.
+- **rough** — Mostly works but has visible issues. Halos around hair/edges, \
+soft fringe of bg color, small leftover bg patches, slight loss of subject \
+detail. Usable for some purposes but not slam-dunk.
+- **broken** — Significant failure. Wrong subject, subject removed, large bg \
+patches retained, mode clearly didn't fit.
+
+Be honest. If the cut is clean, say clean and stop — don't invent issues. \
+If it's rough or broken, set `issue` to a one-sentence description and \
+`next_strategy` to a *different* mode that addresses the specific problem:
+
+- Halo / fringe / chunky edges → matting (refines a grabcut seed)
+- Subject removed or wrong region → grabcut with a tighter `rect`
+- Bg color bled into subject → color-key with explicit `bg_color`
+- Classical modes obviously failing on a portrait → ai (rembg)
+- Interior holes filled when they shouldn't be → color-key
+- Interior negative space transparent when it shouldn't be → contour
+
+Don't suggest the same mode that just ran with the same params — that won't \
+help. Vary the mode, the rect, or the bg_color.
+"""
+
+
 def encode_image(path: Path) -> tuple[str, str, tuple[int, int]]:
     """Return (base64_data, media_type, (width, height))."""
     media_type = {
@@ -170,6 +243,71 @@ def pick_strategy(client: anthropic.Anthropic, path: Path, verbose: bool = False
     return response.parsed_output
 
 
+def evaluate_cut(
+    client: anthropic.Anthropic,
+    original_path: Path,
+    cut_path: Path,
+    last_strategy: BgRemoveStrategy,
+    verbose: bool = False,
+) -> CutEvaluation:
+    """Send original + cut to Claude, ask for a structured verdict + next move."""
+    orig_b64, orig_mt, _ = encode_image(original_path)
+    cut_b64, cut_mt, _ = encode_image(cut_path)
+
+    response = client.messages.parse(
+        model="claude-opus-4-7",
+        max_tokens=2000,
+        thinking={"type": "adaptive"},
+        output_config={"effort": "medium"},
+        system=[
+            {
+                "type": "text",
+                "text": EVAL_SYSTEM_PROMPT,
+                "cache_control": {"type": "ephemeral"},
+            }
+        ],
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "Image 1 — Original input:"},
+                    {
+                        "type": "image",
+                        "source": {"type": "base64", "media_type": orig_mt, "data": orig_b64},
+                    },
+                    {"type": "text", "text": "Image 2 — Cut output (PNG with alpha):"},
+                    {
+                        "type": "image",
+                        "source": {"type": "base64", "media_type": cut_mt, "data": cut_b64},
+                    },
+                    {
+                        "type": "text",
+                        "text": (
+                            f"The cut was produced by mode={last_strategy.mode}"
+                            f"{f' with rect={last_strategy.rect}' if last_strategy.rect else ''}"
+                            f"{f' with bg_color={last_strategy.bg_color}' if last_strategy.bg_color else ''}. "
+                            f"Evaluate the result. If not clean, suggest a different strategy."
+                        ),
+                    },
+                ],
+            }
+        ],
+        output_format=CutEvaluation,
+    )
+
+    if verbose and hasattr(response, "usage"):
+        cache_read = getattr(response.usage, "cache_read_input_tokens", 0)
+        cache_create = getattr(response.usage, "cache_creation_input_tokens", 0)
+        print(
+            f"  eval: tokens in={response.usage.input_tokens} "
+            f"out={response.usage.output_tokens} "
+            f"cache_read={cache_read} cache_create={cache_create}",
+            file=sys.stderr,
+        )
+
+    return response.parsed_output
+
+
 def run_bgremove(
     input_path: Path,
     output_path: Path,
@@ -197,14 +335,74 @@ def run_bgremove(
     return subprocess.run(cmd).returncode
 
 
-def process_one(client: anthropic.Anthropic, input_path: Path, output_path: Path, verbose: bool) -> int:
+def process_one(
+    client: anthropic.Anthropic,
+    input_path: Path,
+    output_path: Path,
+    verbose: bool,
+    evaluate: bool = True,
+    max_attempts: int = 2,
+) -> int:
+    """Pick a strategy, run it, evaluate the result, retry on failure."""
     strategy = pick_strategy(client, input_path, verbose=verbose)
     print(
-        f"{input_path.name}: mode={strategy.mode} "
+        f"{input_path.name}: attempt 1 mode={strategy.mode} "
         f"confidence={strategy.confidence:.2f} — {strategy.rationale}",
         file=sys.stderr,
     )
-    return run_bgremove(input_path, output_path, strategy, verbose=verbose)
+    rc = run_bgremove(input_path, output_path, strategy, verbose=verbose)
+    if rc != 0:
+        return rc
+
+    if not evaluate:
+        return 0
+
+    for attempt in range(2, max_attempts + 1):
+        try:
+            evaluation = evaluate_cut(client, input_path, output_path, strategy, verbose=verbose)
+        except Exception as ex:
+            print(f"  eval failed ({ex}); keeping current cut", file=sys.stderr)
+            return 0
+
+        if evaluation.quality == "clean":
+            print(f"  eval: clean ✓", file=sys.stderr)
+            return 0
+
+        if evaluation.next_strategy is None:
+            # Eval said rough/broken but didn't propose a fix — bail.
+            print(
+                f"  eval: {evaluation.quality} (no retry suggested) — issue: {evaluation.issue}",
+                file=sys.stderr,
+            )
+            return 0
+
+        print(
+            f"  eval: {evaluation.quality} — {evaluation.issue}",
+            file=sys.stderr,
+        )
+        strategy = evaluation.next_strategy
+        print(
+            f"{input_path.name}: attempt {attempt} mode={strategy.mode} "
+            f"confidence={strategy.confidence:.2f} — {strategy.rationale}",
+            file=sys.stderr,
+        )
+        rc = run_bgremove(input_path, output_path, strategy, verbose=verbose)
+        if rc != 0:
+            return rc
+
+    # Final eval after the last attempt — purely informational.
+    try:
+        final = evaluate_cut(client, input_path, output_path, strategy, verbose=verbose)
+        if final.quality == "clean":
+            print(f"  eval: clean ✓", file=sys.stderr)
+        else:
+            print(
+                f"  eval: {final.quality} after {max_attempts} attempts — {final.issue}",
+                file=sys.stderr,
+            )
+    except Exception as ex:
+        print(f"  final eval failed ({ex})", file=sys.stderr)
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -218,6 +416,18 @@ def main(argv: list[str] | None = None) -> int:
         "--ext",
         default=".png,.jpg,.jpeg,.webp,.bmp",
         help="Batch only: comma-separated extensions to include",
+    )
+    ap.add_argument(
+        "--no-evaluate",
+        dest="evaluate",
+        action="store_false",
+        help="Skip the post-cut evaluation loop (single-shot, lower cost)",
+    )
+    ap.add_argument(
+        "--max-attempts",
+        type=int,
+        default=2,
+        help="Max bgremove invocations per image when evaluating (default: 2 = initial + 1 retry)",
     )
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args(argv)
@@ -243,7 +453,7 @@ def main(argv: list[str] | None = None) -> int:
         ok = fail = 0
         for img in images:
             try:
-                rc = process_one(client, img, out_dir / f"{img.stem}-cut.png", args.verbose)
+                rc = process_one(client, img, out_dir / f"{img.stem}-cut.png", args.verbose, evaluate=args.evaluate, max_attempts=args.max_attempts)
                 if rc == 0:
                     ok += 1
                 else:
@@ -256,7 +466,7 @@ def main(argv: list[str] | None = None) -> int:
 
     output = args.output or args.input.with_name(f"{args.input.stem}-cut.png")
     try:
-        return process_one(client, args.input, output, args.verbose)
+        return process_one(client, args.input, output, args.verbose, evaluate=args.evaluate, max_attempts=args.max_attempts)
     except Exception as ex:
         print(f"bgremove-agent: {ex}", file=sys.stderr)
         return 1
