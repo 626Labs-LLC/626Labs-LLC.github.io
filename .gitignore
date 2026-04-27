@@ -1,5 +1,6 @@
 # Tool artifacts
 .qodo/
+.playwright-mcp/
 
 # OS / editor noise
 .DS_Store

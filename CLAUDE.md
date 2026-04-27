@@ -44,12 +44,12 @@ references and one-off design artifacts.
 | `content/site.json` | Source of truth for everything editorial — hero, products, lab, play, about, support, contact, thinking, labRuns. |
 | `content/stories/*.md` | Long-form case studies. Edited via the admin's Stories tab. |
 | `admin/` + `admin-dashboard.html` | Babel-in-browser React admin. PAT-auth against this repo. Edits site.json, uploads to assets/, manages stories, surfaces bot run status. |
-| `apps/widget-bacon-trail/` | The embedded Birthday Bacon Trail widget. Bundle output lives at `widget-bacon-trail/` (root) so GH Pages serves it at `/widget-bacon-trail/`. |
+| `apps/widget-bacon-trail/` | The embedded Birthday Bacon Trail widget. Bundle output lives at `widget-bacon-trail/` (root) so GH Pages serves it at `/widget-bacon-trail/`. The `functions/` subdir is a separate Firebase Cloud Functions project (`logPlay` endpoint, deployed to `guestbuzz-cineperks`) — see its own README. |
 | `assets/` | Screenshots, OG images, favicons, brand exports. `assets/brand/` has the canonical icon + banners (built by `scripts/export-brand.py`). `assets/screenshots/<product>/` is what the admin uploader writes to. |
 | `Design/` | Brand reference + the design skill's UI kit. |
-| `scripts/` | Site pipeline: render-hub, refresh-bacon-shards, track-traffic, build-thumbnails, export-brand, build-admin-favicon. |
+| `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
-| `.github/workflows/` | 4 bot workflows that push to main. All have retry+rebase loops as of 2026-04-27. |
+| `.github/workflows/` | 4 bot workflows that push to main + 1 link checker. All 4 push-to-main workflows have retry+rebase loops as of 2026-04-27. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 
 ---
@@ -61,7 +61,9 @@ references and one-off design artifacts.
 - GitHub Pages redeploys.
 - `python3 scripts/render-hub.py --check` is idempotent; CI uses it to detect drift.
 
-## The 4 bot workflows on main
+## CI workflows
+
+The 4 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
@@ -72,6 +74,12 @@ references and one-off design artifacts.
 
 All four use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
+
+Plus one read-only checker (doesn't push):
+
+| Workflow | Trigger | Notes |
+|---|---|---|
+| `link-check.yml` | Push to `**/*.html` or `**/*.md`, weekly Mon 13:00 UTC | Lychee link-check. Opens an issue on broken links during scheduled runs only. |
 
 ---
 

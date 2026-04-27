@@ -6,19 +6,22 @@ Marker-based partial rendering: the renderer finds pairs of
 `<!-- SITE_JSON:<zone>:start -->` and `:end` comments in index.html and
 replaces the content between them with HTML generated from site.json.
 
-Zones handled (Phase 2):
+Zones handled:
 - hero         — eyebrow, h1, sub, actions, meta
 - hero-chips   — chips around the animated logo
 - products     — the 5 product cards in the Work section
+- thinking     — the Thinking section essays
+- lab-runs     — "How the lab runs" section
+- play         — the Play section
+- about        — the About section
+- support      — the Support CTA section
+- contact      — the Contact section
 - lab-pool     — the JS LAB_POOL array that drives "Also from the lab"
+                 (uses `// SITE_JSON:lab-pool:start/end` line comments)
 
 Zones NOT handled (stay hand-edited in index.html):
 - nav / footer
-- Thinking section
-- How the lab runs section
 - Manifesto / principles
-- Support CTA body
-- Contact section
 
 Stdlib only — runs in any Python 3.10+ on CI without `pip install`.
 """
