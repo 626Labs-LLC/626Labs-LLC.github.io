@@ -222,11 +222,11 @@ FLAGSHIP_PREVIEWS = {
             <div class="preview-dots"><span></span><span></span><span></span></div>
             <div class="preview-body">
               <div><span class="muted">/</span><span class="k">vibe-cartographer</span> <span class="muted">// session state</span></div>
-              <div><span class="s">✓</span> onboard · builder profile loaded</div>
-              <div><span class="s">✓</span> scope · focused project brief</div>
-              <div><span class="s">✓</span> prd · acceptance criteria drafted</div>
-              <div><span class="s">✓</span> spec · technical blueprint</div>
-              <div><span class="muted">→ checklist · build · iterate · reflect</span></div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> onboard · builder profile loaded</div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> scope · focused project brief</div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> prd · acceptance criteria drafted</div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> spec · technical blueprint</div>
+              <div><span class="muted"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> checklist · build · iterate · reflect</span></div>
               <div><span class="muted">level </span><span class="m">3.5</span><span class="muted"> · self-evolving memory · 16 patterns</span></div>
             </div>
           </div>
