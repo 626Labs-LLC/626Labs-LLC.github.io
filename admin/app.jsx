@@ -1571,7 +1571,8 @@ const BOT_WORKFLOWS = [
   { file: "build-widget.yml",         label: "Build widget",        trigger: "on widget src push" },
   { file: "refresh-bacon-shards.yml", label: "Refresh bacon shards", trigger: "daily · 06:00 UTC" },
   { file: "rebuild-hub.yml",          label: "Rebuild hub",          trigger: "on content/site.json push" },
-  { file: "track-traffic.yml",        label: "Track traffic",        trigger: "daily · 06:00 UTC" },
+  { file: "track-traffic.yml",        label: "Track traffic (plugin repos)", trigger: "daily · 06:00 UTC" },
+  { file: "fetch-site-stats.yml",     label: "Fetch site stats (GoatCounter)", trigger: "daily · 06:30 UTC" },
 ];
 
 async function fetchWorkflowRuns(file, token) {
@@ -1734,10 +1735,13 @@ function Toggle({ on, onChange }) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Analytics — site visits (GoatCounter) + plugin-repo traffic (CSV)
+// Analytics — site visits (committed JSON) + plugin-repo traffic (CSV)
 // ─────────────────────────────────────────────────────────────
-const GC_BASE = "https://626labs.goatcounter.com/api/v0";
-const GC_TOKEN_KEY = "626labs.admin.gc-token";
+// Site stats are fetched by .github/workflows/fetch-site-stats.yml
+// (daily 06:30 UTC) and committed to data/site-stats.json. The admin
+// reads the committed JSON via the Contents API — we don't hit
+// GoatCounter directly because (a) /stats/hits fails CORS preflight,
+// and (b) the free-tier API rate-limits at ~5 req/min.
 
 function parseTrafficCSV(text) {
   const lines = text.trim().split("\n");
@@ -1866,116 +1870,142 @@ function TabBar({ value, onChange, options }) {
   );
 }
 
-function GoatCounterConnect({ onConnect }) {
-  const [inputVal, setInputVal] = React.useState("");
+function SiteStatsBootstrap({ onTriggerFresh, onRefresh, triggering, dispatchStatus }) {
   return (
-    <div style={{ maxWidth: 620 }}>
+    <div style={{ maxWidth: 720 }}>
       <div style={{ background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, padding: 22 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-          <span style={{ width: 8, height: 8, borderRadius: 99, background: A.cyan, boxShadow: `0 0 8px ${A.cyan}` }}/>
-          <div style={{ fontSize: 14, fontWeight: 600 }}>Connect GoatCounter</div>
+          <span style={{ width: 8, height: 8, borderRadius: 99, background: A.amber, boxShadow: `0 0 8px ${A.amber}` }}/>
+          <div style={{ fontSize: 14, fontWeight: 600 }}>Site stats workflow hasn't run yet</div>
         </div>
         <div style={{ fontSize: 12, color: A.dim, lineHeight: 1.6, marginBottom: 14 }}>
-          The tracking script ships on every marketing page already. To pull stats into this admin, paste an API token from{" "}
-          <a href="https://626labs.goatcounter.com/user/api" target="_blank" rel="noopener" style={{ color: A.cyan, textDecoration: "none", borderBottom: `1px solid ${A.cyan}` }}>626labs.goatcounter.com → user account → API tokens</a>{" "}
-          (click your email in the top-right of any GoatCounter page, then the <b style={{ color: A.text }}>API</b> tab — not the site Settings page).
-          Grant <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>count</code> + <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>read stats</code>, copy the token, drop it below.
+          The tracking script is collecting visits at{" "}
+          <a href="https://626labs.goatcounter.com" target="_blank" rel="noopener" style={{ color: A.cyan, textDecoration: "none", borderBottom: `1px solid ${A.cyan}` }}>626labs.goatcounter.com</a>{" "}
+          but <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>data/site-stats.json</code> doesn't exist in the repo yet. Two ways to populate it:
         </div>
-        <input
-          type="password"
-          placeholder="GoatCounter API token"
-          value={inputVal}
-          onChange={e => setInputVal(e.target.value)}
-          onKeyDown={e => { if (e.key === "Enter" && inputVal.trim()) onConnect(inputVal.trim()); }}
-          style={{ width: "100%", padding: "10px 12px", background: A.bg, border: `1px solid ${A.line2}`, borderRadius: 6, color: A.text, fontSize: 13, fontFamily: "JetBrains Mono, monospace", marginBottom: 12 }}
-        />
-        <Btn primary onClick={() => inputVal.trim() && onConnect(inputVal.trim())} disabled={!inputVal.trim()}>Connect</Btn>
-        <div style={{ fontSize: 11, color: A.dim2, marginTop: 14, lineHeight: 1.55 }}>
-          Token is stored in browser localStorage only — same as your GitHub PAT. Visitors of this dashboard never see it; the API calls run from your browser direct to GoatCounter.
+        <div style={{ background: A.panel2, border: `1px solid ${A.line}`, borderRadius: 6, padding: 14, fontSize: 11.5, color: A.dim, lineHeight: 1.7, marginBottom: 14, fontFamily: "JetBrains Mono, monospace" }}>
+          <div style={{ color: A.cyan, marginBottom: 4 }}># Option A — kick off the workflow now</div>
+          <div>1. Add a GitHub Actions secret named <span style={{ color: A.text }}>GOATCOUNTER_TOKEN</span></div>
+          <div>2. Click <span style={{ color: A.cyan }}>Trigger fresh fetch</span> below</div>
+          <div>3. Reload after ~30 seconds</div>
+          <div style={{ color: A.cyan, margin: "10px 0 4px" }}># Option B — bootstrap from your machine</div>
+          <div>$ GOATCOUNTER_TOKEN=&lt;your_token&gt; node scripts/fetch-site-stats.mjs</div>
+          <div>$ git add data/site-stats.json && git commit -m "site-stats: first snapshot" && git push</div>
+        </div>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <Btn primary onClick={onTriggerFresh} disabled={triggering}>{triggering ? "Triggering…" : "Trigger fresh fetch"}</Btn>
+          <Btn ghost size="sm" onClick={onRefresh}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Reload</span></Btn>
+          {dispatchStatus && <span style={{ fontSize: 11, color: dispatchStatus.ok ? A.green : A.danger, fontFamily: "JetBrains Mono, monospace" }}>{dispatchStatus.message}</span>}
         </div>
       </div>
-
       <div style={{ marginTop: 14, fontSize: 11.5, color: A.dim, lineHeight: 1.6 }}>
-        While GoatCounter starts logging visits, the <b style={{ color: A.text }}>plugin repos</b> tab still works — it reads <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>data/traffic.csv</code> from this repo with no extra auth.
-        </div>
+        Meanwhile the <b style={{ color: A.text }}>Plugin repos</b> tab still works — it reads <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>data/traffic.csv</code> from this repo, separate path entirely.
+      </div>
     </div>
   );
 }
 
-function SiteStats() {
-  const [gcToken, setGcToken] = React.useState(() => {
-    try { return window.localStorage.getItem(GC_TOKEN_KEY) || ""; } catch { return ""; }
-  });
+function SiteStats({ token }) {
   const [data, setData] = React.useState(null);
   const [error, setError] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
+  const [missing, setMissing] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [reloadKey, setReloadKey] = React.useState(0);
-
-  function saveToken(t) {
-    try { window.localStorage.setItem(GC_TOKEN_KEY, t); } catch {}
-    setGcToken(t);
-  }
-  function disconnect() {
-    try { window.localStorage.removeItem(GC_TOKEN_KEY); } catch {}
-    setGcToken("");
-    setData(null);
-    setError(null);
-  }
+  const [triggering, setTriggering] = React.useState(false);
+  const [dispatchStatus, setDispatchStatus] = React.useState(null);
 
   React.useEffect(() => {
-    if (!gcToken) return;
     let cancelled = false;
     setLoading(true);
     setError(null);
-    const today = new Date().toISOString().slice(0, 10);
-    const startMs = Date.now() - 30 * 24 * 60 * 60 * 1000;
-    const start = new Date(startMs).toISOString().slice(0, 10);
-    const headers = { Authorization: `Bearer ${gcToken}`, "Content-Type": "application/json" };
-    const params = `?start=${start}&end=${today}`;
-    const get = (path) => fetch(`${GC_BASE}${path}`, { headers }).then(r => {
-      if (!r.ok) return r.text().then(t => Promise.reject(`${path} → ${r.status} ${t.slice(0, 80)}`));
-      return r.json();
-    });
-    Promise.all([
-      get(`/stats/total${params}`),
-      get(`/stats/hits${params}&limit=10`),
-      get(`/stats/toprefs${params}&limit=10`),
-      get(`/stats/locations${params}&limit=8`),
-      get(`/stats/browsers${params}&limit=6`),
-    ]).then(([total, hits, refs, locations, browsers]) => {
-      if (cancelled) return;
-      setData({ total, hits, refs, locations, browsers, range: { start, end: today } });
-      setLoading(false);
-    }).catch(e => {
-      if (cancelled) return;
-      setError(typeof e === "string" ? e : (e && e.message) || "Failed to load");
-      setLoading(false);
-    });
+    setMissing(false);
+    const headers = { Accept: "application/vnd.github.raw", "X-GitHub-Api-Version": "2022-11-28" };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/site-stats.json?ref=${REPO_BRANCH}&t=${Date.now()}`, { headers, cache: "no-store" })
+      .then(r => {
+        if (r.status === 404) { setMissing(true); return null; }
+        if (!r.ok) return r.text().then(t => Promise.reject(`${r.status} ${t.slice(0, 100)}`));
+        return r.json();
+      })
+      .then(json => {
+        if (cancelled) return;
+        if (json) setData(json);
+        setLoading(false);
+      })
+      .catch(e => {
+        if (cancelled) return;
+        setError(typeof e === "string" ? e : (e && e.message) || "Failed to load");
+        setLoading(false);
+      });
     return () => { cancelled = true; };
-  }, [gcToken, reloadKey]);
+  }, [token, reloadKey]);
 
-  if (!gcToken) {
-    return <GoatCounterConnect onConnect={saveToken}/>;
+  async function triggerFresh() {
+    if (!token) {
+      setDispatchStatus({ ok: false, message: "no PAT loaded" });
+      return;
+    }
+    setTriggering(true);
+    setDispatchStatus(null);
+    try {
+      const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/fetch-site-stats.yml/dispatches`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ref: REPO_BRANCH }),
+      });
+      if (res.status === 204) {
+        setDispatchStatus({ ok: true, message: "queued — reload in ~30s" });
+      } else {
+        const txt = await res.text();
+        setDispatchStatus({ ok: false, message: `${res.status}: ${txt.slice(0, 80)}` });
+      }
+    } catch (e) {
+      setDispatchStatus({ ok: false, message: (e && e.message) || "dispatch failed" });
+    } finally {
+      setTriggering(false);
+    }
   }
-  if (loading || !data) {
+
+  if (loading) {
     return <div style={{ padding: 56, color: A.dim, textAlign: "center", fontSize: 13 }}>Loading site analytics…</div>;
+  }
+  if (missing) {
+    return <SiteStatsBootstrap onTriggerFresh={triggerFresh} onRefresh={() => setReloadKey(k => k + 1)} triggering={triggering} dispatchStatus={dispatchStatus}/>;
   }
   if (error) {
     return (
       <div style={{ background: "rgba(255,107,107,.06)", border: `1px solid rgba(255,107,107,.2)`, borderRadius: 8, padding: 18, maxWidth: 620 }}>
-        <div style={{ color: A.danger, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>Couldn't reach GoatCounter</div>
+        <div style={{ color: A.danger, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>Couldn't load site stats</div>
         <div style={{ color: A.dim, fontSize: 12, fontFamily: "JetBrains Mono, monospace", marginBottom: 14, wordBreak: "break-all" }}>{error}</div>
-        <div style={{ display: "flex", gap: 8 }}>
-          <Btn ghost size="sm" onClick={() => setReloadKey(k => k + 1)}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Retry</span></Btn>
-          <Btn ghost size="sm" onClick={disconnect}>Disconnect</Btn>
-        </div>
+        <Btn ghost size="sm" onClick={() => setReloadKey(k => k + 1)}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Retry</span></Btn>
       </div>
     );
   }
-  return <SiteStatsDashboard data={data} onRefresh={() => setReloadKey(k => k + 1)} onDisconnect={disconnect}/>;
+  if (!data) {
+    return <SiteStatsBootstrap onTriggerFresh={triggerFresh} onRefresh={() => setReloadKey(k => k + 1)} triggering={triggering} dispatchStatus={dispatchStatus}/>;
+  }
+  return <SiteStatsDashboard data={data} onRefresh={() => setReloadKey(k => k + 1)} onTriggerFresh={triggerFresh} triggering={triggering} dispatchStatus={dispatchStatus}/>;
 }
 
-function SiteStatsDashboard({ data, onRefresh, onDisconnect }) {
+function fmtRelative(iso) {
+  if (!iso) return "—";
+  const ms = Date.now() - new Date(iso).getTime();
+  if (ms < 0) return "just now";
+  const min = Math.floor(ms / 60000);
+  if (min < 1) return "just now";
+  if (min < 60) return `${min}m ago`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return `${hr}h ago`;
+  const day = Math.floor(hr / 24);
+  return `${day}d ago`;
+}
+
+function SiteStatsDashboard({ data, onRefresh, onTriggerFresh, triggering, dispatchStatus }) {
   const totalCount = data.total?.total || 0;
   const totalUnique = data.total?.total_unique || 0;
   const stats = data.total?.stats || [];
@@ -2007,23 +2037,26 @@ function SiteStatsDashboard({ data, onRefresh, onDisconnect }) {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 12 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: A.dim, letterSpacing: ".06em" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: A.dim, letterSpacing: ".06em", flexWrap: "wrap" }}>
           <span style={{ width: 8, height: 8, borderRadius: 99, background: A.cyan, boxShadow: `0 0 8px ${A.cyan}` }}/>
-          <span>{data.range.start}</span>
+          <span>{data.range?.start || "—"}</span>
           <span style={{ color: A.dim2 }}>→</span>
-          <span>{data.range.end}</span>
+          <span>{data.range?.end || "—"}</span>
           <span style={{ color: A.dim2 }}>·</span>
           <span style={{ color: A.cyan }}>626labs.dev</span>
+          <span style={{ color: A.dim2 }}>·</span>
+          <span title={data.generatedAt}>fetched {fmtRelative(data.generatedAt)}</span>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          {dispatchStatus && <span style={{ fontSize: 11, color: dispatchStatus.ok ? A.green : A.danger, fontFamily: "JetBrains Mono, monospace" }}>{dispatchStatus.message}</span>}
           <a href="https://626labs.goatcounter.com" target="_blank" rel="noopener" style={{ fontSize: 11, color: A.cyan, fontFamily: "JetBrains Mono, monospace", textDecoration: "none", padding: "6px 10px", border: `1px solid ${A.line2}`, borderRadius: 6 }}>open in GoatCounter ↗</a>
-          <Btn ghost size="sm" onClick={onRefresh}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Refresh</span></Btn>
-          <Btn ghost size="sm" onClick={onDisconnect}>Disconnect</Btn>
+          <Btn ghost size="sm" onClick={onTriggerFresh} disabled={triggering}>{triggering ? "queueing…" : "Fetch fresh"}</Btn>
+          <Btn ghost size="sm" onClick={onRefresh}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Reload</span></Btn>
         </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 18 }}>
-        <StatTile label="Total views" value={totalCount.toLocaleString()} sub="last 30 days" c={A.cyan}/>
+        <StatTile label="Total views" value={totalCount.toLocaleString()} sub={`last ${data.range?.days || 30} days`} c={A.cyan}/>
         <StatTile label="Unique visitors" value={totalUnique.toLocaleString()} sub="distinct browsers" c={A.magenta}/>
         <StatTile label="Daily average" value={dailyAvg.toLocaleString()} sub="views per day" c={A.green}/>
         <StatTile label="Peak day" value={peakDay.count ? peakDay.count.toLocaleString() : "—"} sub={peakDay.day || "no traffic yet"} c={A.amber}/>
@@ -2217,7 +2250,7 @@ function AnalyticsView({ token }) {
         }
       />
       <div style={{ padding: "18px 26px 32px" }}>
-        {tab === "site" && <SiteStats/>}
+        {tab === "site" && <SiteStats token={token}/>}
         {tab === "repos" && <RepoStats token={token}/>}
       </div>
     </div>

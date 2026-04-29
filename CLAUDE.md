@@ -49,7 +49,7 @@ references and one-off design artifacts.
 | `Design/` | Brand reference + the design skill's UI kit. |
 | `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
-| `.github/workflows/` | 4 bot workflows that push to main + 1 link checker. All 4 push-to-main workflows have retry+rebase loops as of 2026-04-27. |
+| `.github/workflows/` | 5 bot workflows that push to main + 1 link checker. All 5 push-to-main workflows have retry+rebase loops as of 2026-04-29. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 
 ---
@@ -63,16 +63,17 @@ references and one-off design artifacts.
 
 ## CI workflows
 
-The 4 bot workflows that push to main:
+The 5 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
 | `build-widget.yml` | Push to `apps/widget-bacon-trail/src/**` | Vite-builds the widget, commits the bundle to `widget-bacon-trail/`. |
 | `refresh-bacon-shards.yml` | Daily 06:00 UTC | Pulls bacon shard data from Firestore (uses `FIREBASE_SA_JSON` secret). |
 | `rebuild-hub.yml` | Push to `content/site.json` | Re-runs render-hub.py and commits drift. |
-| `track-traffic.yml` | Daily 06:00 UTC | Pulls GitHub traffic metrics (uses `TRAFFIC_PAT` secret). |
+| `track-traffic.yml` | Daily 06:00 UTC | Pulls GitHub traffic metrics for the plugin repos (uses `TRAFFIC_PAT` secret). |
+| `fetch-site-stats.yml` | Daily 06:30 UTC | Pulls GoatCounter visit stats for `626labs.dev` and writes `data/site-stats.json` (uses `GOATCOUNTER_TOKEN` secret). |
 
-All four use a retry+rebase loop on `git push` to handle the race where two
+All five use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
 Plus one read-only checker (doesn't push):
