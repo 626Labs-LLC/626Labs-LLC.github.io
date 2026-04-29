@@ -82,7 +82,18 @@
     "cta": {
       "label": "Read the framework doc",
       "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer/blob/main/docs/self-evolving-plugins-framework.md"
-    }
+    },
+    "artifacts": [
+      {
+        "eyebrow": "Companion thesis",
+        "title": "From legitimate to sustainable.",
+        "blurb": "A builder's doctrine for vibe-coded software that lasts. Five tenets — Legitimacy, Discipline, Quality, Trust, Coherence — for native builders shipping AI-built artifacts to real users.",
+        "links": [
+          { "label": "Read the thesis", "href": "thesis.html" },
+          { "label": "Open the chart", "href": "workflow.html" }
+        ]
+      }
+    ]
   },
   "labRuns": {
     "eyebrow": "03 · Behind the scenes",

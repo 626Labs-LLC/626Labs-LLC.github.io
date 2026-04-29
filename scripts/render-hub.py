@@ -689,6 +689,8 @@ def render_thinking(thinking: dict) -> str:
 
     paragraphs[] are emitted as raw HTML so inline <strong>/<em> carry
     through. CTA is optional — omit the block entirely when absent.
+    `artifacts[]` (optional) renders companion thesis pieces as cards
+    after the main CTA.
     """
     eyebrow = esc(thinking.get("eyebrow", ""))
     headline = esc(thinking.get("headline", ""))
@@ -696,6 +698,7 @@ def render_thinking(thinking: dict) -> str:
     quote = esc(thinking.get("quote", ""))
     paragraphs = thinking.get("paragraphs") or []
     cta = thinking.get("cta") or {}
+    artifacts = thinking.get("artifacts") or []
 
     para_html = "\n".join(f"    <p>{p}</p>" for p in paragraphs)  # raw HTML on purpose
 
@@ -711,6 +714,33 @@ def render_thinking(thinking: dict) -> str:
         )
 
     blockquote_html = f'    <blockquote>\n      {quote}\n    </blockquote>' if quote else ""
+
+    artifacts_html = ""
+    if artifacts:
+        cards = []
+        for art in artifacts:
+            a_eyebrow = esc(art.get("eyebrow", ""))
+            a_title = esc(art.get("title", ""))
+            a_blurb = esc(art.get("blurb", ""))
+            links = art.get("links") or []
+            link_lines = [
+                f'          <a href="{attr(l["href"])}">{esc(l["label"])} '
+                f'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+                f'stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" '
+                f'aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>'
+                for l in links if l.get("label") and l.get("href")
+            ]
+            cards.append(
+                '      <div class="thinking-artifact">\n'
+                f'        <div class="artifact-eyebrow">{a_eyebrow}</div>\n'
+                f'        <h3 class="artifact-title">{a_title}</h3>\n'
+                f'        <p class="artifact-blurb">{a_blurb}</p>\n'
+                '        <div class="artifact-links">\n'
+                + "\n".join(link_lines) + "\n"
+                + '        </div>\n'
+                '      </div>'
+            )
+        artifacts_html = '    <div class="thinking-artifacts">\n' + "\n".join(cards) + "\n    </div>"
 
     parts = [
         '<section class="section thinking" id="thinking">',
@@ -729,6 +759,8 @@ def render_thinking(thinking: dict) -> str:
         parts.append(para_html)
     if cta_html:
         parts.append(cta_html)
+    if artifacts_html:
+        parts.append(artifacts_html)
     parts.append('  </div>')
     parts.append('</section>')
     return "\n".join(parts)

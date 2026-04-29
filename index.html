@@ -813,6 +813,58 @@
     }
     section.thinking .thinking-link a:hover { color: var(--cyan-pale); }
 
+    /* Thinking artifact card — secondary thesis pieces under the main pitch */
+    section.thinking .thinking-artifacts {
+      margin-top: var(--s-8);
+      padding-top: var(--s-6);
+      border-top: 1px solid var(--border-1);
+      display: grid;
+      gap: var(--s-4);
+    }
+    section.thinking .thinking-artifact {
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-lg);
+      padding: var(--s-5) var(--s-6);
+      background:
+        linear-gradient(135deg, rgba(23,212,250,.04), rgba(242,47,137,.03)),
+        rgba(255,255,255,.012);
+      max-width: 780px;
+    }
+    section.thinking .artifact-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 8px;
+    }
+    section.thinking .artifact-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      letter-spacing: -0.012em;
+      color: var(--fg-1);
+    }
+    section.thinking .artifact-blurb {
+      margin: 0 0 var(--s-4) !important;
+      color: var(--fg-2);
+    }
+    section.thinking .artifact-links {
+      display: flex; gap: var(--s-5);
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    section.thinking .artifact-links a {
+      color: var(--cyan);
+      display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none;
+      transition: color 120ms;
+    }
+    section.thinking .artifact-links a:hover { color: var(--cyan-pale); }
+    section.thinking .artifact-links a svg { width: 14px; height: 14px; }
+
     /* ========== How the lab runs ========== */
     section.lab-runs .frames {
       display: grid;
@@ -1723,6 +1775,17 @@
         Read the framework doc
         <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
       </a>
+    </div>
+    <div class="thinking-artifacts">
+      <div class="thinking-artifact">
+        <div class="artifact-eyebrow">Companion thesis</div>
+        <h3 class="artifact-title">From legitimate to sustainable.</h3>
+        <p class="artifact-blurb">A builder's doctrine for vibe-coded software that lasts. Five tenets — Legitimacy, Discipline, Quality, Trust, Coherence — for native builders shipping AI-built artifacts to real users.</p>
+        <div class="artifact-links">
+          <a href="thesis.html">Read the thesis <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          <a href="workflow.html">Open the chart <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
