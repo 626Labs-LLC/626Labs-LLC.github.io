@@ -89,8 +89,14 @@
         "title": "From legitimate to sustainable.",
         "blurb": "A builder's doctrine for vibe-coded software that lasts. Five tenets — Legitimacy, Discipline, Quality, Trust, Coherence — for native builders shipping AI-built artifacts to real users.",
         "links": [
-          { "label": "Read the thesis", "href": "thesis.html" },
-          { "label": "Open the chart", "href": "workflow.html" }
+          {
+            "label": "Read the thesis",
+            "href": "thesis.html"
+          },
+          {
+            "label": "Open the chart",
+            "href": "workflow.html"
+          }
         ]
       }
     ]
@@ -104,6 +110,11 @@
         "tag": "Universe",
         "src": "assets/dashboard-universe.png",
         "alt": "The Lab Dashboard — Universe view, every 626 Labs project as a node in a constellation."
+      },
+      {
+        "tag": "Full expansion",
+        "src": "assets/lab-runs/1777493163128-screenshot-2026-04-13-210705.png",
+        "alt": "Trying to gain every view of our apps that we can so we understand them inside and out."
       },
       {
         "tag": "Operations",
