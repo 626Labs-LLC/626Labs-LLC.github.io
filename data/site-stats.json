@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-29T13:41:37.479Z",
+  "generatedAt": "2026-04-29T20:04:11.621Z",
   "source": "goatcounter",
   "site": "626labs.dev",
   "range": {
@@ -944,30 +944,28 @@
       }
     ]
   },
-  "hits": {
-    "hits": [],
-    "total": 0,
-    "more": false
-  },
-  "refs": null,
-  "locations": null,
-  "browsers": null,
-  "systems": {
+  "hits": null,
+  "refs": {
     "stats": [],
     "more": false
   },
+  "locations": {
+    "stats": [],
+    "more": false
+  },
+  "browsers": {
+    "stats": [],
+    "more": false
+  },
+  "systems": null,
   "errors": [
     {
-      "endpoint": "refs",
-      "error": "GET /stats/toprefs?start=2026-03-30&end=2026-04-29&limit=20 -> 404: {\"error\":\"not found\"}"
+      "endpoint": "hits",
+      "error": "GET /stats/hits?start=2026-03-30&end=2026-04-29&limit=20 -> 429: {\"error\": \"rate limited exceeded; try again in 987.314419ms\"}"
     },
     {
-      "endpoint": "locations",
-      "error": "GET /stats/locations?start=2026-03-30&end=2026-04-29&limit=12 -> 429: {\"error\": \"rate limited exceeded; try again in 988.432408ms\"}"
-    },
-    {
-      "endpoint": "browsers",
-      "error": "GET /stats/browsers?start=2026-03-30&end=2026-04-29&limit=8 -> 429: {\"error\": \"rate limited exceeded; try again in 985.992376ms\"}"
+      "endpoint": "systems",
+      "error": "GET /stats/systems?start=2026-03-30&end=2026-04-29&limit=6 -> 429: {\"error\": \"rate limited exceeded; try again in 989.739025ms\"}"
     }
   ]
 }
