@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Editorial — 626 Labs</title>
+<meta name="description" content="The 626 Labs editorial layer — Theses for research, Field Notes for build logs. One voice, one duo, two registers." />
+<meta property="og:title" content="Editorial — 626 Labs" />
+<meta property="og:description" content="The 626 Labs editorial system. Two surfaces — Theses for research, Field Notes for build logs — sharing one voice." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://626labs.dev/editorial/" />
+<meta property="og:image" content="https://626labs.dev/assets/brand/medium-header-1500x600.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="/favicon-626.png" />
+
+<!-- 626 Labs design system + editorial layer (lives in /Design/) -->
+<link rel="stylesheet" href="/Design/colors_and_type.css" />
+<link rel="stylesheet" href="/Design/editorial.css" />
+
+<style>
+  /* Index-page-only styles. Component styles live in /Design/editorial.css. */
+  .idx-hero {
+    padding: 120px 0 80px;
+    border-bottom: 1px solid var(--ed-rule);
+    margin-bottom: 80px;
+  }
+  .idx-hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(48px, 6vw, 84px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    color: var(--ed-ink);
+    margin: 24px 0 32px;
+    text-wrap: balance;
+  }
+  .idx-hero h1 em {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-weight: 400;
+    background: var(--ed-accent-rule);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .idx-hero p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 22px;
+    line-height: 1.5;
+    font-style: italic;
+    color: var(--ed-ink-2);
+    max-width: 38em;
+  }
+
+  .idx-section { margin-bottom: 80px; }
+  .idx-section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--ed-rule);
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .idx-section-label .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ed-ink-muted);
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  .idx-list { list-style: none; padding: 0; margin: 0; }
+  .idx-list li { border-bottom: 1px solid var(--ed-rule); }
+  .idx-list li a {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 32px;
+    padding: 28px 0;
+    text-decoration: none;
+    color: var(--ed-ink);
+    align-items: baseline;
+    background-image: none !important;
+    transition: padding 220ms;
+  }
+  .idx-list li a:hover { padding-left: 12px; }
+  .idx-list li a.is-planned {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .idx-list .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ed-ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .idx-list .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ed-ink);
+    margin-bottom: 8px;
+    text-wrap: balance;
+  }
+  .idx-list .dek {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ed-ink-2);
+    line-height: 1.45;
+    max-width: 52ch;
+  }
+  .idx-list .meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ed-ink-3);
+    text-align: right;
+    white-space: nowrap;
+  }
+  .idx-list a:hover .title { color: var(--ed-link-hover); }
+
+  @media (max-width: 720px) {
+    .idx-list li a { grid-template-columns: 1fr; gap: 4px; }
+    .idx-list .meta { text-align: left; }
+  }
+
+  .idx-deliverables {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 32px 0;
+  }
+  .idx-card {
+    border: 1px solid var(--ed-rule);
+    border-radius: 12px;
+    padding: 24px;
+    background: var(--ed-paper-soft);
+    text-decoration: none !important;
+    background-image: none !important;
+    color: var(--ed-ink) !important;
+    transition: border-color 220ms, transform 220ms;
+    display: block;
+  }
+  .idx-card:hover { border-color: var(--ed-link); transform: translateY(-2px); }
+  .idx-card.is-planned { opacity: 0.6; cursor: default; pointer-events: none; }
+  .idx-card .kind {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ed-link);
+    margin-bottom: 12px;
+  }
+  .idx-card .name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .idx-card .desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ed-ink-3);
+    line-height: 1.5;
+  }
+
+  .idx-footer {
+    padding: 64px 0 96px;
+    margin-top: 80px;
+    border-top: 1px solid var(--ed-rule);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ed-ink-3);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .idx-footer a {
+    color: var(--ed-link);
+    text-decoration: none;
+    background-image: none !important;
+  }
+  .idx-footer a:hover { color: var(--ed-link-hover); }
+</style>
+</head>
+<body class="ed-page">
+
+<nav class="ed-nav">
+  <a class="ed-lockup" href="/">
+    <span>626 Labs</span><span class="slash">/</span><span class="label">Editorial</span>
+  </a>
+  <div class="ed-nav-links">
+    <a href="#theses">Theses</a>
+    <a href="#field-notes">Field Notes</a>
+    <a href="#system">Style</a>
+    <a href="/">Lab</a>
+  </div>
+</nav>
+
+<div class="ed-shell">
+
+  <section class="idx-hero">
+    <div class="ed-eyebrow">
+      <span>Editorial layer</span>
+      <span class="dot"></span>
+      <span>v1.0</span>
+    </div>
+    <h1>Imagine <em>Something Else</em>, then write it down.</h1>
+    <p>The 626 Labs editorial system. Two surfaces — Theses for research, Field Notes for build logs — sharing one voice, one logo, one duo. Different registers, different rules.</p>
+  </section>
+
+  <section class="idx-section" id="theses">
+    <div class="idx-section-label">
+      <span>Theses</span>
+      <span class="count">No emoji · Serif body · Long-form research</span>
+    </div>
+    <ul class="idx-list">
+      <li><a href="/thesis.html">
+        <span class="num">001</span>
+        <div>
+          <div class="title">From legitimate to sustainable</div>
+          <div class="dek">A builder's doctrine for vibe-coded software that lasts. Five tenets — Legitimacy, Discipline, Quality, Trust, Coherence — for native builders shipping AI-built artifacts to real users.</div>
+        </div>
+        <div class="meta">Apr 28, 2026<br/>~14 min</div>
+      </a></li>
+      <li><a class="is-planned" href="#" aria-disabled="true">
+        <span class="num">002</span>
+        <div>
+          <div class="title">Vibe coding meets enterprise grade — and what survives the meeting</div>
+          <div class="dek">Why "shipped fast" and "shipped well" are the same problem stated twice, and the operating model that makes both true.</div>
+        </div>
+        <div class="meta">In drafting<br/>~22 min</div>
+      </a></li>
+      <li><a class="is-planned" href="#" aria-disabled="true">
+        <span class="num">003</span>
+        <div>
+          <div class="title">The agent who reads first</div>
+          <div class="dek">A position on documentation tools that understand the codebase before they generate anything — and why generation is the wrong default.</div>
+        </div>
+        <div class="meta">Planned<br/>~15 min</div>
+      </a></li>
+    </ul>
+  </section>
+
+  <section class="idx-section" id="field-notes">
+    <div class="idx-section-label">
+      <span>Field Notes</span>
+      <span class="count">Emoji allowed · Builder-to-builder · Short-form</span>
+    </div>
+    <ul class="idx-list">
+      <li><a class="is-planned" href="#" aria-disabled="true">
+        <span class="num">001</span>
+        <div>
+          <div class="title">Seven plugins, one solo workflow — the publication launch</div>
+          <div class="dek">How a single Friday spun up <em>From Legitimate to Sustainable</em>, a chart companion, a Medium publication, a privacy-friendly analytics pipeline, and the operating doctrine that ties them together.</div>
+        </div>
+        <div class="meta">In drafting<br/>~9 min</div>
+      </a></li>
+      <li><a class="is-planned" href="#" aria-disabled="true">
+        <span class="num">002</span>
+        <div>
+          <div class="title">The bgremove agent earned its keep on Anthropic's logo</div>
+          <div class="dek">Why a Claude-vision wrapper around classical CV beats either alone — closed-loop evaluation, retry on failure, and a 94%-transparent matte in one pass.</div>
+        </div>
+        <div class="meta">Planned<br/>~5 min</div>
+      </a></li>
+    </ul>
+  </section>
+
+  <section class="idx-section" id="system">
+    <div class="idx-section-label">
+      <span>What's in this build</span>
+      <span class="count">v1.0 · April 2026</span>
+    </div>
+    <p style="font-family: 'Source Serif 4', serif; font-size: 18px; color: var(--ed-ink-2); max-width: 60ch; margin-bottom: 32px;">An editorial layer that sits on top of the existing 626 Labs design system — adds a serif body, a light surface, and a restrained accent palette for longform reading. Plus a codified emoji policy with a working component and a sample post that demonstrates every rule.</p>
+
+    <div class="idx-deliverables">
+      <a class="idx-card" href="/Design/editorial.css">
+        <div class="kind">Tokens</div>
+        <div class="name">editorial.css</div>
+        <div class="desc">Light surface, serif type scale, drop caps, pull quotes, footnotes, margin notes, status chips. Extends <code>colors_and_type.css</code>.</div>
+      </a>
+      <a class="idx-card" href="/Design/colors_and_type.css">
+        <div class="kind">Foundation</div>
+        <div class="name">colors_and_type.css</div>
+        <div class="desc">The brand-mode tokens (cyan, magenta, navy, the four-font system) that the editorial layer references for accents and code blocks.</div>
+      </a>
+      <a class="idx-card is-planned" href="#" aria-disabled="true">
+        <div class="kind">Style guide</div>
+        <div class="name">Emoji policy</div>
+        <div class="desc">Three-register split: Product (none), Theses (none), Field Notes (yes, with rules). Allowed and banned families, the tone test. Coming soon.</div>
+      </a>
+      <a class="idx-card is-planned" href="#" aria-disabled="true">
+        <div class="kind">Sample post</div>
+        <div class="name">Field Notes No. 001</div>
+        <div class="desc">A complete build-log post showing every legitimate emoji use in context, plus the editorial typography in motion. Coming soon.</div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="idx-footer">
+    <div>626 Labs Editorial · v1.0 · April 2026</div>
+    <div>Built on the <a href="/Design/">626 Labs design system</a> · <a href="/">Lab</a> · <a href="/privacy.html">Privacy</a></div>
+  </footer>
+
+</div>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
