@@ -2097,6 +2097,7 @@ function SiteStatsDashboard({ data, onRefresh, onTriggerFresh, triggering, dispa
 
 function RepoStats({ token }) {
   const [rows, setRows] = React.useState(null);
+  const [repoIndex, setRepoIndex] = React.useState(null); // discovered-repos sidecar
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [reloadKey, setReloadKey] = React.useState(0);
@@ -2113,18 +2114,24 @@ function RepoStats({ token }) {
     setError(null);
     const headers = { Accept: "application/vnd.github.raw", "X-GitHub-Api-Version": "2022-11-28" };
     if (token) headers.Authorization = `Bearer ${token}`;
-    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/traffic.csv?ref=${REPO_BRANCH}&t=${Date.now()}`, { headers, cache: "no-store" })
-      .then(r => r.ok ? r.text() : r.text().then(t => Promise.reject(`${r.status} ${t.slice(0, 80)}`)))
-      .then(text => {
-        if (cancelled) return;
-        setRows(parseTrafficCSV(text));
-        setLoading(false);
-      })
-      .catch(e => {
-        if (cancelled) return;
-        setError(typeof e === "string" ? e : (e && e.message) || "Failed");
-        setLoading(false);
-      });
+    const stamp = Date.now();
+    Promise.all([
+      fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/traffic.csv?ref=${REPO_BRANCH}&t=${stamp}`, { headers, cache: "no-store" })
+        .then(r => r.ok ? r.text() : r.text().then(t => Promise.reject(`traffic.csv ${r.status} ${t.slice(0, 80)}`))),
+      // repos.json is optional — workflow may not have written it yet
+      fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/repos.json?ref=${REPO_BRANCH}&t=${stamp}`, { headers, cache: "no-store" })
+        .then(r => r.status === 404 ? null : r.ok ? r.json() : Promise.resolve(null))
+        .catch(() => null),
+    ]).then(([csvText, reposJson]) => {
+      if (cancelled) return;
+      setRows(parseTrafficCSV(csvText));
+      setRepoIndex(reposJson?.repos || null);
+      setLoading(false);
+    }).catch(e => {
+      if (cancelled) return;
+      setError(typeof e === "string" ? e : (e && e.message) || "Failed");
+      setLoading(false);
+    });
     return () => { cancelled = true; };
   }, [token, reloadKey]);
 
@@ -2164,7 +2171,7 @@ function RepoStats({ token }) {
     </div>
   );
 
-  // Group rows by repo
+  // Group CSV rows by repo
   const byRepo = {};
   (rows || []).forEach(r => {
     if (!byRepo[r.repo]) byRepo[r.repo] = [];
@@ -2178,24 +2185,44 @@ function RepoStats({ token }) {
   });
   Object.values(byRepo).forEach(arr => arr.sort((a, b) => a.date.localeCompare(b.date)));
 
-  // Per-repo aggregates (last 30 days)
-  let repos = Object.entries(byRepo).map(([name, rs]) => {
-    const last30 = rs.slice(-30);
+  function aggregateRepo(name, csvRows, meta) {
+    const last30 = (csvRows || []).slice(-30);
     const totals = last30.reduce((a, r) => ({
       views: a.views + r.views,
       unique_visitors: a.unique_visitors + r.unique_visitors,
       clones: a.clones + r.clones,
       unique_cloners: a.unique_cloners + r.unique_cloners,
     }), { views: 0, unique_visitors: 0, clones: 0, unique_cloners: 0 });
-    const lastActiveRow = [...rs].reverse().find(r => r.views > 0 || r.clones > 0);
+    const lastActiveRow = [...(csvRows || [])].reverse().find(r => r.views > 0 || r.clones > 0);
     return {
       name,
       ...totals,
       lastActivity: lastActiveRow?.date || null,
+      pushedAt: meta?.pushed_at || null,
+      archived: !!meta?.archived,
+      stars: meta?.stargazers_count || 0,
       sparkViews: last30.map(r => r.views),
       sparkClones: last30.map(r => r.clones),
     };
-  });
+  }
+
+  // Master list: union of repo-index (discovered) and CSV (anything with traffic).
+  // If repo-index is available we trust it; otherwise fall back to CSV-only.
+  let repos;
+  if (repoIndex && repoIndex.length) {
+    const indexed = new Set();
+    repos = repoIndex.map(meta => {
+      indexed.add(meta.full_name);
+      return aggregateRepo(meta.full_name, byRepo[meta.full_name], meta);
+    });
+    // Edge case: CSV has rows for a repo no longer in the discovered list
+    // (renamed, made private, etc). Surface them anyway, with no metadata.
+    Object.keys(byRepo).forEach(name => {
+      if (!indexed.has(name)) repos.push(aggregateRepo(name, byRepo[name], null));
+    });
+  } else {
+    repos = Object.entries(byRepo).map(([name, rs]) => aggregateRepo(name, rs, null));
+  }
 
   const totalRepos = repos.length;
 
@@ -2276,7 +2303,7 @@ function RepoStats({ token }) {
       </div>
 
       <div style={{ marginTop: 18, fontSize: 11.5, color: A.dim2, lineHeight: 1.6 }}>
-        Note: this is GitHub.com page views of source repos (people viewing the README, code, etc.) — not visits to 626labs.dev. Site-visit analytics live on the <b style={{ color: A.dim }}>Site</b> tab. Repos auto-discovered daily under <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>estevanhernandez-stack-ed</code> and <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>626Labs-LLC</code>.
+        Note: this is GitHub.com page views of source repos (people viewing the README, code, etc.) — not visits to 626labs.dev. Site-visit analytics live on the <b style={{ color: A.dim }}>Site</b> tab. Repos auto-discovered daily under <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>estevanhernandez-stack-ed</code> and <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>626Labs-LLC</code>{repoIndex ? "" : " (discovery sidecar pending — toggle ‘hide zero-traffic’ off after the next workflow run to see every repo)"}.
       </div>
     </div>
   );
@@ -2306,30 +2333,45 @@ function RepoSortHeader({ id, label, sortBy, sortDir, onClick, align }) {
 }
 
 function RepoStatsRow({ repo, last }) {
+  // Split "owner/name" into prominent name + dim owner subscript.
+  const slashIdx = repo.name.indexOf("/");
+  const ownerPart = slashIdx > 0 ? repo.name.slice(0, slashIdx) : null;
+  const namePart = slashIdx > 0 ? repo.name.slice(slashIdx + 1) : repo.name;
+
+  const inactive = !repo.views && !repo.clones && !repo.unique_visitors && !repo.unique_cloners;
+
   const cell = (color, value) => (
     <div style={{
       padding: "0 12px", textAlign: "right", fontFamily: "JetBrains Mono, monospace",
       fontSize: 13, color: value ? color : A.dim2, fontWeight: value ? 500 : 400,
     }}>{value.toLocaleString()}</div>
   );
+
+  const subtitle = [
+    ownerPart,
+    repo.lastActivity ? `last active ${repo.lastActivity}` : (inactive ? "no traffic in last 30d" : null),
+    repo.archived ? "archived" : null,
+  ].filter(Boolean).join(" · ");
+
   return (
     <div style={{
       display: "grid", gridTemplateColumns: "1fr 90px 90px 90px 110px 200px",
       alignItems: "center", padding: "12px 0",
       borderBottom: last ? "none" : `1px solid ${A.line}`,
-      transition: "background 120ms",
+      opacity: inactive ? 0.6 : 1,
+      transition: "background 120ms, opacity 120ms",
     }}>
       <div style={{ padding: "0 12px", minWidth: 0, overflow: "hidden" }}>
         <a href={`https://github.com/${repo.name}`} target="_blank" rel="noopener" style={{
           color: A.text, textDecoration: "none", fontFamily: "JetBrains Mono, monospace",
-          fontSize: 12.5, display: "inline-flex", alignItems: "center", gap: 6,
-          overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "100%",
+          fontSize: 13.5, fontWeight: 500,
+          display: "inline-flex", alignItems: "center", gap: 6, maxWidth: "100%",
         }} title={repo.name}>
-          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{repo.name}</span>
-          <span style={{ color: A.dim2, fontSize: 9.5, flexShrink: 0 }}>↗</span>
+          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{namePart}</span>
+          <span style={{ color: A.dim2, fontSize: 10, flexShrink: 0 }}>↗</span>
         </a>
-        {repo.lastActivity && (
-          <div style={{ fontSize: 10, color: A.dim2, marginTop: 2, fontFamily: "JetBrains Mono, monospace" }}>last active {repo.lastActivity}</div>
+        {subtitle && (
+          <div style={{ fontSize: 10.5, color: A.dim2, marginTop: 2, fontFamily: "JetBrains Mono, monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={subtitle}>{subtitle}</div>
         )}
       </div>
       {cell(A.cyan, repo.views)}
@@ -2337,8 +2379,14 @@ function RepoStatsRow({ repo, last }) {
       {cell(A.green, repo.clones)}
       {cell(A.amber, repo.unique_cloners)}
       <div style={{ padding: "0 12px", display: "flex", flexDirection: "column", gap: 2 }}>
-        <MiniSparkline values={repo.sparkViews} w={180} h={20} color={A.cyan}/>
-        <MiniSparkline values={repo.sparkClones} w={180} h={14} color={A.green}/>
+        {inactive ? (
+          <div style={{ fontSize: 10, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".04em" }}>—</div>
+        ) : (
+          <>
+            <MiniSparkline values={repo.sparkViews} w={180} h={20} color={A.cyan}/>
+            <MiniSparkline values={repo.sparkClones} w={180} h={14} color={A.green}/>
+          </>
+        )}
       </div>
     </div>
   );

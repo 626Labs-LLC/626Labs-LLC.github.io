@@ -20,6 +20,7 @@ const OWNERS = [
 ];
 
 const CSV_PATH = 'data/traffic.csv';
+const REPOS_PATH = 'data/repos.json';
 const HEADER = 'date,repo,clones,unique_cloners,views,unique_visitors';
 
 const token = process.env.GH_TOKEN;
@@ -84,9 +85,10 @@ async function listPublicRepos(owner) {
     all.push(...repos);
     if (repos.length < 100) break;
   }
-  return all
-    .filter((r) => !r.private && !r.archived && !r.fork)
-    .map((r) => r.full_name);
+  // Return full repo objects (filtered) — main loop pulls full_name from
+  // them and we also write a metadata sidecar for the admin to render
+  // zero-traffic repos.
+  return all.filter((r) => !r.private && !r.archived && !r.fork);
 }
 
 async function discoverRepos() {
@@ -100,8 +102,13 @@ async function discoverRepos() {
       console.warn(`! list ${owner.type}/${owner.name}: ${err.message}`);
     }
   }
-  // Dedupe (defensive — user-listing + org-listing shouldn't overlap).
-  return [...new Set(all)];
+  // Dedupe by full_name (defensive — user-listing + org-listing shouldn't overlap).
+  const seen = new Set();
+  return all.filter((r) => {
+    if (seen.has(r.full_name)) return false;
+    seen.add(r.full_name);
+    return true;
+  });
 }
 
 async function fetchRepoWindow(repo) {
@@ -150,18 +157,43 @@ async function fetchRepoWindowSafe(repo) {
 }
 
 async function main() {
-  const repos = await discoverRepos();
-  if (repos.length === 0) {
+  const discovered = await discoverRepos();
+  if (discovered.length === 0) {
     console.error('No repos discovered. Aborting to avoid overwriting CSV with empty data.');
     process.exit(1);
   }
-  console.log(`Tracking ${repos.length} repos total.`);
+  console.log(`Tracking ${discovered.length} repos total.`);
 
+  // Write the discovery sidecar — admin uses this to render zero-traffic
+  // repos as faded rows so the dashboard reflects the full public surface,
+  // not just the slice that happened to have visits in the last 14 days.
+  const reposPayload = {
+    generatedAt: new Date().toISOString(),
+    count: discovered.length,
+    owners: OWNERS.map((o) => `${o.type}:${o.name}`),
+    repos: discovered.map((r) => ({
+      full_name: r.full_name,
+      owner: r.owner?.login,
+      name: r.name,
+      description: r.description || null,
+      html_url: r.html_url,
+      language: r.language || null,
+      pushed_at: r.pushed_at,
+      stargazers_count: r.stargazers_count || 0,
+      archived: !!r.archived,
+      fork: !!r.fork,
+    })).sort((a, b) => a.full_name.localeCompare(b.full_name)),
+  };
+  await mkdir(path.dirname(REPOS_PATH), { recursive: true });
+  await writeFile(REPOS_PATH, JSON.stringify(reposPayload, null, 2) + '\n');
+  console.log(`Wrote ${REPOS_PATH} — ${discovered.length} public repos`);
+
+  // Now pull traffic data for each.
   const map = await loadExisting();
   let fetched = 0;
   let skipped = 0;
-  for (const repo of repos) {
-    const rows = await fetchRepoWindowSafe(repo);
+  for (const r of discovered) {
+    const rows = await fetchRepoWindowSafe(r.full_name);
     if (rows.length === 0) { skipped++; continue; }
     for (const row of rows) {
       map.set(`${row.date}|${row.repo}`, row);
@@ -178,7 +210,7 @@ async function main() {
     )].join('\n') + '\n';
   await mkdir(path.dirname(CSV_PATH), { recursive: true });
   await writeFile(CSV_PATH, csv);
-  console.log(`traffic snapshot: ${sorted.length} rows total, ${fetched} refreshed, ${skipped} repos skipped (no permission or no data)`);
+  console.log(`traffic snapshot: ${sorted.length} rows total, ${fetched} refreshed, ${skipped} repos with no recent traffic or no admin permission`);
 }
 
 main().catch((err) => {

@@ -32,13 +32,13 @@ jobs:
 
       - name: Commit if changed
         run: |
-          if [[ -z "$(git status --porcelain data/traffic.csv)" ]]; then
-            echo "No traffic changes."
+          if [[ -z "$(git status --porcelain data/traffic.csv data/repos.json)" ]]; then
+            echo "No traffic or repo-discovery changes."
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/traffic.csv
+          git add data/traffic.csv data/repos.json
           git commit -m "traffic: daily snapshot $(date -u +%Y-%m-%d)"
           # Retry push — another bot job (build-widget, refresh-bacon-shards,
           # rebuild-hub) may have pushed first while we were fetching traffic.
