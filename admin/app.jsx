@@ -1877,8 +1877,9 @@ function GoatCounterConnect({ onConnect }) {
         </div>
         <div style={{ fontSize: 12, color: A.dim, lineHeight: 1.6, marginBottom: 14 }}>
           The tracking script ships on every marketing page already. To pull stats into this admin, paste an API token from{" "}
-          <a href="https://626labs.goatcounter.com/user/api" target="_blank" rel="noopener" style={{ color: A.cyan, textDecoration: "none", borderBottom: `1px solid ${A.cyan}` }}>626labs.goatcounter.com → settings → API tokens</a>.
-          Grant <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>count</code> + <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>read</code>, copy the value, drop it below.
+          <a href="https://626labs.goatcounter.com/user/api" target="_blank" rel="noopener" style={{ color: A.cyan, textDecoration: "none", borderBottom: `1px solid ${A.cyan}` }}>626labs.goatcounter.com → user account → API tokens</a>{" "}
+          (click your email in the top-right of any GoatCounter page, then the <b style={{ color: A.text }}>API</b> tab — not the site Settings page).
+          Grant <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>count</code> + <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>read stats</code>, copy the token, drop it below.
         </div>
         <input
           type="password"
@@ -1956,7 +1957,7 @@ function SiteStats() {
   if (!gcToken) {
     return <GoatCounterConnect onConnect={saveToken}/>;
   }
-  if (loading) {
+  if (loading || !data) {
     return <div style={{ padding: 56, color: A.dim, textAlign: "center", fontSize: 13 }}>Loading site analytics…</div>;
   }
   if (error) {
