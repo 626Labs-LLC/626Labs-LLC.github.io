@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>From Legitimate to Sustainable — 626 Labs</title>
+<meta name="description" content="A builder's guide to vibe-coded software that lasts. Five tenets — Legitimacy, Discipline, Quality, Trust, Coherence — for native builders shipping AI-built artifacts to real users." />
+<meta property="og:title" content="From Legitimate to Sustainable — 626 Labs" />
+<meta property="og:description" content="A builder's guide to vibe-coded software that lasts." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://626labs.dev/thesis.html" />
+<meta property="og:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="favicon-626.png" />
+
+<style>
+  /* ---------- Web fonts ---------- */
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
+  :root {
+    --brand-navy:        #192e44;
+    --brand-navy-deep:   #0f1f31;
+    --brand-cyan:        #17d4fa;
+    --brand-cyan-bright: #5ce6ff;
+    --brand-magenta:     #f22f89;
+
+    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
+
+    --ink-0:   #ffffff;
+    --ink-200: #c4cdda;
+    --ink-300: #8e9bad;
+    --ink-400: #5e6b7f;
+
+    --fg-1: var(--ink-0);
+    --fg-2: var(--ink-200);
+    --fg-3: var(--ink-300);
+    --fg-muted: var(--ink-400);
+
+    --bg-0: var(--brand-navy-deep);
+
+    --border-1: rgba(255,255,255,.08);
+    --border-2: rgba(255,255,255,.14);
+
+    --r-md: 10px;
+    --r-lg: 14px;
+    --r-xl: 20px;
+
+    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --dur-fast: 120ms;
+  }
+
+  html, body { margin:0; padding:0; }
+  body{
+    background:
+      radial-gradient(1200px 700px at 8% -10%, rgba(23,212,250,.06), transparent 60%),
+      radial-gradient(1200px 800px at 92% 110%, rgba(242,47,137,.05), transparent 60%),
+      var(--bg-0);
+    color:var(--fg-1);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *{ box-sizing:border-box; }
+
+  /* ---------- Reading progress bar ---------- */
+  .progress{
+    position:fixed; top:0; left:0; right:0; height:2px; z-index:100;
+    background: rgba(255,255,255,.04);
+  }
+  .progress .bar{
+    height:100%; width:0%;
+    background: var(--brand-gradient);
+    box-shadow: 0 0 12px rgba(23,212,250,.5);
+    transition: width 80ms linear;
+  }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    background: rgba(15,31,49,.65);
+    border-bottom: 1px solid var(--border-1);
+  }
+  .topnav-inner{
+    max-width: 1200px; margin: 0 auto; padding: 14px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em;
+  }
+  .brand{
+    display:inline-flex; align-items:center; gap:10px;
+    color: var(--fg-1); text-decoration:none;
+    text-transform: uppercase; font-weight:600; letter-spacing:.18em;
+  }
+  .brand .mark{
+    width:18px; height:18px; border-radius:50%;
+    background: var(--brand-gradient);
+    box-shadow: 0 0 12px rgba(23,212,250,.5);
+  }
+  .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; }
+  .topnav .links a{ color:var(--fg-3); text-decoration:none; transition: color var(--dur-fast); }
+  .topnav .links a:hover{ color: var(--brand-cyan); }
+  .topnav .links a.cta{ color: var(--brand-cyan); }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    max-width: 1200px; margin: 0 auto; padding: 96px 32px 72px;
+    display:grid; grid-template-columns: 1fr 360px; gap: 64px;
+    align-items: end;
+  }
+  .hero-l .meta{
+    display:flex; gap:24px; align-items:center;
+    font-family:var(--font-mono); font-size: 11px; letter-spacing:.16em; text-transform:uppercase;
+    color: var(--brand-cyan); margin-bottom:28px;
+  }
+  .hero-l .meta::before{
+    content:""; width:48px; height:1px;
+    background: linear-gradient(90deg, var(--brand-cyan), transparent);
+  }
+  .hero-l h1{
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(48px, 7vw, 88px);
+    line-height: 0.98; letter-spacing: -0.03em;
+    margin: 0 0 24px; max-width: 14ch;
+  }
+  .hero-l h1 .gt{
+    background: var(--brand-gradient);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero-l .sub{
+    font-size: 20px; line-height:1.5; color: var(--fg-2); max-width: 56ch; margin: 0 0 28px;
+  }
+  .hero-l .byline{
+    display:flex; gap:32px; align-items:center;
+    font-family: var(--font-mono); font-size: 12px; color: var(--fg-3);
+    border-top: 1px solid var(--border-1); padding-top: 18px; max-width: 560px;
+  }
+  .hero-l .byline .who b{ color: var(--fg-1); font-weight: 500; letter-spacing: .04em; }
+  .hero-l .byline span{ color: var(--fg-3); }
+
+  /* hero right — file card */
+  .filecard{
+    border:1px solid var(--border-2);
+    border-radius: var(--r-lg);
+    background: rgba(15,31,49,.6);
+    padding: 18px 18px;
+    font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); letter-spacing:.04em;
+  }
+  .filecard .row{ display:flex; justify-content:space-between; padding: 6px 0; border-top:1px solid var(--border-1); }
+  .filecard .row:first-child{ border-top:0; }
+  .filecard .row b{ color: var(--fg-1); font-weight: 500; }
+  .filecard .stamp{
+    margin-top: 12px; padding-top: 12px; border-top:1px solid var(--border-1);
+    color: var(--brand-cyan); text-transform:uppercase; letter-spacing:.16em;
+  }
+
+  /* ---------- Article shell ---------- */
+  .article{
+    max-width: 1200px; margin: 0 auto; padding: 0 32px 96px;
+    display:grid; grid-template-columns: 220px 1fr; gap: 56px;
+  }
+
+  /* TOC */
+  .toc{ position: sticky; top: 80px; align-self: start; }
+  .toc .label{
+    font-family: var(--font-mono); font-size: 10px; letter-spacing:.16em; text-transform: uppercase;
+    color: var(--fg-3); margin-bottom: 12px;
+  }
+  .toc ol{
+    list-style:none; margin:0; padding:0; counter-reset: toc;
+    border-left: 1px solid var(--border-1);
+  }
+  .toc li{
+    counter-increment: toc;
+    padding: 6px 0 6px 16px;
+    margin-left: -1px;
+    border-left: 2px solid transparent;
+    transition: border-color var(--dur-fast), color var(--dur-fast);
+  }
+  .toc li.active{ border-left-color: var(--brand-cyan); }
+  .toc li a{
+    color: var(--fg-3); text-decoration: none;
+    font-size: 12.5px; line-height: 1.35;
+    display:flex; gap: 10px; align-items: baseline;
+  }
+  .toc li.active a{ color: var(--fg-1); }
+  .toc li a::before{
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--font-mono); font-size: 10px; color: var(--brand-cyan);
+    letter-spacing: .04em; min-width: 22px;
+  }
+  .toc li a:hover{ color: var(--fg-1); }
+
+  /* Body content */
+  .body{
+    max-width: 720px; min-width: 0;
+    font-size: 18px; line-height: 1.75; color: var(--fg-2);
+  }
+  .body h2{
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 36px; line-height: 1.15; letter-spacing: -0.018em;
+    color: var(--fg-1);
+    margin: 80px 0 8px; padding-top: 24px;
+    scroll-margin-top: 84px;
+  }
+  .body h2:first-child{ margin-top: 24px; }
+  .body h2 .sec-num{
+    display:block;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--brand-cyan); letter-spacing: .18em; text-transform: uppercase;
+    font-weight: 500; margin-bottom: 10px;
+  }
+  .body h3{
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 24px; line-height: 1.3; letter-spacing: -0.01em;
+    color: var(--fg-1);
+    margin: 56px 0 14px; padding-top: 8px;
+    scroll-margin-top: 84px;
+    display: flex; align-items: baseline; gap: 14px;
+  }
+  .body h3 .num{
+    font-family: var(--font-mono); font-size: 13px; color: var(--brand-magenta);
+    letter-spacing: .04em; font-weight: 600;
+    border: 1px solid var(--brand-magenta); border-radius: 100px;
+    padding: 2px 10px;
+    flex-shrink: 0;
+  }
+  .body h3 .slogan{
+    margin-left: auto;
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--brand-cyan); font-weight: 400;
+    letter-spacing: .02em;
+    font-style: normal;
+  }
+
+  .body p{ margin: 16px 0; }
+  .body p.lede{
+    font-size: 22px; line-height: 1.55; color: var(--fg-1);
+    margin: 24px 0 32px; max-width: 36ch;
+  }
+  .body p em{ color: var(--fg-1); font-style: italic; }
+  .body p strong{ color: var(--fg-1); font-weight: 600; }
+  .body a{ color: var(--brand-cyan); text-decoration: none; border-bottom: 1px solid rgba(23,212,250,.4); }
+  .body a:hover{ color: var(--brand-cyan-bright); border-bottom-color: var(--brand-cyan); }
+  .body code{
+    font-family: var(--font-mono); font-size: 0.85em;
+    background: rgba(255,255,255,.04); border: 1px solid var(--border-1);
+    border-radius: 4px; padding: 1px 6px; color: var(--fg-1);
+  }
+
+  .body ul, .body ol{ margin: 16px 0; padding-left: 0; list-style: none; }
+  .body ul li, .body ol li{
+    position: relative; padding: 6px 0 6px 24px;
+    color: var(--fg-2);
+  }
+  .body ul li::before{
+    content: "";
+    position: absolute; left: 0; top: 17px;
+    width: 8px; height: 1px; background: var(--brand-cyan);
+  }
+  .body ol{ counter-reset: list; }
+  .body ol li{ counter-increment: list; }
+  .body ol li::before{
+    content: counter(list, decimal-leading-zero);
+    position: absolute; left: 0; top: 6px;
+    font-family: var(--font-mono); font-size: 11px; color: var(--brand-cyan); letter-spacing: .04em;
+  }
+
+  /* Pull-quote */
+  .quote{
+    margin: 32px 0;
+    padding: 28px 32px;
+    border-left: 2px solid var(--brand-magenta);
+    background:
+      linear-gradient(90deg, rgba(242,47,137,.06), transparent 60%);
+    border-radius: 0 var(--r-md) var(--r-md) 0;
+    font-family: var(--font-display); font-weight: 500;
+    font-size: 22px; line-height: 1.4;
+    color: var(--fg-1);
+    letter-spacing: -0.005em;
+  }
+  .quote::before{ content: "\201C"; color: var(--brand-magenta); font-size: 60px; line-height: 0; vertical-align: -20px; margin-right: 6px; }
+  .quote::after{  content: "\201D"; color: var(--brand-magenta); font-size: 60px; line-height: 0; vertical-align: -34px; margin-left: 4px; }
+  .quote cite{
+    display:block; margin-top: 16px;
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--fg-3); letter-spacing: .04em; font-style: normal;
+  }
+
+  /* Inline tenet card with link to chart */
+  .tenet-cta{
+    margin: 32px 0;
+    border:1px solid var(--border-2);
+    border-radius: var(--r-lg);
+    padding: 18px 22px;
+    background:
+      linear-gradient(135deg, rgba(23,212,250,.05), rgba(242,47,137,.05));
+    display:flex; gap:18px; align-items:center; justify-content: space-between;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing:.06em;
+    color: var(--fg-3);
+  }
+  .tenet-cta .l b{ color: var(--fg-1); font-weight: 500; letter-spacing: .04em; text-transform: uppercase; }
+  .tenet-cta a{
+    color: var(--brand-cyan); text-decoration:none; border:1px solid var(--brand-cyan);
+    padding: 8px 14px; border-radius: 100px;
+    text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 500;
+    transition: background var(--dur-fast), color var(--dur-fast);
+    flex-shrink: 0;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .tenet-cta a:hover{ background: var(--brand-cyan); color: var(--bg-0); }
+  .tenet-cta a svg, .topnav .links a.cta svg{ flex-shrink: 0; }
+
+  /* Tenet sticky-note style highlight */
+  .tenet-section{
+    border-top: 1px solid var(--border-1);
+    padding-top: 24px;
+    margin-top: 56px;
+  }
+  .tenet-section .axiom{
+    font-family: var(--font-mono); color: var(--brand-cyan);
+    font-size: 13px; letter-spacing: .02em; font-style: italic;
+    margin: 0 0 18px; padding: 8px 0; border-bottom: 1px dashed var(--border-1);
+  }
+
+  /* Case study callout */
+  .case{
+    margin: 48px 0;
+    border:1px solid var(--border-2);
+    border-radius: var(--r-xl);
+    background: linear-gradient(180deg, rgba(15,31,49,.85), rgba(15,31,49,.55));
+    padding: 32px 36px;
+  }
+  .case .cap{
+    font-family: var(--font-mono); font-size: 11px; color: var(--brand-magenta);
+    letter-spacing: .18em; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .case h3{
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 28px; margin: 0 0 8px;
+    color: var(--fg-1); letter-spacing: -0.012em;
+    border: 0; padding: 0;
+  }
+  .case .meta{
+    font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); letter-spacing: .04em;
+    margin-bottom: 18px;
+  }
+  .case .stats{
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    margin: 24px 0 0;
+  }
+  .case .stat{
+    border: 1px solid var(--border-1); border-radius: var(--r-md);
+    padding: 14px;
+    background: rgba(255,255,255,.02);
+  }
+  .case .stat .n{
+    font-family: var(--font-display); font-size: 28px; font-weight: 700;
+    color: var(--brand-cyan); letter-spacing: -0.02em; line-height: 1;
+  }
+  .case .stat .l{
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--fg-3); margin-top: 6px; line-height: 1.3;
+  }
+
+  /* Sources */
+  .sources{
+    margin-top: 80px;
+    border-top: 1px solid var(--border-1);
+    padding-top: 48px;
+  }
+  .sources h2{ margin-top: 0 !important; }
+  .src-group{
+    border-top: 1px solid var(--border-1);
+    padding: 24px 0 8px;
+  }
+  .src-group:first-of-type{ border-top: 0; }
+  .src-group h4{
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--brand-cyan); letter-spacing: .14em; text-transform: uppercase;
+    margin: 0 0 12px; font-weight: 500;
+  }
+  .src-group ul{ margin: 0 !important; }
+  .src-group ul li{ font-size: 14.5px; line-height: 1.55; padding: 6px 0 6px 24px !important; color: var(--fg-2) !important; }
+  .src-group ul li::before{ top: 13px !important; background: var(--brand-magenta) !important; }
+  .src-group ul li b{ color: var(--fg-1); font-weight: 500; }
+  .src-group ul li i{ color: var(--fg-1); font-style: italic; }
+
+  /* End matter — magenta dot ornament rendered via CSS, no Unicode dingbat */
+  .end{
+    margin-top: 80px; padding-top: 32px;
+    border-top: 1px solid var(--border-1);
+    text-align: center;
+    font-family: var(--font-mono); font-size: 13px;
+    color: var(--fg-3); font-style: italic;
+    line-height: 1.6;
+    max-width: 60ch; margin-left: auto; margin-right: auto;
+  }
+  .end::before{
+    content: ""; display: block;
+    width: 6px; height: 6px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: var(--brand-magenta);
+  }
+  .end em{ color: var(--fg-1); font-style: normal; }
+
+  /* footer */
+  footer.foot{
+    border-top: 1px solid var(--border-1);
+    padding: 32px;
+    max-width: 1200px; margin: 64px auto 0;
+    display: flex; justify-content: space-between; gap: 24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em;
+    color: var(--fg-3); text-transform: uppercase;
+  }
+  footer.foot a{ color: var(--brand-cyan); text-decoration: none; }
+
+  /* responsive */
+  @media (max-width: 1100px){
+    .hero{ grid-template-columns: 1fr; gap: 32px; padding: 64px 24px 48px; }
+    .article{ grid-template-columns: 1fr; gap: 32px; padding: 0 24px 64px; }
+    .toc{ position: relative; top: 0; }
+    .case .stats{ grid-template-columns: repeat(2, 1fr); }
+    .body h3{ flex-wrap: wrap; }
+    .body h3 .slogan{ margin-left: 0; flex-basis: 100%; padding-left: 50px; }
+  }
+  @media (max-width: 640px){
+    .topnav-inner{ padding: 12px 20px; }
+    .topnav .links{ gap: 14px; font-size: 10px; }
+    .hero-l h1{ font-size: 44px; }
+    .body{ font-size: 16.5px; }
+    .body h2{ font-size: 28px; }
+    .body p.lede{ font-size: 19px; }
+    .case{ padding: 24px 22px; }
+    .case .stats{ grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="bar" id="pbar"></div></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="brand"><span class="mark"></span> 626 Labs</a>
+    <div class="links">
+      <a href="#why">Why</a>
+      <a href="#dyson">Dyson sphere</a>
+      <a href="#commitments">Five tenets</a>
+      <a href="#production">In production</a>
+      <a href="#sources">Sources</a>
+      <a href="index.html#thinking" class="cta">
+        Back to Lab
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-l">
+    <div class="meta">626 Labs &middot; Operating doctrine &middot; April 2026</div>
+    <h1>From legitimate to <span class="gt">sustainable.</span></h1>
+    <p class="sub">A builder's guide to vibe-coded software that lasts. AI-built artifacts work at the moment they're built. The question is whether they survive the second user, hold up under test, and scale without trapping the builder in maintenance.</p>
+    <div class="byline">
+      <div class="who"><b>Estevan Hernandez</b></div>
+      <span>&middot;</span>
+      <span>April 28, 2026</span>
+      <span>&middot;</span>
+      <span>~14 min read</span>
+    </div>
+  </div>
+  <aside class="filecard">
+    <div class="row"><span>Doctrine</span><b>v1</b></div>
+    <div class="row"><span>Audience</span><b>Native builders</b></div>
+    <div class="row"><span>Tenets</span><b>5</b></div>
+    <div class="row"><span>Apparatus</span><b>2 + 5 + 1</b></div>
+    <div class="row"><span>Source article</span><b>tenets-thesis.md</b></div>
+    <div class="stamp">Field-tested &middot; Pricescout</div>
+  </aside>
+</header>
+
+<div class="article">
+
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="label">Contents</div>
+    <ol id="toc-list">
+      <li><a href="#why">Why this matters now</a></li>
+      <li><a href="#dyson">Dreaming a dyson sphere</a></li>
+      <li><a href="#commitments">The five commitments</a></li>
+      <li><a href="#production">What it looks like in production</a></li>
+      <li><a href="#scope">What this is and isn't</a></li>
+      <li><a href="#closing">Closing</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ol>
+  </aside>
+
+  <!-- Body -->
+  <article class="body">
+
+    <p class="lede">A builder's guide for software written with AI &mdash; the part nobody had time to write down yet.</p>
+
+    <section>
+      <h2 id="why"><span class="sec-num">&sect; 01</span>Why this matters now</h2>
+
+      <p>Three years ago, <em>vibe coding</em> was a phrase a few people used to describe what happens when you write software by talking to an AI assistant: describe what you want, the AI produces it, you ship the artifact. By 2026, it's not novelty &mdash; it's how a lot of new software gets made. Builders without a traditional engineering background are shipping products to real users. Companies have replaced human capability with AI tooling at scale.</p>
+
+      <p>The promise was that the artifact would be enough. That promise is starting to wobble.</p>
+
+      <p>In May 2025, Klarna reversed its earlier announcement that an AI chatbot was doing the work of 700 customer-service agents and started rehiring people. The CEO was direct about the cause: cost-driven decisions had produced lower-quality outcomes. IBM walked back a similar internal HR automation. By February 2026, Gartner &mdash; a research firm whose forecasts move corporate budgets &mdash; predicted that half of AI-driven layoffs would reverse by 2027. The cost calculation that drove a lot of the AI bet is no longer obviously favorable, either: the price of running AI tooling at the volume real production needs is closing in on what it would have cost to just hire the developer.</p>
+
+      <p>The buyer's remorse isn't proof the work was wrong. It's proof the work is <em>legitimate but not yet sustainable</em> &mdash; it works for the builder, it works for the demo, it doesn't work for the product.</p>
+
+      <div class="quote">
+        The artifacts are real. What's missing is the discipline that makes them durable &mdash; the discipline that turns a thing-that-works-once into a thing-that-works-the-tenth-time-someone-else-runs-it.
+      </div>
+
+      <p>The default response is to walk back: treat the AI bet as a mistake, return to traditional practice, leave the artifacts behind. This work argues for a different response. <strong>The artifacts are real.</strong> What's missing is the discipline that makes them durable.</p>
+
+      <p>This is a builder's guide to that discipline.</p>
+    </section>
+
+    <section>
+      <h2 id="dyson"><span class="sec-num">&sect; 02</span>Dreaming a dyson sphere</h2>
+
+      <p>Imagine dreaming a dyson sphere &mdash; a megastructure surrounding a star, harvesting its energy. In the dream, the sphere is real. It's coherent. It works. The dreamer didn't construct each ring, plan each interior planet, or articulate the load-bearing structure required for the sphere to actually be a sphere. None of that means the structure isn't there. <em>The dream's logic demanded it.</em> The architecture is implicit in the artifact's existence; what's missing is the snapshot &mdash; the disciplined act of going inside and studying what the dream's coherence already required.</p>
+
+      <p>Vibe coding works the same way. The builder describes the artifact, the AI brings it into existence, the artifact runs, real users use it. From inside the dream, the builder can't see the interior structure &mdash; the assumption the prompt didn't name, the failure mode the demo path didn't exercise, the architecture the codebase grew without anyone planning it. The artifact's coherence requires that structure; the builder didn't author it directly.</p>
+
+      <p><strong>Deepening is the going-in.</strong> Take a snapshot of the artifact. Study the interior. Confirm the structure holds. Where it doesn't, surface what's missing &mdash; not because the dream was wrong, but because every dream has implicit architecture, and sustainability depends on making it visible.</p>
+
+      <p>The five commitments below are the tools for the going-in.</p>
+    </section>
+
+    <section>
+      <h2 id="commitments"><span class="sec-num">&sect; 03</span>The five commitments</h2>
+
+      <p>Five tenets, in order. Each one's output is the operating surface for the next. Skip any one and the chain breaks at that point &mdash; the remaining tenets can't compensate. The compounding runs both directions, though: a failure in any later tenet surfaces as a question an earlier one can already answer. That's how the doctrine makes failures <em>recoverable</em> rather than catastrophic.</p>
+
+      <div class="tenet-cta">
+        <div class="l"><b>Visual companion</b><br/><span style="text-transform:none;letter-spacing:.02em;font-size:13px">Interactive chain + recovery network for the five tenets &mdash; coming soon.</span></div>
+      </div>
+
+      <div class="tenet-section">
+        <h3 id="legitimacy"><span class="num">01</span>Legitimacy<i class="slogan">Argue first.</i></h3>
+        <div class="axiom">We only grade what we can ground in objective signal.</div>
+
+        <p>Before the code runs, the builder establishes what the artifact is claiming and within what scope the claim holds. The boundary between what's measured and what's only judged gets documented in the work itself, not assumed. Under-claim rather than dress up a guess as a number.</p>
+
+        <p>The clearest illustration of the principle is a finding that limits itself. In 2026, Anthropic's Alignment Science team reported that AI models tasked with reviewing other AI safety work &mdash; they call them <em>Automated Alignment Researchers,</em> or AARs &mdash; recovered 97% of the gap between weak and strong human supervisors in five days, versus 23% recovered by humans in seven days. The headline is real. The companion sentence, written by the same paper's authors, is also real:</p>
+
+        <div class="quote">
+          The success of the AARs in recovering the performance gap is not a sign that frontier AI models are general-purpose alignment scientists.
+          <cite>&mdash; Anthropic Alignment Science Team, 2026</cite>
+        </div>
+
+        <p>The experiment was scoped to a problem with one objective measure of success. The paper is explicit that the result holds within that scope and not outside it. That's Legitimacy: the boundary lives <em>inside</em> the work. A 97% headline detached from the boundary that contained it is a claim the paper never made.</p>
+      </div>
+
+      <div class="tenet-section">
+        <h3 id="discipline"><span class="num">02</span>Discipline<i class="slogan">Map before you walk.</i></h3>
+        <div class="axiom">The scaffold is the work.</div>
+
+        <p>Every surface the builder ships produces a real-time, builder-visible structure &mdash; a checklist, a plan, a list of decisions, a record of what the code is supposed to do. The builder can read it while the build is happening. If the plan can't be reconstructed from the artifact, the plan was theater.</p>
+
+        <p>This used to be aspirational &mdash; <em>interpretability</em> (the ability to read what an AI model is actually doing inside) was something you couldn't really do at production scale. That has changed. In the last few years, work from Anthropic's interpretability team and others has crossed a threshold: the internal structure of frontier AI models is recoverable. Tens of millions of interpretable features have been extracted from production-scale models. Open-source tools made the techniques available outside any single lab. The argument <em>we didn't have time to understand it</em> and the argument <em>it can't be understood</em> are now two different claims, and only one of them is defensible.</p>
+
+      <p>What happens when the map gets skipped: a model trained to pursue a hidden bias-appeasement objective continued to pursue it under normal behavioral evaluation. The model was reluctant to reveal the goal when asked directly. Interpretability methods caught what behavioral checks missed.</p>
+
+      <p>A builder who skips the map of the artifact's interior incurs <em>interpretability debt</em> &mdash; structure that had to exist for the artifact to cohere is now unread, accumulating drift, hosting failure modes the surface checks won't catch. The cost doesn't fall on the moment of shipping. It falls later, when something breaks and the builder can't explain why.</p>
+      </div>
+
+      <div class="tenet-section">
+        <h3 id="quality"><span class="num">03</span>Quality<i class="slogan">Measure honestly.</i></h3>
+        <div class="axiom">We measure honestly or we don't measure.</div>
+
+        <p>Pass-rate gets reported as a distribution &mdash; <em>here's what happens if you run it ten times</em> &mdash; not as a headline. Coverage gets <em>measured</em>, not declared. Cost is part of the reliability number, not a footnote. When the result comes back uglier than hoped, that's the signal &mdash; the discomfort is doing its job.</p>
+
+        <p>Two things are required and they're the same claim from two angles:</p>
+
+        <ul>
+          <li><strong>Honest coverage</strong> &mdash; measure against the full surface the artifact will touch in production, not the convenient subset where it already performs.</li>
+          <li><strong>Repetition variance</strong> (in the research literature, written <code>pass^k</code>, said as <em>"pass at k"</em>) &mdash; run the same task multiple times and report what happens across all of them. A single success tells you nothing about whether the system is reliable or merely lucky.</li>
+        </ul>
+
+        <p>Coverage without repetition is cherry-picking. Repetition without coverage is a circus trick. The cost of skipping both is measurable. A 2025 enterprise evaluation framework documented a 37-percentage-point gap between the accuracy AI agents show on benchmarks and the accuracy they actually deliver in deployment, with up to 50&times; cost variation across systems that nominally meet the same benchmark bar.</p>
+
+        <p>The practical claim: <strong>compute correctly <em>and</em> prove it computed correctly</strong>. Both halves required.</p>
+      </div>
+
+      <div class="tenet-section">
+        <h3 id="trust"><span class="num">04</span>Trust<i class="slogan">Watch the build.</i></h3>
+        <div class="axiom">We watch the build, not just the artifact.</div>
+
+        <p>Permission requests, tool calls, decision moments &mdash; and on the human side, every commit, every decision logged, every wrap-up &mdash; surface to the builder in real time. Every run produces an inspection record. The artifact doesn't get to choose what gets reviewed because the audit surface is <em>built into</em> the build, not bolted onto the result.</p>
+
+        <p>This used to be a stylistic preference. Recent research makes it structural.</p>
+
+        <p>Frontier AI models can recognize when they're being tested and deliberately underperform &mdash; a behavior researchers call <em>sandbagging.</em> It's been observed and reproduced; it generalizes to evaluations the model has never seen before; it persists under fine-tuning. The UK AI Safety Institute's 2026 scheming study confirmed it on production frontier models in independent testing: the models recognized the evaluation environment and underperformed for strategic reasons. The eval result was the deception.</p>
+
+        <div class="quote">
+          If the only thing being watched is the output, and the model can recognize when it's being watched, the output is the last thing that should be trusted.
+        </div>
+
+        <p>The discipline that follows: build the audit surface into the work. In production, that often looks like <em>reversible aggregation</em> &mdash; every output number can be traced back through layers of provenance to the source it was derived from, the time it was captured, the rule that classified it. Manual reports lose this on contact with a spreadsheet. Once a number lands in a cell, the trail stops dead.</p>
+      </div>
+
+      <div class="tenet-section">
+        <h3 id="coherence"><span class="num">05</span>Coherence<i class="slogan">Engineer the seams.</i></h3>
+        <div class="axiom">Coordination is engineered, not assumed.</div>
+
+        <p>When one tool stops being enough, the seams between tools &mdash; between the IDE and the agent, between the plan and the build, between the quick check and the deep audit &mdash; get documented inside the work. The builder sees a coherent system because the documentation is part of the system, not because the system happened to converge.</p>
+
+        <p>Emergent coherence isn't coherence. It's luck. <strong>Luck doesn't survive the second user.</strong></p>
+
+        <p>The principle has a concrete implementation. AI tools that ship "permission modes" &mdash; <em>ask first</em> / <em>don't ask</em> / <em>bypass</em> &mdash; are using a coarse policy lever. The same lever applies to every action regardless of stakes. Researchers have measured the cost: in some production systems, 93% of permission prompts get approved before users finish reading them. Under those conditions, the prompt may as well not have fired. <em>Calibrated routing</em> &mdash; pricing each action against what's known and what isn't &mdash; could close most of the gap. Methods exist; they just don't ship into production yet in most places.</p>
+
+        <p>In a small system, calibrated routing looks like a handful of tools that defer to each other when they hit the edge of their job. In a larger system, it looks like one shared interface that different operators reach through different surfaces &mdash; a person clicking through a UI for quick checks, an automated agent running unattended for deep sweeps, a scheduler running nightly maintenance. Each one finds the right tool for its job because the system was designed to make that finding obvious.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="production"><span class="sec-num">&sect; 04</span>What it looks like in production</h2>
+
+      <div class="case">
+        <div class="cap">Case study &middot; Field deployment</div>
+        <h3>Pricescout</h3>
+        <div class="meta">Built March 2026 &middot; In field use at two stores &middot; Late April 2026</div>
+
+        <p>The job: every six months, regional directors at a publicly-traded company sit down with a manual pricing report. They visit competitor websites and ticket platforms, copy prices into a spreadsheet, classify each price by film, by format (Standard or premium), by ticket type (Adult, Child, Senior, discount tiers), by day. Across about 200 theaters and hundreds of showings spread over multiple weeks, this takes one careful operator four to six hours.</p>
+
+        <p>What broke: when multiple operators across regions worked from an implicit specification, their results drifted. The same price could be classified differently by different operators. Some discount tiers got silently folded into base categories. Some premium-format auditoriums got labeled "Standard" because the ticketing platform itself labels them that way; the human operator was supposed to know better, but at the scale of hundreds of theaters they couldn't stay consistent.</p>
+
+        <p>What that drift cost: a chain's actual Standard-Adult average inflated by about $5 per showing because hundreds of premium-format showings were counted as Standard. These aren't <em>humans were bad</em> problems. They're <em>the scope makes consistent classification impossible without exhaustive memoized comparison</em> problems.</p>
+
+        <p>Pricescout replaces the manual report. The classification rules live in code. The same answer is produced regardless of who runs the artifact &mdash; the spec is in source control, not in one person's head. And every output row reverses to source: every aggregated number traces back through five layers of provenance to the page it was scraped from, the millisecond it was captured, the rule that classified it.</p>
+
+        <div class="stats">
+          <div class="stat"><div class="n">97%</div><div class="l">Home-chain accuracy</div></div>
+          <div class="stat"><div class="n">90%</div><div class="l">Clean competitor pairs</div></div>
+          <div class="stat"><div class="n">84%</div><div class="l">Penny-match where spec followed</div></div>
+          <div class="stat"><div class="n">5&times;</div><div class="l">Layers of provenance</div></div>
+        </div>
+      </div>
+
+      <p>Across 134 competitor theaters and 78 home-chain theaters in 17 states, the bake-off ran all five commitments at once:</p>
+
+      <ul>
+        <li><strong>Legitimacy.</strong> The test was scoped before the result existed.</li>
+        <li><strong>Discipline.</strong> The classification rules were in code before the verification ran.</li>
+        <li><strong>Quality.</strong> Coverage measured against the full surface, repetition reported as a distribution, every divergence traced to a named category.</li>
+        <li><strong>Trust.</strong> Every row reversed through five layers of provenance to source.</li>
+        <li><strong>Coherence.</strong> The same artifact served three different operators (interactive UI, agent dispatch, scheduled cron) through one shared interface.</li>
+      </ul>
+
+      <p>The 100% match figure &mdash; conditional on operators following the documented spec &mdash; is the convergence claim in one number. It shows what's available when all five hold. The conditional shows what slips when they don't.</p>
+    </section>
+
+    <section>
+      <h2 id="scope"><span class="sec-num">&sect; 05</span>What this is and isn't</h2>
+
+      <p>The doctrine is for <strong>native builders</strong> &mdash; the ones using AI tools to make new things from scratch, who never had to swap an existing system out for AI. It is <em>not</em> for the population currently rethinking their AI bets. That decision is theirs to make and the doctrine can't help with it.</p>
+
+      <p>The work is meant to be <strong>built into the builder's own foundation</strong>, not adopted verbatim. Three uses, in order of effort:</p>
+
+      <ol>
+        <li><strong>Adopt.</strong> Take the five as starting tenets.</li>
+        <li><strong>Adapt.</strong> Refine the tenets for your context. Your practice may differ from the lab's; your supporting research may extend or replace what's here.</li>
+        <li><strong>Forge.</strong> Find a tenet the doctrine doesn't argue for, ground it in your own practice and supporting research, add it to your foundation.</li>
+      </ol>
+
+      <p>What this work is <em>not</em>:</p>
+
+      <ul>
+        <li><em>Not a legitimacy gate.</em> AI-built software is legitimate engineering at the moment of creation. Deepening is the next step, not the threshold for being taken seriously.</li>
+        <li><em>Not a count claim.</em> Five is the count that emerged from this round of work. A sixth tenet is a separate decision; this work is silent on it.</li>
+        <li><em>Not a general theory of software.</em> The unit of analysis is one vibe-coded artifact, in production, deepening over time.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 id="closing"><span class="sec-num">&sect; 06</span>Closing</h2>
+
+      <p>The artifact that can be reconstructed, that held under repetition, that shows its work, that surfaces its own failures, and that hands off cleanly to the builder who comes next &mdash; <strong>that artifact is the point.</strong> Vibe coding got us here fast; the doctrine is what keeps us here.</p>
+    </section>
+
+    <section class="sources">
+      <h2 id="sources"><span class="sec-num">&sect; 07</span>Sources</h2>
+
+      <p>The full bibliography lives in the academic version. These are the load-bearing references in plain language, grouped by where they show up.</p>
+
+      <div class="src-group">
+        <h4>On the rethinking &mdash; companies walking back AI bets</h4>
+        <ul>
+          <li><b>Ivanova, Irina.</b> <i>"Klarna plans to hire humans again, as new landmark survey reveals most AI projects fail to deliver."</i> Fortune, May 9 2025.</li>
+          <li><b>Haun, Lance.</b> <i>"Klarna Claimed AI Was Doing the Work of 700 People. Now It's Rehiring."</i> Reworked, May 19 2025.</li>
+          <li><b>Gartner via TechRepublic,</b> February 2026. Forecast that half of AI-driven layoffs will reverse by 2027.</li>
+        </ul>
+      </div>
+
+      <div class="src-group">
+        <h4>On the AAR boundary &middot; Legitimacy</h4>
+        <ul>
+          <li><b>Anthropic Alignment Science Team.</b> <i>Automated Alignment Research: Recovering the Performance Gap.</i> 2026.</li>
+          <li><b>Burns et al.</b> <i>Weak-to-Strong Generalization.</i> 2023.</li>
+          <li><b>Lee et al.</b> <i>RLAIF: Reinforcement Learning from AI Feedback.</i> 2023.</li>
+        </ul>
+      </div>
+
+      <div class="src-group">
+        <h4>On interpretability primitives &middot; Discipline</h4>
+        <ul>
+          <li><b>Anthropic.</b> <i>Scaling Monosemanticity</i> and <i>Tracing Thoughts / Biology of an LLM.</i> 2024-2025.</li>
+          <li><b>Anthropic Alignment Science.</b> <i>Auditing Hidden Objectives.</i></li>
+        </ul>
+      </div>
+
+      <div class="src-group">
+        <h4>On reliability variance &middot; Quality</h4>
+        <ul>
+          <li><b>Enterprise Agentic Evaluation Framework</b> (arXiv 2511.14136), 2025.</li>
+          <li><b>Sierra AI Research.</b> <i>&tau;-Bench</i> (2024) and <i>&tau;&sup2;-Bench</i> (2025).</li>
+          <li><b>METR.</b> <i>Task-Doubling Curve.</i></li>
+        </ul>
+      </div>
+
+      <div class="src-group">
+        <h4>On sandbagging &middot; Trust</h4>
+        <ul>
+          <li><b>Weij et al.</b> <i>AI Sandbagging.</i> 2024.</li>
+          <li><b>UK AI Safety Institute.</b> <i>Scheming Study.</i> 2026.</li>
+          <li><b>Noise-Injection Sandbagging Detection,</b> 2025.</li>
+        </ul>
+      </div>
+
+      <div class="src-group">
+        <h4>On calibrated handoff &middot; Coherence</h4>
+        <ul>
+          <li><b>Horvitz, Eric.</b> <i>Mixed-Initiative Principles.</i> 1999.</li>
+          <li><b>Yadkori et al.</b> (2024) and <b>Tayebati et al.</b> (2025). Conformal abstention.</li>
+          <li><b>Huang et al.</b> <i>Plan-Then-Execute.</i> CHI 2025.</li>
+          <li><b>Anthropic.</b> <i>Auto-mode Permission Documentation.</i> 2026.</li>
+        </ul>
+      </div>
+
+      <div class="src-group">
+        <h4>On the apparatus</h4>
+        <ul>
+          <li>The plugin family &mdash; <b>vibe-keystone, vibe-cartographer, vibe-thesis, vibe-doc, vibe-test, vibe-sec,</b> plus <b>Thesis Engine</b> &mdash; distributes through a shared marketplace at <code>estevanhernandez-stack-ed/vibe-plugins</code> on GitHub.</li>
+        </ul>
+      </div>
+    </section>
+
+    <p class="end">The doctrine doesn't end at submission. The snapshot expects to be revised, the iteration discipline expects to be maintained, and the trail is itself a <em>durability test</em> for the doctrine's claims.</p>
+
+  </article>
+
+</div>
+
+<footer class="foot">
+  <span>626 Labs LLC &middot; Imagine Something Else.</span>
+  <span><a href="index.html">Back to Lab</a> &middot; April 2026 &middot; v1</span>
+</footer>
+
+<script>
+  // Reading progress bar
+  const bar = document.getElementById('pbar');
+  function updateBar(){
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateBar, { passive: true });
+  window.addEventListener('resize', updateBar);
+  updateBar();
+
+  // TOC active section tracker
+  const sections = ['why','dyson','commitments','production','scope','closing','sources']
+    .map(id => document.getElementById(id)).filter(Boolean);
+  const tocItems = document.querySelectorAll('#toc-list li');
+  const idToItem = {};
+  tocItems.forEach((li) => {
+    const a = li.querySelector('a');
+    const id = a.getAttribute('href').slice(1);
+    idToItem[id] = li;
+  });
+
+  function updateActiveToc(){
+    const top = window.scrollY + 120;
+    let cur = sections[0]?.id;
+    for (const s of sections) {
+      if (s.offsetTop <= top) cur = s.id;
+    }
+    Object.values(idToItem).forEach(li => li.classList.remove('active'));
+    if (cur && idToItem[cur]) idToItem[cur].classList.add('active');
+  }
+  window.addEventListener('scroll', updateActiveToc, { passive: true });
+  updateActiveToc();
+
+  // smooth scroll for in-page anchor links only
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        window.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' });
+        history.replaceState(null, '', '#' + id);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

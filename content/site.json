@@ -134,6 +134,33 @@
       "screenshots": []
     },
     {
+      "id": "vibe-keystone",
+      "title": "Vibe Keystone",
+      "tagline": "Map the repo before the agent starts.",
+      "description": "The bootstrap pass for any repo. Inventories the tech stack, side-tools, bot workflows, and the gotchas worth warning about — then drafts a 626Labs-pattern CLAUDE.md so the next agent lands oriented instead of blind.",
+      "tags": [
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "bootstrap",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "meta": "<code>/keystone</code> · CLAUDE.md bootstrap",
+      "screenshots": []
+    },
+    {
       "id": "vibe-doc",
       "title": "Vibe Doc",
       "description": "Point it at your codebase and it tells you which docs you're missing — ADRs, runbooks, threat models, specs — then writes them. Basically, the documentation pass you keep meaning to do.",
@@ -183,6 +210,60 @@
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
       "meta": "<code>/vibe-test:audit</code> · harness-aware",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-thesis",
+      "title": "Vibe Thesis",
+      "tagline": "Long-form research, drafted with discipline.",
+      "description": "Scaffolds thesis-shaped projects — academic dissertation, master's thesis, long-form research article, position essay. Bootstraps the structure, runs a voice synthesis pass, guards against self-review tone, then renders to PDF, HTML, and a plain-language lay version. Built on ThesisStudio.",
+      "tags": [
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "long-form research",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "meta": "<code>/vibe-thesis</code> · render to PDF / HTML / lay",
+      "screenshots": []
+    },
+    {
+      "id": "thesis-engine",
+      "title": "Thesis Engine",
+      "tagline": "Surface topics. Gather sources. Seed the thesis.",
+      "description": "Research feeder for Vibe Thesis. Surfaces cutting-edge topics in any domain, gathers primary sources, opposing positions, and methodological precedents — then emits a run folder that drops straight into ThesisStudio. Optional stage three adapts a seeded topic into a Smart Brevity blog draft.",
+      "tags": [
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "research feeder",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "meta": "<code>/thesis-engine:discover</code> · topic + source pipeline",
       "screenshots": []
     },
     {
