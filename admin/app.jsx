@@ -2100,6 +2100,12 @@ function RepoStats({ token }) {
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [reloadKey, setReloadKey] = React.useState(0);
+  const [sortBy, setSortBy] = React.useState("unique_cloners");
+  const [sortDir, setSortDir] = React.useState("desc");
+  const [hideZero, setHideZero] = React.useState(true);
+  const [search, setSearch] = React.useState("");
+  const [triggering, setTriggering] = React.useState(false);
+  const [dispatchStatus, setDispatchStatus] = React.useState(null);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -2107,7 +2113,7 @@ function RepoStats({ token }) {
     setError(null);
     const headers = { Accept: "application/vnd.github.raw", "X-GitHub-Api-Version": "2022-11-28" };
     if (token) headers.Authorization = `Bearer ${token}`;
-    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/traffic.csv?ref=${REPO_BRANCH}`, { headers })
+    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/traffic.csv?ref=${REPO_BRANCH}&t=${Date.now()}`, { headers, cache: "no-store" })
       .then(r => r.ok ? r.text() : r.text().then(t => Promise.reject(`${r.status} ${t.slice(0, 80)}`)))
       .then(text => {
         if (cancelled) return;
@@ -2122,6 +2128,34 @@ function RepoStats({ token }) {
     return () => { cancelled = true; };
   }, [token, reloadKey]);
 
+  async function triggerFresh() {
+    if (!token) return;
+    setTriggering(true);
+    setDispatchStatus(null);
+    try {
+      const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/track-traffic.yml/dispatches`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ref: REPO_BRANCH }),
+      });
+      if (res.status === 204) {
+        setDispatchStatus({ ok: true, message: "queued — reload in ~30s" });
+      } else {
+        const txt = await res.text();
+        setDispatchStatus({ ok: false, message: `${res.status}: ${txt.slice(0, 80)}` });
+      }
+    } catch (e) {
+      setDispatchStatus({ ok: false, message: (e && e.message) || "dispatch failed" });
+    } finally {
+      setTriggering(false);
+    }
+  }
+
   if (loading) return <div style={{ padding: 56, color: A.dim, textAlign: "center", fontSize: 13 }}>Loading repo traffic…</div>;
   if (error) return (
     <div style={{ background: "rgba(255,107,107,.06)", border: `1px solid rgba(255,107,107,.2)`, borderRadius: 8, padding: 18, maxWidth: 620 }}>
@@ -2130,7 +2164,7 @@ function RepoStats({ token }) {
     </div>
   );
 
-  // Group rows by repo, sort by date.
+  // Group rows by repo
   const byRepo = {};
   (rows || []).forEach(r => {
     if (!byRepo[r.repo]) byRepo[r.repo] = [];
@@ -2143,90 +2177,169 @@ function RepoStats({ token }) {
     });
   });
   Object.values(byRepo).forEach(arr => arr.sort((a, b) => a.date.localeCompare(b.date)));
-  const repoOrder = [
-    "estevanhernandez-stack-ed/vibe-cartographer",
-    "estevanhernandez-stack-ed/Vibe-Doc",
-    "estevanhernandez-stack-ed/vibe-plugins",
-    "626Labs-LLC/626Labs-LLC.github.io",
-  ];
-  const knownRepos = repoOrder.filter(r => byRepo[r]);
-  const otherRepos = Object.keys(byRepo).filter(r => !repoOrder.includes(r));
-  const sortedRepos = [...knownRepos, ...otherRepos];
+
+  // Per-repo aggregates (last 30 days)
+  let repos = Object.entries(byRepo).map(([name, rs]) => {
+    const last30 = rs.slice(-30);
+    const totals = last30.reduce((a, r) => ({
+      views: a.views + r.views,
+      unique_visitors: a.unique_visitors + r.unique_visitors,
+      clones: a.clones + r.clones,
+      unique_cloners: a.unique_cloners + r.unique_cloners,
+    }), { views: 0, unique_visitors: 0, clones: 0, unique_cloners: 0 });
+    const lastActiveRow = [...rs].reverse().find(r => r.views > 0 || r.clones > 0);
+    return {
+      name,
+      ...totals,
+      lastActivity: lastActiveRow?.date || null,
+      sparkViews: last30.map(r => r.views),
+      sparkClones: last30.map(r => r.clones),
+    };
+  });
+
+  const totalRepos = repos.length;
+
+  // Filter
+  if (hideZero) repos = repos.filter(r => r.views > 0 || r.clones > 0);
+  if (search.trim()) {
+    const q = search.trim().toLowerCase();
+    repos = repos.filter(r => r.name.toLowerCase().includes(q));
+  }
+
+  // Sort
+  repos.sort((a, b) => {
+    let cmp;
+    if (sortBy === "name") cmp = a.name.localeCompare(b.name);
+    else if (sortBy === "lastActivity") cmp = (a.lastActivity || "").localeCompare(b.lastActivity || "");
+    else cmp = (a[sortBy] || 0) - (b[sortBy] || 0);
+    return sortDir === "asc" ? cmp : -cmp;
+  });
+
+  function toggleSort(col) {
+    if (sortBy === col) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(col);
+      setSortDir(col === "name" ? "asc" : "desc");
+    }
+  }
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 12 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: A.dim, letterSpacing: ".06em" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: A.dim, letterSpacing: ".06em", flexWrap: "wrap" }}>
           <span style={{ width: 8, height: 8, borderRadius: 99, background: A.magenta, boxShadow: `0 0 8px ${A.magenta}` }}/>
+          <span>{repos.length}</span>
+          <span style={{ color: A.dim2 }}>of</span>
+          <span>{totalRepos}</span>
+          <span>{totalRepos === 1 ? "repo" : "repos"}</span>
+          <span style={{ color: A.dim2 }}>·</span>
           <span>github.com page views + clones</span>
           <span style={{ color: A.dim2 }}>·</span>
-          <span>committed daily by track-traffic.yml</span>
+          <span>last 30 days</span>
         </div>
-        <Btn ghost size="sm" onClick={() => setReloadKey(k => k + 1)}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Refresh</span></Btn>
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+          <input
+            type="text"
+            placeholder="Filter by name…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{ padding: "6px 10px", background: A.bg, border: `1px solid ${A.line2}`, borderRadius: 6, color: A.text, fontSize: 12, fontFamily: "JetBrains Mono, monospace", width: 180 }}
+          />
+          <label style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11, color: A.dim, fontFamily: "JetBrains Mono, monospace", cursor: "pointer" }}>
+            <input type="checkbox" checked={hideZero} onChange={e => setHideZero(e.target.checked)} style={{ accentColor: A.cyan }}/>
+            hide zero-traffic
+          </label>
+          {dispatchStatus && <span style={{ fontSize: 11, color: dispatchStatus.ok ? A.green : A.danger, fontFamily: "JetBrains Mono, monospace" }}>{dispatchStatus.message}</span>}
+          <Btn ghost size="sm" onClick={triggerFresh} disabled={triggering}>{triggering ? "queueing…" : "Fetch fresh"}</Btn>
+          <Btn ghost size="sm" onClick={() => setReloadKey(k => k + 1)}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Reload</span></Btn>
+        </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 12 }}>
-        {sortedRepos.map(repo => <RepoStatsCard key={repo} repo={repo} rows={byRepo[repo]}/>)}
+      <div style={{ background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, overflow: "hidden" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 90px 90px 90px 110px 200px", alignItems: "center", borderBottom: `1px solid ${A.line}`, background: A.panel2 }}>
+          <RepoSortHeader id="name" label="Repo" sortBy={sortBy} sortDir={sortDir} onClick={toggleSort} align="left"/>
+          <RepoSortHeader id="views" label="Views" sortBy={sortBy} sortDir={sortDir} onClick={toggleSort} align="right"/>
+          <RepoSortHeader id="unique_visitors" label="Unique" sortBy={sortBy} sortDir={sortDir} onClick={toggleSort} align="right"/>
+          <RepoSortHeader id="clones" label="Clones" sortBy={sortBy} sortDir={sortDir} onClick={toggleSort} align="right"/>
+          <RepoSortHeader id="unique_cloners" label="Uniq cloners" sortBy={sortBy} sortDir={sortDir} onClick={toggleSort} align="right"/>
+          <div style={{ padding: "10px 12px", fontFamily: "JetBrains Mono, monospace", fontSize: 10.5, color: A.dim2, letterSpacing: ".12em", textTransform: "uppercase" }}>30-day trend</div>
+        </div>
+
+        {repos.length === 0 ? (
+          <div style={{ padding: 36, textAlign: "center", color: A.dim2, fontSize: 12 }}>
+            {search ? `No repos match "${search}".` : (hideZero ? "No repos with traffic in the last 30 days. Toggle ‘hide zero-traffic’ to see all." : "No data yet.")}
+          </div>
+        ) : (
+          repos.map((r, i) => <RepoStatsRow key={r.name} repo={r} last={i === repos.length - 1}/>)
+        )}
       </div>
 
       <div style={{ marginTop: 18, fontSize: 11.5, color: A.dim2, lineHeight: 1.6 }}>
-        Note: this is GitHub.com page views of the source repos (people viewing the README, code, etc.) — not visits to 626labs.dev. Site-visit analytics live on the <b style={{ color: A.dim }}>Site</b> tab.
+        Note: this is GitHub.com page views of source repos (people viewing the README, code, etc.) — not visits to 626labs.dev. Site-visit analytics live on the <b style={{ color: A.dim }}>Site</b> tab. Repos auto-discovered daily under <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>estevanhernandez-stack-ed</code> and <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>626Labs-LLC</code>.
       </div>
     </div>
   );
 }
 
-function RepoStatsCard({ repo, rows }) {
-  const last30 = rows.slice(-30);
-  const last7 = rows.slice(-7);
-  const totalViews = last30.reduce((a, r) => a + r.views, 0);
-  const totalUnique = last30.reduce((a, r) => a + r.unique_visitors, 0);
-  const totalClones = last30.reduce((a, r) => a + r.clones, 0);
-  const totalUniqueClones = last30.reduce((a, r) => a + r.unique_cloners, 0);
-  const week = {
-    views: last7.reduce((a, r) => a + r.views, 0),
-    clones: last7.reduce((a, r) => a + r.clones, 0),
-  };
-  const viewSpark = last30.map(r => r.views);
-  const cloneSpark = last30.map(r => r.clones);
-
+function RepoSortHeader({ id, label, sortBy, sortDir, onClick, align }) {
+  const active = sortBy === id;
+  const arrow = active ? (sortDir === "asc" ? "↑" : "↓") : "·";
   return (
-    <div style={{ background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, padding: 16 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 18, alignItems: "center" }}>
-        <div style={{ minWidth: 0 }}>
-          <a href={`https://github.com/${repo}`} target="_blank" rel="noopener" style={{
-            fontSize: 13, fontWeight: 500, color: A.text, fontFamily: "JetBrains Mono, monospace",
-            textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6,
-          }}>
-            {repo}
-            <span style={{ color: A.dim2, fontSize: 10 }}>↗</span>
-          </a>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", columnGap: 18, rowGap: 6, marginTop: 12 }}>
-            <RepoStat label="views" value={totalViews} c={A.cyan}/>
-            <RepoStat label="unique" value={totalUnique} c={A.magenta}/>
-            <RepoStat label="clones" value={totalClones} c={A.green}/>
-            <RepoStat label="uniq cloners" value={totalUniqueClones} c={A.amber}/>
-          </div>
-          <div style={{ marginTop: 10, fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".04em" }}>
-            last 30 days · 7-day: {week.views.toLocaleString()} views / {week.clones.toLocaleString()} clones
-          </div>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 180 }}>
-          <div style={{ fontSize: 9.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".1em", textTransform: "uppercase" }}>views</div>
-          <MiniSparkline values={viewSpark} w={180} h={36} color={A.cyan}/>
-          <div style={{ fontSize: 9.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".1em", textTransform: "uppercase", marginTop: 4 }}>clones</div>
-          <MiniSparkline values={cloneSpark} w={180} h={20} color={A.green}/>
-        </div>
-      </div>
-    </div>
+    <button
+      onClick={() => onClick(id)}
+      style={{
+        background: "transparent", border: "none", cursor: "pointer",
+        padding: "10px 12px",
+        color: active ? A.cyan : A.dim2,
+        fontFamily: "JetBrains Mono, monospace", fontSize: 10.5,
+        letterSpacing: ".12em", textTransform: "uppercase",
+        textAlign: align || "left",
+        display: "flex", alignItems: "center", gap: 6,
+        justifyContent: align === "right" ? "flex-end" : "flex-start",
+      }}
+    >
+      <span>{label}</span>
+      <span style={{ color: active ? A.cyan : A.dim2, opacity: active ? 1 : 0.5 }}>{arrow}</span>
+    </button>
   );
 }
 
-function RepoStat({ label, value, c }) {
+function RepoStatsRow({ repo, last }) {
+  const cell = (color, value) => (
+    <div style={{
+      padding: "0 12px", textAlign: "right", fontFamily: "JetBrains Mono, monospace",
+      fontSize: 13, color: value ? color : A.dim2, fontWeight: value ? 500 : 400,
+    }}>{value.toLocaleString()}</div>
+  );
   return (
-    <div>
-      <div style={{ fontSize: 10, color: A.dim2, fontFamily: "JetBrains Mono, monospace", textTransform: "uppercase", letterSpacing: ".1em" }}>{label}</div>
-      <div style={{ fontSize: 16, fontWeight: 600, color: c, fontFamily: "JetBrains Mono, monospace", marginTop: 2 }}>{value.toLocaleString()}</div>
+    <div style={{
+      display: "grid", gridTemplateColumns: "1fr 90px 90px 90px 110px 200px",
+      alignItems: "center", padding: "12px 0",
+      borderBottom: last ? "none" : `1px solid ${A.line}`,
+      transition: "background 120ms",
+    }}>
+      <div style={{ padding: "0 12px", minWidth: 0, overflow: "hidden" }}>
+        <a href={`https://github.com/${repo.name}`} target="_blank" rel="noopener" style={{
+          color: A.text, textDecoration: "none", fontFamily: "JetBrains Mono, monospace",
+          fontSize: 12.5, display: "inline-flex", alignItems: "center", gap: 6,
+          overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "100%",
+        }} title={repo.name}>
+          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{repo.name}</span>
+          <span style={{ color: A.dim2, fontSize: 9.5, flexShrink: 0 }}>↗</span>
+        </a>
+        {repo.lastActivity && (
+          <div style={{ fontSize: 10, color: A.dim2, marginTop: 2, fontFamily: "JetBrains Mono, monospace" }}>last active {repo.lastActivity}</div>
+        )}
+      </div>
+      {cell(A.cyan, repo.views)}
+      {cell(A.magenta, repo.unique_visitors)}
+      {cell(A.green, repo.clones)}
+      {cell(A.amber, repo.unique_cloners)}
+      <div style={{ padding: "0 12px", display: "flex", flexDirection: "column", gap: 2 }}>
+        <MiniSparkline values={repo.sparkViews} w={180} h={20} color={A.cyan}/>
+        <MiniSparkline values={repo.sparkClones} w={180} h={14} color={A.green}/>
+      </div>
     </div>
   );
 }

@@ -70,7 +70,7 @@ The 5 bot workflows that push to main:
 | `build-widget.yml` | Push to `apps/widget-bacon-trail/src/**` | Vite-builds the widget, commits the bundle to `widget-bacon-trail/`. |
 | `refresh-bacon-shards.yml` | Daily 06:00 UTC | Pulls bacon shard data from Firestore (uses `FIREBASE_SA_JSON` secret). |
 | `rebuild-hub.yml` | Push to `content/site.json` | Re-runs render-hub.py and commits drift. |
-| `track-traffic.yml` | Daily 06:00 UTC | Pulls GitHub traffic metrics for the plugin repos (uses `TRAFFIC_PAT` secret). |
+| `track-traffic.yml` | Daily 06:00 UTC | Auto-discovers all public, non-fork, non-archived repos under `estevanhernandez-stack-ed` (user) and `626Labs-LLC` (org), then pulls GitHub traffic metrics for each (uses `TRAFFIC_PAT` secret — needs Administration:Read on every tracked repo). |
 | `fetch-site-stats.yml` | Daily 06:30 UTC | Pulls GoatCounter visit stats for `626labs.dev` and writes `data/site-stats.json` (uses `GOATCOUNTER_TOKEN` secret). |
 
 All five use a retry+rebase loop on `git push` to handle the race where two
