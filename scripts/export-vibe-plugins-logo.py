@@ -254,10 +254,12 @@ def main() -> None:
     icon = Image.open(icon_src).convert("RGBA")
     print("Building Vibe Plugins co-brand mark…")
     for size, name in [
-        ((1500, 500),  "vibe-plugins-banner-1500x500.png"),    # 3:1
+        ((1500, 500),  "vibe-plugins-banner-1500x500.png"),    # 3:1 — Twitter classic / OG
         ((3000, 1000), "vibe-plugins-banner-3000x1000.png"),   # 3:1 @ 2x
         ((1500, 600),  "vibe-plugins-banner-1500x600.png"),    # 5:2 — X Articles
         ((3000, 1200), "vibe-plugins-banner-3000x1200.png"),   # 5:2 @ 2x
+        ((1280, 640),  "vibe-plugins-banner-1280x640.png"),    # 2:1 — GitHub social preview
+        ((2560, 1280), "vibe-plugins-banner-2560x1280.png"),   # 2:1 @ 2x
     ]:
         build_banner(size, icon, OUT / name)
     build_square(1024, icon, OUT / "vibe-plugins-square-1024.png")

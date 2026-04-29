@@ -311,74 +311,84 @@ def load_claude_sparkle(target_height):
     return spk.resize((int(spk.width * scale), target_height), Image.LANCZOS)
 
 
-def build_banner(plugin, out_path):
-    W, H = 1500, 500
+def build_banner(plugin, out_path, size=(1500, 500)):
+    """Render a plugin banner at the requested size.
+
+    All layout values are derived from H (banner height) so the same
+    function produces both the 3:1 (1500x500) Twitter classic banner
+    and the 2:1 (1280x640) GitHub social-preview card without rework.
+    GitHub's social-preview spec asks for a 40pt safe border around
+    the important content — the percentage offsets below honor that.
+    """
+    W, H = size
     canvas = Image.new("RGBA", (W, H), NAVY + (255,))
     canvas.alpha_composite(radial_glow(W, H, 0.16, 0.28, plugin["primary"], 70, 0.50))
     canvas.alpha_composite(radial_glow(W, H, 0.86, 0.78, plugin["secondary"], 60, 0.55))
 
-    # Glyph card on the left — tall mono-feeling tile
-    card_w, card_h = 280, 280
+    # Glyph card on the left — square tile sized to ~56% of banner height.
+    card_side = int(H * 0.56)
     card_x = int(W * 0.06)
-    card_y = (H - card_h) // 2
-    card_layer = Image.new("RGBA", (card_w, card_h), (255, 255, 255, 0))
+    card_y = (H - card_side) // 2
+    card_layer = Image.new("RGBA", (card_side, card_side), (255, 255, 255, 0))
     cdraw = ImageDraw.Draw(card_layer)
-    cdraw.rounded_rectangle([0, 0, card_w - 1, card_h - 1], radius=14,
+    cdraw.rounded_rectangle([0, 0, card_side - 1, card_side - 1],
+                            radius=max(8, int(H * 0.028)),
                             outline=DIM2 + (180,), width=1,
                             fill=(0, 0, 0, 60))
-    # Render glyph centered in the card
-    glyph_size = 200
+    # Render glyph centered in the card — glyph is ~71% of card_side.
+    glyph_size = int(card_side * 0.71)
     glyph = GLYPHS[plugin["glyph"]](plugin["primary"], plugin["secondary"])
     if glyph.size != (glyph_size, glyph_size):
         glyph = glyph.resize((glyph_size, glyph_size), Image.LANCZOS)
-    card_layer.alpha_composite(glyph, dest=((card_w - glyph_size) // 2, (card_h - glyph_size) // 2))
+    card_layer.alpha_composite(glyph, dest=((card_side - glyph_size) // 2, (card_side - glyph_size) // 2))
     canvas.alpha_composite(card_layer, dest=(card_x, card_y))
 
     # Text block
-    text_x = card_x + card_w + int(W * 0.05)
-    sparkle_w = 64 + int(W * 0.04)  # reserve space so name doesn't run under sparkle
+    text_x = card_x + card_side + int(W * 0.05)
+    sparkle_target_h = max(40, int(H * 0.13))
+    sparkle_w = sparkle_target_h + int(W * 0.04)
     text_avail_w = W - text_x - sparkle_w - int(W * 0.06)
     draw = ImageDraw.Draw(canvas)
-    tag_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), 22)
+    tag_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), max(14, int(H * 0.044)))
 
-    # Spaced caps: single space between letters (matches Cartographer's existing
-    # repo banner aesthetic). Auto-fit the font size so long names like
-    # "VIBE CARTOGRAPHER" don't overflow into the sparkle / right margin.
+    # Spaced caps: single space between letters. Auto-fit the font size so
+    # long names like "VIBE CARTOGRAPHER" don't overflow into the sparkle.
     spaced = " ".join(plugin["name"])
-    name_size = 56
-    while name_size > 22:
+    max_name = max(28, int(H * 0.112))
+    name_size = max_name
+    while name_size > 18:
         name_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), name_size)
         nb = draw.textbbox((0, 0), spaced, font=name_font)
         if (nb[2] - nb[0]) <= text_avail_w:
             break
         name_size -= 2
     name_bbox = draw.textbbox((0, 0), spaced, font=name_font)
-    name_w = name_bbox[2] - name_bbox[0]
     name_h = name_bbox[3] - name_bbox[1]
 
     tagline = plugin["tagline"]
     tag_bbox = draw.textbbox((0, 0), tagline, font=tag_font)
     tag_h = tag_bbox[3] - tag_bbox[1]
 
-    block_h = name_h + 18 + tag_h
+    gap = max(10, int(H * 0.036))
+    block_h = name_h + gap + tag_h
     block_top = (H - block_h) // 2
     draw.text((text_x, block_top), spaced, font=name_font, fill=plugin["primary"] + (255,))
-    draw.text((text_x, block_top + name_h + 18), tagline, font=tag_font, fill=DIM + (255,))
+    draw.text((text_x, block_top + name_h + gap), tagline, font=tag_font, fill=DIM + (255,))
 
     # 626 Labs lockup top-right (tiny)
-    sub_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), 13)
+    sub_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), max(11, int(H * 0.026)))
     lockup = "626 LABS  ·  for Claude Code"
     lk_bbox = draw.textbbox((0, 0), lockup, font=sub_font)
     lk_w = lk_bbox[2] - lk_bbox[0]
     draw.text((W - lk_w - int(W * 0.04), int(H * 0.08)), lockup, font=sub_font, fill=DIM2 + (255,))
 
     # Claude sparkle anchored bottom-right corner — small, attribution-only
-    spk = load_claude_sparkle(64)
+    spk = load_claude_sparkle(sparkle_target_h)
     if spk is not None:
         canvas.alpha_composite(spk, dest=(W - spk.width - int(W * 0.04), H - spk.height - int(H * 0.10)))
 
     canvas.convert("RGB").save(out_path, "PNG", optimize=True)
-    print(f"  banner  {plugin['id']:24s}  {out_path}")
+    print(f"  banner  {plugin['id']:24s}  {size[0]}x{size[1]}  {out_path}")
 
 
 def build_square(plugin, out_path):
@@ -437,7 +447,11 @@ def build_square(plugin, out_path):
 def main():
     print(f"Building plugin icons -> {OUT}")
     for p in PLUGINS:
-        build_banner(p, OUT / f"{p['id']}-banner-1500x500.png")
+        # 3:1 — Twitter classic / OG / generic README banner
+        build_banner(p, OUT / f"{p['id']}-banner-1500x500.png", size=(1500, 500))
+        # 2:1 — GitHub social preview (Settings → Social preview, 1280x640 "best display")
+        build_banner(p, OUT / f"{p['id']}-banner-1280x640.png", size=(1280, 640))
+        # Square — repo avatar, marketplace tile
         build_square(p, OUT / f"{p['id']}-square-1024.png")
 
 
