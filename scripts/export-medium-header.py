@@ -193,8 +193,10 @@ def main() -> None:
     icon = Image.open(icon_src).convert("RGBA")
     print("Building Medium publishing headers…")
     for size, name in [
-        ((1500, 500),  "medium-header-1500x500.png"),
-        ((3000, 1000), "medium-header-3000x1000.png"),
+        ((1500, 500),  "medium-header-1500x500.png"),         # 3:1
+        ((3000, 1000), "medium-header-3000x1000.png"),        # 3:1 @ 2x
+        ((1500, 600),  "medium-header-1500x600.png"),         # 5:2 — X Articles
+        ((3000, 1200), "medium-header-3000x1200.png"),        # 5:2 @ 2x
     ]:
         build_header(size, icon, OUT / name)
 
