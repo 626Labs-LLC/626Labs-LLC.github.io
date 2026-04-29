@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Operating tenets — 626 Labs</title>
+<meta name="description" content="A builder's doctrine for vibe-coded software. Five commitments that compound forward and recover backward — Legitimacy, Discipline, Quality, Trust, Coherence. The visual companion to the thesis." />
+<meta property="og:title" content="Operating tenets — 626 Labs" />
+<meta property="og:description" content="Five commitments that compound forward and recover backward. The visual companion to the From Legitimate to Sustainable thesis." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://626labs.dev/workflow.html" />
+<meta property="og:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="favicon-626.png" />
+
+<style>
+  /* ---------- Web fonts ---------- */
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
+  :root {
+    --brand-navy:        #192e44;
+    --brand-navy-deep:   #0f1f31;
+    --brand-cyan:        #17d4fa;
+    --brand-cyan-bright: #5ce6ff;
+    --brand-magenta:     #f22f89;
+
+    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
+
+    --ink-0:   #ffffff;
+    --ink-200: #c4cdda;
+    --ink-300: #8e9bad;
+    --ink-400: #5e6b7f;
+
+    --fg-1: var(--ink-0);
+    --fg-2: var(--ink-200);
+    --fg-3: var(--ink-300);
+    --fg-muted: var(--ink-400);
+
+    --bg-0: var(--brand-navy-deep);
+
+    --border-1: rgba(255,255,255,.08);
+    --border-2: rgba(255,255,255,.14);
+    --border-accent: rgba(23,212,250,.45);
+
+    --r-md: 10px;
+    --r-lg: 14px;
+    --r-xl: 20px;
+
+    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+    --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
+
+    --ease-out: cubic-bezier(.2,.7,.2,1);
+    --dur-fast: 120ms;
+    --dur-med: 220ms;
+  }
+
+  html, body { margin:0; padding:0; min-height:100vh; }
+  body{
+    background:
+      radial-gradient(1200px 700px at 18% -10%, rgba(23,212,250,.10), transparent 60%),
+      radial-gradient(1100px 700px at 92% 110%, rgba(242,47,137,.10), transparent 60%),
+      var(--bg-0);
+    color:var(--fg-1);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *{ box-sizing:border-box; }
+
+  /* ---------- Subtle circuit grid backdrop ---------- */
+  .grid-bg{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      linear-gradient(rgba(23,212,250,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23,212,250,.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    background: rgba(15,31,49,.65);
+    border-bottom: 1px solid var(--border-1);
+  }
+  .topnav-inner{
+    max-width: 1440px; margin: 0 auto; padding: 14px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em;
+  }
+  .brand{
+    display:inline-flex; align-items:center; gap:10px;
+    color: var(--fg-1); text-decoration:none;
+    text-transform: uppercase; font-weight:600; letter-spacing:.18em;
+  }
+  .brand .mark{
+    width:18px; height:18px; border-radius:50%;
+    background: var(--brand-gradient);
+    box-shadow: 0 0 12px rgba(23,212,250,.5);
+  }
+  .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; }
+  .topnav .links a{
+    color:var(--fg-3); text-decoration:none;
+    transition: color var(--dur-fast);
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .topnav .links a:hover{ color: var(--brand-cyan); }
+  .topnav .links a.cta{ color: var(--brand-cyan); }
+  .topnav .links a svg{ flex-shrink: 0; }
+
+  .shell{ position:relative; z-index:1; max-width:1440px; margin:0 auto; padding:48px 56px 96px; }
+
+  /* ---------- Header ---------- */
+  .hd{ display:flex; align-items:flex-start; justify-content:space-between; gap:48px; margin-bottom:56px; }
+  .hd-l{ max-width:760px; }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--brand-cyan); display:inline-flex; align-items:center; gap:10px; margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:""; width:24px; height:1px; background:linear-gradient(90deg, var(--brand-cyan), transparent);
+  }
+  h1.title{
+    font-family:var(--font-display); font-weight:700; font-size:clamp(40px,5vw,64px);
+    line-height:1.02; letter-spacing:-0.025em; margin:0 0 18px;
+  }
+  h1.title .gt{
+    background: var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .lead{
+    font-size:18px; line-height:1.55; color:var(--fg-2); max-width:680px; margin:0;
+  }
+  .lead em{ color:var(--fg-1); font-style:normal; font-weight:500; }
+
+  /* meta on right */
+  .hd-r{
+    display:flex; flex-direction:column; gap:10px; padding-top:6px;
+    font-family:var(--font-mono); font-size:11px; color:var(--fg-3);
+    text-align:right; min-width:220px;
+  }
+  .hd-r .row{ display:flex; justify-content:space-between; gap:12px; border-top:1px solid var(--border-1); padding-top:8px; }
+  .hd-r .row:first-child{ border-top:0; padding-top:0; }
+  .hd-r .row b{ color:var(--fg-1); font-weight:500; }
+
+  /* legend */
+  .legend{
+    display:flex; gap:24px; flex-wrap:wrap; margin:32px 0 24px;
+    font-family:var(--font-mono); font-size:11px; color:var(--fg-3);
+    letter-spacing:.04em;
+  }
+  .legend .item{ display:inline-flex; align-items:center; gap:8px; }
+  .lg-line{ width:28px; height:0; border-top:2px solid var(--brand-cyan); }
+  .lg-line.dash{ border-top:1.5px dashed var(--brand-magenta); }
+  .lg-dot{ width:8px; height:8px; border-radius:50%; background:var(--brand-cyan); box-shadow:0 0 10px var(--brand-cyan); }
+  .lg-ring{ width:10px; height:10px; border-radius:50%; border:1.5px solid var(--brand-magenta); }
+
+  /* ---------- Vertical timeline (narrow viewports) ---------- */
+  .vchain{ position:relative; padding: 8px 0 8px 0; }
+  .vchain::before{
+    content:""; position:absolute; left: 28px; top: 16px; bottom: 16px; width: 2px;
+    background: linear-gradient(180deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
+    box-shadow: 0 0 12px rgba(23,212,250,.4);
+    border-radius: 2px;
+  }
+  .vrow{
+    position:relative; display:flex; gap: 18px; align-items:flex-start;
+    padding: 14px 0;
+  }
+  .vrow + .vrow{ border-top: 1px dashed var(--border-1); }
+  .vdot{
+    position:relative; flex-shrink:0; width: 56px; height: 56px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .vdot::before{
+    content:""; position:absolute; inset:0; margin:auto;
+    width: 14px; height: 14px; border-radius:50%; background: var(--brand-cyan);
+    box-shadow: 0 0 12px var(--brand-cyan);
+    transition: background var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
+  }
+  .vdot::after{
+    content:""; position:absolute; inset:0; margin:auto;
+    width: 32px; height: 32px; border-radius:50%; border: 1px solid rgba(23,212,250,.45);
+    transition: all var(--dur-med) var(--ease-out);
+  }
+  .vrow.is-active .vdot::before{ background: var(--brand-magenta); box-shadow: 0 0 16px var(--brand-magenta); }
+  .vrow.is-active .vdot::after{ border-color: var(--brand-magenta); width: 40px; height: 40px; }
+  .vbody{
+    flex: 1; min-width: 0; cursor: pointer;
+    background: rgba(15,31,49,.72);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    border:1px solid var(--border-2);
+    border-radius: var(--r-md);
+    padding: 14px 16px;
+    transition: border-color var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
+  }
+  .vrow.is-active .vbody{
+    border-color: var(--brand-magenta);
+    box-shadow: 0 0 0 1px var(--brand-magenta), 0 0 28px rgba(242,47,137,.22);
+  }
+  .vrow:hover .vbody{ border-color: var(--brand-cyan); }
+  .vbody .badge{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--fg-3);
+    display:inline-flex; align-items:center; gap:6px; margin-bottom:6px;
+  }
+  .vbody .badge .num{ color:var(--brand-cyan); font-weight:600; }
+  .vbody h3{ font-family:var(--font-display); font-size:18px; font-weight:600; margin:0 0 4px; letter-spacing:-0.01em; }
+  .vbody .slogan{ font-family:var(--font-mono); font-size:11px; color:var(--brand-cyan); margin-bottom:8px; }
+  .vbody p.summary{ font-size:13px; line-height:1.5; color:var(--fg-2); margin:0; }
+
+  /* ---------- Chain stage (horizontal, wide viewports) ---------- */
+  .stage{
+    position:relative;
+    border:1px solid var(--border-1);
+    border-radius: var(--r-xl);
+    background:
+      radial-gradient(60% 80% at 30% 30%, rgba(23,212,250,.06) 0%, transparent 60%),
+      radial-gradient(60% 80% at 70% 70%, rgba(242,47,137,.05) 0%, transparent 60%),
+      rgba(255,255,255,.012);
+    box-shadow: var(--inner-stroke);
+    padding: 56px 40px 40px;
+    overflow:hidden;
+  }
+  .stage-hd{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--fg-3); margin-bottom:12px;
+  }
+  .stage-hd .l{ color:var(--fg-2); }
+  .stage-hd .r{ color:var(--brand-cyan); }
+
+  /* sphere watermark */
+  .sphere{
+    position:absolute; right:-120px; top:50%; transform:translateY(-50%);
+    width: 720px; height: 720px; pointer-events:none; opacity:.55;
+    filter: blur(.2px);
+  }
+
+  /* svg chain */
+  .chain-wrap{ position:relative; aspect-ratio: 1400 / 740; }
+  svg.chain{ display:block; width:100%; height:auto; overflow:visible; }
+
+  /* node card overlays */
+  .nodes{
+    position:absolute; inset:0; pointer-events:none;
+  }
+  .node{
+    position:absolute; transform:translate(-50%,-50%);
+    width: 168px; pointer-events:auto; cursor:pointer;
+    transition: opacity var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+  }
+  @media (min-width: 1100px){ .node{ width: 200px; } }
+  @media (min-width: 1300px){ .node{ width: 220px; } }
+  .node .badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--fg-3); margin-bottom:8px;
+  }
+  .node .num{
+    color: var(--brand-cyan); font-weight:600;
+  }
+  .node .card{
+    background: rgba(15,31,49,.85);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    border:1px solid var(--border-2);
+    border-radius: var(--r-lg);
+    padding: 16px 16px 14px;
+    box-shadow: var(--shadow-2), var(--inner-stroke);
+    transition: border-color var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+  }
+  .node h3{
+    font-family:var(--font-display); font-size:20px; font-weight:600;
+    margin:0 0 4px; letter-spacing:-0.01em; color:var(--fg-1);
+  }
+  .node .slogan{
+    font-family:var(--font-mono); font-size:11px; color:var(--brand-cyan);
+    letter-spacing:.02em; margin-bottom:10px;
+  }
+  .node p.summary{
+    font-size:12.5px; line-height:1.5; color:var(--fg-2); margin:0;
+  }
+
+  .node:hover .card,
+  .node.is-active .card{
+    border-color: var(--brand-cyan);
+    box-shadow: 0 0 0 1px var(--brand-cyan), 0 0 32px rgba(23,212,250,.28), var(--inner-stroke);
+  }
+  .node.is-active .card{
+    border-color: var(--brand-magenta);
+    box-shadow: 0 0 0 1px var(--brand-magenta), 0 0 36px rgba(242,47,137,.30), var(--inner-stroke);
+  }
+  .node.is-dim{ opacity:.35; }
+
+  /* svg styling */
+  .fwd-path{
+    fill:none; stroke: url(#fwdGrad); stroke-width:2;
+    filter: drop-shadow(0 0 6px rgba(23,212,250,.45));
+  }
+  .rec-path{
+    fill:none; stroke: var(--brand-magenta); stroke-width:1.25;
+    stroke-dasharray: 4 5;
+    opacity:.55;
+    transition: opacity var(--dur-med) var(--ease-out), stroke-width var(--dur-med) var(--ease-out);
+  }
+  .rec-path.dim{ opacity:.12; }
+  .rec-path.hot{ opacity:1; stroke-width:1.75; filter: drop-shadow(0 0 4px rgba(242,47,137,.55)); }
+
+  .node-dot{
+    fill: var(--brand-cyan); filter: drop-shadow(0 0 6px var(--brand-cyan));
+  }
+  .node-ring{
+    fill:none; stroke: rgba(23,212,250,.45); stroke-width:1;
+    transition: stroke var(--dur-med) var(--ease-out), stroke-width var(--dur-med) var(--ease-out);
+  }
+  .node-ring.active{ stroke: var(--brand-magenta); stroke-width:1.25; }
+
+  /* ---------- Detail / focus panel ---------- */
+  .detail{
+    margin-top: 32px;
+    border:1px solid var(--border-1);
+    border-radius: var(--r-lg);
+    background: rgba(15,31,49,.55);
+    padding: 24px 28px;
+    display:grid; grid-template-columns: 1.4fr 1fr; gap:32px;
+    min-height: 168px;
+    transition: border-color var(--dur-med) var(--ease-out);
+  }
+  .detail.is-active{ border-color: var(--border-accent); }
+  .detail .l .label{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--fg-3); margin-bottom:6px;
+  }
+  .detail .l h2{
+    font-family:var(--font-display); font-size:30px; font-weight:600;
+    margin:0 0 4px; letter-spacing:-0.015em;
+  }
+  .detail .l h2.idle{ color: var(--fg-2); }
+  .detail .l .slogan{
+    font-family:var(--font-mono); font-size:12px; color:var(--brand-cyan);
+    margin-bottom:14px;
+  }
+  .detail .l p{ font-size:14.5px; line-height:1.55; color:var(--fg-2); margin:0; max-width:60ch; }
+  .detail .r{ border-left:1px solid var(--border-1); padding-left:24px; }
+  .detail .r .label{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--fg-3); margin-bottom:10px;
+  }
+  .recovery-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .recovery-list li{
+    display:flex; gap:10px; align-items:flex-start;
+    font-size:13px; color:var(--fg-2); line-height:1.45;
+  }
+  .recovery-list .arrow{
+    color:var(--brand-magenta); flex-shrink:0; padding-top:2px;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+  .recovery-list .arrow.cyan{ color: var(--brand-cyan); }
+  .recovery-list .arrow svg{ display:block; }
+  .recovery-list b{ color:var(--fg-1); font-weight:500; }
+
+  /* ---------- Apparatus section ---------- */
+  .section-hd{
+    display:flex; align-items:baseline; justify-content:space-between; gap:32px;
+    margin: 88px 0 24px;
+  }
+  .section-hd .l h2{
+    font-family:var(--font-display); font-size:32px; font-weight:600;
+    letter-spacing:-0.015em; margin:0 0 6px;
+  }
+  .section-hd .l p{ font-size:14.5px; color:var(--fg-3); margin:0; max-width:60ch; }
+  .section-hd .r{
+    font-family:var(--font-mono); font-size:11px; color:var(--brand-cyan); letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+
+  .apparatus{
+    border:1px solid var(--border-1);
+    border-radius: var(--r-xl);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.012), transparent 60%),
+      rgba(15,31,49,.5);
+    padding: 32px;
+  }
+  .marketplace{
+    display:flex; align-items:center; justify-content:space-between;
+    border:1px dashed var(--border-2);
+    border-radius: var(--r-lg);
+    padding: 12px 18px;
+    margin-bottom: 18px;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--fg-3);
+  }
+  .marketplace b{ color:var(--brand-cyan); font-weight:500; letter-spacing:.12em; }
+  .marketplace .arrows{
+    display:inline-flex; align-items:center; gap:8px; color:var(--brand-magenta);
+  }
+  .marketplace .arrows svg{ display:block; }
+
+  .pillars{ display:grid; grid-template-columns: repeat(5, 1fr); gap:12px; margin-bottom:18px; }
+  .pillar{
+    border:1px solid var(--border-1);
+    border-radius: var(--r-md);
+    padding: 16px 14px;
+    background: rgba(255,255,255,.02);
+    transition: border-color var(--dur-med) var(--ease-out), background var(--dur-med) var(--ease-out);
+  }
+  .pillar:hover{ border-color: var(--border-accent); background: rgba(23,212,250,.04); }
+  .pillar .key{
+    font-family:var(--font-mono); font-size:10px; color:var(--brand-cyan);
+    letter-spacing:.1em; margin-bottom:8px;
+  }
+  .pillar h4{
+    font-family:var(--font-display); font-size:15px; margin:0 0 4px; font-weight:600;
+  }
+  .pillar p{ font-size:12px; color:var(--fg-3); line-height:1.4; margin:0; }
+
+  .ducts{
+    display:grid; grid-template-columns: 24px 1fr 24px;
+    align-items:center; gap: 0;
+    margin-bottom: 18px; height: 24px;
+  }
+  .ducts .v{
+    width:1px; height:100%; background:linear-gradient(180deg, var(--brand-cyan), transparent);
+    margin: 0 auto;
+  }
+  .ducts .h{
+    height:1px; width:100%;
+    background: repeating-linear-gradient(90deg, rgba(23,212,250,.4) 0 3px, transparent 3px 8px);
+  }
+
+  .foundations{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  .foundation{
+    border:1px solid var(--border-2);
+    border-radius: var(--r-md);
+    padding: 18px 18px;
+    background:
+      radial-gradient(80% 100% at 0% 0%, rgba(242,47,137,.08), transparent 60%),
+      rgba(255,255,255,.02);
+  }
+  .foundation .key{
+    font-family:var(--font-mono); font-size:10px; color:var(--brand-magenta);
+    letter-spacing:.1em; margin-bottom:8px;
+  }
+  .foundation h4{ font-family:var(--font-display); font-size:18px; margin:0 0 4px; }
+  .foundation p{ font-size:12.5px; color:var(--fg-3); line-height:1.45; margin:0; }
+
+  /* ---------- Footer ---------- */
+  .footnote{
+    margin-top: 56px; padding-top: 24px;
+    border-top:1px solid var(--border-1);
+    display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap;
+    font-family:var(--font-mono); font-size:11px; color:var(--fg-3);
+    letter-spacing:.05em;
+  }
+  .footnote .axiom{ color:var(--fg-2); }
+  .footnote .axiom em{ color:var(--brand-cyan); font-style:normal; }
+  .footnote a{ color:var(--brand-cyan); text-decoration:none; }
+
+  /* responsive — collapse to vertical */
+  @media (max-width: 1100px){
+    .pillars{ grid-template-columns: repeat(2, 1fr); }
+    .detail{ grid-template-columns: 1fr; }
+    .detail .r{ border-left:0; padding-left:0; border-top:1px solid var(--border-1); padding-top:18px; }
+    .chain-wrap{ display:none; }
+    .vchain{ display:block; }
+    .shell{ padding: 32px 32px 64px; }
+  }
+  @media (min-width: 1101px){
+    .vchain{ display:none; }
+  }
+  @media (max-width: 720px){
+    .shell{ padding: 32px 20px 64px; }
+    .topnav-inner{ padding: 12px 20px; }
+    .topnav .links{ gap: 14px; font-size: 10px; }
+    .hd{ flex-direction:column; gap:20px; }
+    .hd-r{ text-align:left; }
+    .pillars{ grid-template-columns: 1fr; }
+    .foundations{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="brand"><span class="mark"></span> 626 Labs</a>
+    <div class="links">
+      <a href="thesis.html" class="cta">
+        Read the thesis
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <header class="hd">
+    <div class="hd-l">
+      <div class="eyebrow">626 Labs &middot; Operating doctrine &middot; v1</div>
+      <h1 class="title">A builder's doctrine for <span class="gt">vibe-coded software.</span></h1>
+      <p class="lead">
+        Five commitments that compound forward and recover backward. <em>Legitimate</em> AI-built artifacts work for more than one user, scale without ad-hoc maintenance, and survive the second builder. The doctrine is the discipline of going in.
+      </p>
+    </div>
+    <aside class="hd-r">
+      <div class="row"><span>Audience</span><b>Builders</b></div>
+      <div class="row"><span>Reading surface</span><b>Diagram &middot; interactive</b></div>
+      <div class="row"><span>Apparatus</span><b>2 + 5 + 1</b></div>
+      <div class="row"><span>Last revised</span><b>Apr 2026</b></div>
+    </aside>
+  </header>
+
+  <div class="legend">
+    <span class="item"><span class="lg-line"></span>Forward chain &middot; execution</span>
+    <span class="item"><span class="lg-line dash"></span>Recovery arcs &middot; network</span>
+    <span class="item"><span class="lg-dot"></span>Tenet node</span>
+    <span class="item"><span class="lg-ring"></span>Active focus</span>
+  </div>
+
+  <div class="stage">
+    <div class="stage-hd">
+      <span class="l">Chain in execution &middot; Network in recovery</span>
+      <span class="r">5 tenets</span>
+    </div>
+
+    <!-- Dyson sphere watermark (stylized geometric, animated core) -->
+    <svg class="sphere" viewBox="-200 -200 400 400" aria-hidden="true">
+      <defs>
+        <radialGradient id="sphereCore" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stop-color="rgba(23,212,250,0.55)" />
+          <stop offset="55%" stop-color="rgba(23,212,250,0.07)" />
+          <stop offset="100%" stop-color="rgba(23,212,250,0)" />
+        </radialGradient>
+        <radialGradient id="sphereGlow" cx="60%" cy="40%" r="60%">
+          <stop offset="0%"  stop-color="rgba(242,47,137,0.18)" />
+          <stop offset="60%" stop-color="rgba(242,47,137,0)" />
+        </radialGradient>
+      </defs>
+      <circle cx="0" cy="0" r="180" fill="url(#sphereGlow)" />
+      <circle cx="0" cy="0" r="60"  fill="url(#sphereCore)">
+        <animate attributeName="r" values="58;72;58" dur="4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.85;1;0.85" dur="4s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="0" cy="0" r="170" fill="none" stroke="rgba(23,212,250,0.18)" stroke-width="1" />
+      <!-- longitudes -->
+      <ellipse cx="0" cy="0" rx="170" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="164.45" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="147.22" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="120.21" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="85" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="44.01" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="2" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="44.01" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="85" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="120.21" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="147.22" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="164.45" ry="170" fill="none" stroke="rgba(23,212,250,0.10)" stroke-width="0.7"/>
+      <!-- latitudes -->
+      <ellipse cx="0" cy="-108.8" rx="130.79" ry="23.54" fill="none" stroke="rgba(242,47,137,0.14)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="-47.6" rx="163.31" ry="29.4" fill="none" stroke="rgba(242,47,137,0.14)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="0" rx="170" ry="30.6" fill="none" stroke="rgba(242,47,137,0.14)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="47.6" rx="163.31" ry="29.4" fill="none" stroke="rgba(242,47,137,0.14)" stroke-width="0.7"/>
+      <ellipse cx="0" cy="108.8" rx="130.79" ry="23.54" fill="none" stroke="rgba(242,47,137,0.14)" stroke-width="0.7"/>
+      <!-- spokes -->
+      <g id="sphere-spokes"></g>
+    </svg>
+
+    <!-- Vertical timeline (narrow viewports) — static markup, JS toggles is-active -->
+    <div class="vchain">
+      <div class="vrow" data-tenet="legitimacy">
+        <div class="vdot"></div>
+        <div class="vbody">
+          <div class="badge"><span class="num">01</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4 L4 4 L4 20 L8 20"/><path d="M16 4 L20 4 L20 20 L16 20"/><line x1="9" y1="12" x2="15" y2="12"/></svg><span style="margin-left:4px">Tenet</span></div>
+          <h3>Legitimacy</h3>
+          <div class="slogan">Argument before code.</div>
+          <p class="summary">We only grade what we can ground in objective signal. The boundary between what's measured and what's judged is documented in the work itself, not assumed.</p>
+        </div>
+      </div>
+      <div class="vrow" data-tenet="discipline">
+        <div class="vdot"></div>
+        <div class="vbody">
+          <div class="badge"><span class="num">02</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17"/><line x1="9" y1="3.5" x2="9" y2="20.5"/><line x1="15" y1="3.5" x2="15" y2="20.5"/><line x1="3.5" y1="12" x2="20.5" y2="12"/></svg><span style="margin-left:4px">Tenet</span></div>
+          <h3>Discipline</h3>
+          <div class="slogan">Mapped territory before journey.</div>
+          <p class="summary">The scaffold is the work. Every surface produces builder-visible structure &mdash; checklist, claims map, decisions log &mdash; that the builder can read while the build is happening.</p>
+        </div>
+      </div>
+      <div class="vrow" data-tenet="quality">
+        <div class="vdot"></div>
+        <div class="vbody">
+          <div class="badge"><span class="num">03</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="20" y2="20"/><rect x="5.5" y="14" width="2.5" height="6"/><rect x="9.5" y="9" width="2.5" height="11"/><rect x="13.5" y="6" width="2.5" height="14"/><rect x="17.5" y="11" width="2.5" height="9"/></svg><span style="margin-left:4px">Tenet</span></div>
+          <h3>Quality</h3>
+          <div class="slogan">Compute correctly. Prove it computed correctly.</div>
+          <p class="summary">We measure honestly or we don't measure. Pass-rate as distribution, not headline. Coverage measured, not declared. Cost as part of the reliability number, not a footnote.</p>
+        </div>
+      </div>
+      <div class="vrow" data-tenet="trust">
+        <div class="vdot"></div>
+        <div class="vbody">
+          <div class="badge"><span class="num">04</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12 C 6 6, 18 6, 21.5 12 C 18 18, 6 18, 2.5 12 Z"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none"/></svg><span style="margin-left:4px">Tenet</span></div>
+          <h3>Trust</h3>
+          <div class="slogan">Watch the build, not just the artifact.</div>
+          <p class="summary">The audit surface is built into the build, not bolted onto the result. Sandbagging has nowhere to hide by design.</p>
+        </div>
+      </div>
+      <div class="vrow" data-tenet="coherence">
+        <div class="vdot"></div>
+        <div class="vbody">
+          <div class="badge"><span class="num">05</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9 L17 9"/><path d="M14 5 L18 9 L14 13"/><path d="M21 15 L7 15"/><path d="M10 11 L6 15 L10 19"/></svg><span style="margin-left:4px">Tenet</span></div>
+          <h3>Coherence</h3>
+          <div class="slogan">Engineered, not assumed.</div>
+          <p class="summary">Coordination is engineered. Document the seams &mdash; ask-vs-act calibration, deferrals, handoffs, where the seams live. Emergent coherence isn't coherence; it's luck.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Horizontal chain (wide viewports) — pre-computed positions baked in -->
+    <div class="chain-wrap">
+      <svg class="chain" viewBox="0 -180 1400 740" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="fwdGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"  stop-color="#17d4fa" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#f22f89" stop-opacity="0.95"/>
+          </linearGradient>
+          <marker id="arrowFwd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#f22f89"/>
+          </marker>
+          <marker id="arrowRec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#f22f89" opacity="0.85"/>
+          </marker>
+        </defs>
+
+        <!-- Recovery arcs (dashed, magenta) — rendered behind the forward chain -->
+        <g class="rec-arcs">
+          <path class="rec-path" data-from="discipline" data-to="legitimacy" d="M 425 194.96 Q 287.5 -22.54 150 159.6" marker-end="url(#arrowRec)"/>
+          <path class="rec-path" data-from="quality" data-to="discipline"    d="M 700 209.6 Q 562.5 65.46 425 194.96" marker-end="url(#arrowRec)"/>
+          <path class="rec-path" data-from="quality" data-to="legitimacy"    d="M 700 209.6 Q 425 -19.4 150 159.6" marker-end="url(#arrowRec)"/>
+          <path class="rec-path" data-from="trust" data-to="discipline"      d="M 975 194.96 Q 700 16.96 425 194.96" marker-end="url(#arrowRec)"/>
+          <path class="rec-path" data-from="trust" data-to="quality"         d="M 975 194.96 Q 837.5 65.46 700 209.6" marker-end="url(#arrowRec)"/>
+          <path class="rec-path" data-from="coherence" data-to="trust"       d="M 1250 159.6 Q 1112.5 65.46 975 194.96" marker-end="url(#arrowRec)"/>
+          <path class="rec-path" data-from="coherence" data-to="discipline"  d="M 1250 159.6 Q 837.5 -54.54 425 194.96" marker-end="url(#arrowRec)"/>
+          <path class="rec-path" data-from="coherence" data-to="legitimacy"  d="M 1250 159.6 Q 700 -118.4 150 159.6" marker-end="url(#arrowRec)"/>
+        </g>
+
+        <!-- Forward chain (cyan-to-magenta gradient, with arrowhead) -->
+        <path id="fwd-path" class="fwd-path" marker-end="url(#arrowFwd)"
+              d="M 150 159.6 C 287.5 159.6, 287.5 194.96, 425 194.96 C 562.5 194.96, 562.5 209.6, 700 209.6 C 837.5 209.6, 837.5 194.96, 975 194.96 C 1112.5 194.96, 1112.5 159.6, 1250 159.6"/>
+
+        <!-- Node anchor points -->
+        <g data-tenet="legitimacy">
+          <circle class="node-ring" cx="150" cy="159.6" r="14"/>
+          <circle class="node-dot"  cx="150" cy="159.6" r="4.5"/>
+        </g>
+        <g data-tenet="discipline">
+          <circle class="node-ring" cx="425" cy="194.96" r="14"/>
+          <circle class="node-dot"  cx="425" cy="194.96" r="4.5"/>
+        </g>
+        <g data-tenet="quality">
+          <circle class="node-ring" cx="700" cy="209.6" r="14"/>
+          <circle class="node-dot"  cx="700" cy="209.6" r="4.5"/>
+        </g>
+        <g data-tenet="trust">
+          <circle class="node-ring" cx="975" cy="194.96" r="14"/>
+          <circle class="node-dot"  cx="975" cy="194.96" r="4.5"/>
+        </g>
+        <g data-tenet="coherence">
+          <circle class="node-ring" cx="1250" cy="159.6" r="14"/>
+          <circle class="node-dot"  cx="1250" cy="159.6" r="4.5"/>
+        </g>
+      </svg>
+
+      <!-- Node card overlays (positioned by % over the SVG) -->
+      <div class="nodes">
+        <div class="node" data-tenet="legitimacy" style="left:10.71%; top:14.27%">
+          <div class="badge"><span class="num">01</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4 L4 4 L4 20 L8 20"/><path d="M16 4 L20 4 L20 20 L16 20"/><line x1="9" y1="12" x2="15" y2="12"/></svg></div>
+          <div class="card">
+            <h3>Legitimacy</h3>
+            <div class="slogan">Argument before code.</div>
+            <p class="summary">We only grade what we can ground in objective signal. The boundary between what's measured and what's judged is documented in the work itself, not assumed.</p>
+          </div>
+        </div>
+        <div class="node" data-tenet="discipline" style="left:30.36%; top:76.35%">
+          <div class="badge"><span class="num">02</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17"/><line x1="9" y1="3.5" x2="9" y2="20.5"/><line x1="15" y1="3.5" x2="15" y2="20.5"/><line x1="3.5" y1="12" x2="20.5" y2="12"/></svg></div>
+          <div class="card">
+            <h3>Discipline</h3>
+            <div class="slogan">Mapped territory before journey.</div>
+            <p class="summary">The scaffold is the work. Every surface produces builder-visible structure &mdash; checklist, claims map, decisions log &mdash; that the builder can read while the build is happening.</p>
+          </div>
+        </div>
+        <div class="node" data-tenet="quality" style="left:50%; top:18.32%">
+          <div class="badge"><span class="num">03</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="20" y2="20"/><rect x="5.5" y="14" width="2.5" height="6"/><rect x="9.5" y="9" width="2.5" height="11"/><rect x="13.5" y="6" width="2.5" height="14"/><rect x="17.5" y="11" width="2.5" height="9"/></svg></div>
+          <div class="card">
+            <h3>Quality</h3>
+            <div class="slogan">Compute correctly. Prove it computed correctly.</div>
+            <p class="summary">We measure honestly or we don't measure. Pass-rate as distribution, not headline. Coverage measured, not declared. Cost as part of the reliability number, not a footnote.</p>
+          </div>
+        </div>
+        <div class="node" data-tenet="trust" style="left:69.64%; top:76.35%">
+          <div class="badge"><span class="num">04</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12 C 6 6, 18 6, 21.5 12 C 18 18, 6 18, 2.5 12 Z"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none"/></svg></div>
+          <div class="card">
+            <h3>Trust</h3>
+            <div class="slogan">Watch the build, not just the artifact.</div>
+            <p class="summary">The audit surface is built into the build, not bolted onto the result. Sandbagging has nowhere to hide by design.</p>
+          </div>
+        </div>
+        <div class="node" data-tenet="coherence" style="left:89.29%; top:14.27%">
+          <div class="badge"><span class="num">05</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9 L17 9"/><path d="M14 5 L18 9 L14 13"/><path d="M21 15 L7 15"/><path d="M10 11 L6 15 L10 19"/></svg></div>
+          <div class="card">
+            <h3>Coherence</h3>
+            <div class="slogan">Engineered, not assumed.</div>
+            <p class="summary">Coordination is engineered. Document the seams &mdash; ask-vs-act calibration, deferrals, handoffs, where the seams live. Emergent coherence isn't coherence; it's luck.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail / focus panel — populated by JS via safe DOM methods -->
+  <div class="detail" id="detail"></div>
+
+  <div class="section-hd">
+    <div class="l">
+      <h2>The apparatus</h2>
+      <p>The 626 plugin family that produces work under this doctrine &mdash; two foundations beneath five process pillars, distributed through one shared marketplace.</p>
+    </div>
+    <div class="r">vibe-plugins &middot; 2 + 5 + 1</div>
+  </div>
+
+  <div class="apparatus">
+    <div class="marketplace">
+      <span><b>vibe-plugins</b> &middot; shared marketplace</span>
+      <span class="arrows">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </span>
+      <span>single registration</span>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar"><div class="key">/cartographer</div><h4>Cartographer</h4><p>Maps the spec before the build.</p></div>
+      <div class="pillar"><div class="key">/thesis</div><h4>Thesis</h4><p>Argument scaffold for any claim.</p></div>
+      <div class="pillar"><div class="key">/doc</div><h4>Doc</h4><p>Round out documentation an agent read first.</p></div>
+      <div class="pillar"><div class="key">/test</div><h4>Test</h4><p>Coverage measured, not declared.</p></div>
+      <div class="pillar"><div class="key">/sec</div><h4>Sec</h4><p>Audit surface, built in.</p></div>
+    </div>
+
+    <div class="ducts">
+      <div class="v"></div>
+      <div class="h"></div>
+      <div class="v"></div>
+    </div>
+
+    <div class="foundations">
+      <div class="foundation">
+        <div class="key">FOUNDATION &middot; KNOWLEDGE</div>
+        <h4>Thesis Engine</h4>
+        <p>Claims, evidence, and the boundary between them &mdash; the substrate every pillar reads from.</p>
+      </div>
+      <div class="foundation">
+        <div class="key">FOUNDATION &middot; STRUCTURE</div>
+        <h4>vibe-keystone</h4>
+        <p>The structural CLAUDE.md every plugin writes against. Shared scaffold, shared seams.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <span class="axiom">Chain in execution. <em>Network in recovery.</em> Both load-bearing.</span>
+    <span>626 Labs LLC &middot; Imagine Something Else. &middot; <a href="thesis.html">Thesis</a> &middot; <a href="index.html">Lab</a> &middot; <a href="privacy.html">Privacy</a></span>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ---------- Constants ----------
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  // Tenet copy (constants — no user input ever lands here)
+  const TENETS = {
+    legitimacy: { num:'01', name:'Legitimacy', slogan:'Argument before code.',
+      summary:"We only grade what we can ground in objective signal. The boundary between what's measured and what's judged is documented in the work itself, not assumed." },
+    discipline: { num:'02', name:'Discipline', slogan:'Mapped territory before journey.',
+      summary:"The scaffold is the work. Every surface produces builder-visible structure — checklist, claims map, decisions log — that the builder can read while the build is happening." },
+    quality:    { num:'03', name:'Quality',    slogan:'Compute correctly. Prove it computed correctly.',
+      summary:"We measure honestly or we don't measure. Pass-rate as distribution, not headline. Coverage measured, not declared. Cost as part of the reliability number, not a footnote." },
+    trust:      { num:'04', name:'Trust',      slogan:'Watch the build, not just the artifact.',
+      summary:'The audit surface is built into the build, not bolted onto the result. Sandbagging has nowhere to hide by design.' },
+    coherence:  { num:'05', name:'Coherence',  slogan:'Engineered, not assumed.',
+      summary:"Coordination is engineered. Document the seams — ask-vs-act calibration, deferrals, handoffs, where the seams live. Emergent coherence isn't coherence; it's luck." },
+  };
+
+  const RECOVERY = [
+    { from:'discipline', to:'legitimacy', why:"Scaffold gaps usually mean the grounding question wasn't asked." },
+    { from:'quality',    to:'discipline', why:'Bad measurements come from missing structure to measure against.' },
+    { from:'quality',    to:'legitimacy', why:"If the metric isn't grounded, the score is a guess in a suit." },
+    { from:'trust',      to:'discipline', why:"An untrustworthy build is one whose scaffold isn't visible." },
+    { from:'trust',      to:'quality',    why:'Trust is quality made auditable; if quality is opaque, trust collapses.' },
+    { from:'coherence',  to:'trust',      why:'Handoffs only hold if both sides can audit what crossed the seam.' },
+    { from:'coherence',  to:'discipline', why:'The seam must be drawn on the map before it can be coordinated.' },
+    { from:'coherence',  to:'legitimacy', why:'The second user inherits whatever ground the first user established.' },
+  ];
+
+  // ---------- Safe DOM helpers ----------
+  function el(tag, opts){
+    const e = document.createElement(tag);
+    if (opts){
+      if (opts.cls) e.className = opts.cls;
+      if (opts.text != null) e.textContent = opts.text;
+      if (opts.style) e.setAttribute('style', opts.style);
+    }
+    return e;
+  }
+  function svgIcon(pathDataList, size){
+    size = size || 13;
+    const s = document.createElementNS(SVG_NS, 'svg');
+    s.setAttribute('width', size); s.setAttribute('height', size);
+    s.setAttribute('viewBox', '0 0 24 24');
+    s.setAttribute('fill', 'none'); s.setAttribute('stroke', 'currentColor');
+    s.setAttribute('stroke-width', '1.75');
+    s.setAttribute('stroke-linecap', 'round'); s.setAttribute('stroke-linejoin', 'round');
+    s.setAttribute('aria-hidden', 'true');
+    pathDataList.forEach((d) => {
+      const p = document.createElementNS(SVG_NS, 'path');
+      p.setAttribute('d', d);
+      s.appendChild(p);
+    });
+    return s;
+  }
+  // Lucide-derived icons (path data only — used as constants, no interpolation)
+  const ICON_ARROW_RIGHT = ['M5 12h14','m12 5 7 7-7 7'];
+  const ICON_ARROW_LEFT  = ['M19 12H5','m12 19-7-7 7-7'];
+  const ICON_ROTATE_CCW  = ['M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8','M3 3v5h5'];
+
+  // ---------- Sphere spokes (build via DOM, not innerHTML) ----------
+  function buildSphereSpokes(){
+    const g = document.getElementById('sphere-spokes');
+    if (!g) return;
+    for (let i = 0; i < 36; i++){
+      const a = (i / 36) * Math.PI * 2;
+      const r1 = 168, r2 = 172;
+      const line = document.createElementNS(SVG_NS, 'line');
+      line.setAttribute('x1', (Math.cos(a) * r1).toFixed(2));
+      line.setAttribute('y1', (Math.sin(a) * r1).toFixed(2));
+      line.setAttribute('x2', (Math.cos(a) * r2).toFixed(2));
+      line.setAttribute('y2', (Math.sin(a) * r2).toFixed(2));
+      line.setAttribute('stroke', 'rgba(23,212,250,0.4)');
+      line.setAttribute('stroke-width', '1.2');
+      g.appendChild(line);
+    }
+  }
+
+  // ---------- Active state ----------
+  let active = null;
+
+  function setActive(id){
+    active = id;
+    // Toggle .is-active / .is-dim on horizontal node overlays
+    document.querySelectorAll('.nodes .node').forEach((n) => {
+      const tid = n.dataset.tenet;
+      n.classList.toggle('is-active', tid === active);
+      n.classList.toggle('is-dim', !!active && tid !== active);
+    });
+    // Toggle .is-active on vertical timeline rows
+    document.querySelectorAll('.vchain .vrow').forEach((r) => {
+      r.classList.toggle('is-active', r.dataset.tenet === active);
+    });
+    // Toggle .active on SVG node-rings (and keep r=14 — animations off for stability)
+    document.querySelectorAll('.chain g[data-tenet] .node-ring').forEach((c) => {
+      const tid = c.parentElement.dataset.tenet;
+      c.classList.toggle('active', tid === active);
+      c.setAttribute('r', tid === active ? 18 : 14);
+    });
+    // Recovery arc dim/hot logic
+    document.querySelectorAll('.rec-path').forEach((p) => {
+      const f = p.dataset.from, t = p.dataset.to;
+      const hot = active && (f === active || t === active);
+      p.classList.toggle('hot', !!hot);
+      p.classList.toggle('dim', !!active && !hot);
+    });
+    renderDetail();
+  }
+
+  // ---------- Detail panel (DOM-only, no innerHTML) ----------
+  function renderDetail(){
+    const root = document.getElementById('detail');
+    while (root.firstChild) root.removeChild(root.firstChild);
+    if (!active){
+      root.classList.remove('is-active');
+      const l = el('div', { cls:'l' });
+      l.appendChild(el('div', { cls:'label', text:'Idle · click any tenet to focus' }));
+      const h = el('h2', { cls:'idle', text:'The doctrine is the discipline of going in.' });
+      l.appendChild(h);
+      l.appendChild(el('div', { cls:'slogan', text:'Vibe coding is dreaming a dyson sphere — the sphere is real, the inner surfaces are theoretical until someone goes in and looks.' }));
+      l.appendChild(el('p', { text:"The five tenets compound directionally — each tenet's output is the operating surface for the next — and recover bidirectionally — a failure in any later tenet routes back to a question an earlier one can answer." }));
+      root.appendChild(l);
+
+      const r = el('div', { cls:'r' });
+      r.appendChild(el('div', { cls:'label', text:'Reading guide' }));
+      const ul = el('ul', { cls:'recovery-list' });
+
+      const li1 = el('li');
+      const a1 = el('span', { cls:'arrow' }); a1.appendChild(svgIcon(ICON_ARROW_RIGHT, 13)); li1.appendChild(a1);
+      const t1 = el('span'); t1.appendChild(document.createTextNode('Forward chain: '));
+      const b1a = el('b', { text:'Legitimacy' }); t1.appendChild(b1a); t1.appendChild(document.createTextNode(' clears ground, '));
+      const b1b = el('b', { text:'Discipline' }); t1.appendChild(b1b); t1.appendChild(document.createTextNode(' maps it, '));
+      const b1c = el('b', { text:'Quality' }); t1.appendChild(b1c); t1.appendChild(document.createTextNode(' measures it, '));
+      const b1d = el('b', { text:'Trust' }); t1.appendChild(b1d); t1.appendChild(document.createTextNode(' traces it, '));
+      const b1e = el('b', { text:'Coherence' }); t1.appendChild(b1e); t1.appendChild(document.createTextNode(' holds it.'));
+      li1.appendChild(t1); ul.appendChild(li1);
+
+      const li2 = el('li');
+      const a2 = el('span', { cls:'arrow' }); a2.appendChild(svgIcon(ICON_ROTATE_CCW, 13)); li2.appendChild(a2);
+      li2.appendChild(el('span', { text:'Recovery arcs: dashed lines from any tenet back to the earlier one that answers its failure.' }));
+      ul.appendChild(li2);
+
+      const li3 = el('li');
+      const a3 = el('span', { cls:'arrow cyan' }); a3.appendChild(svgIcon(ICON_ARROW_RIGHT, 11)); li3.appendChild(a3);
+      li3.appendChild(el('span', { text:'Click a node to isolate its recovery routes.' }));
+      ul.appendChild(li3);
+
+      r.appendChild(ul);
+      root.appendChild(r);
+      return;
+    }
+
+    const tenet = TENETS[active];
+    const outgoing = RECOVERY.filter((r) => r.from === active);
+    const incoming = RECOVERY.filter((r) => r.to === active);
+    root.classList.add('is-active');
+
+    const l = el('div', { cls:'l' });
+    l.appendChild(el('div', { cls:'label', text:'Tenet ' + tenet.num + ' · Active' }));
+    l.appendChild(el('h2', { text:tenet.name }));
+    l.appendChild(el('div', { cls:'slogan', text:tenet.slogan }));
+    l.appendChild(el('p', { text:tenet.summary }));
+    root.appendChild(l);
+
+    const r = el('div', { cls:'r' });
+    if (outgoing.length){
+      r.appendChild(el('div', { cls:'label', text:'When ' + tenet.name.toLowerCase() + ' fails — route back to' }));
+      const ul = el('ul', { cls:'recovery-list', style:'margin-bottom:14px' });
+      outgoing.forEach((rt) => {
+        const li = el('li');
+        const a = el('span', { cls:'arrow' }); a.appendChild(svgIcon(ICON_ROTATE_CCW, 13)); li.appendChild(a);
+        const span = el('span');
+        const b = el('b', { text:TENETS[rt.to].name });
+        span.appendChild(b);
+        span.appendChild(document.createTextNode(' — ' + rt.why));
+        li.appendChild(span);
+        ul.appendChild(li);
+      });
+      r.appendChild(ul);
+    }
+    if (incoming.length){
+      r.appendChild(el('div', { cls:'label', text:'Failures elsewhere that ' + tenet.name.toLowerCase() + ' answers' }));
+      const ul = el('ul', { cls:'recovery-list' });
+      incoming.forEach((rt) => {
+        const li = el('li');
+        const a = el('span', { cls:'arrow' }); a.appendChild(svgIcon(ICON_ARROW_LEFT, 13)); li.appendChild(a);
+        const span = el('span');
+        span.appendChild(document.createTextNode('From '));
+        const b = el('b', { text:TENETS[rt.from].name });
+        span.appendChild(b);
+        li.appendChild(span);
+        ul.appendChild(li);
+      });
+      r.appendChild(ul);
+    }
+    if (!outgoing.length && !incoming.length){
+      r.appendChild(el('p', { text:'This tenet is the entry point — every recovery routes back to it.', style:'font-size:13px; color:var(--fg-3)' }));
+    }
+    root.appendChild(r);
+  }
+
+  // ---------- Init ----------
+  buildSphereSpokes();
+  renderDetail();
+
+  // Click handlers — node overlays + vertical timeline rows
+  document.querySelectorAll('.nodes .node, .vchain .vrow').forEach((el) => {
+    el.addEventListener('click', () => {
+      const id = el.dataset.tenet;
+      setActive(id === active ? null : id);
+    });
+  });
+
+  // Esc clears focus
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && active) setActive(null); });
+})();
+</script>
+
+</body>
+</html>
