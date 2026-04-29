@@ -151,6 +151,7 @@ function AdminApp({ token, login, onSignOut }) {
         {nav === "sections" && <SectionsView sections={content.sections} onChange={s => setContent(c => ({...c, sections: s}))}/>}
         {nav === "stories" && <StoriesView token={token} onToast={showToast}/>}
         {nav === "ops" && <OpsView token={token}/>}
+        {nav === "analytics" && <AnalyticsView token={token}/>}
       </div>
 
       <RightRail content={content} liveStats={liveStats} nav={nav} selectedId={selProduct} dirty={dirty} original={original} onPreview={()=>setPreview(true)} onSave={save}/>
@@ -262,6 +263,7 @@ function Sidebar({ nav, onNav, content, token }) {
     { id: "sections", label: "Sections", ic: Ic.eye },
     { id: "stories", label: "Stories", ic: Ic.edit },
     { id: "ops", label: "Ops", ic: Ic.activity },
+    { id: "analytics", label: "Analytics", ic: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="8"/><line x1="18" y1="20" x2="18" y2="11"/><line x1="3" y1="20" x2="21" y2="20"/></svg> },
   ];
   return (
     <div style={{
@@ -1732,6 +1734,496 @@ function Toggle({ on, onChange }) {
 }
 
 // ─────────────────────────────────────────────────────────────
+// Analytics — site visits (GoatCounter) + plugin-repo traffic (CSV)
+// ─────────────────────────────────────────────────────────────
+const GC_BASE = "https://626labs.goatcounter.com/api/v0";
+const GC_TOKEN_KEY = "626labs.admin.gc-token";
+
+function parseTrafficCSV(text) {
+  const lines = text.trim().split("\n");
+  if (lines.length < 2) return [];
+  const cols = lines[0].split(",");
+  return lines.slice(1).map(line => {
+    const vals = line.split(",");
+    const row = {};
+    cols.forEach((c, i) => { row[c] = vals[i]; });
+    return row;
+  });
+}
+
+function MiniSparkline({ values, w, h, color }) {
+  if (!values || values.length === 0) return null;
+  const ww = w || 120, hh = h || 28;
+  const max = Math.max(...values, 1);
+  const stepX = values.length > 1 ? ww / (values.length - 1) : ww;
+  const pts = values.map((v, i) => {
+    const x = i * stepX;
+    const y = hh - (v / max) * (hh - 2) - 1;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+  const area = `0,${hh} ${pts} ${ww},${hh}`;
+  const c = color || A.cyan;
+  return (
+    <svg width={ww} height={hh} viewBox={`0 0 ${ww} ${hh}`} style={{ display: "block" }}>
+      <polygon points={area} fill={c} fillOpacity="0.12"/>
+      <polyline points={pts} fill="none" stroke={c} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function DailyChart({ days, color }) {
+  if (!days || days.length === 0) {
+    return <div style={{ padding: 24, color: A.dim2, fontSize: 12, textAlign: "center" }}>No data in this window yet.</div>;
+  }
+  const w = 760, h = 200;
+  const padL = 38, padR = 12, padT = 12, padB = 28;
+  const innerW = w - padL - padR, innerH = h - padT - padB;
+  const counts = days.map(d => d.count || 0);
+  const max = Math.max(...counts, 1);
+  const stepX = days.length > 1 ? innerW / (days.length - 1) : innerW;
+  const pts = days.map((d, i) => ({
+    x: padL + i * stepX,
+    y: padT + innerH - ((d.count || 0) / max) * innerH,
+    day: d.day, count: d.count || 0,
+  }));
+  const linePath = pts.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ");
+  const lastPt = pts[pts.length - 1];
+  const firstPt = pts[0];
+  const areaPath = `${linePath} L ${lastPt.x.toFixed(1)} ${(padT + innerH).toFixed(1)} L ${firstPt.x.toFixed(1)} ${(padT + innerH).toFixed(1)} Z`;
+  const c = color || A.cyan;
+  const gridYs = [0, 0.25, 0.5, 0.75, 1].map(t => padT + innerH - t * innerH);
+  const labelIdx = [0, Math.floor(pts.length / 2), pts.length - 1];
+  return (
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ display: "block", maxWidth: "100%", height: "auto" }} preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="dailyChartGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={c} stopOpacity="0.35"/>
+          <stop offset="100%" stopColor={c} stopOpacity="0"/>
+        </linearGradient>
+      </defs>
+      {gridYs.map((y, i) => (
+        <line key={i} x1={padL} y1={y} x2={padL + innerW} y2={y} stroke={A.line} strokeWidth="1" strokeDasharray={i === gridYs.length - 1 ? "0" : "2 4"}/>
+      ))}
+      <text x={padL - 6} y={padT + 4} textAnchor="end" fontSize="10" fill={A.dim2} fontFamily="JetBrains Mono, monospace">{max}</text>
+      <text x={padL - 6} y={padT + innerH + 4} textAnchor="end" fontSize="10" fill={A.dim2} fontFamily="JetBrains Mono, monospace">0</text>
+      <path d={areaPath} fill="url(#dailyChartGrad)"/>
+      <path d={linePath} fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      {pts.map((p, i) => (
+        <circle key={i} cx={p.x} cy={p.y} r={i === pts.length - 1 ? 3 : 1.6} fill={c}/>
+      ))}
+      {labelIdx.map(i => pts[i] && (
+        <text key={`lbl${i}`} x={pts[i].x} y={h - 8} textAnchor="middle" fontSize="10" fill={A.dim2} fontFamily="JetBrains Mono, monospace">{(pts[i].day || "").slice(5)}</text>
+      ))}
+    </svg>
+  );
+}
+
+function LeaderboardList({ items, accent, emptyLabel }) {
+  if (!items || items.length === 0) {
+    return <div style={{ padding: "10px 0", fontSize: 12, color: A.dim2 }}>{emptyLabel || "No data yet."}</div>;
+  }
+  const max = Math.max(...items.map(it => it.count || 0), 1);
+  const c = accent || A.cyan;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+      {items.map((it, i) => (
+        <div key={i} style={{
+          display: "grid", gridTemplateColumns: "1fr auto", gap: 14, alignItems: "center",
+          padding: "9px 0", borderBottom: i < items.length - 1 ? `1px solid ${A.line}` : "none",
+        }}>
+          <div style={{ minWidth: 0 }}>
+            <div title={it.label} style={{ fontSize: 12, color: A.text, fontFamily: "JetBrains Mono, monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{it.label || "(empty)"}</div>
+            <div style={{ height: 3, background: "rgba(255,255,255,.04)", borderRadius: 2, marginTop: 5, overflow: "hidden" }}>
+              <div style={{ width: `${(it.count / max) * 100}%`, height: "100%", background: c, borderRadius: 2 }}/>
+            </div>
+          </div>
+          <div style={{ fontSize: 12, fontFamily: "JetBrains Mono, monospace", color: c, textAlign: "right", minWidth: 56 }}>
+            <div>{(it.count || 0).toLocaleString()}</div>
+            {it.unique != null && <div style={{ fontSize: 10, color: A.dim2, marginTop: 1 }}>{(it.unique || 0).toLocaleString()} uniq</div>}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TabBar({ value, onChange, options }) {
+  return (
+    <div style={{ display: "inline-flex", padding: 3, background: A.panel2, border: `1px solid ${A.line}`, borderRadius: 8, gap: 2 }}>
+      {options.map(opt => {
+        const active = value === opt.value;
+        return (
+          <button key={opt.value} onClick={() => onChange(opt.value)} style={{
+            padding: "6px 14px", border: "none", borderRadius: 5,
+            background: active ? A.cyan : "transparent",
+            color: active ? A.bg : A.dim,
+            fontFamily: "inherit", fontSize: 11.5, fontWeight: active ? 600 : 500,
+            letterSpacing: ".02em", cursor: "pointer",
+          }}>{opt.label}</button>
+        );
+      })}
+    </div>
+  );
+}
+
+function GoatCounterConnect({ onConnect }) {
+  const [inputVal, setInputVal] = React.useState("");
+  return (
+    <div style={{ maxWidth: 620 }}>
+      <div style={{ background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, padding: 22 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+          <span style={{ width: 8, height: 8, borderRadius: 99, background: A.cyan, boxShadow: `0 0 8px ${A.cyan}` }}/>
+          <div style={{ fontSize: 14, fontWeight: 600 }}>Connect GoatCounter</div>
+        </div>
+        <div style={{ fontSize: 12, color: A.dim, lineHeight: 1.6, marginBottom: 14 }}>
+          The tracking script ships on every marketing page already. To pull stats into this admin, paste an API token from{" "}
+          <a href="https://626labs.goatcounter.com/user/api" target="_blank" rel="noopener" style={{ color: A.cyan, textDecoration: "none", borderBottom: `1px solid ${A.cyan}` }}>626labs.goatcounter.com → settings → API tokens</a>.
+          Grant <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>count</code> + <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>read</code>, copy the value, drop it below.
+        </div>
+        <input
+          type="password"
+          placeholder="GoatCounter API token"
+          value={inputVal}
+          onChange={e => setInputVal(e.target.value)}
+          onKeyDown={e => { if (e.key === "Enter" && inputVal.trim()) onConnect(inputVal.trim()); }}
+          style={{ width: "100%", padding: "10px 12px", background: A.bg, border: `1px solid ${A.line2}`, borderRadius: 6, color: A.text, fontSize: 13, fontFamily: "JetBrains Mono, monospace", marginBottom: 12 }}
+        />
+        <Btn primary onClick={() => inputVal.trim() && onConnect(inputVal.trim())} disabled={!inputVal.trim()}>Connect</Btn>
+        <div style={{ fontSize: 11, color: A.dim2, marginTop: 14, lineHeight: 1.55 }}>
+          Token is stored in browser localStorage only — same as your GitHub PAT. Visitors of this dashboard never see it; the API calls run from your browser direct to GoatCounter.
+        </div>
+      </div>
+
+      <div style={{ marginTop: 14, fontSize: 11.5, color: A.dim, lineHeight: 1.6 }}>
+        While GoatCounter starts logging visits, the <b style={{ color: A.text }}>plugin repos</b> tab still works — it reads <code style={{ background: A.panel2, padding: "1px 5px", borderRadius: 3, fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>data/traffic.csv</code> from this repo with no extra auth.
+        </div>
+    </div>
+  );
+}
+
+function SiteStats() {
+  const [gcToken, setGcToken] = React.useState(() => {
+    try { return window.localStorage.getItem(GC_TOKEN_KEY) || ""; } catch { return ""; }
+  });
+  const [data, setData] = React.useState(null);
+  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+  const [reloadKey, setReloadKey] = React.useState(0);
+
+  function saveToken(t) {
+    try { window.localStorage.setItem(GC_TOKEN_KEY, t); } catch {}
+    setGcToken(t);
+  }
+  function disconnect() {
+    try { window.localStorage.removeItem(GC_TOKEN_KEY); } catch {}
+    setGcToken("");
+    setData(null);
+    setError(null);
+  }
+
+  React.useEffect(() => {
+    if (!gcToken) return;
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    const today = new Date().toISOString().slice(0, 10);
+    const startMs = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const start = new Date(startMs).toISOString().slice(0, 10);
+    const headers = { Authorization: `Bearer ${gcToken}`, "Content-Type": "application/json" };
+    const params = `?start=${start}&end=${today}`;
+    const get = (path) => fetch(`${GC_BASE}${path}`, { headers }).then(r => {
+      if (!r.ok) return r.text().then(t => Promise.reject(`${path} → ${r.status} ${t.slice(0, 80)}`));
+      return r.json();
+    });
+    Promise.all([
+      get(`/stats/total${params}`),
+      get(`/stats/hits${params}&limit=10`),
+      get(`/stats/toprefs${params}&limit=10`),
+      get(`/stats/locations${params}&limit=8`),
+      get(`/stats/browsers${params}&limit=6`),
+    ]).then(([total, hits, refs, locations, browsers]) => {
+      if (cancelled) return;
+      setData({ total, hits, refs, locations, browsers, range: { start, end: today } });
+      setLoading(false);
+    }).catch(e => {
+      if (cancelled) return;
+      setError(typeof e === "string" ? e : (e && e.message) || "Failed to load");
+      setLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, [gcToken, reloadKey]);
+
+  if (!gcToken) {
+    return <GoatCounterConnect onConnect={saveToken}/>;
+  }
+  if (loading) {
+    return <div style={{ padding: 56, color: A.dim, textAlign: "center", fontSize: 13 }}>Loading site analytics…</div>;
+  }
+  if (error) {
+    return (
+      <div style={{ background: "rgba(255,107,107,.06)", border: `1px solid rgba(255,107,107,.2)`, borderRadius: 8, padding: 18, maxWidth: 620 }}>
+        <div style={{ color: A.danger, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>Couldn't reach GoatCounter</div>
+        <div style={{ color: A.dim, fontSize: 12, fontFamily: "JetBrains Mono, monospace", marginBottom: 14, wordBreak: "break-all" }}>{error}</div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <Btn ghost size="sm" onClick={() => setReloadKey(k => k + 1)}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Retry</span></Btn>
+          <Btn ghost size="sm" onClick={disconnect}>Disconnect</Btn>
+        </div>
+      </div>
+    );
+  }
+  return <SiteStatsDashboard data={data} onRefresh={() => setReloadKey(k => k + 1)} onDisconnect={disconnect}/>;
+}
+
+function SiteStatsDashboard({ data, onRefresh, onDisconnect }) {
+  const totalCount = data.total?.total || 0;
+  const totalUnique = data.total?.total_unique || 0;
+  const stats = data.total?.stats || [];
+  const days = stats.map(s => ({ day: s.day, count: s.daily || 0 }));
+  const dailyAvg = days.length ? Math.round(days.reduce((a, d) => a + d.count, 0) / days.length) : 0;
+  const peakDay = days.reduce((a, b) => (b.count > a.count ? b : a), { day: "", count: 0 });
+
+  const topPages = (data.hits?.hits || []).slice(0, 8).map(h => ({
+    label: h.path || "/",
+    count: h.count || 0,
+    unique: h.count_unique,
+  }));
+  const topRefs = (data.refs?.stats || []).slice(0, 8).map(r => ({
+    label: r.name || "(direct)",
+    count: r.count || 0,
+    unique: r.count_unique,
+  }));
+  const topLocs = (data.locations?.stats || []).slice(0, 6).map(l => ({
+    label: l.name || l.id || "—",
+    count: l.count || 0,
+    unique: l.count_unique,
+  }));
+  const topBrowsers = (data.browsers?.stats || []).slice(0, 6).map(b => ({
+    label: b.name || "—",
+    count: b.count || 0,
+    unique: b.count_unique,
+  }));
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: A.dim, letterSpacing: ".06em" }}>
+          <span style={{ width: 8, height: 8, borderRadius: 99, background: A.cyan, boxShadow: `0 0 8px ${A.cyan}` }}/>
+          <span>{data.range.start}</span>
+          <span style={{ color: A.dim2 }}>→</span>
+          <span>{data.range.end}</span>
+          <span style={{ color: A.dim2 }}>·</span>
+          <span style={{ color: A.cyan }}>626labs.dev</span>
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <a href="https://626labs.goatcounter.com" target="_blank" rel="noopener" style={{ fontSize: 11, color: A.cyan, fontFamily: "JetBrains Mono, monospace", textDecoration: "none", padding: "6px 10px", border: `1px solid ${A.line2}`, borderRadius: 6 }}>open in GoatCounter ↗</a>
+          <Btn ghost size="sm" onClick={onRefresh}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Refresh</span></Btn>
+          <Btn ghost size="sm" onClick={onDisconnect}>Disconnect</Btn>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 18 }}>
+        <StatTile label="Total views" value={totalCount.toLocaleString()} sub="last 30 days" c={A.cyan}/>
+        <StatTile label="Unique visitors" value={totalUnique.toLocaleString()} sub="distinct browsers" c={A.magenta}/>
+        <StatTile label="Daily average" value={dailyAvg.toLocaleString()} sub="views per day" c={A.green}/>
+        <StatTile label="Peak day" value={peakDay.count ? peakDay.count.toLocaleString() : "—"} sub={peakDay.day || "no traffic yet"} c={A.amber}/>
+      </div>
+
+      <div style={{ background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, padding: 18, marginBottom: 14 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
+          <SectionLabel>Daily views — 30-day trend</SectionLabel>
+          <div style={{ fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".08em" }}>views per day</div>
+        </div>
+        <DailyChart days={days} color={A.cyan}/>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
+        <div style={{ background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, padding: 18 }}>
+          <SectionLabel>Top pages</SectionLabel>
+          <LeaderboardList items={topPages} accent={A.cyan} emptyLabel="No page views yet — give it a few hours."/>
+        </div>
+        <div style={{ background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, padding: 18 }}>
+          <SectionLabel>Top referrers</SectionLabel>
+          <LeaderboardList items={topRefs} accent={A.magenta} emptyLabel="No referrers logged yet."/>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+        <div style={{ background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, padding: 18 }}>
+          <SectionLabel>Top locations</SectionLabel>
+          <LeaderboardList items={topLocs} accent={A.green} emptyLabel="No country data yet."/>
+        </div>
+        <div style={{ background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, padding: 18 }}>
+          <SectionLabel>Browsers</SectionLabel>
+          <LeaderboardList items={topBrowsers} accent={A.amber} emptyLabel="No browser data yet."/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RepoStats({ token }) {
+  const [rows, setRows] = React.useState(null);
+  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [reloadKey, setReloadKey] = React.useState(0);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    const headers = { Accept: "application/vnd.github.raw", "X-GitHub-Api-Version": "2022-11-28" };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/traffic.csv?ref=${REPO_BRANCH}`, { headers })
+      .then(r => r.ok ? r.text() : r.text().then(t => Promise.reject(`${r.status} ${t.slice(0, 80)}`)))
+      .then(text => {
+        if (cancelled) return;
+        setRows(parseTrafficCSV(text));
+        setLoading(false);
+      })
+      .catch(e => {
+        if (cancelled) return;
+        setError(typeof e === "string" ? e : (e && e.message) || "Failed");
+        setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [token, reloadKey]);
+
+  if (loading) return <div style={{ padding: 56, color: A.dim, textAlign: "center", fontSize: 13 }}>Loading repo traffic…</div>;
+  if (error) return (
+    <div style={{ background: "rgba(255,107,107,.06)", border: `1px solid rgba(255,107,107,.2)`, borderRadius: 8, padding: 18, maxWidth: 620 }}>
+      <div style={{ color: A.danger, fontSize: 13, marginBottom: 8 }}>Couldn't load data/traffic.csv — {error}</div>
+      <Btn ghost size="sm" onClick={() => setReloadKey(k => k + 1)}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Retry</span></Btn>
+    </div>
+  );
+
+  // Group rows by repo, sort by date.
+  const byRepo = {};
+  (rows || []).forEach(r => {
+    if (!byRepo[r.repo]) byRepo[r.repo] = [];
+    byRepo[r.repo].push({
+      date: r.date,
+      views: +r.views || 0,
+      unique_visitors: +r.unique_visitors || 0,
+      clones: +r.clones || 0,
+      unique_cloners: +r.unique_cloners || 0,
+    });
+  });
+  Object.values(byRepo).forEach(arr => arr.sort((a, b) => a.date.localeCompare(b.date)));
+  const repoOrder = [
+    "estevanhernandez-stack-ed/vibe-cartographer",
+    "estevanhernandez-stack-ed/Vibe-Doc",
+    "estevanhernandez-stack-ed/vibe-plugins",
+    "626Labs-LLC/626Labs-LLC.github.io",
+  ];
+  const knownRepos = repoOrder.filter(r => byRepo[r]);
+  const otherRepos = Object.keys(byRepo).filter(r => !repoOrder.includes(r));
+  const sortedRepos = [...knownRepos, ...otherRepos];
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: A.dim, letterSpacing: ".06em" }}>
+          <span style={{ width: 8, height: 8, borderRadius: 99, background: A.magenta, boxShadow: `0 0 8px ${A.magenta}` }}/>
+          <span>github.com page views + clones</span>
+          <span style={{ color: A.dim2 }}>·</span>
+          <span>committed daily by track-traffic.yml</span>
+        </div>
+        <Btn ghost size="sm" onClick={() => setReloadKey(k => k + 1)}><span style={{display:"inline-flex",alignItems:"center",gap:6}}>{Ic.refresh} Refresh</span></Btn>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 12 }}>
+        {sortedRepos.map(repo => <RepoStatsCard key={repo} repo={repo} rows={byRepo[repo]}/>)}
+      </div>
+
+      <div style={{ marginTop: 18, fontSize: 11.5, color: A.dim2, lineHeight: 1.6 }}>
+        Note: this is GitHub.com page views of the source repos (people viewing the README, code, etc.) — not visits to 626labs.dev. Site-visit analytics live on the <b style={{ color: A.dim }}>Site</b> tab.
+      </div>
+    </div>
+  );
+}
+
+function RepoStatsCard({ repo, rows }) {
+  const last30 = rows.slice(-30);
+  const last7 = rows.slice(-7);
+  const totalViews = last30.reduce((a, r) => a + r.views, 0);
+  const totalUnique = last30.reduce((a, r) => a + r.unique_visitors, 0);
+  const totalClones = last30.reduce((a, r) => a + r.clones, 0);
+  const totalUniqueClones = last30.reduce((a, r) => a + r.unique_cloners, 0);
+  const week = {
+    views: last7.reduce((a, r) => a + r.views, 0),
+    clones: last7.reduce((a, r) => a + r.clones, 0),
+  };
+  const viewSpark = last30.map(r => r.views);
+  const cloneSpark = last30.map(r => r.clones);
+
+  return (
+    <div style={{ background: A.panel, border: `1px solid ${A.line}`, borderRadius: 8, padding: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 18, alignItems: "center" }}>
+        <div style={{ minWidth: 0 }}>
+          <a href={`https://github.com/${repo}`} target="_blank" rel="noopener" style={{
+            fontSize: 13, fontWeight: 500, color: A.text, fontFamily: "JetBrains Mono, monospace",
+            textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6,
+          }}>
+            {repo}
+            <span style={{ color: A.dim2, fontSize: 10 }}>↗</span>
+          </a>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", columnGap: 18, rowGap: 6, marginTop: 12 }}>
+            <RepoStat label="views" value={totalViews} c={A.cyan}/>
+            <RepoStat label="unique" value={totalUnique} c={A.magenta}/>
+            <RepoStat label="clones" value={totalClones} c={A.green}/>
+            <RepoStat label="uniq cloners" value={totalUniqueClones} c={A.amber}/>
+          </div>
+          <div style={{ marginTop: 10, fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".04em" }}>
+            last 30 days · 7-day: {week.views.toLocaleString()} views / {week.clones.toLocaleString()} clones
+          </div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 180 }}>
+          <div style={{ fontSize: 9.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".1em", textTransform: "uppercase" }}>views</div>
+          <MiniSparkline values={viewSpark} w={180} h={36} color={A.cyan}/>
+          <div style={{ fontSize: 9.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace", letterSpacing: ".1em", textTransform: "uppercase", marginTop: 4 }}>clones</div>
+          <MiniSparkline values={cloneSpark} w={180} h={20} color={A.green}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RepoStat({ label, value, c }) {
+  return (
+    <div>
+      <div style={{ fontSize: 10, color: A.dim2, fontFamily: "JetBrains Mono, monospace", textTransform: "uppercase", letterSpacing: ".1em" }}>{label}</div>
+      <div style={{ fontSize: 16, fontWeight: 600, color: c, fontFamily: "JetBrains Mono, monospace", marginTop: 2 }}>{value.toLocaleString()}</div>
+    </div>
+  );
+}
+
+function AnalyticsView({ token }) {
+  const [tab, setTab] = React.useState("site");
+  return (
+    <div>
+      <PanelHeader
+        title="Analytics"
+        subtitle="Site visits via GoatCounter (privacy-friendly, cookieless) and plugin-repo traffic from GitHub"
+        actions={
+          <TabBar
+            value={tab}
+            onChange={setTab}
+            options={[
+              { value: "site", label: "Site" },
+              { value: "repos", label: "Plugin repos" },
+            ]}
+          />
+        }
+      />
+      <div style={{ padding: "18px 26px 32px" }}>
+        {tab === "site" && <SiteStats/>}
+        {tab === "repos" && <RepoStats token={token}/>}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
 // Right rail — live preview, live data, pending diff
 // ─────────────────────────────────────────────────────────────
 function RightRail({ content, liveStats, nav, selectedId, dirty, original, onPreview, onSave }) {
@@ -1869,6 +2361,7 @@ function CommandPalette({ close, onNav, onPreview, onAddProduct, products, onSel
     { label: "Edit Sections", kind: "nav", ic: Ic.eye, run: () => onNav("sections") },
     { label: "Edit Stories", kind: "nav", ic: Ic.edit, run: () => onNav("stories") },
     { label: "Go to Ops", kind: "nav", ic: Ic.activity, run: () => onNav("ops") },
+    { label: "Go to Analytics", kind: "nav", ic: Ic.activity, run: () => onNav("analytics") },
     { label: "Preview site", kind: "action", ic: Ic.eye, run: onPreview },
     { label: "Add new product…", kind: "action", ic: Ic.plus, run: onAddProduct },
     ...products.map(p => ({ label: `Jump to product · ${p.title}`, kind: "product", ic: Ic.grid, run: () => onSelectProduct(p.id) })),

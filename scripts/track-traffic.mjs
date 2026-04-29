@@ -13,6 +13,7 @@ const REPOS = [
   'estevanhernandez-stack-ed/vibe-cartographer',
   'estevanhernandez-stack-ed/Vibe-Doc',
   'estevanhernandez-stack-ed/vibe-plugins',
+  '626Labs-LLC/626Labs-LLC.github.io',
 ];
 
 const CSV_PATH = 'data/traffic.csv';
