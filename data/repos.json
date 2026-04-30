@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-30T12:50:03.883Z",
+  "generatedAt": "2026-04-30T19:41:53.237Z",
   "count": 25,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-04-30T08:39:45Z",
+      "pushed_at": "2026-04-30T19:41:43Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -253,7 +253,7 @@
       "description": "The 626Labs Vibe Plugins ecosystem — spec-driven development, documentation, security, and testing for vibe-coded apps. Monorepo for vibe-sec + vibe-test + shared core.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-04-29T22:16:10Z",
+      "pushed_at": "2026-04-30T14:43:36Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
