@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-29T20:04:19.380Z",
+  "generatedAt": "2026-04-30T00:14:29.736Z",
   "count": 24,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-04-29T20:04:12Z",
+      "pushed_at": "2026-04-30T00:03:08Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -181,7 +181,7 @@
       "description": "Claude Skill/Pipeline for thesis fodder",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Thesis-Engine",
       "language": "Python",
-      "pushed_at": "2026-04-27T19:27:50Z",
+      "pushed_at": "2026-04-29T22:32:47Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -205,7 +205,7 @@
       "description": "Plot your course from idea to shipped app — spec-driven development as a Claude Code plugin, delivered as 8 slash commands (onboard, scope, prd, spec, checklist, build, iterate, reflect). 626Labs LLC.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer",
       "language": "Python",
-      "pushed_at": "2026-04-27T15:24:44Z",
+      "pushed_at": "2026-04-29T22:37:44Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -217,7 +217,7 @@
       "description": "AI-powered documentation gap analyzer for modern codebases — scans your project, classifies what you've built, identifies missing technical docs, and generates them from your existing artifacts. Drop it on any codebase. 626Labs LLC.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Doc",
       "language": "TypeScript",
-      "pushed_at": "2026-04-29T00:14:58Z",
+      "pushed_at": "2026-04-29T22:28:17Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -229,7 +229,7 @@
       "description": "If your Claude.md surface is weak, your entire architecture could crumble down.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-Keystone",
       "language": null,
-      "pushed_at": "2026-04-29T00:26:20Z",
+      "pushed_at": "2026-04-29T22:29:52Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -241,7 +241,7 @@
       "description": "The 626Labs Vibe Plugins ecosystem — spec-driven development, documentation, security, and testing for vibe-coded apps. Monorepo for vibe-sec + vibe-test + shared core.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-04-29T14:45:54Z",
+      "pushed_at": "2026-04-29T22:16:10Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -253,7 +253,7 @@
       "description": "Vibe Sec — security gap finder for vibe-coded apps. Secret-leak scanner CLI shipping now; full plugin in development. Canary channel; stable channel via @626labs vibe-plugins marketplace.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-sec",
       "language": "JavaScript",
-      "pushed_at": "2026-04-21T00:43:10Z",
+      "pushed_at": "2026-04-29T22:32:43Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -265,7 +265,7 @@
       "description": "Vibe Test — diagnostic-and-retrofit testing plugin for vibe-coded apps. Canary channel for beta testers; stable channel via @626labs vibe-plugins marketplace.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-test",
       "language": "TypeScript",
-      "pushed_at": "2026-04-21T00:39:33Z",
+      "pushed_at": "2026-04-29T22:31:04Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -277,7 +277,7 @@
       "description": "Start with a strong stance before you even ask for a line of code",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Thesis",
       "language": "JavaScript",
-      "pushed_at": "2026-04-27T21:46:15Z",
+      "pushed_at": "2026-04-29T22:29:48Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
