@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-30T19:40:57.061Z",
+  "generatedAt": "2026-04-30T19:41:42.597Z",
   "source": "goatcounter",
   "site": "626labs.dev",
   "range": {
@@ -3860,7 +3860,7 @@
   "errors": [
     {
       "endpoint": "total",
-      "error": "GET /stats/total?start=2026-03-31&end=2026-04-30 -> 404: {\"error\":\"not found\"}"
+      "error": "fetch failed"
     }
   ]
 }
