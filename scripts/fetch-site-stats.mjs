@@ -42,24 +42,39 @@ const today = isoDate(Date.now());
 const start = isoDate(Date.now() - DAYS * 24 * 60 * 60 * 1000);
 const params = `start=${start}&end=${today}`;
 
-async function gc(endpoint) {
+async function gc(endpoint, attempts = 4) {
+  // GoatCounter's free-tier API rate-limits aggressively (~5 req/sec).
+  // The 429 response body looks like:
+  //   {"error": "rate limited exceeded; try again in 992.116994ms"}
+  // We parse the wait-hint and retry; if no hint, exponential backoff
+  // starting at 1.5s.
   const url = `${GC_BASE}${endpoint}`;
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'User-Agent': '626labs-hub-site-stats',
-    },
-  });
-  if (!res.ok) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'User-Agent': '626labs-hub-site-stats',
+      },
+    });
+    if (res.ok) return res.json();
     const body = await res.text();
+    if (res.status === 429 && attempt < attempts - 1) {
+      const m = body.match(/(\d+(?:\.\d+)?)\s*ms/i);
+      const hint = m ? Math.ceil(parseFloat(m[1])) : null;
+      // Add a 250ms cushion above the server's hint, or fall back to
+      // exponential (1.5s, 3s, 6s, ...).
+      const waitMs = hint ? hint + 250 : Math.round(1500 * Math.pow(2, attempt));
+      console.warn(`  retry ${attempt + 1}/${attempts - 1} on ${endpoint} after ${waitMs}ms (429)`);
+      await new Promise(r => setTimeout(r, waitMs));
+      continue;
+    }
     throw new Error(`GET ${endpoint} -> ${res.status}: ${body.slice(0, 200)}`);
   }
-  return res.json();
 }
 
-// Soft fetch: tolerate individual endpoint failures so one rate-limited
-// call doesn't break the entire snapshot.
+// Soft fetch: tolerate individual endpoint failures so one persistently-
+// rate-limited call doesn't break the entire snapshot.
 async function softGc(endpoint) {
   try {
     return { ok: true, data: await gc(endpoint) };
@@ -69,16 +84,25 @@ async function softGc(endpoint) {
   }
 }
 
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
 console.log(`Fetching GoatCounter stats for 626labs.dev — ${start} → ${today}`);
 
-const [total, hits, refs, locations, browsers, systems] = await Promise.all([
-  softGc(`/stats/total?${params}`),
-  softGc(`/stats/hits?${params}&limit=${HITS_LIMIT}`),
-  softGc(`/stats/toprefs?${params}&limit=${REFS_LIMIT}`),
-  softGc(`/stats/locations?${params}&limit=${LOCATIONS_LIMIT}`),
-  softGc(`/stats/browsers?${params}&limit=${BROWSERS_LIMIT}`),
-  softGc(`/stats/systems?${params}&limit=${SYSTEMS_LIMIT}`),
-]);
+// Sequential — Promise.all bursts trip GoatCounter's free-tier rate limit.
+// Inter-call delay (300ms) gives the bucket time to refill so the retry-on-429
+// path inside gc() rarely needs to fire.
+async function step(label, endpoint) {
+  const res = await softGc(endpoint);
+  await sleep(300);
+  return res;
+}
+
+const total     = await step('total',     `/stats/total?${params}`);
+const hits      = await step('hits',      `/stats/hits?${params}&limit=${HITS_LIMIT}`);
+const refs      = await step('refs',      `/stats/toprefs?${params}&limit=${REFS_LIMIT}`);
+const locations = await step('locations', `/stats/locations?${params}&limit=${LOCATIONS_LIMIT}`);
+const browsers  = await step('browsers',  `/stats/browsers?${params}&limit=${BROWSERS_LIMIT}`);
+const systems   = await step('systems',   `/stats/systems?${params}&limit=${SYSTEMS_LIMIT}`);
 
 const errors = [total, hits, refs, locations, browsers, systems]
   .map((r, i) => r.ok ? null : { endpoint: ['total','hits','refs','locations','browsers','systems'][i], error: r.error })
