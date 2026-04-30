@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Bacon Trail — 626 Labs</title>
+  <meta name="description" content="A moment with Kevin Bacon. Today's birthday actors, six-degrees style. Take a break and play." />
+  <link rel="icon" type="image/png" href="/favicon-626.png" />
+
+  <meta property="og:title" content="Birthday Bacon Trail" />
+  <meta property="og:description" content="Take a break and play. Today's birthday actors, six-degrees style. Built by 626 Labs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://626labs.dev/play/bacon/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --navy-deep: #0f1f31;
+      --navy-mid:  #192e44;
+      --navy-hi:   #223a54;
+      --cyan:      #17d4fa;
+      --magenta:   #f22f89;
+      --text:      #e8f2ff;
+      --text-sec:  #a8c2d9;
+      --text-dim:  #6a849e;
+      --text-mute: #4a5f7a;
+      --border-1:  rgba(255,255,255,.08);
+      --border-accent: rgba(23,212,250,.45);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 800px 600px at 12% 8%, rgba(23,212,250,.10), transparent 60%),
+        radial-gradient(ellipse 800px 600px at 88% 92%, rgba(242,47,137,.10), transparent 60%),
+        var(--navy-deep);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 32px;
+      border-bottom: 1px solid var(--border-1);
+    }
+    header .back {
+      color: var(--text-sec);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color .12s cubic-bezier(.2,.7,.2,1);
+    }
+    header .back:hover { color: var(--cyan); }
+    header .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: clamp(32px, 6vw, 64px) 24px 48px;
+    }
+
+    .intro { margin-bottom: 32px; }
+    .intro h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(32px, 5vw, 52px);
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+      line-height: 1.05;
+    }
+    .intro h1 .accent {
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .intro p {
+      color: var(--text-sec);
+      max-width: 640px;
+      font-size: clamp(15px, 1.4vw, 17px);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    #bacon-widget {
+      margin-top: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px 24px 48px;
+      color: var(--text-mute);
+      font-size: 13px;
+      border-top: 1px solid var(--border-1);
+      margin-top: 48px;
+    }
+    footer a {
+      color: var(--text-sec);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .12s cubic-bezier(.2,.7,.2,1);
+    }
+    footer a:hover { border-bottom-color: var(--cyan); }
+  </style>
+
+  <link rel="stylesheet" href="/widget-bacon-trail/widget.css" />
+</head>
+<body>
+  <header>
+    <a class="back" href="/">← 626 Labs</a>
+    <span class="eyebrow">Play · Birthday Bacon Trail</span>
+  </header>
+
+  <main>
+    <div class="intro">
+      <h1>Birthday <span class="accent">Bacon Trail</span>.</h1>
+      <p>Today's birthday actors, six-degrees style. Pick one, walk a film chain, find Kevin Bacon — or don't. New cast every day.</p>
+    </div>
+    <div id="bacon-widget"></div>
+  </main>
+
+  <footer>
+    Built by <a href="https://626labs.dev/">626 Labs</a>. Source on <a href="https://github.com/estevanhernandez-stack-ed/626labs-hub">GitHub</a>.
+  </footer>
+
+  <script src="/widget-bacon-trail/widget.js" defer></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      if (window.BaconTrailWidget) {
+        BaconTrailWidget.init({
+          container: document.getElementById('bacon-widget'),
+          ctaUrl: '/',
+          ctaLabel: '← Back to 626 Labs'
+        });
+      }
+    });
+  </script>
+</body>
+</html>
