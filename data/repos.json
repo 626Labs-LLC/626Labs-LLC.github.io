@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-04T08:32:36.378Z",
-  "count": 27,
+  "generatedAt": "2026-05-04T22:51:20.054Z",
+  "count": 28,
   "owners": [
     "user:estevanhernandez-stack-ed",
     "org:626Labs-LLC"
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-05-04T08:10:58Z",
+      "pushed_at": "2026-05-04T09:03:56Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -120,8 +120,8 @@
       "name": "Macro",
       "description": "A Roblox macro maker for Mac",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Macro",
-      "language": "TypeScript",
-      "pushed_at": "2026-05-04T05:34:07Z",
+      "language": "Swift",
+      "pushed_at": "2026-05-04T15:35:10Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -193,7 +193,7 @@
       "description": "A claude Usage Monitor/Pacer",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
       "language": "Python",
-      "pushed_at": "2026-04-21T03:24:40Z",
+      "pushed_at": "2026-05-04T16:35:10Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -259,6 +259,18 @@
       "fork": false
     },
     {
+      "full_name": "estevanhernandez-stack-ed/vibe-iterate",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "vibe-iterate",
+      "description": "Post-ship product iteration — the sibling to vibe-cartographer. Pick a mode (feature-add, competitive, ux-polish, bug-bash), ship one PR. Ingests competitor changelogs, framework releases, and your feedback.md. Maintains your Atlas.",
+      "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-iterate",
+      "language": null,
+      "pushed_at": "2026-05-04T16:24:26Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
       "full_name": "estevanhernandez-stack-ed/vibe-Keystone",
       "owner": "estevanhernandez-stack-ed",
       "name": "vibe-Keystone",
@@ -277,7 +289,7 @@
       "description": "The 626Labs Vibe Plugins ecosystem — spec-driven development, documentation, security, and testing for vibe-coded apps. Monorepo for vibe-sec + vibe-test + shared core.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-05-03T14:19:56Z",
+      "pushed_at": "2026-05-04T14:45:04Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
