@@ -153,6 +153,7 @@
       "npm": "@esthernandez/vibe-cartographer",
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer",
       "claudeCode": true,
+      "anthropicApproved": true,
       "screenshots": []
     },
     {

@@ -295,6 +295,16 @@ CLAUDE_CODE_BADGE = (
     'style=flat-square&logo=anthropic&logoColor=F5F5F0&labelColor=141414'
 )
 
+ANTHROPIC_APPROVED_BADGE = (
+    # Anthropic-approved — same Anthropic-orange visual treatment as the
+    # Claude Code skill badge, but flips the label to read "Anthropic |
+    # approved". Set `anthropicApproved: true` on a product to opt in.
+    # Currently only Vibe Cartographer carries this — featured/listed in
+    # Anthropic's official Claude Code plugins surface.
+    'https://img.shields.io/badge/Anthropic-approved-D97757?'
+    'style=flat-square&logo=anthropic&logoColor=F5F5F0&labelColor=141414'
+)
+
 
 def render_badges(p: dict) -> str:
     """Claude Code skill (if applicable) + npm version + downloads (maskable) + release + npm license.
@@ -305,16 +315,23 @@ def render_badges(p: dict) -> str:
     """
     npm = p.get("npm")
     claude_code = bool(p.get("claudeCode"))
+    anthropic_approved = bool(p.get("anthropicApproved"))
 
     # If it's not a Claude Code plugin AND has no npm, nothing to show.
     if not claude_code and not npm:
         return ""
 
-    # No npm (pure Claude Code plugin) → just the Claude Code badge.
+    approved_badge = (
+        f'\n          <img src="{attr(ANTHROPIC_APPROVED_BADGE)}" alt="Anthropic approved">'
+        if anthropic_approved else ""
+    )
+
+    # No npm (pure Claude Code plugin) → just the Claude Code badge,
+    # plus the Anthropic-approved badge when applicable.
     if not npm:
         return f"""\
         <div class="badges">
-          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">
+          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">{approved_badge}
         </div>"""
     repo = p.get("repo") or ""
     pid = p.get("id", "")
@@ -341,9 +358,13 @@ def render_badges(p: dict) -> str:
         f'          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">\n'
         if claude_code else ""
     )
+    approved_badge_line = (
+        f'          <img src="{attr(ANTHROPIC_APPROVED_BADGE)}" alt="Anthropic approved">\n'
+        if anthropic_approved else ""
+    )
     return f"""\
         <div class="badges">
-{cc_badge}          <img data-maskable="true" src="https://img.shields.io/npm/v/{attr(npm)}?color={BADGE_COLOR_CYAN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="npm version">
+{cc_badge}{approved_badge_line}          <img data-maskable="true" src="https://img.shields.io/npm/v/{attr(npm)}?color={BADGE_COLOR_CYAN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="npm version">
           <img data-maskable="true" src="https://img.shields.io/npm/dt/{attr(npm)}?color={BADGE_COLOR_MAGENTA}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=downloads" alt="total downloads">
           <img data-maskable="true" src="{attr(release_url)}" alt="latest release">
           <img data-maskable="true" src="https://img.shields.io/npm/l/{attr(npm)}?color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="MIT license">
