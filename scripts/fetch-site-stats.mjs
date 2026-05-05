@@ -38,9 +38,20 @@ function isoDate(ms) {
   return new Date(ms).toISOString().slice(0, 10);
 }
 
+// GoatCounter's /stats/total endpoint started returning 404 when given
+// date-only strings — its OpenAPI spec calls for "date-time, rounded to
+// the hour". Send full RFC3339 datetimes so /stats/total accepts the
+// request. The other endpoints have always been lenient about date-only
+// but accept the stricter format too, so we standardize on it.
+function isoHourFloor(ms) {
+  return new Date(ms).toISOString().slice(0, 13) + ':00:00Z';
+}
+
 const today = isoDate(Date.now());
 const start = isoDate(Date.now() - DAYS * 24 * 60 * 60 * 1000);
-const params = `start=${start}&end=${today}`;
+const startParam = isoHourFloor(Date.now() - DAYS * 24 * 60 * 60 * 1000);
+const endParam = isoHourFloor(Date.now());
+const params = `start=${encodeURIComponent(startParam)}&end=${encodeURIComponent(endParam)}`;
 
 async function gc(endpoint, attempts = 4) {
   // GoatCounter's free-tier API rate-limits aggressively (~5 req/sec).
