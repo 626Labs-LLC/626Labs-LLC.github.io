@@ -407,6 +407,37 @@
       "banner": "assets/thumb-rtclickpng.png",
       "meta": "Windows shell extension · 24h build",
       "screenshots": []
+    },
+    {
+      "id": "snapsnip",
+      "title": "SnapSnip",
+      "description": "Automatically renames full-window snips based on metadata. Reads the active app and window title at capture time, writes a context-rich filename, and embeds structured XMP — turns 'Screenshot 2026-04-29 142301.png' into 'Outlook — Q3 forecast — 2026-04-29 142301.png'. Three on-device redaction presets (Strict / Balanced / Permissive). Privacy by default — no network calls.",
+      "tags": [
+        {
+          "label": "Windows",
+          "tone": "cyan"
+        },
+        {
+          "label": "native",
+          "tone": "magenta"
+        },
+        {
+          "label": "privacy",
+          "tone": "cyan"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/SnipSnap",
+      "npm": null,
+      "install": null,
+      "storeUrl": "https://apps.microsoft.com/detail/9PBX8F5TR0VR",
+      "banner": "assets/thumb-snapsnip.png",
+      "meta": "Windows native · context-aware screenshots",
+      "screenshots": []
     }
   ],
   "lab": [
