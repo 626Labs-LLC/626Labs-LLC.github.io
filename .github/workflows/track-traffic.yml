@@ -27,7 +27,15 @@ jobs:
 
       - name: Fetch traffic snapshots
         env:
+          # Personal-account PAT — scoped to repos under estevanhernandez-stack-ed.
           GH_TOKEN: ${{ secrets.TRAFFIC_PAT }}
+          # Org PAT — scoped to repos under 626Labs-LLC. Fine-grained PATs
+          # can only have one resource owner, so we maintain two: the script
+          # routes each repo's Traffic API call to the matching token by
+          # parsing the owner from the repo's full_name. Optional — if the
+          # secret is unset, the script falls back to GH_TOKEN for org repos
+          # (which 403s on the Traffic API but still allows public listing).
+          GH_TOKEN_ORG: ${{ secrets.TRAFFIC_PAT_ORG }}
         run: node scripts/track-traffic.mjs
 
       - name: Commit if changed

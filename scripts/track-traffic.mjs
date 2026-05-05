@@ -5,9 +5,19 @@
 // history, so this script runs daily and accumulates the rolling window
 // into a permanent CSV committed to the repo.
 //
-// Env: GH_TOKEN — fine-grained PAT with Administration:Read on each repo.
-// For "all repos" auto-discovery, the PAT must have access to "All
-// repositories" under each owner — otherwise repos without traffic
+// Env:
+//   GH_TOKEN     — fine-grained PAT for repos under estevanhernandez-stack-ed.
+//   GH_TOKEN_ORG — fine-grained PAT for repos under 626Labs-LLC. Optional;
+//                  if unset, falls back to GH_TOKEN (which can't reach the
+//                  Traffic API on org repos, so they soft-error and skip).
+//
+// Why two tokens: GitHub fine-grained PATs only support a single resource
+// owner. Repos under your personal account and repos under an org you own
+// each need their own PAT. The script picks the right token per repo based
+// on the owner parsed from the repo's full_name.
+//
+// For "all repos" auto-discovery, each PAT must have access to "All
+// repositories" under its owner — otherwise repos without traffic
 // permission soft-error and are skipped from this run (older rows for
 // those repos remain in the CSV).
 
@@ -15,24 +25,42 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
 const OWNERS = [
-  { type: 'user', name: 'estevanhernandez-stack-ed' },
-  { type: 'org',  name: '626Labs-LLC' },
+  { type: 'user', name: 'estevanhernandez-stack-ed', tokenEnv: 'GH_TOKEN' },
+  { type: 'org',  name: '626Labs-LLC',               tokenEnv: 'GH_TOKEN_ORG' },
 ];
 
 const CSV_PATH = 'data/traffic.csv';
 const REPOS_PATH = 'data/repos.json';
 const HEADER = 'date,repo,clones,unique_cloners,views,unique_visitors';
 
-const token = process.env.GH_TOKEN;
-if (!token) {
-  console.error('GH_TOKEN is required');
+// Build the owner → token map. Falls back to GH_TOKEN if a per-owner token
+// is missing, so the script keeps working in degraded mode (org repos will
+// 403 on the Traffic API and be skipped, same as before this split).
+const TOKEN_BY_OWNER = new Map();
+for (const owner of OWNERS) {
+  const t = process.env[owner.tokenEnv] || process.env.GH_TOKEN;
+  if (t) TOKEN_BY_OWNER.set(owner.name, t);
+}
+if (!process.env.GH_TOKEN) {
+  console.error('GH_TOKEN is required (personal-account PAT).');
   process.exit(1);
 }
 
-async function ghFetch(urlPath) {
+function tokenFor(ownerName) {
+  return TOKEN_BY_OWNER.get(ownerName) || process.env.GH_TOKEN;
+}
+
+function tokenForRepo(fullName) {
+  // full_name is "owner/repo" — route by owner segment.
+  const slash = fullName.indexOf('/');
+  return tokenFor(slash > 0 ? fullName.slice(0, slash) : '');
+}
+
+async function ghFetch(urlPath, tokenOverride) {
+  const t = tokenOverride || process.env.GH_TOKEN;
   const res = await fetch(`https://api.github.com${urlPath}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${t}`,
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
       'User-Agent': '626labs-hub-traffic-tracker',
@@ -79,9 +107,10 @@ async function listPublicRepos(owner) {
     ? `/orgs/${owner.name}/repos?type=public&per_page=100&sort=updated`
     : `/users/${owner.name}/repos?type=owner&per_page=100&sort=updated`;
   // Paginate up to 3 pages (300 repos) defensively. We expect <100 today.
+  const ownerToken = tokenFor(owner.name);
   const all = [];
   for (let page = 1; page <= 3; page++) {
-    const repos = await ghFetch(`${basePath}&page=${page}`);
+    const repos = await ghFetch(`${basePath}&page=${page}`, ownerToken);
     all.push(...repos);
     if (repos.length < 100) break;
   }
@@ -112,9 +141,13 @@ async function discoverRepos() {
 }
 
 async function fetchRepoWindow(repo) {
+  // Route the Traffic API call to whichever token has admin:read on this
+  // repo's owner. Personal-account repos use GH_TOKEN, org repos use
+  // GH_TOKEN_ORG (when set).
+  const t = tokenForRepo(repo);
   const [clones, views] = await Promise.all([
-    ghFetch(`/repos/${repo}/traffic/clones`),
-    ghFetch(`/repos/${repo}/traffic/views`),
+    ghFetch(`/repos/${repo}/traffic/clones`, t),
+    ghFetch(`/repos/${repo}/traffic/views`, t),
   ]);
   const byDate = new Map();
   for (const c of clones.clones ?? []) {
