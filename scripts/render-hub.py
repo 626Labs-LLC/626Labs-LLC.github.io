@@ -321,17 +321,28 @@ def render_badges(p: dict) -> str:
     if not claude_code and not npm:
         return ""
 
-    approved_badge = (
+    # Canonical order: most common → least common, so badges that exist on
+    # every plugin sit in the same column position regardless of which card
+    # you're on. The order is:
+    #   1. Claude Code skill         (universal status marker)
+    #   2. GitHub release            (universal — any repo)
+    #   3. License                   (universal — npm-source if published)
+    #   4. npm version               (npm-only)
+    #   5. npm downloads             (npm-only)
+    #   6. Anthropic approved        (rarest — Cart only)
+    # Plugins without npm just stop after position 3 (or position 1 if they
+    # don't have a tagged release path either).
+    approved_badge_line = (
         f'\n          <img src="{attr(ANTHROPIC_APPROVED_BADGE)}" alt="Anthropic approved">'
         if anthropic_approved else ""
     )
 
     # No npm (pure Claude Code plugin) → just the Claude Code badge,
-    # plus the Anthropic-approved badge when applicable.
+    # with Anthropic-approved at the end if applicable.
     if not npm:
         return f"""\
         <div class="badges">
-          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">{approved_badge}
+          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">{approved_badge_line}
         </div>"""
     repo = p.get("repo") or ""
     pid = p.get("id", "")
@@ -358,16 +369,20 @@ def render_badges(p: dict) -> str:
         f'          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">\n'
         if claude_code else ""
     )
-    approved_badge_line = (
-        f'          <img src="{attr(ANTHROPIC_APPROVED_BADGE)}" alt="Anthropic approved">\n'
+    approved_badge_tail = (
+        f'\n          <img src="{attr(ANTHROPIC_APPROVED_BADGE)}" alt="Anthropic approved">'
         if anthropic_approved else ""
     )
+    # Order: CC, release, license, npm version, npm downloads, [Anthropic approved].
+    # npm-specific badges sit at the end so the universal ones above them
+    # stay column-aligned with non-npm plugins. Anthropic-approved comes
+    # absolute last because it's the rarest (Cart only).
     return f"""\
         <div class="badges">
-{cc_badge}{approved_badge_line}          <img data-maskable="true" src="https://img.shields.io/npm/v/{attr(npm)}?color={BADGE_COLOR_CYAN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="npm version">
-          <img data-maskable="true" src="https://img.shields.io/npm/dt/{attr(npm)}?color={BADGE_COLOR_MAGENTA}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=downloads" alt="total downloads">
-          <img data-maskable="true" src="{attr(release_url)}" alt="latest release">
+{cc_badge}          <img data-maskable="true" src="{attr(release_url)}" alt="latest release">
           <img data-maskable="true" src="https://img.shields.io/npm/l/{attr(npm)}?color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="MIT license">
+          <img data-maskable="true" src="https://img.shields.io/npm/v/{attr(npm)}?color={BADGE_COLOR_CYAN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="npm version">
+          <img data-maskable="true" src="https://img.shields.io/npm/dt/{attr(npm)}?color={BADGE_COLOR_MAGENTA}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=downloads" alt="total downloads">{approved_badge_tail}
         </div>"""
 
 
