@@ -379,6 +379,37 @@
       "screenshots": []
     },
     {
+      "id": "rororo",
+      "title": "RORORO",
+      "description": "Native Windows multi-launcher for Roblox — spawn multiple clients side by side, each signed in as a saved account. .NET 10 + WPF + WebView2, DPAPI-encrypted vault tied to your Windows user. Holds the singleton mutex; doesn't inject or modify the client. Independent third-party tool, not affiliated with Roblox Corporation.",
+      "tags": [
+        {
+          "label": "Windows",
+          "tone": "cyan"
+        },
+        {
+          "label": "native",
+          "tone": "magenta"
+        },
+        {
+          "label": "Roblox tooling",
+          "tone": "cyan"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/ROROROblox",
+      "npm": null,
+      "install": null,
+      "storeUrl": "https://apps.microsoft.com/detail/9NMJCS390KWB",
+      "banner": "assets/thumb-rororo.png",
+      "meta": "Windows native · Roblox multi-launcher",
+      "screenshots": []
+    },
+    {
       "id": "rtclickpng",
       "title": "Right Click PNG",
       "description": "Adds 'Convert to PNG' and 'Copy as PNG' to the File Explorer right-click menu — decodes .webp / .avif / .heic / .bmp / .tif / .gif locally, no network round trip. C++/WinRT shell extension plus a .NET 9 AOT engine, seven bundled decoders, 85 tests green. Idea to Microsoft Store in 24 hours, built with Vibe Cartographer.",
