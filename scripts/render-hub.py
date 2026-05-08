@@ -11,6 +11,8 @@ Zones handled:
 - hero-chips   — chips around the animated logo
 - products     — the 5 product cards in the Work section
 - thinking     — the Thinking section essays
+- stories      — auto-discovered Field Notes from content/stories/*.md
+                 (any frontmatter-fenced .md without `draft: true`)
 - lab-runs     — "How the lab runs" section
 - play         — the Play section
 - about        — the About section
@@ -37,6 +39,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SITE_JSON = ROOT / "content" / "site.json"
 INDEX_HTML = ROOT / "index.html"
+STORIES_DIR = ROOT / "content" / "stories"
+
+# Repo slug used to deep-link each Field Note's "Read on GitHub" CTA at the
+# raw markdown source. Per-story rendered HTML pages can be a follow-up; for
+# v1 the reading experience is GitHub's markdown renderer.
+STORIES_GITHUB_REPO = "626Labs-LLC/626Labs-LLC.github.io"
+STORIES_GITHUB_BRANCH = "main"
 
 
 # ─── helpers ────────────────────────────────────────────────────────
@@ -939,6 +948,151 @@ def render_about(about: dict) -> str:
 </section>"""
 
 
+# ─── field notes (auto-discovered stories) ──────────────────────────
+# Frontmatter values we trust as raw strings. Quoted-or-unquoted scalars
+# only — no nested objects, arrays, or multi-line literals. Story authors
+# write frontmatter using the admin's Stories tab, so the surface stays
+# narrow on purpose; if a field needs richer typing, special-case it
+# below (e.g. `draft` is coerced to a bool).
+_FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
+_FM_LINE_RE = re.compile(r'^([A-Za-z0-9_]+):\s*(.*?)\s*$')
+
+
+def _strip_quotes(value: str) -> str:
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in ('"', "'"):
+        return value[1:-1]
+    return value
+
+
+def parse_story_frontmatter(text: str) -> tuple[dict, str]:
+    """Parse a ---fenced YAML-subset frontmatter block.
+
+    Stdlib-only (no PyYAML). Handles the shape the admin's Stories tab
+    writes: simple key/value pairs, quoted strings, ISO dates, booleans.
+    Returns (fields_dict, body_markdown). Returns ({}, text) when the
+    file has no frontmatter fence — the body is still usable, just lacks
+    metadata to surface in the Field Notes card.
+    """
+    m = _FRONTMATTER_RE.match(text)
+    if not m:
+        return {}, text
+    block = m.group(1)
+    body = text[m.end():]
+    fields: dict[str, object] = {}
+    for line in block.splitlines():
+        line = line.rstrip()
+        if not line or line.lstrip().startswith("#"):
+            continue
+        match = _FM_LINE_RE.match(line)
+        if not match:
+            continue
+        key, raw = match.group(1), match.group(2)
+        raw_lower = raw.lower()
+        if raw_lower in ("true", "false"):
+            fields[key] = (raw_lower == "true")
+        elif raw == "" or raw_lower in ("null", "~"):
+            fields[key] = None
+        else:
+            fields[key] = _strip_quotes(raw)
+    return fields, body
+
+
+def discover_stories() -> list[dict]:
+    """Walk content/stories/, return non-draft entries newest-first.
+
+    Each entry is the parsed frontmatter dict plus the source filename
+    (used to build the GitHub link). Files without frontmatter are
+    skipped — there's no card to render without title + published date.
+    Files with `draft: true` are also skipped — the publishing fence.
+    """
+    if not STORIES_DIR.is_dir():
+        return []
+    entries: list[dict] = []
+    for path in sorted(STORIES_DIR.glob("*.md")):
+        try:
+            text = path.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        fields, _ = parse_story_frontmatter(text)
+        if not fields:
+            continue
+        if fields.get("draft") is True:
+            continue
+        if not fields.get("title") or not fields.get("published"):
+            # Need both to render a useful card; otherwise skip silently.
+            continue
+        fields["_filename"] = path.name
+        entries.append(fields)
+    # Newest-first by `published` (ISO date strings sort lexicographically).
+    entries.sort(key=lambda e: str(e.get("published", "")), reverse=True)
+    return entries
+
+
+def render_field_note(story: dict) -> str:
+    """One card. Eyebrow (date · product), title, subtitle, tagline, link."""
+    title = esc(str(story.get("title", "")))
+    subtitle = esc(str(story.get("subtitle", "")))
+    tagline = esc(str(story.get("tagline", "")))
+    published = esc(str(story.get("published", "")))
+    product = esc(str(story.get("product", "")))
+    filename = story.get("_filename", "")
+    eyebrow_parts = [p for p in (published, product) if p]
+    eyebrow = " · ".join(eyebrow_parts)
+    link_url = (
+        f"https://github.com/{STORIES_GITHUB_REPO}/blob/"
+        f"{STORIES_GITHUB_BRANCH}/content/stories/{filename}"
+    )
+
+    parts = [
+        '      <article class="field-note">',
+        f'        <div class="field-note-eyebrow">{eyebrow}</div>',
+        f'        <h3 class="field-note-title">{title}</h3>',
+    ]
+    if subtitle:
+        parts.append(f'        <p class="field-note-subtitle">{subtitle}</p>')
+    if tagline:
+        parts.append(f'        <p class="field-note-tagline">{tagline}</p>')
+    parts.append('        <div class="field-note-link">')
+    parts.append(
+        f'          <a href="{attr(link_url)}" target="_blank" rel="noopener">'
+        'Read the full story '
+        '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+        'stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" '
+        'aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>'
+    )
+    parts.append('        </div>')
+    parts.append('      </article>')
+    return "\n".join(parts)
+
+
+def render_field_notes(stories: list[dict]) -> str:
+    """Whole `<section>` block. Returns "" when no published stories.
+
+    When empty, the SITE_JSON:stories zone collapses to nothing — no
+    section, no nav anchor target. The nav link still exists (see
+    index.html) but jumps to the top of the page until the first story
+    is published. Acceptable v1 — single follow-up commit fixes it.
+    """
+    if not stories:
+        return ""
+    cards = "\n".join(render_field_note(s) for s in stories)
+    return f"""\
+<section class="section field-notes" id="field-notes">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>Field Notes</span><span class="line"></span></div>
+        <h2>What we shipped, what bit us, what we'd do differently.</h2>
+      </div>
+      <p>Long-form retrospectives — the unfiltered version of what each launch actually looked like.</p>
+    </div>
+    <div class="field-notes-grid">
+{cards}
+    </div>
+  </div>
+</section>"""
+
+
 # ─── section toggles ────────────────────────────────────────────────
 # Maps sections keys in site.json → DOM id of the <section> element.
 SECTION_IDS = {
@@ -994,6 +1148,7 @@ def main(argv: list[str]) -> int:
     out = substitute_zone(out, "lab-pool", render_lab_pool(content["lab"]), js=True)
     if "thinking" in content:
         out = substitute_zone(out, "thinking", render_thinking(content["thinking"]))
+    out = substitute_zone(out, "stories", render_field_notes(discover_stories()))
     if "labRuns" in content:
         out = substitute_zone(out, "lab-runs", render_lab_runs(content["labRuns"]))
     if "play" in content:

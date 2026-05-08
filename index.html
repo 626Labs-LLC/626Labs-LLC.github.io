@@ -865,6 +865,81 @@
     section.thinking .artifact-links a:hover { color: var(--cyan-pale); }
     section.thinking .artifact-links a svg { width: 14px; height: 14px; }
 
+    /* ========== Field Notes ========== */
+    section.field-notes {
+      background:
+        radial-gradient(70% 50% at 100% 0%, rgba(242,47,137,.04) 0%, transparent 60%),
+        var(--bg-0);
+      border-bottom: 1px solid var(--border-1);
+    }
+    section.field-notes .field-notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--s-5);
+      margin-top: var(--s-6);
+    }
+    section.field-notes .field-note {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: var(--s-5) var(--s-5);
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-lg);
+      background:
+        linear-gradient(135deg, rgba(23,212,250,.03), rgba(242,47,137,.025)),
+        rgba(255,255,255,.012);
+      transition: border-color 120ms;
+    }
+    section.field-notes .field-note:hover { border-color: var(--border-accent); }
+    section.field-notes .field-note-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--magenta);
+    }
+    section.field-notes .field-note-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.012em;
+      margin: 0;
+      color: var(--fg-1);
+    }
+    section.field-notes .field-note-subtitle {
+      font-size: 14.5px;
+      color: var(--fg-2);
+      line-height: 1.6;
+      margin: 0;
+    }
+    section.field-notes .field-note-tagline {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 12px;
+      margin: 0;
+      font-style: italic;
+      font-size: 13.5px;
+      color: var(--cyan-pale);
+      line-height: 1.5;
+    }
+    section.field-notes .field-note-link {
+      margin-top: auto;
+      padding-top: 4px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+    section.field-notes .field-note-link a {
+      color: var(--cyan);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: color 120ms;
+    }
+    section.field-notes .field-note-link a:hover { color: var(--cyan-pale); }
+    section.field-notes .field-note-link a svg { width: 14px; height: 14px; }
+
     /* ========== How the lab runs ========== */
     section.lab-runs .frames {
       display: grid;
@@ -1341,6 +1416,7 @@
     <div class="nav-links">
       <a href="#work">Work</a>
       <a href="#thinking">Thinking</a>
+      <a href="#field-notes">Field Notes</a>
       <a href="#lab">Lab</a>
       <a href="#about">About</a>
       <a href="https://github.com/sponsors/estevanhernandez-stack-ed">Sponsor</a>
@@ -1862,6 +1938,13 @@
 </section>
 <!-- SITE_JSON:thinking:end -->
 
+<!-- =============== FIELD NOTES =============== -->
+<!-- Auto-discovered from content/stories/*.md (frontmatter, draft: false). -->
+<!-- Section collapses entirely when zero published stories exist. -->
+<!-- SITE_JSON:stories:start -->
+
+<!-- SITE_JSON:stories:end -->
+
 <!-- =============== LAB RUNS =============== -->
 <!-- SITE_JSON:lab-runs:start -->
 <section class="section lab-runs" id="lab-runs">
@@ -2057,6 +2140,7 @@
     <div class="footer-links">
       <a href="#work">Work</a>
       <a href="#thinking">Thinking</a>
+      <a href="#field-notes">Field Notes</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
       <a href="thesis.html">Thesis</a>
