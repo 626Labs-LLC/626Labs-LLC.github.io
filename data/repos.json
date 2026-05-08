@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-07T08:36:38.216Z",
-  "count": 30,
+  "generatedAt": "2026-05-08T07:44:49.809Z",
+  "count": 33,
   "owners": [
     "user:estevanhernandez-stack-ed",
     "org:626Labs-LLC"
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-05-07T08:08:38Z",
+      "pushed_at": "2026-05-08T07:12:05Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -115,6 +115,18 @@
       "fork": false
     },
     {
+      "full_name": "estevanhernandez-stack-ed/homebrew-rororo",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "homebrew-rororo",
+      "description": "Homebrew tap for RORORO — Mac-native multi-Roblox launcher",
+      "html_url": "https://github.com/estevanhernandez-stack-ed/homebrew-rororo",
+      "language": "Ruby",
+      "pushed_at": "2026-05-08T05:24:00Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
       "full_name": "estevanhernandez-stack-ed/homebrew-tap",
       "owner": "estevanhernandez-stack-ed",
       "name": "homebrew-tap",
@@ -145,7 +157,7 @@
       "description": "A Roblox macro maker for Mac",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Macro",
       "language": "Swift",
-      "pushed_at": "2026-05-06T04:54:55Z",
+      "pushed_at": "2026-05-07T19:24:01Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -175,13 +187,25 @@
       "fork": false
     },
     {
+      "full_name": "estevanhernandez-stack-ed/rororo-mac",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "rororo-mac",
+      "description": "Mac-native multi-Roblox launcher. Account vault + multi-instance support. Sibling to ROROROblox (Windows).",
+      "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-mac",
+      "language": "Swift",
+      "pushed_at": "2026-05-08T05:23:58Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
       "full_name": "estevanhernandez-stack-ed/ROROROblox",
       "owner": "estevanhernandez-stack-ed",
       "name": "ROROROblox",
       "description": "Multiroblox as current as possible",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
-      "pushed_at": "2026-05-06T22:28:23Z",
+      "pushed_at": "2026-05-08T03:31:46Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -313,7 +337,7 @@
       "description": "The 626Labs Vibe Plugins ecosystem — spec-driven development, documentation, security, and testing for vibe-coded apps. Monorepo for vibe-sec + vibe-test + shared core.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-05-07T04:49:29Z",
+      "pushed_at": "2026-05-08T05:51:44Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -326,6 +350,18 @@
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-sec",
       "language": "JavaScript",
       "pushed_at": "2026-04-29T22:32:43Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
+      "full_name": "estevanhernandez-stack-ed/vibe-taker",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "vibe-taker",
+      "description": "Take it with you. Capture a feature out of one repo as a portable bundle; plant it into another and adapt to the destination stack.",
+      "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-taker",
+      "language": null,
+      "pushed_at": "2026-05-08T05:54:18Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
