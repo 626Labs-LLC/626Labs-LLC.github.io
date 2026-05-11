@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-10T08:10:17.009Z",
-  "count": 34,
+  "generatedAt": "2026-05-11T09:43:00.433Z",
+  "count": 35,
   "owners": [
     "user:estevanhernandez-stack-ed",
     "org:626Labs-LLC"
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-05-10T07:51:31Z",
+      "pushed_at": "2026-05-11T08:51:47Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -121,7 +121,7 @@
       "description": "Homebrew tap for RORORO — Mac-native multi-Roblox launcher",
       "html_url": "https://github.com/estevanhernandez-stack-ed/homebrew-rororo",
       "language": "Ruby",
-      "pushed_at": "2026-05-09T07:07:44Z",
+      "pushed_at": "2026-05-11T05:06:23Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -205,7 +205,19 @@
       "description": "Mac-native multi-Roblox launcher. Account vault + multi-instance support. Sibling to ROROROblox (Windows).",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-mac",
       "language": "Swift",
-      "pushed_at": "2026-05-09T07:07:42Z",
+      "pushed_at": "2026-05-11T05:06:20Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
+      "full_name": "estevanhernandez-stack-ed/rororo-ur-task",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "rororo-ur-task",
+      "description": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't bound. A 626 Labs product.",
+      "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
+      "language": "C#",
+      "pushed_at": "2026-05-11T06:33:43Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -217,7 +229,7 @@
       "description": "Multiroblox as current as possible",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
-      "pushed_at": "2026-05-09T16:54:06Z",
+      "pushed_at": "2026-05-11T00:07:28Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
