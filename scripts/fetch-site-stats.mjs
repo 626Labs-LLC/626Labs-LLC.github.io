@@ -85,10 +85,12 @@ async function gc(endpoint, attempts = 4) {
 }
 
 // Soft fetch: tolerate individual endpoint failures so one persistently-
-// rate-limited call doesn't break the entire snapshot.
-async function softGc(endpoint) {
+// rate-limited call doesn't break the entire snapshot. `attempts` is
+// forwarded to gc() — pass a higher value for endpoints that must succeed
+// (see /stats/total, which is load-bearing for the admin's top-bar totals).
+async function softGc(endpoint, attempts) {
   try {
-    return { ok: true, data: await gc(endpoint) };
+    return { ok: true, data: await gc(endpoint, attempts) };
   } catch (err) {
     console.warn(`! ${endpoint}: ${err.message}`);
     return { ok: false, error: err.message };
@@ -102,13 +104,24 @@ console.log(`Fetching GoatCounter stats for 626labs.dev — ${start} → ${today
 // Sequential — Promise.all bursts trip GoatCounter's free-tier rate limit.
 // Inter-call delay (300ms) gives the bucket time to refill so the retry-on-429
 // path inside gc() rarely needs to fire.
-async function step(label, endpoint) {
-  const res = await softGc(endpoint);
+async function step(label, endpoint, attempts) {
+  const res = await softGc(endpoint, attempts);
   await sleep(300);
   return res;
 }
 
-const total     = await step('total',     `/stats/total?${params}`);
+// /stats/total is the source of truth for the admin's top-bar totals
+// (data.total.total / total_unique). If it nulls out, the admin renders
+// 0 with no visual tell — which is how "the bar shows zeros, refresh
+// fixes it" failures land. Bump retries to 8 and abort on failure so we
+// preserve the previous good snapshot rather than overwriting with nulls.
+const total     = await step('total',     `/stats/total?${params}`, 8);
+if (!total.ok) {
+  console.error(`! /stats/total failed after retries — aborting without overwriting ${OUT_PATH}.`);
+  console.error(`  reason: ${total.error}`);
+  console.error(`  the previous snapshot stays in place; next scheduled run will retry.`);
+  process.exit(1);
+}
 const hits      = await step('hits',      `/stats/hits?${params}&limit=${HITS_LIMIT}`);
 const refs      = await step('refs',      `/stats/toprefs?${params}&limit=${REFS_LIMIT}`);
 const locations = await step('locations', `/stats/locations?${params}&limit=${LOCATIONS_LIMIT}`);
