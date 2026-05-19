@@ -192,6 +192,12 @@ PRODUCT_SIGILS = {
         '<path d="M1 6v16l7-3 8 3 7-3V3l-7 3-8-3-7 3z"/>'
         '<path d="M8 3v16M16 6v16"/></svg>'
     ),
+    "vibe-iterate": (
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<circle cx="12" cy="12" r="9"/>'
+        '<path d="M12 3v18M3 12h18"/>'
+        '<path d="M12 7l3 5-3 5-3-5z"/></svg>'
+    ),
     "vibe-doc": (
         '<svg class="ic-lg ic" viewBox="0 0 24 24">'
         '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'

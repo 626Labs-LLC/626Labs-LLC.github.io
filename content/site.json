@@ -34,6 +34,10 @@
         "tone": "cyan"
       },
       {
+        "label": "vibe-iterate",
+        "tone": "cyan"
+      },
+      {
         "label": "vibe-doc",
         "tone": "magenta"
       },
@@ -154,6 +158,35 @@
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer",
       "claudeCode": true,
       "anthropicApproved": true,
+      "screenshots": []
+    },
+    {
+      "id": "vibe-iterate",
+      "title": "Vibe Iterate",
+      "tagline": "Maintain your Atlas.",
+      "description": "Post-ship product iteration. Pick a banner mode — feature-add, competitive, ux-polish, bug-bash — or reach for a sidecar (:radar, :spy, :scan-releases, :rate, :ship, :upgrade). Ships one PR per session, regression-aware.",
+      "tags": [
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "post-ship",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-iterate",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "anthropicApproved": false,
+      "meta": "<code>/vibe-iterate</code> · post-ship iteration",
+      "productPage": "/vibe-iterate/",
       "screenshots": []
     },
     {
