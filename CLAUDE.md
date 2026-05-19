@@ -67,11 +67,13 @@ The 5 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
-| `build-widget.yml` | Push to `apps/widget-bacon-trail/src/**` | Vite-builds the widget, commits the bundle to `widget-bacon-trail/`. |
+| `build-widget.yml` | Push to `apps/widget-bacon-trail/src/**` | Vite-builds the widget, commits the bundle to `widget-bacon-trail/`. Bakes `VITE_TMDB_API_KEY` (required) and `VITE_STATS_ENDPOINT` (optional — widget degrades to no play counts if unset) into the IIFE bundle at build time. |
 | `refresh-bacon-shards.yml` | Daily 06:00 UTC | Pulls bacon shard data from Firestore (uses `FIREBASE_SA_JSON` secret). |
 | `rebuild-hub.yml` | Push to `content/site.json` | Re-runs render-hub.py and commits drift. |
-| `track-traffic.yml` | Daily 06:00 UTC | Auto-discovers all public, non-fork, non-archived repos under `estevanhernandez-stack-ed` (user) and `626Labs-LLC` (org), then pulls GitHub traffic metrics for each (uses `TRAFFIC_PAT` secret — needs Administration:Read on every tracked repo). |
+| `track-traffic.yml` | Daily 06:00 UTC | Auto-discovers all public, non-fork, non-archived repos under `estevanhernandez-stack-ed` (user) and `626Labs-LLC` (org), then pulls GitHub traffic metrics for each. Uses `TRAFFIC_PAT` (user-scope, needs Administration:Read on every tracked repo) and `TRAFFIC_PAT_ORG` (optional org-scope override — without it, org repos fall back to GH_TOKEN and 403 on the Traffic API). |
 | `fetch-site-stats.yml` | Daily 06:30 UTC | Pulls GoatCounter visit stats for `626labs.dev` and writes `data/site-stats.json` (uses `GOATCOUNTER_TOKEN` secret). |
+
+**Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
 All five use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.

@@ -20,4 +20,5 @@ If the user invokes this skill without any other guidance, ask them what they wa
 - Product-specific teal `#2ee6c9` used in The Lab Dashboard for primary CTAs and active nav.
 - Type: Space Grotesk (display), Inter (UI), JetBrains Mono (code + small meta labels, always uppercase with +0.12em tracking).
 - Voice: builder-to-builder, second person, short sentences, no emoji in UI, no hedging verbs.
+- **Audio:** No default system sounds, browser alert chimes, or stock OS dings. If a surface needs audio feedback (notifications, success/error tones, micro-interactions), use **modern crisp tones** — short, intentionally-shaped, brand-coherent. Default to silence over a system beep.
 - Tagline: *Imagine Something Else.*

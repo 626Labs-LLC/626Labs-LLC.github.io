@@ -295,7 +295,9 @@ function LockScreen({ onUnlock }) {
             Generate a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style={{ color: "#17d4fa", textDecoration: "underline" }}>fine-grained PAT</a> with:
             <ul style={{ margin: "6px 0 0 18px", padding: 0 }}>
               <li>Repository access → Only <code style={{ color: "#17d4fa", fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>626Labs-LLC/626Labs-LLC.github.io</code></li>
-              <li>Permissions → Contents: <strong style={{ color: "#e7edf5" }}>Read &amp; write</strong></li>
+              <li>Permissions → Contents: <strong style={{ color: "#e7edf5" }}>Read &amp; write</strong> (edits to site.json + stories)</li>
+              <li>Permissions → Actions: <strong style={{ color: "#e7edf5" }}>Read &amp; write</strong> (Ops tab — list runs + Re-run buttons)</li>
+              <li>Permissions → Metadata: <strong style={{ color: "#e7edf5" }}>Read</strong> (auto-granted; required by GitHub)</li>
             </ul>
           </div>
         </form>
