@@ -482,6 +482,18 @@ def build_square(plugin, out_path):
     print(f"  square  {plugin['id']:24s}  {out_path}")
 
 
+def build_icon(plugin, out_path, size=512):
+    """Glyph-only transparent icon — for nav marks, favicons, inline use.
+    No card, no text, no background. Just the line-art glyph centered."""
+    canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    glyph_size = int(size * 0.76)
+    glyph = GLYPHS[plugin["glyph"]](plugin["primary"], plugin["secondary"])
+    glyph = glyph.resize((glyph_size, glyph_size), Image.LANCZOS)
+    canvas.alpha_composite(glyph, dest=((size - glyph_size) // 2, (size - glyph_size) // 2))
+    canvas.save(out_path, "PNG", optimize=True)
+    print(f"  icon    {plugin['id']:24s}  {out_path}")
+
+
 def main():
     print(f"Building plugin icons -> {OUT}")
     for p in PLUGINS:
@@ -491,6 +503,8 @@ def main():
         build_banner(p, OUT / f"{p['id']}-banner-1280x640.png", size=(1280, 640))
         # Square — repo avatar, marketplace tile
         build_square(p, OUT / f"{p['id']}-square-1024.png")
+        # Glyph-only transparent icon — nav marks, favicons
+        build_icon(p, OUT / f"{p['id']}-icon-transparent-512.png")
 
 
 if __name__ == "__main__":

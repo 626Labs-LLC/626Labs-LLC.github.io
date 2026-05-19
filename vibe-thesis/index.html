@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vibe-iterate · Maintain your Atlas. · 626Labs</title>
-  <meta name="description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <link rel="canonical" href="https://626labs.dev/vibe-iterate/" />
+  <title>vibe-thesis · Start with a strong stance · 626Labs</title>
+  <meta name="description" content="Claude Code plugin for academic thesis authoring. Scaffolds a PDF + render pipeline, voice synthesis, and self-review tone lint in about 30 minutes." />
+  <link rel="canonical" href="https://626labs.dev/vibe-thesis/" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
-  <meta property="og:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta property="og:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta property="og:url" content="https://626labs.dev/vibe-iterate/" />
-  <meta property="og:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+  <meta property="og:title" content="vibe-thesis · Start with a strong stance" />
+  <meta property="og:description" content="Claude Code plugin for academic thesis authoring. Scaffolds a PDF + render pipeline, voice synthesis, and self-review tone lint in about 30 minutes." />
+  <meta property="og:url" content="https://626labs.dev/vibe-thesis/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-thesis-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta name="twitter:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta name="twitter:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+  <meta name="twitter:title" content="vibe-thesis · Start with a strong stance" />
+  <meta name="twitter:description" content="Claude Code plugin for academic thesis authoring. Scaffolds a PDF + render pipeline, voice synthesis, and self-review tone lint in about 30 minutes." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-thesis-banner-1280x640.png" />
 
   <style>
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
@@ -244,8 +244,8 @@
         </a>
         <span class="brand-sep" aria-hidden="true">/</span>
         <span class="brand-current">
-          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
-          <span>vibe-iterate</span>
+          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-thesis-icon-transparent-512.png" alt="" /></span>
+          <span>vibe-thesis</span>
         </span>
       </div>
       <a href="#install" class="btn btn-ghost">Install</a>
@@ -259,13 +259,13 @@
         <div class="hero-grid">
           <div class="hero-left">
             <span class="eyebrow">626Labs · Claude Code plugin</span>
-            <h1>Maintain your Atlas.</h1>
-            <p class="hero-subhead">Cart took you idea &rarr; v1. vibe-iterate takes you v1 &rarr; v1+n. Ships one PR per session &mdash; regression-aware, small-diff-preferred.</p>
+            <h1>Start with a strong stance.</h1>
+            <p class="hero-subhead">A Claude Code plugin that scaffolds and co-authors thesis-shaped artifacts &mdash; dissertations, master's theses, long-form research articles, position essays &mdash; with a rendered PDF skeleton in roughly 30 minutes. For researchers and technical writers who want Claude in the loop without giving up their own voice.</p>
             <div class="hero-ctas">
-              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-iterate/blob/main/docs/2026-05-04-vibe-iterate-design.md" class="btn btn-ghost">Read the spec</a>
+              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/Vibe-Thesis" class="btn btn-ghost">View on GitHub</a>
             </div>
             <div class="hero-meta">
-              <span>v1.0.0</span><span>·</span><span>4 modes</span><span>·</span><span>6 sidecars</span><span>·</span><span>MIT</span>
+              <span>v0.2.0</span><span>·</span><span>6 commands</span><span>·</span><span>voice pipeline</span><span>·</span><span>PDF / HTML / md</span>
             </div>
           </div>
 
@@ -275,23 +275,19 @@
                 <span class="term-dot r"></span>
                 <span class="term-dot y"></span>
                 <span class="term-dot g"></span>
-                <span class="term-label">vibe-iterate ~</span>
+                <span class="term-label">vibe-thesis ~</span>
               </div>
               <div class="term-body">
-                <div><span class="prompt">$</span> <span class="cmd">/vibe-iterate</span></div>
-                <div><span class="agent">[Ptolemy]</span> Reading project state...</div>
-                <div>  &rarr; Atlas: <span class="key">12 entries</span>, last shipped 4 days ago</div>
-                <div>  &rarr; Stack: <span class="path">Next.js 15.2.0</span>, <span class="path">Tailwind 4</span>, <span class="path">Supabase</span></div>
-                <div>  &rarr; Radar cache: 6 days old <span class="muted">(stale)</span></div>
+                <div><span class="prompt">&gt;</span> <span class="cmd">scaffold a vibe thesis on epistemic justice in clinical AI</span></div>
+                <div><span class="agent">[vibe-thesis]</span> Detected gh + auth. Creating from ThesisStudio...</div>
+                <div>  <span class="ok">✓</span> repo created · marker injected · bootstrap dispatched</div>
                 <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Recommended mode for the moment:</div>
-                <div>  <span class="key">feature-add</span> &mdash; Product Hunt surfaced 3 candidates,</div>
-                <div>  framework releases include <span class="path">Tailwind v4.1</span>.</div>
+                <div>  Name 2–4 authors whose prose you admire:</div>
+                <div><span class="prompt">&gt;</span> Fricker, Hacking, Daston, Browne</div>
+                <div>  Synthesis ratio? <span class="prompt">&gt;</span> timeless-anchored</div>
+                <div>  <span class="ok">✓</span> VOICE SYNTHESIS written to CLAUDE.md</div>
                 <div>&nbsp;</div>
-                <div>Launch <span class="key">feature-add</span>? [y/N]: <span class="cmd">y</span></div>
-                <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Scanning... <span class="ok">done</span></div>
-                <div><span class="agent">[Ptolemy]</span> PR ready: <span class="path">feat: inline AI command palette</span><span class="term-cursor"></span></div>
+                <div>  <span class="ok">✓</span> Round-trip PDF rendered: <span class="path">08_OUTPUT/pdf/example.pdf</span><span class="term-cursor"></span></div>
               </div>
             </div>
           </div>
@@ -302,69 +298,46 @@
     <section class="work">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">01 · The work</span>
-          <h2>Four modes for what&#x27;s next.</h2>
-          <p class="lead">Pick the mode for the moment. Each ships one PR per session, with Atlas continuity across runs.</p>
+          <span class="eyebrow">01 · Commands</span>
+          <h2>The full writing loop, from the slash bar.</h2>
+          <p class="lead">Six user-invocable commands cover scaffold through voice capture, tone lint, and final render.</p>
         </div>
 
         <div class="cards-grid">
           <div class="card">
-            <span class="cmd">/vibe-iterate:feature-add</span>
-            <h3>Ship the next feature.</h3>
-            <p class="desc">Multi-source candidate scan: competitors, Product Hunt, framework releases, your feedback.md. Clusters, scores, picks one.</p>
-            <p class="reach">Reach for it when <em>you don't know what to build next</em>.</p>
+            <span class="cmd">/vibe-thesis:vibe-render</span>
+            <h3>Render to your target format.</h3>
+            <p class="desc">Pre-runs token compile and citation checks, then calls Pandoc + xelatex. Reports the manifest on success, surfaces stderr with a diagnostic table on failure. --guard requires a clean tone lint first.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-iterate:competitive</span>
-            <h3>Close the gaps that matter.</h3>
-            <p class="desc">Reads competitor changelogs, diffs against your shipped product, ranks by strategic relevance &mdash; not parity.</p>
-            <p class="reach">Reach for it when <em>a competitor shipped something loud</em>.</p>
+            <span class="cmd">/vibe-thesis:vibe-status</span>
+            <h3>One-screen project state.</h3>
+            <p class="desc">Read-only. Reports planning docs, body counts, claim coverage, citations health, voice state, and last render in 30 lines or fewer.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-iterate:ux-polish</span>
-            <h3>Tighten what&#x27;s shipped but rough.</h3>
-            <p class="desc">Walks routes, components, key flows. Scores by user-trust impact.</p>
-            <p class="reach">Reach for it when <em>the product works but feels off</em>.</p>
+            <span class="cmd">/vibe-thesis:voice</span>
+            <h3>Set or revise your voice profile.</h3>
+            <p class="desc">A short interview: timeless prose voices, contemporary field experts, and a synthesis ratio. Writes a VOICE SYNTHESIS block to CLAUDE.md so the drafting persona reads it. Idempotent.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-iterate:bug-bash</span>
-            <h3>Fix the loudest bug.</h3>
-            <p class="desc">Reads feedback.md, triages by severity &times; frequency &times; blast-radius. Dormant when feedback.md is missing.</p>
-            <p class="reach">Reach for it when <em>users keep reporting the same thing</em>.</p>
+            <span class="cmd">/vibe-thesis:guard</span>
+            <h3>Lint body content for self-review tone.</h3>
+            <p class="desc">Advisory scan for inflationary language, self-praise framings, and defensive over-qualification. Reports file:line with one-line suggestions. Never auto-fixes.</p>
           </div>
-        </div>
 
-        <div class="sub-head">
-          <h3>Six tools when a mode is too much.</h3>
-          <span class="hint">Run any sidecar directly — no mode required.</span>
-        </div>
-        <div class="mini-grid">
-          <div class="mini">
-            <span class="name">:radar</span>
-            <p class="desc">What's new across your stack and competitors since last visit.</p>
+          <div class="card">
+            <span class="cmd">/vibe-thesis:smooth</span>
+            <h3>Apply your voice to a draft.</h3>
+            <p class="desc">Multi-pass rewrite that recasts a draft in your captured voice without changing claims or paragraph structure. Outputs a .smoothed.md plus a diff summary.</p>
           </div>
-          <div class="mini">
-            <span class="name">:spy &amp;lt;url&amp;gt;</span>
-            <p class="desc">One-shot competitive read on a single URL.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:scan-releases [pkg]</span>
-            <p class="desc">What's new in this lib since you last bumped.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:rate &amp;lt;idea&amp;gt;</span>
-            <p class="desc">Score an idea on impact / fit / effort / regression-risk / user-trust.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:ship &amp;lt;brief&amp;gt;</span>
-            <p class="desc">Express lane. Skip ingestion, ship from a brief.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:upgrade &amp;lt;pkg&amp;gt;</span>
-            <p class="desc">Surgical library bump with codemods if available.</p>
+
+          <div class="card">
+            <span class="cmd">/vibe-thesis:audit</span>
+            <h3>Discipline-audit any markdown.</h3>
+            <p class="desc">The same lint with no project required &mdash; point it at any file or directory. Issues a one-line verdict; --public formats it as a quotable scorecard.</p>
           </div>
         </div>
       </div>
@@ -373,16 +346,16 @@
     <section class="brain">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">02 · The brain</span>
-          <h2>Ptolemy stays current.</h2>
+          <span class="eyebrow">02 · How it works</span>
+          <h2>Wraps ThesisStudio, adds the Claude-native layer.</h2>
         </div>
         <div class="brain-grid">
           <div>
-            <p><strong>Ptolemy is vibe-iterate's agent</strong> &mdash; senior to Cart's field-cartographer, oriented for already-shipped territory. He reads your stack via context7, watches framework releases on a weekly scan, and keeps your Atlas &mdash; the running record of what you've shipped, what you considered, what got cut, and why &mdash; in continuity across sessions.</p>
-            <p>When <strong>vibe-cartographer</strong> is installed in the same repo, Ptolemy defers cleanly (Pattern #13). When it's not, vibe-iterate stands on its own. <strong>Composes, never depends.</strong></p>
+            <p>vibe-thesis doesn't fork ThesisStudio &mdash; it wraps it. ThesisStudio is the upstream source for the templates, the render pipeline (Pandoc + xelatex + biber), and four content sub-skills. vibe-thesis adds an orchestrator that bridges natural-language scaffold intent to the right path &mdash; offline-bundled or live from the template &mdash; then dispatches the bootstrap interview, voice synthesis, and toolchain verification in sequence.</p>
+            <p>The <strong>voice pipeline</strong> is the distinctive layer: <strong>/voice</strong> captures whose prose anchors your drafting, <strong>/smooth</strong> applies that profile while preserving claims and structure, and <strong>/guard</strong> enforces the Honest Limits pillar by catching the inflationary patterns LLM-assisted academic writing tends to accumulate.</p>
           </div>
           <div>
-            <div class="callout">No telemetry. Atlas data stays on your machine.</div>
+            <div class="callout">Zero npm runtime dependencies. The render toolchain lives in the scaffolded project, not the plugin.</div>
           </div>
         </div>
       </div>
@@ -392,30 +365,20 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">03 · Get it</span>
-          <h2>Two channels.</h2>
+          <h2>Install.</h2>
         </div>
 
-        <div class="install-grid">
+        <div class="install-grid solo">
           <div class="card install-card">
             <h3>Stable <span class="badge">marketplace</span></h3>
-            <p class="blurb">Tagged releases, promoted via the Vibe Plugins marketplace.</p>
+            <p class="blurb">Tagged releases from the solo repo.</p>
             <div class="codeblock">
               <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
-              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
-/plugin install vibe-iterate</pre>
-            </div>
-          </div>
-          <div class="card install-card">
-            <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
-            <p class="blurb">Latest main from this repo. Re-syncs on every push.</p>
-            <div class="codeblock">
-              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
-              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-iterate
-/plugin install vibe-iterate</pre>
+              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/Vibe-Thesis
+/plugin install vibe-thesis@vibe-thesis</pre>
             </div>
           </div>
         </div>
-        <p class="install-note">Pick stable if you want to be told. Pick canary if you want to tell us.</p>
       </div>
     </section>
 
@@ -435,12 +398,11 @@
               <div class="role">idea → v1</div>
             </div>
           </a>
-          <a href="/vibe-iterate/" class="family-card here">
+          <a href="/vibe-iterate/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-iterate</div>
               <div class="role">v1 → v1+n</div>
-            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-keystone/" class="family-card">
@@ -478,11 +440,12 @@
               <div class="role">research feeder</div>
             </div>
           </a>
-          <a href="/vibe-thesis/" class="family-card">
+          <a href="/vibe-thesis/" class="family-card here">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-thesis-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-thesis</div>
               <div class="role">thesis authoring</div>
+            <div class="you">You are here</div>
             </div>
           </a>
         </div>
