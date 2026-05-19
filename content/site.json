@@ -261,9 +261,9 @@
         }
       ],
       "status": "live",
-      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "repo": "estevanhernandez-stack-ed/vibe-test",
       "npm": "@esthernandez/vibe-test",
-      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-test",
       "claudeCode": true,
       "meta": "<code>/vibe-test:audit</code> · harness-aware",
       "screenshots": []
@@ -377,9 +377,9 @@
         }
       ],
       "status": "wip",
-      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "repo": "estevanhernandez-stack-ed/vibe-sec",
       "npm": "@esthernandez/vibe-sec",
-      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-sec",
       "claudeCode": true,
       "meta": "/vibe-sec · drafting",
       "screenshots": []
