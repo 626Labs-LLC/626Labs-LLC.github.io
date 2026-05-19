@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vibe-iterate · Maintain your Atlas. · 626 Labs</title>
+  <meta name="description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626 Labs." />
+  <link rel="canonical" href="https://626labs.dev/vibe-iterate/" />
+  <link rel="icon" type="image/png" href="/favicon-626.png" />
+
+  <meta property="og:title" content="vibe-iterate · Maintain your Atlas." />
+  <meta property="og:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session." />
+  <meta property="og:url" content="https://626labs.dev/vibe-iterate/" />
+  <meta property="og:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="626 Labs" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="vibe-iterate · Maintain your Atlas." />
+  <meta name="twitter:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+
+  <style>
+    /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --navy-deep: #0f1f31;
+      --navy-mid:  #192e44;
+      --navy-hi:   #223a54;
+      --navy-line: #2a3a5c;
+      --cyan:      #17d4fa;
+      --cyan-pale: #5ce6ff;
+      --cyan-dim:  #0fa8c9;
+      --magenta:   #f22f89;
+      --magenta-pale: #ff66a8;
+      --success:   #2bd99a;
+      --ink-0:     #ffffff;
+      --ink-100:   #e8eef7;
+      --ink-200:   #c0cad8;
+      --ink-300:   #8a98ad;
+      --ink-400:   #5e6e84;
+      --r-sm: 6px;
+      --r-md: 10px;
+      --r-lg: 14px;
+      --r-xl: 20px;
+      --maxw: 1240px;
+      --gutter: 24px;
+      --grad-duo: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--navy-deep);
+      color: var(--ink-100);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; text-decoration-color: var(--magenta); }
+
+    .container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+
+    .eyebrow {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+    }
+
+    h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; color: var(--ink-0); margin: 0 0 16px; font-weight: 600; }
+    h1 { font-size: clamp(40px, 5vw, 64px); letter-spacing: -0.025em; line-height: 1.05; }
+    h2 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-size: clamp(22px, 2vw, 28px); line-height: 1.2; }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: var(--r-md);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 120ms cubic-bezier(.2,.7,.2,1);
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--grad-duo); color: var(--ink-0); }
+    .btn-primary:hover { filter: brightness(1.08); box-shadow: 0 0 24px rgba(23,212,250,.35); text-decoration: none; }
+    .btn-ghost { background: transparent; color: var(--ink-0); border: 1px solid rgba(255,255,255,.16); }
+    .btn-ghost:hover { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.32); text-decoration: none; }
+
+    nav.top {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(15,31,49,.7);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    nav.top .row { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    nav.top .brand { display: flex; align-items: center; gap: 10px; color: var(--ink-0); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; }
+    nav.top .brand:hover { text-decoration: none; }
+    nav.top .brand img { height: 28px; width: auto; }
+
+    footer {
+      margin-top: 96px; padding: 32px 0 48px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      color: var(--ink-300); font-size: 14px;
+    }
+    footer .row { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    footer .tagline { font-family: 'Space Grotesk', sans-serif; color: var(--ink-200); }
+    footer .links { display: flex; gap: 20px; }
+
+    /* Hero */
+    section.hero { position: relative; padding: 80px 0 96px; overflow: hidden; }
+    section.hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(60% 50% at 30% 20%, rgba(23,212,250,.18) 0%, transparent 60%),
+        radial-gradient(40% 40% at 80% 60%, rgba(242,47,137,.14) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+    section.hero .container { position: relative; z-index: 1; }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+    .hero-left .eyebrow { margin-bottom: 16px; display: inline-block; }
+    .hero-subhead { color: var(--ink-200); font-size: clamp(17px, 1.4vw, 19px); max-width: 560px; margin: 0 0 28px; }
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+    .hero-meta { display: flex; gap: 16px; flex-wrap: wrap; color: var(--ink-300); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; }
+    .hero-meta span { color: var(--ink-200); }
+
+    .term { background: var(--navy-mid); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 8px 32px rgba(0,0,0,.35); overflow: hidden; }
+    .term-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(0,0,0,.18); border-bottom: 1px solid rgba(255,255,255,.04); }
+    .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .term-dot.r { background: #ff5f57; }
+    .term-dot.y { background: #febc2e; }
+    .term-dot.g { background: #28c840; }
+    .term-label { margin-left: 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: var(--ink-300); }
+    .term-body { padding: 20px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.65; color: var(--ink-200); max-height: 420px; }
+    .term-body .prompt { color: var(--cyan); }
+    .term-body .cmd { color: var(--ink-0); }
+    .term-body .agent { color: var(--cyan); }
+    .term-body .path { color: var(--cyan-pale); }
+    .term-body .key { color: var(--magenta-pale); }
+    .term-body .ok { color: var(--success); }
+    .term-body .muted { color: var(--ink-300); }
+    .term-cursor { display: inline-block; width: 8px; height: 14px; background: var(--cyan); vertical-align: -2px; animation: blink 1.05s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Section base */
+    section.work, section.brain, section.install, section.family { padding: 80px 0; }
+    .section-head { margin-bottom: 40px; }
+    .section-head .eyebrow { display: inline-block; margin-bottom: 12px; }
+    .section-head .lead { color: var(--ink-200); font-size: 17px; max-width: 640px; margin: 8px 0 0; }
+
+    .card { background: var(--navy-mid); border: 1px solid rgba(255,255,255,.08); border-radius: var(--r-lg); padding: 24px; transition: border-color 120ms cubic-bezier(.2,.7,.2,1); }
+    .card:hover { border-color: rgba(23,212,250,.45); }
+    .card .cmd { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); display: inline-block; margin-bottom: 10px; }
+    .card h3 { margin: 0 0 8px; font-size: 22px; }
+    .card .desc { color: var(--ink-200); margin: 0 0 12px; }
+    .card .reach { color: var(--ink-300); font-size: 14px; border-top: 1px solid rgba(255,255,255,.06); padding-top: 12px; margin-top: 12px; }
+    .card .reach em { color: var(--magenta-pale); font-style: normal; }
+
+    .modes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    .sidecars-head { margin-top: 56px; margin-bottom: 24px; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+    .sidecars-head h3 { margin: 0; }
+    .sidecars-head .hint { color: var(--ink-300); font-size: 14px; }
+    .sidecars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .sidecar { background: var(--navy-mid); border: 1px solid rgba(255,255,255,.08); border-radius: var(--r-md); padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start; transition: border-color 120ms cubic-bezier(.2,.7,.2,1); }
+    .sidecar:hover { border-color: rgba(23,212,250,.45); }
+    .sidecar svg { flex-shrink: 0; width: 20px; height: 20px; stroke: var(--cyan); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; margin-top: 2px; }
+    .sidecar .body { flex: 1; }
+    .sidecar .name { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: var(--cyan); display: block; margin-bottom: 4px; }
+    .sidecar .desc { color: var(--ink-200); font-size: 14px; margin: 0; }
+
+    section.brain { background: linear-gradient(180deg, transparent 0%, rgba(23,212,250,.03) 100%); }
+    .brain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .brain-grid p { color: var(--ink-200); margin: 0 0 16px; max-width: 540px; }
+    .brain-grid strong { color: var(--ink-0); font-weight: 500; }
+    .callout { margin-top: 32px; padding: 20px 24px; border-top: 1px solid rgba(23,212,250,.35); border-bottom: 1px solid rgba(23,212,250,.35); background: rgba(23,212,250,.04); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 14px; color: var(--ink-100); max-width: 540px; }
+
+    .install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; }
+    .install-card { padding: 24px; }
+    .install-card h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 6px; }
+    .install-card .badge { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px; border-radius: var(--r-sm); background: rgba(23,212,250,.12); color: var(--cyan); }
+    .install-card .badge.magenta { background: rgba(242,47,137,.12); color: var(--magenta-pale); }
+    .install-card .blurb { color: var(--ink-200); margin: 0 0 16px; font-size: 14px; }
+    .codeblock { position: relative; background: var(--navy-deep); border: 1px solid rgba(23,212,250,.25); border-radius: var(--r-md); padding: 14px 44px 14px 16px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: var(--ink-100); line-height: 1.7; overflow-x: auto; }
+    .codeblock .copybtn { position: absolute; top: 8px; right: 8px; background: transparent; border: 1px solid rgba(255,255,255,.12); border-radius: var(--r-sm); padding: 4px 8px; cursor: pointer; color: var(--ink-300); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; transition: all 120ms cubic-bezier(.2,.7,.2,1); }
+    .codeblock .copybtn:hover { color: var(--cyan); border-color: rgba(23,212,250,.45); }
+    .codeblock .copybtn.ok { color: var(--success); border-color: rgba(43,217,154,.45); }
+    .install-note { margin-top: 20px; color: var(--ink-300); font-size: 14px; }
+
+    .family-lead { color: var(--ink-200); margin: 0 0 32px; max-width: 640px; }
+    .family-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .family-card { background: var(--navy-mid); border: 1px solid rgba(255,255,255,.08); border-radius: var(--r-md); padding: 18px 20px; display: block; color: var(--ink-100); transition: all 120ms cubic-bezier(.2,.7,.2,1); }
+    .family-card:hover { border-color: rgba(23,212,250,.45); text-decoration: none; }
+    .family-card.here { border-color: rgba(23,212,250,.55); box-shadow: 0 0 24px rgba(23,212,250,.18); }
+    .family-card .name { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--ink-0); margin-bottom: 2px; }
+    .family-card .role { color: var(--ink-300); font-size: 14px; }
+    .family-card .you { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cyan); margin-top: 6px; }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+      .sidecars-grid { grid-template-columns: repeat(2, 1fr); }
+      .brain-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+    @media (max-width: 720px) {
+      footer .row { flex-direction: column; gap: 12px; }
+      .modes-grid { grid-template-columns: 1fr; }
+      section.work, section.brain, section.install, section.family { padding: 56px 0; }
+      .card { padding: 20px; }
+      .install-grid { grid-template-columns: 1fr; }
+      .family-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 540px) {
+      .sidecars-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top">
+    <div class="container row">
+      <a href="/" class="brand">
+        <img src="/favicon-626.png" alt="626 Labs" />
+        <span>626 Labs</span>
+      </a>
+      <a href="#install" class="btn btn-ghost">Install</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-left">
+            <span class="eyebrow">626 Labs · Claude Code plugin</span>
+            <h1>Maintain your Atlas.</h1>
+            <p class="hero-subhead">Cart took you idea &rarr; v1. vibe-iterate takes you v1 &rarr; v1+n. Ships one PR per session &mdash; regression-aware, small-diff-preferred.</p>
+            <div class="hero-ctas">
+              <a href="#install" class="btn btn-primary">Install plugin</a>
+              <a href="https://github.com/estevanhernandez-stack-ed/vibe-iterate/blob/main/docs/2026-05-04-vibe-iterate-design.md" class="btn btn-ghost">Read the spec</a>
+            </div>
+            <div class="hero-meta">
+              <span>v1.0.0</span><span>·</span><span>4 modes</span><span>·</span><span>6 sidecars</span><span>·</span><span>MIT</span>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="term">
+              <div class="term-bar">
+                <span class="term-dot r"></span>
+                <span class="term-dot y"></span>
+                <span class="term-dot g"></span>
+                <span class="term-label">vibe-iterate ~</span>
+              </div>
+              <div class="term-body">
+                <div><span class="prompt">$</span> <span class="cmd">/vibe-iterate</span></div>
+                <div><span class="agent">[Ptolemy]</span> Reading project state...</div>
+                <div>  &rarr; Atlas: <span class="key">12 entries</span>, last shipped 4 days ago</div>
+                <div>  &rarr; Stack: <span class="path">Next.js 15.2.0</span>, <span class="path">Tailwind 4</span>, <span class="path">Supabase</span></div>
+                <div>  &rarr; Radar cache: 6 days old <span class="muted">(stale)</span></div>
+                <div>&nbsp;</div>
+                <div><span class="agent">[Ptolemy]</span> Recommended mode for the moment:</div>
+                <div>  <span class="key">feature-add</span> &mdash; Product Hunt surfaced 3 candidates,</div>
+                <div>  framework releases include <span class="path">Tailwind v4.1</span>,</div>
+                <div>  feedback.md has 2 fresh requests.</div>
+                <div>&nbsp;</div>
+                <div>Launch <span class="key">feature-add</span>? [y/N]: <span class="cmd">y</span></div>
+                <div>&nbsp;</div>
+                <div><span class="agent">[Ptolemy]</span> Scanning... <span class="ok">done</span> (3 comp, 1 PH, 1 fwk, 2 feedback)</div>
+                <div><span class="agent">[Ptolemy]</span> Top candidate: <span class="key">inline AI command palette</span></div>
+                <div>  impact: <span class="ok">high</span> · fit: <span class="ok">high</span> · risk: <span class="ok">low</span></div>
+                <div>&nbsp;</div>
+                <div><span class="agent">[Ptolemy]</span> PR ready: <span class="path">feat: inline AI command palette (Cmd+K)</span><span class="term-cursor"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work" id="work">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">01 · The work</span>
+          <h2>Four modes for what's next.</h2>
+          <p class="lead">Pick the mode for the moment. Each ships one PR per session, with Atlas continuity across runs.</p>
+        </div>
+
+        <div class="modes-grid">
+          <div class="card">
+            <span class="cmd">/vibe-iterate:feature-add</span>
+            <h3>Ship the next feature.</h3>
+            <p class="desc">Multi-source candidate scan: competitors, Product Hunt, framework releases, your feedback.md. Clusters, scores, picks one.</p>
+            <p class="reach">Reach for it when <em>you don't know what to build next</em>.</p>
+          </div>
+
+          <div class="card">
+            <span class="cmd">/vibe-iterate:competitive</span>
+            <h3>Close the gaps that matter.</h3>
+            <p class="desc">Reads competitor changelogs, diffs against your shipped product, ranks by strategic relevance &mdash; not parity.</p>
+            <p class="reach">Reach for it when <em>a competitor shipped something loud</em>.</p>
+          </div>
+
+          <div class="card">
+            <span class="cmd">/vibe-iterate:ux-polish</span>
+            <h3>Tighten what's shipped but rough.</h3>
+            <p class="desc">Walks routes, components, key flows. Scores by user-trust impact.</p>
+            <p class="reach">Reach for it when <em>the product works but feels off</em>.</p>
+          </div>
+
+          <div class="card">
+            <span class="cmd">/vibe-iterate:bug-bash</span>
+            <h3>Fix the loudest bug.</h3>
+            <p class="desc">Reads feedback.md, triages by severity &times; frequency &times; blast-radius. Dormant when feedback.md is missing.</p>
+            <p class="reach">Reach for it when <em>users keep reporting the same thing</em>.</p>
+          </div>
+        </div>
+
+        <div class="sidecars-head">
+          <h3>Six tools when a mode is too much.</h3>
+          <span class="hint">Run any sidecar directly &mdash; no mode required.</span>
+        </div>
+        <div class="sidecars-grid">
+
+          <div class="sidecar">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+            <div class="body">
+              <span class="name">:radar</span>
+              <p class="desc">What's new across your stack and competitors since last visit.</p>
+            </div>
+          </div>
+
+          <div class="sidecar">
+            <svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            <div class="body">
+              <span class="name">:spy &lt;url&gt;</span>
+              <p class="desc">One-shot competitive read on a single URL.</p>
+            </div>
+          </div>
+
+          <div class="sidecar">
+            <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05M12 22.08V12"/></svg>
+            <div class="body">
+              <span class="name">:scan-releases [pkg]</span>
+              <p class="desc">What's new in this lib since you last bumped.</p>
+            </div>
+          </div>
+
+          <div class="sidecar">
+            <svg viewBox="0 0 24 24"><path d="M16 16.5V8L8 16V8M3 21h18"/></svg>
+            <div class="body">
+              <span class="name">:rate &lt;idea&gt;</span>
+              <p class="desc">Score an idea on impact / fit / effort / regression-risk / user-trust.</p>
+            </div>
+          </div>
+
+          <div class="sidecar">
+            <svg viewBox="0 0 24 24"><path d="M2 20a4 4 0 0 0 4 0 4 4 0 0 1 4 0 4 4 0 0 0 4 0 4 4 0 0 1 4 0 4 4 0 0 0 4 0M3 16l9-13 9 13M12 3v13"/></svg>
+            <div class="body">
+              <span class="name">:ship &lt;brief&gt;</span>
+              <p class="desc">Express lane. Skip ingestion, ship from a brief.</p>
+            </div>
+          </div>
+
+          <div class="sidecar">
+            <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            <div class="body">
+              <span class="name">:upgrade &lt;pkg&gt;</span>
+              <p class="desc">Surgical library bump with codemods if available.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="brain">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">02 · The brain</span>
+          <h2>Ptolemy stays current.</h2>
+        </div>
+        <div class="brain-grid">
+          <div>
+            <p><strong>Ptolemy is vibe-iterate's agent</strong> &mdash; senior to Cart's field-cartographer, oriented for already-shipped territory. He reads your stack via context7, watches framework releases on a weekly scan, and keeps your Atlas &mdash; the running record of what you've shipped, what you considered, what got cut, and why &mdash; in continuity across sessions.</p>
+            <p>When <strong>vibe-cartographer</strong> is installed in the same repo, Ptolemy defers cleanly (Pattern #13). When it's not, vibe-iterate stands on its own. <strong>Composes, never depends.</strong></p>
+          </div>
+          <div>
+            <div class="callout">No telemetry. Atlas data stays on your machine.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="install" id="install">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">03 · Get it</span>
+          <h2>Two channels.</h2>
+        </div>
+
+        <div class="install-grid">
+          <div class="card install-card">
+            <h3>Stable <span class="badge">marketplace</span></h3>
+            <p class="blurb">Tagged releases, promoted via the Vibe Plugins marketplace.</p>
+            <div class="codeblock">
+              <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
+              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
+/plugin install vibe-iterate</pre>
+            </div>
+          </div>
+
+          <div class="card install-card">
+            <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
+            <p class="blurb">Latest <code>main</code> from this repo. Re-syncs on every push.</p>
+            <div class="codeblock">
+              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
+              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-iterate
+/plugin install vibe-iterate</pre>
+            </div>
+          </div>
+        </div>
+
+        <p class="install-note">Pick stable if you want to be told. Pick canary if you want to tell us.</p>
+      </div>
+    </section>
+
+    <section class="family">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">04 · Family</span>
+          <h2>One plugin in a family.</h2>
+        </div>
+        <p class="family-lead">Vibe Plugins are a coordinated family &mdash; installed independently, composed when present.</p>
+
+        <div class="family-grid">
+          <a href="https://github.com/estevanhernandez-stack-ed/vibe-cartographer" class="family-card">
+            <div class="name">vibe-cartographer</div>
+            <div class="role">idea &rarr; v1</div>
+          </a>
+          <a href="/vibe-iterate/" class="family-card here">
+            <div class="name">vibe-iterate</div>
+            <div class="role">v1 &rarr; v1+n</div>
+            <div class="you">You are here</div>
+          </a>
+          <a href="https://github.com/estevanhernandez-stack-ed/Vibe-Doc" class="family-card">
+            <div class="name">vibe-doc</div>
+            <div class="role">documentation completeness</div>
+          </a>
+          <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins" class="family-card">
+            <div class="name">vibe-test</div>
+            <div class="role">test coverage and tier enforcement</div>
+          </a>
+          <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins" class="family-card">
+            <div class="name">vibe-sec</div>
+            <div class="role">security posture</div>
+          </a>
+          <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins" class="family-card">
+            <div class="name">thesis-engine + vibe-thesis</div>
+            <div class="role">research authoring</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container row">
+      <div>626 Labs LLC · MIT · 2026</div>
+      <div class="tagline">Imagine Something Else.</div>
+      <div class="links">
+        <a href="https://github.com/estevanhernandez-stack-ed/vibe-iterate">GitHub</a>
+        <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins">Marketplace</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.copybtn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var targetId = btn.getAttribute('data-target');
+        var target = document.getElementById(targetId);
+        if (!target) return;
+        var text = target.textContent;
+        if (!navigator.clipboard) { return; }
+        navigator.clipboard.writeText(text).then(function() {
+          var orig = btn.textContent;
+          btn.textContent = 'copied';
+          btn.classList.add('ok');
+          setTimeout(function() {
+            btn.textContent = orig;
+            btn.classList.remove('ok');
+          }, 1500);
+        }).catch(function() {
+          var orig = btn.textContent;
+          btn.textContent = 'press Ctrl+C';
+          setTimeout(function() { btn.textContent = orig; }, 1500);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
