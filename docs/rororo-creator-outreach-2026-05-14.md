@@ -12,6 +12,12 @@ outreach, which the media-blitz doc doesn't touch. Use them together.
 > bands, not exact figures. Contact paths are listed where verifiable; where a
 > business email wasn't public, the doc says so rather than guessing. Verify the
 > contact path before you send.
+>
+> **Update (2026-05-17):** Both plugins teased in this doc have shipped. The
+> sections that called out the "first plugin" / `auto-keys` now name the
+> shipped products — **RoRoRo Ur Task** (per-window macro recorder, v0.2.2)
+> and **RoRoRo Ur OCR** (screen-region OCR + color triggers). Wave 2 strategy
+> is unchanged; its trigger ("when the plugins ship") is just now satisfied.
 
 ---
 
@@ -110,10 +116,15 @@ gap — it makes the outreach honest. What we actually offer:
 - **No-strings framing.** "Try it. If it's useful, a mention helps us. If it's
   not, tell us why — that's useful too." A creator can say yes to that in one
   reply.
-- **Early access to the plugin ecosystem.** v1.4 shipped the plugin system; the
-  first plugin — `auto-keys`, an AFK-defeat cycler — lands in a sibling repo
-  soon. For PS99 creators specifically, *that* is the killer hook (see below).
-  Offer named creators a heads-up + early build when it ships.
+- **The plugin ecosystem.** v1.4 shipped the plugin system, and two plugins
+  are live: **RoRoRo Ur Task** (per-window macro recorder — record once,
+  replay across a stack of alts; AFK-defeat is the headline use case, but the
+  recorder shape generalizes to trade flows, repetitive farms, key-mash
+  sequences) and **RoRoRo Ur OCR** (define a screen region, watch for text or
+  color, fire a keybind on match — banner detection, event-spawn auto-response).
+  For PS99 creators specifically, *that* is the killer hook (see Wave 2 below).
+  Offer named creators heads-up + first-look on the next plugins in the
+  backlog before they hit the public release.
 - **Build-what-they-need, within reason.** For a high-fit creator with a specific
   workflow gap, "what would make this perfect for your setup?" is a real offer.
   The roadmap already has creator-shaped items.
@@ -127,12 +138,16 @@ gap — it makes the outreach honest. What we actually offer:
 - **Wave 1 (now) — the launcher.** RORORO as it ships today: multi-instance,
   saved-account vault, Launch As, Squad Launch. Target: traders, multi-account
   creators, Roblox-news/tool creators, the trading communities.
-- **Wave 2 (when `auto-keys` ships) — the AFK story.** PS99 is a grind. AFK-
-  farming across a stack of accounts is exactly what a chunk of the PS99 audience
-  does. An AFK-defeat cycler plugin on top of a clean multi-launcher is a much
-  bigger creator hook than the launcher alone — and it's the angle that gets the
-  Tier 2 PS99 names interested. Don't burn the big names on Wave 1; tease the
-  plugin to them and come back loud when it's real.
+- **Wave 2 (plugins are live) — the AFK story.** PS99 is a grind. AFK-farming
+  across a stack of accounts is exactly what a chunk of the PS99 audience does.
+  **RoRoRo Ur Task** records a macro once and replays it across the stack — a
+  per-window recorder is a more general shape than a fixed cycler, so trade
+  flows and repetitive farms fall out of the same primitive. **RoRoRo Ur OCR**
+  lets a region of the screen drive a keybind, so event banners or color-coded
+  UI changes auto-trigger the response. Plugins-on-a-clean-launcher is a much
+  bigger creator hook than the launcher alone — that's the angle that gets the
+  Tier 2 PS99 names interested. Don't burn the big names on Wave 1; lead the
+  Wave 2 emails with the plugin story.
 
 ---
 
@@ -159,7 +174,7 @@ treat "About tab" as confirmed until you've looked.
 
 | Creator | Platform / handle | Reach (band) | Why they fit | Contact path | Confidence |
 |---|---|---|---|---|---|
-| **Digito** | YouTube | ~2.75M | Dominant PS99 creator, English, was among the first to end-game zones. Perfect audience fit; large enough that this is a real ask. Save for the `auto-keys` wave. | Business inquiry via YouTube About tab; agency/management likely | Medium |
+| **Digito** | YouTube | ~2.75M | Dominant PS99 creator, English, was among the first to end-game zones. Perfect audience fit; large enough that this is a real ask. Save for the plugin-ecosystem wave (Wave 2). | Business inquiry via YouTube About tab; agency/management likely | Medium |
 | **RussoPlays** | YouTube `@russoplaysgames` | ~2M+ | Pet Sim + heavy *trading* content. Trading is a multi-account workflow — strong thematic fit. | YouTube About tab; X `@RussoTalkss` (verify) | Medium |
 | **Gravycatman** | YouTube | ~4.3M | Huge Pet Sim creator. Great audience fit, but at this size expect management and a rate card. Wave 2, and only if a smaller PS99 push has already proven the messaging. | Management via YouTube About tab | Medium |
 | **Conor3D** | YouTube | ~800K | Roblox walkthroughs + tutorials. Fits a "how-to: run multiple accounts the safe way" video natively. | YouTube About tab | Low-med |
@@ -243,9 +258,12 @@ unlock." Lead with the verdict. Swap the bracketed bits per recipient.
 > - Microsoft Store: https://apps.microsoft.com/detail/9NMJCS390KWB
 > - Source (MIT, open): https://github.com/estevanhernandez-stack-ed/ROROROblox
 >
-> One more thing worth a heads-up: v1.4 added a plugin system, and the first
-> plugin — an AFK-defeat cycler — is landing soon. Happy to get you an early
-> build when it ships if that's interesting.
+> One more thing worth a heads-up: v1.4 added a plugin system, and two
+> plugins are live — **RoRoRo Ur Task** (per-window macro recorder; record an
+> AFK-defeat sequence once, replay it across a stack of alts) and **RoRoRo Ur
+> OCR** (screen-region OCR + color triggers fire keybinds — banner detection,
+> event-spawn auto-response). Happy to walk you through either, or get you a
+> first-look on the next plugin in the backlog before it ships.
 >
 > Either way, thanks for reading.
 >
@@ -347,9 +365,10 @@ One follow-up. Not two. Silence is an answer.
 - **News/commentary creators (SharkBlox, DeeterPlays, RTC) run in parallel** —
   they're a different funnel (coverage, not installs) and don't compete for the
   same calendar slot.
-- **Hold Tier 2 for Wave 2.** When `auto-keys` ships, the PS99 pitch gets
-  materially stronger. Email Digito/Gravycatman/RussoPlays *then*, with the
-  plugin as the lead — not now with the launcher alone.
+- **Hold Tier 2 for Wave 2.** With **RoRoRo Ur Task** and **RoRoRo Ur OCR**
+  live, the PS99 pitch is materially stronger now than it was on launch day.
+  Once Wave 1 has proven the messaging, email Digito/Gravycatman/RussoPlays
+  with the plugin story as the lead — not the launcher alone.
 - **Batch size:** 3-5 personalized sends per session, not a blast. Each email's
   "why you specifically" line has to be real.
 - **Pace:** one outreach session every 2-3 days through Wave 1. This is a slow
@@ -387,8 +406,10 @@ One follow-up. Not two. Silence is an answer.
 - **Don't overstate the safety.** Low-but-nonzero risk, stated plainly, is the
   pitch. An overclaim is how you lose a creator who would otherwise have said
   yes.
-- **Don't promise the `auto-keys` plugin a ship date you don't control.** "Soon"
-  and "I'll get you an early build" — not a calendar date.
+- **Don't promise future plugins a ship date you don't control.** The two
+  shipped plugins (Ur Task, Ur OCR) are fair game — link them, walk creators
+  through them. For the backlog, "we're working on it" and "I'll get you a
+  first-look when it's close" — not a calendar date.
 
 ### Tracking
 
