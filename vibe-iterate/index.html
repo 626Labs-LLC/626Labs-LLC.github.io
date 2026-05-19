@@ -15,6 +15,8 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="vibe-iterate · Maintain your Atlas." />
+  <meta name="twitter:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session." />
   <meta name="twitter:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
 
   <style>
@@ -142,7 +144,7 @@
     .term-body .path { color: var(--cyan-pale); }
     .term-body .key { color: var(--magenta-pale); }
     .term-body .ok { color: var(--success); }
-    .term-body .muted { color: var(--ink-400); }
+    .term-body .muted { color: var(--ink-300); }
     .term-cursor { display: inline-block; width: 8px; height: 14px; background: var(--cyan); vertical-align: -2px; animation: blink 1.05s steps(1) infinite; }
     @keyframes blink { 50% { opacity: 0; } }
 
@@ -408,7 +410,7 @@
             <h3>Stable <span class="badge">marketplace</span></h3>
             <p class="blurb">Tagged releases, promoted via the Vibe Plugins marketplace.</p>
             <div class="codeblock">
-              <button class="copybtn" data-target="copy-stable">copy</button>
+              <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
               <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
 /plugin install vibe-iterate</pre>
             </div>
@@ -418,7 +420,7 @@
             <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
             <p class="blurb">Latest <code>main</code> from this repo. Re-syncs on every push.</p>
             <div class="codeblock">
-              <button class="copybtn" data-target="copy-canary">copy</button>
+              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
               <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-iterate
 /plugin install vibe-iterate</pre>
             </div>
@@ -487,6 +489,7 @@
         var target = document.getElementById(targetId);
         if (!target) return;
         var text = target.textContent;
+        if (!navigator.clipboard) { return; }
         navigator.clipboard.writeText(text).then(function() {
           var orig = btn.textContent;
           btn.textContent = 'copied';
@@ -495,6 +498,10 @@
             btn.textContent = orig;
             btn.classList.remove('ok');
           }, 1500);
+        }).catch(function() {
+          var orig = btn.textContent;
+          btn.textContent = 'press Ctrl+C';
+          setTimeout(function() { btn.textContent = orig; }, 1500);
         });
       });
     });
