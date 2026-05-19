@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>RORORO — multi-launcher for Roblox · 626 Labs</title>
+<meta name="description" content="Run multiple Roblox clients side by side, each signed in as a different saved account. Native on Windows and macOS, plugin-extensible, free. An independent third-party tool — not affiliated with Roblox Corporation." />
+<meta property="og:title" content="RORORO — multi-launcher for Roblox" />
+<meta property="og:description" content="Windows + macOS native multi-launcher. Run multiple Roblox clients side by side, each signed in as a saved account. Plugin-extensible. Free." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://626labs.dev/rororo.html" />
+<meta property="og:image" content="https://626labs.dev/assets/thumb-rororo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="favicon-626.png" />
+
+<style>
+  /* ---------- Web fonts ---------- */
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
+  :root {
+    --brand-navy:        #192e44;
+    --brand-navy-deep:   #0f1f31;
+    --brand-cyan:        #17d4fa;
+    --brand-cyan-bright: #5ce6ff;
+    --brand-magenta:     #f22f89;
+
+    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
+
+    --ink-0:   #ffffff;
+    --ink-200: #c4cdda;
+    --ink-300: #8e9bad;
+    --ink-400: #5e6b7f;
+
+    --fg-1: var(--ink-0);
+    --fg-2: var(--ink-200);
+    --fg-3: var(--ink-300);
+    --fg-muted: var(--ink-400);
+
+    --bg-0: var(--brand-navy-deep);
+
+    --border-1: rgba(255,255,255,.08);
+    --border-2: rgba(255,255,255,.14);
+    --border-accent: rgba(23,212,250,.45);
+
+    --r-md: 10px;
+    --r-lg: 14px;
+    --r-xl: 20px;
+
+    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+    --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
+
+    --ease-out: cubic-bezier(.2,.7,.2,1);
+    --dur-fast: 120ms;
+    --dur-med: 220ms;
+  }
+
+  html, body { margin:0; padding:0; min-height:100vh; }
+  body{
+    background:
+      radial-gradient(1200px 700px at 18% -10%, rgba(23,212,250,.10), transparent 60%),
+      radial-gradient(1100px 700px at 92% 110%, rgba(242,47,137,.10), transparent 60%),
+      var(--bg-0);
+    color:var(--fg-1);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *{ box-sizing:border-box; }
+  a{ color:var(--brand-cyan); }
+
+  /* ---------- Subtle circuit grid backdrop ---------- */
+  .grid-bg{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      linear-gradient(rgba(23,212,250,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23,212,250,.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    background: rgba(15,31,49,.65);
+    border-bottom: 1px solid var(--border-1);
+  }
+  .topnav-inner{
+    max-width: 1440px; margin: 0 auto; padding: 14px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em;
+  }
+  .brand{
+    display:inline-flex; align-items:center; gap:10px;
+    color: var(--fg-1); text-decoration:none;
+    text-transform: uppercase; font-weight:600; letter-spacing:.18em;
+  }
+  .brand .mark{
+    width:18px; height:18px; border-radius:50%;
+    background: var(--brand-gradient);
+    box-shadow: 0 0 12px rgba(23,212,250,.5);
+  }
+  .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; align-items:center; }
+  .topnav .links a{
+    color:var(--fg-3); text-decoration:none;
+    transition: color var(--dur-fast);
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .topnav .links a:hover{ color: var(--brand-cyan); }
+  .topnav .links a.cta{ color: var(--brand-cyan); }
+  .topnav .links a svg{ flex-shrink: 0; }
+
+  .shell{ position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:48px 56px 96px; }
+
+  /* ---------- Header ---------- */
+  .hd{ display:flex; align-items:flex-start; justify-content:space-between; gap:48px; margin-bottom:40px; }
+  .hd-l{ max-width:680px; }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--brand-cyan); display:inline-flex; align-items:center; gap:10px; margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:""; width:24px; height:1px; background:linear-gradient(90deg, var(--brand-cyan), transparent);
+  }
+  h1.title{
+    font-family:var(--font-display); font-weight:700; font-size:clamp(40px,5vw,60px);
+    line-height:1.04; letter-spacing:-0.025em; margin:0 0 18px;
+  }
+  h1.title .gt{
+    background: var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .lead{
+    font-size:18px; line-height:1.55; color:var(--fg-2); max-width:620px; margin:0;
+  }
+  .lead em{ color:var(--fg-1); font-style:normal; font-weight:500; }
+
+  /* CTA row under the lead */
+  .cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:26px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--font-body); font-size:13.5px; font-weight:600;
+    text-decoration:none; padding:11px 18px; border-radius:var(--r-md);
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-med), border-color var(--dur-med);
+  }
+  .btn svg{ flex-shrink:0; }
+  .btn-primary{
+    color:#08151f; background: var(--brand-gradient);
+    box-shadow: 0 6px 22px rgba(23,212,250,.28);
+  }
+  .btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 8px 28px rgba(23,212,250,.4); }
+  .btn-ghost{
+    color:var(--fg-1); background: rgba(255,255,255,.03);
+    border:1px solid var(--border-2);
+  }
+  .btn-ghost:hover{ border-color: var(--border-accent); color:var(--brand-cyan); }
+
+  /* meta on right */
+  .hd-r{
+    display:flex; flex-direction:column; gap:10px; padding-top:6px;
+    font-family:var(--font-mono); font-size:11px; color:var(--fg-3);
+    text-align:right; min-width:240px;
+  }
+  .hd-r .row{ display:flex; justify-content:space-between; gap:12px; border-top:1px solid var(--border-1); padding-top:8px; }
+  .hd-r .row:first-child{ border-top:0; padding-top:0; }
+  .hd-r .row b{ color:var(--fg-1); font-weight:500; }
+
+  /* ---------- Product banner ---------- */
+  .hero-visual{
+    border:1px solid var(--border-2);
+    border-radius: var(--r-xl);
+    overflow:hidden;
+    box-shadow: var(--shadow-2), var(--inner-stroke);
+    margin-bottom: 16px;
+    background: rgba(15,31,49,.5);
+  }
+  .hero-visual img{ display:block; width:100%; height:auto; }
+
+  /* ---------- Section heads ---------- */
+  .section-hd{
+    display:flex; align-items:baseline; justify-content:space-between; gap:32px;
+    margin: 80px 0 22px;
+  }
+  .section-hd .l h2{
+    font-family:var(--font-display); font-size:30px; font-weight:600;
+    letter-spacing:-0.015em; margin:0 0 6px;
+  }
+  .section-hd .l p{ font-size:14.5px; color:var(--fg-3); margin:0; max-width:62ch; }
+  .section-hd .r{
+    font-family:var(--font-mono); font-size:11px; color:var(--brand-cyan); letter-spacing:.12em;
+    text-transform:uppercase; white-space:nowrap;
+  }
+
+  /* ---------- Install grid ---------- */
+  .install-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
+  .install-card{
+    position:relative;
+    border:1px solid var(--border-1);
+    border-radius: var(--r-lg);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.014), transparent 60%),
+      rgba(15,31,49,.55);
+    padding: 22px 20px 20px;
+    display:flex; flex-direction:column; gap:10px;
+    transition: border-color var(--dur-med) var(--ease-out), background var(--dur-med);
+  }
+  .install-card:hover{ border-color: var(--border-accent); }
+  .install-card.recommended{ border-color: var(--border-accent); }
+  .install-card .pill{
+    position:absolute; top:-9px; left:20px;
+    font-family:var(--font-mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:#08151f; background: var(--brand-gradient);
+    padding:3px 9px; border-radius:999px; font-weight:700;
+  }
+  .install-card .plat{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--brand-cyan);
+  }
+  .install-card h3{
+    font-family:var(--font-display); font-size:19px; font-weight:600; margin:0; letter-spacing:-0.01em;
+  }
+  .install-card p{ font-size:13px; line-height:1.5; color:var(--fg-2); margin:0; flex:1; }
+  .install-card code{
+    font-family:var(--font-mono); font-size:11px; color:var(--brand-cyan-bright);
+    background: rgba(23,212,250,.06); border:1px solid var(--border-1);
+    border-radius:6px; padding:8px 10px; display:block; line-height:1.5;
+    overflow-x:auto; white-space:pre;
+  }
+  .install-card .go{
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:.04em;
+    color:var(--brand-cyan); text-decoration:none;
+    display:inline-flex; align-items:center; gap:6px; margin-top:2px;
+  }
+  .install-card .go:hover{ color:var(--brand-cyan-bright); }
+
+  /* ---------- Feature grid ---------- */
+  .feature-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
+  .feature{
+    border:1px solid var(--border-1);
+    border-radius: var(--r-md);
+    padding: 18px 16px;
+    background: rgba(255,255,255,.02);
+    transition: border-color var(--dur-med) var(--ease-out), background var(--dur-med);
+  }
+  .feature:hover{ border-color: var(--border-accent); background: rgba(23,212,250,.035); }
+  .feature .key{
+    font-family:var(--font-mono); font-size:10px; color:var(--brand-cyan);
+    letter-spacing:.1em; margin-bottom:8px;
+  }
+  .feature h4{ font-family:var(--font-display); font-size:15px; margin:0 0 5px; font-weight:600; }
+  .feature p{ font-size:12.5px; color:var(--fg-3); line-height:1.5; margin:0; }
+
+  /* ---------- Screenshot gallery ---------- */
+  .gallery{ display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; }
+  .gallery figure{
+    margin:0;
+    border:1px solid var(--border-1);
+    border-radius: var(--r-lg);
+    background: rgba(15,31,49,.5);
+    overflow:hidden;
+    transition: border-color var(--dur-med) var(--ease-out);
+  }
+  .gallery figure:hover{ border-color: var(--border-accent); }
+  .gallery img{ display:block; width:100%; height:auto; }
+  .gallery figcaption{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--fg-3);
+    padding: 10px 14px;
+    border-top:1px solid var(--border-1);
+  }
+
+  /* ---------- Platform split ---------- */
+  .platform-split{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+  .platform{
+    border:1px solid var(--border-2);
+    border-radius: var(--r-lg);
+    padding: 24px 22px;
+    background:
+      radial-gradient(80% 100% at 0% 0%, rgba(23,212,250,.07), transparent 58%),
+      rgba(15,31,49,.5);
+  }
+  .platform.mac{
+    background:
+      radial-gradient(80% 100% at 0% 0%, rgba(242,47,137,.08), transparent 58%),
+      rgba(15,31,49,.5);
+  }
+  .platform .key{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--brand-cyan); margin-bottom:8px;
+  }
+  .platform.mac .key{ color:var(--brand-magenta); }
+  .platform h3{ font-family:var(--font-display); font-size:22px; font-weight:600; margin:0 0 4px; }
+  .platform .stack{
+    font-family:var(--font-mono); font-size:11px; color:var(--fg-3); margin-bottom:14px;
+  }
+  .platform ul{ list-style:none; margin:0 0 16px; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .platform li{
+    display:flex; gap:9px; align-items:flex-start;
+    font-size:13px; color:var(--fg-2); line-height:1.45;
+  }
+  .platform li .tick{ color:var(--brand-cyan); flex-shrink:0; padding-top:2px; }
+  .platform.mac li .tick{ color:var(--brand-magenta); }
+  .platform li b{ color:var(--fg-1); font-weight:500; }
+
+  /* ---------- Plugins ---------- */
+  .plugin-intro{
+    border:1px solid var(--border-1);
+    border-radius: var(--r-lg);
+    background: rgba(15,31,49,.5);
+    padding: 22px 24px;
+    font-size:14px; line-height:1.6; color:var(--fg-2);
+    margin-bottom: 14px;
+  }
+  .plugin-intro b{ color:var(--fg-1); font-weight:500; }
+  .plugin-list{ display:flex; flex-direction:column; gap:10px; }
+  .plugin{
+    display:grid; grid-template-columns: 1fr auto; gap:18px; align-items:center;
+    border:1px solid var(--border-1);
+    border-radius: var(--r-md);
+    padding: 16px 20px;
+    background: rgba(255,255,255,.02);
+    transition: border-color var(--dur-med) var(--ease-out);
+  }
+  .plugin:hover{ border-color: var(--border-accent); }
+  .plugin.live{ border-color: rgba(43,217,154,.35); }
+  .plugin .pl-l{ min-width:0; }
+  .plugin .pl-name{
+    display:flex; align-items:center; gap:10px; margin-bottom:4px;
+  }
+  .plugin h4{ font-family:var(--font-display); font-size:16px; font-weight:600; margin:0; }
+  .plugin .status{
+    font-family:var(--font-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
+    padding:2px 8px; border-radius:999px;
+  }
+  .plugin .status.live{ color:#2bd99a; background:rgba(43,217,154,.1); border:1px solid rgba(43,217,154,.3); }
+  .plugin .status.bench{ color:var(--fg-3); background:rgba(255,255,255,.03); border:1px solid var(--border-2); }
+  .plugin p{ font-size:12.5px; color:var(--fg-3); line-height:1.5; margin:0; }
+  .plugin .pl-link{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.04em;
+    color:var(--brand-cyan); text-decoration:none; white-space:nowrap;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .plugin .pl-link:hover{ color:var(--brand-cyan-bright); }
+  .plugin .pl-link.muted{ color:var(--fg-muted); }
+
+  .plugin-howto{
+    margin-top:14px;
+    display:grid; grid-template-columns: 1.25fr 1fr; gap:14px;
+  }
+  .howto-col{
+    border:1px solid var(--border-1);
+    border-radius: var(--r-lg);
+    background: rgba(15,31,49,.5);
+    padding: 22px 24px;
+  }
+  .howto-col.publish{
+    border-style:dashed; border-color:var(--border-2);
+    background:
+      radial-gradient(70% 120% at 100% 0%, rgba(242,47,137,.05), transparent 60%),
+      rgba(15,31,49,.5);
+  }
+  .howto-key{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--brand-cyan); margin-bottom:16px;
+  }
+  .howto-col.publish .howto-key{ color:var(--brand-magenta); }
+  ol.steps{
+    list-style:none; counter-reset: step; margin:0; padding:0;
+    display:flex; flex-direction:column; gap:13px;
+  }
+  ol.steps li{
+    counter-increment: step;
+    position:relative; padding-left:34px;
+    font-size:13px; line-height:1.55; color:var(--fg-2);
+  }
+  ol.steps li::before{
+    content: counter(step);
+    position:absolute; left:0; top:-1px;
+    width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:11px; font-weight:600;
+    color:var(--brand-cyan); background:rgba(23,212,250,.08);
+    border:1px solid var(--border-accent);
+  }
+  ol.steps li b{ color:var(--fg-1); font-weight:500; }
+  ol.steps li code, .howto-col.publish p code{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--brand-cyan-bright);
+    background:rgba(23,212,250,.06); border-radius:4px; padding:1px 5px;
+  }
+  .howto-col.publish p{
+    font-size:13px; line-height:1.55; color:var(--fg-2); margin:0 0 14px;
+  }
+  .howto-col.publish p b{ color:var(--fg-1); font-weight:500; }
+  .publish-links{ display:flex; flex-direction:column; gap:8px; }
+  .publish-links a{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:.02em;
+    text-decoration:none; color:var(--brand-cyan);
+    border:1px solid var(--border-1); border-radius:var(--r-md);
+    padding:11px 13px; transition: border-color var(--dur-med), color var(--dur-fast);
+  }
+  .publish-links a:hover{ border-color:var(--border-accent); color:var(--brand-cyan-bright); }
+  .publish-links a span{ color:var(--fg-3); text-align:right; }
+  .publish-links a:hover span{ color:var(--fg-2); }
+
+  /* ---------- Trust ---------- */
+  .trust-box{
+    border:1px solid var(--border-1);
+    border-radius: var(--r-xl);
+    background:
+      radial-gradient(70% 120% at 100% 0%, rgba(242,47,137,.06), transparent 60%),
+      rgba(15,31,49,.5);
+    padding: 32px 34px;
+  }
+  .trust-box .trust-item{ margin-bottom:20px; }
+  .trust-box .trust-item:last-child{ margin-bottom:0; }
+  .trust-box .key{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--brand-magenta); margin-bottom:6px;
+  }
+  .trust-box h4{ font-family:var(--font-display); font-size:16px; font-weight:600; margin:0 0 5px; }
+  .trust-box p{ font-size:13.5px; line-height:1.6; color:var(--fg-2); margin:0; max-width:78ch; }
+  .trust-box p a{ text-decoration:none; }
+
+  /* ---------- Footer ---------- */
+  .footnote{
+    margin-top: 72px; padding-top: 24px;
+    border-top:1px solid var(--border-1);
+    display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap;
+    font-family:var(--font-mono); font-size:11px; color:var(--fg-3);
+    letter-spacing:.05em;
+  }
+  .footnote .axiom{ color:var(--fg-2); }
+  .footnote .axiom em{ color:var(--brand-cyan); font-style:normal; }
+  .footnote a{ color:var(--brand-cyan); text-decoration:none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1000px){
+    .install-grid{ grid-template-columns: 1fr; }
+    .feature-grid{ grid-template-columns: repeat(2, 1fr); }
+    .platform-split{ grid-template-columns: 1fr; }
+    .plugin-howto{ grid-template-columns: 1fr; }
+    .hd{ flex-direction:column; gap:24px; }
+    .hd-r{ text-align:left; min-width:0; align-self:stretch; }
+    .shell{ padding: 32px 32px 64px; }
+    .section-hd{ flex-direction:column; gap:6px; margin-top:64px; }
+  }
+  @media (max-width: 640px){
+    .shell{ padding: 28px 20px 56px; }
+    .topnav-inner{ padding: 12px 20px; }
+    .topnav .links{ gap:14px; font-size:10px; }
+    .feature-grid{ grid-template-columns: 1fr; }
+    .gallery{ grid-template-columns: 1fr; }
+    .plugin{ grid-template-columns: 1fr; gap:10px; }
+    .publish-links a{ flex-direction:column; align-items:flex-start; gap:4px; }
+    .publish-links a span{ text-align:left; }
+    .cta-row{ gap:10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="brand"><span class="mark"></span> 626 Labs</a>
+    <div class="links">
+      <a href="index.html">The lab</a>
+      <a href="https://github.com/estevanhernandez-stack-ed/ROROROblox">Source</a>
+      <a href="https://apps.microsoft.com/detail/9NMJCS390KWB" class="cta">
+        Get RORORO
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <header class="hd">
+    <div class="hd-l">
+      <div class="eyebrow">626 Labs &middot; Product &middot; Roblox tooling</div>
+      <h1 class="title">Run multiple Roblox clients. <span class="gt">Side by side, one machine.</span></h1>
+      <p class="lead">
+        <em>RORORO</em> is a native multi-launcher for Roblox &mdash; spawn several clients at once, each signed in as a different saved account, one click each. Native on Windows and macOS, plugin-extensible, free. No injection, no client modification &mdash; it holds a singleton lock before launch and starts the official client unmodified.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://apps.microsoft.com/detail/9NMJCS390KWB">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+          Get it on Microsoft Store
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/estevanhernandez-stack-ed/ROROROblox">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          View source on GitHub
+        </a>
+      </div>
+    </div>
+    <aside class="hd-r">
+      <div class="row"><span>Platforms</span><b>Windows &middot; macOS</b></div>
+      <div class="row"><span>Latest &middot; Windows</span><b>v1.4.1</b></div>
+      <div class="row"><span>Plugin host</span><b>v1.4 contract</b></div>
+      <div class="row"><span>License</span><b>MIT &middot; open source</b></div>
+      <div class="row"><span>Price</span><b>Free</b></div>
+    </aside>
+  </header>
+
+  <div class="hero-visual">
+    <img src="assets/screenshots/rororo/win-main.png" alt="RORORO main window — saved accounts list with per-account Launch As, the singleton-lock toggle, and the state-coloured tray ring" loading="lazy" />
+  </div>
+
+  <!-- ============ GET IT ============ -->
+  <div class="section-hd">
+    <div class="l">
+      <h2>Get it</h2>
+      <p>Three install paths. Pick the trust posture that fits you &mdash; they all land the same app.</p>
+    </div>
+    <div class="r">Windows + macOS</div>
+  </div>
+
+  <div class="install-grid">
+    <div class="install-card recommended">
+      <span class="pill">Recommended</span>
+      <span class="plat">Windows</span>
+      <h3>Microsoft Store</h3>
+      <p>Signed by Microsoft, bypasses SmartScreen entirely, auto-updates through the Store. One click and you are in &mdash; the best path for most people.</p>
+      <a class="go" href="https://apps.microsoft.com/detail/9NMJCS390KWB">
+        Open the Store listing
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+    <div class="install-card">
+      <span class="plat">Windows</span>
+      <h3>GitHub Releases</h3>
+      <p>Grab <code>rororo-win-Setup.exe</code> &mdash; one click, installs to your user profile. SmartScreen warns once because the installer is unsigned; choose <b>More info &rarr; Run anyway</b>. Velopack auto-updates it from there.</p>
+      <a class="go" href="https://github.com/estevanhernandez-stack-ed/ROROROblox/releases">
+        Open Releases
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+    <div class="install-card">
+      <span class="plat">macOS 14+</span>
+      <h3>Homebrew</h3>
+      <p>The Mac-native sibling &mdash; signed and notarized by Apple, Sparkle auto-update. Install with one tap:</p>
+      <code>brew tap estevanhernandez-stack-ed/rororo
+brew install --cask rororo</code>
+      <a class="go" href="https://github.com/estevanhernandez-stack-ed/rororo-mac">
+        RORORO Mac on GitHub
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ============ WHAT IT DOES ============ -->
+  <div class="section-hd">
+    <div class="l">
+      <h2>What it does</h2>
+      <p>The launcher core &mdash; the same shape on both platforms, native on each.</p>
+    </div>
+    <div class="r">The launcher</div>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature">
+      <div class="key">01 &middot; MULTI-INSTANCE</div>
+      <h4>One-click multi-instance</h4>
+      <p>A tray toggle holds the Roblox singleton lock so multiple clients run side by side. The official client, unmodified &mdash; no injection, no DevTools, no registry edits.</p>
+    </div>
+    <div class="feature">
+      <div class="key">02 &middot; VAULT</div>
+      <h4>Saved-account vault</h4>
+      <p>Add your alts once via an embedded login window. Cookies are encrypted at rest and tied to your machine &mdash; DPAPI on Windows, Keychain on macOS.</p>
+    </div>
+    <div class="feature">
+      <div class="key">03 &middot; LAUNCH AS</div>
+      <h4>Launch As</h4>
+      <p>One click spawns each saved account straight into your default game URL. Set the game once; every alt lands there.</p>
+    </div>
+    <div class="feature">
+      <div class="key">04 &middot; LOGIN</div>
+      <h4>Your password never touches the app</h4>
+      <p>Login happens on Roblox's own page inside an embedded browser. RORORO is the window frame, not the form handler &mdash; it only ever captures the session cookie set after a successful login.</p>
+    </div>
+    <div class="feature">
+      <div class="key">05 &middot; TRAY UX</div>
+      <h4>State-coloured tray ring</h4>
+      <p>Read your setup at a glance: cyan ring means the lock is held and multi-instance is on, slate means off, magenta means error. No menu-diving.</p>
+    </div>
+    <div class="feature">
+      <div class="key">06 &middot; UPDATES</div>
+      <h4>Auto-update built in</h4>
+      <p>Velopack on Windows, Sparkle on macOS. When Roblox shifts under the launcher, the fix ships to you without a reinstall.</p>
+    </div>
+  </div>
+
+  <!-- ============ SEE IT WORK ============ -->
+  <div class="section-hd">
+    <div class="l">
+      <h2>See it work</h2>
+      <p>The surfaces you actually use &mdash; the welcome flow, the add-account window, Squad Launch, settings, the diagnostics tab.</p>
+    </div>
+    <div class="r">The app</div>
+  </div>
+
+  <div class="gallery">
+    <figure>
+      <img src="assets/screenshots/rororo/win-welcome.png" alt="RORORO welcome screen" loading="lazy" />
+      <figcaption>Welcome &middot; first run</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/rororo/win-add-account.png" alt="RORORO add-account flow with embedded Roblox login" loading="lazy" />
+      <figcaption>Add an account</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/rororo/win-add-game.png" alt="RORORO default-game configuration" loading="lazy" />
+      <figcaption>Set a default game</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/rororo/win-squad-launch.png" alt="RORORO Squad Launch panel" loading="lazy" />
+      <figcaption>Squad Launch</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/rororo/win-settings.png" alt="RORORO settings panel" loading="lazy" />
+      <figcaption>Settings</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/rororo/win-theme.png" alt="RORORO theme picker" loading="lazy" />
+      <figcaption>Theme</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/rororo/win-diagnostics.png" alt="RORORO diagnostics tab" loading="lazy" />
+      <figcaption>Diagnostics</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/rororo/win-about.png" alt="RORORO about screen with version and license info" loading="lazy" />
+      <figcaption>About</figcaption>
+    </figure>
+  </div>
+
+  <!-- ============ PLATFORMS ============ -->
+  <div class="section-hd">
+    <div class="l">
+      <h2>Two platforms, one product</h2>
+      <p>Not a port wrapped in a cross-platform runtime &mdash; each build is native to its OS, using only public APIs.</p>
+    </div>
+    <div class="r">Native &times; 2</div>
+  </div>
+
+  <div class="platform-split">
+    <div class="platform win">
+      <div class="key">Windows 11</div>
+      <h3>RORORO for Windows</h3>
+      <div class="stack">.NET 10 LTS &middot; C# 14 &middot; WPF</div>
+      <ul>
+        <li><span class="tick">&#9656;</span><span>Multi-instance via a <b>singleton-mutex hold</b> &mdash; typed P/Invokes, no client touch.</span></li>
+        <li><span class="tick">&#9656;</span><span><b>DPAPI-encrypted</b> account vault &mdash; cookies tied to your Windows user; a copied file won't decrypt elsewhere.</span></li>
+        <li><span class="tick">&#9656;</span><span>Squad Launch, Friend Follow, join-by-link, per-game routing, local renames.</span></li>
+        <li><span class="tick">&#9656;</span><span>The <b>plugin host</b> &mdash; v1.4's named-pipe extension surface (see below).</span></li>
+        <li><span class="tick">&#9656;</span><span>Velopack auto-update &middot; Microsoft Store + GitHub Releases.</span></li>
+      </ul>
+    </div>
+    <div class="platform mac">
+      <div class="key">macOS 14+</div>
+      <h3>RORORO for Mac</h3>
+      <div class="stack">Swift &middot; SwiftUI</div>
+      <ul>
+        <li><span class="tick">&#9656;</span><span>Multi-instance via <b>POSIX <code style="font-size:11px">sem_unlink</code> + per-launch app copy</b> &mdash; public APIs only, no client modification.</span></li>
+        <li><span class="tick">&#9656;</span><span><b>Keychain-backed</b> vault &mdash; saved cookies never sync to iCloud.</span></li>
+        <li><span class="tick">&#9656;</span><span>Embedded WKWebView login &mdash; same password-never-touches-the-app contract as Windows.</span></li>
+        <li><span class="tick">&#9656;</span><span>A built-in <b>auto-keys macro cycler</b> for AFK keep-alive.</span></li>
+        <li><span class="tick">&#9656;</span><span>Sparkle auto-update &middot; signed and notarized by Apple &middot; Homebrew.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ PLUGINS ============ -->
+  <div class="section-hd">
+    <div class="l">
+      <h2>Plugins</h2>
+      <p>v1.4 opened RORORO on Windows to plugins &mdash; and this is where you find them.</p>
+    </div>
+    <div class="r">v1.4 plugin host</div>
+  </div>
+
+  <div class="plugin-intro">
+    A plugin is a <b>separate, signed Windows app</b> &mdash; its own process, never loaded into RORORO. It connects over a per-user named pipe, declares every capability it wants up front, and shows you a <b>consent sheet</b> before it gets any of them. You install one by pasting a GitHub release URL into <b>RORORO &rarr; Plugins</b>; RORORO verifies the SHA-256 before it unpacks anything. A plugin crash can't take RORORO down &mdash; the wall is intentional, and it is what keeps RORORO itself eligible for the Microsoft Store.
+  </div>
+
+  <div class="plugin-list">
+    <div class="plugin live">
+      <div class="pl-l">
+        <div class="pl-name">
+          <h4>RoRoRo Ur Task</h4>
+          <span class="status live">Live &middot; v0.2.0</span>
+        </div>
+        <p>Per-window-aware macro recorder. Records bind to a Roblox account; playback refuses to fire keys or clicks into any other alt's window, and stops cold if you alt-tab away or the bound window closes. F8 to record, F5 to play, Esc to abort. The reference plugin for the SDK.</p>
+      </div>
+      <a class="pl-link" href="https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases">
+        Get the plugin
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+    <div class="plugin">
+      <div class="pl-l">
+        <div class="pl-name">
+          <h4>Session Stats</h4>
+          <span class="status bench">On the bench</span>
+        </div>
+        <p>Live per-account uptime, launch counts this session, and mutex state &mdash; a pure observer panel for tracking a long farming run.</p>
+      </div>
+      <span class="pl-link muted">Scoped</span>
+    </div>
+    <div class="plugin">
+      <div class="pl-l">
+        <div class="pl-name">
+          <h4>Discord Rich Presence</h4>
+          <span class="status bench">On the bench</span>
+        </div>
+        <p>Pushes "playing with N alts via RORORO" to your Discord status whenever accounts launch.</p>
+      </div>
+      <span class="pl-link muted">Scoped</span>
+    </div>
+    <div class="plugin">
+      <div class="pl-l">
+        <div class="pl-name">
+          <h4>Auto-Relaunch on Exit</h4>
+          <span class="status bench">On the bench</span>
+        </div>
+        <p>Watches for an alt's window closing and relaunches it &mdash; closes the crashed-alt loop on an unattended run.</p>
+      </div>
+      <span class="pl-link muted">Scoped</span>
+    </div>
+  </div>
+
+  <div class="plugin-howto">
+    <div class="howto-col">
+      <div class="howto-key">How to install a plugin</div>
+      <ol class="steps">
+        <li>Open <b>Plugins</b> from RORORO's main-window nav, or from the tray menu.</li>
+        <li>Paste the plugin's <b>GitHub release directory URL</b> into Install &mdash; the parent path that holds its <code>manifest.json</code>, <code>manifest.sha256</code>, and <code>plugin.zip</code>.</li>
+        <li>RORORO fetches the manifest and <b>verifies the SHA-256</b> of the download against it &mdash; and refuses to extract on any mismatch.</li>
+        <li>Review the <b>consent sheet</b>. Every capability the plugin declared is itemized; toggle each one before it gets access.</li>
+        <li><b>Restart RORORO.</b> Plugins start when RORORO launches, so a fresh install runs after the restart prompt.</li>
+      </ol>
+    </div>
+    <div class="howto-col publish">
+      <div class="howto-key">Publishing a plugin</div>
+      <p>A plugin is your own signed Windows app built against the <b>RORORO plugin contract</b>. Ship it as a GitHub release with three artifacts &mdash; <code>manifest.json</code>, <code>manifest.sha256</code>, <code>plugin.zip</code> &mdash; and anyone can install it with the steps on the left.</p>
+      <div class="publish-links">
+        <a href="https://github.com/estevanhernandez-stack-ed/ROROROblox/blob/main/docs/plugins/AUTHOR_GUIDE.md">
+          Plugin author guide <span>contract &middot; capabilities &middot; manifest</span>
+        </a>
+        <a href="https://github.com/estevanhernandez-stack-ed/rororo-ur-task">
+          Reference plugin <span>RoRoRo Ur Task &middot; working example</span>
+        </a>
+        <a href="https://github.com/estevanhernandez-stack-ed/ROROROblox/issues">
+          Questions &amp; feature asks <span>ROROROblox issues</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TRUST ============ -->
+  <div class="section-hd">
+    <div class="l">
+      <h2>The honest part</h2>
+      <p>What this is, what the risk is, and whose work it builds on &mdash; said plainly, because it should be.</p>
+    </div>
+    <div class="r">Owned, not hidden</div>
+  </div>
+
+  <div class="trust-box">
+    <div class="trust-item">
+      <div class="key">Independence</div>
+      <h4>An independent third-party tool</h4>
+      <p>RORORO is not affiliated with, endorsed by, or sponsored by Roblox Corporation. "Roblox" is a trademark of Roblox Corporation, used here only to describe compatibility &mdash; RORORO launches the official Roblox client, unmodified.</p>
+    </div>
+    <div class="trust-item">
+      <div class="key">The risk</div>
+      <h4>No injection &mdash; but the risk isn't zero</h4>
+      <p>RORORO doesn't inject into or modify the Roblox client. It holds a Windows mutex name (or a POSIX semaphore on macOS) before launch, then starts the official client. Roblox has stated that multi-instancing "may be considered malicious behavior," so the risk of a ban appears low but is non-zero &mdash; and the README says exactly that. Don't run this on accounts you can't afford to lose.</p>
+    </div>
+    <div class="trust-item">
+      <div class="key">Provenance</div>
+      <h4>Reuse without erasure</h4>
+      <p>The named-mutex defeat technique originated with <a href="https://github.com/Zgoly/MultiBloxy">MultiBloxy by Zgoly</a>. RORORO is a clean C# reimplementation with substantially expanded scope &mdash; account management, structured launch flow, a plugin host &mdash; not a fork. The credit, the reference binary, and the caveats are all in <a href="https://github.com/estevanhernandez-stack-ed/ROROROblox/blob/main/PROVENANCE.txt">PROVENANCE.txt</a>.</p>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <span class="axiom">Run six. <em>Trust the window you're recording.</em> Own the provenance.</span>
+    <span>626 Labs LLC &middot; Imagine Something Else. &middot; <a href="index.html">Lab</a> &middot; <a href="thesis.html">Thesis</a> &middot; <a href="privacy.html">Privacy</a></span>
+  </div>
+
+</div>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
