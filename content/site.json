@@ -471,68 +471,9 @@
       "npm": null,
       "install": null,
       "storeUrl": "https://apps.microsoft.com/detail/9NMJCS390KWB",
+      "productPage": "rororo.html",
       "banner": "assets/thumb-rororo.png",
-      "meta": "Free on MS Store · plugin-extensible",
-      "screenshots": []
-    },
-    {
-      "id": "rororo-mac",
-      "title": "RORORO Mac",
-      "description": "Mac-native multi-launcher for Roblox — sibling to the Windows version, same product on macOS 14+. Run multiple Roblox clients each signed in as a different saved account. Swift / SwiftUI, Keychain-backed account vault (cookies never sync to iCloud), embedded WKWebView login so your password never touches the app process. Multi-instance via POSIX sem_unlink + per-launch app copy — public APIs only, no client modification. Sparkle auto-update, signed and notarized by Apple. Built-in auto-keys macro cycler for AFK keep-alive. Independent third-party tool — not affiliated with Roblox Corporation.",
-      "tags": [
-        {
-          "label": "macOS",
-          "tone": "cyan"
-        },
-        {
-          "label": "native",
-          "tone": "magenta"
-        },
-        {
-          "label": "Roblox tooling",
-          "tone": "cyan"
-        },
-        {
-          "label": "Live",
-          "tone": "live"
-        }
-      ],
-      "status": "live",
-      "repo": "estevanhernandez-stack-ed/rororo-mac",
-      "npm": null,
-      "install": "brew tap estevanhernandez-stack-ed/rororo && brew install --cask rororo",
-      "banner": null,
-      "meta": "macOS · brew-installable · Sparkle auto-update",
-      "screenshots": []
-    },
-    {
-      "id": "rororo-ur-task",
-      "title": "RoRoRo Ur Task",
-      "description": "First-party RORORO plugin — per-window-aware macro recorder. Captures the foreground Roblox user-id on record; playback refuses to fire keys or clicks into any other alt's window. Alt-tab away mid-playback and it stops cold. Auto-stops if the bound alt's window closes. F8 to record, F5 to play, Esc to abort. Built on the RORORO v1.4 plugin host — separate Windows EXE, named-pipe IPC, capabilities declared up front with a consent sheet at install. Reference plugin for the new SDK.",
-      "tags": [
-        {
-          "label": "plugin",
-          "tone": "cyan"
-        },
-        {
-          "label": "Windows",
-          "tone": "magenta"
-        },
-        {
-          "label": "macro recorder",
-          "tone": "cyan"
-        },
-        {
-          "label": "Live",
-          "tone": "live"
-        }
-      ],
-      "status": "live",
-      "repo": "estevanhernandez-stack-ed/rororo-ur-task",
-      "npm": null,
-      "install": null,
-      "banner": null,
-      "meta": "RORORO plugin · per-window macros",
+      "meta": "Free · Windows + macOS · plugin-extensible",
       "screenshots": []
     }
   ],
