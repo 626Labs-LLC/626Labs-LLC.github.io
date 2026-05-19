@@ -158,7 +158,8 @@
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer",
       "claudeCode": true,
       "anthropicApproved": true,
-      "screenshots": []
+      "screenshots": [],
+      "productPage": "/vibe-cartographer/"
     },
     {
       "id": "vibe-iterate",
@@ -214,7 +215,8 @@
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
       "meta": "<code>/keystone</code> · CLAUDE.md bootstrap",
-      "screenshots": []
+      "screenshots": [],
+      "productPage": "/vibe-keystone/"
     },
     {
       "id": "vibe-doc",
@@ -240,7 +242,8 @@
       "install": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Doc",
       "claudeCode": true,
       "meta": "<code>/vibe-doc</code> · gap analyzer",
-      "screenshots": []
+      "screenshots": [],
+      "productPage": "/vibe-doc/"
     },
     {
       "id": "vibe-test",
@@ -266,7 +269,8 @@
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
       "meta": "<code>/vibe-test:audit</code> · harness-aware",
-      "screenshots": []
+      "screenshots": [],
+      "productPage": "/vibe-test/"
     },
     {
       "id": "vibe-thesis",
@@ -293,7 +297,8 @@
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
       "meta": "<code>/vibe-thesis</code> · render to PDF / HTML / lay",
-      "screenshots": []
+      "screenshots": [],
+      "productPage": "/vibe-thesis/"
     },
     {
       "id": "thesis-engine",
@@ -320,7 +325,8 @@
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
       "meta": "<code>/thesis-engine:discover</code> · topic + source pipeline",
-      "screenshots": []
+      "screenshots": [],
+      "productPage": "/thesis-engine/"
     },
     {
       "id": "sanduhr",
@@ -382,7 +388,8 @@
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
       "meta": "/vibe-sec · drafting",
-      "screenshots": []
+      "screenshots": [],
+      "productPage": "/vibe-sec/"
     },
     {
       "id": "rbx15-shirt-pants",
