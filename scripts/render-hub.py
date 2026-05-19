@@ -485,17 +485,14 @@ def render_product_foot(p: dict) -> str:
         link = ""
     elif p.get("status") == "wip":
         link = (
-            f'<a class="product-link" href="https://github.com/{attr(repo)}/tree/main/packages/{attr(pid)}">'
+            f'<a class="product-link" href="https://github.com/{attr(repo)}">'
             "Framework doc "
             '<svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>'
             "</a>"
         )
     else:
-        link_target = f"https://github.com/{repo}"
-        if pid == "vibe-test":
-            link_target += "/tree/main/packages/vibe-test"
         link = (
-            f'<a class="product-link" href="{attr(link_target)}">'
+            f'<a class="product-link" href="https://github.com/{attr(repo)}">'
             "Open repo "
             '<svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>'
             "</a>"

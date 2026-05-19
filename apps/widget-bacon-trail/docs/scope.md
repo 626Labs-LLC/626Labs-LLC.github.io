@@ -4,7 +4,7 @@
 
 An embeddable React widget that runs a stripped-down version of the Birthday Bacon Trail game — the user picks one of today's birthday actors, walks a movie-cast chain, and tries to find Kevin Bacon within six films. Picking a film whose cast includes Bacon is the win. Designed to live as a ~400×600 card on 626labs.dev. Goal is delight + "we actually ship games" proof, not theater-rewards conversion.
 
-The widget is a second-generation artifact of the Lobby Engagement Suite: the full game lives at [`apps/bacon-trail/`](~/Projects/QuizShow/apps/bacon-trail/) in the QuizShow monorepo; this is a compact, embeddable fork optimized for portfolio placement.
+The widget is a second-generation artifact of the Lobby Engagement Suite: the full game lives at `apps/bacon-trail/` in the QuizShow monorepo; this is a compact, embeddable fork optimized for portfolio placement.
 
 ## Who It's For
 
@@ -24,12 +24,12 @@ The widget is a second-generation artifact of the Lobby Engagement Suite: the fu
 
 **Architectural mentor:**
 
-- [**CinePerks Trivia Widget**](~/Projects/QuizShow/apps/widget/) — the sibling widget in the same monorepo. Defines the embed contract we are cloning (config-via-props, `theme / brandColor / brandLogo`, `CinePerksWidget.init({ container, ...config })` script-tag invocation). Our widget's config API is a near-superset of this one. `INTEGRATION.md` in that directory documents the pattern in detail.
+- **CinePerks Trivia Widget** (`~/Projects/QuizShow/apps/widget/`) — the sibling widget in the same monorepo. Defines the embed contract we are cloning (config-via-props, `theme / brandColor / brandLogo`, `CinePerksWidget.init({ container, ...config })` script-tag invocation). Our widget's config API is a near-superset of this one. `INTEGRATION.md` in that directory documents the pattern in detail.
 
 **Source material (the game):**
 
-- [`apps/bacon-trail/`](~/Projects/QuizShow/apps/bacon-trail/) — the full Birthday Bacon Trail app. State machine, screens, service layer all usable as references. ~20 files, ~2000 lines.
-- [`WeSeeYouAtTheMovies/frontend/src/components/BirthdayBaconTrail/`](~/Projects/WeSeeYouAtTheMovies/frontend/src/components/BirthdayBaconTrail/) — the prior lift-and-adapt into WSYATM. Useful as a *"here's how we already stripped the auth and nickname systems"* reference, but it still assumes a user context; we go further and ship without user state at all.
+- `~/Projects/QuizShow/apps/bacon-trail/` — the full Birthday Bacon Trail app. State machine, screens, service layer all usable as references. ~20 files, ~2000 lines.
+- `~/Projects/WeSeeYouAtTheMovies/frontend/src/components/BirthdayBaconTrail/` — the prior lift-and-adapt into WSYATM. Useful as a *"here's how we already stripped the auth and nickname systems"* reference, but it still assumes a user context; we go further and ship without user state at all.
 
 **Spiritual cousin (reveals what we're NOT):**
 
@@ -55,7 +55,7 @@ Four decisions with downstream architectural consequences, resolved in this scop
 
 Source of truth remains QuizShow's `actorDatabase` in Firestore (project `guestbuzz-cineperks`). This collection is **already the Bacon-engine-filtered set** — it's not the full TMDB actor universe, it's the curated subset the Bacon Trail game plays with (actors with known Bacon numbers, meaningful popularity, known birthdays). No further filtering needed on our end.
 
-A new GitHub Action (modeled on [`.github/workflows/track-traffic.yml`](~/Projects/626labs-hub/.github/workflows/track-traffic.yml)) runs nightly (cron `0 6 * * *` UTC), queries Firestore for each of the 366 date keys, and writes 366 files to `apps/widget-bacon-trail/data/birthdays/MM-DD.json`. The widget loads exactly one file per visit (today's).
+A new GitHub Action (modeled on `.github/workflows/track-traffic.yml`) runs nightly (cron `0 6 * * *` UTC), queries Firestore for each of the 366 date keys, and writes 366 files to `apps/widget-bacon-trail/data/birthdays/MM-DD.json`. The widget loads exactly one file per visit (today's).
 
 **Measured numbers (2026-04-23 Firestore query):**
 

@@ -2,7 +2,7 @@
 
 An embeddable React widget that runs a stripped-down version of the Birthday Bacon Trail game. The visitor picks one of today's birthday actors, walks a movie-cast chain, and tries to find Kevin Bacon within six films. Built for a small card on [626labs.dev](https://626labs.dev/#play) and designed to be re-embeddable anywhere a script tag can run.
 
-Full game lives at [`apps/bacon-trail/`](../../../QuizShow/apps/bacon-trail/) in the QuizShow monorepo. This widget is a compact fork optimized for portfolio placement — no accounts, no leaderboard, no writes.
+Full game lives at `apps/bacon-trail/` in the QuizShow monorepo. This widget is a compact fork optimized for portfolio placement — no accounts, no leaderboard, no writes.
 
 ---
 

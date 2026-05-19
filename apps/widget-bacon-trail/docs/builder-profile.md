@@ -65,10 +65,10 @@ Prove that a game-genre sub-product can be lifted out of a monorepo and re-homed
 ## Architecture docs / reference code
 
 - **"Proof" block** drafted 2026-04-23 pre-`/scope` (PROJECT, PARENT, IDEA, GAMEPLAY, DATA, CONFIG API, REUSE, CUT, OPEN QUESTIONS). Feeds directly into the `/scope` interview as raw input.
-- [`~/Projects/QuizShow/apps/bacon-trail/`](~/Projects/QuizShow/apps/bacon-trail/) — full-game source. State machine, screens, services.
-- [`~/Projects/QuizShow/apps/widget/`](~/Projects/QuizShow/apps/widget/) — the embed-widget pattern to clone (config API, `Widget.tsx` shell, `INTEGRATION.md`).
-- [`~/Projects/WeSeeYouAtTheMovies/frontend/src/components/BirthdayBaconTrail/`](~/Projects/WeSeeYouAtTheMovies/frontend/src/components/BirthdayBaconTrail/) — prior adaptation; trim the user/auth wrapper, keep the state machine structure.
-- [`~/Projects/626labs-hub/`](~/Projects/626labs-hub/) — deploy target. Hub's render pipeline (`scripts/render-hub.py`), admin dash, and sub-page patterns (`sanduhr/`) are all known. `apps/` is a new top-level directory for the hub.
+- `~/Projects/QuizShow/apps/bacon-trail/` — full-game source. State machine, screens, services.
+- `~/Projects/QuizShow/apps/widget/` — the embed-widget pattern to clone (config API, `Widget.tsx` shell, `INTEGRATION.md`).
+- `~/Projects/WeSeeYouAtTheMovies/frontend/src/components/BirthdayBaconTrail/` — prior adaptation; trim the user/auth wrapper, keep the state machine structure.
+- `~/Projects/626labs-hub/` — deploy target. Hub's render pipeline (`scripts/render-hub.py`), admin dash, and sub-page patterns (`sanduhr/`) are all known. `apps/` is a new top-level directory for the hub.
 
 ---
 
