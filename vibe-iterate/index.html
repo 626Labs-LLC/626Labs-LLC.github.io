@@ -100,9 +100,18 @@
       border-bottom: 1px solid rgba(255,255,255,.06);
     }
     nav.top .row { display: flex; align-items: center; justify-content: space-between; height: 56px; }
-    nav.top .brand { display: flex; align-items: center; gap: 10px; color: var(--ink-0); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; }
-    nav.top .brand:hover { text-decoration: none; }
-    nav.top .brand img { height: 28px; width: auto; }
+    nav.top .brand-row { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    nav.top .brand { display: flex; align-items: center; gap: 8px; color: var(--ink-200); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; }
+    nav.top .brand:hover { text-decoration: none; color: var(--ink-0); }
+    nav.top .brand img { height: 26px; width: auto; }
+    nav.top .brand-sep { color: var(--ink-400); font-size: 18px; }
+    nav.top .brand-current { display: flex; align-items: center; gap: 8px; color: var(--ink-0); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; }
+    nav.top .vibe-mark { width: 28px; height: 28px; border-radius: var(--r-sm); background: rgba(23,212,250,.12); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    nav.top .vibe-mark svg { width: 18px; height: 18px; stroke: var(--cyan); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    @media (max-width: 520px) {
+      nav.top .brand span { display: none; }
+      nav.top .brand-sep { display: none; }
+    }
 
     footer {
       margin-top: 96px; padding: 32px 0 48px;
@@ -224,10 +233,19 @@
 
   <nav class="top">
     <div class="container row">
-      <a href="/" class="brand">
-        <img src="/favicon-626.png" alt="626 Labs" />
-        <span>626 Labs</span>
-      </a>
+      <div class="brand-row">
+        <a href="/" class="brand">
+          <img src="/assets/brand/icon-transparent-256.png" alt="626Labs" />
+          <span>626Labs</span>
+        </a>
+        <span class="brand-sep" aria-hidden="true">/</span>
+        <span class="brand-current">
+          <span class="vibe-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/><path d="M12 7l3 5-3 5-3-5z"/></svg>
+          </span>
+          <span>vibe-iterate</span>
+        </span>
+      </div>
       <a href="#install" class="btn btn-ghost">Install</a>
     </div>
   </nav>
@@ -238,7 +256,7 @@
       <div class="container">
         <div class="hero-grid">
           <div class="hero-left">
-            <span class="eyebrow">626 Labs · Claude Code plugin</span>
+            <span class="eyebrow">626Labs · Claude Code plugin</span>
             <h1>Maintain your Atlas.</h1>
             <p class="hero-subhead">Cart took you idea &rarr; v1. vibe-iterate takes you v1 &rarr; v1+n. Ships one PR per session &mdash; regression-aware, small-diff-preferred.</p>
             <div class="hero-ctas">
@@ -473,7 +491,7 @@
 
   <footer>
     <div class="container row">
-      <div>626 Labs LLC · MIT · 2026</div>
+      <div>626Labs LLC · MIT · 2026</div>
       <div class="tagline">Imagine Something Else.</div>
       <div class="links">
         <a href="https://github.com/estevanhernandez-stack-ed/vibe-iterate">GitHub</a>

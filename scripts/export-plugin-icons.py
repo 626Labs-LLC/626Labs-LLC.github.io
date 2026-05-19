@@ -7,6 +7,7 @@ Cartographer's existing repo banner (a 3×3 connected-node graph).
 
 Plugins:
   vibe-cartographer  → connected-node graph (the map)
+  vibe-iterate       → compass rose in an orbit (navigate the Atlas, iterate)
   vibe-keystone      → keystone arch (load-bearing stone)
   vibe-doc           → lined document
   vibe-test          → bar chart with axis
@@ -99,6 +100,37 @@ def glyph_cartographer(primary, secondary):
     # Nodes on top
     for x, y in nodes:
         draw.ellipse([x-9, y-9, x+9, y+9], fill=NAVY + (255,), outline=primary + (255,), width=3)
+    return img
+
+
+def glyph_iterate(primary, secondary):
+    """Compass rose inside an orbit — navigate already-mapped territory,
+    iteration after iteration. (vibe-iterate: maintain your Atlas.)"""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    cx, cy = GLYPH_SIZE // 2, GLYPH_SIZE // 2
+    R = 62
+    # Outer compass ring
+    draw.ellipse([cx - R, cy - R, cx + R, cy + R], outline=primary + (255,), width=3)
+    # Crosshair to the ring
+    draw.line([(cx, cy - R), (cx, cy + R)], fill=primary + (255,), width=3)
+    draw.line([(cx - R, cy), (cx + R, cy)], fill=primary + (255,), width=3)
+    # Intercardinal ticks just inside the ring
+    for a in (45, 135, 225, 315):
+        ox = cx + R * math.cos(math.radians(a))
+        oy = cy - R * math.sin(math.radians(a))
+        ix = cx + (R - 13) * math.cos(math.radians(a))
+        iy = cy - (R - 13) * math.sin(math.radians(a))
+        draw.line([(ix, iy), (ox, oy)], fill=primary + (255,), width=2)
+    # Compass needle — two diamonds (vertical + horizontal), secondary
+    nd, nw = 30, 12
+    draw.polygon([(cx, cy - nd), (cx + nw, cy), (cx, cy + nd), (cx - nw, cy)],
+                 outline=secondary + (255,), width=3)
+    draw.polygon([(cx - nd, cy), (cx, cy - nw), (cx + nd, cy), (cx, cy + nw)],
+                 outline=secondary + (255,), width=3)
+    # Center hub
+    draw.ellipse([cx - 6, cy - 6, cx + 6, cy + 6], fill=NAVY + (255,),
+                 outline=primary + (255,), width=3)
     return img
 
 
@@ -247,6 +279,7 @@ def glyph_engine(primary, secondary):
 
 GLYPHS = {
     "node_graph":   glyph_cartographer,
+    "compass":      glyph_iterate,
     "keystone":     glyph_keystone,
     "doc":          glyph_doc,
     "bars":         glyph_test,
@@ -265,6 +298,11 @@ PLUGINS = [
         "id": "vibe-cartographer", "name": "VIBE CARTOGRAPHER",
         "tagline": "plot your course",
         "glyph": "node_graph", "primary": MAGENTA, "secondary": CYAN,  # flagship gets the duo
+    },
+    {
+        "id": "vibe-iterate", "name": "VIBE ITERATE",
+        "tagline": "maintain your Atlas",
+        "glyph": "compass", "primary": CYAN, "secondary": MAGENTA,
     },
     {
         "id": "vibe-keystone", "name": "VIBE KEYSTONE",
