@@ -3,22 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vibe-iterate · Maintain your Atlas. · 626Labs</title>
-  <meta name="description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <link rel="canonical" href="https://626labs.dev/vibe-iterate/" />
+  <title>Vibe Plugins · Claude Code plugins by 626Labs</title>
+  <meta name="description" content="A coordinated family of Claude Code plugins by 626Labs — planning, iteration, docs, tests, security, and research authoring." />
+  <link rel="canonical" href="https://626labs.dev/plugins/" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
-
-  <meta property="og:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta property="og:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta property="og:url" content="https://626labs.dev/vibe-iterate/" />
-  <meta property="og:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+  <meta property="og:title" content="Vibe Plugins · for Claude Code" />
+  <meta property="og:description" content="A coordinated family of Claude Code plugins by 626Labs." />
+  <meta property="og:url" content="https://626labs.dev/plugins/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/vibe-plugins-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta name="twitter:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta name="twitter:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
-
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/vibe-plugins-banner-1280x640.png" />
   <style>
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -237,18 +233,11 @@
 
   <nav class="top">
     <div class="container row">
-      <div class="brand-row">
-        <a href="/" class="brand">
-          <img src="/assets/brand/icon-transparent-256.png" alt="626Labs" />
-          <span>626Labs</span>
-        </a>
-        <span class="brand-sep" aria-hidden="true">/</span>
-        <span class="brand-current">
-          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
-          <span>vibe-iterate</span>
-        </span>
-      </div>
-      <a href="#install" class="btn btn-ghost">Install</a>
+      <a href="/" class="brand">
+        <img src="/assets/brand/icon-transparent-256.png" alt="626Labs" />
+        <span>626Labs</span>
+      </a>
+      <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins" class="btn btn-ghost">Marketplace</a>
     </div>
   </nav>
 
@@ -256,177 +245,26 @@
 
     <section class="hero">
       <div class="container">
-        <div class="hero-grid">
+        <div class="hero-grid solo">
           <div class="hero-left">
-            <span class="eyebrow">626Labs · Claude Code plugin</span>
-            <h1>Maintain your Atlas.</h1>
-            <p class="hero-subhead">Cart took you idea &rarr; v1. vibe-iterate takes you v1 &rarr; v1+n. Ships one PR per session &mdash; regression-aware, small-diff-preferred.</p>
+            <span class="eyebrow">626Labs · for Claude Code</span>
+            <h1>Vibe Plugins.</h1>
+            <p class="hero-subhead">A coordinated family of Claude Code plugins &mdash; installed independently, composed when present. Plan it, ship it, iterate it, document it, test it, secure it.</p>
             <div class="hero-ctas">
-              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-iterate/blob/main/docs/2026-05-04-vibe-iterate-design.md" class="btn btn-ghost">Read the spec</a>
-            </div>
-            <div class="hero-meta">
-              <span>v1.0.0</span><span>·</span><span>4 modes</span><span>·</span><span>6 sidecars</span><span>·</span><span>MIT</span>
-            </div>
-          </div>
-
-          <div class="hero-right">
-            <div class="term">
-              <div class="term-bar">
-                <span class="term-dot r"></span>
-                <span class="term-dot y"></span>
-                <span class="term-dot g"></span>
-                <span class="term-label">vibe-iterate ~</span>
-              </div>
-              <div class="term-body">
-                <div><span class="prompt">$</span> <span class="cmd">/vibe-iterate</span></div>
-                <div><span class="agent">[Ptolemy]</span> Reading project state...</div>
-                <div>  &rarr; Atlas: <span class="key">12 entries</span>, last shipped 4 days ago</div>
-                <div>  &rarr; Stack: <span class="path">Next.js 15.2.0</span>, <span class="path">Tailwind 4</span>, <span class="path">Supabase</span></div>
-                <div>  &rarr; Radar cache: 6 days old <span class="muted">(stale)</span></div>
-                <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Recommended mode for the moment:</div>
-                <div>  <span class="key">feature-add</span> &mdash; Product Hunt surfaced 3 candidates,</div>
-                <div>  framework releases include <span class="path">Tailwind v4.1</span>.</div>
-                <div>&nbsp;</div>
-                <div>Launch <span class="key">feature-add</span>? [y/N]: <span class="cmd">y</span></div>
-                <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Scanning... <span class="ok">done</span></div>
-                <div><span class="agent">[Ptolemy]</span> PR ready: <span class="path">feat: inline AI command palette</span><span class="term-cursor"></span></div>
-              </div>
+              <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins" class="btn btn-primary">Get the marketplace</a>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="work">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">01 · The work</span>
-          <h2>Four modes for what&#x27;s next.</h2>
-          <p class="lead">Pick the mode for the moment. Each ships one PR per session, with Atlas continuity across runs.</p>
-        </div>
-
-        <div class="cards-grid">
-          <div class="card">
-            <span class="cmd">/vibe-iterate:feature-add</span>
-            <h3>Ship the next feature.</h3>
-            <p class="desc">Multi-source candidate scan: competitors, Product Hunt, framework releases, your feedback.md. Clusters, scores, picks one.</p>
-            <p class="reach">Reach for it when <em>you don't know what to build next</em>.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-iterate:competitive</span>
-            <h3>Close the gaps that matter.</h3>
-            <p class="desc">Reads competitor changelogs, diffs against your shipped product, ranks by strategic relevance &mdash; not parity.</p>
-            <p class="reach">Reach for it when <em>a competitor shipped something loud</em>.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-iterate:ux-polish</span>
-            <h3>Tighten what&#x27;s shipped but rough.</h3>
-            <p class="desc">Walks routes, components, key flows. Scores by user-trust impact.</p>
-            <p class="reach">Reach for it when <em>the product works but feels off</em>.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-iterate:bug-bash</span>
-            <h3>Fix the loudest bug.</h3>
-            <p class="desc">Reads feedback.md, triages by severity &times; frequency &times; blast-radius. Dormant when feedback.md is missing.</p>
-            <p class="reach">Reach for it when <em>users keep reporting the same thing</em>.</p>
-          </div>
-        </div>
-
-        <div class="sub-head">
-          <h3>Six tools when a mode is too much.</h3>
-          <span class="hint">Run any sidecar directly — no mode required.</span>
-        </div>
-        <div class="mini-grid">
-          <div class="mini">
-            <span class="name">:radar</span>
-            <p class="desc">What's new across your stack and competitors since last visit.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:spy &amp;lt;url&amp;gt;</span>
-            <p class="desc">One-shot competitive read on a single URL.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:scan-releases [pkg]</span>
-            <p class="desc">What's new in this lib since you last bumped.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:rate &amp;lt;idea&amp;gt;</span>
-            <p class="desc">Score an idea on impact / fit / effort / regression-risk / user-trust.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:ship &amp;lt;brief&amp;gt;</span>
-            <p class="desc">Express lane. Skip ingestion, ship from a brief.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:upgrade &amp;lt;pkg&amp;gt;</span>
-            <p class="desc">Surgical library bump with codemods if available.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="brain">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">02 · The brain</span>
-          <h2>Ptolemy stays current.</h2>
-        </div>
-        <div class="brain-grid">
-          <div>
-            <p><strong>Ptolemy is vibe-iterate's agent</strong> &mdash; senior to Cart's field-cartographer, oriented for already-shipped territory. He reads your stack via context7, watches framework releases on a weekly scan, and keeps your Atlas &mdash; the running record of what you've shipped, what you considered, what got cut, and why &mdash; in continuity across sessions.</p>
-            <p>When <strong>vibe-cartographer</strong> is installed in the same repo, Ptolemy defers cleanly (Pattern #13). When it's not, vibe-iterate stands on its own. <strong>Composes, never depends.</strong></p>
-          </div>
-          <div>
-            <div class="callout">No telemetry. Atlas data stays on your machine.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="install" id="install">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">03 · Get it</span>
-          <h2>Two channels.</h2>
-        </div>
-
-        <div class="install-grid">
-          <div class="card install-card">
-            <h3>Stable <span class="badge">marketplace</span></h3>
-            <p class="blurb">Tagged releases, promoted via the Vibe Plugins marketplace.</p>
-            <div class="codeblock">
-              <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
-              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
-/plugin install vibe-iterate</pre>
-            </div>
-          </div>
-          <div class="card install-card">
-            <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
-            <p class="blurb">Latest main from this repo. Re-syncs on every push.</p>
-            <div class="codeblock">
-              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
-              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-iterate
-/plugin install vibe-iterate</pre>
-            </div>
-          </div>
-        </div>
-        <p class="install-note">Pick stable if you want to be told. Pick canary if you want to tell us.</p>
       </div>
     </section>
 
     <section class="family">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">04 · Family</span>
-          <h2>One plugin in a family.</h2>
+          <span class="eyebrow">The family</span>
+          <h2>Eight plugins, one playbook.</h2>
+          <p class="lead">Each ships on its own. Each composes with the others when they share a repo.</p>
         </div>
-        <p class="family-lead">Vibe Plugins are a coordinated family &mdash; installed independently, composed when present.</p>
-
         <div class="family-grid">
           <a href="/vibe-cartographer/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-cartographer-icon-transparent-512.png" alt="" /></span>
@@ -435,12 +273,11 @@
               <div class="role">idea → v1</div>
             </div>
           </a>
-          <a href="/vibe-iterate/" class="family-card here">
+          <a href="/vibe-iterate/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-iterate</div>
               <div class="role">v1 → v1+n</div>
-            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-keystone/" class="family-card">
@@ -501,25 +338,6 @@
       </div>
     </div>
   </footer>
-
-  <script>
-    document.querySelectorAll('.copybtn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var target = document.getElementById(btn.getAttribute('data-target'));
-        if (!target || !navigator.clipboard) { return; }
-        navigator.clipboard.writeText(target.textContent).then(function() {
-          var orig = btn.textContent;
-          btn.textContent = 'copied';
-          btn.classList.add('ok');
-          setTimeout(function() { btn.textContent = orig; btn.classList.remove('ok'); }, 1500);
-        }).catch(function() {
-          var orig = btn.textContent;
-          btn.textContent = 'press Ctrl+C';
-          setTimeout(function() { btn.textContent = orig; }, 1500);
-        });
-      });
-    });
-  </script>
 
 </body>
 </html>

@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vibe-iterate · Maintain your Atlas. · 626Labs</title>
-  <meta name="description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <link rel="canonical" href="https://626labs.dev/vibe-iterate/" />
+  <title>thesis-engine · Research feeder for vibe-thesis · 626Labs</title>
+  <meta name="description" content="Claude Code plugin that discovers thesis topics, gathers sources, and outputs vibe-thesis-ready research notes plus a BibTeX bibliography. 4 commands, 3 stages." />
+  <link rel="canonical" href="https://626labs.dev/thesis-engine/" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
-  <meta property="og:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta property="og:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta property="og:url" content="https://626labs.dev/vibe-iterate/" />
-  <meta property="og:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+  <meta property="og:title" content="thesis-engine · Research feeder for vibe-thesis" />
+  <meta property="og:description" content="Claude Code plugin that discovers thesis topics, gathers sources, and outputs vibe-thesis-ready research notes plus a BibTeX bibliography. 4 commands, 3 stages." />
+  <meta property="og:url" content="https://626labs.dev/thesis-engine/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/thesis-engine-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta name="twitter:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta name="twitter:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+  <meta name="twitter:title" content="thesis-engine · Research feeder for vibe-thesis" />
+  <meta name="twitter:description" content="Claude Code plugin that discovers thesis topics, gathers sources, and outputs vibe-thesis-ready research notes plus a BibTeX bibliography. 4 commands, 3 stages." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/thesis-engine-banner-1280x640.png" />
 
   <style>
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
@@ -244,8 +244,8 @@
         </a>
         <span class="brand-sep" aria-hidden="true">/</span>
         <span class="brand-current">
-          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
-          <span>vibe-iterate</span>
+          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/thesis-engine-icon-transparent-512.png" alt="" /></span>
+          <span>thesis-engine</span>
         </span>
       </div>
       <a href="#install" class="btn btn-ghost">Install</a>
@@ -259,13 +259,13 @@
         <div class="hero-grid">
           <div class="hero-left">
             <span class="eyebrow">626Labs · Claude Code plugin</span>
-            <h1>Maintain your Atlas.</h1>
-            <p class="hero-subhead">Cart took you idea &rarr; v1. vibe-iterate takes you v1 &rarr; v1+n. Ships one PR per session &mdash; regression-aware, small-diff-preferred.</p>
+            <h1>Research feeder for vibe-thesis.</h1>
+            <p class="hero-subhead">thesis-engine does the cold-start work that's painful before you can write: it scans the field for live, low-competition topics, pulls primary sources across five research axes, and emits vibe-thesis-shaped notes plus a BibTeX bibliography ready to drop into ThesisStudio.</p>
             <div class="hero-ctas">
-              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-iterate/blob/main/docs/2026-05-04-vibe-iterate-design.md" class="btn btn-ghost">Read the spec</a>
+              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/Thesis-Engine" class="btn btn-ghost">View on GitHub</a>
             </div>
             <div class="hero-meta">
-              <span>v1.0.0</span><span>·</span><span>4 modes</span><span>·</span><span>6 sidecars</span><span>·</span><span>MIT</span>
+              <span>v0.2.1</span><span>·</span><span>4 commands</span><span>·</span><span>3 stages</span><span>·</span><span>MIT</span>
             </div>
           </div>
 
@@ -275,23 +275,20 @@
                 <span class="term-dot r"></span>
                 <span class="term-dot y"></span>
                 <span class="term-dot g"></span>
-                <span class="term-label">vibe-iterate ~</span>
+                <span class="term-label">thesis-engine ~</span>
               </div>
               <div class="term-body">
-                <div><span class="prompt">$</span> <span class="cmd">/vibe-iterate</span></div>
-                <div><span class="agent">[Ptolemy]</span> Reading project state...</div>
-                <div>  &rarr; Atlas: <span class="key">12 entries</span>, last shipped 4 days ago</div>
-                <div>  &rarr; Stack: <span class="path">Next.js 15.2.0</span>, <span class="path">Tailwind 4</span>, <span class="path">Supabase</span></div>
-                <div>  &rarr; Radar cache: 6 days old <span class="muted">(stale)</span></div>
+                <div><span class="prompt">&gt;</span> <span class="cmd">/thesis-engine:discover --domain agentic_systems</span></div>
+                <div><span class="agent">[engine]</span> Searching the field across four angles...</div>
                 <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Recommended mode for the moment:</div>
-                <div>  <span class="key">feature-add</span> &mdash; Product Hunt surfaced 3 candidates,</div>
-                <div>  framework releases include <span class="path">Tailwind v4.1</span>.</div>
+                <div>  Ranked topics</div>
+                <div>  <span class="key">1</span>  Uncertainty-driven handoff in agents      <span class="ok">15</span></div>
+                <div>  <span class="key">2</span>  Compositional orchestrator-worker         <span class="muted">13</span></div>
+                <div>  <span class="key">3</span>  Retrieval-augmented agent state           <span class="muted">12</span></div>
                 <div>&nbsp;</div>
-                <div>Launch <span class="key">feature-add</span>? [y/N]: <span class="cmd">y</span></div>
-                <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Scanning... <span class="ok">done</span></div>
-                <div><span class="agent">[Ptolemy]</span> PR ready: <span class="path">feat: inline AI command palette</span><span class="term-cursor"></span></div>
+                <div>  Written to <span class="path">topics-20260519.md</span></div>
+                <div><span class="prompt">&gt;</span> <span class="cmd">/thesis-engine:write "Uncertainty-driven handoff"</span></div>
+                <div>  <span class="ok">✓</span> 14 sources · Pandoc keys · references.bib parses<span class="term-cursor"></span></div>
               </div>
             </div>
           </div>
@@ -302,69 +299,34 @@
     <section class="work">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">01 · The work</span>
-          <h2>Four modes for what&#x27;s next.</h2>
-          <p class="lead">Pick the mode for the moment. Each ships one PR per session, with Atlas continuity across runs.</p>
+          <span class="eyebrow">01 · What it does</span>
+          <h2>Discover, gather, optionally blog.</h2>
+          <p class="lead">Three stages, one clean run folder — everything vibe-thesis needs to start writing, nothing more.</p>
         </div>
 
         <div class="cards-grid">
           <div class="card">
-            <span class="cmd">/vibe-iterate:feature-add</span>
-            <h3>Ship the next feature.</h3>
-            <p class="desc">Multi-source candidate scan: competitors, Product Hunt, framework releases, your feedback.md. Clusters, scores, picks one.</p>
-            <p class="reach">Reach for it when <em>you don't know what to build next</em>.</p>
+            <span class="cmd">/thesis-engine:run</span>
+            <h3>Full pipeline, stages 1 + 2.</h3>
+            <p class="desc">Discovers a ranked topic table, gathers sources across five axes, writes vibe-thesis-shaped notes and a BibTeX bibliography to a dated run folder. Add --blog for Stage 3; --auto and --count N for batch runs.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-iterate:competitive</span>
-            <h3>Close the gaps that matter.</h3>
-            <p class="desc">Reads competitor changelogs, diffs against your shipped product, ranks by strategic relevance &mdash; not parity.</p>
-            <p class="reach">Reach for it when <em>a competitor shipped something loud</em>.</p>
+            <span class="cmd">/thesis-engine:discover</span>
+            <h3>Topic discovery only.</h3>
+            <p class="desc">Searches the field across four angles, scores each candidate on novelty, thesis potential, and relevance, and presents a ranked top-5 table. Writes it to a dated file so candidates survive the session.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-iterate:ux-polish</span>
-            <h3>Tighten what&#x27;s shipped but rough.</h3>
-            <p class="desc">Walks routes, components, key flows. Scores by user-trust impact.</p>
-            <p class="reach">Reach for it when <em>the product works but feels off</em>.</p>
+            <span class="cmd">/thesis-engine:write</span>
+            <h3>Source gathering for a topic.</h3>
+            <p class="desc">Axis-structured web searches, per-axis notes with Pandoc citation keys, a proposal stub, and a BibTeX bibliography. Runs quality gates; partial runs land in pending/ with a checklist of what failed.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-iterate:bug-bash</span>
-            <h3>Fix the loudest bug.</h3>
-            <p class="desc">Reads feedback.md, triages by severity &times; frequency &times; blast-radius. Dormant when feedback.md is missing.</p>
-            <p class="reach">Reach for it when <em>users keep reporting the same thing</em>.</p>
-          </div>
-        </div>
-
-        <div class="sub-head">
-          <h3>Six tools when a mode is too much.</h3>
-          <span class="hint">Run any sidecar directly — no mode required.</span>
-        </div>
-        <div class="mini-grid">
-          <div class="mini">
-            <span class="name">:radar</span>
-            <p class="desc">What's new across your stack and competitors since last visit.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:spy &amp;lt;url&amp;gt;</span>
-            <p class="desc">One-shot competitive read on a single URL.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:scan-releases [pkg]</span>
-            <p class="desc">What's new in this lib since you last bumped.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:rate &amp;lt;idea&amp;gt;</span>
-            <p class="desc">Score an idea on impact / fit / effort / regression-risk / user-trust.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:ship &amp;lt;brief&amp;gt;</span>
-            <p class="desc">Express lane. Skip ingestion, ship from a brief.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:upgrade &amp;lt;pkg&amp;gt;</span>
-            <p class="desc">Surgical library bump with codemods if available.</p>
+            <span class="cmd">/thesis-engine:blog</span>
+            <h3>Blog draft from a run folder.</h3>
+            <p class="desc">Reads a run folder (or a single THESIS.md) and produces an 800–1,200 word Smart Brevity post plus frontmatter, structured to drop directly into BlogStudio.</p>
           </div>
         </div>
       </div>
@@ -373,16 +335,16 @@
     <section class="brain">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">02 · The brain</span>
-          <h2>Ptolemy stays current.</h2>
+          <span class="eyebrow">02 · How it fits</span>
+          <h2>Inputs for vibe-thesis, not a replacement for it.</h2>
         </div>
         <div class="brain-grid">
           <div>
-            <p><strong>Ptolemy is vibe-iterate's agent</strong> &mdash; senior to Cart's field-cartographer, oriented for already-shipped territory. He reads your stack via context7, watches framework releases on a weekly scan, and keeps your Atlas &mdash; the running record of what you've shipped, what you considered, what got cut, and why &mdash; in continuity across sessions.</p>
-            <p>When <strong>vibe-cartographer</strong> is installed in the same repo, Ptolemy defers cleanly (Pattern #13). When it's not, vibe-iterate stands on its own. <strong>Composes, never depends.</strong></p>
+            <p>thesis-engine owns the cold-start problem: topic selection and source coverage are painful and slow to do inside a drafting tool. The engine does those stages autonomously &mdash; searches across prior art, methodology, opposing positions, key authors, and primary sources &mdash; then hands off a clean folder that merges directly into ThesisStudio's structure without renaming anything.</p>
+            <p>The drafting, the LeadWriter persona, the citation render pipeline, and the three-pillar voice all stay inside <strong>vibe-thesis</strong>. thesis-engine produces the inputs, enforces quality gates, and gets out of the way. The blog adapter is a bonus stage, not the main event &mdash; same research, different surface.</p>
           </div>
           <div>
-            <div class="callout">No telemetry. Atlas data stays on your machine.</div>
+            <div class="callout">Stage 2 gates are mandatory: if any of six checks fail, the partial run moves to pending/ with a checklist before you proceed.</div>
           </div>
         </div>
       </div>
@@ -398,24 +360,24 @@
         <div class="install-grid">
           <div class="card install-card">
             <h3>Stable <span class="badge">marketplace</span></h3>
-            <p class="blurb">Tagged releases, promoted via the Vibe Plugins marketplace.</p>
+            <p class="blurb">Tagged releases via the Vibe Plugins marketplace.</p>
             <div class="codeblock">
               <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
               <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
-/plugin install vibe-iterate</pre>
+/plugin install thesis-engine@vibe-plugins</pre>
             </div>
           </div>
           <div class="card install-card">
             <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
-            <p class="blurb">Latest main from this repo. Re-syncs on every push.</p>
+            <p class="blurb">Tracks the solo repo&#x27;s main branch.</p>
             <div class="codeblock">
               <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
-              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-iterate
-/plugin install vibe-iterate</pre>
+              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/Thesis-Engine
+/plugin install thesis-engine@Thesis-Engine</pre>
             </div>
           </div>
         </div>
-        <p class="install-note">Pick stable if you want to be told. Pick canary if you want to tell us.</p>
+        <p class="install-note">Pairs with vibe-thesis — the engine feeds, ThesisStudio drafts.</p>
       </div>
     </section>
 
@@ -435,12 +397,11 @@
               <div class="role">idea → v1</div>
             </div>
           </a>
-          <a href="/vibe-iterate/" class="family-card here">
+          <a href="/vibe-iterate/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-iterate</div>
               <div class="role">v1 → v1+n</div>
-            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-keystone/" class="family-card">
@@ -471,11 +432,12 @@
               <div class="role">security posture</div>
             </div>
           </a>
-          <a href="/thesis-engine/" class="family-card">
+          <a href="/thesis-engine/" class="family-card here">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/thesis-engine-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">thesis-engine</div>
               <div class="role">research feeder</div>
+            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-thesis/" class="family-card">

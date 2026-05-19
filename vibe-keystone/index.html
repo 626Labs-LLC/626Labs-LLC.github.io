@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vibe-iterate · Maintain your Atlas. · 626Labs</title>
-  <meta name="description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <link rel="canonical" href="https://626labs.dev/vibe-iterate/" />
+  <title>vibe-keystone · Bootstrap the file agents stand on · 626Labs</title>
+  <meta name="description" content="vibe-keystone bootstraps a CLAUDE.md for any repo. Inventories the stack, interviews you for your conventions, then writes the load-bearing file every agent needs." />
+  <link rel="canonical" href="https://626labs.dev/vibe-keystone/" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
-  <meta property="og:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta property="og:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta property="og:url" content="https://626labs.dev/vibe-iterate/" />
-  <meta property="og:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+  <meta property="og:title" content="vibe-keystone · Bootstrap any repo" />
+  <meta property="og:description" content="vibe-keystone bootstraps a CLAUDE.md for any repo. Inventories the stack, interviews you for your conventions, then writes the load-bearing file every agent needs." />
+  <meta property="og:url" content="https://626labs.dev/vibe-keystone/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-keystone-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta name="twitter:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta name="twitter:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+  <meta name="twitter:title" content="vibe-keystone · Bootstrap any repo" />
+  <meta name="twitter:description" content="vibe-keystone bootstraps a CLAUDE.md for any repo. Inventories the stack, interviews you for your conventions, then writes the load-bearing file every agent needs." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-keystone-banner-1280x640.png" />
 
   <style>
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
@@ -244,8 +244,8 @@
         </a>
         <span class="brand-sep" aria-hidden="true">/</span>
         <span class="brand-current">
-          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
-          <span>vibe-iterate</span>
+          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-keystone-icon-transparent-512.png" alt="" /></span>
+          <span>vibe-keystone</span>
         </span>
       </div>
       <a href="#install" class="btn btn-ghost">Install</a>
@@ -259,13 +259,13 @@
         <div class="hero-grid">
           <div class="hero-left">
             <span class="eyebrow">626Labs · Claude Code plugin</span>
-            <h1>Maintain your Atlas.</h1>
-            <p class="hero-subhead">Cart took you idea &rarr; v1. vibe-iterate takes you v1 &rarr; v1+n. Ships one PR per session &mdash; regression-aware, small-diff-preferred.</p>
+            <h1>Bootstrap the file agents stand on.</h1>
+            <p class="hero-subhead">vibe-keystone produces a production-grade CLAUDE.md for any repository &mdash; inventorying first, interviewing you for your actual conventions, then writing a structured file every downstream agent can stand on. Works for any org, not just 626Labs.</p>
             <div class="hero-ctas">
-              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-iterate/blob/main/docs/2026-05-04-vibe-iterate-design.md" class="btn btn-ghost">Read the spec</a>
+              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-Keystone" class="btn btn-ghost">View on GitHub</a>
             </div>
             <div class="hero-meta">
-              <span>v1.0.0</span><span>·</span><span>4 modes</span><span>·</span><span>6 sidecars</span><span>·</span><span>MIT</span>
+              <span>v0.1.1</span><span>·</span><span>1 command</span><span>·</span><span>tenant-aware</span><span>·</span><span>MIT</span>
             </div>
           </div>
 
@@ -275,23 +275,22 @@
                 <span class="term-dot r"></span>
                 <span class="term-dot y"></span>
                 <span class="term-dot g"></span>
-                <span class="term-label">vibe-iterate ~</span>
+                <span class="term-label">keystone ~</span>
               </div>
               <div class="term-body">
-                <div><span class="prompt">$</span> <span class="cmd">/vibe-iterate</span></div>
-                <div><span class="agent">[Ptolemy]</span> Reading project state...</div>
-                <div>  &rarr; Atlas: <span class="key">12 entries</span>, last shipped 4 days ago</div>
-                <div>  &rarr; Stack: <span class="path">Next.js 15.2.0</span>, <span class="path">Tailwind 4</span>, <span class="path">Supabase</span></div>
-                <div>  &rarr; Radar cache: 6 days old <span class="muted">(stale)</span></div>
+                <div><span class="prompt">&gt;</span> <span class="cmd">/keystone</span></div>
+                <div><span class="agent">[keystone]</span> Inventorying repo...</div>
+                <div>  git log: 14 commits, active main</div>
+                <div>  stack: <span class="path">Next.js 15, TypeScript, Tailwind v4</span></div>
+                <div>  CLAUDE.md: <span class="muted">not found — clear to draft</span></div>
                 <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Recommended mode for the moment:</div>
-                <div>  <span class="key">feature-add</span> &mdash; Product Hunt surfaced 3 candidates,</div>
-                <div>  framework releases include <span class="path">Tailwind v4.1</span>.</div>
+                <div>  Four questions before I write anything:</div>
+                <div>  1. Whose repo is this?  2. Where do decisions log?</div>
+                <div>  3. Persona: inherit / override / none?  4. Work mode?</div>
                 <div>&nbsp;</div>
-                <div>Launch <span class="key">feature-add</span>? [y/N]: <span class="cmd">y</span></div>
+                <div><span class="prompt">&gt;</span> Acme Corp · docs/decisions.md · inherit · code platform</div>
                 <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Scanning... <span class="ok">done</span></div>
-                <div><span class="agent">[Ptolemy]</span> PR ready: <span class="path">feat: inline AI command palette</span><span class="term-cursor"></span></div>
+                <div>  Writing CLAUDE.md... <span class="ok">✓</span> 9 sections, 0 placeholders<span class="term-cursor"></span></div>
               </div>
             </div>
           </div>
@@ -302,69 +301,22 @@
     <section class="work">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">01 · The work</span>
-          <h2>Four modes for what&#x27;s next.</h2>
-          <p class="lead">Pick the mode for the moment. Each ships one PR per session, with Atlas continuity across runs.</p>
+          <span class="eyebrow">01 · What it does</span>
+          <h2>One command, one load-bearing file.</h2>
+          <p class="lead">Before writing a line, /keystone inventories your stack and asks four targeted questions — then produces a CLAUDE.md future agents actually stand on, not a template dressed up with your repo name.</p>
         </div>
 
         <div class="cards-grid">
           <div class="card">
-            <span class="cmd">/vibe-iterate:feature-add</span>
-            <h3>Ship the next feature.</h3>
-            <p class="desc">Multi-source candidate scan: competitors, Product Hunt, framework releases, your feedback.md. Clusters, scores, picks one.</p>
-            <p class="reach">Reach for it when <em>you don't know what to build next</em>.</p>
+            <span class="cmd">/keystone</span>
+            <h3>Bootstrap a CLAUDE.md.</h3>
+            <p class="desc">Inventories the repo (git state, layout, stack files, existing .claude/ config), interviews you for tenant identity and conventions, then writes a structured CLAUDE.md adapted to that context. Shows a diff and confirms before overwriting an existing file.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-iterate:competitive</span>
-            <h3>Close the gaps that matter.</h3>
-            <p class="desc">Reads competitor changelogs, diffs against your shipped product, ranks by strategic relevance &mdash; not parity.</p>
-            <p class="reach">Reach for it when <em>a competitor shipped something loud</em>.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-iterate:ux-polish</span>
-            <h3>Tighten what&#x27;s shipped but rough.</h3>
-            <p class="desc">Walks routes, components, key flows. Scores by user-trust impact.</p>
-            <p class="reach">Reach for it when <em>the product works but feels off</em>.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-iterate:bug-bash</span>
-            <h3>Fix the loudest bug.</h3>
-            <p class="desc">Reads feedback.md, triages by severity &times; frequency &times; blast-radius. Dormant when feedback.md is missing.</p>
-            <p class="reach">Reach for it when <em>users keep reporting the same thing</em>.</p>
-          </div>
-        </div>
-
-        <div class="sub-head">
-          <h3>Six tools when a mode is too much.</h3>
-          <span class="hint">Run any sidecar directly — no mode required.</span>
-        </div>
-        <div class="mini-grid">
-          <div class="mini">
-            <span class="name">:radar</span>
-            <p class="desc">What's new across your stack and competitors since last visit.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:spy &amp;lt;url&amp;gt;</span>
-            <p class="desc">One-shot competitive read on a single URL.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:scan-releases [pkg]</span>
-            <p class="desc">What's new in this lib since you last bumped.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:rate &amp;lt;idea&amp;gt;</span>
-            <p class="desc">Score an idea on impact / fit / effort / regression-risk / user-trust.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:ship &amp;lt;brief&amp;gt;</span>
-            <p class="desc">Express lane. Skip ingestion, ship from a brief.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:upgrade &amp;lt;pkg&amp;gt;</span>
-            <p class="desc">Surgical library bump with codemods if available.</p>
+            <span class="cmd">(follow-ups)</span>
+            <h3>Proposes the scaffold.</h3>
+            <p class="desc">After the file, it proposes .claude/agents/, .claude/rules/, and .claude/hooks/ candidates tailored to the repo &mdash; but never auto-creates anything. You decide what to keep.</p>
           </div>
         </div>
       </div>
@@ -373,16 +325,16 @@
     <section class="brain">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">02 · The brain</span>
-          <h2>Ptolemy stays current.</h2>
+          <span class="eyebrow">02 · How it&#x27;s different</span>
+          <h2>It refuses to write blind.</h2>
         </div>
         <div class="brain-grid">
           <div>
-            <p><strong>Ptolemy is vibe-iterate's agent</strong> &mdash; senior to Cart's field-cartographer, oriented for already-shipped territory. He reads your stack via context7, watches framework releases on a weekly scan, and keeps your Atlas &mdash; the running record of what you've shipped, what you considered, what got cut, and why &mdash; in continuity across sessions.</p>
-            <p>When <strong>vibe-cartographer</strong> is installed in the same repo, Ptolemy defers cleanly (Pattern #13). When it's not, vibe-iterate stands on its own. <strong>Composes, never depends.</strong></p>
+            <p>Most bootstrapping tools generate a template and call it done. vibe-keystone treats blind writes as a bug: it inventories the repo first &mdash; git log, package.json, workflow files, existing .claude/ structure &mdash; then asks one round of targeted questions before drafting anything. The produced file is specific to your stack, your decision-tracking surface, and your org's voice rules.</p>
+            <p>The skill adapts its output to repo type. A code platform gets a tech-stack section and infrastructure guardrails. A marketing site gets voice rules and a design-system reference. A writing repo gets a persona-override clause and citation discipline. Sections that don't apply are dropped, not left as placeholders that rot.</p>
           </div>
           <div>
-            <div class="callout">No telemetry. Atlas data stays on your machine.</div>
+            <div class="callout">It will not overwrite an existing CLAUDE.md without a diff and explicit confirmation.</div>
           </div>
         </div>
       </div>
@@ -392,30 +344,21 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">03 · Get it</span>
-          <h2>Two channels.</h2>
+          <h2>Install.</h2>
         </div>
 
-        <div class="install-grid">
+        <div class="install-grid solo">
           <div class="card install-card">
             <h3>Stable <span class="badge">marketplace</span></h3>
-            <p class="blurb">Tagged releases, promoted via the Vibe Plugins marketplace.</p>
+            <p class="blurb">Or drop the SKILL into ~/.claude/skills/keystone/ to run it as /keystone.</p>
             <div class="codeblock">
               <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
-              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
-/plugin install vibe-iterate</pre>
-            </div>
-          </div>
-          <div class="card install-card">
-            <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
-            <p class="blurb">Latest main from this repo. Re-syncs on every push.</p>
-            <div class="codeblock">
-              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
-              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-iterate
-/plugin install vibe-iterate</pre>
+              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-Keystone
+/plugin install vibe-keystone@vibe-keystone</pre>
             </div>
           </div>
         </div>
-        <p class="install-note">Pick stable if you want to be told. Pick canary if you want to tell us.</p>
+        <p class="install-note">Surfaces as /keystone (user skill) or /vibe-keystone:keystone (plugin).</p>
       </div>
     </section>
 
@@ -435,19 +378,19 @@
               <div class="role">idea → v1</div>
             </div>
           </a>
-          <a href="/vibe-iterate/" class="family-card here">
+          <a href="/vibe-iterate/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-iterate</div>
               <div class="role">v1 → v1+n</div>
-            <div class="you">You are here</div>
             </div>
           </a>
-          <a href="/vibe-keystone/" class="family-card">
+          <a href="/vibe-keystone/" class="family-card here">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-keystone-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-keystone</div>
               <div class="role">bootstrap any repo</div>
+            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-doc/" class="family-card">

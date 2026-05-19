@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vibe-iterate · Maintain your Atlas. · 626Labs</title>
-  <meta name="description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <link rel="canonical" href="https://626labs.dev/vibe-iterate/" />
+  <title>vibe-doc · Close the documentation vacuum · 626Labs</title>
+  <meta name="description" content="AI-powered doc gap analyzer for Claude Code. Scan your project, identify missing ADRs, runbooks, and specs, and generate them from your existing artifacts." />
+  <link rel="canonical" href="https://626labs.dev/vibe-doc/" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
-  <meta property="og:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta property="og:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta property="og:url" content="https://626labs.dev/vibe-iterate/" />
-  <meta property="og:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+  <meta property="og:title" content="vibe-doc · Close the documentation vacuum" />
+  <meta property="og:description" content="AI-powered doc gap analyzer for Claude Code. Scan your project, identify missing ADRs, runbooks, and specs, and generate them from your existing artifacts." />
+  <meta property="og:url" content="https://626labs.dev/vibe-doc/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-doc-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta name="twitter:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta name="twitter:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+  <meta name="twitter:title" content="vibe-doc · Close the documentation vacuum" />
+  <meta name="twitter:description" content="AI-powered doc gap analyzer for Claude Code. Scan your project, identify missing ADRs, runbooks, and specs, and generate them from your existing artifacts." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-doc-banner-1280x640.png" />
 
   <style>
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
@@ -244,8 +244,8 @@
         </a>
         <span class="brand-sep" aria-hidden="true">/</span>
         <span class="brand-current">
-          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
-          <span>vibe-iterate</span>
+          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-doc-icon-transparent-512.png" alt="" /></span>
+          <span>vibe-doc</span>
         </span>
       </div>
       <a href="#install" class="btn btn-ghost">Install</a>
@@ -259,13 +259,13 @@
         <div class="hero-grid">
           <div class="hero-left">
             <span class="eyebrow">626Labs · Claude Code plugin</span>
-            <h1>Maintain your Atlas.</h1>
-            <p class="hero-subhead">Cart took you idea &rarr; v1. vibe-iterate takes you v1 &rarr; v1+n. Ships one PR per session &mdash; regression-aware, small-diff-preferred.</p>
+            <h1>Close the documentation vacuum.</h1>
+            <p class="hero-subhead">vibe-doc scans your codebase, classifies your project type, finds the documentation holes, and generates professional docs from the artifacts you already have. For builders shipping fast who don't have time to write docs by hand &mdash; and can't afford to skip them.</p>
             <div class="hero-ctas">
-              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-iterate/blob/main/docs/2026-05-04-vibe-iterate-design.md" class="btn btn-ghost">Read the spec</a>
+              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/Vibe-Doc" class="btn btn-ghost">View on GitHub</a>
             </div>
             <div class="hero-meta">
-              <span>v1.0.0</span><span>·</span><span>4 modes</span><span>·</span><span>6 sidecars</span><span>·</span><span>MIT</span>
+              <span>v0.7.1</span><span>·</span><span>4 commands</span><span>·</span><span>MIT</span>
             </div>
           </div>
 
@@ -275,23 +275,22 @@
                 <span class="term-dot r"></span>
                 <span class="term-dot y"></span>
                 <span class="term-dot g"></span>
-                <span class="term-label">vibe-iterate ~</span>
+                <span class="term-label">vibe-doc ~</span>
               </div>
               <div class="term-body">
-                <div><span class="prompt">$</span> <span class="cmd">/vibe-iterate</span></div>
-                <div><span class="agent">[Ptolemy]</span> Reading project state...</div>
-                <div>  &rarr; Atlas: <span class="key">12 entries</span>, last shipped 4 days ago</div>
-                <div>  &rarr; Stack: <span class="path">Next.js 15.2.0</span>, <span class="path">Tailwind 4</span>, <span class="path">Supabase</span></div>
-                <div>  &rarr; Radar cache: 6 days old <span class="muted">(stale)</span></div>
+                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-doc:scan</span></div>
+                <div><span class="agent">[vibe-doc]</span> Running: npx vibe-doc scan .</div>
                 <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Recommended mode for the moment:</div>
-                <div>  <span class="key">feature-add</span> &mdash; Product Hunt surfaced 3 candidates,</div>
-                <div>  framework releases include <span class="path">Tailwind v4.1</span>.</div>
+                <div>  Classification</div>
+                <div>  Primary:    <span class="key">Claude Code Plugin</span></div>
+                <div>  Confidence: <span class="ok">91%</span></div>
                 <div>&nbsp;</div>
-                <div>Launch <span class="key">feature-add</span>? [y/N]: <span class="cmd">y</span></div>
+                <div>  Documentation gap report</div>
+                <div>  Required:     <span class="key">1 of 3</span> exist (33%)</div>
+                <div>  Recommended:  <span class="key">0 of 3</span> exist</div>
                 <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Scanning... <span class="ok">done</span></div>
-                <div><span class="agent">[Ptolemy]</span> PR ready: <span class="path">feat: inline AI command palette</span><span class="term-cursor"></span></div>
+                <div>  <span class="muted">⚠ No skill/command reference — required before publish</span></div>
+                <div>  [walkthrough] [generate] [check]<span class="term-cursor"></span></div>
               </div>
             </div>
           </div>
@@ -302,69 +301,34 @@
     <section class="work">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">01 · The work</span>
-          <h2>Four modes for what&#x27;s next.</h2>
-          <p class="lead">Pick the mode for the moment. Each ships one PR per session, with Atlas continuity across runs.</p>
+          <span class="eyebrow">01 · What it does</span>
+          <h2>Find the gaps. Fill them fast.</h2>
+          <p class="lead">vibe-doc walks your project, cross-references what you've built against a seven-doc standard, hands back a prioritized gap report — then generates the missing docs from your own artifacts, autonomous-first.</p>
         </div>
 
         <div class="cards-grid">
           <div class="card">
-            <span class="cmd">/vibe-iterate:feature-add</span>
-            <h3>Ship the next feature.</h3>
-            <p class="desc">Multi-source candidate scan: competitors, Product Hunt, framework releases, your feedback.md. Clusters, scores, picks one.</p>
-            <p class="reach">Reach for it when <em>you don't know what to build next</em>.</p>
+            <span class="cmd">/vibe-doc:scan</span>
+            <h3>Scan for documentation gaps.</h3>
+            <p class="desc">Walks your codebase, classifies your project type, and produces a tiered gap report &mdash; Required, Recommended, Optional &mdash; with risk callouts. Saves to .vibe-doc/state.json for the downstream commands.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-iterate:competitive</span>
-            <h3>Close the gaps that matter.</h3>
-            <p class="desc">Reads competitor changelogs, diffs against your shipped product, ranks by strategic relevance &mdash; not parity.</p>
-            <p class="reach">Reach for it when <em>a competitor shipped something loud</em>.</p>
+            <span class="cmd">/vibe-doc:generate</span>
+            <h3>Generate missing docs.</h3>
+            <p class="desc">Reads scan results, then fills autonomously from your READMEs, CI configs, SKILL files, schemas, and git history &mdash; asking only for the sections that genuinely need human judgment. Outputs to docs/generated/; promotion is your call.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-iterate:ux-polish</span>
-            <h3>Tighten what&#x27;s shipped but rough.</h3>
-            <p class="desc">Walks routes, components, key flows. Scores by user-trust impact.</p>
-            <p class="reach">Reach for it when <em>the product works but feels off</em>.</p>
+            <span class="cmd">/vibe-doc:check</span>
+            <h3>Validate deployment readiness.</h3>
+            <p class="desc">CI-safe validation that all Required-tier docs exist and haven't gone stale relative to recent commits. Exits 0 or 1 &mdash; drop it into any pipeline as a documentation gate.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-iterate:bug-bash</span>
-            <h3>Fix the loudest bug.</h3>
-            <p class="desc">Reads feedback.md, triages by severity &times; frequency &times; blast-radius. Dormant when feedback.md is missing.</p>
-            <p class="reach">Reach for it when <em>users keep reporting the same thing</em>.</p>
-          </div>
-        </div>
-
-        <div class="sub-head">
-          <h3>Six tools when a mode is too much.</h3>
-          <span class="hint">Run any sidecar directly — no mode required.</span>
-        </div>
-        <div class="mini-grid">
-          <div class="mini">
-            <span class="name">:radar</span>
-            <p class="desc">What's new across your stack and competitors since last visit.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:spy &amp;lt;url&amp;gt;</span>
-            <p class="desc">One-shot competitive read on a single URL.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:scan-releases [pkg]</span>
-            <p class="desc">What's new in this lib since you last bumped.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:rate &amp;lt;idea&amp;gt;</span>
-            <p class="desc">Score an idea on impact / fit / effort / regression-risk / user-trust.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:ship &amp;lt;brief&amp;gt;</span>
-            <p class="desc">Express lane. Skip ingestion, ship from a brief.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:upgrade &amp;lt;pkg&amp;gt;</span>
-            <p class="desc">Surgical library bump with codemods if available.</p>
+            <span class="cmd">/vibe-doc:evolve</span>
+            <h3>Reflect and propose improvements.</h3>
+            <p class="desc">Reads your session history and friction log, weights patterns across three tracks, and proposes concrete edits to SKILL files or the classifier. Nothing applies without your explicit yes.</p>
           </div>
         </div>
       </div>
@@ -373,16 +337,16 @@
     <section class="brain">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">02 · The brain</span>
-          <h2>Ptolemy stays current.</h2>
+          <span class="eyebrow">02 · How it&#x27;s built</span>
+          <h2>Dual-layer by design.</h2>
         </div>
         <div class="brain-grid">
           <div>
-            <p><strong>Ptolemy is vibe-iterate's agent</strong> &mdash; senior to Cart's field-cartographer, oriented for already-shipped territory. He reads your stack via context7, watches framework releases on a weekly scan, and keeps your Atlas &mdash; the running record of what you've shipped, what you considered, what got cut, and why &mdash; in continuity across sessions.</p>
-            <p>When <strong>vibe-cartographer</strong> is installed in the same repo, Ptolemy defers cleanly (Pattern #13). When it's not, vibe-iterate stands on its own. <strong>Composes, never depends.</strong></p>
+            <p>vibe-doc is two systems sharing one classification engine. The <strong>conversational layer</strong> (Skills) handles adaptive, interview-driven flows with checkpoint gates so you stay in control at every fork. The <strong>deterministic layer</strong> (a CLI binary) handles reproducible, CI-safe operations with stable exit codes. Both read and write the same .vibe-doc/state.json so context carries between sessions and tools.</p>
+            <p>Generate runs autonomous-first: it reads your actual files and fills what it can without asking, interviewing you only where the code genuinely can't answer &mdash; security judgment, business intent, operational context. The rule is strict: confident content only, inline source citations, NEEDS INPUT markers where evidence doesn't exist. No fabrication.</p>
           </div>
           <div>
-            <div class="callout">No telemetry. Atlas data stays on your machine.</div>
+            <div class="callout">Self-evolving. /evolve proposes improvements to its own classifier — with your approval, never automatically.</div>
           </div>
         </div>
       </div>
@@ -392,30 +356,20 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">03 · Get it</span>
-          <h2>Two channels.</h2>
+          <h2>Install.</h2>
         </div>
 
-        <div class="install-grid">
+        <div class="install-grid solo">
           <div class="card install-card">
             <h3>Stable <span class="badge">marketplace</span></h3>
-            <p class="blurb">Tagged releases, promoted via the Vibe Plugins marketplace.</p>
+            <p class="blurb">Tagged releases via the Vibe Plugins marketplace. Also on npm: @esthernandez/vibe-doc.</p>
             <div class="codeblock">
               <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
               <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
-/plugin install vibe-iterate</pre>
-            </div>
-          </div>
-          <div class="card install-card">
-            <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
-            <p class="blurb">Latest main from this repo. Re-syncs on every push.</p>
-            <div class="codeblock">
-              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
-              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-iterate
-/plugin install vibe-iterate</pre>
+/plugin install vibe-doc@vibe-plugins</pre>
             </div>
           </div>
         </div>
-        <p class="install-note">Pick stable if you want to be told. Pick canary if you want to tell us.</p>
       </div>
     </section>
 
@@ -435,12 +389,11 @@
               <div class="role">idea → v1</div>
             </div>
           </a>
-          <a href="/vibe-iterate/" class="family-card here">
+          <a href="/vibe-iterate/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-iterate</div>
               <div class="role">v1 → v1+n</div>
-            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-keystone/" class="family-card">
@@ -450,11 +403,12 @@
               <div class="role">bootstrap any repo</div>
             </div>
           </a>
-          <a href="/vibe-doc/" class="family-card">
+          <a href="/vibe-doc/" class="family-card here">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-doc-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-doc</div>
               <div class="role">documentation completeness</div>
+            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-test/" class="family-card">

@@ -1,0 +1,544 @@
+{
+  "$comment": "Per-plugin landing-page content. Rendered by scripts/render-plugin-pages.py. See docs/vibe-plugins-pages.md. Fields rendered as raw HTML (allow entities): subhead, card.desc, card.reach, prose paragraphs, terminal lines. Escaped (plain text only): name, eyebrow, headings, card.title, card.command, callout, mini.name.",
+  "family": [
+    { "id": "vibe-cartographer", "name": "vibe-cartographer", "role": "idea → v1", "href": "/vibe-cartographer/" },
+    { "id": "vibe-iterate", "name": "vibe-iterate", "role": "v1 → v1+n", "href": "/vibe-iterate/" },
+    { "id": "vibe-keystone", "name": "vibe-keystone", "role": "bootstrap any repo", "href": "/vibe-keystone/" },
+    { "id": "vibe-doc", "name": "vibe-doc", "role": "documentation completeness", "href": "/vibe-doc/" },
+    { "id": "vibe-test", "name": "vibe-test", "role": "tests that matter", "href": "/vibe-test/" },
+    { "id": "vibe-sec", "name": "vibe-sec", "role": "security posture", "href": "/vibe-sec/" },
+    { "id": "thesis-engine", "name": "thesis-engine", "role": "research feeder", "href": "/thesis-engine/" },
+    { "id": "vibe-thesis", "name": "vibe-thesis", "role": "thesis authoring", "href": "/vibe-thesis/" }
+  ],
+  "plugins": {
+    "vibe-iterate": {
+      "name": "vibe-iterate",
+      "metaTitle": "vibe-iterate · Maintain your Atlas. · 626Labs",
+      "ogTitle": "vibe-iterate · Maintain your Atlas.",
+      "metaDescription": "Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs.",
+      "ogImage": "/assets/og-vibe-iterate.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Maintain your Atlas.",
+      "subhead": "Cart took you idea &rarr; v1. vibe-iterate takes you v1 &rarr; v1+n. Ships one PR per session &mdash; regression-aware, small-diff-preferred.",
+      "heroMeta": ["v1.0.0", "4 modes", "6 sidecars", "MIT"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "Read the spec", "href": "https://github.com/estevanhernandez-stack-ed/vibe-iterate/blob/main/docs/2026-05-04-vibe-iterate-design.md" }
+      },
+      "terminal": {
+        "label": "vibe-iterate ~",
+        "lines": [
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-iterate</span>",
+          "<span class=\"agent\">[Ptolemy]</span> Reading project state...",
+          "  &rarr; Atlas: <span class=\"key\">12 entries</span>, last shipped 4 days ago",
+          "  &rarr; Stack: <span class=\"path\">Next.js 15.2.0</span>, <span class=\"path\">Tailwind 4</span>, <span class=\"path\">Supabase</span>",
+          "  &rarr; Radar cache: 6 days old <span class=\"muted\">(stale)</span>",
+          "&nbsp;",
+          "<span class=\"agent\">[Ptolemy]</span> Recommended mode for the moment:",
+          "  <span class=\"key\">feature-add</span> &mdash; Product Hunt surfaced 3 candidates,",
+          "  framework releases include <span class=\"path\">Tailwind v4.1</span>.",
+          "&nbsp;",
+          "Launch <span class=\"key\">feature-add</span>? [y/N]: <span class=\"cmd\">y</span>",
+          "&nbsp;",
+          "<span class=\"agent\">[Ptolemy]</span> Scanning... <span class=\"ok\">done</span>",
+          "<span class=\"agent\">[Ptolemy]</span> PR ready: <span class=\"path\">feat: inline AI command palette</span><span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · The work",
+          "heading": "Four modes for what's next.",
+          "lead": "Pick the mode for the moment. Each ships one PR per session, with Atlas continuity across runs.",
+          "cards": [
+            { "command": "/vibe-iterate:feature-add", "title": "Ship the next feature.", "desc": "Multi-source candidate scan: competitors, Product Hunt, framework releases, your feedback.md. Clusters, scores, picks one.", "reach": "Reach for it when <em>you don't know what to build next</em>." },
+            { "command": "/vibe-iterate:competitive", "title": "Close the gaps that matter.", "desc": "Reads competitor changelogs, diffs against your shipped product, ranks by strategic relevance &mdash; not parity.", "reach": "Reach for it when <em>a competitor shipped something loud</em>." },
+            { "command": "/vibe-iterate:ux-polish", "title": "Tighten what's shipped but rough.", "desc": "Walks routes, components, key flows. Scores by user-trust impact.", "reach": "Reach for it when <em>the product works but feels off</em>." },
+            { "command": "/vibe-iterate:bug-bash", "title": "Fix the loudest bug.", "desc": "Reads feedback.md, triages by severity &times; frequency &times; blast-radius. Dormant when feedback.md is missing.", "reach": "Reach for it when <em>users keep reporting the same thing</em>." }
+          ],
+          "mini": {
+            "heading": "Six tools when a mode is too much.",
+            "hint": "Run any sidecar directly — no mode required.",
+            "items": [
+              { "name": ":radar", "desc": "What's new across your stack and competitors since last visit." },
+              { "name": ":spy &lt;url&gt;", "desc": "One-shot competitive read on a single URL." },
+              { "name": ":scan-releases [pkg]", "desc": "What's new in this lib since you last bumped." },
+              { "name": ":rate &lt;idea&gt;", "desc": "Score an idea on impact / fit / effort / regression-risk / user-trust." },
+              { "name": ":ship &lt;brief&gt;", "desc": "Express lane. Skip ingestion, ship from a brief." },
+              { "name": ":upgrade &lt;pkg&gt;", "desc": "Surgical library bump with codemods if available." }
+            ]
+          }
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · The brain",
+          "heading": "Ptolemy stays current.",
+          "paragraphs": [
+            "<strong>Ptolemy is vibe-iterate's agent</strong> &mdash; senior to Cart's field-cartographer, oriented for already-shipped territory. He reads your stack via context7, watches framework releases on a weekly scan, and keeps your Atlas &mdash; the running record of what you've shipped, what you considered, what got cut, and why &mdash; in continuity across sessions.",
+            "When <strong>vibe-cartographer</strong> is installed in the same repo, Ptolemy defers cleanly (Pattern #13). When it's not, vibe-iterate stands on its own. <strong>Composes, never depends.</strong>"
+          ],
+          "callout": "No telemetry. Atlas data stays on your machine."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-iterate",
+        "stableBlurb": "Tagged releases, promoted via the Vibe Plugins marketplace.",
+        "canary": "/plugin marketplace add estevanhernandez-stack-ed/vibe-iterate\n/plugin install vibe-iterate",
+        "canaryBlurb": "Latest main from this repo. Re-syncs on every push.",
+        "note": "Pick stable if you want to be told. Pick canary if you want to tell us."
+      }
+    },
+
+    "vibe-cartographer": {
+      "name": "vibe-cartographer",
+      "metaTitle": "vibe-cartographer · Vibe coding with a map. · 626Labs",
+      "ogTitle": "vibe-cartographer · Vibe coding with a map.",
+      "metaDescription": "Vibe Cartographer is a Claude Code plugin: 12 slash commands guiding you from idea to shipped app with spec-driven vibe coding. MIT. 626Labs.",
+      "ogImage": "/assets/brand/plugins/vibe-cartographer-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Vibe coding with a map.",
+      "subhead": "Twelve slash commands that take you from idea spark to shipped app &mdash; spec-first, persona-aware, with persistent memory that gets sharper every run. Built for builders who move fast and don't want to lose the thread.",
+      "heroMeta": ["v1.8.0", "12 commands", "MIT", "Level 3"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer" }
+      },
+      "terminal": {
+        "label": "vibe-cartographer ~",
+        "lines": [
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-cartographer:onboard</span>",
+          "<span class=\"agent\">Cart v1.8.0</span> &mdash; let's plot your course.",
+          "  What are you working on?",
+          "&nbsp;",
+          "<span class=\"prompt\">&gt;</span> A CLI that scrapes structured data from job boards.",
+          "&nbsp;",
+          "  Experience: junior / mid / senior? Pace: Learner or Builder?",
+          "<span class=\"prompt\">&gt;</span> Senior, Builder.",
+          "&nbsp;",
+          "  Pick a voice: Professor · Cohort · <span class=\"key\">Superdev</span> · Architect · Coach",
+          "<span class=\"prompt\">&gt;</span> Superdev.",
+          "&nbsp;",
+          "  Profile written to <span class=\"path\">docs/builder-profile.md</span>. <span class=\"ok\">Ready.</span>",
+          "  Run <span class=\"cmd\">/vibe-cartographer:scope</span> to start shaping it.<span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · The build chain",
+          "heading": "Twelve commands. One shipped app.",
+          "lead": "Each command writes an artifact the next one reads — scope feeds the PRD, PRD feeds the spec, spec feeds the checklist — so you're never starting from a blank page mid-build.",
+          "cards": [
+            { "command": "/vibe-cartographer:onboard", "title": "Welcome and meet the builder.", "desc": "Profiles your experience, pacing, and persona choice, then writes a builder profile every downstream command reads." },
+            { "command": "/vibe-cartographer:scope", "title": "Brainstorm and focus your idea.", "desc": "Brainstorm partner mode &mdash; expands before it constrains. Interviews you, then writes docs/scope.md." },
+            { "command": "/vibe-cartographer:prd", "title": "Turn scope into requirements.", "desc": "Surfaces every ambiguity and edge case before code exists. Writes docs/prd.md with testable acceptance criteria." },
+            { "command": "/vibe-cartographer:spec", "title": "Blueprint the architecture.", "desc": "Translates the PRD into a technical blueprint &mdash; stack, data flow, file structure. Writes docs/spec.md." },
+            { "command": "/vibe-cartographer:checklist", "title": "Sequence the build plan.", "desc": "Co-designs a dependency-aware, riskiest-item-first build sequence. You pick step-by-step or autonomous here." },
+            { "command": "/vibe-cartographer:build", "title": "Build the app.", "desc": "Executes the checklist in your chosen mode. Step-by-step pauses at each item; autonomous runs straight through." },
+            { "command": "/vibe-cartographer:iterate", "title": "Optional polish pass.", "desc": "Compressed planning loop after the core build. Surfaces Tier 1/2/3 polish candidates from the build's open flags." },
+            { "command": "/vibe-cartographer:reflect", "title": "Retro and peer review.", "desc": "Post-ship retro: a conversational check-in, then a qualitative review of your build against the eval rubric." },
+            { "command": "/vibe-cartographer:evolve", "title": "Propose self-improvements.", "desc": "Reads session logs and friction signals, surfaces patterns, proposes concrete SKILL edits. Nothing auto-applies." },
+            { "command": "/vibe-cartographer:vitals", "title": "Self-diagnostic health check.", "desc": "Eight read-only checks across plugin files, profile, and logs. Offers matching auto-fixes with explicit confirmation." },
+            { "command": "/vibe-cartographer:friction", "title": "Inspect the friction log.", "desc": "Read-only view into the friction log, grouped by type with confidence. Filterable by project, type, and days." },
+            { "command": "/vibe-cartographer:coder-voice", "title": "Capture your coder voice.", "desc": "Writes a voice block so the agent answers in your voice during autonomous work. Personal sweep or preset cutter." }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · The brain",
+          "heading": "A plugin that learns from every run.",
+          "paragraphs": [
+            "Vibe Cartographer is built on the <strong>Self-Evolving Plugin Framework</strong> &mdash; the thesis that a plugin should be more useful on its tenth run than its first, not because you learned it, but because it learned you. Three capabilities drive that: self-repair, self-teach, and self-evolve. The deepest is self-evolve: <strong>/evolve</strong> reads your session logs and friction signals, then proposes concrete edits to its own commands &mdash; with your consent, one change at a time.",
+            "As of v1.8.0, Cart is at <strong>Level 3</strong> of the maturity ladder. It shares a unified builder profile with the rest of the family &mdash; onboard once, and your persona, experience level, and preferences carry across every plugin."
+          ],
+          "callout": "No telemetry. Session data stays on your machine."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer\n/plugin install vibe-cartographer@vibe-cartographer",
+        "stableBlurb": "Tagged releases. Also on npm: @esthernandez/vibe-cartographer.",
+        "note": "Main is the canary channel; tagged versions are stable."
+      }
+    },
+
+    "vibe-keystone": {
+      "name": "vibe-keystone",
+      "metaTitle": "vibe-keystone · Bootstrap the file agents stand on · 626Labs",
+      "ogTitle": "vibe-keystone · Bootstrap any repo",
+      "metaDescription": "vibe-keystone bootstraps a CLAUDE.md for any repo. Inventories the stack, interviews you for your conventions, then writes the load-bearing file every agent needs.",
+      "ogImage": "/assets/brand/plugins/vibe-keystone-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Bootstrap the file agents stand on.",
+      "subhead": "vibe-keystone produces a production-grade CLAUDE.md for any repository &mdash; inventorying first, interviewing you for your actual conventions, then writing a structured file every downstream agent can stand on. Works for any org, not just 626Labs.",
+      "heroMeta": ["v0.1.1", "1 command", "tenant-aware", "MIT"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-Keystone" }
+      },
+      "terminal": {
+        "label": "keystone ~",
+        "lines": [
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/keystone</span>",
+          "<span class=\"agent\">[keystone]</span> Inventorying repo...",
+          "  git log: 14 commits, active main",
+          "  stack: <span class=\"path\">Next.js 15, TypeScript, Tailwind v4</span>",
+          "  CLAUDE.md: <span class=\"muted\">not found — clear to draft</span>",
+          "&nbsp;",
+          "  Four questions before I write anything:",
+          "  1. Whose repo is this?  2. Where do decisions log?",
+          "  3. Persona: inherit / override / none?  4. Work mode?",
+          "&nbsp;",
+          "<span class=\"prompt\">&gt;</span> Acme Corp · docs/decisions.md · inherit · code platform",
+          "&nbsp;",
+          "  Writing CLAUDE.md... <span class=\"ok\">✓</span> 9 sections, 0 placeholders<span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "One command, one load-bearing file.",
+          "lead": "Before writing a line, /keystone inventories your stack and asks four targeted questions — then produces a CLAUDE.md future agents actually stand on, not a template dressed up with your repo name.",
+          "cards": [
+            { "command": "/keystone", "title": "Bootstrap a CLAUDE.md.", "desc": "Inventories the repo (git state, layout, stack files, existing .claude/ config), interviews you for tenant identity and conventions, then writes a structured CLAUDE.md adapted to that context. Shows a diff and confirms before overwriting an existing file." },
+            { "command": "(follow-ups)", "title": "Proposes the scaffold.", "desc": "After the file, it proposes .claude/agents/, .claude/rules/, and .claude/hooks/ candidates tailored to the repo &mdash; but never auto-creates anything. You decide what to keep." }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it's different",
+          "heading": "It refuses to write blind.",
+          "paragraphs": [
+            "Most bootstrapping tools generate a template and call it done. vibe-keystone treats blind writes as a bug: it inventories the repo first &mdash; git log, package.json, workflow files, existing .claude/ structure &mdash; then asks one round of targeted questions before drafting anything. The produced file is specific to your stack, your decision-tracking surface, and your org's voice rules.",
+            "The skill adapts its output to repo type. A code platform gets a tech-stack section and infrastructure guardrails. A marketing site gets voice rules and a design-system reference. A writing repo gets a persona-override clause and citation discipline. Sections that don't apply are dropped, not left as placeholders that rot."
+          ],
+          "callout": "It will not overwrite an existing CLAUDE.md without a diff and explicit confirmation."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-Keystone\n/plugin install vibe-keystone@vibe-keystone",
+        "stableBlurb": "Or drop the SKILL into ~/.claude/skills/keystone/ to run it as /keystone.",
+        "note": "Surfaces as /keystone (user skill) or /vibe-keystone:keystone (plugin)."
+      }
+    },
+
+    "vibe-doc": {
+      "name": "vibe-doc",
+      "metaTitle": "vibe-doc · Close the documentation vacuum · 626Labs",
+      "ogTitle": "vibe-doc · Close the documentation vacuum",
+      "metaDescription": "AI-powered doc gap analyzer for Claude Code. Scan your project, identify missing ADRs, runbooks, and specs, and generate them from your existing artifacts.",
+      "ogImage": "/assets/brand/plugins/vibe-doc-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Close the documentation vacuum.",
+      "subhead": "vibe-doc scans your codebase, classifies your project type, finds the documentation holes, and generates professional docs from the artifacts you already have. For builders shipping fast who don't have time to write docs by hand &mdash; and can't afford to skip them.",
+      "heroMeta": ["v0.7.1", "4 commands", "MIT"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Doc" }
+      },
+      "terminal": {
+        "label": "vibe-doc ~",
+        "lines": [
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-doc:scan</span>",
+          "<span class=\"agent\">[vibe-doc]</span> Running: npx vibe-doc scan .",
+          "&nbsp;",
+          "  Classification",
+          "  Primary:    <span class=\"key\">Claude Code Plugin</span>",
+          "  Confidence: <span class=\"ok\">91%</span>",
+          "&nbsp;",
+          "  Documentation gap report",
+          "  Required:     <span class=\"key\">1 of 3</span> exist (33%)",
+          "  Recommended:  <span class=\"key\">0 of 3</span> exist",
+          "&nbsp;",
+          "  <span class=\"muted\">⚠ No skill/command reference — required before publish</span>",
+          "  [walkthrough] [generate] [check]<span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "Find the gaps. Fill them fast.",
+          "lead": "vibe-doc walks your project, cross-references what you've built against a seven-doc standard, hands back a prioritized gap report — then generates the missing docs from your own artifacts, autonomous-first.",
+          "cards": [
+            { "command": "/vibe-doc:scan", "title": "Scan for documentation gaps.", "desc": "Walks your codebase, classifies your project type, and produces a tiered gap report &mdash; Required, Recommended, Optional &mdash; with risk callouts. Saves to .vibe-doc/state.json for the downstream commands." },
+            { "command": "/vibe-doc:generate", "title": "Generate missing docs.", "desc": "Reads scan results, then fills autonomously from your READMEs, CI configs, SKILL files, schemas, and git history &mdash; asking only for the sections that genuinely need human judgment. Outputs to docs/generated/; promotion is your call." },
+            { "command": "/vibe-doc:check", "title": "Validate deployment readiness.", "desc": "CI-safe validation that all Required-tier docs exist and haven't gone stale relative to recent commits. Exits 0 or 1 &mdash; drop it into any pipeline as a documentation gate." },
+            { "command": "/vibe-doc:evolve", "title": "Reflect and propose improvements.", "desc": "Reads your session history and friction log, weights patterns across three tracks, and proposes concrete edits to SKILL files or the classifier. Nothing applies without your explicit yes." }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it's built",
+          "heading": "Dual-layer by design.",
+          "paragraphs": [
+            "vibe-doc is two systems sharing one classification engine. The <strong>conversational layer</strong> (Skills) handles adaptive, interview-driven flows with checkpoint gates so you stay in control at every fork. The <strong>deterministic layer</strong> (a CLI binary) handles reproducible, CI-safe operations with stable exit codes. Both read and write the same .vibe-doc/state.json so context carries between sessions and tools.",
+            "Generate runs autonomous-first: it reads your actual files and fills what it can without asking, interviewing you only where the code genuinely can't answer &mdash; security judgment, business intent, operational context. The rule is strict: confident content only, inline source citations, NEEDS INPUT markers where evidence doesn't exist. No fabrication."
+          ],
+          "callout": "Self-evolving. /evolve proposes improvements to its own classifier — with your approval, never automatically."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-doc@vibe-plugins",
+        "stableBlurb": "Tagged releases via the Vibe Plugins marketplace. Also on npm: @esthernandez/vibe-doc."
+      }
+    },
+
+    "vibe-test": {
+      "name": "vibe-test",
+      "metaTitle": "vibe-test · Tests your app actually needs · 626Labs",
+      "ogTitle": "vibe-test · Tests your app actually needs",
+      "metaDescription": "Claude Code plugin that audits, classifies, and generates tier-appropriate tests for vibe-coded JS/TS apps — and catches the broken harnesses other tools assume away.",
+      "ogImage": "/assets/brand/plugins/vibe-test-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Tests your app actually needs.",
+      "subhead": "vibe-test reads your app, classifies it by type and deployment risk, and generates the tests proportional to that risk &mdash; not a boilerplate dump, not a pass/fail coverage meter. For builders who shipped vibe-coded apps with thin-to-zero coverage and no clear path to fixing that.",
+      "heroMeta": ["v0.2.4", "7 commands", "JS / TS", "626Labs"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-test" }
+      },
+      "terminal": {
+        "label": "vibe-test ~",
+        "lines": [
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-test:audit</span>",
+          "<span class=\"agent\">vibe-test v0.2.4</span> · Auditing my-app...",
+          "&nbsp;",
+          "  App type   <span class=\"path\">SPA + API (React + Firebase)</span>",
+          "  Tier       <span class=\"key\">Public-facing</span>",
+          "  Target 70% · Actual <span class=\"key\">27.6%</span>",
+          "&nbsp;",
+          "  <span class=\"muted\">CRITICAL</span> cherry-picked-denominator",
+          "    coverage measured over 3 of 43 files",
+          "  <span class=\"muted\">CRITICAL</span> missing-test-binary <span class=\"muted\">(jest not installed)</span>",
+          "  <span class=\"muted\">HIGH</span>     gap-behavioral <span class=\"muted\">(auth flow untested)</span>",
+          "&nbsp;",
+          "  Wrote <span class=\"path\">docs/vibe-test/audit.md</span><span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "Audit, generate, leave a practice you can keep.",
+          "lead": "vibe-test classifies your app against a five-tier maturity matrix and generates tests proportional to what you actually shipped — then hands you a runbook and CI config so the practice survives after the plugin stops running.",
+          "cards": [
+            { "command": "/vibe-test", "title": "Plugin entry point.", "desc": "First-run or returning welcome. Lists the subcommands in plain language, detects whether a prior audit exists, and asks what to do next. No scanning." },
+            { "command": "/vibe-test:audit", "title": "App inventory and gap analysis.", "desc": "Scans routes, components, models, integrations. Classifies app type and maturity tier, measures coverage with an honest denominator, and surfaces three harness-break finding types as first-class findings." },
+            { "command": "/vibe-test:generate", "title": "Confidence-tiered test generation.", "desc": "Generates in three lanes: high-confidence auto-writes to tests/, medium stages for batch review, low shows inline for accept/reject. Matches your framework idioms." },
+            { "command": "/vibe-test:fix", "title": "Diagnose and repair broken tests.", "desc": "Distinguishes harness-level breaks from test-logic breaks and routes repairs by confidence. Rolls back generated tests to pending when they're the source of CI breakage." },
+            { "command": "/vibe-test:coverage", "title": "Honest-denominator coverage.", "desc": "Detects cherry-picked denominators and proposes &mdash; never silently applies &mdash; the adapter diff to fix them. Emits a CI-friendly JSON sidecar." },
+            { "command": "/vibe-test:gate", "title": "CI pass/fail enforcement.", "desc": "Applies the tier-appropriate threshold and exits 0/1/2. Detects CI mode and emits GitHub Actions annotations plus a summary." },
+            { "command": "/vibe-test:posture", "title": "Ambient posture summary.", "desc": "Read-only. Renders classification, weighted score vs target, gap counts, and last-run timestamps in under 40 lines. Suggests next commands as questions." }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · Why it's different",
+          "heading": "Every other test tool assumes the harness works.",
+          "paragraphs": [
+            "The coverage number your CI reports is a claim. vibe-test checks whether the claim is true. Three harness-level finding types &mdash; <strong>broken runner</strong>, <strong>missing binary</strong>, <strong>cherry-picked denominator</strong> &mdash; are surfaced as distinct, actionable findings. These are the failure modes that make coverage look fine while the app ships untested. No other Claude Code test tool catches them as first-class findings.",
+            "The generator is tier-aware: a prototype gets smoke tests, a public-facing SPA+API gets smoke + behavioral + edge-case + integration, calibrated by a weighted score. The handoff artifacts &mdash; docs/TESTING.md, a test plan, and an optional GitHub Actions stub &mdash; survive uninstalling the plugin entirely."
+          ],
+          "callout": "First real run: a React+Firebase app reported 0% coverage (a forks-pool timeout). vibe-test surfaced the broken harness and the true ~6% backend number in one audit."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-test@vibe-plugins",
+        "stableBlurb": "Tagged releases via the Vibe Plugins marketplace. CLI for CI: @esthernandez/vibe-test-cli.",
+        "canary": "/plugin marketplace add estevanhernandez-stack-ed/vibe-test\n/plugin install vibe-test",
+        "canaryBlurb": "Tracks the solo repo's main branch — faster feedback, occasional breakage.",
+        "note": "JS/TS today (React, Next, Vite, Express, Firebase). Python/Go on the roadmap."
+      }
+    },
+
+    "vibe-sec": {
+      "name": "vibe-sec",
+      "metaTitle": "vibe-sec · Security audit for what your AI shipped · 626Labs",
+      "ogTitle": "vibe-sec · Security audit for vibe-coded apps",
+      "metaDescription": "Claude Code plugin that audits vibe-coded apps for secrets, auth gaps, CVEs, and OWASP Top 10 issues — with fixes scaled to your app type.",
+      "ogImage": "/assets/brand/plugins/vibe-sec-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin · pre-release",
+      "h1": "Security audit for the app your AI just shipped.",
+      "subhead": "vibe-sec scans vibe-coded apps for the predictable security gaps AI prototyping leaves behind &mdash; secrets in source, sketchy auth, stale dependencies, open CORS &mdash; and generates fixes proportional to what your app actually needs. For solo builders shipping fast and not wanting to get burned.",
+      "heroMeta": ["plugin v0.0.2", "CLI v0.1.1 live", "6 commands planned"],
+      "ctas": {
+        "primary": { "label": "Get the CLI" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-sec" }
+      },
+      "terminal": {
+        "label": "vibe-sec ~",
+        "lines": [
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">npm install -g @esthernandez/vibe-sec-cli</span>",
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">vibe-sec scan .</span>",
+          "&nbsp;",
+          "  <span class=\"agent\">vibe-sec audit</span> · v0.1.1",
+          "  247 files scanned",
+          "&nbsp;",
+          "  <span class=\"key\">CRITICAL</span>  OPENAI_API_KEY            <span class=\"path\">src/lib/ai.ts:14</span>",
+          "  <span class=\"key\">CRITICAL</span>  DATABASE_URL_W/_CREDS     <span class=\"path\">.env.local:3</span>",
+          "  <span class=\"muted\">HIGH</span>      GITHUB_PAT_CLASSIC        <span class=\"path\">scripts/deploy.js:8</span>",
+          "&nbsp;",
+          "  &rarr; JSON report: <span class=\"path\">.vibe-sec/state/audit.json</span><span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "The predictable fingerprint of an AI-built app — found and fixed.",
+          "lead": "When an LLM builds your app, it optimizes for a working demo. vibe-sec knows the gap between that and a deployable system, and works through it systematically. Commands below are the design — the plugin is pre-release; the CLI scanner ships today.",
+          "cards": [
+            { "command": "/vibe-sec:scan", "title": "Full security scan.", "desc": "Classifies app type and deployment context, then runs the three-layer audit &mdash; hygiene (secrets, headers, CORS), architecture (auth, validation, authorization), and dependency CVEs. Findings prioritized by tier, not an abstract ideal." },
+            { "command": "/vibe-sec:fix", "title": "Generate and apply fixes.", "desc": "Automated for high-confidence hygiene issues (gitignore entries, security headers, removing hardcoded secrets); guided templates for architectural issues." },
+            { "command": "/vibe-sec:audit", "title": "Deep dependency audit.", "desc": "CVE cross-reference against direct and transitive deps, lock-file integrity, pinned-vs-floating audit, and typosquat detection." },
+            { "command": "/vibe-sec:threat-model", "title": "Guided threat modeling.", "desc": "STRIDE-style analysis from your app's actual surface area. Outputs a document vibe-doc can render." },
+            { "command": "/vibe-sec:check", "title": "CI pass/fail gate.", "desc": "CI-safe exit codes against your app's security tier. Drops into a GitHub Action without configuration." },
+            { "command": "/vibe-sec:status", "title": "Security posture summary.", "desc": "Last scan, open findings by severity, fixes applied vs deferred, and threat-model status." }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · The design",
+          "heading": "Three layers, one classifier, fixes you can ship.",
+          "paragraphs": [
+            "vibe-sec separates security into three layers that compound. <strong>Hygiene</strong> is fully automatable: secrets out of source, headers added, CORS locked down. <strong>Architecture</strong> requires understanding how the app is built &mdash; does the auth actually protect the routes it claims to? <strong>Threat modeling</strong> asks what the realistic attack vectors are given this app's deployment context, and proposes a model for you to validate.",
+            "The classifier is what keeps it from being generic. The same finding &mdash; say, missing rate limiting &mdash; might be critical for a payment API and informational for a personal static site. vibe-sec classifies your app first (prototype → regulated enterprise); the tier sets the bar, not a one-size-fits-all checklist."
+          ],
+          "callout": "Goal: from \"I have a vibe-coded app\" to \"I know what's insecure\" in under 2 minutes."
+        }
+      ],
+      "install": {
+        "stable": "npm install -g @esthernandez/vibe-sec-cli\nvibe-sec scan .",
+        "stableBlurb": "The CLI secret scanner ships today. The full Claude Code plugin is pre-release.",
+        "canary": "/plugin marketplace add estevanhernandez-stack-ed/vibe-sec\n/plugin install vibe-sec",
+        "canaryBlurb": "Track the plugin as it lands — commands roll out from the framework spec.",
+        "note": "Plugin v0.0.2 reserves the slot; the CLI is the working artifact for now."
+      }
+    },
+
+    "thesis-engine": {
+      "name": "thesis-engine",
+      "metaTitle": "thesis-engine · Research feeder for vibe-thesis · 626Labs",
+      "ogTitle": "thesis-engine · Research feeder for vibe-thesis",
+      "metaDescription": "Claude Code plugin that discovers thesis topics, gathers sources, and outputs vibe-thesis-ready research notes plus a BibTeX bibliography. 4 commands, 3 stages.",
+      "ogImage": "/assets/brand/plugins/thesis-engine-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Research feeder for vibe-thesis.",
+      "subhead": "thesis-engine does the cold-start work that's painful before you can write: it scans the field for live, low-competition topics, pulls primary sources across five research axes, and emits vibe-thesis-shaped notes plus a BibTeX bibliography ready to drop into ThesisStudio.",
+      "heroMeta": ["v0.2.1", "4 commands", "3 stages", "MIT"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Thesis-Engine" }
+      },
+      "terminal": {
+        "label": "thesis-engine ~",
+        "lines": [
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/thesis-engine:discover --domain agentic_systems</span>",
+          "<span class=\"agent\">[engine]</span> Searching the field across four angles...",
+          "&nbsp;",
+          "  Ranked topics",
+          "  <span class=\"key\">1</span>  Uncertainty-driven handoff in agents      <span class=\"ok\">15</span>",
+          "  <span class=\"key\">2</span>  Compositional orchestrator-worker         <span class=\"muted\">13</span>",
+          "  <span class=\"key\">3</span>  Retrieval-augmented agent state           <span class=\"muted\">12</span>",
+          "&nbsp;",
+          "  Written to <span class=\"path\">topics-20260519.md</span>",
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/thesis-engine:write \"Uncertainty-driven handoff\"</span>",
+          "  <span class=\"ok\">✓</span> 14 sources · Pandoc keys · references.bib parses<span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "Discover, gather, optionally blog.",
+          "lead": "Three stages, one clean run folder — everything vibe-thesis needs to start writing, nothing more.",
+          "cards": [
+            { "command": "/thesis-engine:run", "title": "Full pipeline, stages 1 + 2.", "desc": "Discovers a ranked topic table, gathers sources across five axes, writes vibe-thesis-shaped notes and a BibTeX bibliography to a dated run folder. Add --blog for Stage 3; --auto and --count N for batch runs." },
+            { "command": "/thesis-engine:discover", "title": "Topic discovery only.", "desc": "Searches the field across four angles, scores each candidate on novelty, thesis potential, and relevance, and presents a ranked top-5 table. Writes it to a dated file so candidates survive the session." },
+            { "command": "/thesis-engine:write", "title": "Source gathering for a topic.", "desc": "Axis-structured web searches, per-axis notes with Pandoc citation keys, a proposal stub, and a BibTeX bibliography. Runs quality gates; partial runs land in pending/ with a checklist of what failed." },
+            { "command": "/thesis-engine:blog", "title": "Blog draft from a run folder.", "desc": "Reads a run folder (or a single THESIS.md) and produces an 800–1,200 word Smart Brevity post plus frontmatter, structured to drop directly into BlogStudio." }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it fits",
+          "heading": "Inputs for vibe-thesis, not a replacement for it.",
+          "paragraphs": [
+            "thesis-engine owns the cold-start problem: topic selection and source coverage are painful and slow to do inside a drafting tool. The engine does those stages autonomously &mdash; searches across prior art, methodology, opposing positions, key authors, and primary sources &mdash; then hands off a clean folder that merges directly into ThesisStudio's structure without renaming anything.",
+            "The drafting, the LeadWriter persona, the citation render pipeline, and the three-pillar voice all stay inside <strong>vibe-thesis</strong>. thesis-engine produces the inputs, enforces quality gates, and gets out of the way. The blog adapter is a bonus stage, not the main event &mdash; same research, different surface."
+          ],
+          "callout": "Stage 2 gates are mandatory: if any of six checks fail, the partial run moves to pending/ with a checklist before you proceed."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install thesis-engine@vibe-plugins",
+        "stableBlurb": "Tagged releases via the Vibe Plugins marketplace.",
+        "canary": "/plugin marketplace add estevanhernandez-stack-ed/Thesis-Engine\n/plugin install thesis-engine@Thesis-Engine",
+        "canaryBlurb": "Tracks the solo repo's main branch.",
+        "note": "Pairs with vibe-thesis — the engine feeds, ThesisStudio drafts."
+      }
+    },
+
+    "vibe-thesis": {
+      "name": "vibe-thesis",
+      "metaTitle": "vibe-thesis · Start with a strong stance · 626Labs",
+      "ogTitle": "vibe-thesis · Start with a strong stance",
+      "metaDescription": "Claude Code plugin for academic thesis authoring. Scaffolds a PDF + render pipeline, voice synthesis, and self-review tone lint in about 30 minutes.",
+      "ogImage": "/assets/brand/plugins/vibe-thesis-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Start with a strong stance.",
+      "subhead": "A Claude Code plugin that scaffolds and co-authors thesis-shaped artifacts &mdash; dissertations, master's theses, long-form research articles, position essays &mdash; with a rendered PDF skeleton in roughly 30 minutes. For researchers and technical writers who want Claude in the loop without giving up their own voice.",
+      "heroMeta": ["v0.2.0", "6 commands", "voice pipeline", "PDF / HTML / md"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Thesis" }
+      },
+      "terminal": {
+        "label": "vibe-thesis ~",
+        "lines": [
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">scaffold a vibe thesis on epistemic justice in clinical AI</span>",
+          "<span class=\"agent\">[vibe-thesis]</span> Detected gh + auth. Creating from ThesisStudio...",
+          "  <span class=\"ok\">✓</span> repo created · marker injected · bootstrap dispatched",
+          "&nbsp;",
+          "  Name 2–4 authors whose prose you admire:",
+          "<span class=\"prompt\">&gt;</span> Fricker, Hacking, Daston, Browne",
+          "  Synthesis ratio? <span class=\"prompt\">&gt;</span> timeless-anchored",
+          "  <span class=\"ok\">✓</span> VOICE SYNTHESIS written to CLAUDE.md",
+          "&nbsp;",
+          "  <span class=\"ok\">✓</span> Round-trip PDF rendered: <span class=\"path\">08_OUTPUT/pdf/example.pdf</span><span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · Commands",
+          "heading": "The full writing loop, from the slash bar.",
+          "lead": "Six user-invocable commands cover scaffold through voice capture, tone lint, and final render.",
+          "cards": [
+            { "command": "/vibe-thesis:vibe-render", "title": "Render to your target format.", "desc": "Pre-runs token compile and citation checks, then calls Pandoc + xelatex. Reports the manifest on success, surfaces stderr with a diagnostic table on failure. --guard requires a clean tone lint first." },
+            { "command": "/vibe-thesis:vibe-status", "title": "One-screen project state.", "desc": "Read-only. Reports planning docs, body counts, claim coverage, citations health, voice state, and last render in 30 lines or fewer." },
+            { "command": "/vibe-thesis:voice", "title": "Set or revise your voice profile.", "desc": "A short interview: timeless prose voices, contemporary field experts, and a synthesis ratio. Writes a VOICE SYNTHESIS block to CLAUDE.md so the drafting persona reads it. Idempotent." },
+            { "command": "/vibe-thesis:guard", "title": "Lint body content for self-review tone.", "desc": "Advisory scan for inflationary language, self-praise framings, and defensive over-qualification. Reports file:line with one-line suggestions. Never auto-fixes." },
+            { "command": "/vibe-thesis:smooth", "title": "Apply your voice to a draft.", "desc": "Multi-pass rewrite that recasts a draft in your captured voice without changing claims or paragraph structure. Outputs a .smoothed.md plus a diff summary." },
+            { "command": "/vibe-thesis:audit", "title": "Discipline-audit any markdown.", "desc": "The same lint with no project required &mdash; point it at any file or directory. Issues a one-line verdict; --public formats it as a quotable scorecard." }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it works",
+          "heading": "Wraps ThesisStudio, adds the Claude-native layer.",
+          "paragraphs": [
+            "vibe-thesis doesn't fork ThesisStudio &mdash; it wraps it. ThesisStudio is the upstream source for the templates, the render pipeline (Pandoc + xelatex + biber), and four content sub-skills. vibe-thesis adds an orchestrator that bridges natural-language scaffold intent to the right path &mdash; offline-bundled or live from the template &mdash; then dispatches the bootstrap interview, voice synthesis, and toolchain verification in sequence.",
+            "The <strong>voice pipeline</strong> is the distinctive layer: <strong>/voice</strong> captures whose prose anchors your drafting, <strong>/smooth</strong> applies that profile while preserving claims and structure, and <strong>/guard</strong> enforces the Honest Limits pillar by catching the inflationary patterns LLM-assisted academic writing tends to accumulate."
+          ],
+          "callout": "Zero npm runtime dependencies. The render toolchain lives in the scaffolded project, not the plugin."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Thesis\n/plugin install vibe-thesis@vibe-thesis",
+        "stableBlurb": "Tagged releases from the solo repo."
+      }
+    }
+  }
+}

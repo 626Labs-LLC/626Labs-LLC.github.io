@@ -1,25 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vibe-iterate · Maintain your Atlas. · 626Labs</title>
-  <meta name="description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <link rel="canonical" href="https://626labs.dev/vibe-iterate/" />
-  <link rel="icon" type="image/png" href="/favicon-626.png" />
+"""Render per-plugin landing pages for the Vibe Plugins family.
 
-  <meta property="og:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta property="og:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta property="og:url" content="https://626labs.dev/vibe-iterate/" />
-  <meta property="og:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="626 Labs" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="vibe-iterate · Maintain your Atlas." />
-  <meta name="twitter:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
-  <meta name="twitter:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
+Reads content/plugin-pages.json (one entry per plugin + a shared family
+list) and emits <plugin-id>/index.html for each, plus plugins/index.html
+(the family index). Same no-build, inline-CSS idiom as render-hub.py.
 
-  <style>
+The design (hero + section cards + install + family + footer) is shared
+across every page; only the per-plugin content differs. Change the look
+once here, regenerate all pages.
+
+Usage:
+  python scripts/render-plugin-pages.py            # write all pages
+  python scripts/render-plugin-pages.py --check     # drift check (CI), exit 1 if stale
+
+To add a plugin page: add an entry to content/plugin-pages.json and an
+icon/banner via scripts/export-plugin-icons.py, then run this. See
+docs/vibe-plugins-pages.md.
+"""
+import json
+import sys
+from html import escape
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+DATA = ROOT / "content" / "plugin-pages.json"
+
+# ── Shared CSS (identical on every plugin page + the family index) ──────
+STYLE = """
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -231,277 +237,9 @@
     @media (max-width: 540px) {
       .mini-grid { grid-template-columns: 1fr; }
     }
-  </style>
-</head>
-<body>
+"""
 
-  <nav class="top">
-    <div class="container row">
-      <div class="brand-row">
-        <a href="/" class="brand">
-          <img src="/assets/brand/icon-transparent-256.png" alt="626Labs" />
-          <span>626Labs</span>
-        </a>
-        <span class="brand-sep" aria-hidden="true">/</span>
-        <span class="brand-current">
-          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
-          <span>vibe-iterate</span>
-        </span>
-      </div>
-      <a href="#install" class="btn btn-ghost">Install</a>
-    </div>
-  </nav>
-
-  <main>
-
-    <section class="hero">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="hero-left">
-            <span class="eyebrow">626Labs · Claude Code plugin</span>
-            <h1>Maintain your Atlas.</h1>
-            <p class="hero-subhead">Cart took you idea &rarr; v1. vibe-iterate takes you v1 &rarr; v1+n. Ships one PR per session &mdash; regression-aware, small-diff-preferred.</p>
-            <div class="hero-ctas">
-              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-iterate/blob/main/docs/2026-05-04-vibe-iterate-design.md" class="btn btn-ghost">Read the spec</a>
-            </div>
-            <div class="hero-meta">
-              <span>v1.0.0</span><span>·</span><span>4 modes</span><span>·</span><span>6 sidecars</span><span>·</span><span>MIT</span>
-            </div>
-          </div>
-
-          <div class="hero-right">
-            <div class="term">
-              <div class="term-bar">
-                <span class="term-dot r"></span>
-                <span class="term-dot y"></span>
-                <span class="term-dot g"></span>
-                <span class="term-label">vibe-iterate ~</span>
-              </div>
-              <div class="term-body">
-                <div><span class="prompt">$</span> <span class="cmd">/vibe-iterate</span></div>
-                <div><span class="agent">[Ptolemy]</span> Reading project state...</div>
-                <div>  &rarr; Atlas: <span class="key">12 entries</span>, last shipped 4 days ago</div>
-                <div>  &rarr; Stack: <span class="path">Next.js 15.2.0</span>, <span class="path">Tailwind 4</span>, <span class="path">Supabase</span></div>
-                <div>  &rarr; Radar cache: 6 days old <span class="muted">(stale)</span></div>
-                <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Recommended mode for the moment:</div>
-                <div>  <span class="key">feature-add</span> &mdash; Product Hunt surfaced 3 candidates,</div>
-                <div>  framework releases include <span class="path">Tailwind v4.1</span>.</div>
-                <div>&nbsp;</div>
-                <div>Launch <span class="key">feature-add</span>? [y/N]: <span class="cmd">y</span></div>
-                <div>&nbsp;</div>
-                <div><span class="agent">[Ptolemy]</span> Scanning... <span class="ok">done</span></div>
-                <div><span class="agent">[Ptolemy]</span> PR ready: <span class="path">feat: inline AI command palette</span><span class="term-cursor"></span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="work">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">01 · The work</span>
-          <h2>Four modes for what&#x27;s next.</h2>
-          <p class="lead">Pick the mode for the moment. Each ships one PR per session, with Atlas continuity across runs.</p>
-        </div>
-
-        <div class="cards-grid">
-          <div class="card">
-            <span class="cmd">/vibe-iterate:feature-add</span>
-            <h3>Ship the next feature.</h3>
-            <p class="desc">Multi-source candidate scan: competitors, Product Hunt, framework releases, your feedback.md. Clusters, scores, picks one.</p>
-            <p class="reach">Reach for it when <em>you don't know what to build next</em>.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-iterate:competitive</span>
-            <h3>Close the gaps that matter.</h3>
-            <p class="desc">Reads competitor changelogs, diffs against your shipped product, ranks by strategic relevance &mdash; not parity.</p>
-            <p class="reach">Reach for it when <em>a competitor shipped something loud</em>.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-iterate:ux-polish</span>
-            <h3>Tighten what&#x27;s shipped but rough.</h3>
-            <p class="desc">Walks routes, components, key flows. Scores by user-trust impact.</p>
-            <p class="reach">Reach for it when <em>the product works but feels off</em>.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-iterate:bug-bash</span>
-            <h3>Fix the loudest bug.</h3>
-            <p class="desc">Reads feedback.md, triages by severity &times; frequency &times; blast-radius. Dormant when feedback.md is missing.</p>
-            <p class="reach">Reach for it when <em>users keep reporting the same thing</em>.</p>
-          </div>
-        </div>
-
-        <div class="sub-head">
-          <h3>Six tools when a mode is too much.</h3>
-          <span class="hint">Run any sidecar directly — no mode required.</span>
-        </div>
-        <div class="mini-grid">
-          <div class="mini">
-            <span class="name">:radar</span>
-            <p class="desc">What's new across your stack and competitors since last visit.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:spy &amp;lt;url&amp;gt;</span>
-            <p class="desc">One-shot competitive read on a single URL.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:scan-releases [pkg]</span>
-            <p class="desc">What's new in this lib since you last bumped.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:rate &amp;lt;idea&amp;gt;</span>
-            <p class="desc">Score an idea on impact / fit / effort / regression-risk / user-trust.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:ship &amp;lt;brief&amp;gt;</span>
-            <p class="desc">Express lane. Skip ingestion, ship from a brief.</p>
-          </div>
-          <div class="mini">
-            <span class="name">:upgrade &amp;lt;pkg&amp;gt;</span>
-            <p class="desc">Surgical library bump with codemods if available.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="brain">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">02 · The brain</span>
-          <h2>Ptolemy stays current.</h2>
-        </div>
-        <div class="brain-grid">
-          <div>
-            <p><strong>Ptolemy is vibe-iterate's agent</strong> &mdash; senior to Cart's field-cartographer, oriented for already-shipped territory. He reads your stack via context7, watches framework releases on a weekly scan, and keeps your Atlas &mdash; the running record of what you've shipped, what you considered, what got cut, and why &mdash; in continuity across sessions.</p>
-            <p>When <strong>vibe-cartographer</strong> is installed in the same repo, Ptolemy defers cleanly (Pattern #13). When it's not, vibe-iterate stands on its own. <strong>Composes, never depends.</strong></p>
-          </div>
-          <div>
-            <div class="callout">No telemetry. Atlas data stays on your machine.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="install" id="install">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">03 · Get it</span>
-          <h2>Two channels.</h2>
-        </div>
-
-        <div class="install-grid">
-          <div class="card install-card">
-            <h3>Stable <span class="badge">marketplace</span></h3>
-            <p class="blurb">Tagged releases, promoted via the Vibe Plugins marketplace.</p>
-            <div class="codeblock">
-              <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
-              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
-/plugin install vibe-iterate</pre>
-            </div>
-          </div>
-          <div class="card install-card">
-            <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
-            <p class="blurb">Latest main from this repo. Re-syncs on every push.</p>
-            <div class="codeblock">
-              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
-              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-iterate
-/plugin install vibe-iterate</pre>
-            </div>
-          </div>
-        </div>
-        <p class="install-note">Pick stable if you want to be told. Pick canary if you want to tell us.</p>
-      </div>
-    </section>
-
-    <section class="family">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">04 · Family</span>
-          <h2>One plugin in a family.</h2>
-        </div>
-        <p class="family-lead">Vibe Plugins are a coordinated family &mdash; installed independently, composed when present.</p>
-
-        <div class="family-grid">
-          <a href="/vibe-cartographer/" class="family-card">
-            <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-cartographer-icon-transparent-512.png" alt="" /></span>
-            <div>
-              <div class="name">vibe-cartographer</div>
-              <div class="role">idea → v1</div>
-            </div>
-          </a>
-          <a href="/vibe-iterate/" class="family-card here">
-            <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-iterate-icon-transparent-512.png" alt="" /></span>
-            <div>
-              <div class="name">vibe-iterate</div>
-              <div class="role">v1 → v1+n</div>
-            <div class="you">You are here</div>
-            </div>
-          </a>
-          <a href="/vibe-keystone/" class="family-card">
-            <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-keystone-icon-transparent-512.png" alt="" /></span>
-            <div>
-              <div class="name">vibe-keystone</div>
-              <div class="role">bootstrap any repo</div>
-            </div>
-          </a>
-          <a href="/vibe-doc/" class="family-card">
-            <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-doc-icon-transparent-512.png" alt="" /></span>
-            <div>
-              <div class="name">vibe-doc</div>
-              <div class="role">documentation completeness</div>
-            </div>
-          </a>
-          <a href="/vibe-test/" class="family-card">
-            <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-test-icon-transparent-512.png" alt="" /></span>
-            <div>
-              <div class="name">vibe-test</div>
-              <div class="role">tests that matter</div>
-            </div>
-          </a>
-          <a href="/vibe-sec/" class="family-card">
-            <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-sec-icon-transparent-512.png" alt="" /></span>
-            <div>
-              <div class="name">vibe-sec</div>
-              <div class="role">security posture</div>
-            </div>
-          </a>
-          <a href="/thesis-engine/" class="family-card">
-            <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/thesis-engine-icon-transparent-512.png" alt="" /></span>
-            <div>
-              <div class="name">thesis-engine</div>
-              <div class="role">research feeder</div>
-            </div>
-          </a>
-          <a href="/vibe-thesis/" class="family-card">
-            <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-thesis-icon-transparent-512.png" alt="" /></span>
-            <div>
-              <div class="name">vibe-thesis</div>
-              <div class="role">thesis authoring</div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <div class="container row">
-      <div>626Labs LLC · MIT · 2026</div>
-      <div class="tagline">Imagine Something Else.</div>
-      <div class="links">
-        <a href="/plugins/">All plugins</a>
-        <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins">Marketplace</a>
-      </div>
-    </div>
-  </footer>
-
+COPY_SCRIPT = """
   <script>
     document.querySelectorAll('.copybtn').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -520,6 +258,408 @@
       });
     });
   </script>
+"""
 
-</body>
-</html>
+
+def e(s):
+    return escape(str(s), quote=True)
+
+
+def icon_path(plugin_id):
+    return f"/assets/brand/plugins/{plugin_id}-icon-transparent-512.png"
+
+
+def render_head(p):
+    title = e(p["metaTitle"])
+    desc = e(p["metaDescription"])
+    url = f"https://626labs.dev/{p['id']}/"
+    og = "https://626labs.dev" + p["ogImage"]
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content="{desc}" />
+  <link rel="canonical" href="{url}" />
+  <link rel="icon" type="image/png" href="/favicon-626.png" />
+
+  <meta property="og:title" content="{e(p['ogTitle'])}" />
+  <meta property="og:description" content="{desc}" />
+  <meta property="og:url" content="{url}" />
+  <meta property="og:image" content="{og}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="626 Labs" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{e(p['ogTitle'])}" />
+  <meta name="twitter:description" content="{desc}" />
+  <meta name="twitter:image" content="{og}" />
+
+  <style>{STYLE}  </style>
+</head>
+<body>
+"""
+
+
+def render_nav(p):
+    return f"""
+  <nav class="top">
+    <div class="container row">
+      <div class="brand-row">
+        <a href="/" class="brand">
+          <img src="/assets/brand/icon-transparent-256.png" alt="626Labs" />
+          <span>626Labs</span>
+        </a>
+        <span class="brand-sep" aria-hidden="true">/</span>
+        <span class="brand-current">
+          <span class="vibe-mark" aria-hidden="true"><img src="{icon_path(p['id'])}" alt="" /></span>
+          <span>{e(p['name'])}</span>
+        </span>
+      </div>
+      <a href="#install" class="btn btn-ghost">Install</a>
+    </div>
+  </nav>
+"""
+
+
+def render_hero(p):
+    ctas = ['<a href="#install" class="btn btn-primary">%s</a>' % e(p["ctas"]["primary"]["label"])]
+    sec = p["ctas"].get("secondary")
+    if sec:
+        ctas.append(f'<a href="{e(sec["href"])}" class="btn btn-ghost">{e(sec["label"])}</a>')
+    meta = "<span>·</span>".join(f"<span>{e(m)}</span>" for m in p["heroMeta"])
+
+    term = p.get("terminal")
+    if term:
+        lines = "\n".join("                <div>%s</div>" % ln for ln in term["lines"])
+        right = f"""
+          <div class="hero-right">
+            <div class="term">
+              <div class="term-bar">
+                <span class="term-dot r"></span>
+                <span class="term-dot y"></span>
+                <span class="term-dot g"></span>
+                <span class="term-label">{e(term['label'])}</span>
+              </div>
+              <div class="term-body">
+{lines}
+              </div>
+            </div>
+          </div>"""
+        grid_class = "hero-grid"
+    else:
+        right = ""
+        grid_class = "hero-grid solo"
+
+    return f"""
+    <section class="hero">
+      <div class="container">
+        <div class="{grid_class}">
+          <div class="hero-left">
+            <span class="eyebrow">{e(p['eyebrow'])}</span>
+            <h1>{e(p['h1'])}</h1>
+            <p class="hero-subhead">{p['subhead']}</p>
+            <div class="hero-ctas">
+              {''.join(ctas)}
+            </div>
+            <div class="hero-meta">
+              {meta}
+            </div>
+          </div>
+{right}
+        </div>
+      </div>
+    </section>
+"""
+
+
+def render_card(c):
+    reach = ""
+    if c.get("reach"):
+        reach = f'\n            <p class="reach">{c["reach"]}</p>'
+    return f"""          <div class="card">
+            <span class="cmd">{e(c['command'])}</span>
+            <h3>{e(c['title'])}</h3>
+            <p class="desc">{c['desc']}</p>{reach}
+          </div>"""
+
+
+def render_cards_section(s):
+    cols = " cols-3" if s.get("cols") == 3 else ""
+    cards = "\n\n".join(render_card(c) for c in s["cards"])
+    extra = ""
+    if s.get("mini"):
+        hint = f'<span class="hint">{e(s["mini"].get("hint", ""))}</span>' if s["mini"].get("hint") else ""
+        minis = "\n".join(
+            f"""          <div class="mini">
+            <span class="name">{e(m['name'])}</span>
+            <p class="desc">{m['desc']}</p>
+          </div>""" for m in s["mini"]["items"]
+        )
+        extra = f"""
+
+        <div class="sub-head">
+          <h3>{e(s['mini']['heading'])}</h3>
+          {hint}
+        </div>
+        <div class="mini-grid">
+{minis}
+        </div>"""
+    lead = f'\n          <p class="lead">{s["lead"]}</p>' if s.get("lead") else ""
+    return f"""
+    <section class="work">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">{e(s['eyebrow'])}</span>
+          <h2>{e(s['heading'])}</h2>{lead}
+        </div>
+
+        <div class="cards-grid{cols}">
+{cards}
+        </div>{extra}
+      </div>
+    </section>
+"""
+
+
+def render_prose_section(s):
+    paras = "\n            ".join(f"<p>{para}</p>" for para in s["paragraphs"])
+    callout = ""
+    if s.get("callout"):
+        callout = f"""
+          <div>
+            <div class="callout">{e(s['callout'])}</div>
+          </div>"""
+        grid_open = '<div class="brain-grid">'
+    else:
+        grid_open = "<div>"
+    grid_close = "</div>"
+    return f"""
+    <section class="brain">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">{e(s['eyebrow'])}</span>
+          <h2>{e(s['heading'])}</h2>
+        </div>
+        {grid_open}
+          <div>
+            {paras}
+          </div>{callout}
+        {grid_close}
+      </div>
+    </section>
+"""
+
+
+def render_install(p):
+    inst = p["install"]
+    solo = " solo" if not inst.get("canary") else ""
+    cards = [f"""          <div class="card install-card">
+            <h3>Stable <span class="badge">marketplace</span></h3>
+            <p class="blurb">{e(inst.get('stableBlurb', 'Tagged releases, promoted via the Vibe Plugins marketplace.'))}</p>
+            <div class="codeblock">
+              <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
+              <pre id="copy-stable" style="margin:0;white-space:pre">{e(inst['stable'])}</pre>
+            </div>
+          </div>"""]
+    if inst.get("canary"):
+        cards.append(f"""          <div class="card install-card">
+            <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
+            <p class="blurb">{e(inst.get('canaryBlurb', 'Latest main from this repo.'))}</p>
+            <div class="codeblock">
+              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
+              <pre id="copy-canary" style="margin:0;white-space:pre">{e(inst['canary'])}</pre>
+            </div>
+          </div>""")
+    note = f'\n        <p class="install-note">{e(inst["note"])}</p>' if inst.get("note") else ""
+    return f"""
+    <section class="install" id="install">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">{e(p.get('installEyebrow', '03 · Get it'))}</span>
+          <h2>{e('Two channels.' if inst.get('canary') else 'Install.')}</h2>
+        </div>
+
+        <div class="install-grid{solo}">
+{chr(10).join(cards)}
+        </div>{note}
+      </div>
+    </section>
+"""
+
+
+def render_family(current_id, family):
+    cards = []
+    for f in family:
+        here = " here" if f["id"] == current_id else ""
+        you = '\n            <div class="you">You are here</div>' if f["id"] == current_id else ""
+        cards.append(f"""          <a href="{e(f['href'])}" class="family-card{here}">
+            <span class="fc-mark" aria-hidden="true"><img src="{icon_path(f['id'])}" alt="" /></span>
+            <div>
+              <div class="name">{e(f['name'])}</div>
+              <div class="role">{e(f['role'])}</div>{you}
+            </div>
+          </a>""")
+    return f"""
+    <section class="family">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">04 · Family</span>
+          <h2>One plugin in a family.</h2>
+        </div>
+        <p class="family-lead">Vibe Plugins are a coordinated family &mdash; installed independently, composed when present.</p>
+
+        <div class="family-grid">
+{chr(10).join(cards)}
+        </div>
+      </div>
+    </section>
+"""
+
+
+def render_footer():
+    return """
+  <footer>
+    <div class="container row">
+      <div>626Labs LLC · MIT · 2026</div>
+      <div class="tagline">Imagine Something Else.</div>
+      <div class="links">
+        <a href="/plugins/">All plugins</a>
+        <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins">Marketplace</a>
+      </div>
+    </div>
+  </footer>
+"""
+
+
+def render_page(p, family):
+    parts = [render_head(p), render_nav(p), "\n  <main>\n", render_hero(p)]
+    for s in p["sections"]:
+        if s["type"] == "cards":
+            parts.append(render_cards_section(s))
+        elif s["type"] == "prose":
+            parts.append(render_prose_section(s))
+    parts.append(render_install(p))
+    parts.append(render_family(p["id"], family))
+    parts.append("\n  </main>\n")
+    parts.append(render_footer())
+    parts.append(COPY_SCRIPT)
+    parts.append("\n</body>\n</html>\n")
+    return "".join(parts)
+
+
+def render_index(data):
+    """The /plugins/ family index."""
+    family = data["family"]
+    cards = []
+    for f in family:
+        cards.append(f"""          <a href="{e(f['href'])}" class="family-card">
+            <span class="fc-mark" aria-hidden="true"><img src="{icon_path(f['id'])}" alt="" /></span>
+            <div>
+              <div class="name">{e(f['name'])}</div>
+              <div class="role">{e(f['role'])}</div>
+            </div>
+          </a>""")
+    og = "https://626labs.dev/assets/brand/vibe-plugins-banner-1280x640.png"
+    head = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vibe Plugins · Claude Code plugins by 626Labs</title>
+  <meta name="description" content="A coordinated family of Claude Code plugins by 626Labs — planning, iteration, docs, tests, security, and research authoring." />
+  <link rel="canonical" href="https://626labs.dev/plugins/" />
+  <link rel="icon" type="image/png" href="/favicon-626.png" />
+  <meta property="og:title" content="Vibe Plugins · for Claude Code" />
+  <meta property="og:description" content="A coordinated family of Claude Code plugins by 626Labs." />
+  <meta property="og:url" content="https://626labs.dev/plugins/" />
+  <meta property="og:image" content="{og}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="626 Labs" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="{og}" />
+  <style>{STYLE}  </style>
+</head>
+<body>
+"""
+    nav = """
+  <nav class="top">
+    <div class="container row">
+      <a href="/" class="brand">
+        <img src="/assets/brand/icon-transparent-256.png" alt="626Labs" />
+        <span>626Labs</span>
+      </a>
+      <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins" class="btn btn-ghost">Marketplace</a>
+    </div>
+  </nav>
+"""
+    hero = """
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid solo">
+          <div class="hero-left">
+            <span class="eyebrow">626Labs · for Claude Code</span>
+            <h1>Vibe Plugins.</h1>
+            <p class="hero-subhead">A coordinated family of Claude Code plugins &mdash; installed independently, composed when present. Plan it, ship it, iterate it, document it, test it, secure it.</p>
+            <div class="hero-ctas">
+              <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins" class="btn btn-primary">Get the marketplace</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+"""
+    grid = f"""
+    <section class="family">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">The family</span>
+          <h2>Eight plugins, one playbook.</h2>
+          <p class="lead">Each ships on its own. Each composes with the others when they share a repo.</p>
+        </div>
+        <div class="family-grid">
+{chr(10).join(cards)}
+        </div>
+      </div>
+    </section>
+"""
+    return head + nav + "\n  <main>\n" + hero + grid + "\n  </main>\n" + render_footer() + "\n</body>\n</html>\n"
+
+
+def build():
+    data = json.loads(DATA.read_text(encoding="utf-8"))
+    family = data["family"]
+    outputs = {}
+    for pid, p in data["plugins"].items():
+        p["id"] = pid
+        outputs[ROOT / pid / "index.html"] = render_page(p, family)
+    outputs[ROOT / "plugins" / "index.html"] = render_index(data)
+    return outputs
+
+
+def main():
+    check = "--check" in sys.argv
+    outputs = build()
+    drift = []
+    for path, html in outputs.items():
+        existing = path.read_text(encoding="utf-8") if path.exists() else None
+        if existing != html:
+            drift.append(path)
+            if not check:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(html, encoding="utf-8", newline="\n")
+    if check:
+        if drift:
+            print("DRIFT — these pages are stale, run render-plugin-pages.py:")
+            for d in drift:
+                print(f"  {d.relative_to(ROOT)}")
+            sys.exit(1)
+        print("plugin pages up to date.")
+    else:
+        for path in outputs:
+            print(f"  wrote {path.relative_to(ROOT)}")
+        print(f"{len(outputs)} pages rendered.")
+
+
+if __name__ == "__main__":
+    main()
