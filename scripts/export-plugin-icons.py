@@ -163,6 +163,25 @@ def glyph_family(primary, secondary):
     return img
 
 
+def glyph_taker(primary, secondary):
+    """Two repos with a feature bundle crossing between them — capture here,
+    plant there. (vibe-taker: take it with you.)"""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    cy = GLYPH_SIZE // 2
+    # Two container repos
+    draw.rounded_rectangle([24, 56, 80, 144], radius=10, outline=primary + (255,), width=3)
+    draw.rounded_rectangle([120, 56, 176, 144], radius=10, outline=primary + (255,), width=3)
+    # The feature block sitting in the source repo
+    draw.rectangle([38, 78, 66, 106], outline=primary + (255,), width=3)
+    # Transfer arrow carrying it across (secondary)
+    draw.line([(84, cy), (116, cy)], fill=secondary + (255,), width=4)
+    draw.polygon([(110, cy - 8), (110, cy + 8), (122, cy)], fill=secondary + (255,))
+    # The block planted in the destination repo
+    draw.rectangle([134, 78, 162, 106], outline=secondary + (255,), width=3)
+    return img
+
+
 def glyph_keystone(primary, secondary):
     """Architectural arch with the keystone (center wedge) emphasized."""
     img = _new_glyph()
@@ -310,6 +329,7 @@ GLYPHS = {
     "node_graph":   glyph_cartographer,
     "compass":      glyph_iterate,
     "family":       glyph_family,
+    "transfer":     glyph_taker,
     "keystone":     glyph_keystone,
     "doc":          glyph_doc,
     "bars":         glyph_test,
@@ -333,6 +353,11 @@ PLUGINS = [
         "id": "vibe-iterate", "name": "VIBE ITERATE",
         "tagline": "maintain your Atlas",
         "glyph": "compass", "primary": CYAN, "secondary": MAGENTA,
+    },
+    {
+        "id": "vibe-taker", "name": "VIBE TAKER",
+        "tagline": "take it with you",
+        "glyph": "transfer", "primary": CYAN, "secondary": MAGENTA,
     },
     {
         "id": "vibe-keystone", "name": "VIBE KEYSTONE",

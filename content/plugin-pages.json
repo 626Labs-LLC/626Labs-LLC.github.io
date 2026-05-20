@@ -7,6 +7,7 @@
     { "id": "vibe-doc", "name": "vibe-doc", "role": "documentation completeness", "href": "/vibe-doc/" },
     { "id": "vibe-test", "name": "vibe-test", "role": "tests that matter", "href": "/vibe-test/" },
     { "id": "vibe-sec", "name": "vibe-sec", "role": "security posture", "href": "/vibe-sec/" },
+    { "id": "vibe-taker", "name": "vibe-taker", "role": "move features between repos", "href": "/vibe-taker/" },
     { "id": "thesis-engine", "name": "thesis-engine", "role": "research feeder", "href": "/thesis-engine/" },
     { "id": "vibe-thesis", "name": "vibe-thesis", "role": "thesis authoring", "href": "/vibe-thesis/" }
   ],
@@ -538,6 +539,69 @@
       "install": {
         "stable": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Thesis\n/plugin install vibe-thesis@vibe-thesis",
         "stableBlurb": "Tagged releases from the solo repo."
+      }
+    },
+
+    "vibe-taker": {
+      "name": "vibe-taker",
+      "metaTitle": "vibe-taker · Take it with you. · 626Labs",
+      "ogTitle": "vibe-taker · Take it with you.",
+      "metaDescription": "Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack.",
+      "ogImage": "/assets/brand/plugins/vibe-taker-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Take it with you.",
+      "subhead": "Move a feature between repos without copy-paste archaeology. vibe-taker captures a feature out of one codebase as a portable bundle &mdash; architecture, contract surface, the prompts that built it, a verbatim source snapshot, and the gotchas &mdash; then plants it into another repo with stack-aware adaptation.",
+      "heroMeta": ["v0.1.1", "3 commands", "local-only", "MIT"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-taker" }
+      },
+      "terminal": {
+        "label": "vibe-taker ~",
+        "lines": [
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-taker:capture src/features/command-palette</span>",
+          "<span class=\"agent\">[vibe-taker]</span> Reading source... <span class=\"ok\">done</span> (14 files)",
+          "  &rarr; architecture + contract surface extracted",
+          "  &rarr; prompts that built it: <span class=\"key\">6 captured</span>",
+          "  &rarr; gotchas: <span class=\"key\">2 flagged</span>",
+          "  <span class=\"ok\">✓</span> bundled to <span class=\"path\">~/.vibe-taker/library/command-palette/</span>",
+          "&nbsp;",
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-taker:plant command-palette</span>",
+          "<span class=\"agent\">[vibe-taker]</span> Target stack: <span class=\"path\">React 19 + Vite</span> (match: <span class=\"ok\">high</span>)",
+          "  &rarr; code-lift selected · adapting imports",
+          "  Review diff before write? [Y/n] <span class=\"cmd\">y</span>",
+          "  <span class=\"ok\">✓</span> planted: 11 files, 0 conflicts<span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "Capture here, plant there.",
+          "lead": "Three commands move a feature across repos — reading source autonomously, asking only when the why can't be derived from the code.",
+          "cards": [
+            { "command": "/vibe-taker:capture &lt;path&gt;", "title": "Lift a feature into a bundle.", "desc": "Reads the source, snapshots reference code, extracts the architecture and contract surface, captures the prompts that built it, and flags the gotchas &mdash; into a portable shelf entry at ~/.vibe-taker/library/." },
+            { "command": "/vibe-taker:plant &lt;name&gt;", "title": "Drop it into a new repo.", "desc": "Detects the target stack and picks code-lift on a high match or spec-driven re-implementation on a low one &mdash; declining a hard cross-language mismatch instead of producing broken code. Always shows the diff before any write." },
+            { "command": "/vibe-taker:list", "title": "See what's on the shelf.", "desc": "Searches your cross-repo library and flags near-duplicate captures with Jaccard hints. Supports --search and --sort name|lang." }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it's different",
+          "heading": "It reads the source, then asks the right questions.",
+          "paragraphs": [
+            "Copy-paste between repos loses everything that isn't code &mdash; the contract, the reasoning, the prompts, the gotchas. vibe-taker captures all of it: an architecture sketch, the contract surface, the AI prompts that built the feature, a verbatim source snapshot, and the warnings. It derives the <strong>what</strong> and <strong>how</strong> autonomously from the code, and only asks you for the <strong>why</strong> when the code can't tell it.",
+            "On plant, it detects the destination stack and adapts &mdash; lifting code when the match is high, re-implementing from the spec when it's low, and declining outright on a hard cross-language mismatch rather than shipping something broken. Nothing is written until you confirm the diff."
+          ],
+          "callout": "Local-only by default. ~/.vibe-taker/library/ is the single source of truth — nothing leaves your machine."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-taker@vibe-plugins",
+        "stableBlurb": "Tagged releases via the Vibe Plugins marketplace.",
+        "canary": "/plugin marketplace add estevanhernandez-stack-ed/vibe-taker\n/plugin install vibe-taker",
+        "canaryBlurb": "Tracks the solo repo's main branch.",
+        "note": "The library lives at ~/.vibe-taker/library/ — portable across every repo you work in."
       }
     }
   }

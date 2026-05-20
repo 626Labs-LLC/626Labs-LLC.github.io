@@ -203,6 +203,12 @@ PRODUCT_SIGILS = {
         '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>'
         '<path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>'
     ),
+    "vibe-taker": (
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<rect x="2" y="6" width="7" height="12" rx="1"/>'
+        '<rect x="15" y="6" width="7" height="12" rx="1"/>'
+        '<path d="M9 12h6M13 9l3 3-3 3"/></svg>'
+    ),
     "vibe-test": (
         '<svg class="ic-lg ic" viewBox="0 0 24 24">'
         '<path d="M10 2v7.31M14 9.3V2M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0M7 18h10"/></svg>'

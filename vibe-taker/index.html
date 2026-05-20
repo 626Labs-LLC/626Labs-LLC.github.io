@@ -3,18 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vibe Plugins · Claude Code plugins by 626Labs</title>
-  <meta name="description" content="A coordinated family of Claude Code plugins by 626Labs — planning, iteration, docs, tests, security, and research authoring." />
-  <link rel="canonical" href="https://626labs.dev/plugins/" />
+  <title>vibe-taker · Take it with you. · 626Labs</title>
+  <meta name="description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
+  <link rel="canonical" href="https://626labs.dev/vibe-taker/" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
-  <meta property="og:title" content="Vibe Plugins · for Claude Code" />
-  <meta property="og:description" content="A coordinated family of Claude Code plugins by 626Labs." />
-  <meta property="og:url" content="https://626labs.dev/plugins/" />
-  <meta property="og:image" content="https://626labs.dev/assets/brand/vibe-plugins-banner-1280x640.png" />
+
+  <meta property="og:title" content="vibe-taker · Take it with you." />
+  <meta property="og:description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
+  <meta property="og:url" content="https://626labs.dev/vibe-taker/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-taker-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://626labs.dev/assets/brand/vibe-plugins-banner-1280x640.png" />
+  <meta name="twitter:title" content="vibe-taker · Take it with you." />
+  <meta name="twitter:description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-taker-banner-1280x640.png" />
+
   <style>
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -237,11 +241,18 @@
 
   <nav class="top">
     <div class="container row">
-      <a href="/" class="brand">
-        <img src="/assets/brand/icon-transparent-256.png" alt="626Labs" />
-        <span>626Labs</span>
-      </a>
-      <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins" class="btn btn-ghost">Marketplace</a>
+      <div class="brand-row">
+        <a href="/" class="brand">
+          <img src="/assets/brand/icon-transparent-256.png" alt="626Labs" />
+          <span>626Labs</span>
+        </a>
+        <span class="brand-sep" aria-hidden="true">/</span>
+        <span class="brand-current">
+          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-taker-icon-transparent-512.png" alt="" /></span>
+          <span>vibe-taker</span>
+        </span>
+      </div>
+      <a href="#install" class="btn btn-ghost">Install</a>
     </div>
   </nav>
 
@@ -251,27 +262,132 @@
       <div class="container">
         <div class="hero-grid">
           <div class="hero-left">
-            <span class="eyebrow">626Labs · for Claude Code</span>
-            <h1>Vibe Plugins.</h1>
-            <p class="hero-subhead">A coordinated family of Claude Code plugins &mdash; installed independently, composed when present. Plan it, ship it, iterate it, document it, test it, secure it.</p>
+            <span class="eyebrow">626Labs · Claude Code plugin</span>
+            <h1>Take it with you.</h1>
+            <p class="hero-subhead">Move a feature between repos without copy-paste archaeology. vibe-taker captures a feature out of one codebase as a portable bundle &mdash; architecture, contract surface, the prompts that built it, a verbatim source snapshot, and the gotchas &mdash; then plants it into another repo with stack-aware adaptation.</p>
             <div class="hero-ctas">
-              <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins" class="btn btn-primary">Get the marketplace</a>
+              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-taker" class="btn btn-ghost">View on GitHub</a>
+            </div>
+            <div class="hero-meta">
+              <span>v0.1.1</span><span>·</span><span>3 commands</span><span>·</span><span>local-only</span><span>·</span><span>MIT</span>
             </div>
           </div>
-          <div class="hero-right hero-mark">
-            <img src="/assets/brand/vibe-plugins-mark-transparent-512.png" alt="Vibe Plugins" />
+
+          <div class="hero-right">
+            <div class="term">
+              <div class="term-bar">
+                <span class="term-dot r"></span>
+                <span class="term-dot y"></span>
+                <span class="term-dot g"></span>
+                <span class="term-label">vibe-taker ~</span>
+              </div>
+              <div class="term-body">
+                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-taker:capture src/features/command-palette</span></div>
+                <div><span class="agent">[vibe-taker]</span> Reading source... <span class="ok">done</span> (14 files)</div>
+                <div>  &rarr; architecture + contract surface extracted</div>
+                <div>  &rarr; prompts that built it: <span class="key">6 captured</span></div>
+                <div>  &rarr; gotchas: <span class="key">2 flagged</span></div>
+                <div>  <span class="ok">✓</span> bundled to <span class="path">~/.vibe-taker/library/command-palette/</span></div>
+                <div>&nbsp;</div>
+                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-taker:plant command-palette</span></div>
+                <div><span class="agent">[vibe-taker]</span> Target stack: <span class="path">React 19 + Vite</span> (match: <span class="ok">high</span>)</div>
+                <div>  &rarr; code-lift selected · adapting imports</div>
+                <div>  Review diff before write? [Y/n] <span class="cmd">y</span></div>
+                <div>  <span class="ok">✓</span> planted: 11 files, 0 conflicts<span class="term-cursor"></span></div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="work">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">01 · What it does</span>
+          <h2>Capture here, plant there.</h2>
+          <p class="lead">Three commands move a feature across repos — reading source autonomously, asking only when the why can't be derived from the code.</p>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <span class="cmd">/vibe-taker:capture &amp;lt;path&amp;gt;</span>
+            <h3>Lift a feature into a bundle.</h3>
+            <p class="desc">Reads the source, snapshots reference code, extracts the architecture and contract surface, captures the prompts that built it, and flags the gotchas &mdash; into a portable shelf entry at ~/.vibe-taker/library/.</p>
+          </div>
+
+          <div class="card">
+            <span class="cmd">/vibe-taker:plant &amp;lt;name&amp;gt;</span>
+            <h3>Drop it into a new repo.</h3>
+            <p class="desc">Detects the target stack and picks code-lift on a high match or spec-driven re-implementation on a low one &mdash; declining a hard cross-language mismatch instead of producing broken code. Always shows the diff before any write.</p>
+          </div>
+
+          <div class="card">
+            <span class="cmd">/vibe-taker:list</span>
+            <h3>See what&#x27;s on the shelf.</h3>
+            <p class="desc">Searches your cross-repo library and flags near-duplicate captures with Jaccard hints. Supports --search and --sort name|lang.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="brain">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">02 · How it&#x27;s different</span>
+          <h2>It reads the source, then asks the right questions.</h2>
+        </div>
+        <div class="brain-grid">
+          <div>
+            <p>Copy-paste between repos loses everything that isn't code &mdash; the contract, the reasoning, the prompts, the gotchas. vibe-taker captures all of it: an architecture sketch, the contract surface, the AI prompts that built the feature, a verbatim source snapshot, and the warnings. It derives the <strong>what</strong> and <strong>how</strong> autonomously from the code, and only asks you for the <strong>why</strong> when the code can't tell it.</p>
+            <p>On plant, it detects the destination stack and adapts &mdash; lifting code when the match is high, re-implementing from the spec when it's low, and declining outright on a hard cross-language mismatch rather than shipping something broken. Nothing is written until you confirm the diff.</p>
+          </div>
+          <div>
+            <div class="callout">Local-only by default. ~/.vibe-taker/library/ is the single source of truth — nothing leaves your machine.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="install" id="install">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">03 · Get it</span>
+          <h2>Two channels.</h2>
+        </div>
+
+        <div class="install-grid">
+          <div class="card install-card">
+            <h3>Stable <span class="badge">marketplace</span></h3>
+            <p class="blurb">Tagged releases via the Vibe Plugins marketplace.</p>
+            <div class="codeblock">
+              <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
+              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
+/plugin install vibe-taker@vibe-plugins</pre>
+            </div>
+          </div>
+          <div class="card install-card">
+            <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
+            <p class="blurb">Tracks the solo repo&#x27;s main branch.</p>
+            <div class="codeblock">
+              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
+              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-taker
+/plugin install vibe-taker</pre>
+            </div>
+          </div>
+        </div>
+        <p class="install-note">The library lives at ~/.vibe-taker/library/ — portable across every repo you work in.</p>
       </div>
     </section>
 
     <section class="family">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">The family</span>
-          <h2>Eight plugins, one playbook.</h2>
-          <p class="lead">Each ships on its own. Each composes with the others when they share a repo.</p>
+          <span class="eyebrow">04 · Family</span>
+          <h2>One plugin in a family.</h2>
         </div>
+        <p class="family-lead">Vibe Plugins are a coordinated family &mdash; installed independently, composed when present.</p>
+
         <div class="family-grid">
           <a href="/vibe-cartographer/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-cartographer-icon-transparent-512.png" alt="" /></span>
@@ -315,11 +431,12 @@
               <div class="role">security posture</div>
             </div>
           </a>
-          <a href="/vibe-taker/" class="family-card">
+          <a href="/vibe-taker/" class="family-card here">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-taker-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-taker</div>
               <div class="role">move features between repos</div>
+            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/thesis-engine/" class="family-card">
@@ -352,6 +469,25 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    document.querySelectorAll('.copybtn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = document.getElementById(btn.getAttribute('data-target'));
+        if (!target || !navigator.clipboard) { return; }
+        navigator.clipboard.writeText(target.textContent).then(function() {
+          var orig = btn.textContent;
+          btn.textContent = 'copied';
+          btn.classList.add('ok');
+          setTimeout(function() { btn.textContent = orig; btn.classList.remove('ok'); }, 1500);
+        }).catch(function() {
+          var orig = btn.textContent;
+          btn.textContent = 'press Ctrl+C';
+          setTimeout(function() { btn.textContent = orig; }, 1500);
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>
