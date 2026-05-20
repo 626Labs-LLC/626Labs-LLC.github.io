@@ -145,6 +145,10 @@ STYLE = """
     .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
     .hero-meta { display: flex; gap: 16px; flex-wrap: wrap; color: var(--ink-300); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; }
     .hero-meta span { color: var(--ink-200); }
+    .hero-mark { display: flex; align-items: center; justify-content: center; position: relative; }
+    .hero-mark::before { content: ''; position: absolute; width: 72%; height: 72%; border-radius: 50%; background: radial-gradient(circle, rgba(23,212,250,.22) 0%, rgba(242,47,137,.12) 45%, transparent 72%); filter: blur(28px); z-index: 0; }
+    .hero-mark img { position: relative; z-index: 1; width: min(340px, 78%); height: auto; }
+    @media (max-width: 900px) { .hero-mark { display: none; } }
 
     .term { background: var(--navy-mid); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 8px 32px rgba(0,0,0,.35); overflow: hidden; }
     .term-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(0,0,0,.18); border-bottom: 1px solid rgba(255,255,255,.04); }
@@ -596,7 +600,7 @@ def render_index(data):
     hero = """
     <section class="hero">
       <div class="container">
-        <div class="hero-grid solo">
+        <div class="hero-grid">
           <div class="hero-left">
             <span class="eyebrow">626Labs · for Claude Code</span>
             <h1>Vibe Plugins.</h1>
@@ -604,6 +608,9 @@ def render_index(data):
             <div class="hero-ctas">
               <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins" class="btn btn-primary">Get the marketplace</a>
             </div>
+          </div>
+          <div class="hero-right hero-mark">
+            <img src="/assets/brand/vibe-plugins-mark-transparent-512.png" alt="Vibe Plugins" />
           </div>
         </div>
       </div>
