@@ -394,6 +394,35 @@
       "productPage": "/vibe-sec/"
     },
     {
+      "id": "vibe-taker",
+      "title": "Vibe Taker",
+      "tagline": "Take it with you.",
+      "description": "Move a feature between repos without copy-paste archaeology. Capture a feature out of one codebase as a portable bundle — architecture, contract, the prompts that built it, and the gotchas — then plant it into another repo with stack-aware adaptation. Local-only.",
+      "tags": [
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "cross-repo",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-taker",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "anthropicApproved": false,
+      "meta": "<code>/vibe-taker</code> · cross-repo feature transplant",
+      "productPage": "/vibe-taker/",
+      "screenshots": []
+    },
+    {
       "id": "rbx15-shirt-pants",
       "title": "RBX15 Classic Shirt and Pants Maker",
       "description": "Visual editor for Roblox R15 shirt and pants templates. Electron UI, Python Pillow compositing engine. Drag-and-drop layers, fullbleed / mirror / meme-tee presets, word art. Free on the Microsoft Store.",
