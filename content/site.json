@@ -216,7 +216,8 @@
       "claudeCode": true,
       "meta": "<code>/keystone</code> · CLAUDE.md bootstrap",
       "screenshots": [],
-      "productPage": "/vibe-keystone/"
+      "productPage": "/vibe-keystone/",
+      "anthropicApproved": true
     },
     {
       "id": "vibe-doc",
@@ -243,7 +244,8 @@
       "claudeCode": true,
       "meta": "<code>/vibe-doc</code> · gap analyzer",
       "screenshots": [],
-      "productPage": "/vibe-doc/"
+      "productPage": "/vibe-doc/",
+      "anthropicApproved": true
     },
     {
       "id": "vibe-test",
