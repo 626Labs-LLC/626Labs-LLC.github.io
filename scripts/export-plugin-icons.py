@@ -134,6 +134,35 @@ def glyph_iterate(primary, secondary):
     return img
 
 
+def glyph_family(primary, secondary):
+    """The Vibe Plugins family mark: a hexagon (the 626 motif) holding a small
+    circuit-brain node cluster, with the signature cyan/magenta swoosh sweeping
+    beneath it. 626 DNA crossed with the plugins' line-art style."""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    cx, cy = GLYPH_SIZE // 2, GLYPH_SIZE // 2 - 4
+    R = 78
+    # Flat-top hexagon outline
+    hexpts = [(cx + R * math.cos(math.radians(60 * k)),
+               cy + R * math.sin(math.radians(60 * k))) for k in range(6)]
+    draw.polygon(hexpts, outline=primary + (255,), width=4)
+    # Circuit-brain: a small connected node cluster, kept in the upper half
+    nodes = [(cx, cy - 36), (cx - 27, cy - 14), (cx + 27, cy - 14),
+             (cx - 14, cy + 6), (cx + 14, cy + 6)]
+    for i, j in [(0, 1), (0, 2), (1, 2), (1, 3), (2, 4), (3, 4)]:
+        draw.line([nodes[i], nodes[j]], fill=primary + (255,), width=2)
+    for (x, y) in nodes:
+        draw.ellipse([x - 6, y - 6, x + 6, y + 6], fill=NAVY + (255,),
+                     outline=primary + (255,), width=3)
+    # Signature swoosh — two crossing arcs (the duo) sweeping the lower third,
+    # clear of the cluster.
+    draw.arc([cx - 66, cy + 28, cx + 8, cy + 100], start=200, end=350,
+             fill=primary + (255,), width=6)
+    draw.arc([cx - 8, cy + 28, cx + 66, cy + 100], start=190, end=340,
+             fill=secondary + (255,), width=6)
+    return img
+
+
 def glyph_keystone(primary, secondary):
     """Architectural arch with the keystone (center wedge) emphasized."""
     img = _new_glyph()
@@ -280,6 +309,7 @@ def glyph_engine(primary, secondary):
 GLYPHS = {
     "node_graph":   glyph_cartographer,
     "compass":      glyph_iterate,
+    "family":       glyph_family,
     "keystone":     glyph_keystone,
     "doc":          glyph_doc,
     "bars":         glyph_test,
@@ -505,6 +535,9 @@ def main():
         build_square(p, OUT / f"{p['id']}-square-1024.png")
         # Glyph-only transparent icon — nav marks, favicons
         build_icon(p, OUT / f"{p['id']}-icon-transparent-512.png")
+    # Family mark — the hero logo for the /plugins/ index (lives in brand/)
+    build_icon({"id": "vibe-plugins-mark", "glyph": "family", "primary": CYAN, "secondary": MAGENTA},
+               ASSETS / "brand" / "vibe-plugins-mark-transparent-512.png")
 
 
 if __name__ == "__main__":
