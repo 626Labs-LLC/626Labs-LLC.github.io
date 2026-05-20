@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-19T09:49:25.026Z",
+  "generatedAt": "2026-05-20T09:37:46.337Z",
   "count": 37,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-05-19T08:53:38Z",
+      "pushed_at": "2026-05-20T08:48:26Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -361,7 +361,7 @@
       "description": "Post-ship product iteration — the sibling to vibe-cartographer. Pick a mode (feature-add, competitive, ux-polish, bug-bash), ship one PR. Ingests competitor changelogs, framework releases, and your feedback.md. Maintains your Atlas.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-iterate",
       "language": "Shell",
-      "pushed_at": "2026-05-07T04:48:54Z",
+      "pushed_at": "2026-05-20T03:45:52Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -385,7 +385,7 @@
       "description": "The 626Labs Vibe Plugins ecosystem — spec-driven development, documentation, security, and testing for vibe-coded apps. Monorepo for vibe-sec + vibe-test + shared core.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-05-18T15:05:08Z",
+      "pushed_at": "2026-05-19T15:04:38Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
