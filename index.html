@@ -628,6 +628,14 @@
     }
     .badges img { height: 22px; }
 
+    .product-cta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 0 var(--s-5);
+    }
+    .product-cta .btn { font-size: 14px; padding: 10px 18px; }
+
     .install {
       margin: 0 0 var(--s-5);
       padding: 12px 14px;
@@ -1415,6 +1423,7 @@
     </a>
     <div class="nav-links">
       <a href="#work">Work</a>
+      <a href="/plugins/">Plugins</a>
       <a href="#thinking">Thinking</a>
       <a href="#field-notes">Field Notes</a>
       <a href="#lab">Lab</a>
@@ -1493,7 +1502,7 @@
         <div class="eyebrow"><span>01 · Portfolio</span><span class="line"></span></div>
         <h2>The work, shipping.</h2>
       </div>
-      <p>Four shipped products plus one in-flight. All MIT, all open source. The plugins built on a shared spine: an opinionated agent that reads the code before it touches it.</p>
+      <p>Eight plugins shipped plus native Windows and macOS apps, with one more in-flight. All open source. The plugins built on a shared spine: an opinionated agent that reads the code before it touches it.</p>
     </div>
 
     <div class="products">
@@ -1568,6 +1577,26 @@
       <article class="product">
         <div class="product-head">
           <div class="product-sigil">
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z"/><circle cx="18.5" cy="5.5" r="1.3"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">Web app</span><span class="tag magenta">AI astrology</span><span class="tag cyan">Freemium</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>Celestia 3</h3>
+        <p class="product-desc">An AI technomancer that reads the actual sky. The Swiss Ephemeris engine was rebuilt to astronomical precision — not the second-rate math most astrology apps ship — so every chart is observatory-accurate. Converse with the Athanor, an AI oracle grounded in your real natal chart, across the Natal Compass, Aura Cam, Arithmancy, Tarot, Rituals, Chronos forecasts, Celebrity Match, Synastry, and the Grimoire.</p>
+        <div class="product-cta">
+          <a class="btn btn-primary" href="https://celestia.626labs.dev" target="_blank" rel="noopener">Start free<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="btn btn-ghost" href="https://www.youtube.com/watch?v=HV8dUMReNgI" target="_blank" rel="noopener">Watch demo</a>
+        </div>
+        <div class="product-foot">
+          <div class="product-meta">Free to explore · ascend from $3.99/mo · cancel anytime</div>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-head">
+          <div class="product-sigil">
             <svg class="ic-lg ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/><path d="M12 7l3 5-3 5-3-5z"/></svg>
           </div>
           <div class="product-tags">
@@ -1578,6 +1607,7 @@
         <p class="product-desc">Post-ship product iteration. Pick a banner mode — feature-add, competitive, ux-polish, bug-bash — or reach for a sidecar (:radar, :spy, :scan-releases, :rate, :ship, :upgrade). Ships one PR per session, regression-aware.</p>
         <div class="badges">
           <img src="https://img.shields.io/badge/Claude%20Code-skill-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Claude Code skill">
+          <img src="https://img.shields.io/badge/Anthropic-approved-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Anthropic approved">
         </div>
         <div class="install">
           <span class="label">Install in Claude Code</span>
@@ -1656,10 +1686,11 @@
         <p class="product-desc">Reads your vibe-coded app, classifies maturity tier and deployment risk, generates the tests that actually matter. Catches the broken harnesses every other test tool assumes away — vitest configs silently reporting 0%, coverage tools cherry-picking denominators.</p>
         <div class="badges">
           <img src="https://img.shields.io/badge/Claude%20Code-skill-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Claude Code skill">
-          <img data-maskable="true" src="https://img.shields.io/github/v/release/estevanhernandez-stack-ed/vibe-test?filter=vibe-test-v*&amp;color=2bd99a&amp;labelColor=0f1f31&amp;style=flat-square&amp;label=release" alt="latest release">
+          <img data-maskable="true" src="https://img.shields.io/github/v/release/estevanhernandez-stack-ed/vibe-plugins?filter=vibe-test-v*&amp;color=2bd99a&amp;labelColor=0f1f31&amp;style=flat-square&amp;label=release" alt="latest release">
           <img data-maskable="true" src="https://img.shields.io/npm/l/@esthernandez/vibe-test?color=2bd99a&labelColor=0f1f31&style=flat-square" alt="MIT license">
           <img data-maskable="true" src="https://img.shields.io/npm/v/@esthernandez/vibe-test?color=17d4fa&labelColor=0f1f31&style=flat-square" alt="npm version">
           <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-test?color=f22f89&labelColor=0f1f31&style=flat-square&label=downloads" alt="total downloads">
+          <img src="https://img.shields.io/badge/Anthropic-approved-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Anthropic approved">
         </div>
         <div class="install">
           <span class="label">Install in Claude Code</span>
@@ -1684,6 +1715,7 @@
         <p class="product-desc">Scaffolds thesis-shaped projects — academic dissertation, master's thesis, long-form research article, position essay. Bootstraps the structure, runs a voice synthesis pass, guards against self-review tone, then renders to PDF, HTML, and a plain-language lay version. Built on ThesisStudio.</p>
         <div class="badges">
           <img src="https://img.shields.io/badge/Claude%20Code-skill-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Claude Code skill">
+          <img src="https://img.shields.io/badge/Anthropic-approved-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Anthropic approved">
         </div>
         <div class="install">
           <span class="label">Install in Claude Code</span>
@@ -1708,6 +1740,7 @@
         <p class="product-desc">Research feeder for Vibe Thesis. Surfaces cutting-edge topics in any domain, gathers primary sources, opposing positions, and methodological precedents — then emits a run folder that drops straight into ThesisStudio. Optional stage three adapts a seeded topic into a Smart Brevity blog draft.</p>
         <div class="badges">
           <img src="https://img.shields.io/badge/Claude%20Code-skill-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Claude Code skill">
+          <img src="https://img.shields.io/badge/Anthropic-approved-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Anthropic approved">
         </div>
         <div class="install">
           <span class="label">Install in Claude Code</span>
@@ -1768,7 +1801,6 @@
         <p class="product-desc">The security gaps AI prototyping leaves behind are pretty predictable — leaked secrets, sketchy auth, missing input validation, stale dependencies. Vibe Sec finds them and writes the fix, scaled to where your app actually runs.</p>
         <div class="badges">
           <img src="https://img.shields.io/badge/Claude%20Code-skill-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Claude Code skill">
-          <img data-maskable="true" src="https://img.shields.io/github/v/release/estevanhernandez-stack-ed/vibe-sec?filter=vibe-sec-v*&amp;color=2bd99a&amp;labelColor=0f1f31&amp;style=flat-square&amp;label=release" alt="latest release">
           <img data-maskable="true" src="https://img.shields.io/npm/l/@esthernandez/vibe-sec?color=2bd99a&labelColor=0f1f31&style=flat-square" alt="MIT license">
           <img data-maskable="true" src="https://img.shields.io/npm/v/@esthernandez/vibe-sec?color=17d4fa&labelColor=0f1f31&style=flat-square" alt="npm version">
           <img data-maskable="true" src="https://img.shields.io/npm/dt/@esthernandez/vibe-sec?color=f22f89&labelColor=0f1f31&style=flat-square&label=downloads" alt="total downloads">
@@ -1796,6 +1828,7 @@
         <p class="product-desc">Move a feature between repos without copy-paste archaeology. Capture a feature out of one codebase as a portable bundle — architecture, contract, the prompts that built it, and the gotchas — then plant it into another repo with stack-aware adaptation. Local-only.</p>
         <div class="badges">
           <img src="https://img.shields.io/badge/Claude%20Code-skill-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Claude Code skill">
+          <img src="https://img.shields.io/badge/Anthropic-approved-D97757?style=flat-square&amp;logo=anthropic&amp;logoColor=F5F5F0&amp;labelColor=141414" alt="Anthropic approved">
         </div>
         <div class="install">
           <span class="label">Install in Claude Code</span>
@@ -2210,22 +2243,6 @@
   const LAB_POOL = [
     // SITE_JSON:lab-pool:start
 
-      {
-            "name": "Celestia 3",
-            "meta": "AI Technomancer · Hackathon",
-            "desc": "Gemini 3 + Swiss Ephemeris WASM + React Three Fiber. Readings of the actual sky with conversational narration — a Devpost hackathon entry with NASA-grade ephemeris data under the hood.",
-            "video": "HV8dUMReNgI",
-            "links": [
-                  {
-                        "label": "Watch demo",
-                        "href": "https://www.youtube.com/watch?v=HV8dUMReNgI"
-                  },
-                  {
-                        "label": "GitHub",
-                        "href": "https://github.com/estevanhernandez-stack-ed/Celestia3"
-                  }
-            ]
-      },
       {
             "name": "Project L.A.D.D.E.R.",
             "meta": "Local-first education · Gemma",

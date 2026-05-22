@@ -231,6 +231,12 @@ PRODUCT_SIGILS = {
         '<svg class="ic-lg ic" viewBox="0 0 24 24">'
         '<path d="M5 3v17l4.5-3.5 2.5 5 2-1-2.5-5h5.5z"/></svg>'
     ),
+    "celestia-3": (
+        # Celestial sparkle + star accent
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z"/>'
+        '<circle cx="18.5" cy="5.5" r="1.3"/></svg>'
+    ),
 }
 
 # Flagship-only decorative preview (terminal mock + bullets), keyed by id.
@@ -278,13 +284,17 @@ BADGE_COLOR_MAGENTA = "f22f89"
 BADGE_COLOR_GREEN = "2bd99a"
 BADGE_LABEL_BG = "0f1f31"
 
-SHIELDS_RELEASE_FILTER = {
-    # Monorepo: filter by tag prefix so each package's card shows its own
-    # latest release — without this, shields.io returns the repo's newest
-    # tag across all packages (e.g. vibe-sec's card was showing
-    # vibe-test-v0.2.3).
-    "vibe-test": "?filter=vibe-test-v*",
-    "vibe-sec": "?filter=vibe-sec-v*",
+# Per-plugin release-badge overrides. shields.io's github/v/release reads
+# *published Releases*, not git tags — so two cases need special handling:
+#   1. Monorepo packaging: the release lives in vibe-plugins, not the
+#      standalone repo (which carries tags but no Releases). Point `repo` at
+#      the monorepo and `filter` at the package's tag prefix.
+#   2. No Release yet (WIP): suppress the badge with `hide` rather than let
+#      shields render "no matching releases found".
+# Plugins not listed here resolve against their own `repo` with no filter.
+SHIELDS_RELEASE = {
+    "vibe-test": {"repo": "estevanhernandez-stack-ed/vibe-plugins", "filter": "vibe-test-v*"},
+    "vibe-sec": {"hide": True},
 }
 
 # Category label that sits under the flagship tag row ("SPEC-DRIVEN · SELF-EVOLVING").
@@ -319,9 +329,9 @@ CLAUDE_CODE_BADGE = (
 ANTHROPIC_APPROVED_BADGE = (
     # Anthropic-approved — same Anthropic-orange visual treatment as the
     # Claude Code skill badge, but flips the label to read "Anthropic |
-    # approved". Set `anthropicApproved: true` on a product to opt in.
-    # Currently only Vibe Cartographer carries this — featured/listed in
-    # Anthropic's official Claude Code plugins surface.
+    # approved". Set `anthropicApproved: true` on a product to opt in —
+    # carried by every plugin published in Anthropic's official Claude Code
+    # plugins directory.
     'https://img.shields.io/badge/Anthropic-approved-D97757?'
     'style=flat-square&logo=anthropic&logoColor=F5F5F0&labelColor=141414'
 )
@@ -367,43 +377,39 @@ def render_badges(p: dict) -> str:
         </div>"""
     repo = p.get("repo") or ""
     pid = p.get("id", "")
-    filt = SHIELDS_RELEASE_FILTER.get(pid, "")
-    # Release badge always points at the GitHub repo in .repo. For the
-    # monorepo-based plugins, filter narrows to the package's tag prefix.
-    release_url = (
-        f"https://img.shields.io/github/v/release/{repo}{filt}"
-        f"&color={BADGE_COLOR_GREEN}" if filt
-        else f"https://img.shields.io/github/v/release/{repo}?color={BADGE_COLOR_GREEN}"
-    )
-    # Re-structure: always use a clean query string.
-    if filt:
-        release_url = (
-            f"https://img.shields.io/github/v/release/{repo}"
-            f"{filt}&color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=release"
-        )
-    else:
-        release_url = (
-            f"https://img.shields.io/github/v/release/{repo}"
-            f"?color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=release"
-        )
-    cc_badge = (
-        f'          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">\n'
-        if claude_code else ""
-    )
-    approved_badge_tail = (
-        f'\n          <img src="{attr(ANTHROPIC_APPROVED_BADGE)}" alt="Anthropic approved">'
-        if anthropic_approved else ""
-    )
-    # Order: CC, release, license, npm version, npm downloads, [Anthropic approved].
-    # npm-specific badges sit at the end so the universal ones above them
-    # stay column-aligned with non-npm plugins. Anthropic-approved comes
-    # absolute last because it's the rarest (Cart only).
+    rel = SHIELDS_RELEASE.get(pid, {})
+    rel_repo = rel.get("repo", repo)
+    rel_filter = rel.get("filter")
+
+    # Order: CC, release, license, npm version, npm downloads, [Anthropic
+    # approved]. npm-specific badges sit after the universal ones so cards
+    # stay column-aligned regardless of which plugin you're on; Anthropic-
+    # approved comes absolute last (rarest). Built as a list so a suppressed
+    # release badge (WIP plugins) just drops a row without disturbing the rest.
+    rows: list[str] = []
+    if claude_code:
+        rows.append(f'          <img src="{attr(CLAUDE_CODE_BADGE)}" alt="Claude Code skill">')
+    if not rel.get("hide"):
+        if rel_filter:
+            release_url = (
+                f"https://img.shields.io/github/v/release/{rel_repo}"
+                f"?filter={rel_filter}&color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=release"
+            )
+        else:
+            release_url = (
+                f"https://img.shields.io/github/v/release/{rel_repo}"
+                f"?color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=release"
+            )
+        rows.append(f'          <img data-maskable="true" src="{attr(release_url)}" alt="latest release">')
+    rows.append(f'          <img data-maskable="true" src="https://img.shields.io/npm/l/{attr(npm)}?color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="MIT license">')
+    rows.append(f'          <img data-maskable="true" src="https://img.shields.io/npm/v/{attr(npm)}?color={BADGE_COLOR_CYAN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="npm version">')
+    rows.append(f'          <img data-maskable="true" src="https://img.shields.io/npm/dt/{attr(npm)}?color={BADGE_COLOR_MAGENTA}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=downloads" alt="total downloads">')
+    if anthropic_approved:
+        rows.append(f'          <img src="{attr(ANTHROPIC_APPROVED_BADGE)}" alt="Anthropic approved">')
+    body = "\n".join(rows)
     return f"""\
         <div class="badges">
-{cc_badge}          <img data-maskable="true" src="{attr(release_url)}" alt="latest release">
-          <img data-maskable="true" src="https://img.shields.io/npm/l/{attr(npm)}?color={BADGE_COLOR_GREEN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="MIT license">
-          <img data-maskable="true" src="https://img.shields.io/npm/v/{attr(npm)}?color={BADGE_COLOR_CYAN}&labelColor={BADGE_LABEL_BG}&style=flat-square" alt="npm version">
-          <img data-maskable="true" src="https://img.shields.io/npm/dt/{attr(npm)}?color={BADGE_COLOR_MAGENTA}&labelColor={BADGE_LABEL_BG}&style=flat-square&label=downloads" alt="total downloads">{approved_badge_tail}
+{body}
         </div>"""
 
 
@@ -477,6 +483,31 @@ def render_store_badges(p: dict) -> str:
     return "\n".join(parts)
 
 
+def render_product_cta(p: dict) -> str:
+    """Primary launch CTA for hosted web-app products (those with a liveUrl).
+
+    Renders a gradient primary button to the live app plus an optional ghost
+    'Watch demo' button. Plugin / native-store products don't set liveUrl and
+    skip this entirely.
+    """
+    live = p.get("liveUrl")
+    if not live:
+        return ""
+    label = esc(p.get("liveCtaLabel", "Open app"))
+    arrow = '<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>'
+    parts = [
+        '        <div class="product-cta">',
+        f'          <a class="btn btn-primary" href="{attr(live)}" target="_blank" rel="noopener">{label}{arrow}</a>',
+    ]
+    demo = p.get("demoUrl")
+    if demo:
+        parts.append(
+            f'          <a class="btn btn-ghost" href="{attr(demo)}" target="_blank" rel="noopener">Watch demo</a>'
+        )
+    parts.append('        </div>')
+    return "\n".join(parts)
+
+
 def render_product_foot(p: dict) -> str:
     """Foot row: product-meta + product-link."""
     pid = p.get("id", "")
@@ -494,6 +525,9 @@ def render_product_foot(p: dict) -> str:
         )
     elif store_url:
         # Store badge pair is already the CTA; a repo link here is redundant.
+        link = ""
+    elif p.get("liveUrl"):
+        # Hosted web app — the launch CTA buttons are the action, no repo link.
         link = ""
     elif p.get("status") == "wip":
         link = (
@@ -541,6 +575,7 @@ def render_product(p: dict) -> str:
     install_html = render_install(p)
     visual_html = render_product_visual(p)
     store_badges_html = render_store_badges(p)
+    cta_html = render_product_cta(p)
     preview_html = FLAGSHIP_PREVIEWS.get(pid, "") if flagship else ""
     foot_html = "" if flagship else render_product_foot(p)
 
@@ -585,6 +620,8 @@ def render_product(p: dict) -> str:
         parts.append(badges_html)
     if install_html:
         parts.append(install_html)
+    if cta_html:
+        parts.append(cta_html)
     if store_badges_html:
         parts.append(store_badges_html)
     if preview_html:

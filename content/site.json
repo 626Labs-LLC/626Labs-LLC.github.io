@@ -162,6 +162,27 @@
       "productPage": "/vibe-cartographer/"
     },
     {
+      "id": "celestia-3",
+      "title": "Celestia 3",
+      "tagline": "NASA-grade astrology AI.",
+      "description": "An AI technomancer that reads the actual sky. The Swiss Ephemeris engine was rebuilt to astronomical precision — not the second-rate math most astrology apps ship — so every chart is observatory-accurate. Converse with the Athanor, an AI oracle grounded in your real natal chart, across the Natal Compass, Aura Cam, Arithmancy, Tarot, Rituals, Chronos forecasts, Celebrity Match, Synastry, and the Grimoire.",
+      "tags": [
+        { "label": "Web app", "tone": "cyan" },
+        { "label": "AI astrology", "tone": "magenta" },
+        { "label": "Freemium", "tone": "cyan" },
+        { "label": "Live", "tone": "live" }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/Celestia3",
+      "npm": null,
+      "claudeCode": false,
+      "liveUrl": "https://celestia.626labs.dev",
+      "liveCtaLabel": "Start free",
+      "demoUrl": "https://www.youtube.com/watch?v=HV8dUMReNgI",
+      "meta": "Free to explore · ascend from $3.99/mo · cancel anytime",
+      "screenshots": []
+    },
+    {
       "id": "vibe-iterate",
       "title": "Vibe Iterate",
       "tagline": "Maintain your Atlas.",
@@ -185,7 +206,7 @@
       "npm": null,
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
-      "anthropicApproved": false,
+      "anthropicApproved": true,
       "meta": "<code>/vibe-iterate</code> · post-ship iteration",
       "productPage": "/vibe-iterate/",
       "screenshots": []
@@ -272,7 +293,8 @@
       "claudeCode": true,
       "meta": "<code>/vibe-test:audit</code> · harness-aware",
       "screenshots": [],
-      "productPage": "/vibe-test/"
+      "productPage": "/vibe-test/",
+      "anthropicApproved": true
     },
     {
       "id": "vibe-thesis",
@@ -300,7 +322,8 @@
       "claudeCode": true,
       "meta": "<code>/vibe-thesis</code> · render to PDF / HTML / lay",
       "screenshots": [],
-      "productPage": "/vibe-thesis/"
+      "productPage": "/vibe-thesis/",
+      "anthropicApproved": true
     },
     {
       "id": "thesis-engine",
@@ -328,7 +351,8 @@
       "claudeCode": true,
       "meta": "<code>/thesis-engine:discover</code> · topic + source pipeline",
       "screenshots": [],
-      "productPage": "/thesis-engine/"
+      "productPage": "/thesis-engine/",
+      "anthropicApproved": true
     },
     {
       "id": "sanduhr",
@@ -417,7 +441,7 @@
       "npm": null,
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
-      "anthropicApproved": false,
+      "anthropicApproved": true,
       "meta": "<code>/vibe-taker</code> · cross-repo feature transplant",
       "productPage": "/vibe-taker/",
       "screenshots": []
@@ -549,23 +573,6 @@
     }
   ],
   "lab": [
-    {
-      "id": "celestia-3",
-      "name": "Celestia 3",
-      "meta": "AI Technomancer · Hackathon",
-      "desc": "Gemini 3 + Swiss Ephemeris WASM + React Three Fiber. Readings of the actual sky with conversational narration — a Devpost hackathon entry with NASA-grade ephemeris data under the hood.",
-      "video": "HV8dUMReNgI",
-      "links": [
-        {
-          "label": "Watch demo",
-          "href": "https://www.youtube.com/watch?v=HV8dUMReNgI"
-        },
-        {
-          "label": "GitHub",
-          "href": "https://github.com/estevanhernandez-stack-ed/Celestia3"
-        }
-      ]
-    },
     {
       "id": "ladder",
       "name": "Project L.A.D.D.E.R.",
