@@ -293,6 +293,56 @@ def glyph_thesis(primary, secondary):
     return img
 
 
+def glyph_walk(primary, secondary):
+    """Two footprints staggered diagonally — earn the tour first, one step at a time.
+    Right foot (primary) upper-right, left foot (secondary) lower-left.
+    Each foot: a tapered polygon outline (wide heel, narrower toe end) + 3 toe dots.
+    Mirrors the polygon-outline approach used by glyph_keystone / glyph_sec."""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+
+    def draw_foot(cx, cy, angle_deg, color):
+        """Tapered foot outline: wider at bottom (heel), narrower at top (toe).
+        3 toe dots clustered just above the toe end. Rotated by angle_deg."""
+        # Local-space foot outline — pointed at top, rounded-ish at bottom.
+        # Coordinates relative to (0,0) with toe at top, heel at bottom.
+        # fw_toe < fw_heel to read as foot-shaped.
+        fw_heel = 24   # half-width at heel (bottom)
+        fw_toe  = 14   # half-width at toe end (top)
+        fh      = 42   # total height
+        half    = fh // 2
+        # 6-point polygon: two points at heel, two at mid-arch, two at toe end
+        local_pts = [
+            (-fw_toe,  -half),       # toe-left
+            ( fw_toe,  -half),       # toe-right
+            ( fw_heel,  half - 4),   # heel-right
+            ( fw_heel // 2, half),   # heel-tip-right
+            (-fw_heel // 2, half),   # heel-tip-left
+            (-fw_heel,  half - 4),   # heel-left
+        ]
+        cos_t = math.cos(math.radians(angle_deg))
+        sin_t = math.sin(math.radians(angle_deg))
+        rotated = [
+            (int(cx + x * cos_t - y * sin_t), int(cy + x * sin_t + y * cos_t))
+            for x, y in local_pts
+        ]
+        draw.polygon(rotated, outline=color + (255,), width=3)
+
+        # 3 toe dots above the toe end of the foot
+        toe_y_local = -half - 8
+        for tx in (-8, 0, 8):
+            rx = int(cx + tx * cos_t - toe_y_local * sin_t)
+            ry = int(cy + tx * sin_t + toe_y_local * cos_t)
+            draw.ellipse([rx - 3, ry - 3, rx + 3, ry + 3], outline=color + (255,), width=2)
+
+    # Right foot — upper-right, angled slightly outward (+15°), primary color
+    draw_foot(cx=115, cy=75, angle_deg=15, color=primary)
+    # Left foot — lower-left, mirrored outward (-15°), secondary color
+    draw_foot(cx=85, cy=125, angle_deg=-15, color=secondary)
+
+    return img
+
+
 def glyph_engine(primary, secondary):
     """Cog/gear feeding into a page — research-feeder."""
     img = _new_glyph()
@@ -336,6 +386,7 @@ GLYPHS = {
     "shield":       glyph_sec,
     "scroll":       glyph_thesis,
     "engine_gear":  glyph_engine,
+    "footprints":   glyph_walk,
 }
 
 
@@ -388,6 +439,11 @@ PLUGINS = [
         "id": "thesis-engine", "name": "THESIS ENGINE",
         "tagline": "topics, sources, ready to write",
         "glyph": "engine_gear", "primary": MAGENTA, "secondary": CYAN,
+    },
+    {
+        "id": "vibe-walk", "name": "VIBE WALK",
+        "tagline": "earn the tour first",
+        "glyph": "footprints", "primary": CYAN, "secondary": MAGENTA,
     },
 ]
 

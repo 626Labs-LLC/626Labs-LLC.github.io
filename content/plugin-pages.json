@@ -8,6 +8,7 @@
     { "id": "vibe-test", "name": "vibe-test", "role": "tests that matter", "href": "/vibe-test/" },
     { "id": "vibe-sec", "name": "vibe-sec", "role": "security posture", "href": "/vibe-sec/" },
     { "id": "vibe-taker", "name": "vibe-taker", "role": "move features between repos", "href": "/vibe-taker/" },
+    { "id": "vibe-walk", "name": "vibe-walk", "role": "onboarding tours", "href": "/vibe-walk/" },
     { "id": "thesis-engine", "name": "thesis-engine", "role": "research feeder", "href": "/thesis-engine/" },
     { "id": "vibe-thesis", "name": "vibe-thesis", "role": "thesis authoring", "href": "/vibe-thesis/" }
   ],
@@ -539,6 +540,81 @@
       "install": {
         "stable": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Thesis\n/plugin install vibe-thesis@vibe-thesis",
         "stableBlurb": "Tagged releases from the solo repo."
+      }
+    },
+
+    "vibe-walk": {
+      "name": "vibe-walk",
+      "metaTitle": "vibe-walk · Earn the tour first. · 626Labs",
+      "ogTitle": "vibe-walk · Earn the tour first.",
+      "metaDescription": "Claude Code plugin that reads your app, names the aha moment, and gives you an honest verdict on whether a spotlight tour helps or hurts — before building one. By 626Labs.",
+      "ogImage": "/assets/brand/plugins/vibe-walk-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Earn the tour first.",
+      "subhead": "vibe-walk reads your app's user-facing surfaces, names the aha moment, and delivers a verdict &mdash; build or don't build &mdash; before generating a single line of tour code. &ldquo;Don't build a tour here&rdquo; is a first-class output. A tour vendor would never tell you that. This one will.",
+      "heroMeta": ["v0.1.0", "walkthrough mode", "Driver.js", "MIT"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Walk" }
+      },
+      "terminal": {
+        "label": "vibe-walk ~",
+        "lines": [
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-walk:discover</span>",
+          "<span class=\"agent\">[Sherpa]</span> Reading surfaces...",
+          "  &rarr; 11 user-facing regions &middot; <span class=\"path\">src/app/</span> &middot; 3 existing overlays",
+          "  &rarr; aha moment: <span class=\"key\">first successful export</span>",
+          "  &rarr; anchor-readiness: <span class=\"ok\">good</span> (stable data-* selectors found)",
+          "&nbsp;",
+          "  <span class=\"agent\">[Sherpa]</span> VERDICT: <span class=\"ok\">build</span>",
+          "  11 surfaces, new-user audience, blank-canvas first run &mdash;",
+          "  a short tour has real ROI here.",
+          "&nbsp;",
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-walk:walk</span>",
+          "<span class=\"agent\">[Sherpa]</span> Gate 1/5: mode &rarr; <span class=\"key\">walkthrough</span>",
+          "<span class=\"agent\">[Sherpa]</span> Gate 4/5: aha moment confirmed &rarr; <span class=\"key\">first export</span>",
+          "<span class=\"agent\">[Sherpa]</span> Building: anchor pass &middot; Driver.js module &middot; 6-event analytics",
+          "  <span class=\"ok\">done</span> &mdash; <span class=\"path\">spotlightTour.ts</span>, <span class=\"path\">TOUR_ANALYTICS.md</span><span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · The flow",
+          "heading": "Discover first. Build only when it earns it.",
+          "lead": "Two commands, one honest gate. Phase 1 runs autonomously against your codebase and names the verdict. Phase 2 runs five interview gates, then builds. Skip Phase 1 and Phase 2 won't start.",
+          "cards": [
+            { "command": "/vibe-walk:discover", "title": "Autonomous surface discovery + verdict.", "desc": "Reads your orientation docs, route surface, and component composition. Names the aha moment, ranks 8&ndash;12 candidate stops, checks anchor-readiness, and delivers the verdict: <strong>build</strong> / <strong>don't build</strong> / <strong>cheaper first</strong>. No questions. Fully autonomous.", "reach": "Reach for it <em>before you've committed to building a tour</em>." },
+            { "command": "/vibe-walk:walk", "title": "Five gates, then a complete tour.", "desc": "Confirms mode (walkthrough vs training), trigger model, substrate, aha moment, and user role &mdash; then builds: Driver.js module, anchor-injection codemod, 6-event analytics wiring, and a persistent replay entry point.", "reach": "Reach for it <em>after discover returns a build verdict</em>." }
+          ],
+          "mini": {
+            "heading": "Three more commands.",
+            "hint": "Run any directly — no discover required.",
+            "items": [
+              { "name": "/vibe-walk", "desc": "Bare router. Reads project state, recommends the next step, asks before launching." },
+              { "name": ":vitals", "desc": "Structural self-test — checks plugin files, all SKILLs, scripts, and friction-trigger wiring. Read-only." },
+              { "name": ":evolve-walk", "desc": "L3 self-evolution. Reads session and friction logs, proposes concrete improvements. Never auto-applies." }
+            ]
+          }
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · What it generates",
+          "heading": "A tour you own, fully instrumented.",
+          "paragraphs": [
+            "When the verdict is <strong>build</strong>, Phase 2 emits a drop-in TypeScript module: a <strong>spotlightSteps.ts</strong> config array and a <strong>spotlightTour.ts</strong> runner with <code>start(onDone)</code>, SSR guard, progress indicator (&ldquo;3 of 5&rdquo;), and persistent replay export. Same ownership model as shadcn &mdash; you own the generated code from day one.",
+            "The anchor-injection pass adds <strong>data-tour=\"&lt;kebab-semantic-name&gt;\"</strong> attributes via a jscodeshift codemod, auto-injecting only the provably safe subset and routing everything ambiguous to a <strong>REVIEW_NEEDED.md</strong> with per-item reason codes. Phase 2 halts until you resolve that list. <strong>Six analytics events</strong> &mdash; tour_started, tour_step_viewed, tour_step_advanced, tour_skipped, tour_completed, tour_replayed &mdash; wire to Driver.js substrate hooks and emit into your existing analytics system. The success criterion is downstream activation, not completion. Completion is a trap metric.",
+            "Steps are capped at 5 (default 3&ndash;4). The shape of the completion cliff is consistent across sources and grounded in cognitive-load theory &mdash; stated honestly as a conservative guardrail below a single-vendor observed curve, not a proven constant. Dogfooded against the Celestia3 webapp, where the first run caught a real bug the test suite missed."
+          ],
+          "callout": "No telemetry. Session and friction data stays in ~/.claude/plugins/data/vibe-walk/ — inspect or delete at any time."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-walk@vibe-plugins",
+        "stableBlurb": "Tagged releases, promoted via the Vibe Plugins marketplace.",
+        "canary": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Walk\n/plugin install vibe-walk",
+        "canaryBlurb": "Latest main from the solo repo. Fastest path to new substrates and guardrail updates.",
+        "note": "Web only in v1 — the anchor contract requires DOM selectors. Training mode is v2."
       }
     },
 
