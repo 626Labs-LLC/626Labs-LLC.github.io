@@ -54,29 +54,49 @@ const endParam = isoHourFloor(Date.now());
 const params = `start=${encodeURIComponent(startParam)}&end=${encodeURIComponent(endParam)}`;
 
 async function gc(endpoint, attempts = 4) {
-  // GoatCounter's free-tier API rate-limits aggressively (~5 req/sec).
-  // The 429 response body looks like:
+  // GoatCounter's free-tier API rate-limits aggressively (~5 req/sec), and
+  // around its daily stats-aggregation window (~06:30 UTC — exactly when this
+  // job is scheduled) /stats/total intermittently returns a transient 404:
+  // the request is well-formed and the token is valid, the resource is just
+  // briefly unavailable. So we retry on 429, 404, and 5xx (and on network
+  // errors), not 429 alone — otherwise the `attempts: 8` on /stats/total is
+  // dead weight, because a 404 used to throw on the first try.
+  //
+  // 429 carries a wait-hint in its body:
   //   {"error": "rate limited exceeded; try again in 992.116994ms"}
-  // We parse the wait-hint and retry; if no hint, exponential backoff
-  // starting at 1.5s.
+  // We honor that hint; everything else uses exponential backoff (1.5s, 3s,
+  // 6s, ...) capped at 30s.
   const url = `${GC_BASE}${endpoint}`;
+  const retryable = (status) => status === 429 || status === 404 || status >= 500;
+  const backoff = (attempt) => Math.min(30000, Math.round(1500 * Math.pow(2, attempt)));
   for (let attempt = 0; attempt < attempts; attempt++) {
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'User-Agent': '626labs-hub-site-stats',
-      },
-    });
+    let res;
+    try {
+      res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'User-Agent': '626labs-hub-site-stats',
+        },
+      });
+    } catch (err) {
+      // Network / DNS hiccup — retryable.
+      if (attempt < attempts - 1) {
+        const waitMs = backoff(attempt);
+        console.warn(`  retry ${attempt + 1}/${attempts - 1} on ${endpoint} after ${waitMs}ms (network: ${err.message})`);
+        await new Promise(r => setTimeout(r, waitMs));
+        continue;
+      }
+      throw new Error(`GET ${endpoint} -> network error: ${err.message}`);
+    }
     if (res.ok) return res.json();
     const body = await res.text();
-    if (res.status === 429 && attempt < attempts - 1) {
-      const m = body.match(/(\d+(?:\.\d+)?)\s*ms/i);
+    if (retryable(res.status) && attempt < attempts - 1) {
+      const m = res.status === 429 ? body.match(/(\d+(?:\.\d+)?)\s*ms/i) : null;
       const hint = m ? Math.ceil(parseFloat(m[1])) : null;
-      // Add a 250ms cushion above the server's hint, or fall back to
-      // exponential (1.5s, 3s, 6s, ...).
-      const waitMs = hint ? hint + 250 : Math.round(1500 * Math.pow(2, attempt));
-      console.warn(`  retry ${attempt + 1}/${attempts - 1} on ${endpoint} after ${waitMs}ms (429)`);
+      // 429: server's wait-hint + 250ms cushion. Otherwise exponential backoff.
+      const waitMs = hint ? hint + 250 : backoff(attempt);
+      console.warn(`  retry ${attempt + 1}/${attempts - 1} on ${endpoint} after ${waitMs}ms (${res.status})`);
       await new Promise(r => setTimeout(r, waitMs));
       continue;
     }
