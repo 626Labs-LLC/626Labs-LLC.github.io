@@ -35,6 +35,8 @@ import re
 import sys
 from pathlib import Path
 
+import site_facts  # sibling module in scripts/ (added to sys.path when run as a script)
+
 # ─── paths ──────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
 SITE_JSON = ROOT / "content" / "site.json"
@@ -1185,6 +1187,7 @@ def apply_section_toggles(html: str, sections: dict) -> str:
 # ─── main ───────────────────────────────────────────────────────────
 def main(argv: list[str]) -> int:
     content = json.loads(SITE_JSON.read_text(encoding="utf-8"))
+    content = site_facts.resolve_tokens(content, site_facts.facts())
     src = INDEX_HTML.read_text(encoding="utf-8")
 
     out = src
