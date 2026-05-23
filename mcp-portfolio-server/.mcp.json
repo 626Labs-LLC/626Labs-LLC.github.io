@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "portfolio": {
+      "command": "node",
+      "args": [
+        "C:/Users/estev/Projects/626labs-hub/mcp-portfolio-server/dist/index.js"
+      ],
+      "env": {
+        "PORTFOLIO_REPO_ROOT": "C:/Users/estev/Projects/626labs-hub"
+      }
+    }
+  }
+}

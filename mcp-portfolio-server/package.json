@@ -1,0 +1,25 @@
+{
+  "name": "mcp-portfolio-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local stdio MCP server exposing 626 Labs portfolio content (resume, projects, Field Notes) to AI assistants. Integrated with the live site: projects are content/site.json products, blog posts are content/stories; mutations go through the guarded site CLI.",
+  "bin": {
+    "mcp-portfolio-server": "dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "inspect": "npx @modelcontextprotocol/inspector tsx src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
