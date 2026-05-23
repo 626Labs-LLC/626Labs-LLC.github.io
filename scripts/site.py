@@ -149,6 +149,17 @@ def _on_main() -> bool:
     return r.stdout.strip() in ("main", "master")
 
 
+def _maybe_commit(args, message, paths=("content/site.json", "index.html")) -> int:
+    if getattr(args, "commit", False):
+        if _on_main():
+            print("refusing to commit on main — switch to a branch.", file=sys.stderr)
+            return 1
+        subprocess.run(["git", "add", *paths], check=True)
+        subprocess.run(["git", "commit", "-m", message], check=True)
+        print("committed.")
+    return 0
+
+
 def cmd_facts(_args) -> int:
     print(json.dumps(site_facts.facts(), indent=2, ensure_ascii=False))
     return 0
@@ -208,17 +219,35 @@ def cmd_set_status(args) -> int:
         )
         return 1
     print(f"set {args.id} status -> {args.status} (validated).")
-    if args.commit:
-        if _on_main():
-            print("refusing to commit on main — switch to a branch.", file=sys.stderr)
-            return 1
-        subprocess.run(["git", "add", "content/site.json", "index.html"], check=True)
-        subprocess.run(
-            ["git", "commit", "-m", f"content: set {args.id} status to {args.status}"],
-            check=True,
+    return _maybe_commit(args, f"content: set {args.id} status to {args.status}")
+
+
+def cmd_set_product(args) -> int:
+    data = json.loads(SITE_JSON.read_text(encoding="utf-8"))
+    product = next(
+        (p for p in data.get("products", []) if p.get("id") == args.id), None
+    )
+    if product is None:
+        print(f"no product with id: {args.id}", file=sys.stderr)
+        return 2
+    if str(product.get(args.field)) == args.value:
+        print(f"{args.id}.{args.field} is already '{args.value}' — no change.")
+        return 0
+    text = SITE_JSON.read_text(encoding="utf-8")
+    try:
+        new_text = set_field_in_text(text, args.id, args.field, args.value)
+    except ValueError as e:
+        print(f"cannot set {args.id}.{args.field}: {e}", file=sys.stderr)
+        return 2
+    ok, detail = guarded_apply(SITE_JSON, new_text)
+    if not ok:
+        print(
+            f"refused: {args.id}.{args.field} -> {args.value} fails the doctor:\n{detail}",
+            file=sys.stderr,
         )
-        print("committed.")
-    return 0
+        return 1
+    print(f"set {args.id}.{args.field} -> {args.value} (validated).")
+    return _maybe_commit(args, f"content: set {args.id} {args.field}")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -238,6 +267,12 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("status", choices=["live", "wip"])
     s.add_argument("--commit", action="store_true", help="commit on current branch (not main)")
     s.set_defaults(fn=cmd_set_status)
+    sp = sub.add_parser("set-product", help="set a product string field (guarded)")
+    sp.add_argument("id")
+    sp.add_argument("field")
+    sp.add_argument("value")
+    sp.add_argument("--commit", action="store_true")
+    sp.set_defaults(fn=cmd_set_product)
     return ap
 
 
