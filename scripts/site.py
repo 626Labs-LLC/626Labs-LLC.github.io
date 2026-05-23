@@ -306,6 +306,60 @@ def cmd_upload_shot(args) -> int:
     )
 
 
+STORIES = ROOT / "content" / "stories"
+
+
+def story_scaffold(title: str, slug: str = "") -> str:
+    """Field Note scaffold matching the render-hub frontmatter contract. Ships
+    with `draft: true` — the publishing fence — so it stays unpublished until
+    the author fills it in and flips draft to false."""
+    from datetime import date
+    return (
+        "---\n"
+        f"id: {slug or _slugify(title)}\n"
+        'product: ""\n'
+        f'title: "{title}"\n'
+        'subtitle: ""\n'
+        f"published: {date.today().isoformat()}\n"
+        'tagline: ""\n'
+        'hero_image: ""\n'
+        "draft: true\n"
+        "---\n\n"
+        f"## {title}\n\n"
+        "Write the story here, then set `draft: false` to publish.\n"
+    )
+
+
+def _slugify(s: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-") or "untitled"
+
+
+def cmd_story(args) -> int:
+    if args.action == "list":
+        if not STORIES.exists():
+            print("(no stories dir)")
+            return 0
+        for p in sorted(STORIES.glob("*.md")):
+            print(p.name)
+        return 0
+    # new
+    if not args.slug:
+        print("story new requires a <slug>.", file=sys.stderr)
+        return 2
+    slug = _slugify(args.slug)
+    dest = STORIES / f"{slug}.md"
+    if dest.exists():
+        print(f"story already exists: {dest.relative_to(ROOT)}", file=sys.stderr)
+        return 2
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(
+        story_scaffold(args.title or args.slug, slug), encoding="utf-8", newline="\n"
+    )
+    print(f"created {dest.relative_to(ROOT)} (draft) — fill it in, then set "
+          f"draft: false to publish.")
+    return 0
+
+
 def product_skeleton(pid: str, title: str, tagline: str, claude_code: bool) -> str:
     obj = {
         "id": pid, "title": title, "tagline": tagline, "description": "",
@@ -369,6 +423,11 @@ def build_parser() -> argparse.ArgumentParser:
     us.add_argument("image")
     us.add_argument("--commit", action="store_true")
     us.set_defaults(fn=cmd_upload_shot)
+    st = sub.add_parser("story", help="manage Field Note stories")
+    st.add_argument("action", choices=["new", "list"])
+    st.add_argument("slug", nargs="?")
+    st.add_argument("--title", default="")
+    st.set_defaults(fn=cmd_story)
     return ap
 
 

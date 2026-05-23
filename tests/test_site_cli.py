@@ -122,3 +122,18 @@ def test_screenshot_slug():
     assert site_cli.screenshot_slug("My Cool Shot!.PNG") == ("my-cool-shot", ".png")
     assert site_cli.screenshot_slug("x.jpeg") == ("x", ".jpeg")
     assert site_cli.screenshot_slug("....png") == ("shot", ".png")
+
+
+def test_story_scaffold():
+    fm = site_cli.story_scaffold("My First Note", "my-first-note")
+    assert fm.startswith("---\n")
+    assert 'title: "My First Note"' in fm
+    assert "## My First Note" in fm
+    assert "draft: true" in fm           # publishing fence — stays unpublished
+    assert "id: my-first-note" in fm
+    assert "published:" in fm            # render-hub requires title + published
+
+
+def test_slugify():
+    assert site_cli._slugify("My First Note!") == "my-first-note"
+    assert site_cli._slugify("---") == "untitled"
