@@ -22,7 +22,7 @@ Outputs (under assets/brand/plugins/):
 from pathlib import Path
 import math
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageChops
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
@@ -294,53 +294,72 @@ def glyph_thesis(primary, secondary):
 
 
 def glyph_walk(primary, secondary):
-    """Two footprints staggered diagonally — earn the tour first, one step at a time.
-    Right foot (primary) upper-right, left foot (secondary) lower-left.
-    Each foot: a tapered polygon outline (wide heel, narrower toe end) + 3 toe dots.
-    Mirrors the polygon-outline approach used by glyph_keystone / glyph_sec."""
-    img = _new_glyph()
-    draw = ImageDraw.Draw(img)
+    """Two footprints staggered diagonally — a walk, one step at a time.
+    Each foot is a single line-art sole contour: wide at the ball (toe end),
+    pinched at the arch, rounded at the heel — the universally legible
+    footprint silhouette. No literal toe dots (they read as a creature, not
+    a footprint). Right foot (primary) leads upper-right; left foot
+    (secondary) trails lower-left."""
+    # Drawn as a filled outer sole minus an inset inner copy, giving a smooth
+    # constant-width ring (PIL's wide-polygon outline lumps at every vertex).
+    # Supersampled 4x, then LANCZOS-downsampled for clean curves.
+    SS = 4
+    size = GLYPH_SIZE * SS
 
-    def draw_foot(cx, cy, angle_deg, color):
-        """Tapered foot outline: wider at bottom (heel), narrower at top (toe).
-        3 toe dots clustered just above the toe end. Rotated by angle_deg."""
-        # Local-space foot outline — pointed at top, rounded-ish at bottom.
-        # Coordinates relative to (0,0) with toe at top, heel at bottom.
-        # fw_toe < fw_heel to read as foot-shaped.
-        fw_heel = 24   # half-width at heel (bottom)
-        fw_toe  = 14   # half-width at toe end (top)
-        fh      = 42   # total height
-        half    = fh // 2
-        # 6-point polygon: two points at heel, two at mid-arch, two at toe end
-        local_pts = [
-            (-fw_toe,  -half),       # toe-left
-            ( fw_toe,  -half),       # toe-right
-            ( fw_heel,  half - 4),   # heel-right
-            ( fw_heel // 2, half),   # heel-tip-right
-            (-fw_heel // 2, half),   # heel-tip-left
-            (-fw_heel,  half - 4),   # heel-left
-        ]
+    # Half-width of the sole from toe (t=0) through ball, arch, to heel (t=1).
+    profile = [
+        (0.00, 3), (0.05, 12), (0.16, 19), (0.30, 16),
+        (0.44, 11), (0.56, 10), (0.70, 14), (0.82, 16),
+        (0.94, 11), (1.00, 3),
+    ]
+
+    def half_width(t):
+        for i in range(len(profile) - 1):
+            t0, w0 = profile[i]
+            t1, w1 = profile[i + 1]
+            if t0 <= t <= t1:
+                f = (t - t0) / (t1 - t0)
+                return w0 + (w1 - w0) * f
+        return profile[-1][1]
+
+    top, height, steps, stroke = -34, 72, 120, 3
+
+    def contour(cx, cy, angle_deg, shrink):
+        """Closed sole contour (toe -y, heel +y) inset by `shrink`, in 200-space
+        scaled by SS. shrink=0 is the outer edge, shrink=stroke the inner."""
         cos_t = math.cos(math.radians(angle_deg))
         sin_t = math.sin(math.radians(angle_deg))
-        rotated = [
-            (int(cx + x * cos_t - y * sin_t), int(cy + x * sin_t + y * cos_t))
-            for x, y in local_pts
-        ]
-        draw.polygon(rotated, outline=color + (255,), width=3)
 
-        # 3 toe dots above the toe end of the foot
-        toe_y_local = -half - 8
-        for tx in (-8, 0, 8):
-            rx = int(cx + tx * cos_t - toe_y_local * sin_t)
-            ry = int(cy + tx * sin_t + toe_y_local * cos_t)
-            draw.ellipse([rx - 3, ry - 3, rx + 3, ry + 3], outline=color + (255,), width=2)
+        def place(x, y):
+            return ((cx + x * cos_t - y * sin_t) * SS,
+                    (cy + x * sin_t + y * cos_t) * SS)
 
-    # Right foot — upper-right, angled slightly outward (+15°), primary color
-    draw_foot(cx=115, cy=75, angle_deg=15, color=primary)
-    # Left foot — lower-left, mirrored outward (-15°), secondary color
-    draw_foot(cx=85, cy=125, angle_deg=-15, color=secondary)
+        right, left = [], []
+        for s in range(steps + 1):
+            t = s / steps
+            y = top + t * height
+            w = max(0.0, half_width(t) - shrink)
+            right.append(place(w, y))
+            left.append(place(-w, y))
+        return right + left[::-1]
 
-    return img
+    out = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+
+    def add_foot(cx, cy, angle_deg, color):
+        outer = Image.new("L", (size, size), 0)
+        inner = Image.new("L", (size, size), 0)
+        ImageDraw.Draw(outer).polygon(contour(cx, cy, angle_deg, 0), fill=255)
+        ImageDraw.Draw(inner).polygon(contour(cx, cy, angle_deg, stroke), fill=255)
+        ring = ImageChops.subtract(outer, inner)
+        solid = Image.new("RGBA", (size, size), color + (255,))
+        out.alpha_composite(Image.composite(solid, Image.new("RGBA", (size, size), (0, 0, 0, 0)), ring))
+
+    # Right foot — upper-right, angled slightly outward (+16°), primary color
+    add_foot(120, 76, 16, primary)
+    # Left foot — lower-left, mirrored outward (-16°), secondary color
+    add_foot(80, 124, -16, secondary)
+
+    return out.resize((GLYPH_SIZE, GLYPH_SIZE), Image.LANCZOS)
 
 
 def glyph_engine(primary, secondary):
@@ -442,7 +461,7 @@ PLUGINS = [
     },
     {
         "id": "vibe-walk", "name": "VIBE WALK",
-        "tagline": "earn the tour first",
+        "tagline": "tours users actually finish",
         "glyph": "footprints", "primary": CYAN, "secondary": MAGENTA,
     },
 ]
