@@ -126,6 +126,12 @@ time from `scripts/site_facts.py` (e.g. `{{fact:claude_plugins}}`,
 `{{fact:live_plugin_names}}`, `{{fact:cmd_vibe-cartographer_word}}`). An unknown
 token fails the render loudly, so a typo never ships.
 
+### Agent management CLI — `scripts/site.py`
+
+The agent equivalent of the admin dashboard. `facts`/`get`/`doctor`/`render`/`ops`
+to inspect; `set-status` to mutate with validate-before-commit guardrails (the
+edit auto-reverts if it would fail the doctor). See `AGENTS.md`.
+
 ### Content health — `scripts/site-doctor.py`
 
 The checkup + CI gate. `--report` for an on-demand health printout (derived
