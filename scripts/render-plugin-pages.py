@@ -265,6 +265,17 @@ COPY_SCRIPT = """
 """
 
 
+NUM_WORDS = {
+    1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six",
+    7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten", 11: "Eleven",
+    12: "Twelve", 13: "Thirteen", 14: "Fourteen", 15: "Fifteen",
+}
+
+
+def num_word(n):
+    return NUM_WORDS.get(n, str(n))
+
+
 def e(s):
     return escape(str(s), quote=True)
 
@@ -564,6 +575,7 @@ def render_index(data):
               <div class="role">{e(f['role'])}</div>
             </div>
           </a>""")
+    count_word = num_word(len(family))
     og = "https://626labs.dev/assets/brand/vibe-plugins-banner-1280x640.png"
     head = f"""<!DOCTYPE html>
 <html lang="en">
@@ -621,7 +633,7 @@ def render_index(data):
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">The family</span>
-          <h2>Nine plugins, one playbook.</h2>
+          <h2>{count_word} plugins, one playbook.</h2>
           <p class="lead">Each ships on its own. Each composes with the others when they share a repo.</p>
         </div>
         <div class="family-grid">

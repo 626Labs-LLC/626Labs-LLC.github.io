@@ -545,13 +545,13 @@
 
     "vibe-walk": {
       "name": "vibe-walk",
-      "metaTitle": "vibe-walk · Earn the tour first. · 626Labs",
-      "ogTitle": "vibe-walk · Earn the tour first.",
-      "metaDescription": "Claude Code plugin that reads your app, names the aha moment, and gives you an honest verdict on whether a spotlight tour helps or hurts — before building one. By 626Labs.",
+      "metaTitle": "vibe-walk · Tours your users actually finish. · 626Labs",
+      "ogTitle": "vibe-walk · Tours your users actually finish.",
+      "metaDescription": "Claude Code plugin that reads your app, names the aha moment, and builds a spotlight tour you own — Driver.js, anchor codemod, six analytics events. Honest about fit when a tour won't help. By 626Labs.",
       "ogImage": "/assets/brand/plugins/vibe-walk-banner-1280x640.png",
       "eyebrow": "626Labs · Claude Code plugin",
-      "h1": "Earn the tour first.",
-      "subhead": "vibe-walk reads your app's user-facing surfaces, names the aha moment, and delivers a verdict &mdash; build or don't build &mdash; before generating a single line of tour code. &ldquo;Don't build a tour here&rdquo; is a first-class output. A tour vendor would never tell you that. This one will.",
+      "h1": "Tours your users actually finish.",
+      "subhead": "vibe-walk reads your app, names the aha moment, and builds a spotlight tour you own outright &mdash; Driver.js module, anchor codemod, six analytics events wired to track what actually lands. And it's honest about fit: if a tour won't help, it tells you before you build one.",
       "heroMeta": ["v0.1.0", "walkthrough mode", "Driver.js", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -581,8 +581,8 @@
         {
           "type": "cards",
           "eyebrow": "01 · The flow",
-          "heading": "Discover first. Build only when it earns it.",
-          "lead": "Two commands, one honest gate. Phase 1 runs autonomously against your codebase and names the verdict. Phase 2 runs five interview gates, then builds. Skip Phase 1 and Phase 2 won't start.",
+          "heading": "Find the aha moment, then build the tour.",
+          "lead": "Two commands. Phase 1 reads your codebase autonomously, names the aha moment, and ranks the stops. Phase 2 runs five interview gates, then builds the tour. (Phase 1 also calls fit honestly &mdash; if a tour won't help, you'll know before Phase 2.)",
           "cards": [
             { "command": "/vibe-walk:discover", "title": "Autonomous surface discovery + verdict.", "desc": "Reads your orientation docs, route surface, and component composition. Names the aha moment, ranks 8&ndash;12 candidate stops, checks anchor-readiness, and delivers the verdict: <strong>build</strong> / <strong>don't build</strong> / <strong>cheaper first</strong>. No questions. Fully autonomous.", "reach": "Reach for it <em>before you've committed to building a tour</em>." },
             { "command": "/vibe-walk:walk", "title": "Five gates, then a complete tour.", "desc": "Confirms mode (walkthrough vs training), trigger model, substrate, aha moment, and user role &mdash; then builds: Driver.js module, anchor-injection codemod, 6-event analytics wiring, and a persistent replay entry point.", "reach": "Reach for it <em>after discover returns a build verdict</em>." }
