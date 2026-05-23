@@ -26,7 +26,7 @@ New Claude Code plugin. Web, free.
 ## Thread (each tweet < 280)
 
 ```
-1/ 👣 Weekend build: most side projects ship with no onboarding. New users land on a blank screen and bounce before they hit the good part. vibe-walk fixes that in an afternoon. 626labs.dev/vibe-walk
+1/ 👣 Weekend build: the first five minutes decide whether a new user sticks. vibe-walk builds the onboarding tour that walks them to the moment your app clicks — in an afternoon. 626labs.dev/vibe-walk
 
 2/ Point it at your app. It reads your surfaces, names the aha moment — the first time the product clicks — and builds a spotlight tour you own outright: Driver.js module, anchor-injection codemod, 6 analytics events. The generated code is yours, shadcn-style.
 
