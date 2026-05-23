@@ -14,9 +14,14 @@ validate (render + health doctor) and auto-revert if an edit would ship drift.
 
 ## Write (guarded)
 
-- `python scripts/site.py set-status <product-id> <live|wip>` — flip a product's
-  status. Validates before it stands; `--commit` commits on the current branch
-  (refuses on main).
+Each validates (render + doctor) before it stands and auto-reverts on failure;
+`--commit` commits on the current branch (refuses on main).
+
+- `python scripts/site.py set-status <product-id> <live|wip>` — flip a product's status.
+- `python scripts/site.py set-product <id> <field> <value>` — set a product string field.
+- `python scripts/site.py add-plugin <id> --title T [--tagline TG] [--claude-code]` — append a skeleton product (status wip).
+- `python scripts/site.py upload-shot <product-id> <image>` — copy + name + register a screenshot (max 6).
+- `python scripts/site.py story new <slug> --title T` / `story list` — Field Note scaffolding (ships `draft: true`).
 
 ## Conventions
 
@@ -28,6 +33,5 @@ validate (render + health doctor) and auto-revert if an edit would ship drift.
 
 ## Roadmap
 
-`add-plugin`, `upload-shot`, `story`, and a general `set` arrive in M2.2 — they
-need a format-preserving JSON array/object editor (a naive parse→dump explodes
-the hand-formatted content files). The MCP wrapper is M3.
+The MCP wrapper (M3) exposes these same verbs as a `manage_site_content` tool
+group on the Firebase server, so MCP-aware agents get native tool-calling.
