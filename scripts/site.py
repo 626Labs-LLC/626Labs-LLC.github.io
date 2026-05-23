@@ -56,6 +56,62 @@ def set_status_in_text(text: str, product_id: str, new_status: str) -> str:
     return text[:start] + new_block + text[end:]
 
 
+def _product_block_span(text: str, product_id: str) -> tuple[int, int]:
+    """(start, end) char span of a product object, bounded by the next id."""
+    m = re.search(r'"id":\s*"' + re.escape(product_id) + r'"', text)
+    if not m:
+        raise ValueError(f"product not found: {product_id}")
+    start = m.end()
+    nxt = re.search(r'"id":\s*"', text[start:])
+    end = start + nxt.start() if nxt else len(text)
+    return start, end
+
+
+def set_field_in_text(text: str, product_id: str, field: str, new_value: str) -> str:
+    """Replace a product's string field value in place, preserving formatting."""
+    start, end = _product_block_span(text, product_id)
+    block = text[start:end]
+    pat = re.compile(r'("' + re.escape(field) + r'":\s*")([^"]*)(")')
+    new_block, n = pat.subn(
+        r"\g<1>" + new_value.replace("\\", "\\\\") + r"\g<3>", block, count=1
+    )
+    if n != 1:
+        raise ValueError(f"string field '{field}' not found for {product_id}")
+    return text[:start] + new_block + text[end:]
+
+
+def array_append_in_text(text: str, array_key: str, element_text: str,
+                         search_from: int = 0) -> str:
+    """Append element_text to the named array, preserving formatting. Handles
+    empty and non-empty arrays (inline or multi-line). Format-preserving, valid
+    JSON. Indentation is derived from the array key's line, so it is correct
+    even for an inline empty array like `"items": []`."""
+    m = re.search(r'"' + re.escape(array_key) + r'":\s*\[', text[search_from:])
+    if not m:
+        raise ValueError(f"array not found: {array_key}")
+    key_abs = search_from + m.start()
+    open_idx = search_from + m.end()
+    key_line_start = text.rfind("\n", 0, key_abs) + 1
+    key_indent = text[key_line_start:key_abs]  # leading whitespace before the key
+    elem_indent = key_indent + "  "
+    depth, i = 1, open_idx
+    while depth:
+        c = text[i]
+        depth += (c == "[") - (c == "]")
+        i += 1
+    close = i - 1
+    inner = text[open_idx:close]
+    if inner.strip() == "":  # empty array -> expand it
+        return (
+            text[:open_idx] + "\n" + elem_indent + element_text + "\n"
+            + key_indent + text[close:]
+        )
+    before = text[:close].rstrip()  # non-empty: comma after prev last element
+    return (
+        before + ",\n" + elem_indent + element_text + "\n" + key_indent + text[close:]
+    )
+
+
 def render_all() -> None:
     for script in ("render-hub.py", "render-plugin-pages.py"):
         subprocess.run(
