@@ -134,10 +134,18 @@ Confirmed derivation logic (verified against current `site.json` /
 | `claude_plugins_wip` | products where `claudeCode == true and status == "wip"` | 1 (vibe-sec) |
 | `live_plugin_names` | titles of the above live set (for the About list) | — |
 | `family_count` | `len(family)` in `plugin-pages.json` (already used by render) | 10 |
-| `cmd_count[<plugin>]` | `len(cards)` for each plugin page that has a command-card array | cartographer = 12 |
 | `windows_native_count` | products with a "Windows" tag and `claudeCode` unset | 5 |
-| `widget_count` | count of widget apps under `apps/` (or supplement) | 1 |
+| `widget_count` | count of `apps/widget-*` directories | 1 |
+| `cmd_count[<plugin>]` | **supplement** — a plugin's command count lives in *that plugin's* repo, not the hub | cartographer = 12 |
 | `ms_store_releases` | **supplement** — the *published-to-Store* claim is external | 5 |
+
+**Correction (verified during planning):** an earlier audit claimed the command
+count derives from `len(cards)` on the plugin page. There is no such array — the
+cartographer page's lists are `heroMeta` (4), `terminal.lines` (14), `sections`
+(2); "12 commands" is typed prose inside `heroMeta`. The authoritative count is
+in the plugin's own repo, which this hub does not contain. So command counts are
+**supplement** facts (external truths), not derived. This is consistent with the
+design: derive what the hub knows, supplement what it doesn't.
 
 `number_word(n)` (cardinal) and a future `ordinal_word(n)` live here too, reused
 by the renderers (today `render-plugin-pages.py` has its own `NUM_WORDS` —
@@ -156,8 +164,10 @@ entry carries a comment explaining *why* it's manual.
 
 ```jsonc
 {
-  "ms_store_releases": 5,   // Store publication isn't visible in GitHub scans;
-                            // confirm against the Microsoft Store dashboard.
+  "ms_store_releases": 5,        // Store publication isn't visible in GitHub
+                                 // scans; confirm against the MS Store dashboard.
+  "cmd_vibe-cartographer": 12,   // Command count lives in the vibe-cartographer
+                                 // plugin repo; bump when its commands change.
   "_note": "Only facts that cannot be derived from repo sources belong here."
 }
 ```
