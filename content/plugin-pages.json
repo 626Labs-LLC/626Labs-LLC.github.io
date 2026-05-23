@@ -95,7 +95,7 @@
       "name": "vibe-cartographer",
       "metaTitle": "vibe-cartographer · Vibe coding with a map. · 626Labs",
       "ogTitle": "vibe-cartographer · Vibe coding with a map.",
-      "metaDescription": "Vibe Cartographer is a Claude Code plugin: 12 slash commands guiding you from idea to shipped app with spec-driven vibe coding. MIT. 626Labs.",
+      "metaDescription": "Vibe Cartographer is a Claude Code plugin: {{fact:cmd_vibe-cartographer}} slash commands guiding you from idea to shipped app with spec-driven vibe coding. MIT. 626Labs.",
       "ogImage": "/assets/brand/plugins/vibe-cartographer-banner-1280x640.png",
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Vibe coding with a map.",
