@@ -84,3 +84,111 @@ def guarded_apply(source_path: Path, new_text: str, *,
         render_fn()
         return False, detail
     return True, detail
+
+
+def _on_main() -> bool:
+    r = subprocess.run(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True
+    )
+    return r.stdout.strip() in ("main", "master")
+
+
+def cmd_facts(_args) -> int:
+    print(json.dumps(site_facts.facts(), indent=2, ensure_ascii=False))
+    return 0
+
+
+def cmd_get(args) -> int:
+    data = json.loads(SITE_JSON.read_text(encoding="utf-8"))
+    if args.section not in data:
+        print(
+            f"no such section: {args.section}. available: {', '.join(data)}",
+            file=sys.stderr,
+        )
+        return 2
+    print(json.dumps(data[args.section], indent=2, ensure_ascii=False))
+    return 0
+
+
+def cmd_doctor(args) -> int:
+    argv = ["--check"] if args.check else ["--report"]
+    return subprocess.run(
+        [sys.executable, str(SCRIPTS / "site-doctor.py"), *argv]
+    ).returncode
+
+
+def cmd_render(_args) -> int:
+    render_all()
+    print("rendered index.html + plugin pages.")
+    return 0
+
+
+def cmd_ops(_args) -> int:
+    try:
+        return subprocess.run(["gh", "run", "list", "--limit", "8"]).returncode
+    except FileNotFoundError:
+        print("gh CLI not found — install it to see CI run status.", file=sys.stderr)
+        return 2
+
+
+def cmd_set_status(args) -> int:
+    data = json.loads(SITE_JSON.read_text(encoding="utf-8"))
+    product = next(
+        (p for p in data.get("products", []) if p.get("id") == args.id), None
+    )
+    if product is None:
+        print(f"no product with id: {args.id}", file=sys.stderr)
+        return 2
+    if product.get("status") == args.status:
+        print(f"{args.id} is already '{args.status}' — no change.")
+        return 0
+    text = SITE_JSON.read_text(encoding="utf-8")
+    new_text = set_status_in_text(text, args.id, args.status)
+    ok, detail = guarded_apply(SITE_JSON, new_text)
+    if not ok:
+        print(
+            f"refused: setting {args.id} -> {args.status} fails the doctor:\n{detail}",
+            file=sys.stderr,
+        )
+        return 1
+    print(f"set {args.id} status -> {args.status} (validated).")
+    if args.commit:
+        if _on_main():
+            print("refusing to commit on main — switch to a branch.", file=sys.stderr)
+            return 1
+        subprocess.run(["git", "add", "content/site.json", "index.html"], check=True)
+        subprocess.run(
+            ["git", "commit", "-m", f"content: set {args.id} status to {args.status}"],
+            check=True,
+        )
+        print("committed.")
+    return 0
+
+
+def build_parser() -> argparse.ArgumentParser:
+    ap = argparse.ArgumentParser(prog="site.py", description="626labs.dev management CLI")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    sub.add_parser("facts", help="print derived facts").set_defaults(fn=cmd_facts)
+    g = sub.add_parser("get", help="print a section of site.json")
+    g.add_argument("section")
+    g.set_defaults(fn=cmd_get)
+    d = sub.add_parser("doctor", help="health checkup")
+    d.add_argument("--check", action="store_true")
+    d.set_defaults(fn=cmd_doctor)
+    sub.add_parser("render", help="re-render site").set_defaults(fn=cmd_render)
+    sub.add_parser("ops", help="recent CI runs (needs gh)").set_defaults(fn=cmd_ops)
+    s = sub.add_parser("set-status", help="flip a product's status (guarded)")
+    s.add_argument("id")
+    s.add_argument("status", choices=["live", "wip"])
+    s.add_argument("--commit", action="store_true", help="commit on current branch (not main)")
+    s.set_defaults(fn=cmd_set_status)
+    return ap
+
+
+def main(argv) -> int:
+    args = build_parser().parse_args(argv)
+    return args.fn(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

@@ -61,3 +61,13 @@ def test_guarded_apply_keeps_on_success(tmp_path):
     )
     assert ok is True
     assert f.read_text(encoding="utf-8") == "MUTATED"   # kept
+
+
+def test_cmd_facts_runs(capsys):
+    rc = site_cli.main(["facts"])
+    out = capsys.readouterr().out
+    assert rc == 0 and '"claude_plugins"' in out
+
+
+def test_cmd_get_unknown_section_errors():
+    assert site_cli.main(["get", "definitely-not-a-section"]) == 2
