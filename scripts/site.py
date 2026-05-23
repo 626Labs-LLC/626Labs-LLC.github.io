@@ -22,8 +22,10 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -54,6 +56,62 @@ def set_status_in_text(text: str, product_id: str, new_status: str) -> str:
     if n != 1:
         raise ValueError(f"status field not found for {product_id}")
     return text[:start] + new_block + text[end:]
+
+
+def _product_block_span(text: str, product_id: str) -> tuple[int, int]:
+    """(start, end) char span of a product object, bounded by the next id."""
+    m = re.search(r'"id":\s*"' + re.escape(product_id) + r'"', text)
+    if not m:
+        raise ValueError(f"product not found: {product_id}")
+    start = m.end()
+    nxt = re.search(r'"id":\s*"', text[start:])
+    end = start + nxt.start() if nxt else len(text)
+    return start, end
+
+
+def set_field_in_text(text: str, product_id: str, field: str, new_value: str) -> str:
+    """Replace a product's string field value in place, preserving formatting."""
+    start, end = _product_block_span(text, product_id)
+    block = text[start:end]
+    pat = re.compile(r'("' + re.escape(field) + r'":\s*")([^"]*)(")')
+    new_block, n = pat.subn(
+        r"\g<1>" + new_value.replace("\\", "\\\\") + r"\g<3>", block, count=1
+    )
+    if n != 1:
+        raise ValueError(f"string field '{field}' not found for {product_id}")
+    return text[:start] + new_block + text[end:]
+
+
+def array_append_in_text(text: str, array_key: str, element_text: str,
+                         search_from: int = 0) -> str:
+    """Append element_text to the named array, preserving formatting. Handles
+    empty and non-empty arrays (inline or multi-line). Format-preserving, valid
+    JSON. Indentation is derived from the array key's line, so it is correct
+    even for an inline empty array like `"items": []`."""
+    m = re.search(r'"' + re.escape(array_key) + r'":\s*\[', text[search_from:])
+    if not m:
+        raise ValueError(f"array not found: {array_key}")
+    key_abs = search_from + m.start()
+    open_idx = search_from + m.end()
+    key_line_start = text.rfind("\n", 0, key_abs) + 1
+    key_indent = text[key_line_start:key_abs]  # leading whitespace before the key
+    elem_indent = key_indent + "  "
+    depth, i = 1, open_idx
+    while depth:
+        c = text[i]
+        depth += (c == "[") - (c == "]")
+        i += 1
+    close = i - 1
+    inner = text[open_idx:close]
+    if inner.strip() == "":  # empty array -> expand it
+        return (
+            text[:open_idx] + "\n" + elem_indent + element_text + "\n"
+            + key_indent + text[close:]
+        )
+    before = text[:close].rstrip()  # non-empty: comma after prev last element
+    return (
+        before + ",\n" + elem_indent + element_text + "\n" + key_indent + text[close:]
+    )
 
 
 def render_all() -> None:
@@ -91,6 +149,17 @@ def _on_main() -> bool:
         ["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True
     )
     return r.stdout.strip() in ("main", "master")
+
+
+def _maybe_commit(args, message, paths=("content/site.json", "index.html")) -> int:
+    if getattr(args, "commit", False):
+        if _on_main():
+            print("refusing to commit on main — switch to a branch.", file=sys.stderr)
+            return 1
+        subprocess.run(["git", "add", *paths], check=True)
+        subprocess.run(["git", "commit", "-m", message], check=True)
+        print("committed.")
+    return 0
 
 
 def cmd_facts(_args) -> int:
@@ -152,17 +221,171 @@ def cmd_set_status(args) -> int:
         )
         return 1
     print(f"set {args.id} status -> {args.status} (validated).")
-    if args.commit:
-        if _on_main():
-            print("refusing to commit on main — switch to a branch.", file=sys.stderr)
-            return 1
-        subprocess.run(["git", "add", "content/site.json", "index.html"], check=True)
-        subprocess.run(
-            ["git", "commit", "-m", f"content: set {args.id} status to {args.status}"],
-            check=True,
+    return _maybe_commit(args, f"content: set {args.id} status to {args.status}")
+
+
+def cmd_set_product(args) -> int:
+    data = json.loads(SITE_JSON.read_text(encoding="utf-8"))
+    product = next(
+        (p for p in data.get("products", []) if p.get("id") == args.id), None
+    )
+    if product is None:
+        print(f"no product with id: {args.id}", file=sys.stderr)
+        return 2
+    if str(product.get(args.field)) == args.value:
+        print(f"{args.id}.{args.field} is already '{args.value}' — no change.")
+        return 0
+    text = SITE_JSON.read_text(encoding="utf-8")
+    try:
+        new_text = set_field_in_text(text, args.id, args.field, args.value)
+    except ValueError as e:
+        print(f"cannot set {args.id}.{args.field}: {e}", file=sys.stderr)
+        return 2
+    ok, detail = guarded_apply(SITE_JSON, new_text)
+    if not ok:
+        print(
+            f"refused: {args.id}.{args.field} -> {args.value} fails the doctor:\n{detail}",
+            file=sys.stderr,
         )
-        print("committed.")
+        return 1
+    print(f"set {args.id}.{args.field} -> {args.value} (validated).")
+    return _maybe_commit(args, f"content: set {args.id} {args.field}")
+
+
+def screenshot_slug(filename: str) -> tuple[str, str]:
+    """(slug, ext) for a screenshot filename, matching the admin convention."""
+    m = re.search(r"\.[A-Za-z0-9]+$", filename or "")
+    ext = (m.group(0) if m else ".png").lower()
+    base = re.sub(r"\.[A-Za-z0-9]+$", "", filename or "")
+    base = re.sub(r"[^a-z0-9]+", "-", base.lower()).strip("-") or "shot"
+    return base, ext
+
+
+def cmd_upload_shot(args) -> int:
+    src = Path(args.image)
+    if not src.exists():
+        print(f"image not found: {src}", file=sys.stderr)
+        return 2
+    data = json.loads(SITE_JSON.read_text(encoding="utf-8"))
+    product = next(
+        (p for p in data.get("products", []) if p.get("id") == args.id), None
+    )
+    if product is None:
+        print(f"no product with id: {args.id}", file=sys.stderr)
+        return 2
+    if "screenshots" not in product:
+        print(f"{args.id} has no screenshots field — add it via the admin first.",
+              file=sys.stderr)
+        return 2
+    if len(product["screenshots"]) >= 6:
+        print(f"{args.id} already has 6 screenshots — remove one first.", file=sys.stderr)
+        return 2
+    base, ext = screenshot_slug(src.name)
+    ts = int(time.time() * 1000)
+    rel = f"assets/screenshots/{args.id}/{ts}-{base}{ext}"
+    dest = ROOT / rel
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, dest)
+    element = json.dumps(
+        {"id": f"shot-{ts}", "path": rel, "name": src.name, "size": dest.stat().st_size},
+        ensure_ascii=False,
+    )
+    text = SITE_JSON.read_text(encoding="utf-8")
+    start, end = _product_block_span(text, args.id)
+    new_block = array_append_in_text(text[start:end], "screenshots", element)
+    new_text = text[:start] + new_block + text[end:]
+    ok, detail = guarded_apply(SITE_JSON, new_text)
+    if not ok:
+        dest.unlink(missing_ok=True)  # roll back the copied file too
+        print(f"refused: upload-shot {args.id} fails the doctor:\n{detail}", file=sys.stderr)
+        return 1
+    print(f"uploaded {rel} and registered on {args.id} (validated).")
+    return _maybe_commit(
+        args, f"content: add screenshot to {args.id}",
+        paths=("content/site.json", "index.html", rel),
+    )
+
+
+STORIES = ROOT / "content" / "stories"
+
+
+def story_scaffold(title: str, slug: str = "") -> str:
+    """Field Note scaffold matching the render-hub frontmatter contract. Ships
+    with `draft: true` — the publishing fence — so it stays unpublished until
+    the author fills it in and flips draft to false."""
+    from datetime import date
+    return (
+        "---\n"
+        f"id: {slug or _slugify(title)}\n"
+        'product: ""\n'
+        f'title: "{title}"\n'
+        'subtitle: ""\n'
+        f"published: {date.today().isoformat()}\n"
+        'tagline: ""\n'
+        'hero_image: ""\n'
+        "draft: true\n"
+        "---\n\n"
+        f"## {title}\n\n"
+        "Write the story here, then set `draft: false` to publish.\n"
+    )
+
+
+def _slugify(s: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-") or "untitled"
+
+
+def cmd_story(args) -> int:
+    if args.action == "list":
+        if not STORIES.exists():
+            print("(no stories dir)")
+            return 0
+        for p in sorted(STORIES.glob("*.md")):
+            print(p.name)
+        return 0
+    # new
+    if not args.slug:
+        print("story new requires a <slug>.", file=sys.stderr)
+        return 2
+    slug = _slugify(args.slug)
+    dest = STORIES / f"{slug}.md"
+    if dest.exists():
+        print(f"story already exists: {dest.relative_to(ROOT)}", file=sys.stderr)
+        return 2
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(
+        story_scaffold(args.title or args.slug, slug), encoding="utf-8", newline="\n"
+    )
+    print(f"created {dest.relative_to(ROOT)} (draft) — fill it in, then set "
+          f"draft: false to publish.")
     return 0
+
+
+def product_skeleton(pid: str, title: str, tagline: str, claude_code: bool) -> str:
+    obj = {
+        "id": pid, "title": title, "tagline": tagline, "description": "",
+        "tags": [], "status": "wip", "repo": "", "npm": "", "install": "",
+        "claudeCode": claude_code, "screenshots": [],
+    }
+    return json.dumps(obj, ensure_ascii=False)
+
+
+def cmd_add_plugin(args) -> int:
+    data = json.loads(SITE_JSON.read_text(encoding="utf-8"))
+    if any(p.get("id") == args.id for p in data.get("products", [])):
+        print(f"product id already exists: {args.id}", file=sys.stderr)
+        return 2
+    text = SITE_JSON.read_text(encoding="utf-8")
+    element = product_skeleton(args.id, args.title, args.tagline or "",
+                              claude_code=args.claude_code)
+    new_text = array_append_in_text(text, "products", element)
+    ok, detail = guarded_apply(SITE_JSON, new_text)
+    if not ok:
+        print(f"refused: add-plugin {args.id} fails the doctor:\n{detail}", file=sys.stderr)
+        return 1
+    print(f"added product '{args.id}' (status: wip). Fill in description/tags/repo "
+          f"next, and create its landing page in content/plugin-pages.json if it's "
+          f"a Claude Code plugin.")
+    return _maybe_commit(args, f"content: add product {args.id}")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -182,6 +405,29 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("status", choices=["live", "wip"])
     s.add_argument("--commit", action="store_true", help="commit on current branch (not main)")
     s.set_defaults(fn=cmd_set_status)
+    sp = sub.add_parser("set-product", help="set a product string field (guarded)")
+    sp.add_argument("id")
+    sp.add_argument("field")
+    sp.add_argument("value")
+    sp.add_argument("--commit", action="store_true")
+    sp.set_defaults(fn=cmd_set_product)
+    ap2 = sub.add_parser("add-plugin", help="append a skeleton product (guarded)")
+    ap2.add_argument("id")
+    ap2.add_argument("--title", required=True)
+    ap2.add_argument("--tagline", default="")
+    ap2.add_argument("--claude-code", dest="claude_code", action="store_true")
+    ap2.add_argument("--commit", action="store_true")
+    ap2.set_defaults(fn=cmd_add_plugin)
+    us = sub.add_parser("upload-shot", help="copy + register a screenshot (guarded)")
+    us.add_argument("id")
+    us.add_argument("image")
+    us.add_argument("--commit", action="store_true")
+    us.set_defaults(fn=cmd_upload_shot)
+    st = sub.add_parser("story", help="manage Field Note stories")
+    st.add_argument("action", choices=["new", "list"])
+    st.add_argument("slug", nargs="?")
+    st.add_argument("--title", default="")
+    st.set_defaults(fn=cmd_story)
     return ap
 
 
