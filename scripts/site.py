@@ -22,8 +22,10 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -250,6 +252,60 @@ def cmd_set_product(args) -> int:
     return _maybe_commit(args, f"content: set {args.id} {args.field}")
 
 
+def screenshot_slug(filename: str) -> tuple[str, str]:
+    """(slug, ext) for a screenshot filename, matching the admin convention."""
+    m = re.search(r"\.[A-Za-z0-9]+$", filename or "")
+    ext = (m.group(0) if m else ".png").lower()
+    base = re.sub(r"\.[A-Za-z0-9]+$", "", filename or "")
+    base = re.sub(r"[^a-z0-9]+", "-", base.lower()).strip("-") or "shot"
+    return base, ext
+
+
+def cmd_upload_shot(args) -> int:
+    src = Path(args.image)
+    if not src.exists():
+        print(f"image not found: {src}", file=sys.stderr)
+        return 2
+    data = json.loads(SITE_JSON.read_text(encoding="utf-8"))
+    product = next(
+        (p for p in data.get("products", []) if p.get("id") == args.id), None
+    )
+    if product is None:
+        print(f"no product with id: {args.id}", file=sys.stderr)
+        return 2
+    if "screenshots" not in product:
+        print(f"{args.id} has no screenshots field — add it via the admin first.",
+              file=sys.stderr)
+        return 2
+    if len(product["screenshots"]) >= 6:
+        print(f"{args.id} already has 6 screenshots — remove one first.", file=sys.stderr)
+        return 2
+    base, ext = screenshot_slug(src.name)
+    ts = int(time.time() * 1000)
+    rel = f"assets/screenshots/{args.id}/{ts}-{base}{ext}"
+    dest = ROOT / rel
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, dest)
+    element = json.dumps(
+        {"id": f"shot-{ts}", "path": rel, "name": src.name, "size": dest.stat().st_size},
+        ensure_ascii=False,
+    )
+    text = SITE_JSON.read_text(encoding="utf-8")
+    start, end = _product_block_span(text, args.id)
+    new_block = array_append_in_text(text[start:end], "screenshots", element)
+    new_text = text[:start] + new_block + text[end:]
+    ok, detail = guarded_apply(SITE_JSON, new_text)
+    if not ok:
+        dest.unlink(missing_ok=True)  # roll back the copied file too
+        print(f"refused: upload-shot {args.id} fails the doctor:\n{detail}", file=sys.stderr)
+        return 1
+    print(f"uploaded {rel} and registered on {args.id} (validated).")
+    return _maybe_commit(
+        args, f"content: add screenshot to {args.id}",
+        paths=("content/site.json", "index.html", rel),
+    )
+
+
 def product_skeleton(pid: str, title: str, tagline: str, claude_code: bool) -> str:
     obj = {
         "id": pid, "title": title, "tagline": tagline, "description": "",
@@ -308,6 +364,11 @@ def build_parser() -> argparse.ArgumentParser:
     ap2.add_argument("--claude-code", dest="claude_code", action="store_true")
     ap2.add_argument("--commit", action="store_true")
     ap2.set_defaults(fn=cmd_add_plugin)
+    us = sub.add_parser("upload-shot", help="copy + register a screenshot (guarded)")
+    us.add_argument("id")
+    us.add_argument("image")
+    us.add_argument("--commit", action="store_true")
+    us.set_defaults(fn=cmd_upload_shot)
     return ap
 
 

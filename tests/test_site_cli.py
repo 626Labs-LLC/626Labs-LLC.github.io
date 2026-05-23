@@ -116,3 +116,9 @@ def test_product_skeleton_shape():
         "description": "", "tags": [], "status": "wip",
         "repo": "", "npm": "", "install": "", "claudeCode": True, "screenshots": [],
     }
+
+
+def test_screenshot_slug():
+    assert site_cli.screenshot_slug("My Cool Shot!.PNG") == ("my-cool-shot", ".png")
+    assert site_cli.screenshot_slug("x.jpeg") == ("x", ".jpeg")
+    assert site_cli.screenshot_slug("....png") == ("shot", ".png")
