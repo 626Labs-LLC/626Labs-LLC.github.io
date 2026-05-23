@@ -106,3 +106,13 @@ def test_set_field_in_text_missing_field_raises():
     sample = '{ "products": [ { "id": "p1", "tagline": "x" } ] }\n'
     with pytest.raises(ValueError):
         site_cli.set_field_in_text(sample, "p1", "nope", "y")
+
+
+def test_product_skeleton_shape():
+    import json
+    obj = json.loads(site_cli.product_skeleton("vibe-demo", "Vibe Demo", "A demo.", True))
+    assert obj == {
+        "id": "vibe-demo", "title": "Vibe Demo", "tagline": "A demo.",
+        "description": "", "tags": [], "status": "wip",
+        "repo": "", "npm": "", "install": "", "claudeCode": True, "screenshots": [],
+    }

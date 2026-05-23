@@ -250,6 +250,34 @@ def cmd_set_product(args) -> int:
     return _maybe_commit(args, f"content: set {args.id} {args.field}")
 
 
+def product_skeleton(pid: str, title: str, tagline: str, claude_code: bool) -> str:
+    obj = {
+        "id": pid, "title": title, "tagline": tagline, "description": "",
+        "tags": [], "status": "wip", "repo": "", "npm": "", "install": "",
+        "claudeCode": claude_code, "screenshots": [],
+    }
+    return json.dumps(obj, ensure_ascii=False)
+
+
+def cmd_add_plugin(args) -> int:
+    data = json.loads(SITE_JSON.read_text(encoding="utf-8"))
+    if any(p.get("id") == args.id for p in data.get("products", [])):
+        print(f"product id already exists: {args.id}", file=sys.stderr)
+        return 2
+    text = SITE_JSON.read_text(encoding="utf-8")
+    element = product_skeleton(args.id, args.title, args.tagline or "",
+                              claude_code=args.claude_code)
+    new_text = array_append_in_text(text, "products", element)
+    ok, detail = guarded_apply(SITE_JSON, new_text)
+    if not ok:
+        print(f"refused: add-plugin {args.id} fails the doctor:\n{detail}", file=sys.stderr)
+        return 1
+    print(f"added product '{args.id}' (status: wip). Fill in description/tags/repo "
+          f"next, and create its landing page in content/plugin-pages.json if it's "
+          f"a Claude Code plugin.")
+    return _maybe_commit(args, f"content: add product {args.id}")
+
+
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="site.py", description="626labs.dev management CLI")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -273,6 +301,13 @@ def build_parser() -> argparse.ArgumentParser:
     sp.add_argument("value")
     sp.add_argument("--commit", action="store_true")
     sp.set_defaults(fn=cmd_set_product)
+    ap2 = sub.add_parser("add-plugin", help="append a skeleton product (guarded)")
+    ap2.add_argument("id")
+    ap2.add_argument("--title", required=True)
+    ap2.add_argument("--tagline", default="")
+    ap2.add_argument("--claude-code", dest="claude_code", action="store_true")
+    ap2.add_argument("--commit", action="store_true")
+    ap2.set_defaults(fn=cmd_add_plugin)
     return ap
 
 
