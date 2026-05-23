@@ -5,7 +5,9 @@ on:
     branches: [main]
     paths:
       - 'content/site.json'
+      - 'content/facts-supplement.json'
       - 'scripts/render-hub.py'
+      - 'scripts/site_facts.py'
       - '.github/workflows/rebuild-hub.yml'
   workflow_dispatch:
 

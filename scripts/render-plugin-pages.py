@@ -21,6 +21,8 @@ import sys
 from html import escape
 from pathlib import Path
 
+import site_facts  # sibling module in scripts/ (added to sys.path when run as a script)
+
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "content" / "plugin-pages.json"
 
@@ -265,15 +267,8 @@ COPY_SCRIPT = """
 """
 
 
-NUM_WORDS = {
-    1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six",
-    7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten", 11: "Eleven",
-    12: "Twelve", 13: "Thirteen", 14: "Fourteen", 15: "Fifteen",
-}
-
-
 def num_word(n):
-    return NUM_WORDS.get(n, str(n))
+    return site_facts.number_word(n)
 
 
 def e(s):
@@ -647,6 +642,7 @@ def render_index(data):
 
 def build():
     data = json.loads(DATA.read_text(encoding="utf-8"))
+    data = site_facts.resolve_tokens(data, site_facts.facts())
     family = data["family"]
     outputs = {}
     for pid, p in data["plugins"].items():

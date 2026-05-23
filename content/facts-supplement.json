@@ -1,0 +1,5 @@
+{
+  "ms_store_releases": 5,
+  "cmd_vibe-cartographer": 12,
+  "_note": "External truths only — facts that cannot be derived from repo sources. ms_store_releases: confirm against the Microsoft Store dashboard. cmd_vibe-cartographer: lives in the vibe-cartographer plugin repo; bump when its commands change."
+}

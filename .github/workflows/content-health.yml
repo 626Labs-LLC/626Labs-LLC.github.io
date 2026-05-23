@@ -1,0 +1,52 @@
+name: content-health
+
+on:
+  pull_request:
+    paths:
+      - 'content/**'
+      - 'index.html'
+      - 'plugins/**'
+      - 'scripts/**'
+      - 'assets/**'
+      - 'tests/**'
+      - '.github/workflows/content-health.yml'
+  schedule:
+    - cron: '0 13 * * 1'   # Mondays 13:00 UTC, alongside link-check
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  doctor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install test deps
+        run: pip install pytest
+
+      - name: Run unit tests
+        run: python -m pytest -q
+
+      - name: Run site doctor (drift gate)
+        run: python scripts/site-doctor.py --check
+
+      - name: Open issue on scheduled failure
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "Content health drift detected (scheduled run)",
+              body: "`site-doctor.py --check` (or the unit tests) failed on the scheduled run. Run `python scripts/site-doctor.py --report` locally to see details. This often means an external fact in `content/facts-supplement.json` (e.g. Microsoft Store releases) drifted from reality, or a count was edited in prose without re-rendering."
+            });

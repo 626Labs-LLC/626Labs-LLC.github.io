@@ -121,6 +121,20 @@ and one banner.
 ### Site renderer — `scripts/render-hub.py`
 
 Rebuilds `index.html` from `content/site.json`. `--check` for drift detection.
+Counts/lists in prose can use `{{fact:KEY}}` tokens — they resolve at render
+time from `scripts/site_facts.py` (e.g. `{{fact:claude_plugins}}`,
+`{{fact:live_plugin_names}}`, `{{fact:cmd_vibe-cartographer_word}}`). An unknown
+token fails the render loudly, so a typo never ships.
+
+### Content health — `scripts/site-doctor.py`
+
+The checkup + CI gate. `--report` for an on-demand health printout (derived
+facts, supplement reminders, drift); `--check` exits nonzero on any failure (CI
+uses this). Validates prose-vs-facts (a curated registry), dangling local-asset
+references, and render drift. Facts derive via `scripts/site_facts.py`; truths
+that can't be derived locally (Microsoft Store releases, a plugin's command
+count) live in `content/facts-supplement.json` — re-confirm those periodically.
+The `content-health.yml` workflow runs the doctor on PRs and weekly.
 
 ### Admin favicon — `scripts/build-admin-favicon.py`
 

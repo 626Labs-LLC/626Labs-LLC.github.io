@@ -1,0 +1,11 @@
+{
+  "hero": { "meta": [{ "label": "Deployed", "value": "{{fact:claude_plugins}} plugins" }] },
+  "about": { "paragraphs": ["Names: <strong>{{fact:live_plugin_names}}</strong>."] },
+  "products": [
+    { "id": "vibe-alpha", "title": "vibe-alpha", "status": "live", "claudeCode": true, "tags": [] },
+    { "id": "thesis-beta", "title": "thesis-beta", "status": "live", "claudeCode": true, "tags": [] },
+    { "id": "vibe-wip", "title": "vibe-wip", "status": "wip", "claudeCode": true, "tags": [] },
+    { "id": "webby", "title": "webby", "status": "live", "claudeCode": false, "tags": [] },
+    { "id": "nativey", "title": "nativey", "status": "live", "tags": [{ "label": "Windows" }] }
+  ]
+}

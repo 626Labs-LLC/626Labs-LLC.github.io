@@ -95,12 +95,12 @@
       "name": "vibe-cartographer",
       "metaTitle": "vibe-cartographer · Vibe coding with a map. · 626Labs",
       "ogTitle": "vibe-cartographer · Vibe coding with a map.",
-      "metaDescription": "Vibe Cartographer is a Claude Code plugin: 12 slash commands guiding you from idea to shipped app with spec-driven vibe coding. MIT. 626Labs.",
+      "metaDescription": "Vibe Cartographer is a Claude Code plugin: {{fact:cmd_vibe-cartographer}} slash commands guiding you from idea to shipped app with spec-driven vibe coding. MIT. 626Labs.",
       "ogImage": "/assets/brand/plugins/vibe-cartographer-banner-1280x640.png",
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Vibe coding with a map.",
-      "subhead": "Twelve slash commands that take you from idea spark to shipped app &mdash; spec-first, persona-aware, with persistent memory that gets sharper every run. Built for builders who move fast and don't want to lose the thread.",
-      "heroMeta": ["v1.8.0", "12 commands", "MIT", "Level 3"],
+      "subhead": "{{fact:cmd_vibe-cartographer_word}} slash commands that take you from idea spark to shipped app &mdash; spec-first, persona-aware, with persistent memory that gets sharper every run. Built for builders who move fast and don't want to lose the thread.",
+      "heroMeta": ["v1.8.0", "{{fact:cmd_vibe-cartographer}} commands", "MIT", "Level 3"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer" }
@@ -128,7 +128,7 @@
         {
           "type": "cards",
           "eyebrow": "01 · The build chain",
-          "heading": "Twelve commands. One shipped app.",
+          "heading": "{{fact:cmd_vibe-cartographer_word}} commands. One shipped app.",
           "lead": "Each command writes an artifact the next one reads — scope feeds the PRD, PRD feeds the spec, spec feeds the checklist — so you're never starting from a blank page mid-build.",
           "cards": [
             { "command": "/vibe-cartographer:onboard", "title": "Welcome and meet the builder.", "desc": "Profiles your experience, pacing, and persona choice, then writes a builder profile every downstream command reads." },
