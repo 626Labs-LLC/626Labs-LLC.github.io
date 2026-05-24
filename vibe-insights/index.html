@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vibe-taker · Take it with you. · 626Labs</title>
-  <meta name="description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
-  <link rel="canonical" href="https://626labs.dev/vibe-taker/" />
+  <title>vibe-insights · The /insights you wish you had. · 626Labs</title>
+  <meta name="description" content="Claude Code plugin for cross-machine, work-walled session analytics. Coverage, recall, the cache reveal, trends, and a synthesized read of how you actually work. By 626Labs." />
+  <link rel="canonical" href="https://626labs.dev/vibe-insights/" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
-  <meta property="og:title" content="vibe-taker · Take it with you." />
-  <meta property="og:description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
-  <meta property="og:url" content="https://626labs.dev/vibe-taker/" />
-  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-taker-banner-1280x640.png" />
+  <meta property="og:title" content="vibe-insights · The /insights you wish you had." />
+  <meta property="og:description" content="Claude Code plugin for cross-machine, work-walled session analytics. Coverage, recall, the cache reveal, trends, and a synthesized read of how you actually work. By 626Labs." />
+  <meta property="og:url" content="https://626labs.dev/vibe-insights/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-insights-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="vibe-taker · Take it with you." />
-  <meta name="twitter:description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
-  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-taker-banner-1280x640.png" />
+  <meta name="twitter:title" content="vibe-insights · The /insights you wish you had." />
+  <meta name="twitter:description" content="Claude Code plugin for cross-machine, work-walled session analytics. Coverage, recall, the cache reveal, trends, and a synthesized read of how you actually work. By 626Labs." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-insights-banner-1280x640.png" />
 
   <style>
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
@@ -248,8 +248,8 @@
         </a>
         <span class="brand-sep" aria-hidden="true">/</span>
         <span class="brand-current">
-          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-taker-icon-transparent-512.png" alt="" /></span>
-          <span>vibe-taker</span>
+          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-insights-icon-transparent-512.png" alt="" /></span>
+          <span>vibe-insights</span>
         </span>
       </div>
       <a href="#install" class="btn btn-ghost">Install</a>
@@ -263,13 +263,13 @@
         <div class="hero-grid">
           <div class="hero-left">
             <span class="eyebrow">626Labs · Claude Code plugin</span>
-            <h1>Take it with you.</h1>
-            <p class="hero-subhead">Move a feature between repos without copy-paste archaeology. vibe-taker captures a feature out of one codebase as a portable bundle &mdash; architecture, contract surface, the prompts that built it, a verbatim source snapshot, and the gotchas &mdash; then plants it into another repo with stack-aware adaptation.</p>
+            <h1>The /insights you wish you had.</h1>
+            <p class="hero-subhead">vibe-insights reads your Claude Code transcripts across every machine and your whole history &mdash; walls your employer's sessions local-only &mdash; and hands back coverage, recall, the cache reveal, trends, and a synthesized read of how you actually work. The verbose /insights, over everything.</p>
             <div class="hero-ctas">
-              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-taker" class="btn btn-ghost">View on GitHub</a>
+              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-insights" class="btn btn-ghost">View on GitHub</a>
             </div>
             <div class="hero-meta">
-              <span>v0.1.1</span><span>·</span><span>3 commands</span><span>·</span><span>local-only</span><span>·</span><span>MIT</span>
+              <span>v0.1.0</span><span>·</span><span>cross-machine</span><span>·</span><span>work-walled</span><span>·</span><span>MIT</span>
             </div>
           </div>
 
@@ -279,21 +279,18 @@
                 <span class="term-dot r"></span>
                 <span class="term-dot y"></span>
                 <span class="term-dot g"></span>
-                <span class="term-label">vibe-taker ~</span>
+                <span class="term-label">vibe-insights ~</span>
               </div>
               <div class="term-body">
-                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-taker:capture src/features/command-palette</span></div>
-                <div><span class="agent">[vibe-taker]</span> Reading source... <span class="ok">done</span> (14 files)</div>
-                <div>  &rarr; architecture + contract surface extracted</div>
-                <div>  &rarr; prompts that built it: <span class="key">6 captured</span></div>
-                <div>  &rarr; gotchas: <span class="key">2 flagged</span></div>
-                <div>  <span class="ok">✓</span> bundled to <span class="path">~/.vibe-taker/library/command-palette/</span></div>
+                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-insights</span></div>
+                <div><span class="agent">[vibe-insights]</span> Reading sessions across your machines...</div>
+                <div>  &rarr; <span class="key">280 sessions</span> &middot; 2 machines &middot; work walled &middot; back to Jan</div>
                 <div>&nbsp;</div>
-                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-taker:plant command-palette</span></div>
-                <div><span class="agent">[vibe-taker]</span> Target stack: <span class="path">React 19 + Vite</span> (match: <span class="ok">high</span>)</div>
-                <div>  &rarr; code-lift selected · adapting imports</div>
-                <div>  Review diff before write? [Y/n] <span class="cmd">y</span></div>
-                <div>  <span class="ok">✓</span> planted: 11 files, 0 conflicts<span class="term-cursor"></span></div>
+                <div>  Token burn    <span class="key">144M</span> &middot; output share 18%</div>
+                <div>  Cache reveal  <span class="key">22.8B</span> cache-read <span class="muted">(96% of input-side)</span></div>
+                <div>  Top friction  <span class="key">env / tooling</span> &mdash; 44% of judged sessions</div>
+                <div>&nbsp;</div>
+                <div><span class="agent">[vibe-insights]</span> Narrative read written &rarr; <span class="path">insights.html</span><span class="term-cursor"></span></div>
               </div>
             </div>
           </div>
@@ -305,27 +302,33 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">01 · What it does</span>
-          <h2>Capture here, plant there.</h2>
-          <p class="lead">Three commands move a feature across repos — reading source autonomously, asking only when the why can't be derived from the code.</p>
+          <h2>Everything /insights leaves on the table.</h2>
+          <p class="lead">A deterministic engine reads your session transcripts and produces one branded report — split by account and machine, with the parts your employer owns kept local.</p>
         </div>
 
         <div class="cards-grid">
           <div class="card">
-            <span class="cmd">/vibe-taker:capture &amp;lt;path&amp;gt;</span>
-            <h3>Lift a feature into a bundle.</h3>
-            <p class="desc">Reads the source, snapshots reference code, extracts the architecture and contract surface, captures the prompts that built it, and flags the gotchas &mdash; into a portable shelf entry at ~/.vibe-taker/library/.</p>
+            <span class="cmd">Coverage &amp; recall</span>
+            <h3>Where was I, across every machine.</h3>
+            <p class="desc">Sessions, repos, and burn split by account (work vs personal) &times; machine. Plus the most-recent sessions with titles, branches, and machines &mdash; and the open feature branches you walked away from.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-taker:plant &amp;lt;name&amp;gt;</span>
-            <h3>Drop it into a new repo.</h3>
-            <p class="desc">Detects the target stack and picks code-lift on a high match or spec-driven re-implementation on a low one &mdash; declining a hard cross-language mismatch instead of producing broken code. Always shows the diff before any write.</p>
+            <span class="cmd">The cache reveal</span>
+            <h3>The number the flat report buries.</h3>
+            <p class="desc">Burn, output share, and the cache-read tokens carrying most of your input-side context. The headline burn is the small number; vibe-insights shows you the rest.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-taker:list</span>
-            <h3>See what&#x27;s on the shelf.</h3>
-            <p class="desc">Searches your cross-repo library and flags near-duplicate captures with Jaccard hints. Supports --search and --sort name|lang.</p>
+            <span class="cmd">The wall</span>
+            <h3>Employer sessions stay local.</h3>
+            <p class="desc">Configure your work repos &mdash; those sessions are labeled work and kept local-only, never synced cross-machine, never pushed &mdash; but still visible in your own report. The wall is by repo, not by home.</p>
+          </div>
+
+          <div class="card">
+            <span class="cmd">How it went</span>
+            <h3>A read, not just a count.</h3>
+            <p class="desc">An LLM tags each session for friction, satisfaction, and outcome; deterministic charts roll it up. Then a synthesized 'how you actually work' interpretation, grounded in the numbers.</p>
           </div>
         </div>
       </div>
@@ -334,16 +337,16 @@
     <section class="brain">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">02 · How it&#x27;s different</span>
-          <h2>It reads the source, then asks the right questions.</h2>
+          <span class="eyebrow">02 · How it&#x27;s built</span>
+          <h2>Deterministic engine, LLM only where it earns it.</h2>
         </div>
         <div class="brain-grid">
           <div>
-            <p>Copy-paste between repos loses everything that isn't code &mdash; the contract, the reasoning, the prompts, the gotchas. vibe-taker captures all of it: an architecture sketch, the contract surface, the AI prompts that built the feature, a verbatim source snapshot, and the warnings. It derives the <strong>what</strong> and <strong>how</strong> autonomously from the code, and only asks you for the <strong>why</strong> when the code can't tell it.</p>
-            <p>On plant, it detects the destination stack and adapts &mdash; lifting code when the match is high, re-implementing from the spec when it's low, and declining outright on a hard cross-language mismatch rather than shipping something broken. Nothing is written until you confirm the diff.</p>
+            <p><strong>The engine is deterministic and offline.</strong> It never calls an LLM or MCP &mdash; it reads local JSONL transcripts and a few cache files. The narrative read, the decisions overlay, and the per-session tags come from the <strong>/vibe-insights</strong> skill, where the LLM lives, and are handed to the engine as files. That keeps the analytics reproducible and the tool marketplace-portable.</p>
+            <p>Cross-machine works through tiny per-machine indexes you sync (Syncthing or anything that moves a folder); the report merges every machine. vibe-insights runs <strong>fully standalone</strong> &mdash; the optional <strong>cc-logs</strong> package keeps token numbers aligned with sibling tools like Sanduhr when it's installed. Decisions are MCP-agnostic: a file, or your dashboard.</p>
           </div>
           <div>
-            <div class="callout">Local-only by default. ~/.vibe-taker/library/ is the single source of truth — nothing leaves your machine.</div>
+            <div class="callout">No telemetry. Everything stays on your machine — and the work shard never leaves its origin box.</div>
           </div>
         </div>
       </div>
@@ -353,30 +356,21 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">03 · Get it</span>
-          <h2>Two channels.</h2>
+          <h2>Install.</h2>
         </div>
 
-        <div class="install-grid">
+        <div class="install-grid solo">
           <div class="card install-card">
             <h3>Stable <span class="badge">marketplace</span></h3>
-            <p class="blurb">Tagged releases via the Vibe Plugins marketplace.</p>
+            <p class="blurb">Tagged releases via the Vibe Plugins marketplace. The Python engine installs from the repo; the optional cc-logs extra keeps token numbers aligned with sibling tools.</p>
             <div class="codeblock">
               <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
               <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
-/plugin install vibe-taker@vibe-plugins</pre>
-            </div>
-          </div>
-          <div class="card install-card">
-            <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
-            <p class="blurb">Tracks the solo repo&#x27;s main branch.</p>
-            <div class="codeblock">
-              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
-              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-taker
-/plugin install vibe-taker</pre>
+/plugin install vibe-insights@vibe-plugins</pre>
             </div>
           </div>
         </div>
-        <p class="install-note">The library lives at ~/.vibe-taker/library/ — portable across every repo you work in.</p>
+        <p class="install-note">Standalone. Reads ~/.claude and ~/.claude-personal; set your work repos to wall employer sessions local-only.</p>
       </div>
     </section>
 
@@ -431,12 +425,11 @@
               <div class="role">security posture</div>
             </div>
           </a>
-          <a href="/vibe-taker/" class="family-card here">
+          <a href="/vibe-taker/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-taker-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-taker</div>
               <div class="role">move features between repos</div>
-            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-walk/" class="family-card">
@@ -453,11 +446,12 @@
               <div class="role">end-of-session wrap-up</div>
             </div>
           </a>
-          <a href="/vibe-insights/" class="family-card">
+          <a href="/vibe-insights/" class="family-card here">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-insights-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-insights</div>
               <div class="role">session analytics</div>
+            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/thesis-engine/" class="family-card">

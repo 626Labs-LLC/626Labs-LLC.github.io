@@ -247,6 +247,13 @@ PRODUCT_SIGILS = {
         '<circle cx="6.4" cy="17.4" r="0.95" fill="currentColor" stroke="none"/>'
         '<circle cx="9.4" cy="14.6" r="0.95" fill="currentColor" stroke="none"/></svg>'
     ),
+    "vibe-insights": (
+        # Magnifier over a rising trend line — insight into your usage.
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<path d="M2 17l4-4 3 2 4-6"/>'
+        '<circle cx="15.5" cy="8.5" r="3.5"/>'
+        '<path d="M18 11l3.5 3.5"/></svg>'
+    ),
     "rbx15-shirt-pants": (
         # T-shirt outline
         '<svg class="ic-lg ic" viewBox="0 0 24 24">'
