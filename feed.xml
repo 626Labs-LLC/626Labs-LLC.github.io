@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>626 Labs — Field Notes</title>
+  <subtitle>What we shipped, what bit us, what we&#x27;d do differently.</subtitle>
+  <link href="https://626labs.dev/#field-notes"/>
+  <link rel="self" type="application/atom+xml" href="https://626labs.dev/feed.xml"/>
+  <id>https://626labs.dev/feed.xml</id>
+  <updated>2026-05-23T00:00:00Z</updated>
+  <author><name>626 Labs</name></author>
+  <entry>
+    <title>I complained that /insights wasn&#x27;t insightful. Seven hours later I had a plugin that beats it.</title>
+    <link href="https://github.com/626Labs-LLC/626Labs-LLC.github.io/blob/main/content/stories/vibe-insights-build-2026-05-23.md"/>
+    <id>https://github.com/626Labs-LLC/626Labs-LLC.github.io/blob/main/content/stories/vibe-insights-build-2026-05-23.md</id>
+    <updated>2026-05-23T00:00:00Z</updated>
+    <published>2026-05-23T00:00:00Z</published>
+    <author><name>626 Labs</name></author>
+    <summary>It grabs insights from every Claude Code building surface you use, walls work from personal, and can even tell you the story of how it got built.</summary>
+  </entry>
+  <entry>
+    <title>I said it&#x27;s Evolve day. I left with a plugin I&#x27;d forgotten we&#x27;d planned.</title>
+    <link href="https://github.com/626Labs-LLC/626Labs-LLC.github.io/blob/main/content/stories/vibe-wrap-build-2026-05-23.md"/>
+    <id>https://github.com/626Labs-LLC/626Labs-LLC.github.io/blob/main/content/stories/vibe-wrap-build-2026-05-23.md</id>
+    <updated>2026-05-23T00:00:00Z</updated>
+    <published>2026-05-23T00:00:00Z</published>
+    <author><name>626 Labs</name></author>
+    <summary>I went in to evolve two plugins. The agent cleared the whole backlog, and out came vibe-wrap, a session-wrap plugin I&#x27;d forgotten we planned. It shipped anyway.</summary>
+  </entry>
+  <entry>
+    <title>RoRoRo: the Roblox multi-launcher you can recommend on camera</title>
+    <link href="https://ai.plainenglish.io/rororo-the-roblox-multi-launcher-you-can-recommend-on-camera-162cb542a51f?source=friends_link&amp;sk=8840456f1bd18f501f00d05eee3154cc"/>
+    <id>https://ai.plainenglish.io/rororo-the-roblox-multi-launcher-you-can-recommend-on-camera-162cb542a51f?source=friends_link&amp;sk=8840456f1bd18f501f00d05eee3154cc</id>
+    <updated>2026-05-06T00:00:00Z</updated>
+    <published>2026-05-06T00:00:00Z</published>
+    <author><name>626 Labs</name></author>
+    <summary>Three days from first commit to Microsoft Store. The build was a day; the wait was two.</summary>
+  </entry>
+  <entry>
+    <title>Three Pipelines</title>
+    <link href="https://ai.plainenglish.io/three-pipelines-659efa424e81?source=friends_link&amp;sk=6d5227e966bed3eac8dffd3915082380"/>
+    <id>https://ai.plainenglish.io/three-pipelines-659efa424e81?source=friends_link&amp;sk=6d5227e966bed3eac8dffd3915082380</id>
+    <updated>2026-05-06T00:00:00Z</updated>
+    <published>2026-05-06T00:00:00Z</published>
+    <author><name>626 Labs</name></author>
+    <summary>Same doctrine, three institutional shapes for deploying AI-generated code across different organizational scales.</summary>
+  </entry>
+  <entry>
+    <title>From Legitimate to Sustainable</title>
+    <link href="https://ai.plainenglish.io/from-legitimate-to-sustainable-2c281edde513?source=friends_link&amp;sk=37308198a3e1f62e1814966976c5e8d8"/>
+    <id>https://ai.plainenglish.io/from-legitimate-to-sustainable-2c281edde513?source=friends_link&amp;sk=37308198a3e1f62e1814966976c5e8d8</id>
+    <updated>2026-04-29T00:00:00Z</updated>
+    <published>2026-04-29T00:00:00Z</published>
+    <author><name>626 Labs</name></author>
+    <summary>A builder&#x27;s guide to vibe-coded software that lasts, works for more than one user, and scales without trapping the builder in maintenance.</summary>
+  </entry>
+  <entry>
+    <title>The Second User</title>
+    <link href="https://ai.plainenglish.io/the-second-user-457cbec2a69c?source=friends_link&amp;sk=228a3b6fbe83a513b0f3a7c1137ea546"/>
+    <id>https://ai.plainenglish.io/the-second-user-457cbec2a69c?source=friends_link&amp;sk=228a3b6fbe83a513b0f3a7c1137ea546</id>
+    <updated>2026-04-29T00:00:00Z</updated>
+    <published>2026-04-29T00:00:00Z</published>
+    <author><name>626 Labs</name></author>
+    <summary>How I built seven Claude Code plugins from real workflow friction points.</summary>
+  </entry>
+</feed>

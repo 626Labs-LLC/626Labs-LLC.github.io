@@ -49,6 +49,16 @@ STORIES_DIR = ROOT / "content" / "stories"
 STORIES_GITHUB_REPO = "626Labs-LLC/626Labs-LLC.github.io"
 STORIES_GITHUB_BRANCH = "main"
 
+# ─── feed (Atom syndication for Field Notes) ────────────────────────
+FEED_PATH = ROOT / "feed.xml"
+SITE_URL = "https://626labs.dev"
+FEED_TITLE = "626 Labs — Field Notes"
+FEED_SUBTITLE = "What we shipped, what bit us, what we'd do differently."
+FEED_AUTHOR = "626 Labs"
+# Atom requires <updated>; with zero published stories we anchor to a fixed
+# date so an empty feed still renders deterministically (idempotent --check).
+FEED_EPOCH = "2026-01-01T00:00:00Z"
+
 
 # ─── helpers ────────────────────────────────────────────────────────
 def esc(s: str | None) -> str:
@@ -58,6 +68,11 @@ def esc(s: str | None) -> str:
 
 def attr(s: str | None) -> str:
     """HTML-escape for attribute values."""
+    return html.escape(s or "", quote=True)
+
+
+def xesc(s: str | None) -> str:
+    """Escape for XML text + attribute contexts (the Atom feed)."""
     return html.escape(s or "", quote=True)
 
 
@@ -1100,20 +1115,37 @@ def discover_stories() -> list[dict]:
     return entries
 
 
+def story_link(story: dict) -> str:
+    """Canonical URL for a Field Note. `external_url` wins when set (a post
+    whose canonical home is off-site, e.g. Medium); otherwise the GitHub
+    markdown source. Used by both the card CTA and the Atom feed."""
+    ext = story.get("external_url")
+    if ext:
+        return str(ext)
+    filename = story.get("_filename", "")
+    return (
+        f"https://github.com/{STORIES_GITHUB_REPO}/blob/"
+        f"{STORIES_GITHUB_BRANCH}/content/stories/{filename}"
+    )
+
+
 def render_field_note(story: dict) -> str:
-    """One card. Eyebrow (date · product), title, subtitle, tagline, link."""
+    """One card. Eyebrow (date · product · source), title, subtitle, tagline, link.
+
+    `external_url` points the CTA at an off-site canonical home; `source`
+    labels it in the eyebrow + CTA ("Read on Medium"). Both optional — a
+    story without them renders the GitHub-source card exactly as before."""
     title = esc(str(story.get("title", "")))
     subtitle = esc(str(story.get("subtitle", "")))
     tagline = esc(str(story.get("tagline", "")))
     published = esc(str(story.get("published", "")))
     product = esc(str(story.get("product", "")))
-    filename = story.get("_filename", "")
-    eyebrow_parts = [p for p in (published, product) if p]
+    source = esc(str(story.get("source", "")))
+    is_external = bool(story.get("external_url"))
+    eyebrow_parts = [p for p in (published, product, source) if p]
     eyebrow = " · ".join(eyebrow_parts)
-    link_url = (
-        f"https://github.com/{STORIES_GITHUB_REPO}/blob/"
-        f"{STORIES_GITHUB_BRANCH}/content/stories/{filename}"
-    )
+    link_url = story_link(story)
+    cta = f"Read on {source}" if (is_external and source) else "Read the full story"
 
     parts = [
         '      <article class="field-note">',
@@ -1127,7 +1159,7 @@ def render_field_note(story: dict) -> str:
     parts.append('        <div class="field-note-link">')
     parts.append(
         f'          <a href="{attr(link_url)}" target="_blank" rel="noopener">'
-        'Read the full story '
+        f'{esc(cta)} '
         '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
         'stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" '
         'aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>'
@@ -1161,8 +1193,61 @@ def render_field_notes(stories: list[dict]) -> str:
     <div class="field-notes-grid">
 {cards}
     </div>
+    <a class="field-notes-subscribe" href="/feed.xml">Subscribe via Atom<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a>
   </div>
 </section>"""
+
+
+# ─── feed (Atom syndication for Field Notes) ────────────────────────
+def _rfc3339(value: object) -> str:
+    """Coerce a story's `published` (date-only ISO, e.g. 2026-04-23) into an
+    RFC-3339 datetime for Atom. Pass through anything already carrying a time;
+    fall back to FEED_EPOCH when empty."""
+    s = str(value or "").strip()
+    if not s:
+        return FEED_EPOCH
+    return s if "T" in s else f"{s}T00:00:00Z"
+
+
+def render_atom_feed(stories: list[dict]) -> str:
+    """Build the Field Notes Atom feed from the discovered stories.
+
+    Deterministic by design: the feed's <updated> derives from the newest
+    story's published date (never wall-clock), so `--check` stays idempotent
+    and CI never sees phantom drift. Each <entry> links to its canonical home
+    — external_url for off-site posts, the GitHub source otherwise."""
+    updated = _rfc3339(stories[0].get("published")) if stories else FEED_EPOCH
+    entries = []
+    for s in stories:
+        link = story_link(s)
+        when = _rfc3339(s.get("published"))
+        summary = str(s.get("subtitle") or s.get("tagline") or "")
+        author = str(s.get("author") or FEED_AUTHOR)
+        entries.append(
+            "  <entry>\n"
+            f"    <title>{xesc(str(s.get('title', '')))}</title>\n"
+            f'    <link href="{xesc(link)}"/>\n'
+            f"    <id>{xesc(link)}</id>\n"
+            f"    <updated>{when}</updated>\n"
+            f"    <published>{when}</published>\n"
+            f"    <author><name>{xesc(author)}</name></author>\n"
+            f"    <summary>{xesc(summary)}</summary>\n"
+            "  </entry>"
+        )
+    body = ("\n" + "\n".join(entries)) if entries else ""
+    return (
+        '<?xml version="1.0" encoding="utf-8"?>\n'
+        '<feed xmlns="http://www.w3.org/2005/Atom">\n'
+        f"  <title>{xesc(FEED_TITLE)}</title>\n"
+        f"  <subtitle>{xesc(FEED_SUBTITLE)}</subtitle>\n"
+        f'  <link href="{SITE_URL}/#field-notes"/>\n'
+        f'  <link rel="self" type="application/atom+xml" href="{SITE_URL}/feed.xml"/>\n'
+        f"  <id>{SITE_URL}/feed.xml</id>\n"
+        f"  <updated>{updated}</updated>\n"
+        f"  <author><name>{xesc(FEED_AUTHOR)}</name></author>"
+        f"{body}\n"
+        "</feed>\n"
+    )
 
 
 # ─── section toggles ────────────────────────────────────────────────
@@ -1214,6 +1299,8 @@ def main(argv: list[str]) -> int:
     content = site_facts.resolve_tokens(content, site_facts.facts())
     src = INDEX_HTML.read_text(encoding="utf-8")
 
+    stories = discover_stories()
+
     out = src
     out = substitute_zone(out, "hero", render_hero(content["hero"]))
     out = substitute_zone(out, "hero-chips", render_chips(content["hero"]["chips"]))
@@ -1221,7 +1308,7 @@ def main(argv: list[str]) -> int:
     out = substitute_zone(out, "lab-pool", render_lab_pool(content["lab"]), js=True)
     if "thinking" in content:
         out = substitute_zone(out, "thinking", render_thinking(content["thinking"]))
-    out = substitute_zone(out, "stories", render_field_notes(discover_stories()))
+    out = substitute_zone(out, "stories", render_field_notes(stories))
     if "labRuns" in content:
         out = substitute_zone(out, "lab-runs", render_lab_runs(content["labRuns"]))
     if "play" in content:
@@ -1234,19 +1321,36 @@ def main(argv: list[str]) -> int:
         out = substitute_zone(out, "contact", render_contact(content["contact"]))
     out = apply_section_toggles(out, content.get("sections") or {})
 
-    changed = out != src
+    feed_new = render_atom_feed(stories)
+    feed_old = FEED_PATH.read_text(encoding="utf-8") if FEED_PATH.exists() else None
+
+    index_changed = out != src
+    feed_changed = feed_new != feed_old
+
     if "--check" in argv:
-        if changed:
-            print("index.html is out of date relative to content/site.json. Run scripts/render-hub.py.", file=sys.stderr)
+        stale = [name for name, drifted in
+                 (("index.html", index_changed), ("feed.xml", feed_changed)) if drifted]
+        if stale:
+            print(
+                f"{' and '.join(stale)} out of date relative to content. "
+                "Run scripts/render-hub.py.",
+                file=sys.stderr,
+            )
             return 1
-        print("index.html is up to date.")
+        print("index.html and feed.xml are up to date.")
         return 0
 
-    if changed:
+    if index_changed:
         INDEX_HTML.write_text(out, encoding="utf-8")
         print(f"index.html rebuilt from {SITE_JSON.relative_to(ROOT)}")
     else:
         print("index.html already matches content/site.json — no change.")
+
+    if feed_changed:
+        FEED_PATH.write_text(feed_new, encoding="utf-8")
+        print(f"feed.xml rebuilt from {STORIES_DIR.relative_to(ROOT)}/")
+    else:
+        print("feed.xml already current — no change.")
     return 0
 
 
