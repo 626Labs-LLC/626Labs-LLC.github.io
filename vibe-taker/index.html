@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/SpaceGrotesk-Variable.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-Variable.woff2" crossorigin />
   <title>vibe-taker · Take it with you. · 626Labs</title>
   <meta name="description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
   <link rel="canonical" href="https://626labs.dev/vibe-taker/" />
@@ -19,9 +21,37 @@
   <meta name="twitter:description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
   <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-taker-banner-1280x640.png" />
 
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://626labs.dev/vibe-taker/#software",
+  "name": "vibe-taker",
+  "description": "Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack.",
+  "url": "https://626labs.dev/vibe-taker/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Claude Code",
+  "image": "https://626labs.dev/assets/brand/plugins/vibe-taker-banner-1280x640.png",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "@id": "https://626labs.dev/#org",
+    "name": "626 Labs",
+    "url": "https://626labs.dev/"
+  },
+  "softwareVersion": "0.1.1",
+  "license": "https://opensource.org/licenses/MIT"
+}
+  </script>
+
   <style>
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    @import url('/fonts/fonts.css');
 
     :root {
       --navy-deep: #0f1f31;

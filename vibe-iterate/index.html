@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/SpaceGrotesk-Variable.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-Variable.woff2" crossorigin />
   <title>vibe-iterate · Maintain your Atlas. · 626Labs</title>
   <meta name="description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
   <link rel="canonical" href="https://626labs.dev/vibe-iterate/" />
@@ -19,9 +21,37 @@
   <meta name="twitter:description" content="Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs." />
   <meta name="twitter:image" content="https://626labs.dev/assets/og-vibe-iterate.png" />
 
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://626labs.dev/vibe-iterate/#software",
+  "name": "vibe-iterate",
+  "description": "Claude Code plugin for post-ship product iteration. Four modes, six sidecars, one PR per session. By 626Labs.",
+  "url": "https://626labs.dev/vibe-iterate/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Claude Code",
+  "image": "https://626labs.dev/assets/og-vibe-iterate.png",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "@id": "https://626labs.dev/#org",
+    "name": "626 Labs",
+    "url": "https://626labs.dev/"
+  },
+  "softwareVersion": "1.0.0",
+  "license": "https://opensource.org/licenses/MIT"
+}
+  </script>
+
   <style>
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    @import url('/fonts/fonts.css');
 
     :root {
       --navy-deep: #0f1f31;
