@@ -417,6 +417,28 @@ def glyph_wrap(primary, secondary):
     return img
 
 
+def glyph_insights(primary, secondary):
+    """A magnifying lens (secondary) over a rising sparkline (primary) — insight
+    into how your usage actually trends. (vibe-insights: the /insights you wish
+    you had.)"""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    # Rising sparkline across the lower-left, climbing to the upper-right.
+    pts = [(26, 152), (58, 122), (86, 136), (114, 98), (140, 74)]
+    draw.line(pts, fill=primary + (255,), width=4, joint="curve")
+    # Magnifier lens centered over the latest, highest point.
+    lx, ly, lr = 140, 74, 40
+    draw.ellipse([lx - lr, ly - lr, lx + lr, ly + lr], outline=secondary + (255,), width=5)
+    # The highlighted data point under the lens — the insight.
+    draw.ellipse([lx - 6, ly - 6, lx + 6, ly + 6], fill=NAVY + (255,),
+                 outline=primary + (255,), width=3)
+    # Lens handle off the lower-right at 45 degrees.
+    ax = lx + lr * math.cos(math.radians(45))
+    ay = ly + lr * math.sin(math.radians(45))
+    draw.line([(ax, ay), (ax + 30, ay + 30)], fill=secondary + (255,), width=8)
+    return img
+
+
 GLYPHS = {
     "node_graph":   glyph_cartographer,
     "compass":      glyph_iterate,
@@ -430,6 +452,7 @@ GLYPHS = {
     "engine_gear":  glyph_engine,
     "footprints":   glyph_walk,
     "wrap":         glyph_wrap,
+    "lens":         glyph_insights,
 }
 
 
@@ -492,6 +515,11 @@ PLUGINS = [
         "id": "vibe-wrap", "name": "VIBE WRAP",
         "tagline": "sessions wrap themselves",
         "glyph": "wrap", "primary": CYAN, "secondary": MAGENTA,
+    },
+    {
+        "id": "vibe-insights", "name": "VIBE INSIGHTS",
+        "tagline": "the /insights you wish you had",
+        "glyph": "lens", "primary": CYAN, "secondary": MAGENTA,
     },
 ]
 
