@@ -20,3 +20,24 @@ assets/level_3 Este.gif
 # Anyone can load the URL; the lockscreen blocks access until a valid
 # fine-grained GitHub PAT (Contents: Write on this repo) is pasted.
 # PAT lives only in the visitor's localStorage. robots: noindex,nofollow.
+
+# Local plugin / agent state — regenerated locally, never tracked
+.vibe-iterate/
+.vibe-doc/
+.claude/626labs-context.md
+
+# Generated docs (vibe-doc output) + session wraps (vibe-wrap output) —
+# regenerate on demand; the wraps also name private sibling repos.
+docs/generated/
+docs/session-wraps/
+
+# Personal documents — this repo is PUBLIC; keep these local-only.
+Estevan-626-Resume.pdf
+Profile.pdf
+anthropic_fellows.*
+
+# Stray brand files NOT produced by export-brand.py (its output set is the
+# icon + banners; these portrait crops are unreferenced churn). Ignored so
+# they can't be committed to the generated assets/brand/ dir by accident.
+assets/brand/logo-portrait-128.png
+assets/brand/logo-portrait-256.png
