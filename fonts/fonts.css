@@ -1,0 +1,37 @@
+/* 626 Labs self-hosted web fonts — replaces the third-party Google Fonts
+   @import on every site page. Variable fonts (woff2) built from the TTFs in
+   this directory via fontTools; see scripts/build-fonts.py. Absolute /fonts/
+   URLs resolve from any page depth on 626labs.dev.
+
+   NOT for the embedded widget (widget-bacon-trail/) — it renders on
+   third-party domains where /fonts/ would resolve to the host, so the widget
+   keeps its own font loading. */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/Inter-Variable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/Inter-Italic-Variable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/SpaceGrotesk-Variable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('/fonts/JetBrainsMono-Variable.woff2') format('woff2');
+}
