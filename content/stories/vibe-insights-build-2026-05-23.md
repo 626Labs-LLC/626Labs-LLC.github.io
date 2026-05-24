@@ -10,8 +10,6 @@ draft: false
 
 # I complained that `/insights` wasn't insightful. Seven hours later I had a plugin that beats it.
 
-*A build story, drafted by vibe-insights from its own commit spine + decision log on 2026-05-23. Voice: mine.*
-
 **The one-liner:** This tool grabs insights from all of your Claude Code building surfaces and can even tell you a story. Cross-machine, work-walled, installable. Two new private repos, 42 commits, 60 tests, one sleeping baby's worth of checking in between increments.
 
 ---
