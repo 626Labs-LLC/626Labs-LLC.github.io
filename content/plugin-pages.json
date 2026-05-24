@@ -9,6 +9,7 @@
     { "id": "vibe-sec", "name": "vibe-sec", "role": "security posture", "href": "/vibe-sec/" },
     { "id": "vibe-taker", "name": "vibe-taker", "role": "move features between repos", "href": "/vibe-taker/" },
     { "id": "vibe-walk", "name": "vibe-walk", "role": "onboarding tours", "href": "/vibe-walk/" },
+    { "id": "vibe-wrap", "name": "vibe-wrap", "role": "end-of-session wrap-up", "href": "/vibe-wrap/" },
     { "id": "thesis-engine", "name": "thesis-engine", "role": "research feeder", "href": "/thesis-engine/" },
     { "id": "vibe-thesis", "name": "vibe-thesis", "role": "thesis authoring", "href": "/vibe-thesis/" }
   ],
@@ -360,28 +361,26 @@
       "ogTitle": "vibe-sec · Security audit for vibe-coded apps",
       "metaDescription": "Claude Code plugin that audits vibe-coded apps for secrets, auth gaps, CVEs, and OWASP Top 10 issues — with fixes scaled to your app type.",
       "ogImage": "/assets/brand/plugins/vibe-sec-banner-1280x640.png",
-      "eyebrow": "626Labs · Claude Code plugin · pre-release",
+      "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Security audit for the app your AI just shipped.",
       "subhead": "vibe-sec scans vibe-coded apps for the predictable security gaps AI prototyping leaves behind &mdash; secrets in source, sketchy auth, stale dependencies, open CORS &mdash; and generates fixes proportional to what your app actually needs. For solo builders shipping fast and not wanting to get burned.",
-      "heroMeta": ["plugin v0.0.2", "CLI v0.1.1 live", "6 commands planned"],
+      "heroMeta": ["v0.6.0", "9 commands", "tier-aware", "MIT"],
       "ctas": {
-        "primary": { "label": "Get the CLI" },
+        "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-sec" }
       },
       "terminal": {
         "label": "vibe-sec ~",
         "lines": [
-          "<span class=\"prompt\">$</span> <span class=\"cmd\">npm install -g @esthernandez/vibe-sec-cli</span>",
-          "<span class=\"prompt\">$</span> <span class=\"cmd\">vibe-sec scan .</span>",
-          "&nbsp;",
-          "  <span class=\"agent\">vibe-sec audit</span> · v0.1.1",
-          "  247 files scanned",
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-sec:scan</span>",
+          "<span class=\"agent\">vibe-sec v0.6.0</span> · classifying app, then scanning...",
+          "  &rarr; tier: <span class=\"key\">public-facing</span> · 247 files",
           "&nbsp;",
           "  <span class=\"key\">CRITICAL</span>  OPENAI_API_KEY            <span class=\"path\">src/lib/ai.ts:14</span>",
           "  <span class=\"key\">CRITICAL</span>  DATABASE_URL_W/_CREDS     <span class=\"path\">.env.local:3</span>",
           "  <span class=\"muted\">HIGH</span>      GITHUB_PAT_CLASSIC        <span class=\"path\">scripts/deploy.js:8</span>",
           "&nbsp;",
-          "  &rarr; JSON report: <span class=\"path\">.vibe-sec/state/audit.json</span><span class=\"term-cursor\"></span>"
+          "  &rarr; four-band report: <span class=\"path\">.vibe-sec/state/audit.json</span><span class=\"term-cursor\"></span>"
         ]
       },
       "sections": [
@@ -389,19 +388,28 @@
           "type": "cards",
           "eyebrow": "01 · What it does",
           "heading": "The predictable fingerprint of an AI-built app — found and fixed.",
-          "lead": "When an LLM builds your app, it optimizes for a working demo. vibe-sec knows the gap between that and a deployable system, and works through it systematically. Commands below are the design — the plugin is pre-release; the CLI scanner ships today.",
+          "lead": "When an LLM builds your app, it optimizes for a working demo. vibe-sec classifies the gap between that and a deployable system, then works through it systematically &mdash; deferring to gitleaks, OSV-Scanner, and Semgrep when they're installed, and falling back to an in-house baseline when they're not.",
           "cards": [
-            { "command": "/vibe-sec:scan", "title": "Full security scan.", "desc": "Classifies app type and deployment context, then runs the three-layer audit &mdash; hygiene (secrets, headers, CORS), architecture (auth, validation, authorization), and dependency CVEs. Findings prioritized by tier, not an abstract ideal." },
-            { "command": "/vibe-sec:fix", "title": "Generate and apply fixes.", "desc": "Automated for high-confidence hygiene issues (gitignore entries, security headers, removing hardcoded secrets); guided templates for architectural issues." },
-            { "command": "/vibe-sec:audit", "title": "Deep dependency audit.", "desc": "CVE cross-reference against direct and transitive deps, lock-file integrity, pinned-vs-floating audit, and typosquat detection." },
-            { "command": "/vibe-sec:threat-model", "title": "Guided threat modeling.", "desc": "STRIDE-style analysis from your app's actual surface area. Outputs a document vibe-doc can render." },
-            { "command": "/vibe-sec:check", "title": "CI pass/fail gate.", "desc": "CI-safe exit codes against your app's security tier. Drops into a GitHub Action without configuration." },
-            { "command": "/vibe-sec:status", "title": "Security posture summary.", "desc": "Last scan, open findings by severity, fixes applied vs deferred, and threat-model status." }
-          ]
+            { "command": "/vibe-sec:scan", "title": "Fast secret scan.", "desc": "Defers to gitleaks / trufflehog when present, runs an in-house Layer A scanner when not. Classifies the app first so every finding is weighted by deployment tier, not an abstract ideal." },
+            { "command": "/vibe-sec:audit", "title": "Full tier-calibrated audit.", "desc": "One pass across all ten concerns &mdash; secrets, dependencies, supply chain, config posture, crypto/PII, auth, the OWASP top 10, rate-limiting, and more &mdash; resolved into a single report across four severity bands." },
+            { "command": "/vibe-sec:deps", "title": "Dependency + supply-chain check.", "desc": "CVE cross-reference against direct and transitive deps, lockfile integrity, pinned-vs-floating audit, and typosquat detection &mdash; fast enough to run on every change." },
+            { "command": "/vibe-sec:fix", "title": "Confidence-routed remediation.", "desc": "Automated for high-confidence hygiene (gitignore entries, security headers, secrets out of source); guided templates for architectural issues. Destructive actions are gated behind explicit overrides." },
+            { "command": "/vibe-sec:gate", "title": "CI pass/fail gate.", "desc": "Exit codes 0/1/2 against your app's tier, with GitHub Actions annotations. Drops into a workflow without configuration." },
+            { "command": "/vibe-sec:threat-model", "title": "Threat-model synthesis.", "desc": "STRIDE / DREAD analysis from your app's real surface area. Outputs a Mermaid diagram plus Threat Dragon JSON you can open and edit." }
+          ],
+          "mini": {
+            "heading": "Three more commands.",
+            "hint": "Run any directly — no scan required.",
+            "items": [
+              { "name": "/vibe-sec", "desc": "Router. State-aware next-step for your security posture." },
+              { "name": ":posture", "desc": "Read-only tier-aware summary from cached state — no re-scan." },
+              { "name": ":research", "desc": "Re-run one concern's domain research to refresh the living briefs." }
+            ]
+          }
         },
         {
           "type": "prose",
-          "eyebrow": "02 · The design",
+          "eyebrow": "02 · How it works",
           "heading": "Three layers, one classifier, fixes you can ship.",
           "paragraphs": [
             "vibe-sec separates security into three layers that compound. <strong>Hygiene</strong> is fully automatable: secrets out of source, headers added, CORS locked down. <strong>Architecture</strong> requires understanding how the app is built &mdash; does the auth actually protect the routes it claims to? <strong>Threat modeling</strong> asks what the realistic attack vectors are given this app's deployment context, and proposes a model for you to validate.",
@@ -411,11 +419,9 @@
         }
       ],
       "install": {
-        "stable": "npm install -g @esthernandez/vibe-sec-cli\nvibe-sec scan .",
-        "stableBlurb": "The CLI secret scanner ships today. The full Claude Code plugin is pre-release.",
-        "canary": "/plugin marketplace add estevanhernandez-stack-ed/vibe-sec\n/plugin install vibe-sec",
-        "canaryBlurb": "Track the plugin as it lands — commands roll out from the framework spec.",
-        "note": "Plugin v0.0.2 reserves the slot; the CLI is the working artifact for now."
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-sec\n/plugin install vibe-sec",
+        "stableBlurb": "Nine commands, tier-aware. Latest main from the vibe-sec repo; a tagged release promotes it to the aggregated vibe-plugins marketplace.",
+        "note": "Prefer a standalone binary for CI? npm install -g @esthernandez/vibe-sec-cli runs the secret scanner with no Claude Code required. vibe-sec defers to gitleaks, OSV-Scanner, and Semgrep when they're present."
       }
     },
 
@@ -678,6 +684,67 @@
         "canary": "/plugin marketplace add estevanhernandez-stack-ed/vibe-taker\n/plugin install vibe-taker",
         "canaryBlurb": "Tracks the solo repo's main branch.",
         "note": "The library lives at ~/.vibe-taker/library/ — portable across every repo you work in."
+      }
+    },
+
+    "vibe-wrap": {
+      "name": "vibe-wrap",
+      "metaTitle": "vibe-wrap · Sessions wrap themselves · 626Labs",
+      "ogTitle": "vibe-wrap · Sessions wrap themselves",
+      "metaDescription": "Claude Code plugin for end-of-session wrap-ups. Reads the breadcrumb trail your toolkit already left — multi-repo aware — surfaces what shipped, what's uncommitted, what's unpushed, then gates commit + push. MIT. 626Labs.",
+      "ogImage": "/assets/brand/plugins/vibe-wrap-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Sessions wrap themselves.",
+      "subhead": "vibe-wrap reads the breadcrumb trail your toolkit already left &mdash; instead of cold-reconstructing from git log and memory. One gesture at session end: what shipped across every repo you touched, what's still uncommitted, what's still unpushed &mdash; plus a written handoff you can read, share, or paste into a status update.",
+      "heroMeta": ["v0.2.1", "4 commands", "multi-repo", "MIT"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-wrap" }
+      },
+      "terminal": {
+        "label": "vibe-wrap ~",
+        "lines": [
+          "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-wrap</span>",
+          "<span class=\"agent\">[vibe-wrap]</span> Reading the trail...",
+          "  &rarr; breadcrumbs: <span class=\"key\">38</span> from <span class=\"path\">cart, doc, test</span>",
+          "  &rarr; repos touched: <span class=\"path\">hub, vibe-sec, celestia3</span>",
+          "&nbsp;",
+          "  <span class=\"agent\">What shipped</span> &mdash; 14 commits across 3 repos",
+          "  <span class=\"agent\">Still uncommitted</span> &mdash; 1 file <span class=\"muted\">(config.json)</span>",
+          "  <span class=\"agent\">Still unpushed</span> &mdash; 2 commits on <span class=\"path\">hub</span>",
+          "&nbsp;",
+          "  Wrote <span class=\"path\">docs/session-wraps/2026-05-23.md</span>",
+          "  Commit the uncommitted file? [y/N]: <span class=\"cmd\">y</span><span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "One gesture at session end.",
+          "lead": "vibe-wrap reads the trail sibling plugins already wrote, renders a handoff doc, then gates commit and push — every gate defaults to no-action.",
+          "cards": [
+            { "command": "/vibe-wrap", "title": "Wrap the session.", "desc": "Reads the breadcrumb trail, sibling session-logs, git state across every repo the session touched, and your decision log &mdash; then renders a handoff doc naming what shipped, what's still uncommitted, and what's still unpushed. Gates commit + push interactively, scoped to the current repo." },
+            { "command": "/vibe-wrap:status", "title": "Check the trail mid-session.", "desc": "Read-only, under three seconds. Shows breadcrumb count, which sibling plugins were detected, friction signals, and decisions logged so far &mdash; before you commit to the full wrap." },
+            { "command": "/vibe-wrap:evolve-wrap", "title": "Improve the plugin itself.", "desc": "L3 self-evolution. Reads vibe-wrap's own session and friction logs plus the last 30 days of wrap docs, then proposes edits to its own SKILLs and templates. Never auto-applies." },
+            { "command": "/vibe-wrap:plant", "title": "Drop a breadcrumb.", "desc": "Internal &mdash; sibling plugins call it at command-start to mark the trail, no-op-safe when vibe-wrap isn't installed. The opt-in contract that makes a richer wrap possible." }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it's built",
+          "heading": "Read wide, mutate narrow.",
+          "paragraphs": [
+            "End-of-session reconstruction is expensive when work hasn't been committed in steady passes. vibe-wrap solves it with a <strong>breadcrumb pattern</strong>: sibling vibe plugins already write structured session-logs, friction, and wins as part of their own self-evolution loop, so vibe-wrap reads that trail at session end. Zero coupling, zero extra instrumentation &mdash; when a sibling is absent, the wrap just gets thinner.",
+            "It reads across every repo the session touched but only ever mutates the one you're in. <strong>What shipped</strong> and <strong>still unpushed</strong> span every sibling repo with commits in the session window; the commit and push gates stay scoped to the current repo. The <strong>bumper-lanes invariant</strong> holds throughout &mdash; every gate defaults to no-action, and secret-pattern matches require a second confirmation before anything moves."
+          ],
+          "callout": "Pluggable decision log: Markdown (default), JSONL, 626Labs MCP, or off. Nothing leaves your machine unless you wire the MCP bridge."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-wrap\n/plugin install vibe-wrap",
+        "stableBlurb": "Latest main from the vibe-wrap repo. A tagged release promotes it to the aggregated vibe-plugins marketplace.",
+        "note": "Python 3.11+ and Git on PATH. Pure stdlib — no third-party dependencies. 626Labs MCP optional (one of four decision-log backends)."
       }
     }
   }

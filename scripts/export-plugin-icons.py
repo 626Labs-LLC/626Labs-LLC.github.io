@@ -14,6 +14,8 @@ Plugins:
   vibe-sec           → shield with center dot
   vibe-thesis        → page with footnote markers
   thesis-engine      → cog feeding a page
+  vibe-walk          → two staggered footprints
+  vibe-wrap          → breadcrumb trail into a wrapped summary card
 
 Outputs (under assets/brand/plugins/):
   <id>-banner-1500x500.png — repo README banner
@@ -394,6 +396,27 @@ def glyph_engine(primary, secondary):
     return img
 
 
+def glyph_wrap(primary, secondary):
+    """A breadcrumb trail rising into a wrapped summary card with a check —
+    the session wraps itself because the trail is already there.
+    (vibe-wrap: sessions wrap themselves when the trail is already there.)"""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    # The wrap card on the right — the session summary that materializes.
+    L, T, R, B = 92, 56, 168, 144
+    draw.rounded_rectangle([L, T, R, B], radius=12, outline=primary + (255,), width=3)
+    # Checkmark inside the card — wrapped, accounted for.
+    draw.line([(108, 102), (122, 120), (152, 78)],
+              fill=secondary + (255,), width=4, joint="curve")
+    # Breadcrumb trail rising from lower-left into the card (dots grow inward).
+    for i, (x, y) in enumerate([(30, 152), (50, 134), (70, 114)]):
+        r = 5 + i
+        draw.ellipse([x - r, y - r, x + r, y + r], fill=secondary + (255,))
+    # Connector from the last crumb to the card edge.
+    draw.line([(76, 108), (92, 92)], fill=secondary + (200,), width=2)
+    return img
+
+
 GLYPHS = {
     "node_graph":   glyph_cartographer,
     "compass":      glyph_iterate,
@@ -406,6 +429,7 @@ GLYPHS = {
     "scroll":       glyph_thesis,
     "engine_gear":  glyph_engine,
     "footprints":   glyph_walk,
+    "wrap":         glyph_wrap,
 }
 
 
@@ -463,6 +487,11 @@ PLUGINS = [
         "id": "vibe-walk", "name": "VIBE WALK",
         "tagline": "tours users actually finish",
         "glyph": "footprints", "primary": CYAN, "secondary": MAGENTA,
+    },
+    {
+        "id": "vibe-wrap", "name": "VIBE WRAP",
+        "tagline": "sessions wrap themselves",
+        "glyph": "wrap", "primary": CYAN, "secondary": MAGENTA,
     },
 ]
 
