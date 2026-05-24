@@ -223,6 +223,15 @@ PRODUCT_SIGILS = {
         '<svg class="ic-lg ic" viewBox="0 0 24 24">'
         '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
     ),
+    "vibe-wrap": (
+        # Breadcrumb trail rising into a wrapped summary card with a check.
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<rect x="10.5" y="7" width="10.5" height="12" rx="2"/>'
+        '<path d="M13 13.2l1.7 1.9 3.3-3.9"/>'
+        '<circle cx="3.4" cy="20.2" r="0.95" fill="currentColor" stroke="none"/>'
+        '<circle cx="6.4" cy="17.4" r="0.95" fill="currentColor" stroke="none"/>'
+        '<circle cx="9.4" cy="14.6" r="0.95" fill="currentColor" stroke="none"/></svg>'
+    ),
     "rbx15-shirt-pants": (
         # T-shirt outline
         '<svg class="ic-lg ic" viewBox="0 0 24 24">'

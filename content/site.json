@@ -404,16 +404,16 @@
           "tone": "magenta"
         },
         {
-          "label": "Coming soon",
-          "tone": "wip"
+          "label": "Live",
+          "tone": "live"
         }
       ],
-      "status": "wip",
+      "status": "live",
       "repo": "estevanhernandez-stack-ed/vibe-sec",
       "npm": "@esthernandez/vibe-sec",
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-sec",
       "claudeCode": true,
-      "meta": "/vibe-sec · drafting",
+      "meta": "<code>/vibe-sec</code> · tier-aware security audit",
       "screenshots": [],
       "productPage": "/vibe-sec/"
     },
@@ -444,6 +444,25 @@
       "anthropicApproved": true,
       "meta": "<code>/vibe-taker</code> · cross-repo feature transplant",
       "productPage": "/vibe-taker/",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-wrap",
+      "title": "Vibe Wrap",
+      "tagline": "Sessions wrap themselves when the trail is already there.",
+      "description": "End-of-session wrap-up that reads the breadcrumb trail your toolkit already left instead of cold-reconstructing from git log. Multi-repo aware — it surfaces what shipped across every repo you touched, what's still uncommitted, and what's still unpushed, then gates commit and push on the current repo only. The result is a written record you can read, share, or paste into a status update.",
+      "tags": [
+        { "label": "Plugin", "tone": "cyan" },
+        { "label": "session-wrap", "tone": "magenta" },
+        { "label": "Live", "tone": "live" }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-wrap",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-wrap",
+      "claudeCode": true,
+      "meta": "<code>/vibe-wrap</code> · end-of-session handoff",
+      "productPage": "/vibe-wrap/",
       "screenshots": []
     },
     {

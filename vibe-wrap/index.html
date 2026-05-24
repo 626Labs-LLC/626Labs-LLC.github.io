@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vibe-cartographer · Vibe coding with a map. · 626Labs</title>
-  <meta name="description" content="Vibe Cartographer is a Claude Code plugin: 12 slash commands guiding you from idea to shipped app with spec-driven vibe coding. MIT. 626Labs." />
-  <link rel="canonical" href="https://626labs.dev/vibe-cartographer/" />
+  <title>vibe-wrap · Sessions wrap themselves · 626Labs</title>
+  <meta name="description" content="Claude Code plugin for end-of-session wrap-ups. Reads the breadcrumb trail your toolkit already left — multi-repo aware — surfaces what shipped, what&#x27;s uncommitted, what&#x27;s unpushed, then gates commit + push. MIT. 626Labs." />
+  <link rel="canonical" href="https://626labs.dev/vibe-wrap/" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
-  <meta property="og:title" content="vibe-cartographer · Vibe coding with a map." />
-  <meta property="og:description" content="Vibe Cartographer is a Claude Code plugin: 12 slash commands guiding you from idea to shipped app with spec-driven vibe coding. MIT. 626Labs." />
-  <meta property="og:url" content="https://626labs.dev/vibe-cartographer/" />
-  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-cartographer-banner-1280x640.png" />
+  <meta property="og:title" content="vibe-wrap · Sessions wrap themselves" />
+  <meta property="og:description" content="Claude Code plugin for end-of-session wrap-ups. Reads the breadcrumb trail your toolkit already left — multi-repo aware — surfaces what shipped, what&#x27;s uncommitted, what&#x27;s unpushed, then gates commit + push. MIT. 626Labs." />
+  <meta property="og:url" content="https://626labs.dev/vibe-wrap/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-wrap-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="vibe-cartographer · Vibe coding with a map." />
-  <meta name="twitter:description" content="Vibe Cartographer is a Claude Code plugin: 12 slash commands guiding you from idea to shipped app with spec-driven vibe coding. MIT. 626Labs." />
-  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-cartographer-banner-1280x640.png" />
+  <meta name="twitter:title" content="vibe-wrap · Sessions wrap themselves" />
+  <meta name="twitter:description" content="Claude Code plugin for end-of-session wrap-ups. Reads the breadcrumb trail your toolkit already left — multi-repo aware — surfaces what shipped, what&#x27;s uncommitted, what&#x27;s unpushed, then gates commit + push. MIT. 626Labs." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-wrap-banner-1280x640.png" />
 
   <style>
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
@@ -248,8 +248,8 @@
         </a>
         <span class="brand-sep" aria-hidden="true">/</span>
         <span class="brand-current">
-          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-cartographer-icon-transparent-512.png" alt="" /></span>
-          <span>vibe-cartographer</span>
+          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-wrap-icon-transparent-512.png" alt="" /></span>
+          <span>vibe-wrap</span>
         </span>
       </div>
       <a href="#install" class="btn btn-ghost">Install</a>
@@ -263,13 +263,13 @@
         <div class="hero-grid">
           <div class="hero-left">
             <span class="eyebrow">626Labs · Claude Code plugin</span>
-            <h1>Vibe coding with a map.</h1>
-            <p class="hero-subhead">Twelve slash commands that take you from idea spark to shipped app &mdash; spec-first, persona-aware, with persistent memory that gets sharper every run. Built for builders who move fast and don't want to lose the thread.</p>
+            <h1>Sessions wrap themselves.</h1>
+            <p class="hero-subhead">vibe-wrap reads the breadcrumb trail your toolkit already left &mdash; instead of cold-reconstructing from git log and memory. One gesture at session end: what shipped across every repo you touched, what's still uncommitted, what's still unpushed &mdash; plus a written handoff you can read, share, or paste into a status update.</p>
             <div class="hero-ctas">
-              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-cartographer" class="btn btn-ghost">View on GitHub</a>
+              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-wrap" class="btn btn-ghost">View on GitHub</a>
             </div>
             <div class="hero-meta">
-              <span>v1.8.0</span><span>·</span><span>12 commands</span><span>·</span><span>MIT</span><span>·</span><span>Level 3</span>
+              <span>v0.2.1</span><span>·</span><span>4 commands</span><span>·</span><span>multi-repo</span><span>·</span><span>MIT</span>
             </div>
           </div>
 
@@ -279,23 +279,20 @@
                 <span class="term-dot r"></span>
                 <span class="term-dot y"></span>
                 <span class="term-dot g"></span>
-                <span class="term-label">vibe-cartographer ~</span>
+                <span class="term-label">vibe-wrap ~</span>
               </div>
               <div class="term-body">
-                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-cartographer:onboard</span></div>
-                <div><span class="agent">Cart v1.8.0</span> &mdash; let's plot your course.</div>
-                <div>  What are you working on?</div>
+                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-wrap</span></div>
+                <div><span class="agent">[vibe-wrap]</span> Reading the trail...</div>
+                <div>  &rarr; breadcrumbs: <span class="key">38</span> from <span class="path">cart, doc, test</span></div>
+                <div>  &rarr; repos touched: <span class="path">hub, vibe-sec, celestia3</span></div>
                 <div>&nbsp;</div>
-                <div><span class="prompt">&gt;</span> A CLI that scrapes structured data from job boards.</div>
+                <div>  <span class="agent">What shipped</span> &mdash; 14 commits across 3 repos</div>
+                <div>  <span class="agent">Still uncommitted</span> &mdash; 1 file <span class="muted">(config.json)</span></div>
+                <div>  <span class="agent">Still unpushed</span> &mdash; 2 commits on <span class="path">hub</span></div>
                 <div>&nbsp;</div>
-                <div>  Experience: junior / mid / senior? Pace: Learner or Builder?</div>
-                <div><span class="prompt">&gt;</span> Senior, Builder.</div>
-                <div>&nbsp;</div>
-                <div>  Pick a voice: Professor · Cohort · <span class="key">Superdev</span> · Architect · Coach</div>
-                <div><span class="prompt">&gt;</span> Superdev.</div>
-                <div>&nbsp;</div>
-                <div>  Profile written to <span class="path">docs/builder-profile.md</span>. <span class="ok">Ready.</span></div>
-                <div>  Run <span class="cmd">/vibe-cartographer:scope</span> to start shaping it.<span class="term-cursor"></span></div>
+                <div>  Wrote <span class="path">docs/session-wraps/2026-05-23.md</span></div>
+                <div>  Commit the uncommitted file? [y/N]: <span class="cmd">y</span><span class="term-cursor"></span></div>
               </div>
             </div>
           </div>
@@ -306,82 +303,34 @@
     <section class="work">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">01 · The build chain</span>
-          <h2>Twelve commands. One shipped app.</h2>
-          <p class="lead">Each command writes an artifact the next one reads — scope feeds the PRD, PRD feeds the spec, spec feeds the checklist — so you're never starting from a blank page mid-build.</p>
+          <span class="eyebrow">01 · What it does</span>
+          <h2>One gesture at session end.</h2>
+          <p class="lead">vibe-wrap reads the trail sibling plugins already wrote, renders a handoff doc, then gates commit and push — every gate defaults to no-action.</p>
         </div>
 
         <div class="cards-grid">
           <div class="card">
-            <span class="cmd">/vibe-cartographer:onboard</span>
-            <h3>Welcome and meet the builder.</h3>
-            <p class="desc">Profiles your experience, pacing, and persona choice, then writes a builder profile every downstream command reads.</p>
+            <span class="cmd">/vibe-wrap</span>
+            <h3>Wrap the session.</h3>
+            <p class="desc">Reads the breadcrumb trail, sibling session-logs, git state across every repo the session touched, and your decision log &mdash; then renders a handoff doc naming what shipped, what's still uncommitted, and what's still unpushed. Gates commit + push interactively, scoped to the current repo.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-cartographer:scope</span>
-            <h3>Brainstorm and focus your idea.</h3>
-            <p class="desc">Brainstorm partner mode &mdash; expands before it constrains. Interviews you, then writes docs/scope.md.</p>
+            <span class="cmd">/vibe-wrap:status</span>
+            <h3>Check the trail mid-session.</h3>
+            <p class="desc">Read-only, under three seconds. Shows breadcrumb count, which sibling plugins were detected, friction signals, and decisions logged so far &mdash; before you commit to the full wrap.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-cartographer:prd</span>
-            <h3>Turn scope into requirements.</h3>
-            <p class="desc">Surfaces every ambiguity and edge case before code exists. Writes docs/prd.md with testable acceptance criteria.</p>
+            <span class="cmd">/vibe-wrap:evolve-wrap</span>
+            <h3>Improve the plugin itself.</h3>
+            <p class="desc">L3 self-evolution. Reads vibe-wrap's own session and friction logs plus the last 30 days of wrap docs, then proposes edits to its own SKILLs and templates. Never auto-applies.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-cartographer:spec</span>
-            <h3>Blueprint the architecture.</h3>
-            <p class="desc">Translates the PRD into a technical blueprint &mdash; stack, data flow, file structure. Writes docs/spec.md.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-cartographer:checklist</span>
-            <h3>Sequence the build plan.</h3>
-            <p class="desc">Co-designs a dependency-aware, riskiest-item-first build sequence. You pick step-by-step or autonomous here.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-cartographer:build</span>
-            <h3>Build the app.</h3>
-            <p class="desc">Executes the checklist in your chosen mode. Step-by-step pauses at each item; autonomous runs straight through.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-cartographer:iterate</span>
-            <h3>Optional polish pass.</h3>
-            <p class="desc">Compressed planning loop after the core build. Surfaces Tier 1/2/3 polish candidates from the build's open flags.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-cartographer:reflect</span>
-            <h3>Retro and peer review.</h3>
-            <p class="desc">Post-ship retro: a conversational check-in, then a qualitative review of your build against the eval rubric.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-cartographer:evolve</span>
-            <h3>Propose self-improvements.</h3>
-            <p class="desc">Reads session logs and friction signals, surfaces patterns, proposes concrete SKILL edits. Nothing auto-applies.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-cartographer:vitals</span>
-            <h3>Self-diagnostic health check.</h3>
-            <p class="desc">Eight read-only checks across plugin files, profile, and logs. Offers matching auto-fixes with explicit confirmation.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-cartographer:friction</span>
-            <h3>Inspect the friction log.</h3>
-            <p class="desc">Read-only view into the friction log, grouped by type with confidence. Filterable by project, type, and days.</p>
-          </div>
-
-          <div class="card">
-            <span class="cmd">/vibe-cartographer:coder-voice</span>
-            <h3>Capture your coder voice.</h3>
-            <p class="desc">Writes a voice block so the agent answers in your voice during autonomous work. Personal sweep or preset cutter.</p>
+            <span class="cmd">/vibe-wrap:plant</span>
+            <h3>Drop a breadcrumb.</h3>
+            <p class="desc">Internal &mdash; sibling plugins call it at command-start to mark the trail, no-op-safe when vibe-wrap isn't installed. The opt-in contract that makes a richer wrap possible.</p>
           </div>
         </div>
       </div>
@@ -390,16 +339,16 @@
     <section class="brain">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">02 · The brain</span>
-          <h2>A plugin that learns from every run.</h2>
+          <span class="eyebrow">02 · How it&#x27;s built</span>
+          <h2>Read wide, mutate narrow.</h2>
         </div>
         <div class="brain-grid">
           <div>
-            <p>Vibe Cartographer is built on the <strong>Self-Evolving Plugin Framework</strong> &mdash; the thesis that a plugin should be more useful on its tenth run than its first, not because you learned it, but because it learned you. Three capabilities drive that: self-repair, self-teach, and self-evolve. The deepest is self-evolve: <strong>/evolve</strong> reads your session logs and friction signals, then proposes concrete edits to its own commands &mdash; with your consent, one change at a time.</p>
-            <p>As of v1.8.0, Cart is at <strong>Level 3</strong> of the maturity ladder. It shares a unified builder profile with the rest of the family &mdash; onboard once, and your persona, experience level, and preferences carry across every plugin.</p>
+            <p>End-of-session reconstruction is expensive when work hasn't been committed in steady passes. vibe-wrap solves it with a <strong>breadcrumb pattern</strong>: sibling vibe plugins already write structured session-logs, friction, and wins as part of their own self-evolution loop, so vibe-wrap reads that trail at session end. Zero coupling, zero extra instrumentation &mdash; when a sibling is absent, the wrap just gets thinner.</p>
+            <p>It reads across every repo the session touched but only ever mutates the one you're in. <strong>What shipped</strong> and <strong>still unpushed</strong> span every sibling repo with commits in the session window; the commit and push gates stay scoped to the current repo. The <strong>bumper-lanes invariant</strong> holds throughout &mdash; every gate defaults to no-action, and secret-pattern matches require a second confirmation before anything moves.</p>
           </div>
           <div>
-            <div class="callout">No telemetry. Session data stays on your machine.</div>
+            <div class="callout">Pluggable decision log: Markdown (default), JSONL, 626Labs MCP, or off. Nothing leaves your machine unless you wire the MCP bridge.</div>
           </div>
         </div>
       </div>
@@ -415,15 +364,15 @@
         <div class="install-grid solo">
           <div class="card install-card">
             <h3>Stable <span class="badge">marketplace</span></h3>
-            <p class="blurb">Tagged releases. Also on npm: @esthernandez/vibe-cartographer.</p>
+            <p class="blurb">Latest main from the vibe-wrap repo. A tagged release promotes it to the aggregated vibe-plugins marketplace.</p>
             <div class="codeblock">
               <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
-              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer
-/plugin install vibe-cartographer@vibe-cartographer</pre>
+              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-wrap
+/plugin install vibe-wrap</pre>
             </div>
           </div>
         </div>
-        <p class="install-note">Main is the canary channel; tagged versions are stable.</p>
+        <p class="install-note">Python 3.11+ and Git on PATH. Pure stdlib — no third-party dependencies. 626Labs MCP optional (one of four decision-log backends).</p>
       </div>
     </section>
 
@@ -436,12 +385,11 @@
         <p class="family-lead">Vibe Plugins are a coordinated family &mdash; installed independently, composed when present.</p>
 
         <div class="family-grid">
-          <a href="/vibe-cartographer/" class="family-card here">
+          <a href="/vibe-cartographer/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-cartographer-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-cartographer</div>
               <div class="role">idea → v1</div>
-            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-iterate/" class="family-card">
@@ -493,11 +441,12 @@
               <div class="role">onboarding tours</div>
             </div>
           </a>
-          <a href="/vibe-wrap/" class="family-card">
+          <a href="/vibe-wrap/" class="family-card here">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-wrap-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-wrap</div>
               <div class="role">end-of-session wrap-up</div>
+            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/thesis-engine/" class="family-card">
