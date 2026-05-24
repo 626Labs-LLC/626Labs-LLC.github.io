@@ -30,7 +30,7 @@ DATA = ROOT / "content" / "plugin-pages.json"
 # ── Shared CSS (identical on every plugin page + the family index) ──────
 STYLE = """
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    @import url('/fonts/fonts.css');
 
     :root {
       --navy-deep: #0f1f31;
@@ -332,6 +332,8 @@ def render_head(p):
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/SpaceGrotesk-Variable.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-Variable.woff2" crossorigin />
   <title>{title}</title>
   <meta name="description" content="{desc}" />
   <link rel="canonical" href="{url}" />
