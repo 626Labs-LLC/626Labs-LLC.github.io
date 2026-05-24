@@ -683,6 +683,21 @@ def render_play_section(play: dict) -> str:
     lead = esc(play.get("lead", "Try one."))
     widgets = play.get("widgets") or []
 
+    # Optional standalone-page link, rendered beneath the lead in the
+    # section head. Shape: play.link = {"href": "...", "label": "..."}.
+    link = play.get("link") or {}
+    link_href = link.get("href")
+    link_label = link.get("label")
+    if link_href and link_label:
+        aside = (
+            '<div class="play-aside">\n'
+            f'        <p>{esc(lead)}</p>\n'
+            f'        <a class="play-link" href="{attr(link_href)}">{esc(link_label)}</a>\n'
+            '      </div>'
+        )
+    else:
+        aside = f'<p>{esc(lead)}</p>'
+
     # Widget mount-points (empty <div>s keyed by id).
     mounts = "\n        ".join(
         f'<div id="{attr(w.get("id", ""))}" class="play-widget"></div>'
@@ -729,7 +744,7 @@ def render_play_section(play: dict) -> str:
         <div class="eyebrow"><span>{eyebrow}</span><span class="line"></span></div>
         <h2>{headline}</h2>
       </div>
-      <p>{esc(lead)}</p>
+      {aside}
     </div>
     <div class="{grid_class}">
         {mounts}
