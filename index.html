@@ -1146,6 +1146,33 @@
       width: 100%;
       max-width: 420px;
     }
+    .play-aside {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--s-4);
+      max-width: 440px;
+    }
+    .play-link {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      border: 1px solid var(--border-2);
+      padding: 8px 14px;
+      border-radius: var(--r-md);
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .play-link:hover {
+      border-color: var(--border-accent);
+      background: rgba(23,212,250,.06);
+      color: var(--cyan-pale);
+    }
 
     /* ========== About / Manifesto ========== */
     section.manifesto {
@@ -2112,7 +2139,10 @@
         <div class="eyebrow"><span>05 · Play</span><span class="line"></span></div>
         <h2>Also, we make games.</h2>
       </div>
-      <p>A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).</p>
+      <div class="play-aside">
+        <p>A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).</p>
+        <a class="play-link" href="/bacon-trail/">Open full page ↗</a>
+      </div>
     </div>
     <div class="play-grid">
         <div id="bacon-widget" class="play-widget"></div>

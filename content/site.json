@@ -738,6 +738,10 @@
     "eyebrow": "05 · Play",
     "headline": "Also, we make games.",
     "lead": "A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).",
+    "link": {
+      "href": "/bacon-trail/",
+      "label": "Open full page ↗"
+    },
     "widgets": [
       {
         "id": "bacon-widget",
