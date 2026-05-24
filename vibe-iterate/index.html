@@ -91,6 +91,24 @@
     a { color: var(--cyan); text-decoration: none; }
     a:hover { text-decoration: underline; text-decoration-color: var(--magenta); }
 
+    .skip-link {
+      position: absolute; left: 8px; top: -52px; z-index: 200;
+      background: var(--cyan); color: var(--navy-deep);
+      padding: 8px 16px; border-radius: var(--r-md);
+      font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px;
+      transition: top 120ms ease;
+    }
+    .skip-link:focus { top: 8px; outline: 2px solid var(--ink-0); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
     .container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
 
     .eyebrow {
@@ -268,6 +286,7 @@
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <nav class="top">
     <div class="container row">
@@ -286,7 +305,7 @@
     </div>
   </nav>
 
-  <main>
+  <main id="main">
 
     <section class="hero">
       <div class="container">

@@ -70,6 +70,24 @@ STYLE = """
     a { color: var(--cyan); text-decoration: none; }
     a:hover { text-decoration: underline; text-decoration-color: var(--magenta); }
 
+    .skip-link {
+      position: absolute; left: 8px; top: -52px; z-index: 200;
+      background: var(--cyan); color: var(--navy-deep);
+      padding: 8px 16px; border-radius: var(--r-md);
+      font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px;
+      transition: top 120ms ease;
+    }
+    .skip-link:focus { top: 8px; outline: 2px solid var(--ink-0); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
     .container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
 
     .eyebrow {
@@ -354,6 +372,7 @@ def render_head(p):
   <style>{STYLE}  </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 """
 
 
@@ -589,7 +608,7 @@ def render_footer():
 
 
 def render_page(p, family):
-    parts = [render_head(p), render_nav(p), "\n  <main>\n", render_hero(p)]
+    parts = [render_head(p), render_nav(p), "\n  <main id=\"main\">\n", render_hero(p)]
     for s in p["sections"]:
         if s["type"] == "cards":
             parts.append(render_cards_section(s))
@@ -638,6 +657,7 @@ def render_index(data):
   <style>{STYLE}  </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 """
     nav = """
   <nav class="top">
@@ -683,7 +703,7 @@ def render_index(data):
       </div>
     </section>
 """
-    return head + nav + "\n  <main>\n" + hero + grid + "\n  </main>\n" + render_footer() + "\n</body>\n</html>\n"
+    return head + nav + "\n  <main id=\"main\">\n" + hero + grid + "\n  </main>\n" + render_footer() + "\n</body>\n</html>\n"
 
 
 def build():
