@@ -1257,6 +1257,47 @@ def render_atom_feed(stories: list[dict]) -> str:
     )
 
 
+# ─── sitemap (XML sitemap for search crawlers) ──────────────────────
+SITEMAP_PATH = ROOT / "sitemap.xml"
+# Directories that have an index.html but should NOT be advertised to
+# crawlers. Empty today — every public page is fair game. Add a dir name
+# here to keep a future preview/private surface out of the sitemap.
+SITEMAP_EXCLUDE: frozenset[str] = frozenset()
+
+
+def render_sitemap(root: Path = ROOT) -> str:
+    """Build an XML sitemap from the pages actually on disk.
+
+    Enumerates the root index.html plus every <dir>/index.html one level down,
+    mapping each to its clean GitHub Pages URL. Filesystem-derived so it never
+    drifts: add a plugin page directory and it appears here automatically.
+    Deterministic ordering (home first, then alphabetical) keeps --check idempotent.
+    """
+    pages: list[tuple[str, str, str]] = []  # (loc, changefreq, priority)
+    if (root / "index.html").exists():
+        pages.append((f"{SITE_URL}/", "daily", "1.0"))
+    for idx in sorted(root.glob("*/index.html"), key=lambda p: p.parent.name):
+        name = idx.parent.name
+        if name in SITEMAP_EXCLUDE:
+            continue
+        pages.append((f"{SITE_URL}/{name}/", "weekly", "0.8"))
+
+    urls = "\n".join(
+        "  <url>\n"
+        f"    <loc>{xesc(loc)}</loc>\n"
+        f"    <changefreq>{cf}</changefreq>\n"
+        f"    <priority>{pr}</priority>\n"
+        "  </url>"
+        for loc, cf, pr in pages
+    )
+    return (
+        '<?xml version="1.0" encoding="utf-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{urls}\n"
+        "</urlset>\n"
+    )
+
+
 # ─── section toggles ────────────────────────────────────────────────
 # Maps sections keys in site.json → DOM id of the <section> element.
 SECTION_IDS = {
@@ -1331,12 +1372,17 @@ def main(argv: list[str]) -> int:
     feed_new = render_atom_feed(stories)
     feed_old = FEED_PATH.read_text(encoding="utf-8") if FEED_PATH.exists() else None
 
+    sitemap_new = render_sitemap()
+    sitemap_old = SITEMAP_PATH.read_text(encoding="utf-8") if SITEMAP_PATH.exists() else None
+
     index_changed = out != src
     feed_changed = feed_new != feed_old
+    sitemap_changed = sitemap_new != sitemap_old
 
     if "--check" in argv:
         stale = [name for name, drifted in
-                 (("index.html", index_changed), ("feed.xml", feed_changed)) if drifted]
+                 (("index.html", index_changed), ("feed.xml", feed_changed),
+                  ("sitemap.xml", sitemap_changed)) if drifted]
         if stale:
             print(
                 f"{' and '.join(stale)} out of date relative to content. "
@@ -1344,7 +1390,7 @@ def main(argv: list[str]) -> int:
                 file=sys.stderr,
             )
             return 1
-        print("index.html and feed.xml are up to date.")
+        print("index.html, feed.xml and sitemap.xml are up to date.")
         return 0
 
     if index_changed:
@@ -1358,6 +1404,12 @@ def main(argv: list[str]) -> int:
         print(f"feed.xml rebuilt from {STORIES_DIR.relative_to(ROOT)}/")
     else:
         print("feed.xml already current — no change.")
+
+    if sitemap_changed:
+        SITEMAP_PATH.write_text(sitemap_new, encoding="utf-8")
+        print("sitemap.xml rebuilt from the page tree.")
+    else:
+        print("sitemap.xml already current — no change.")
     return 0
 
 

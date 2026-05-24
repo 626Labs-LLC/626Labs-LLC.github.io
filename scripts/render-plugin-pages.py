@@ -17,6 +17,7 @@ icon/banner via scripts/export-plugin-icons.py, then run this. See
 docs/vibe-plugins-pages.md.
 """
 import json
+import re
 import sys
 from html import escape
 from pathlib import Path
@@ -279,6 +280,48 @@ def icon_path(plugin_id):
     return f"/assets/brand/plugins/{plugin_id}-icon-transparent-512.png"
 
 
+def software_jsonld(p) -> str:
+    """SoftwareApplication structured data for a plugin landing page.
+
+    Built with json.dumps so descriptions (em-dashes, apostrophes) escape
+    correctly. softwareVersion is parsed from the leading vX.Y token in
+    heroMeta; license is emitted only when the plugin actually declares MIT
+    there (no guessing for the few that don't). Every family plugin is a free,
+    installable Claude Code developer tool, so offers + isAccessibleForFree are
+    accurate to assert across the board.
+    """
+    url = f"https://626labs.dev/{p['id']}/"
+    hero = [str(x) for x in p.get("heroMeta", [])]
+    version = next((x.lstrip("v") for x in hero if re.match(r"^v?\d+\.\d+", x)), None)
+    is_mit = any(x.upper() == "MIT" for x in hero)
+    data = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "@id": url + "#software",
+        "name": p["name"],
+        "description": p["metaDescription"],
+        "url": url,
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Claude Code",
+        "image": "https://626labs.dev" + p["ogImage"],
+        "isAccessibleForFree": True,
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "author": {
+            "@type": "Organization",
+            "@id": "https://626labs.dev/#org",
+            "name": "626 Labs",
+            "url": "https://626labs.dev/",
+        },
+    }
+    if version:
+        data["softwareVersion"] = version
+    if is_mit:
+        data["license"] = "https://opensource.org/licenses/MIT"
+    # <-escape any "<" so a description can never break out of the script tag.
+    payload = json.dumps(data, indent=2, ensure_ascii=False).replace("<", "\\u003c")
+    return f'  <script type="application/ld+json">\n{payload}\n  </script>\n'
+
+
 def render_head(p):
     title = e(p["metaTitle"])
     desc = e(p["metaDescription"])
@@ -307,6 +350,7 @@ def render_head(p):
   <meta name="twitter:description" content="{desc}" />
   <meta name="twitter:image" content="{og}" />
 
+{software_jsonld(p)}
   <style>{STYLE}  </style>
 </head>
 <body>
