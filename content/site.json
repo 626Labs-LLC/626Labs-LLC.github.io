@@ -137,7 +137,7 @@
       "flagship": true,
       "title": "Vibe Cartographer",
       "tagline": "Vibe coding with a map.",
-      "description": "{{fact:cmd_vibe-cartographer_word}} slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect — and the plugin remembers where you left off so you don't lose the thread between sessions.",
+      "description": "{{fact:cmd_vibe-cartographer_word}} slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect. Each step reads what the last one wrote, so the plan compounds instead of drifting, and it remembers where you left off between sessions. Pick a builder persona, keep a living architecture doc, run autonomous or step-by-step. Structure for vibe coding that doesn't kill the vibe.",
       "tags": [
         {
           "label": "Flagship",
@@ -186,7 +186,7 @@
       "id": "vibe-iterate",
       "title": "Vibe Iterate",
       "tagline": "Maintain your Atlas.",
-      "description": "Post-ship product iteration. Pick a banner mode — feature-add, competitive, ux-polish, bug-bash — or reach for a sidecar (:radar, :spy, :scan-releases, :rate, :ship, :upgrade). Ships one PR per session, regression-aware.",
+      "description": "What to build next, after the app ships. Pick a banner mode — feature-add, competitive, ux-polish, bug-bash — and it scans competitors, framework releases, and your own feedback, scores the candidates, and ships one regression-aware PR. Sidecars (:radar, :spy, :scan-releases, :rate, :ship, :upgrade) cover the in-between. Every iteration logs to an Atlas — what won, what didn't, and why — so the next call starts where the last one ended.",
       "tags": [
         {
           "label": "Plugin",
@@ -235,7 +235,7 @@
       "id": "vibe-keystone",
       "title": "Vibe Keystone",
       "tagline": "Map the repo before the agent starts.",
-      "description": "The bootstrap pass for any repo. Inventories the tech stack, side-tools, bot workflows, and the gotchas worth warning about — then drafts a 626Labs-pattern CLAUDE.md so the next agent lands oriented instead of blind.",
+      "description": "The bootstrap pass for any repo. Inventories the tech stack, side-tools, and bot workflows, then drafts a CLAUDE.md so the next agent lands oriented instead of blind. Interviews you for what it can't infer — org, decision surface, voice rules, persona — so the file reflects your conventions, not boilerplate. The keystone is the load-bearing file every later agent decision rests on; set it once and let it carry.",
       "tags": [
         {
           "label": "Plugin",
@@ -263,7 +263,7 @@
     {
       "id": "vibe-doc",
       "title": "Vibe Doc",
-      "description": "Point it at your codebase and it tells you which docs you're missing — ADRs, runbooks, threat models, specs — then writes them. Basically, the documentation pass you keep meaning to do.",
+      "description": "Point it at your codebase and it finds the docs you're missing — ADRs, runbooks, threat models, specs — then writes them from what's actually in the repo. Scans for gaps, scores deployment readiness, and drafts the pieces you keep meaning to write, asking you only for the calls a machine shouldn't make. A CI check keeps the set honest as the code moves.",
       "tags": [
         {
           "label": "Plugin",
@@ -413,7 +413,7 @@
     {
       "id": "vibe-sec",
       "title": "Vibe Sec",
-      "description": "The security gaps AI prototyping leaves behind are pretty predictable — leaked secrets, sketchy auth, missing input validation, stale dependencies. Vibe Sec finds them and writes the fix, scaled to where your app actually runs.",
+      "description": "The security gaps AI prototyping leaves behind are predictable — leaked secrets, sketchy auth, missing input validation, stale dependencies. Vibe Sec audits across ten concerns, calibrated to where your app actually runs, then writes the fix and routes it by confidence so nothing destructive lands on its own. Fast secret and dependency scans, a STRIDE threat model, and a CI gate that fails the build before the gap ships.",
       "tags": [
         {
           "label": "Plugin",
@@ -488,7 +488,7 @@
     {
       "id": "rbx15-shirt-pants",
       "title": "RBX15 Classic Shirt and Pants Maker",
-      "description": "Visual editor for Roblox R15 shirt and pants templates. Electron UI, Python Pillow compositing engine. Drag-and-drop layers, fullbleed / mirror / meme-tee presets, word art. Free on the Microsoft Store.",
+      "description": "Native desktop editor for Roblox Classic (R15) shirt and pants templates, built for the exact 585×559 template grid. Layer-based compositing with non-destructive adjustments — brightness, contrast, saturation, hue, and per-channel RGB shift, all real-time — plus drawing tools, fullbleed / mirror / meme-tee presets, and a word-art generator with 15 fonts. Built on Electron for Windows. Free on the Microsoft Store.",
       "tags": [
         {
           "label": "Windows",
