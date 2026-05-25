@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Press &amp; Brand Kit — 626 Labs</title>
+  <meta name="description" content="Logos, marks, colors, type, and boilerplate for 626 Labs — a Fort Worth studio building native apps, web tools, and Claude Code plugins. Download the brand assets and copy the boilerplate." />
+  <link rel="icon" type="image/png" href="favicon-626.png" />
+
+  <meta property="og:title" content="Press &amp; Brand Kit — 626 Labs" />
+  <meta property="og:description" content="Logos, marks, colors, type, and boilerplate for 626 Labs. Download the assets, copy the boilerplate." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://626labs.dev/press.html" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+  <meta name="robots" content="index, follow" />
+
+  <style>
+    /* 626 Labs Design System — see ~/.claude/skills/626labs-design + /Design */
+    @import url('/fonts/fonts.css');
+
+    :root {
+      --navy-deep: #0f1f31;
+      --navy-mid:  #192e44;
+      --navy-hi:   #223a54;
+      --navy-line: #2a3a5c;
+      --cyan:      #17d4fa;
+      --cyan-pale: #5ce6ff;
+      --cyan-dim:  #0fa8c9;
+      --magenta:   #f22f89;
+      --magenta-pale: #ff5aa3;
+      --ink-0:     #ffffff;
+      --ink-950:   #050c18;
+      --text:      #e8f2ff;
+      --text-sec:  #a8c2d9;
+      --text-dim:  #9fafc0;
+      --text-mute: #92a5bd;
+      --ok:        #2bd99a;
+      --warn:      #ffb454;
+
+      --bg-0: var(--navy-deep);
+      --bg-1: var(--navy-mid);
+      --bg-2: var(--navy-hi);
+      --fg-1: var(--text);
+      --fg-2: var(--text-sec);
+      --fg-3: var(--text-dim);
+      --fg-muted: var(--text-mute);
+
+      --border-1: rgba(255,255,255,.08);
+      --border-2: rgba(255,255,255,.14);
+      --border-strong: rgba(255,255,255,.24);
+      --border-accent: rgba(23,212,250,.45);
+
+      --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+      --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
+      --glow-cyan: 0 0 0 1px rgba(23,212,250,.35), 0 0 24px rgba(23,212,250,.35);
+      --glow-duo: 0 0 24px rgba(23,212,250,.22), 0 0 48px rgba(242,47,137,.16);
+      --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
+
+      --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+      --shadow-3: 0 12px 32px rgba(0,0,0,.55);
+
+      --ease-out: cubic-bezier(.2,.7,.2,1);
+      --dur-fast: 120ms;
+      --dur-med: 220ms;
+
+      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+      --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+      --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+      --r-pill: 999px;
+
+      --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg-0);
+      color: var(--fg-1);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    a.inline-link {
+      color: var(--cyan);
+      border-bottom: 1px solid rgba(23,212,250,.35);
+      transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+    }
+    a.inline-link:hover { color: var(--cyan-pale); border-bottom-color: var(--cyan-pale); }
+    h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
+
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 var(--s-8);
+    }
+
+    /* ========== Nav (mirrors index.html) ========== */
+    nav.nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(15, 31, 49, 0.72);
+      border-bottom: 1px solid var(--border-1);
+    }
+    .nav-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 var(--s-8);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-6);
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+    .nav-brand .brand-626 { color: var(--cyan); }
+    .nav-brand .brand-labs { color: var(--fg-1); }
+    .nav-links {
+      display: flex;
+      gap: var(--s-6);
+      font-size: 14px;
+      color: var(--fg-2);
+    }
+    .nav-links a {
+      position: relative;
+      padding: 6px 2px;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .nav-links a:hover { color: var(--fg-1); }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-950);
+      background: var(--cyan);
+      padding: 8px 14px;
+      border-radius: var(--r-md);
+      border: none;
+      box-shadow: 0 0 0 1px rgba(23,212,250,.4), 0 0 18px rgba(23,212,250,.25);
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .nav-cta:hover {
+      background: var(--cyan-pale);
+      box-shadow: 0 0 0 1px rgba(92,230,255,.55), 0 0 28px rgba(23,212,250,.5);
+    }
+    @media (max-width: 720px) { .nav-links { display: none; } }
+    .ic { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ========== Page header ========== */
+    header.page-hero {
+      position: relative;
+      padding: clamp(56px, 8vw, 96px) 0 var(--s-12);
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-1);
+    }
+    .page-hero-bg { position: absolute; inset: 0; pointer-events: none; }
+    .page-hero-bg .grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(23,212,250,.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(242,47,137,.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 75%);
+    }
+    .page-hero-bg .glow {
+      position: absolute;
+      top: -30%; right: -20%;
+      width: 70%; height: 100%;
+      background: radial-gradient(closest-side, rgba(23,212,250,.18), transparent 70%);
+      filter: blur(60px);
+    }
+    .page-hero-inner { position: relative; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-3);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--fg-3);
+      margin-bottom: var(--s-5);
+    }
+    .eyebrow .pulse {
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 10px var(--ok);
+    }
+    h1.page-title {
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+      margin: 0 0 var(--s-4);
+      color: var(--fg-1);
+    }
+    h1.page-title .accent {
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .page-lead {
+      font-size: clamp(16px, 1.6vw, 19px);
+      color: var(--fg-2);
+      max-width: 60ch;
+      margin: 0 0 var(--s-5);
+    }
+    .page-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--fg-3);
+      letter-spacing: 0.04em;
+    }
+    .page-meta .sep { margin: 0 var(--s-3); color: var(--text-mute); }
+
+    /* ========== Body sections ========== */
+    main.kit { padding: var(--s-12) 0 var(--s-16); }
+    main.kit h2 {
+      font-size: clamp(22px, 2.4vw, 28px);
+      line-height: 1.2;
+      margin: var(--s-16) 0 var(--s-2);
+      color: var(--fg-1);
+    }
+    main.kit h2:first-of-type { margin-top: 0; }
+    main.kit h2 .num {
+      font-family: var(--font-mono);
+      font-size: 0.6em;
+      color: var(--cyan);
+      margin-right: var(--s-3);
+      letter-spacing: 0.04em;
+      vertical-align: 0.15em;
+    }
+    main.kit .section-note {
+      color: var(--fg-2);
+      max-width: 68ch;
+      margin: 0 0 var(--s-6);
+    }
+    main.kit strong { color: var(--fg-1); font-weight: 600; }
+    main.kit hr { border: 0; height: 1px; background: var(--border-1); margin: var(--s-12) 0; }
+
+    /* ========== Boilerplate copy blocks ========== */
+    .copy-block {
+      position: relative;
+      margin: var(--s-4) 0;
+      padding: var(--s-5) var(--s-6);
+      border-radius: var(--r-lg);
+      background: var(--bg-1);
+      border: 1px solid var(--border-1);
+      box-shadow: var(--inner-stroke);
+    }
+    .copy-block .copy-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--fg-3);
+      margin-bottom: var(--s-3);
+    }
+    .copy-block p { margin: 0; color: var(--fg-1); }
+    .copy-btn {
+      position: absolute;
+      top: var(--s-4); right: var(--s-4);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--cyan);
+      background: rgba(23,212,250,.08);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--r-sm);
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .copy-btn:hover { background: rgba(23,212,250,.18); color: var(--cyan-pale); }
+
+    /* ========== Asset grid ========== */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: var(--s-5);
+      margin: var(--s-6) 0;
+    }
+    .asset-card {
+      border-radius: var(--r-lg);
+      background: var(--bg-1);
+      border: 1px solid var(--border-1);
+      overflow: hidden;
+      box-shadow: var(--inner-stroke);
+      transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+    }
+    .asset-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+    .asset-preview {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 150px;
+      padding: var(--s-6);
+      background:
+        radial-gradient(closest-side, rgba(23,212,250,.10), transparent 70%) -30% -40% / 80% 120% no-repeat,
+        radial-gradient(closest-side, rgba(242,47,137,.10), transparent 70%) 130% 140% / 80% 120% no-repeat,
+        var(--navy-deep);
+      border-bottom: 1px solid var(--border-1);
+    }
+    .asset-preview img { max-width: 100%; max-height: 120px; height: auto; display: block; }
+    .asset-preview.wide img { max-height: 86px; }
+    .asset-meta { padding: var(--s-4) var(--s-5) var(--s-5); }
+    .asset-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); }
+    .asset-spec {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--fg-3);
+      letter-spacing: 0.03em;
+      margin: 4px 0 var(--s-4);
+    }
+    .dl-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600;
+      color: var(--cyan);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--r-md);
+      padding: 6px 12px;
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .dl-btn:hover { background: rgba(23,212,250,.12); color: var(--cyan-pale); }
+
+    /* ========== Color swatches ========== */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: var(--s-4);
+      margin: var(--s-6) 0;
+    }
+    .swatch {
+      border-radius: var(--r-lg);
+      border: 1px solid var(--border-1);
+      overflow: hidden;
+      box-shadow: var(--inner-stroke);
+    }
+    .swatch .chip { height: 84px; }
+    .swatch .info { padding: var(--s-3) var(--s-4) var(--s-4); background: var(--bg-1); }
+    .swatch .sw-name { font-weight: 600; font-size: 14px; color: var(--fg-1); }
+    .swatch .sw-hex {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: var(--fg-3);
+      text-transform: uppercase;
+    }
+
+    /* ========== Type specimens ========== */
+    .type-row {
+      padding: var(--s-5) 0;
+      border-bottom: 1px solid var(--border-1);
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-role {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--cyan);
+      margin-bottom: var(--s-2);
+    }
+    .type-specimen { color: var(--fg-1); line-height: 1.1; }
+    .type-display { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.02em; }
+    .type-body    { font-family: var(--font-body); font-weight: 400; font-size: 22px; line-height: 1.5; }
+    .type-mono    { font-family: var(--font-mono); font-size: 20px; }
+    .type-name { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); margin-top: var(--s-2); }
+
+    /* ========== Usage guidelines ========== */
+    .guide-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-5);
+      margin: var(--s-6) 0;
+    }
+    @media (max-width: 680px) { .guide-cols { grid-template-columns: 1fr; } }
+    .guide {
+      border-radius: var(--r-lg);
+      background: var(--bg-1);
+      border: 1px solid var(--border-1);
+      padding: var(--s-5) var(--s-6);
+      box-shadow: var(--inner-stroke);
+    }
+    .guide h3 {
+      font-size: 15px;
+      margin: 0 0 var(--s-3);
+      display: flex; align-items: center; gap: var(--s-2);
+    }
+    .guide.do h3 { color: var(--ok); }
+    .guide.dont h3 { color: var(--magenta-pale); }
+    .guide ul { margin: 0; padding-left: var(--s-5); }
+    .guide li { margin: var(--s-2) 0; color: var(--fg-2); }
+
+    /* ========== Contact ========== */
+    .contact-card {
+      margin-top: var(--s-6);
+      padding: var(--s-5) var(--s-6);
+      border-radius: var(--r-lg);
+      background: var(--bg-1);
+      border: 1px solid var(--border-1);
+      box-shadow: var(--inner-stroke);
+    }
+    .contact-card .row { display: flex; gap: var(--s-3); align-items: baseline; flex-wrap: wrap; }
+    .contact-card .label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--fg-3);
+      min-width: 90px;
+    }
+    .contact-card .value { color: var(--fg-1); }
+
+    /* ========== Footer (mirrors index.html) ========== */
+    footer {
+      border-top: 1px solid var(--border-1);
+      padding: var(--s-8) 0;
+      background: var(--bg-0);
+    }
+    .footer-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 var(--s-8);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--s-6);
+      flex-wrap: wrap;
+    }
+    .footer-links {
+      display: flex;
+      gap: var(--s-5);
+      font-size: 13px;
+      color: var(--fg-3);
+      flex-wrap: wrap;
+    }
+    .footer-links a { color: var(--fg-3); transition: color var(--dur-fast) var(--ease-out); }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--fg-3);
+      letter-spacing: 0.02em;
+    }
+    .footer-meta .brand-tagline { color: var(--cyan); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html#top">
+      <svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+        <defs>
+          <linearGradient id="navg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#17d4fa"/>
+            <stop offset="100%" stop-color="#f22f89"/>
+          </linearGradient>
+        </defs>
+        <polygon points="16,3 28,10 28,22 16,29 4,22 4,10" fill="none" stroke="url(#navg)" stroke-width="1.6"/>
+        <circle cx="16" cy="16" r="3.2" fill="none" stroke="#17d4fa" stroke-width="1.3"/>
+        <path d="M8 16 L12.5 16 M19.5 16 L24 16 M16 8.5 L16 12.5 M16 19.5 L16 23.5" stroke="#f22f89" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <span><span class="brand-626">626</span><span class="brand-labs">Labs</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#work">Work</a>
+      <a href="index.html#thinking">Thinking</a>
+      <a href="index.html#lab">Lab</a>
+      <a href="index.html#about">About</a>
+      <a href="https://github.com/sponsors/estevanhernandez-stack-ed">Sponsor</a>
+    </div>
+    <a href="index.html#contact" class="nav-cta">
+      Get in touch
+      <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="page-hero-bg">
+    <div class="grid"></div>
+    <div class="glow"></div>
+  </div>
+  <div class="wrap page-hero-inner">
+    <div class="eyebrow">
+      <span class="pulse"></span>
+      <span>Brand · Press</span>
+    </div>
+    <h1 class="page-title">Press &amp; <span class="accent">Brand Kit</span></h1>
+    <p class="page-lead">
+      Everything you need to write about or link to 626 Labs — marks, colors, type, and boilerplate. Use the assets as-is; the only rule that matters is keep them legible and keep cyan and magenta together.
+    </p>
+    <p class="page-meta">
+      626 Labs LLC <span class="sep">·</span>
+      Fort Worth, Texas <span class="sep">·</span>
+      Imagine Something Else.
+    </p>
+  </div>
+</header>
+
+<main class="kit">
+  <div class="wrap">
+
+    <h2><span class="num">01</span>Boilerplate</h2>
+    <p class="section-note">Drop-in copy for an article, a directory listing, or a release note. Take whichever length fits.</p>
+
+    <div class="copy-block">
+      <div class="copy-label">One line</div>
+      <button class="copy-btn" type="button">Copy</button>
+      <p>626 Labs is a Fort Worth studio building native apps, web tools, and Claude Code plugins.</p>
+    </div>
+
+    <div class="copy-block">
+      <div class="copy-label">Short</div>
+      <button class="copy-btn" type="button">Copy</button>
+      <p>626 Labs is a Fort Worth, Texas studio that ships native apps, web tools, and Claude Code plugins — including the Vibe family that maps, tests, documents, and ships software alongside you. Tagline: Imagine Something Else.</p>
+    </div>
+
+    <div class="copy-block">
+      <div class="copy-label">Long</div>
+      <button class="copy-btn" type="button">Copy</button>
+      <p>626 Labs LLC is a builder-run studio out of Fort Worth, Texas, working across native Windows apps, web tools, and a growing family of Claude Code plugins. The work runs from a single principle — that the right tools let one person build at the scale of a team — and it ships in the open, source-first, across the company org and the founder's personal account on GitHub. Imagine Something Else.</p>
+    </div>
+
+    <h2><span class="num">02</span>Logos &amp; marks</h2>
+    <p class="section-note">PNG with transparency, built for the navy field. Right-click or use the download button to grab the file.</p>
+
+    <div class="asset-grid">
+      <div class="asset-card">
+        <div class="asset-preview"><img src="assets/brand/icon-transparent-512.png" alt="626 Labs icon" /></div>
+        <div class="asset-meta">
+          <div class="asset-name">Icon</div>
+          <div class="asset-spec">PNG · transparent · 512px</div>
+          <a class="dl-btn" href="assets/brand/icon-transparent-512.png" download>
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Download
+          </a>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview"><img src="assets/brand/icon-transparent-1024.png" alt="626 Labs icon, large" /></div>
+        <div class="asset-meta">
+          <div class="asset-name">Icon (large)</div>
+          <div class="asset-spec">PNG · transparent · 1024px</div>
+          <a class="dl-btn" href="assets/brand/icon-transparent-1024.png" download>
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Download
+          </a>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview"><img src="assets/brand/logo-portrait-256.png" alt="626 Labs icon and wordmark" /></div>
+        <div class="asset-meta">
+          <div class="asset-name">Icon + wordmark</div>
+          <div class="asset-spec">PNG · on navy · 256px</div>
+          <a class="dl-btn" href="assets/brand/logo-portrait-256.png" download>
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Download
+          </a>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview"><img src="assets/brand/vibe-plugins-mark-transparent-512.png" alt="Vibe plugins family mark" /></div>
+        <div class="asset-meta">
+          <div class="asset-name">Vibe plugins mark</div>
+          <div class="asset-spec">PNG · transparent · 512px</div>
+          <a class="dl-btn" href="assets/brand/vibe-plugins-mark-transparent-512.png" download>
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Download
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <h2><span class="num">03</span>Banners</h2>
+    <p class="section-note">Pre-sized for the common social and repo headers.</p>
+
+    <div class="asset-grid">
+      <div class="asset-card">
+        <div class="asset-preview wide"><img src="assets/brand/banner-1500x500.png" alt="626 Labs banner, 1500 by 500" /></div>
+        <div class="asset-meta">
+          <div class="asset-name">X / Twitter header</div>
+          <div class="asset-spec">PNG · 1500×500</div>
+          <a class="dl-btn" href="assets/brand/banner-1500x500.png" download>
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Download
+          </a>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview wide"><img src="assets/brand/banner-1280x640.png" alt="626 Labs banner, 1280 by 640" /></div>
+        <div class="asset-meta">
+          <div class="asset-name">GitHub / repo header</div>
+          <div class="asset-spec">PNG · 1280×640</div>
+          <a class="dl-btn" href="assets/brand/banner-1280x640.png" download>
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Download
+          </a>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview wide"><img src="assets/brand/banner-1200x630.png" alt="626 Labs banner, 1200 by 630" /></div>
+        <div class="asset-meta">
+          <div class="asset-name">OG / social card</div>
+          <div class="asset-spec">PNG · 1200×630</div>
+          <a class="dl-btn" href="assets/brand/banner-1200x630.png" download>
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg> Download
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <h2><span class="num">04</span>Colors</h2>
+    <p class="section-note">Cyan and magenta are the signature pair — always together, never one without the other. Navy is the field everything sits on.</p>
+
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="chip" style="background:#17d4fa"></div>
+        <div class="info"><div class="sw-name">Cyan</div><div class="sw-hex">#17D4FA</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#f22f89"></div>
+        <div class="info"><div class="sw-name">Magenta</div><div class="sw-hex">#F22F89</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:linear-gradient(135deg,#17d4fa,#f22f89)"></div>
+        <div class="info"><div class="sw-name">Brand gradient</div><div class="sw-hex">135° cyan→magenta</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#0f1f31"></div>
+        <div class="info"><div class="sw-name">Navy (field)</div><div class="sw-hex">#0F1F31</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#192e44"></div>
+        <div class="info"><div class="sw-name">Navy (raised)</div><div class="sw-hex">#192E44</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#e8f2ff"></div>
+        <div class="info"><div class="sw-name">Ink (text)</div><div class="sw-hex">#E8F2FF</div></div>
+      </div>
+    </div>
+
+    <h2><span class="num">05</span>Typography</h2>
+    <p class="section-note">All three are open fonts (SIL OFL) and ship in <code style="font-family:var(--font-mono);font-size:.92em">/fonts</code>.</p>
+
+    <div class="type-row">
+      <div class="type-role">Display</div>
+      <div class="type-specimen type-display">Imagine Something Else.</div>
+      <div class="type-name">Space Grotesk — headings, wordmark, product names</div>
+    </div>
+    <div class="type-row">
+      <div class="type-role">Body</div>
+      <div class="type-specimen type-body">Builder-to-builder, second person, sentence case.</div>
+      <div class="type-name">Inter — running text and UI</div>
+    </div>
+    <div class="type-row">
+      <div class="type-role">Mono</div>
+      <div class="type-specimen type-mono">626LABS · FORT WORTH · TX</div>
+      <div class="type-name">JetBrains Mono — code and UPPERCASE meta labels (+0.12em tracking)</div>
+    </div>
+
+    <h2><span class="num">06</span>Usage</h2>
+    <div class="guide-cols">
+      <div class="guide do">
+        <h3>Do</h3>
+        <ul>
+          <li>Keep cyan and magenta paired.</li>
+          <li>Place the marks on the navy field or a dark surface.</li>
+          <li>Leave clear space around the mark — at least the height of the icon's center node.</li>
+          <li>Use the files as provided. Scale proportionally.</li>
+        </ul>
+      </div>
+      <div class="guide dont">
+        <h3>Don't</h3>
+        <ul>
+          <li>Recolor, gradient-swap, or split the pair.</li>
+          <li>Stretch, rotate, or add a drop shadow.</li>
+          <li>Add emoji to brand surfaces.</li>
+          <li>Place the mark on a busy photo without the navy field behind it.</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr/>
+
+    <h2><span class="num">07</span>Press contact</h2>
+    <div class="contact-card">
+      <div class="row"><div class="label">Email</div><div class="value"><a class="inline-link" href="mailto:estevan@626labs.dev">estevan@626labs.dev</a></div></div>
+      <div class="row"><div class="label">Entity</div><div class="value">626 Labs LLC</div></div>
+      <div class="row"><div class="label">Location</div><div class="value">Fort Worth, Texas, United States</div></div>
+      <div class="row"><div class="label">GitHub</div><div class="value"><a class="inline-link" href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">626Labs-LLC</a> · <a class="inline-link" href="https://github.com/estevanhernandez-stack-ed" target="_blank" rel="noopener">estevanhernandez-stack-ed</a></div></div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-meta">
+      © 2026 626 Labs LLC · <span class="brand-tagline">Imagine Something Else.</span><br/>
+      &ldquo;Claude&rdquo; and &ldquo;claude.ai&rdquo; are trademarks of Anthropic PBC, used nominatively.
+    </div>
+    <div class="footer-links">
+      <a href="index.html#work">Work</a>
+      <a href="index.html#thinking">Thinking</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="press.html">Press</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Copy-to-clipboard for the boilerplate blocks.
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('p').innerText.trim();
+      navigator.clipboard.writeText(text).then(function () {
+        var old = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = old; }, 1400);
+      });
+    });
+  });
+</script>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
