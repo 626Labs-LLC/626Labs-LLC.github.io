@@ -1265,6 +1265,14 @@ def _story_body_html(body_md: str) -> str:
     )
 
 
+def _reading_minutes(body_md: str) -> int:
+    """Estimate read time from the body word count (fenced code excluded so a
+    code-heavy note doesn't read as longer than it is). 200 wpm, floor 1."""
+    text = re.sub(r"```.*?```", " ", body_md, flags=re.S)
+    words = len(re.findall(r"\w+", text))
+    return max(1, round(words / 200))
+
+
 def _ed_next_card(story: dict, label: str, pos: str) -> str:
     """One .ed-next card pointing at an adjacent local Field Note (pos: 'older'|'newer')."""
     href = f"/editorial/{story_slug(story)}/"
@@ -1335,10 +1343,13 @@ def render_story_page(story: dict, body_html: str,
     }
     ld_json = json.dumps(ld, ensure_ascii=False, indent=2)
 
+    read_min = _reading_minutes(str(story.get("_body", "")))
     meta = [f'<span class="author">{author}</span>']
     if product:
         meta.append('<span class="sep">·</span>')
         meta.append(f"<span>{product}</span>")
+    meta.append('<span class="sep">·</span>')
+    meta.append(f'<span>{read_min} min read</span>')
     dek = f'\n      <p class="ed-dek">{esc(subtitle)}</p>' if subtitle else ""
 
     pager_cards = []
