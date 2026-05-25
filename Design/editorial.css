@@ -442,6 +442,34 @@
 .ed-source a { color: var(--ed-ink-3); text-decoration: underline; }
 .ed-source a:hover { color: var(--ed-link-hover); }
 
+/* Prev/next pager at the foot of a Field Note */
+.ed-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 24px;
+}
+.ed-pager .older { grid-column: 1; }
+.ed-pager .newer { grid-column: 2; text-align: right; }
+@media (max-width: 600px) {
+  .ed-pager { grid-template-columns: 1fr; }
+  .ed-pager .older, .ed-pager .newer { grid-column: 1; text-align: left; }
+}
+
+/* Quiet 'all notes' link below the pager */
+.ed-all-notes {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 28px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--ed-ink-3);
+  text-decoration: none;
+}
+.ed-all-notes:hover { color: var(--ed-link-hover); }
+.ed-all-notes .ic { width: 16px; height: 16px; }
+
 /* ============================================================
    EmojiSection — controlled use of section-marker emoji
    (Field Notes only — see voice/emoji-policy.md)

@@ -1265,10 +1265,26 @@ def _story_body_html(body_md: str) -> str:
     )
 
 
-def render_story_page(story: dict, body_html: str) -> str:
+def _ed_next_card(story: dict, label: str, pos: str) -> str:
+    """One .ed-next card pointing at an adjacent local Field Note (pos: 'older'|'newer')."""
+    href = f"/editorial/{story_slug(story)}/"
+    title = esc(str(story.get("title", "")))
+    dek = esc(str(story.get("subtitle") or story.get("tagline") or ""))
+    return (
+        f'      <a class="ed-next {pos}" href="{attr(href)}">\n'
+        f'        <div class="ed-next-label">{label}</div>\n'
+        f'        <div class="ed-next-title">{title}</div>\n'
+        f'        <div class="ed-next-dek">{dek}</div>\n'
+        "      </a>"
+    )
+
+
+def render_story_page(story: dict, body_html: str,
+                      newer: dict | None = None, older: dict | None = None) -> str:
     """Full standalone HTML reading page for one local Field Note, on the
     editorial layer (Design/editorial.css). Frontmatter drives the header;
-    `body_html` is the already-rendered markdown body."""
+    `body_html` is the already-rendered markdown body; `newer`/`older` are the
+    adjacent local notes for the prev/next pager (None at the ends)."""
     raw_title = str(story.get("title", ""))
     title = esc(raw_title)
     subtitle = str(story.get("subtitle") or story.get("tagline") or "")
@@ -1291,6 +1307,16 @@ def render_story_page(story: dict, body_html: str) -> str:
         meta.append('<span class="sep">·</span>')
         meta.append(f"<span>{product}</span>")
     dek = f'\n      <p class="ed-dek">{esc(subtitle)}</p>' if subtitle else ""
+
+    pager_cards = []
+    if older:
+        pager_cards.append(_ed_next_card(older, "Older Field Note", "older"))
+    if newer:
+        pager_cards.append(_ed_next_card(newer, "Newer Field Note", "newer"))
+    pager = (
+        '    <nav class="ed-pager" aria-label="More Field Notes">\n'
+        + "\n".join(pager_cards) + "\n    </nav>\n"
+    ) if pager_cards else ""
 
     return f"""<!doctype html>
 <html lang="en">
@@ -1331,11 +1357,7 @@ def render_story_page(story: dict, body_html: str) -> str:
 {body_html}
     </div>
     <div class="ed-end-rule"></div>
-    <a class="ed-next" href="/#field-notes">
-      <div class="ed-next-label">Back to</div>
-      <div class="ed-next-title">All Field Notes</div>
-      <div class="ed-next-dek">What we shipped, what bit us, what we'd do differently.</div>
-    </a>
+{pager}    <a class="ed-all-notes" href="/#field-notes"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> All Field Notes</a>
     <p class="ed-source"><a href="{attr(story_source_url(story))}" target="_blank" rel="noopener">View the markdown source on GitHub</a></p>
   </article>
 </div>
@@ -1346,15 +1368,22 @@ def render_story_page(story: dict, body_html: str) -> str:
 
 def render_story_pages(stories: list[dict]) -> list[tuple[Path, str]]:
     """(output_path, html) for each LOCAL published story. Off-site (external_url)
-    posts keep linking out and get no on-site page. Sorted by slug so the write
-    order — and thus `--check` — is deterministic."""
+    posts keep linking out and get no on-site page. Prev/next neighbors come from
+    the newest-first local order (so the pager never points at a Medium post that
+    has no on-site page); the returned list is sorted by path so the write order —
+    and thus `--check` — is deterministic."""
+    local = [s for s in stories if not s.get("external_url")]  # newest-first
     pages: list[tuple[Path, str]] = []
-    for s in sorted((s for s in stories if not s.get("external_url")), key=story_slug):
+    for i, s in enumerate(local):
         slug = story_slug(s)
         if not slug:
             continue
+        newer = local[i - 1] if i > 0 else None
+        older = local[i + 1] if i + 1 < len(local) else None
         body_html = _story_body_html(str(s.get("_body", "")))
-        pages.append((STORY_PAGES_DIR / slug / "index.html", render_story_page(s, body_html)))
+        html_doc = render_story_page(s, body_html, newer=newer, older=older)
+        pages.append((STORY_PAGES_DIR / slug / "index.html", html_doc))
+    pages.sort(key=lambda pc: pc[0].as_posix())
     return pages
 
 
