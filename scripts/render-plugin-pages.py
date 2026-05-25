@@ -46,8 +46,8 @@ STYLE = """
       --ink-0:     #ffffff;
       --ink-100:   #e8eef7;
       --ink-200:   #c0cad8;
-      --ink-300:   #8a98ad;
-      --ink-400:   #5e6e84;
+      --ink-300:   #a4afbf;
+      --ink-400:   #97a4b5;
       --r-sm: 6px;
       --r-md: 10px;
       --r-lg: 14px;
@@ -166,6 +166,8 @@ STYLE = """
     .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
     .hero-meta { display: flex; gap: 16px; flex-wrap: wrap; color: var(--ink-300); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; }
     .hero-meta span { color: var(--ink-200); }
+    .hero-validated { margin-top: 14px; max-width: 560px; font-size: 13px; line-height: 1.5; color: var(--ink-300); }
+    .hero-validated .vtag { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--success); margin-right: 10px; }
     .hero-mark { display: flex; align-items: center; justify-content: center; position: relative; }
     .hero-mark::before { content: ''; position: absolute; width: 72%; height: 72%; border-radius: 50%; background: radial-gradient(circle, rgba(23,212,250,.22) 0%, rgba(242,47,137,.12) 45%, transparent 72%); filter: blur(28px); z-index: 0; }
     .hero-mark img { position: relative; z-index: 1; width: min(340px, 78%); height: auto; }
@@ -306,6 +308,12 @@ _pv_path = ROOT / "data" / "plugin-versions.json"
 if _pv_path.exists():
     PLUGIN_VERSIONS = json.loads(_pv_path.read_text(encoding="utf-8"))
 
+# Per-plugin "Validated on" credibility line, excerpted from each repo README.
+PLUGIN_VALIDATED: dict = {}
+_val_path = ROOT / "content" / "plugin-validated.json"
+if _val_path.exists():
+    PLUGIN_VALIDATED = json.loads(_val_path.read_text(encoding="utf-8")).get("validated", {})
+
 
 def effective_version(p) -> str | None:
     """Live tag for this plugin if we have one, else the hand-set heroMeta version."""
@@ -424,6 +432,12 @@ def render_hero(p):
         hero_meta[0] = ev
     meta = "<span>·</span>".join(f"<span>{e(m)}</span>" for m in hero_meta)
 
+    vtext = PLUGIN_VALIDATED.get(p["id"])
+    validated_html = (
+        f'\n            <p class="hero-validated"><span class="vtag">Validated</span>{e(vtext)}</p>'
+        if vtext else ""
+    )
+
     term = p.get("terminal")
     if term:
         lines = "\n".join("                <div>%s</div>" % ln for ln in term["lines"])
@@ -459,7 +473,7 @@ def render_hero(p):
             </div>
             <div class="hero-meta">
               {meta}
-            </div>
+            </div>{validated_html}
           </div>
 {right}
         </div>

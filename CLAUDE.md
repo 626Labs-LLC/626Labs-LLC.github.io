@@ -50,7 +50,7 @@ references and one-off design artifacts.
 | `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 5 bot workflows that push to main + 1 link checker. All 5 push-to-main workflows have retry+rebase loops as of 2026-04-29. |
+| `.github/workflows/` | 6 bot workflows that push to main + 1 link checker. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 
 ---
@@ -64,7 +64,7 @@ references and one-off design artifacts.
 
 ## CI workflows
 
-The 5 bot workflows that push to main:
+The 6 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
@@ -73,10 +73,11 @@ The 5 bot workflows that push to main:
 | `rebuild-hub.yml` | Push to `content/site.json` | Re-runs render-hub.py and commits drift. |
 | `track-traffic.yml` | Daily 06:00 UTC | Auto-discovers all public, non-fork, non-archived repos under `estevanhernandez-stack-ed` (user) and `626Labs-LLC` (org), then pulls GitHub traffic metrics for each. Uses `TRAFFIC_PAT` (user-scope, needs Administration:Read on every tracked repo) and `TRAFFIC_PAT_ORG` (optional org-scope override — without it, org repos fall back to GH_TOKEN and 403 on the Traffic API). |
 | `fetch-site-stats.yml` | Daily 06:30 UTC | Pulls GoatCounter visit stats for `626labs.dev` and writes `data/site-stats.json` (uses `GOATCOUNTER_TOKEN` secret). |
+| `refresh-plugin-versions.yml` | Daily 07:00 UTC | Reads each plugin repo's latest tag (`content/plugin-repos.json` → GitHub API), writes `data/plugin-versions.json`, re-renders plugin pages so version chips can't drift. Default `GITHUB_TOKEN` reads public tags — no extra secret. |
 
 **Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
-All five use a retry+rebase loop on `git push` to handle the race where two
+All six use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
 Plus one read-only checker (doesn't push):

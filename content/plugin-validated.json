@@ -1,0 +1,16 @@
+{
+  "$comment": "Per-plugin 'Validated on' credibility line for the hub plugin pages, excerpted faithfully from each plugin repo's README '## Validated on' section (no fabrication — trimmed at a natural break where the README sentence ran long). render-plugin-pages.py renders this under the hero meta. Omit a plugin to hide its line (vibe-wrap has no Validated-on section yet).",
+  "validated": {
+    "vibe-cartographer": "Dogfooded across build cycles — Vibe Cartographer builds the other Vibe plugins.",
+    "vibe-iterate": "Proven cross-agent — ran under Gemini in Antigravity 2.0, adapting on the fly.",
+    "vibe-doc": "Scanned the 626 hub.",
+    "vibe-test": "WeSeeYouAtTheMovies — three real findings reproduced live on the real codebase.",
+    "vibe-sec": "A real Firebase app.",
+    "vibe-keystone": "Bootstrapped the CLAUDE.md across every 626 Labs work repo and the main repo.",
+    "thesis-engine": "Fed research across the full 626 Labs article catalog.",
+    "vibe-thesis": "The agentic-architect-vibe article — the toolchain was proven via the completed article itself.",
+    "vibe-walk": "Celestia3 — cycle #16, A/B against the hand-built version.",
+    "vibe-taker": "The bgremove + Sanduhr features.",
+    "vibe-insights": "Proven on a live 195-session personal index across two machines."
+  }
+}
