@@ -41,3 +41,4 @@ anthropic_fellows.*
 # they can't be committed to the generated assets/brand/ dir by accident.
 assets/brand/logo-portrait-128.png
 assets/brand/logo-portrait-256.png
+.gitnexus
