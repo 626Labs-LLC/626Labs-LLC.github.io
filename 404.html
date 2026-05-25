@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — 626 Labs</title>
+  <meta name="robots" content="noindex" />
+  <meta name="description" content="That page isn't here. Head back to 626 Labs." />
+  <link rel="icon" type="image/png" href="/favicon-626.png" />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/SpaceGrotesk-Variable.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-Variable.woff2" crossorigin />
+  <link rel="stylesheet" href="/fonts/fonts.css" />
+  <style>
+    :root {
+      --navy-deep: #0f1f31;
+      --cyan:      #17d4fa;
+      --magenta:   #f22f89;
+      --text:      #e8f2ff;
+      --text-sec:  #a8c2d9;
+      --text-dim:  #6a849e;
+      --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    body {
+      background:
+        radial-gradient(60% 50% at 30% 20%, rgba(23,212,250,.16) 0%, transparent 60%),
+        radial-gradient(45% 45% at 78% 70%, rgba(242,47,137,.13) 0%, transparent 60%),
+        var(--navy-deep);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.55;
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+      -webkit-font-smoothing: antialiased;
+    }
+    main { max-width: 560px; text-align: center; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--text-dim); margin-bottom: 20px;
+    }
+    .code {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; line-height: 1;
+      font-size: clamp(96px, 20vw, 200px);
+      letter-spacing: -0.04em;
+      background: var(--brand-gradient);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      margin: 0;
+    }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: clamp(24px, 3.5vw, 34px);
+      letter-spacing: -0.02em; margin: 8px 0 16px;
+    }
+    p { color: var(--text-sec); font-size: 17px; margin: 0 auto 32px; max-width: 460px; }
+    .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 10px;
+      font-weight: 600; font-size: 15px; text-decoration: none;
+      transition: all 140ms cubic-bezier(.2,.7,.2,1);
+    }
+    .btn-primary { background: var(--brand-gradient); color: #050c18; }
+    .btn-primary:hover { filter: brightness(1.08); box-shadow: 0 0 24px rgba(23,212,250,.35); }
+    .btn-ghost { color: var(--text); border: 1px solid rgba(255,255,255,.16); }
+    .btn-ghost:hover { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.32); }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main id="main">
+    <div class="eyebrow">626 Labs · page not found</div>
+    <p class="code">404</p>
+    <h1>This page imagined something else.</h1>
+    <p>The URL doesn't map to anything here — it may have moved, or never shipped. Let's get you back to solid ground.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/">Back to 626 Labs</a>
+      <a class="btn btn-ghost" href="/plugins/">Browse the plugins</a>
+    </div>
+  </main>
+</body>
+</html>
