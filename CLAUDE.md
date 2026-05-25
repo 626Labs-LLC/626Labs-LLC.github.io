@@ -120,6 +120,18 @@ PNGs at 1500x500, 1280x640, 1200x630). Re-run after brand changes.
 No `--check` flag — verify visually by opening `icon-transparent-512.png`
 and one banner.
 
+### Field Note social cards — `scripts/build-og-cards.py`
+
+Generates a branded 1200x630 OG/social card per local Field Note into
+`assets/og/<slug>.png` (navy field + cyan/magenta glow, title hero,
+hairline, dek, footer). `render-hub.py` points each story page's
+`og:image` and BlogPosting `image` at the card when it exists, else falls
+back to `assets/brand/medium-header-1500x600.png`. Re-run after adding or
+retitling a story: `python scripts/build-og-cards.py` (outputs are
+generated — don't hand-edit `assets/og/`). `--check` byte-compares and
+exits nonzero on any missing/stale card (deterministic, like
+`render-hub.py --check`).
+
 ### Site renderer — `scripts/render-hub.py`
 
 Rebuilds `index.html` from `content/site.json`. `--check` for drift detection.
