@@ -1302,6 +1302,39 @@ def render_story_page(story: dict, body_html: str,
     else:
         og_image = f"{SITE_URL}/assets/brand/medium-header-1500x600.png"
 
+    # BlogPosting structured data — completes the JSON-LD coverage the homepage
+    # (#29) and plugin pages (#30) already have. Built as a dict + json.dumps so
+    # titles with quotes/em-dashes escape cleanly; author/publisher inlined
+    # because cross-page @id references don't resolve for crawlers.
+    published_raw = str(story.get("published", ""))
+    author_name = str(story.get("author") or "626 Labs")
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": raw_title,
+        "description": desc,
+        "url": canonical,
+        "mainEntityOfPage": {"@type": "WebPage", "@id": canonical},
+        "datePublished": published_raw,
+        "dateModified": str(story.get("updated") or published_raw),
+        "image": og_image,
+        "inLanguage": "en",
+        "author": {
+            "@type": "Organization" if author_name == "626 Labs" else "Person",
+            "name": author_name,
+            "url": f"{SITE_URL}/",
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "626 Labs",
+            "logo": {
+                "@type": "ImageObject",
+                "url": f"{SITE_URL}/assets/brand/icon-transparent-512.png",
+            },
+        },
+    }
+    ld_json = json.dumps(ld, ensure_ascii=False, indent=2)
+
     meta = [f'<span class="author">{author}</span>']
     if product:
         meta.append('<span class="sep">·</span>')
@@ -1333,6 +1366,9 @@ def render_story_page(story: dict, body_html: str,
 <meta property="og:url" content="{canonical}" />
 <meta property="og:image" content="{attr(og_image)}" />
 <meta name="twitter:card" content="summary_large_image" />
+<script type="application/ld+json">
+{ld_json}
+</script>
 <link rel="icon" type="image/png" href="/favicon-626.png" />
 <link rel="stylesheet" href="/Design/colors_and_type.css" />
 <link rel="stylesheet" href="/Design/editorial.css" />
