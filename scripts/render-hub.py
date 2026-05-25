@@ -1294,6 +1294,10 @@ def render_story_page(story: dict, body_html: str,
         og_image = str(img)
         if og_image.startswith("/"):
             og_image = f"{SITE_URL}{og_image}"
+    elif (ROOT / "assets" / "og" / f"{story_slug(story)}.png").exists():
+        # Auto-generated branded social card (scripts/build-og-cards.py); falls
+        # back to the generic brand banner when a story has no card yet.
+        og_image = f"{SITE_URL}/assets/og/{story_slug(story)}.png"
     else:
         og_image = f"{SITE_URL}/assets/brand/medium-header-1500x600.png"
 
