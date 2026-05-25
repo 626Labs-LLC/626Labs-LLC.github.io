@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SITE_JSON = ROOT / "content" / "site.json"
 PLUGIN_PAGES_JSON = ROOT / "content" / "plugin-pages.json"
 SUPPLEMENT_JSON = ROOT / "content" / "facts-supplement.json"
+PLUGIN_STATS_JSON = ROOT / "data" / "plugin-stats.json"
 APPS_DIR = ROOT / "apps"
 
 NUM_WORDS = {
@@ -60,7 +61,8 @@ def _widget_count() -> int:
     )
 
 
-def derive(site: dict, pages: dict, supplement: dict) -> dict:
+def derive(site: dict, pages: dict, supplement: dict, stats: dict | None = None) -> dict:
+    stats = stats or {}
     products = site.get("products", [])
     live = [p for p in products if is_claude_plugin(p) and p.get("status") == "live"]
     wip = [p for p in products if is_claude_plugin(p) and p.get("status") == "wip"]
@@ -84,6 +86,18 @@ def derive(site: dict, pages: dict, supplement: dict) -> dict:
         "live_plugin_names": ", ".join(display_name(p) for p in live),
     }
 
+    # Live per-plugin command counts, derived from data/plugin-stats.json (the same
+    # repo-tree source as the capability chips). Exposes cmd_<id> + cmd_<id>_word for
+    # every plugin so card copy can reference a count that can't drift. "commands" is
+    # the raw command-file count — command-as-skill plugins read 0, matching the chip.
+    # The supplement loop below runs last, so a manual override is still possible.
+    for pid, s in stats.items():
+        if not isinstance(s, dict):
+            continue
+        n = int(s.get("commands", 0) or 0)
+        f[f"cmd_{pid}"] = n
+        f[f"cmd_{pid}_word"] = number_word(n)
+
     for key, val in supplement.items():
         if key.startswith("_"):
             continue
@@ -103,7 +117,12 @@ def facts() -> dict:
         if SUPPLEMENT_JSON.exists()
         else {}
     )
-    return derive(site, pages, supplement)
+    stats = (
+        json.loads(PLUGIN_STATS_JSON.read_text(encoding="utf-8"))
+        if PLUGIN_STATS_JSON.exists()
+        else {}
+    )
+    return derive(site, pages, supplement, stats)
 
 
 def resolve_tokens(obj, fct: dict):
