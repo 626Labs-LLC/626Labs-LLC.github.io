@@ -247,6 +247,7 @@ STYLE = """
     .family-card .fc-mark img { width: 36px; height: 36px; display: block; }
     .family-card .name { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--ink-0); margin-bottom: 2px; }
     .family-card .role { color: var(--ink-300); font-size: 14px; }
+    .family-card .fc-caps { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: var(--ink-400); margin-top: 6px; }
     .family-card .you { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cyan); margin-top: 6px; }
 
     @media (max-width: 900px) {
@@ -326,9 +327,10 @@ if _ps_path.exists():
     PLUGIN_STATS = json.loads(_ps_path.read_text(encoding="utf-8"))
 
 
-def caps_line(plugin_id) -> str:
-    """The 'what installs' footprint chip: commands · skills · agents, zeros
-    omitted, pluralized. Empty string when we have no counts for this plugin."""
+def caps_text(plugin_id) -> str:
+    """Bare 'commands · skills · agents' footprint string — zeros omitted,
+    pluralized, ' &middot; '-joined. Empty when we have no counts for this
+    plugin. Shared by the hero chip and the family-index cards."""
     s = PLUGIN_STATS.get(plugin_id)
     if not s:
         return ""
@@ -337,9 +339,14 @@ def caps_line(plugin_id) -> str:
         n = int(s.get(key, 0) or 0)
         if n:
             parts.append(f"{n} {noun}" + ("" if n == 1 else "s"))
-    if not parts:
+    return " &middot; ".join(parts)
+
+
+def caps_line(plugin_id) -> str:
+    """The hero 'Includes …' footprint chip. Empty when no counts."""
+    inner = caps_text(plugin_id)
+    if not inner:
         return ""
-    inner = " &middot; ".join(parts)
     return f'\n            <p class="hero-caps"><span class="captag">Includes</span>{inner}</p>'
 
 
@@ -691,11 +698,13 @@ def render_index(data):
     family = data["family"]
     cards = []
     for f in family:
+        caps = caps_text(f["id"])
+        caps_html = f'\n              <div class="fc-caps">{caps}</div>' if caps else ""
         cards.append(f"""          <a href="{e(f['href'])}" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="{icon_path(f['id'])}" alt="" /></span>
             <div>
               <div class="name">{e(f['name'])}</div>
-              <div class="role">{e(f['role'])}</div>
+              <div class="role">{e(f['role'])}</div>{caps_html}
             </div>
           </a>""")
     count_word = num_word(len(family))
