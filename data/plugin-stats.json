@@ -1,0 +1,62 @@
+{
+  "thesis-engine": {
+    "commands": 4,
+    "skills": 1,
+    "agents": 0
+  },
+  "vibe-cartographer": {
+    "commands": 13,
+    "skills": 17,
+    "agents": 0
+  },
+  "vibe-doc": {
+    "commands": 5,
+    "skills": 7,
+    "agents": 3
+  },
+  "vibe-insights": {
+    "commands": 0,
+    "skills": 1,
+    "agents": 0
+  },
+  "vibe-iterate": {
+    "commands": 0,
+    "skills": 16,
+    "agents": 0
+  },
+  "vibe-keystone": {
+    "commands": 0,
+    "skills": 2,
+    "agents": 0
+  },
+  "vibe-sec": {
+    "commands": 9,
+    "skills": 10,
+    "agents": 0
+  },
+  "vibe-taker": {
+    "commands": 3,
+    "skills": 6,
+    "agents": 0
+  },
+  "vibe-test": {
+    "commands": 8,
+    "skills": 14,
+    "agents": 0
+  },
+  "vibe-thesis": {
+    "commands": 5,
+    "skills": 10,
+    "agents": 0
+  },
+  "vibe-walk": {
+    "commands": 0,
+    "skills": 9,
+    "agents": 0
+  },
+  "vibe-wrap": {
+    "commands": 0,
+    "skills": 7,
+    "agents": 0
+  }
+}
