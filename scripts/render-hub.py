@@ -1263,15 +1263,28 @@ SITEMAP_PATH = ROOT / "sitemap.xml"
 # crawlers. Empty today — every public page is fair game. Add a dir name
 # here to keep a future preview/private surface out of the sitemap.
 SITEMAP_EXCLUDE: frozenset[str] = frozenset()
+# Root-level *.html files that should NOT appear in the sitemap. index.html
+# maps to "/" on its own; 404.html is an error page; admin-dashboard.html is
+# the PAT-gated admin surface and must stay out of crawler view. Every other
+# top-level page (rororo, thesis, workflow, privacy, ...) is public content.
+SITEMAP_ROOT_HTML_EXCLUDE: frozenset[str] = frozenset(
+    {"index.html", "404.html", "admin-dashboard.html"}
+)
 
 
 def render_sitemap(root: Path = ROOT) -> str:
     """Build an XML sitemap from the pages actually on disk.
 
-    Enumerates the root index.html plus every <dir>/index.html one level down,
-    mapping each to its clean GitHub Pages URL. Filesystem-derived so it never
-    drifts: add a plugin page directory and it appears here automatically.
-    Deterministic ordering (home first, then alphabetical) keeps --check idempotent.
+    Enumerates three page classes, all filesystem-derived so the sitemap never
+    drifts from what actually ships:
+      1. the root index.html              -> "/"             (daily, 1.0)
+      2. every <dir>/index.html one down  -> "/<dir>/"       (weekly, 0.8)
+      3. standalone root <name>.html      -> "/<name>.html"  (monthly, 0.6)
+    Class 3 covers the hand-authored content pages (rororo, thesis, workflow,
+    privacy) the dir walk would otherwise miss; SITEMAP_ROOT_HTML_EXCLUDE keeps
+    index/404/admin out. Add a page and it appears here automatically.
+    Deterministic ordering (home, then dirs, then root pages — each alphabetical)
+    keeps --check idempotent.
     """
     pages: list[tuple[str, str, str]] = []  # (loc, changefreq, priority)
     if (root / "index.html").exists():
@@ -1281,6 +1294,10 @@ def render_sitemap(root: Path = ROOT) -> str:
         if name in SITEMAP_EXCLUDE:
             continue
         pages.append((f"{SITE_URL}/{name}/", "weekly", "0.8"))
+    for html in sorted(root.glob("*.html"), key=lambda p: p.name):
+        if html.name in SITEMAP_ROOT_HTML_EXCLUDE:
+            continue
+        pages.append((f"{SITE_URL}/{html.name}", "monthly", "0.6"))
 
     urls = "\n".join(
         "  <url>\n"
