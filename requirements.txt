@@ -1,0 +1,4 @@
+# Python dependencies for the site renderer (scripts/render-hub.py).
+# Pinned for local/CI parity — bump deliberately so generated output can't
+# drift between a contributor's machine and the rebuild-hub workflow.
+markdown==3.10.2
