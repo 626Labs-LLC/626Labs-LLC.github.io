@@ -69,4 +69,4 @@ def test_real_facts_smoke():
     assert f["claude_plugins"] == 11       # live + claudeCode (added vibe-insights)
     assert f["family_count"] == 12         # plugin-pages family[] (added vibe-insights)
     assert f["widget_count"] == 1
-    assert f["cmd_vibe-cartographer"] == 12  # from supplement
+    assert f["cmd_vibe-cartographer"] == 13  # derived live from data/plugin-stats.json (13 command files)

@@ -125,12 +125,12 @@ def main(argv) -> int:
         print(
             f"derived: {fcts['claude_plugins']} plugins, "
             f"{fcts['family_count']} family, {fcts['widget_count']} widget, "
-            f"{fcts['windows_native_count']} windows-native"
+            f"{fcts['windows_native_count']} windows-native, "
+            f"cartographer cmds={fcts.get('cmd_vibe-cartographer')} (live)"
         )
         print(
             "supplement (re-confirm periodically): "
-            f"ms_store_releases={fcts.get('ms_store_releases')}, "
-            f"cmd_vibe-cartographer={fcts.get('cmd_vibe-cartographer')}"
+            f"ms_store_releases={fcts.get('ms_store_releases')}"
         )
         print(f"checks: {'PASS' if not failures else str(len(failures)) + ' FAILURE(S)'}")
         for f in failures:
