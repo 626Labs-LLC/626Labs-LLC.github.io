@@ -298,6 +298,22 @@ def icon_path(plugin_id):
     return f"/assets/brand/plugins/{plugin_id}-icon-transparent-512.png"
 
 
+# Live plugin versions, refreshed daily by .github/workflows/refresh-plugin-versions.yml
+# (id -> "vX.Y.Z"). Baked into each page so versions can't drift from the released
+# tags. Missing entries (repos with no tags) fall back to the heroMeta version.
+PLUGIN_VERSIONS: dict = {}
+_pv_path = ROOT / "data" / "plugin-versions.json"
+if _pv_path.exists():
+    PLUGIN_VERSIONS = json.loads(_pv_path.read_text(encoding="utf-8"))
+
+
+def effective_version(p) -> str | None:
+    """Live tag for this plugin if we have one, else the hand-set heroMeta version."""
+    hero = [str(x) for x in p.get("heroMeta", [])]
+    fallback = next((x for x in hero if re.match(r"^v?\d+\.\d+", x)), None)
+    return PLUGIN_VERSIONS.get(p["id"], fallback)
+
+
 def software_jsonld(p) -> str:
     """SoftwareApplication structured data for a plugin landing page.
 
@@ -310,7 +326,7 @@ def software_jsonld(p) -> str:
     """
     url = f"https://626labs.dev/{p['id']}/"
     hero = [str(x) for x in p.get("heroMeta", [])]
-    version = next((x.lstrip("v") for x in hero if re.match(r"^v?\d+\.\d+", x)), None)
+    version = (effective_version(p) or "").lstrip("v") or None
     is_mit = any(x.upper() == "MIT" for x in hero)
     data = {
         "@context": "https://schema.org",
@@ -402,7 +418,11 @@ def render_hero(p):
     sec = p["ctas"].get("secondary")
     if sec:
         ctas.append(f'<a href="{e(sec["href"])}" class="btn btn-ghost">{e(sec["label"])}</a>')
-    meta = "<span>·</span>".join(f"<span>{e(m)}</span>" for m in p["heroMeta"])
+    hero_meta = list(p["heroMeta"])
+    ev = effective_version(p)
+    if ev and hero_meta and re.match(r"^v?\d+\.\d+", str(hero_meta[0])):
+        hero_meta[0] = ev
+    meta = "<span>·</span>".join(f"<span>{e(m)}</span>" for m in hero_meta)
 
     term = p.get("terminal")
     if term:

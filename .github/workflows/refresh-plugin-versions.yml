@@ -1,0 +1,60 @@
+name: Refresh Plugin Versions
+
+on:
+  schedule:
+    # 07:00 UTC daily — staggered off the 06:00/06:30 job cluster.
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: refresh-plugin-versions
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    # Don't re-trigger on our own bot commit. Same guard as the other push jobs.
+    if: github.actor != 'github-actions[bot]'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Refresh versions from GitHub tags
+        env:
+          # Default token reads public-repo tags fine (no new secret needed).
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/refresh-plugin-versions.mjs
+
+      - name: Rebuild plugin pages with refreshed versions
+        run: python scripts/render-plugin-pages.py
+
+      - name: Commit + push if changed
+        run: |
+          if [[ -z "$(git status --porcelain data/plugin-versions.json '*/index.html')" ]]; then
+            echo "No version drift."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/plugin-versions.json '*/index.html'
+          git commit -m "chore(plugin-versions): refresh $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; rebasing onto remote main and retrying..."
+            git pull --rebase origin main
+            sleep $((attempt * 3))
+          done
+          echo "::error::Failed to push after 5 attempts."
+          exit 1

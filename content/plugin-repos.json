@@ -1,0 +1,17 @@
+{
+  "$comment": "Maps each hub plugin id to its public GitHub repo (owner/repo, exact casing). Source of truth for the live version pipeline: scripts/refresh-plugin-versions.mjs reads this, queries each repo's latest tag, and writes data/plugin-versions.json, which render-plugin-pages.py bakes into each page's version chip. Add a plugin here when you add it to plugin-pages.json. Kept separate from plugin-pages.json so the version pipeline never has to rewrite that format-sensitive file.",
+  "repos": {
+    "vibe-cartographer": "estevanhernandez-stack-ed/vibe-cartographer",
+    "vibe-iterate": "estevanhernandez-stack-ed/vibe-iterate",
+    "vibe-doc": "estevanhernandez-stack-ed/Vibe-Doc",
+    "vibe-test": "estevanhernandez-stack-ed/vibe-test",
+    "vibe-sec": "estevanhernandez-stack-ed/vibe-sec",
+    "vibe-keystone": "estevanhernandez-stack-ed/vibe-Keystone",
+    "thesis-engine": "estevanhernandez-stack-ed/Thesis-Engine",
+    "vibe-thesis": "estevanhernandez-stack-ed/Vibe-Thesis",
+    "vibe-walk": "estevanhernandez-stack-ed/Vibe-Walk",
+    "vibe-taker": "estevanhernandez-stack-ed/vibe-taker",
+    "vibe-wrap": "estevanhernandez-stack-ed/vibe-wrap",
+    "vibe-insights": "estevanhernandez-stack-ed/vibe-insights"
+  }
+}
