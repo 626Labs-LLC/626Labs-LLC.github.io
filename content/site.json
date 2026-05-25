@@ -291,7 +291,8 @@
     {
       "id": "vibe-test",
       "title": "Vibe Test",
-      "description": "Reads your vibe-coded app, classifies maturity tier and deployment risk, generates the tests that actually matter. Catches the broken harnesses every other test tool assumes away — vitest configs silently reporting 0%, coverage tools cherry-picking denominators.",
+      "tagline": "Put your code to the test before somebody else does.",
+      "description": "Reads your vibe-coded app, classifies maturity tier and deployment risk, then generates the tests that actually matter — the ones tied to user impact, the release, the environment, not the ones that pad a number. Covers what the agent skipped when you're unsure what to test, and calls the broken harness fast: a vitest config silently reporting 0%, a green bar that's lying. Catches it before it sends you down the wrong road.",
       "tags": [
         {
           "label": "Plugin",
@@ -320,7 +321,7 @@
       "id": "vibe-thesis",
       "title": "Vibe Thesis",
       "tagline": "Long-form research, drafted with discipline.",
-      "description": "Scaffolds thesis-shaped projects — academic dissertation, master's thesis, long-form research article, position essay. Bootstraps the structure, runs a voice synthesis pass, guards against self-review tone, then renders to PDF, HTML, and a plain-language lay version. Built on ThesisStudio.",
+      "description": "Scaffolds thesis-shaped projects — dissertation, thesis, position essay — starting from sources you defend, challenge, or endorse, not a cold prompt. Runs a voice synthesis pass so it reads in your voice, not an LLM's, and guards the self-review tell: a model over-naming its own subject in the same flat cadence. Renders to PDF, HTML, and a lay version you can read in a sitting or hand to an agent. Built on ThesisStudio.",
       "tags": [
         {
           "label": "Plugin",
@@ -349,7 +350,7 @@
       "id": "thesis-engine",
       "title": "Thesis Engine",
       "tagline": "Surface topics. Gather sources. Seed the thesis.",
-      "description": "Research feeder for Vibe Thesis. Surfaces cutting-edge topics in any domain, gathers primary sources, opposing positions, and methodological precedents — then emits a run folder that drops straight into ThesisStudio. Optional stage three adapts a seeded topic into a Smart Brevity blog draft.",
+      "description": "Research feeder for Vibe Thesis. Surfaces cutting-edge topics in any domain, then gathers primary sources, opposing positions, and methodological precedents — the opposing ones on purpose, so you argue fair and mine the other side for merit. Emits a run folder that drops into ThesisStudio, research done and structured. Optional stage three turns a topic into a Smart Brevity blog draft for ideas that aren't thesis-sized.",
       "tags": [
         {
           "label": "Plugin",
@@ -441,7 +442,7 @@
       "id": "vibe-taker",
       "title": "Vibe Taker",
       "tagline": "Take it with you.",
-      "description": "Move a feature between repos without copy-paste archaeology. Capture a feature out of one codebase as a portable bundle — architecture, contract, the prompts that built it, and the gotchas — then plant it into another repo with stack-aware adaptation. Local-only.",
+      "description": "Move a feature between repos without copy-paste archaeology — no more pointing an agent at an old folder to \"go get that.\" Captures it as a portable bundle: architecture, contract, gotchas, and the prompts that built it — so the destination repo continues your original process instead of pasting dead code, adapted to its stack. For a signature feature you want everywhere, or a prototype you lift into the next build. Local-only.",
       "tags": [
         {
           "label": "Plugin",
