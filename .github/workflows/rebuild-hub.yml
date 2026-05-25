@@ -6,8 +6,10 @@ on:
     paths:
       - 'content/site.json'
       - 'content/facts-supplement.json'
+      - 'content/stories/**'
       - 'scripts/render-hub.py'
       - 'scripts/site_facts.py'
+      - 'requirements.txt'
       - '.github/workflows/rebuild-hub.yml'
   workflow_dispatch:
 
@@ -35,25 +37,28 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Render index.html from content/site.json
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Render hub from content (index, feed, sitemap, Field Note pages)
         run: python3 scripts/render-hub.py
 
       - name: Check for changes
         id: changes
         run: |
-          if [ -n "$(git status --porcelain index.html)" ]; then
+          if [ -n "$(git status --porcelain index.html feed.xml sitemap.xml editorial)" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit + push rebuilt index.html
+      - name: Commit + push rebuilt hub
         if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          git commit -m "hub: rebuild index.html from site.json
+          git add -A index.html feed.xml sitemap.xml editorial
+          git commit -m "hub: rebuild from site.json + stories
 
           Triggered by commit ${{ github.sha }}"
           # Retry push — another bot job (build-widget, refresh-bacon-shards,
@@ -73,7 +78,7 @@ jobs:
       - name: Summary
         run: |
           if [ "${{ steps.changes.outputs.changed }}" = "true" ]; then
-            echo "✅ index.html rebuilt + pushed — GitHub Pages will redeploy." >> "$GITHUB_STEP_SUMMARY"
+            echo "✅ Hub rebuilt + pushed (index, feed, sitemap, Field Note pages) — GitHub Pages will redeploy." >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "✅ index.html already matched site.json — nothing to do." >> "$GITHUB_STEP_SUMMARY"
+            echo "✅ Hub already matched content — nothing to do." >> "$GITHUB_STEP_SUMMARY"
           fi
