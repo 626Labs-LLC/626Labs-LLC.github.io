@@ -423,6 +423,25 @@
   font-size: 17px;
 }
 
+/* Horizontal rule in body — a quiet centered mark */
+.ed-article hr {
+  border: 0;
+  height: 1px;
+  width: 120px;
+  margin: 48px auto;
+  background: var(--ed-rule-strong);
+}
+
+/* Field Note source credit — quiet link back to the markdown origin */
+.ed-source {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--ed-ink-3);
+  margin-top: 40px;
+}
+.ed-source a { color: var(--ed-ink-3); text-decoration: underline; }
+.ed-source a:hover { color: var(--ed-link-hover); }
+
 /* ============================================================
    EmojiSection — controlled use of section-marker emoji
    (Field Notes only — see voice/emoji-policy.md)

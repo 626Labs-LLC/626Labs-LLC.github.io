@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>I complained that /insights wasn't insightful. Seven hours later I had a plugin that beats it. — Field Notes — 626 Labs</title>
+<meta name="description" content="It grabs insights from every Claude Code building surface you use, walls work from personal, and can even tell you the story of how it got built." />
+<link rel="canonical" href="https://626labs.dev/editorial/vibe-insights-build-2026-05-23/" />
+<meta property="og:title" content="I complained that /insights wasn&#x27;t insightful. Seven hours later I had a plugin that beats it." />
+<meta property="og:description" content="It grabs insights from every Claude Code building surface you use, walls work from personal, and can even tell you the story of how it got built." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://626labs.dev/editorial/vibe-insights-build-2026-05-23/" />
+<meta property="og:image" content="https://626labs.dev/assets/brand/medium-header-1500x600.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="/favicon-626.png" />
+<link rel="stylesheet" href="/Design/colors_and_type.css" />
+<link rel="stylesheet" href="/Design/editorial.css" />
+</head>
+<body class="ed-page">
+<nav class="ed-nav">
+  <a class="ed-lockup" href="/"><span>626 Labs</span><span class="slash">/</span><span class="label">Field Notes</span></a>
+  <div class="ed-nav-links">
+    <a href="/#field-notes">Field Notes</a>
+    <a href="/editorial/">Editorial</a>
+    <a href="/">Home</a>
+  </div>
+</nav>
+<div class="ed-shell">
+  <article class="ed-article">
+    <header>
+      <div class="ed-eyebrow">Field Note<span class="dot"></span><span class="num">2026-05-23</span></div>
+      <h1 class="ed-title">I complained that /insights wasn't insightful. Seven hours later I had a plugin that beats it.</h1>
+      <p class="ed-dek">It grabs insights from every Claude Code building surface you use, walls work from personal, and can even tell you the story of how it got built.</p>
+      <div class="ed-meta"><span class="author">626 Labs</span><span class="sep">·</span><span>vibe-insights</span></div>
+    </header>
+    <div class="ed-body">
+<p><strong>The one-liner:</strong> This tool grabs insights from all of your Claude Code building surfaces and can even tell you a story. Cross-machine, work-walled, installable. Two new private repos, 42 commits, 60 tests, one sleeping baby's worth of checking in between increments.</p>
+<hr>
+<h2>It started as a complaint</h2>
+<p>I ran <code>/insights</code>. It read one config home, on one machine, over a recent window, and I run two accounts across two machines with history back to January. The report was fine. It just wasn't <em>mine</em>.</p>
+<p>The actual question underneath: <strong>how do I get my other PC's context here?</strong> Two machines feet apart, both on the tailnet, and no shared brain. That's where it began.</p>
+<h2>The reframe that unlocked it</h2>
+<p>The first instinct was "keep work and personal separate." Wrong frame. <strong>Separation lives in the credentials, not the transcripts.</strong> The logs are just JSONL. So you don't merge homes; you <em>read across</em> them and tag each session by account and machine. Billing stays clean; the brain gets the whole picture.</p>
+<p>That reframe turned a config headache into a one-evening engine.</p>
+<h2>The build (15:24 → 15:54, thirty minutes)</h2>
+<p>Spec → plan → subagent-driven TDD. One implementer subagent per task, two-stage review, fresh context each time. Phase 1 (the deterministic index engine, walled work, coverage + recall) landed in <strong>thirty minutes of wall clock</strong>. Reused Sanduhr's <code>cc_logs</code> token math via an extracted <code>cc-logs</code> package, so the two tools' burn numbers <em>can't</em> drift.</p>
+<p>It's Wednesday, Lemon.</p>
+<h2>Then the real-data smoke test earned its keep</h2>
+<p>The unit tests were green. The real run said 57 sessions when I knew there were ~179. The synthetic fixtures used the shallow on-disk layout; <strong>real Claude Code nests subagent transcripts four levels deep</strong>, and the one-level walk silently missed 70% of the files. Caught it, made discovery recursive across both repos, folded subagent burn into its parent session. The fixtures lied; the real data told the truth.</p>
+<h2>The original goal, delivered</h2>
+<p>Syncthing over the tailnet, per-machine indexes, a structural wall (work never leaves its origin box). The merge lit up: <strong>nebuchadnezzar's 75 sessions joined dunder's</strong> in one report. The two machines finally shared a brain, the thing I'd wanted at hour zero.</p>
+<h2>"Not as insightful as I expected"</h2>
+<p>Fair. So I went at the native report's actual depth: not more counting, but <strong>per-session judgment</strong>. An LLM tags each session for friction, satisfaction, outcome; deterministic charts roll it up. The standout finding: <strong>env/tooling friction is ~44% of judged sessions</strong>, the <em>exact</em> #1 the native <code>/insights</code> flagged, arrived at independently from my own data. Two analyses, one verdict.</p>
+<p>The hidden number the flat report buried: <strong>22.8 billion cache-read tokens</strong> carrying 96% of input-side context. The headline burn is the small number.</p>
+<h2>A wrong assumption, caught by instinct</h2>
+<p>The report showed dunder smaller than neb. That contradicted reality. Root cause: the wall was per-<em>home</em>, and <code>.claude</code> was a mixed pre-split history. Half my personal 626Labs work was buried in the "work" pile. Moved the wall to per-<em>repo</em>. dunder's personal jumped 58 → 119, exactly where it belonged. The wall was never about secrecy; it's about not burning work quota on personal, so everything's <em>viewable</em>, just labeled.</p>
+<h2>The verge</h2>
+<p>Packaged it as an installable Claude Code plugin: manifest, skills layout, validator green. Then pointed my own iteration plugin at it and shipped four more features in a row: the native-grade charts, R4 polish, response-time, cross-project decisions.</p>
+<h2>What it cost, what it is</h2>
+<ul>
+<li><strong>42 commits</strong> (15:24 → 22:53), <strong>60 tests</strong>, two private repos.</li>
+<li><strong>280 sessions</strong> analyzed · <strong>144M tokens</strong> of burn · <strong>22.8B</strong> cache reads.</li>
+<li>A report with a synthesized read up top, then coverage, recall, token/cost, trends, pick-this-back-up, decisions, languages, and per-session how-it-went.</li>
+</ul>
+<h2>The meta</h2>
+<p>The process is the product: spec → subagent-TDD → verify on real data → iterate. Twice, the win was <em>verification catching what the tests couldn't</em>: the recursive-discovery miss and the buried-personal split. And the tool now closes the loop: it holds every project's spine (sessions, decisions, friction, timeline) so it can draft the build story itself. This post is the proof.</p>
+<p>Imagine something else.</p>
+<p>Este · 626 Labs</p>
+    </div>
+    <div class="ed-end-rule"></div>
+    <a class="ed-next" href="/#field-notes">
+      <div class="ed-next-label">Back to</div>
+      <div class="ed-next-title">All Field Notes</div>
+      <div class="ed-next-dek">What we shipped, what bit us, what we'd do differently.</div>
+    </a>
+    <p class="ed-source"><a href="https://github.com/626Labs-LLC/626Labs-LLC.github.io/blob/main/content/stories/vibe-insights-build-2026-05-23.md" target="_blank" rel="noopener">View the markdown source on GitHub</a></p>
+  </article>
+</div>
+</body>
+</html>

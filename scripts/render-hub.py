@@ -25,7 +25,10 @@ Zones NOT handled (stay hand-edited in index.html):
 - nav / footer
 - Manifesto / principles
 
-Stdlib only — runs in any Python 3.10+ on CI without `pip install`.
+Also materializes each local Field Note into an on-site reading page at
+`editorial/<slug>/index.html` (the editorial layer), the Atom feed, and the
+sitemap. Markdown bodies render via the `markdown` library — the one Python
+dependency (see requirements.txt); CI installs it before running this script.
 """
 from __future__ import annotations
 
@@ -35,6 +38,7 @@ import re
 import sys
 from pathlib import Path
 
+import markdown  # the one external dep — markdown -> HTML for Field Note pages
 import site_facts  # sibling module in scripts/ (added to sys.path when run as a script)
 
 # ─── paths ──────────────────────────────────────────────────────────
@@ -42,10 +46,12 @@ ROOT = Path(__file__).resolve().parent.parent
 SITE_JSON = ROOT / "content" / "site.json"
 INDEX_HTML = ROOT / "index.html"
 STORIES_DIR = ROOT / "content" / "stories"
+# Local Field Notes render to on-site reading pages under here:
+# editorial/<slug>/index.html, served at /editorial/<slug>/.
+STORY_PAGES_DIR = ROOT / "editorial"
 
-# Repo slug used to deep-link each Field Note's "Read on GitHub" CTA at the
-# raw markdown source. Per-story rendered HTML pages can be a follow-up; for
-# v1 the reading experience is GitHub's markdown renderer.
+# Repo slug used for the "View the markdown source" link at the foot of each
+# rendered Field Note page — build-log transparency back to the raw .md.
 STORIES_GITHUB_REPO = "626Labs-LLC/626Labs-LLC.github.io"
 STORIES_GITHUB_BRANCH = "main"
 
@@ -1107,7 +1113,7 @@ def discover_stories() -> list[dict]:
             text = path.read_text(encoding="utf-8")
         except OSError:
             continue
-        fields, _ = parse_story_frontmatter(text)
+        fields, body = parse_story_frontmatter(text)
         if not fields:
             continue
         if fields.get("draft") is True:
@@ -1116,24 +1122,39 @@ def discover_stories() -> list[dict]:
             # Need both to render a useful card; otherwise skip silently.
             continue
         fields["_filename"] = path.name
+        fields["_body"] = body  # raw markdown, for the on-site reading page
         entries.append(fields)
     # Newest-first by `published` (ISO date strings sort lexicographically).
     entries.sort(key=lambda e: str(e.get("published", "")), reverse=True)
     return entries
 
 
+def story_slug(story: dict) -> str:
+    """URL slug for a Field Note's on-site page: explicit `slug` frontmatter
+    wins, else the filename stem (e.g. vibe-wrap-build-2026-05-23)."""
+    slug = story.get("slug")
+    if slug:
+        return str(slug)
+    return story.get("_filename", "").removesuffix(".md")
+
+
+def story_source_url(story: dict) -> str:
+    """GitHub link to the raw markdown — the 'View source' footer credit."""
+    return (
+        f"https://github.com/{STORIES_GITHUB_REPO}/blob/"
+        f"{STORIES_GITHUB_BRANCH}/content/stories/{story.get('_filename', '')}"
+    )
+
+
 def story_link(story: dict) -> str:
     """Canonical URL for a Field Note. `external_url` wins when set (a post
-    whose canonical home is off-site, e.g. Medium); otherwise the GitHub
-    markdown source. Used by both the card CTA and the Atom feed."""
+    whose canonical home is off-site, e.g. Medium); otherwise the on-site
+    rendered page at /editorial/<slug>/. Used by the card CTA, the Atom feed,
+    and the sitemap."""
     ext = story.get("external_url")
     if ext:
         return str(ext)
-    filename = story.get("_filename", "")
-    return (
-        f"https://github.com/{STORIES_GITHUB_REPO}/blob/"
-        f"{STORIES_GITHUB_BRANCH}/content/stories/{filename}"
-    )
+    return f"{SITE_URL}/editorial/{story_slug(story)}/"
 
 
 def render_field_note(story: dict) -> str:
@@ -1152,7 +1173,16 @@ def render_field_note(story: dict) -> str:
     eyebrow_parts = [p for p in (published, product, source) if p]
     eyebrow = " · ".join(eyebrow_parts)
     link_url = story_link(story)
-    cta = f"Read on {source}" if (is_external and source) else "Read the full story"
+    if is_external:
+        # Off-site canonical home (e.g. Medium): new tab + diagonal arrow.
+        cta = f"Read on {source}" if source else "Read the full story"
+        link_open = f'<a href="{attr(link_url)}" target="_blank" rel="noopener">'
+        arrow = '<path d="M7 17L17 7M7 7h10v10"/>'
+    else:
+        # On-site reading page: same-tab navigation + forward arrow.
+        cta = "Read the full story"
+        link_open = f'<a href="{attr(link_url)}">'
+        arrow = '<path d="M5 12h14M13 5l7 7-7 7"/>'
 
     parts = [
         '      <article class="field-note">',
@@ -1165,11 +1195,10 @@ def render_field_note(story: dict) -> str:
         parts.append(f'        <p class="field-note-tagline">{tagline}</p>')
     parts.append('        <div class="field-note-link">')
     parts.append(
-        f'          <a href="{attr(link_url)}" target="_blank" rel="noopener">'
-        f'{esc(cta)} '
+        f'          {link_open}{esc(cta)} '
         '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
         'stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" '
-        'aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>'
+        f'aria-hidden="true">{arrow}</svg></a>'
     )
     parts.append('        </div>')
     parts.append('      </article>')
@@ -1203,6 +1232,124 @@ def render_field_notes(stories: list[dict]) -> str:
     <a class="field-notes-subscribe" href="/feed.xml">Subscribe via Atom<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a>
   </div>
 </section>"""
+
+
+# ─── on-site Field Note pages (the editorial reading layer) ─────────
+def _strip_leading_h1(body_md: str) -> str:
+    """Drop a single leading `# H1` from a story body — the frontmatter title
+    is authoritative and already renders as the page <h1>, so a body that
+    repeats it (vibe-insights, vibe-wrap both do) would double up."""
+    lines = body_md.splitlines()
+    i = 0
+    while i < len(lines) and not lines[i].strip():
+        i += 1
+    if i < len(lines) and re.match(r"#\s+\S", lines[i]):
+        del lines[i]
+        while i < len(lines) and not lines[i].strip():
+            del lines[i]
+    return "\n".join(lines)
+
+
+def _story_body_html(body_md: str) -> str:
+    """Render a Field Note's markdown body to HTML. Deterministic for a pinned
+    `markdown` version (see requirements.txt) so `--check` stays idempotent."""
+    return markdown.markdown(
+        _strip_leading_h1(body_md),
+        extensions=["fenced_code", "tables", "sane_lists"],
+        output_format="html5",
+    )
+
+
+def render_story_page(story: dict, body_html: str) -> str:
+    """Full standalone HTML reading page for one local Field Note, on the
+    editorial layer (Design/editorial.css). Frontmatter drives the header;
+    `body_html` is the already-rendered markdown body."""
+    raw_title = str(story.get("title", ""))
+    title = esc(raw_title)
+    subtitle = str(story.get("subtitle") or story.get("tagline") or "")
+    published = esc(str(story.get("published", "")))
+    product = esc(str(story.get("product", "")))
+    author = esc(str(story.get("author") or "626 Labs"))
+    canonical = f"{SITE_URL}/editorial/{story_slug(story)}/"
+    desc = subtitle or raw_title
+
+    img = story.get("image") or story.get("og_image") or story.get("hero_image")
+    if img:
+        og_image = str(img)
+        if og_image.startswith("/"):
+            og_image = f"{SITE_URL}{og_image}"
+    else:
+        og_image = f"{SITE_URL}/assets/brand/medium-header-1500x600.png"
+
+    meta = [f'<span class="author">{author}</span>']
+    if product:
+        meta.append('<span class="sep">·</span>')
+        meta.append(f"<span>{product}</span>")
+    dek = f'\n      <p class="ed-dek">{esc(subtitle)}</p>' if subtitle else ""
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title} — Field Notes — 626 Labs</title>
+<meta name="description" content="{attr(desc)}" />
+<link rel="canonical" href="{canonical}" />
+<meta property="og:title" content="{attr(raw_title)}" />
+<meta property="og:description" content="{attr(desc)}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="{canonical}" />
+<meta property="og:image" content="{attr(og_image)}" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="/favicon-626.png" />
+<link rel="stylesheet" href="/Design/colors_and_type.css" />
+<link rel="stylesheet" href="/Design/editorial.css" />
+</head>
+<body class="ed-page">
+<nav class="ed-nav">
+  <a class="ed-lockup" href="/"><span>626 Labs</span><span class="slash">/</span><span class="label">Field Notes</span></a>
+  <div class="ed-nav-links">
+    <a href="/#field-notes">Field Notes</a>
+    <a href="/editorial/">Editorial</a>
+    <a href="/">Home</a>
+  </div>
+</nav>
+<div class="ed-shell">
+  <article class="ed-article">
+    <header>
+      <div class="ed-eyebrow">Field Note<span class="dot"></span><span class="num">{published}</span></div>
+      <h1 class="ed-title">{title}</h1>{dek}
+      <div class="ed-meta">{''.join(meta)}</div>
+    </header>
+    <div class="ed-body">
+{body_html}
+    </div>
+    <div class="ed-end-rule"></div>
+    <a class="ed-next" href="/#field-notes">
+      <div class="ed-next-label">Back to</div>
+      <div class="ed-next-title">All Field Notes</div>
+      <div class="ed-next-dek">What we shipped, what bit us, what we'd do differently.</div>
+    </a>
+    <p class="ed-source"><a href="{attr(story_source_url(story))}" target="_blank" rel="noopener">View the markdown source on GitHub</a></p>
+  </article>
+</div>
+</body>
+</html>
+"""
+
+
+def render_story_pages(stories: list[dict]) -> list[tuple[Path, str]]:
+    """(output_path, html) for each LOCAL published story. Off-site (external_url)
+    posts keep linking out and get no on-site page. Sorted by slug so the write
+    order — and thus `--check` — is deterministic."""
+    pages: list[tuple[Path, str]] = []
+    for s in sorted((s for s in stories if not s.get("external_url")), key=story_slug):
+        slug = story_slug(s)
+        if not slug:
+            continue
+        body_html = _story_body_html(str(s.get("_body", "")))
+        pages.append((STORY_PAGES_DIR / slug / "index.html", render_story_page(s, body_html)))
+    return pages
 
 
 # ─── feed (Atom syndication for Field Notes) ────────────────────────
@@ -1272,41 +1419,54 @@ SITEMAP_ROOT_HTML_EXCLUDE: frozenset[str] = frozenset(
 )
 
 
-def render_sitemap(root: Path = ROOT) -> str:
-    """Build an XML sitemap from the pages actually on disk.
+def render_sitemap(stories: list[dict] | None = None, root: Path = ROOT) -> str:
+    """Build an XML sitemap from the pages actually on disk plus the Field Notes.
 
-    Enumerates three page classes, all filesystem-derived so the sitemap never
-    drifts from what actually ships:
-      1. the root index.html              -> "/"             (daily, 1.0)
-      2. every <dir>/index.html one down  -> "/<dir>/"       (weekly, 0.8)
-      3. standalone root <name>.html      -> "/<name>.html"  (monthly, 0.6)
+    Enumerates four page classes, all derived from real content so the sitemap
+    never drifts from what ships:
+      1. the root index.html              -> "/"                  (daily, 1.0)
+      2. every <dir>/index.html one down  -> "/<dir>/"            (weekly, 0.8)
+      3. standalone root <name>.html      -> "/<name>.html"       (monthly, 0.6)
+      4. each local Field Note            -> "/editorial/<slug>/" (monthly, 0.7)
     Class 3 covers the hand-authored content pages (rororo, thesis, workflow,
     privacy) the dir walk would otherwise miss; SITEMAP_ROOT_HTML_EXCLUDE keeps
-    index/404/admin out. Add a page and it appears here automatically.
-    Deterministic ordering (home, then dirs, then root pages — each alphabetical)
-    keeps --check idempotent.
+    index/404/admin out. Class 4 carries a <lastmod> from each note's frontmatter
+    date (deterministic — no git needed). Add a page or publish a note and it
+    appears here automatically. Deterministic ordering (home, dirs, root pages,
+    notes — each alphabetical) keeps --check idempotent.
     """
-    pages: list[tuple[str, str, str]] = []  # (loc, changefreq, priority)
+    if stories is None:
+        stories = discover_stories()
+    # (loc, changefreq, priority, lastmod | None)
+    pages: list[tuple[str, str, str, str | None]] = []
     if (root / "index.html").exists():
-        pages.append((f"{SITE_URL}/", "daily", "1.0"))
+        pages.append((f"{SITE_URL}/", "daily", "1.0", None))
     for idx in sorted(root.glob("*/index.html"), key=lambda p: p.parent.name):
         name = idx.parent.name
         if name in SITEMAP_EXCLUDE:
             continue
-        pages.append((f"{SITE_URL}/{name}/", "weekly", "0.8"))
-    for html in sorted(root.glob("*.html"), key=lambda p: p.name):
-        if html.name in SITEMAP_ROOT_HTML_EXCLUDE:
+        pages.append((f"{SITE_URL}/{name}/", "weekly", "0.8", None))
+    for html_file in sorted(root.glob("*.html"), key=lambda p: p.name):
+        if html_file.name in SITEMAP_ROOT_HTML_EXCLUDE:
             continue
-        pages.append((f"{SITE_URL}/{html.name}", "monthly", "0.6"))
+        pages.append((f"{SITE_URL}/{html_file.name}", "monthly", "0.6", None))
+    for s in sorted((s for s in stories if not s.get("external_url")), key=story_slug):
+        slug = story_slug(s)
+        if not slug:
+            continue
+        lastmod = str(s.get("updated") or s.get("published") or "")[:10] or None
+        pages.append((f"{SITE_URL}/editorial/{slug}/", "monthly", "0.7", lastmod))
 
-    urls = "\n".join(
-        "  <url>\n"
-        f"    <loc>{xesc(loc)}</loc>\n"
-        f"    <changefreq>{cf}</changefreq>\n"
-        f"    <priority>{pr}</priority>\n"
-        "  </url>"
-        for loc, cf, pr in pages
-    )
+    blocks = []
+    for loc, cf, pr, lastmod in pages:
+        block = ["  <url>", f"    <loc>{xesc(loc)}</loc>"]
+        if lastmod:
+            block.append(f"    <lastmod>{xesc(lastmod)}</lastmod>")
+        block.append(f"    <changefreq>{cf}</changefreq>")
+        block.append(f"    <priority>{pr}</priority>")
+        block.append("  </url>")
+        blocks.append("\n".join(block))
+    urls = "\n".join(blocks)
     return (
         '<?xml version="1.0" encoding="utf-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -1389,17 +1549,25 @@ def main(argv: list[str]) -> int:
     feed_new = render_atom_feed(stories)
     feed_old = FEED_PATH.read_text(encoding="utf-8") if FEED_PATH.exists() else None
 
-    sitemap_new = render_sitemap()
+    sitemap_new = render_sitemap(stories)
     sitemap_old = SITEMAP_PATH.read_text(encoding="utf-8") if SITEMAP_PATH.exists() else None
+
+    # On-site Field Note pages — (path, new_html, changed) per local story.
+    story_pages = []
+    for path, new_html in render_story_pages(stories):
+        old = path.read_text(encoding="utf-8") if path.exists() else None
+        story_pages.append((path, new_html, new_html != old))
 
     index_changed = out != src
     feed_changed = feed_new != feed_old
     sitemap_changed = sitemap_new != sitemap_old
+    stale_stories = [p for p, _, changed in story_pages if changed]
 
     if "--check" in argv:
         stale = [name for name, drifted in
                  (("index.html", index_changed), ("feed.xml", feed_changed),
                   ("sitemap.xml", sitemap_changed)) if drifted]
+        stale += [p.relative_to(ROOT).as_posix() for p in stale_stories]
         if stale:
             print(
                 f"{' and '.join(stale)} out of date relative to content. "
@@ -1407,7 +1575,10 @@ def main(argv: list[str]) -> int:
                 file=sys.stderr,
             )
             return 1
-        print("index.html, feed.xml and sitemap.xml are up to date.")
+        print(
+            f"index.html, feed.xml, sitemap.xml and {len(story_pages)} "
+            "Field Note page(s) are up to date."
+        )
         return 0
 
     if index_changed:
@@ -1427,6 +1598,16 @@ def main(argv: list[str]) -> int:
         print("sitemap.xml rebuilt from the page tree.")
     else:
         print("sitemap.xml already current — no change.")
+
+    rebuilt = 0
+    for path, new_html, changed in story_pages:
+        if changed:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(new_html, encoding="utf-8")
+            print(f"Field Note page rebuilt: {path.relative_to(ROOT).as_posix()}")
+            rebuilt += 1
+    if not rebuilt:
+        print(f"{len(story_pages)} Field Note page(s) already current — no change.")
     return 0
 
 
