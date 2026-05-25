@@ -5,8 +5,17 @@
   <link href="https://626labs.dev/#field-notes"/>
   <link rel="self" type="application/atom+xml" href="https://626labs.dev/feed.xml"/>
   <id>https://626labs.dev/feed.xml</id>
-  <updated>2026-05-23T00:00:00Z</updated>
+  <updated>2026-05-24T00:00:00Z</updated>
   <author><name>626 Labs</name></author>
+  <entry>
+    <title>vibe-walk builds the onboarding tour, and tells you when not to</title>
+    <link href="https://github.com/626Labs-LLC/626Labs-LLC.github.io/blob/main/content/stories/2026-05-24-vibe-walk-launch.md"/>
+    <id>https://github.com/626Labs-LLC/626Labs-LLC.github.io/blob/main/content/stories/2026-05-24-vibe-walk-launch.md</id>
+    <updated>2026-05-24T00:00:00Z</updated>
+    <published>2026-05-24T00:00:00Z</published>
+    <author><name>626 Labs</name></author>
+    <summary>A Claude Code plugin that reads your app, builds an instrumented spotlight tour you own, and is honest when a tour won&#x27;t help.</summary>
+  </entry>
   <entry>
     <title>I complained that /insights wasn&#x27;t insightful. Seven hours later I had a plugin that beats it.</title>
     <link href="https://github.com/626Labs-LLC/626Labs-LLC.github.io/blob/main/content/stories/vibe-insights-build-2026-05-23.md"/>
