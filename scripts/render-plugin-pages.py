@@ -168,6 +168,8 @@ STYLE = """
     .hero-meta span { color: var(--ink-200); }
     .hero-validated { margin-top: 14px; max-width: 560px; font-size: 13px; line-height: 1.5; color: var(--ink-300); }
     .hero-validated .vtag { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--success); margin-right: 10px; }
+    .hero-caps { margin-top: 10px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: var(--ink-200); }
+    .hero-caps .captag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cyan); margin-right: 10px; }
     .hero-mark { display: flex; align-items: center; justify-content: center; position: relative; }
     .hero-mark::before { content: ''; position: absolute; width: 72%; height: 72%; border-radius: 50%; background: radial-gradient(circle, rgba(23,212,250,.22) 0%, rgba(242,47,137,.12) 45%, transparent 72%); filter: blur(28px); z-index: 0; }
     .hero-mark img { position: relative; z-index: 1; width: min(340px, 78%); height: auto; }
@@ -314,6 +316,32 @@ _val_path = ROOT / "content" / "plugin-validated.json"
 if _val_path.exists():
     PLUGIN_VALIDATED = json.loads(_val_path.read_text(encoding="utf-8")).get("validated", {})
 
+# Live capability counts, refreshed daily alongside the versions by
+# .github/workflows/refresh-plugin-versions.yml (id -> {commands, skills, agents}).
+# These mirror Claude Code's pre-install preview — the literal install footprint —
+# counted from each repo's file tree. Missing entries render no chip.
+PLUGIN_STATS: dict = {}
+_ps_path = ROOT / "data" / "plugin-stats.json"
+if _ps_path.exists():
+    PLUGIN_STATS = json.loads(_ps_path.read_text(encoding="utf-8"))
+
+
+def caps_line(plugin_id) -> str:
+    """The 'what installs' footprint chip: commands · skills · agents, zeros
+    omitted, pluralized. Empty string when we have no counts for this plugin."""
+    s = PLUGIN_STATS.get(plugin_id)
+    if not s:
+        return ""
+    parts = []
+    for key, noun in (("commands", "command"), ("skills", "skill"), ("agents", "agent")):
+        n = int(s.get(key, 0) or 0)
+        if n:
+            parts.append(f"{n} {noun}" + ("" if n == 1 else "s"))
+    if not parts:
+        return ""
+    inner = " &middot; ".join(parts)
+    return f'\n            <p class="hero-caps"><span class="captag">Includes</span>{inner}</p>'
+
 
 def effective_version(p) -> str | None:
     """Live tag for this plugin if we have one, else the hand-set heroMeta version."""
@@ -437,6 +465,7 @@ def render_hero(p):
         f'\n            <p class="hero-validated"><span class="vtag">Validated</span>{e(vtext)}</p>'
         if vtext else ""
     )
+    caps_html = caps_line(p["id"])
 
     term = p.get("terminal")
     if term:
@@ -473,7 +502,7 @@ def render_hero(p):
             </div>
             <div class="hero-meta">
               {meta}
-            </div>{validated_html}
+            </div>{caps_html}{validated_html}
           </div>
 {right}
         </div>
