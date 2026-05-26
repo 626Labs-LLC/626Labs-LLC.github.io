@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-25T10:10:49.119Z",
-  "count": 44,
+  "generatedAt": "2026-05-26T09:59:34.837Z",
+  "count": 43,
   "owners": [
     "user:estevanhernandez-stack-ed",
     "org:626Labs-LLC"
@@ -13,19 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-05-25T09:42:08Z",
-      "stargazers_count": 0,
-      "archived": false,
-      "fork": false
-    },
-    {
-      "full_name": "estevanhernandez-stack-ed/626-labs-mod-manager",
-      "owner": "estevanhernandez-stack-ed",
-      "name": "626-labs-mod-manager",
-      "description": null,
-      "html_url": "https://github.com/estevanhernandez-stack-ed/626-labs-mod-manager",
-      "language": "JavaScript",
-      "pushed_at": "2026-05-24T03:16:29Z",
+      "pushed_at": "2026-05-26T09:01:27Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -109,7 +97,7 @@
       "description": "An AI \"Technomancer\" using the power of Gemini 3 and the Stars!",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Celestia3",
       "language": "TypeScript",
-      "pushed_at": "2026-05-25T05:35:54Z",
+      "pushed_at": "2026-05-26T01:37:51Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -421,7 +409,7 @@
       "description": "Post-ship product iteration — the sibling to vibe-cartographer. Pick a mode (feature-add, competitive, ux-polish, bug-bash), ship one PR. Ingests competitor changelogs, framework releases, and your feedback.md. Maintains your Atlas.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-iterate",
       "language": "Shell",
-      "pushed_at": "2026-05-25T02:12:42Z",
+      "pushed_at": "2026-05-26T02:40:37Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -445,7 +433,7 @@
       "description": "The 626Labs Vibe Plugins ecosystem — spec-driven development, documentation, security, and testing for vibe-coded apps. Monorepo for vibe-sec + vibe-test + shared core.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-05-25T02:08:43Z",
+      "pushed_at": "2026-05-25T15:02:41Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
