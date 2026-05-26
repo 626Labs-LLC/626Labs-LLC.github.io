@@ -70,7 +70,7 @@ The 6 bot workflows that push to main:
 |---|---|---|
 | `build-widget.yml` | Push to `apps/widget-bacon-trail/src/**` | Vite-builds the widget, commits the bundle to `widget-bacon-trail/`. Bakes `VITE_TMDB_API_KEY` (required) and `VITE_STATS_ENDPOINT` (optional — widget degrades to no play counts if unset) into the IIFE bundle at build time. |
 | `refresh-bacon-shards.yml` | Daily 06:00 UTC | Pulls bacon shard data from Firestore (uses `FIREBASE_SA_JSON` secret). |
-| `rebuild-hub.yml` | Push to `content/site.json` | Re-runs render-hub.py and commits drift. |
+| `rebuild-hub.yml` | Push to `content/site.json` or `content/stories/**` | Builds Field Note social cards (`build-og-cards.py` → `assets/og/`) then re-runs render-hub.py and commits drift. Needs `Pillow`+`numpy` (in `requirements.txt`). |
 | `track-traffic.yml` | Daily 06:00 UTC | Auto-discovers all public, non-fork, non-archived repos under `estevanhernandez-stack-ed` (user) and `626Labs-LLC` (org), then pulls GitHub traffic metrics for each. Uses `TRAFFIC_PAT` (user-scope, needs Administration:Read on every tracked repo) and `TRAFFIC_PAT_ORG` (optional org-scope override — without it, org repos fall back to GH_TOKEN and 403 on the Traffic API). |
 | `fetch-site-stats.yml` | Daily 06:30 UTC | Pulls GoatCounter visit stats for `626labs.dev` and writes `data/site-stats.json` (uses `GOATCOUNTER_TOKEN` secret). |
 | `refresh-plugin-versions.yml` | Daily 07:00 UTC | Reads each plugin repo's latest tag (`content/plugin-repos.json` → GitHub API), writes `data/plugin-versions.json`, re-renders plugin pages so version chips can't drift. Default `GITHUB_TOKEN` reads public tags — no extra secret. |
@@ -126,11 +126,13 @@ Generates a branded 1200x630 OG/social card per local Field Note into
 `assets/og/<slug>.png` (navy field + cyan/magenta glow, title hero,
 hairline, dek, footer). `render-hub.py` points each story page's
 `og:image` and BlogPosting `image` at the card when it exists, else falls
-back to `assets/brand/medium-header-1500x600.png`. Re-run after adding or
-retitling a story: `python scripts/build-og-cards.py` (outputs are
-generated — don't hand-edit `assets/og/`). `--check` byte-compares and
-exits nonzero on any missing/stale card (deterministic, like
-`render-hub.py --check`).
+back to `assets/brand/medium-header-1500x600.png`. **CI runs this
+automatically** — `rebuild-hub.yml` builds the cards before rendering on
+any push to `content/stories/**`, so a new story gets its card without a
+manual step. Run `python scripts/build-og-cards.py` only for a local
+preview (outputs are generated — don't hand-edit `assets/og/`). `--check`
+byte-compares and exits nonzero on any missing/stale card (deterministic
+via the pinned Pillow in `requirements.txt`, like `render-hub.py --check`).
 
 ### Site renderer — `scripts/render-hub.py`
 
