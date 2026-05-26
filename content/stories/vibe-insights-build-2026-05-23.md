@@ -4,7 +4,7 @@ product: vibe-insights
 title: "I complained that /insights wasn't insightful. Seven hours later I had a plugin that beats it."
 subtitle: "It grabs insights from every Claude Code building surface you use, walls work from personal, and can even tell you the story of how it got built."
 published: 2026-05-23
-tagline: "42 commits, 60 tests, 280 sessions analyzed. Twice, the win was verification catching what the tests couldn't."
+tagline: "Get /insights across all of your vibe- coding surfaces."
 draft: false
 ---
 
