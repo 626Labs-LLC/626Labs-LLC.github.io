@@ -16,6 +16,10 @@ Inputs:
 Outputs (under assets/og/ — generated; don't hand-edit):
   assets/og/<slug>.png          — one per local published story, 1200x630
 
+CI runs this automatically: rebuild-hub.yml builds the cards before rendering
+on any push to content/stories/**, so a new story gets its card with no manual
+step. Run it by hand only for a local preview.
+
 Usage:
   python scripts/build-og-cards.py          # (re)generate every card
   python scripts/build-og-cards.py --check   # CI/idempotency: nonzero if any
