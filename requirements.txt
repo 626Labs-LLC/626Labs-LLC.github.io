@@ -1,9 +1,10 @@
 # Python dependencies for the site renderer (scripts/render-hub.py) and the
 # Field Note social-card generator (scripts/build-og-cards.py).
 # Pinned for local/CI parity — bump deliberately so generated output can't
-# drift between a contributor's machine and the rebuild-hub workflow. Pillow
-# wheels bundle their own FreeType, so a pinned Pillow renders byte-identical
-# PNGs across platforms — that's what keeps the committed cards from churning.
+# drift. A pinned Pillow is byte-stable run-to-run on a given OS, but its
+# bundled FreeType rasterizes a few bytes differently across platforms
+# (ubuntu vs Windows), so the rebuild-hub workflow (ubuntu) is the source of
+# truth for assets/og — don't commit cards regenerated on a non-Linux box.
 markdown==3.10.2
 Pillow==10.4.0
 numpy==2.3.4

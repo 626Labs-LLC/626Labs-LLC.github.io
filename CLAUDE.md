@@ -126,13 +126,16 @@ Generates a branded 1200x630 OG/social card per local Field Note into
 `assets/og/<slug>.png` (navy field + cyan/magenta glow, title hero,
 hairline, dek, footer). `render-hub.py` points each story page's
 `og:image` and BlogPosting `image` at the card when it exists, else falls
-back to `assets/brand/medium-header-1500x600.png`. **CI runs this
-automatically** — `rebuild-hub.yml` builds the cards before rendering on
-any push to `content/stories/**`, so a new story gets its card without a
+back to `assets/brand/medium-header-1500x600.png`. **CI owns `assets/og/`**
+— `rebuild-hub.yml` (ubuntu) builds the cards before rendering on any push
+to `content/stories/**`, so a new or retitled story gets its card without a
 manual step. Run `python scripts/build-og-cards.py` only for a local
-preview (outputs are generated — don't hand-edit `assets/og/`). `--check`
-byte-compares and exits nonzero on any missing/stale card (deterministic
-via the pinned Pillow in `requirements.txt`, like `render-hub.py --check`).
+preview, and **don't commit cards regenerated on a non-Linux box** — a
+pinned Pillow is byte-stable run-to-run on one OS but its bundled FreeType
+rasterizes a few bytes differently across platforms, so a local Windows
+`--check` will show a harmless diff against the ubuntu-committed cards. Let
+rebuild-hub regenerate them. (`--check` byte-compares and exits nonzero on
+any missing/stale card, like `render-hub.py --check`.)
 
 ### Site renderer — `scripts/render-hub.py`
 
