@@ -5,8 +5,17 @@
   <link href="https://626labs.dev/#field-notes"/>
   <link rel="self" type="application/atom+xml" href="https://626labs.dev/feed.xml"/>
   <id>https://626labs.dev/feed.xml</id>
-  <updated>2026-05-24T00:00:00Z</updated>
+  <updated>2026-05-29T00:00:00Z</updated>
   <author><name>626 Labs</name></author>
+  <entry>
+    <title>Same code, 3x the thinking: what I did with my first 8 hours with Opus 4.</title>
+    <link href="https://626labs.dev/editorial/2026-05-29-same-code-triple-thinking/"/>
+    <id>https://626labs.dev/editorial/2026-05-29-same-code-triple-thinking/</id>
+    <updated>2026-05-29T00:00:00Z</updated>
+    <published>2026-05-29T00:00:00Z</published>
+    <author><name>Este Hernandez</name></author>
+    <summary>I turned on max-orchestration to see what would happen. Eight sessions later the agent had burned three times the tokens and written the same amount of code. The extra went into tests it caught before I saw them, and into a run that stopped answering the wheel once it started.</summary>
+  </entry>
   <entry>
     <title>vibe-walk builds the onboarding tour, and tells you when not to</title>
     <link href="https://626labs.dev/editorial/2026-05-24-vibe-walk-launch/"/>

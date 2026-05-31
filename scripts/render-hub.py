@@ -1253,9 +1253,12 @@ def _story_body_html(body_md: str) -> str:
 
 
 def _reading_minutes(body_md: str) -> int:
-    """Estimate read time from the body word count (fenced code excluded so a
-    code-heavy note doesn't read as longer than it is). 200 wpm, floor 1."""
+    """Estimate read time from the body word count. Fenced code and raw HTML/SVG
+    markup are excluded so a code-heavy or figure-heavy note (inline SVG charts,
+    data tables) doesn't read as longer than it is — tag names, attributes, and
+    path coordinates aren't prose. 200 wpm, floor 1."""
     text = re.sub(r"```.*?```", " ", body_md, flags=re.S)
+    text = re.sub(r"<[^>]+>", " ", text)  # drop HTML/SVG tags + their attributes
     words = len(re.findall(r"\w+", text))
     return max(1, round(words / 200))
 
