@@ -1,5 +1,5 @@
 ---
-title: "Same code, 3x the thinking: what I did with my first 8 hours with Opus 4."
+title: "Same code, 3x the thinking: what I did with my first 8 hours with Opus 4.8."
 subtitle: "I turned on max-orchestration to see what would happen. Eight sessions later the agent had burned three times the tokens and written the same amount of code. The extra went into tests it caught before I saw them, and into a run that stopped answering the wheel once it started."
 tagline: "3.2x the tokens, the same lines of code. The extra went into care, not output, and into a run that stopped answering the wheel."
 published: 2026-05-29
