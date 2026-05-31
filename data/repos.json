@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-30T08:29:55.506Z",
-  "count": 44,
+  "generatedAt": "2026-05-31T08:48:14.726Z",
+  "count": 45,
   "owners": [
     "user:estevanhernandez-stack-ed",
     "org:626Labs-LLC"
@@ -13,7 +13,19 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-05-30T08:11:53Z",
+      "pushed_at": "2026-05-31T08:31:15Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
+      "full_name": "estevanhernandez-stack-ed/626-mod-launcher",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "626-mod-launcher",
+      "description": "Native Windows (.NET 10 / WinUI 3) rewrite of the 626 Labs Mod Launcher. Phase 1 (ModManager.Core) complete: 157 tests green.",
+      "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher",
+      "language": "C#",
+      "pushed_at": "2026-05-31T03:05:48Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -97,7 +109,7 @@
       "description": "An AI \"Technomancer\" using the power of Gemini 3 and the Stars!",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Celestia3",
       "language": "TypeScript",
-      "pushed_at": "2026-05-30T04:11:00Z",
+      "pushed_at": "2026-05-31T06:26:51Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -433,7 +445,7 @@
       "description": "The 626Labs Vibe Plugins ecosystem — spec-driven development, documentation, security, and testing for vibe-coded apps. Monorepo for vibe-sec + vibe-test + shared core.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-05-30T05:35:28Z",
+      "pushed_at": "2026-05-30T14:32:21Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
