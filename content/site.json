@@ -215,7 +215,7 @@
       "id": "vibe-insights",
       "title": "Vibe Insights",
       "tagline": "The /insights you wish you had.",
-      "description": "Cross-machine, work-walled Claude Code session analytics — the verbose /insights over every machine and your whole history. Coverage, where-was-I recall, token/cost with the cache reveal, trends, decisions, languages, per-session friction, and a synthesized read of how you actually work. Standalone engine; employer sessions stay walled and local.",
+      "description": "The deep retrospective for your Claude Code work — the verbose /insights over your full history and every machine you code on. Coverage, where-was-I recall, token/cost with the cache reveal, trends, how-you-work, ranked open threads, decisions, languages, per-session friction, and a synthesized read of how you actually work. Personal by default, no telemetry; keep any source or repo local-only.",
       "tags": [
         { "label": "Plugin", "tone": "cyan" },
         { "label": "analytics", "tone": "magenta" },
@@ -227,7 +227,7 @@
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
       "anthropicApproved": true,
-      "meta": "<code>/vibe-insights</code> · cross-machine analytics",
+      "meta": "<code>/vibe-insights</code> · cross-machine retrospective",
       "productPage": "/vibe-insights/",
       "screenshots": []
     },
