@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-02T10:27:19.175Z",
-  "count": 44,
+  "generatedAt": "2026-06-03T11:03:11.657Z",
+  "count": 43,
   "owners": [
     "user:estevanhernandez-stack-ed",
     "org:626Labs-LLC"
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-06-02T09:55:31Z",
+      "pushed_at": "2026-06-03T10:27:11Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -25,7 +25,7 @@
       "description": "Native Windows (.NET 10 / WinUI 3) rewrite of the 626 Labs Mod Launcher. Phase 1 (ModManager.Core) complete: 157 tests green.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher",
       "language": "C#",
-      "pushed_at": "2026-06-01T01:28:41Z",
+      "pushed_at": "2026-06-03T04:09:17Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -206,18 +206,6 @@
       "html_url": "https://github.com/estevanhernandez-stack-ed/Macro",
       "language": "Swift",
       "pushed_at": "2026-05-07T19:24:01Z",
-      "stargazers_count": 0,
-      "archived": false,
-      "fork": false
-    },
-    {
-      "full_name": "estevanhernandez-stack-ed/Project-626Labs",
-      "owner": "estevanhernandez-stack-ed",
-      "name": "Project-626Labs",
-      "description": "A Personal Project Organizer",
-      "html_url": "https://github.com/estevanhernandez-stack-ed/Project-626Labs",
-      "language": "TypeScript",
-      "pushed_at": "2026-06-02T06:14:18Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -433,7 +421,7 @@
       "description": "The 626Labs Vibe Plugins ecosystem — spec-driven development, documentation, security, and testing for vibe-coded apps. Monorepo for vibe-sec + vibe-test + shared core.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-06-01T22:17:41Z",
+      "pushed_at": "2026-06-02T15:23:54Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
