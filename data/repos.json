@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-06T08:35:35.407Z",
+  "generatedAt": "2026-06-07T09:15:19.713Z",
   "count": 43,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-06-06T08:19:30Z",
+      "pushed_at": "2026-06-07T08:40:46Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -25,7 +25,7 @@
       "description": "Native Windows (.NET 10 / WinUI 3) rewrite of the 626 Labs Mod Launcher. Phase 1 (ModManager.Core) complete: 157 tests green.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher",
       "language": "C#",
-      "pushed_at": "2026-06-04T03:01:30Z",
+      "pushed_at": "2026-06-07T01:48:50Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -301,7 +301,7 @@
       "description": "Native Windows 11 + macOS glass widget that projects when you'll hit your Claude usage cap — burn-rate, pace markers, live token-burn from local Claude Code sessions, and five glass themes. Independent third-party tool. MIT.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
       "language": "Python",
-      "pushed_at": "2026-05-08T22:40:13Z",
+      "pushed_at": "2026-06-07T04:12:41Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -421,7 +421,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-06-05T15:01:16Z",
+      "pushed_at": "2026-06-06T14:32:18Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
