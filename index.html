@@ -1348,6 +1348,58 @@
       line-height: 1.55;
     }
 
+    /* ── About star map ─────────────────────────── */
+    .starmap {
+      margin-top: var(--s-10);
+      position: relative;
+      border: 1px solid rgba(23, 212, 250, 0.18);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      background: radial-gradient(ellipse at 60% 40%, #14283f 0%, #0f1f31 70%);
+    }
+    .starmap-sky { display: block; width: 100%; height: 340px; }
+    @media (max-width: 760px) { .starmap-sky { height: 240px; } }
+    .starmap-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--s-4);
+      padding: 10px 14px;
+      border-top: 1px solid var(--border-1);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-2);
+    }
+    .starmap-legend { display: flex; gap: var(--s-4); }
+    .starmap-legend .lg { display: inline-flex; align-items: center; gap: 6px; }
+    .starmap-legend .lg::before {
+      content: "";
+      width: 7px; height: 7px; border-radius: 50%;
+    }
+    .starmap-legend .lg-plugin::before   { background: #17d4fa; box-shadow: 0 0 6px rgba(23, 212, 250, 0.8); }
+    .starmap-legend .lg-flagship::before { background: #f22f89; box-shadow: 0 0 6px rgba(242, 47, 137, 0.8); }
+    .starmap-legend .lg-product::before  { background: #e8f6ff; box-shadow: 0 0 6px rgba(232, 246, 255, 0.7); }
+    @media (max-width: 600px) {
+      .starmap-caption { flex-direction: column; align-items: flex-start; gap: 6px; }
+    }
+    .starmap-tooltip {
+      position: absolute;
+      z-index: 2;
+      pointer-events: none;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-1);
+      background: rgba(10, 22, 38, 0.92);
+      border: 1px solid rgba(23, 212, 250, 0.35);
+      border-radius: 6px;
+      padding: 5px 9px;
+      white-space: nowrap;
+    }
+
     .stack {
       display: flex;
       gap: var(--s-2);
