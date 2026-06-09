@@ -69,24 +69,26 @@ the back pocket).
 
 ```json
 "starMap": {
-  "flagship": "vibe-cartographer",
   "products": ["Celestia 3", "RORORO", "We See You at the Movies"]
 }
 ```
 
-- `flagship` — plugin id whose star renders magenta `#f22f89`. Falls back to
-  the first live plugin if missing/unknown.
+- The flagship (magenta `#f22f89` star) derives from the existing
+  `"flagship": true` field on the product entry in `site.json` —
+  vibe-cartographer already carries it. Falls back to the first live plugin
+  if no product is flagged. No duplicate config.
 - `products` — curated display names for background stars (3–5 recommended).
-  Exact initial list confirmed at implementation against `site.json`
-  products. Editable later via admin (out of scope now).
+  Editable later via admin (out of scope now).
+- Presence of the `starMap` block is the feature toggle: omit it and
+  `render_about()` emits no panel (clean rollback path).
 
 ### Emitted blob (`#starmap-data`)
 
 ```json
 {
   "plugins": [
-    {"id": "vibe-cartographer", "name": "Vibe Cartographer", "version": "0.9.1", "flagship": true},
-    {"id": "vibe-doc", "name": "Vibe Doc", "version": "1.2.0"}
+    {"id": "vibe-cartographer", "name": "Vibe Cartographer", "flagship": true},
+    {"id": "vibe-doc", "name": "Vibe Doc", "flagship": false}
   ],
   "products": [{"name": "Celestia 3"}, {"name": "RORORO"}]
 }
@@ -95,10 +97,14 @@ the back pocket).
 - `plugins` ordered as they appear in `site.json` (launch order) — this
   order is load-bearing: it assigns spine slots, so it must stay stable.
 - Plugin set derives from the same live-plugin selection `site_facts.py`
-  uses for `live_plugin_names` (single source of truth; the blob and the
-  prose can never disagree).
-- `version` joined from `data/plugin-versions.json` when present; omitted
-  otherwise (tooltip then shows name only).
+  uses for `live_plugin_names` (`is_claude_plugin(p) and status == "live"`;
+  single source of truth — the blob and the prose can never disagree).
+- **Versions are not baked into the blob.** `refresh-plugin-versions.yml`
+  re-renders plugin subpages only, never the root `index.html` — baking
+  versions would make the daily version bump fail `render-hub.py --check`
+  until a manual re-render. Instead the star map JS fetches
+  `data/plugin-versions.json` once at runtime (same-origin, ~200 bytes) and
+  joins versions into tooltips as progressive enhancement.
 - No timestamps, no randomness — the blob must be byte-stable so
   `render-hub.py --check` stays idempotent.
 
@@ -154,7 +160,9 @@ Trigger: IntersectionObserver at ~35% panel visibility.
 - `pointermove`: nearest-star hit test within 14px (plugins and products).
   Hit → HTML tooltip (`.starmap-tooltip`) pinned next to the star (not the
   cursor): mono uppercase, `NAME · vX.Y.Z` (version chip omitted when
-  unknown). Cursor becomes `default`; no underline of clickability implied.
+  unknown — the version map comes from the runtime fetch above, so a failed
+  fetch degrades to name-only tooltips). Cursor stays `default`; no
+  clickability implied.
 - Touch: tap = same hit test + show; tap on empty sky = dismiss.
 - No click navigation (locked decision — the map is not a menu).
 
