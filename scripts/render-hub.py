@@ -992,7 +992,61 @@ def render_contact(contact: dict) -> str:
 
 
 # ─── about / manifesto ──────────────────────────────────────────────
-def render_about(about: dict) -> str:
+def _starmap_blob(about: dict, products: list) -> str:
+    """Byte-stable JSON for the star map. Plugin order = site.json order
+    (load-bearing: it assigns spine slots). No timestamps, no randomness.
+    Versions are deliberately NOT baked — the JS fetches
+    data/plugin-versions.json at runtime so the daily version bump can't
+    drift this file against --check."""
+    cfg = about.get("starMap") or {}
+    live = [
+        p for p in products
+        if site_facts.is_claude_plugin(p) and p.get("status") == "live"
+    ]
+    plugins = [
+        {
+            "id": p.get("id", ""),
+            "name": p.get("title", p.get("id", "")),
+            "flagship": bool(p.get("flagship")),
+        }
+        for p in live
+    ]
+    if plugins and not any(pl["flagship"] for pl in plugins):
+        plugins[0]["flagship"] = True
+    blob = {
+        "plugins": plugins,
+        "products": [{"name": n} for n in (cfg.get("products") or [])],
+    }
+    # sort_keys for byte-stability; lists keep their (load-bearing) order.
+    # Escape "</" so the JSON can never close its own <script> element.
+    return json.dumps(blob, separators=(",", ":"), sort_keys=True).replace("</", "<\\/")
+
+
+def _render_starmap(about: dict, products: list) -> str:
+    """The constellation panel. Emitted only when about.starMap exists —
+    presence of the config block is the feature toggle."""
+    if about.get("starMap") is None:
+        return ""
+    return f"""
+  <div class="wrap">
+    <figure class="starmap" id="plugin-constellation">
+      <canvas class="starmap-sky" aria-hidden="true"></canvas>
+      <div class="starmap-tooltip" hidden></div>
+      <figcaption class="starmap-caption">
+        <span class="starmap-label">The plugin constellation</span>
+        <span class="starmap-legend">
+          <span class="lg lg-plugin">live plugin</span>
+          <span class="lg lg-flagship">flagship</span>
+          <span class="lg lg-product">products</span>
+        </span>
+      </figcaption>
+    </figure>
+    <script type="application/json" id="starmap-data">{_starmap_blob(about, products)}</script>
+  </div>
+"""
+
+
+def render_about(about: dict, products: list | None = None) -> str:
     """Render the `.manifesto` section — 'About 626 Labs'.
 
     paragraphs[] are emitted as raw HTML (not escaped) so the caller can
@@ -1039,7 +1093,7 @@ def render_about(about: dict) -> str:
 {para_html}
     </div>
   </div>
-
+{_render_starmap(about, products or [])}
   <div class="wrap">
     <div class="principles">
 {principles_html}
@@ -1636,7 +1690,10 @@ def main(argv: list[str]) -> int:
     if "play" in content:
         out = substitute_zone(out, "play", render_play_section(content["play"]))
     if "about" in content:
-        out = substitute_zone(out, "about", render_about(content["about"]))
+        out = substitute_zone(
+            out, "about",
+            render_about(content["about"], content.get("products") or []),
+        )
     if "support" in content:
         out = substitute_zone(out, "support", render_support(content["support"]))
     if "contact" in content:

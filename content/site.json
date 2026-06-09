@@ -788,6 +788,9 @@
       "React 19",
       "Fort Worth, TX"
     ],
+    "starMap": {
+      "products": ["Celestia 3", "RORORO", "We See You at the Movies"]
+    },
     "paragraphs": [
       "626 Labs builds modern tools for practices that have been running on spreadsheets, paper, and inherited habits for decades — or, in the case of astrology, a few thousand years. The brief is simple: look at a field that everyone assumes is \"fine the way it is,\" and ship the version it should have had all along.",
       "The proof case is <strong>Celestia 3</strong>. AI joined with tarot, numerology, and astrology in one surface. Partway through the build, we discovered the default Swiss Ephemeris engine drifted at the second-precision level. We didn't ship around it. We repaired the engine ourselves and met the NASA-grade bar. The point isn't the math — it's the posture. When the bar moves mid-build, we move with it.",
