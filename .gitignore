@@ -25,6 +25,7 @@ assets/level_3 Este.gif
 .vibe-iterate/
 .vibe-doc/
 .claude/626labs-context.md
+.superpowers/
 
 # Generated docs (vibe-doc output) + session wraps (vibe-wrap output) —
 # regenerate on demand; the wraps also name private sibling repos.
