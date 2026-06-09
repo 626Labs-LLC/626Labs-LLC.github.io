@@ -1024,8 +1024,9 @@ def _starmap_blob(about: dict, products: list) -> str:
 
 def _render_starmap(about: dict, products: list) -> str:
     """The constellation panel. Emitted only when about.starMap exists —
-    presence of the config block is the feature toggle."""
-    if about.get("starMap") is None:
+    presence of the config block (a dict) is the feature toggle; absent,
+    null, or false all read as off, matching _starmap_blob's `or {}` guard."""
+    if not isinstance(about.get("starMap"), dict):
         return ""
     return f"""
   <div class="wrap">
