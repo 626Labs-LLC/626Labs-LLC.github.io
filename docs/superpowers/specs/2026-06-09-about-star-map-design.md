@@ -134,7 +134,8 @@ Trigger: IntersectionObserver at ~35% panel visibility.
 
 | Phase | Timing | Easing |
 |---|---|---|
-| Dust + products fade in | 0–700ms | ease-out cubic |
+| Dust fades in | 0–700ms | ease-out cubic |
+| Product stars fade in | from 200ms, ~120ms stagger, 500ms each | ease-out cubic |
 | Plugin stars pop | from 400ms, ~160ms stagger, 380ms each | easeOutBack (overshoot) |
 | Constellation lines draw | from ~1900ms, ~200ms stagger, 450ms each | ease-out cubic |
 | Settle into ambient | after last line | — |
