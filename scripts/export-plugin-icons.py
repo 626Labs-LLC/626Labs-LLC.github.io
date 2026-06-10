@@ -16,6 +16,7 @@ Plugins:
   thesis-engine      → cog feeding a page
   vibe-walk          → two staggered footprints
   vibe-wrap          → breadcrumb trail into a wrapped summary card
+  vibe-prompt        → prompt bubble: chevron + audited text lines
 
 Outputs (under assets/brand/plugins/):
   <id>-banner-1500x500.png — repo README banner
@@ -30,6 +31,11 @@ ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
 OUT = ASSETS / "brand" / "plugins"
 FONTS = ROOT / "fonts"
+# The fonts dir consolidated to variable fonts after this script's last run;
+# prefer the static Regular when present, fall back to the Variable file
+# (JetBrains Mono Variable defaults to wght 400 == Regular).
+_MONO = FONTS / "JetBrainsMono-Regular.ttf"
+MONO_TTF = _MONO if _MONO.exists() else FONTS / "JetBrainsMono-Variable.ttf"
 CLAUDE_SPARKLE_SRC = ASSETS / "anthropic" / "claude-sparkle.png"
 
 OUT.mkdir(parents=True, exist_ok=True)
@@ -439,6 +445,26 @@ def glyph_insights(primary, secondary):
     return img
 
 
+def glyph_prompt(primary, secondary):
+    """Speech bubble holding a terminal chevron + two prompt-text lines —
+    the prompt-engineering loop: what you say to the model, audited."""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    # Bubble body
+    draw.rounded_rectangle([35, 45, 165, 135], radius=14,
+                           outline=primary + (255,), width=3)
+    # Bubble tail (open triangle, bottom-left)
+    draw.line([(62, 134), (52, 160)], fill=primary + (255,), width=3)
+    draw.line([(52, 160), (82, 134)], fill=primary + (255,), width=3)
+    # Terminal chevron `>` — the accent (the prompt itself)
+    draw.line([(58, 74), (74, 90)], fill=secondary + (255,), width=3)
+    draw.line([(74, 90), (58, 106)], fill=secondary + (255,), width=3)
+    # Prompt text lines
+    draw.line([(88, 82), (140, 82)], fill=primary + (255,), width=3)
+    draw.line([(88, 98), (126, 98)], fill=primary + (255,), width=3)
+    return img
+
+
 GLYPHS = {
     "node_graph":   glyph_cartographer,
     "compass":      glyph_iterate,
@@ -453,6 +479,7 @@ GLYPHS = {
     "footprints":   glyph_walk,
     "wrap":         glyph_wrap,
     "lens":         glyph_insights,
+    "prompt_bubble": glyph_prompt,
 }
 
 
@@ -521,6 +548,11 @@ PLUGINS = [
         "tagline": "the /insights you wish you had",
         "glyph": "lens", "primary": CYAN, "secondary": MAGENTA,
     },
+    {
+        "id": "vibe-prompt", "name": "VIBE PROMPT",
+        "tagline": "close the prompt loop",
+        "glyph": "prompt_bubble", "primary": CYAN, "secondary": MAGENTA,
+    },
 ]
 
 
@@ -574,7 +606,7 @@ def build_banner(plugin, out_path, size=(1500, 500)):
     sparkle_w = sparkle_target_h + int(W * 0.04)
     text_avail_w = W - text_x - sparkle_w - int(W * 0.06)
     draw = ImageDraw.Draw(canvas)
-    tag_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), max(14, int(H * 0.044)))
+    tag_font = ImageFont.truetype(str(MONO_TTF), max(14, int(H * 0.044)))
 
     # Spaced caps: single space between letters. Auto-fit the font size so
     # long names like "VIBE CARTOGRAPHER" don't overflow into the sparkle.
@@ -582,7 +614,7 @@ def build_banner(plugin, out_path, size=(1500, 500)):
     max_name = max(28, int(H * 0.112))
     name_size = max_name
     while name_size > 18:
-        name_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), name_size)
+        name_font = ImageFont.truetype(str(MONO_TTF), name_size)
         nb = draw.textbbox((0, 0), spaced, font=name_font)
         if (nb[2] - nb[0]) <= text_avail_w:
             break
@@ -601,7 +633,7 @@ def build_banner(plugin, out_path, size=(1500, 500)):
     draw.text((text_x, block_top + name_h + gap), tagline, font=tag_font, fill=DIM + (255,))
 
     # 626 Labs lockup top-right (tiny)
-    sub_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), max(11, int(H * 0.026)))
+    sub_font = ImageFont.truetype(str(MONO_TTF), max(11, int(H * 0.026)))
     lockup = "626 LABS  ·  for Claude Code"
     lk_bbox = draw.textbbox((0, 0), lockup, font=sub_font)
     lk_w = lk_bbox[2] - lk_bbox[0]
@@ -629,15 +661,15 @@ def build_square(plugin, out_path):
     canvas.alpha_composite(glyph, dest=((W - glyph_size) // 2, int(H * 0.14)))
 
     draw = ImageDraw.Draw(canvas)
-    name_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), 56)
-    tag_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), 22)
-    sub_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), 16)
+    name_font = ImageFont.truetype(str(MONO_TTF), 56)
+    tag_font = ImageFont.truetype(str(MONO_TTF), 22)
+    sub_font = ImageFont.truetype(str(MONO_TTF), 16)
 
     spaced = " ".join(plugin["name"])
     target_w = int(W * 0.86)
     name_size = 64
     while name_size > 22:
-        name_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), name_size)
+        name_font = ImageFont.truetype(str(MONO_TTF), name_size)
         nb = draw.textbbox((0, 0), spaced, font=name_font)
         if (nb[2] - nb[0]) <= target_w:
             break
