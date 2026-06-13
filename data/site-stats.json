@@ -1,56 +1,24 @@
 {
-  "generatedAt": "2026-06-12T10:49:44.606Z",
+  "generatedAt": "2026-06-13T09:43:21.285Z",
   "source": "goatcounter",
   "site": "626labs.dev",
   "range": {
-    "start": "2026-05-13",
-    "end": "2026-06-12",
+    "start": "2026-05-14",
+    "end": "2026-06-13",
     "days": 30
   },
   "total": {
-    "total": 95,
+    "total": 111,
     "total_events": 0,
-    "total_utc": 96,
+    "total_utc": 112,
     "stats": [
-      {
-        "day": "2026-05-13",
-        "hourly": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "daily": 0,
-        "weekly": 9,
-        "monthly": 79
-      },
       {
         "day": "2026-05-14",
         "hourly": [
           0,
           0,
           0,
-          1,
+          0,
           0,
           0,
           0,
@@ -72,7 +40,9 @@
           0,
           0
         ],
-        "daily": 2
+        "daily": 1,
+        "weekly": 12,
+        "monthly": 78
       },
       {
         "day": "2026-05-15",
@@ -252,8 +222,7 @@
           0,
           0
         ],
-        "daily": 4,
-        "weekly": 62
+        "daily": 4
       },
       {
         "day": "2026-05-21",
@@ -283,7 +252,8 @@
           0,
           0
         ],
-        "daily": 4
+        "daily": 4,
+        "weekly": 59
       },
       {
         "day": "2026-05-22",
@@ -463,8 +433,7 @@
           0,
           0
         ],
-        "daily": 1,
-        "weekly": 11
+        "daily": 1
       },
       {
         "day": "2026-05-28",
@@ -494,7 +463,8 @@
           0,
           0
         ],
-        "daily": 1
+        "daily": 1,
+        "weekly": 11
       },
       {
         "day": "2026-05-29",
@@ -615,7 +585,7 @@
           0
         ],
         "daily": 2,
-        "monthly": 16
+        "monthly": 33
       },
       {
         "day": "2026-06-02",
@@ -675,8 +645,7 @@
           0,
           0
         ],
-        "daily": 1,
-        "weekly": 12
+        "daily": 1
       },
       {
         "day": "2026-06-04",
@@ -706,7 +675,8 @@
           0,
           0
         ],
-        "daily": 0
+        "daily": 0,
+        "weekly": 12
       },
       {
         "day": "2026-06-05",
@@ -886,8 +856,7 @@
           0,
           0
         ],
-        "daily": 1,
-        "weekly": 1
+        "daily": 1
       },
       {
         "day": "2026-06-11",
@@ -917,10 +886,41 @@
           0,
           0
         ],
-        "daily": 0
+        "daily": 0,
+        "weekly": 17
       },
       {
         "day": "2026-06-12",
+        "hourly": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          15,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "daily": 17
+      },
+      {
+        "day": "2026-06-13",
         "hourly": [
           0,
           0,
@@ -954,52 +954,20 @@
   "hits": {
     "hits": [
       {
-        "count": 95,
+        "count": 111,
         "path_id": 88673470,
         "path": "/",
         "event": false,
         "title": "626 Labs — Imagine Something Else",
-        "max": 6,
+        "max": 15,
         "stats": [
-          {
-            "day": "2026-05-13",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 0,
-            "weekly": 9,
-            "monthly": 79
-          },
           {
             "day": "2026-05-14",
             "hourly": [
               0,
               0,
               0,
-              1,
+              0,
               0,
               0,
               0,
@@ -1021,7 +989,9 @@
               0,
               0
             ],
-            "daily": 2
+            "daily": 1,
+            "weekly": 12,
+            "monthly": 78
           },
           {
             "day": "2026-05-15",
@@ -1201,8 +1171,7 @@
               0,
               0
             ],
-            "daily": 4,
-            "weekly": 62
+            "daily": 4
           },
           {
             "day": "2026-05-21",
@@ -1232,7 +1201,8 @@
               0,
               0
             ],
-            "daily": 4
+            "daily": 4,
+            "weekly": 59
           },
           {
             "day": "2026-05-22",
@@ -1412,8 +1382,7 @@
               0,
               0
             ],
-            "daily": 1,
-            "weekly": 11
+            "daily": 1
           },
           {
             "day": "2026-05-28",
@@ -1443,7 +1412,8 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 11
           },
           {
             "day": "2026-05-29",
@@ -1564,7 +1534,7 @@
               0
             ],
             "daily": 2,
-            "monthly": 16
+            "monthly": 33
           },
           {
             "day": "2026-06-02",
@@ -1624,8 +1594,7 @@
               0,
               0
             ],
-            "daily": 1,
-            "weekly": 12
+            "daily": 1
           },
           {
             "day": "2026-06-04",
@@ -1655,7 +1624,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 12
           },
           {
             "day": "2026-06-05",
@@ -1835,8 +1805,7 @@
               0,
               0
             ],
-            "daily": 1,
-            "weekly": 1
+            "daily": 1
           },
           {
             "day": "2026-06-11",
@@ -1866,10 +1835,41 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 17
           },
           {
             "day": "2026-06-12",
+            "hourly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              15,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 17
+          },
+          {
+            "day": "2026-06-13",
             "hourly": [
               0,
               0,
@@ -1901,7 +1901,7 @@
         ]
       }
     ],
-    "total": 95,
+    "total": 111,
     "more": false
   },
   "refs": {
@@ -1909,13 +1909,19 @@
       {
         "id": "t.co",
         "name": "t.co",
-        "count": 43,
+        "count": 53,
         "ref_scheme": "h"
       },
       {
         "name": "",
         "count": 40,
         "ref_scheme": "o"
+      },
+      {
+        "id": "twitter.com/search?q=https%3A%2F%2Ft.co%2Ft6Q6w56DEH",
+        "name": "twitter.com/search?q=https%3A%2F%2Ft.co%2Ft6Q6w56DEH",
+        "count": 7,
+        "ref_scheme": "h"
       },
       {
         "id": "Google",
@@ -1934,12 +1940,6 @@
         "name": "www.linkedin.com",
         "count": 1,
         "ref_scheme": "h"
-      },
-      {
-        "id": "twitter.com/search?q=https%3A%2F%2Ft.co%2Ft6Q6w56DEH",
-        "name": "twitter.com/search?q=https%3A%2F%2Ft.co%2Ft6Q6w56DEH",
-        "count": 1,
-        "ref_scheme": "h"
       }
     ],
     "more": false
@@ -1954,7 +1954,7 @@
       {
         "id": "IN",
         "name": "India",
-        "count": 9
+        "count": 10
       },
       {
         "id": "CA",
@@ -1967,8 +1967,23 @@
         "count": 3
       },
       {
+        "id": "FR",
+        "name": "France",
+        "count": 3
+      },
+      {
+        "id": "JP",
+        "name": "Japan",
+        "count": 3
+      },
+      {
         "id": "NG",
         "name": "Nigeria",
+        "count": 3
+      },
+      {
+        "id": "TR",
+        "name": "Turkey",
         "count": 3
       },
       {
@@ -1977,34 +1992,19 @@
         "count": 2
       },
       {
-        "id": "FR",
-        "name": "France",
+        "id": "GB",
+        "name": "United Kingdom",
         "count": 2
       },
       {
-        "id": "JP",
-        "name": "Japan",
-        "count": 2
-      },
-      {
-        "id": "TR",
-        "name": "Turkey",
+        "id": "RO",
+        "name": "Romania",
         "count": 2
       },
       {
         "id": "VN",
         "name": "Vietnam",
         "count": 2
-      },
-      {
-        "id": "AT",
-        "name": "Austria",
-        "count": 1
-      },
-      {
-        "id": "CL",
-        "name": "Chile",
-        "count": 1
       }
     ],
     "more": true
@@ -2014,11 +2014,11 @@
       {
         "id": "Chrome",
         "name": "Chrome",
-        "count": 70
+        "count": 72
       },
       {
         "name": "",
-        "count": 24
+        "count": 32
       },
       {
         "id": "Safari",
@@ -2036,34 +2036,34 @@
   "systems": {
     "stats": [
       {
+        "id": "iOS",
+        "name": "iOS",
+        "count": 37
+      },
+      {
         "id": "Windows",
         "name": "Windows",
         "count": 36
       },
       {
-        "id": "iOS",
-        "name": "iOS",
-        "count": 29
-      },
-      {
         "id": "Android",
         "name": "Android",
-        "count": 18
+        "count": 21
       },
       {
         "id": "macOS",
         "name": "macOS",
+        "count": 10
+      },
+      {
+        "id": "Linux",
+        "name": "Linux",
         "count": 7
       },
       {
         "id": "Chrome OS",
         "name": "Chrome OS",
-        "count": 6
-      },
-      {
-        "id": "Linux",
-        "name": "Linux",
-        "count": 6
+        "count": 1
       }
     ],
     "more": false
