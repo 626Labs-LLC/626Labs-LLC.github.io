@@ -1,49 +1,17 @@
 {
-  "generatedAt": "2026-06-14T10:03:48.143Z",
+  "generatedAt": "2026-06-15T12:49:15.863Z",
   "source": "goatcounter",
   "site": "626labs.dev",
   "range": {
-    "start": "2026-05-15",
-    "end": "2026-06-14",
+    "start": "2026-05-16",
+    "end": "2026-06-15",
     "days": 30
   },
   "total": {
-    "total": 113,
+    "total": 118,
     "total_events": 0,
-    "total_utc": 113,
+    "total_utc": 118,
     "stats": [
-      {
-        "day": "2026-05-15",
-        "hourly": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "daily": 0,
-        "weekly": 15,
-        "monthly": 77
-      },
       {
         "day": "2026-05-16",
         "hourly": [
@@ -72,7 +40,9 @@
           0,
           0
         ],
-        "daily": 0
+        "daily": 0,
+        "weekly": 18,
+        "monthly": 77
       },
       {
         "day": "2026-05-17",
@@ -252,8 +222,7 @@
           0,
           0
         ],
-        "daily": 3,
-        "weekly": 56
+        "daily": 3
       },
       {
         "day": "2026-05-23",
@@ -283,7 +252,8 @@
           0,
           0
         ],
-        "daily": 2
+        "daily": 2,
+        "weekly": 56
       },
       {
         "day": "2026-05-24",
@@ -463,8 +433,7 @@
           0,
           0
         ],
-        "daily": 3,
-        "weekly": 10
+        "daily": 3
       },
       {
         "day": "2026-05-30",
@@ -494,7 +463,8 @@
           0,
           0
         ],
-        "daily": 1
+        "daily": 1,
+        "weekly": 7
       },
       {
         "day": "2026-05-31",
@@ -555,7 +525,7 @@
           0
         ],
         "daily": 2,
-        "monthly": 36
+        "monthly": 41
       },
       {
         "day": "2026-06-02",
@@ -675,8 +645,7 @@
           0,
           0
         ],
-        "daily": 0,
-        "weekly": 12
+        "daily": 0
       },
       {
         "day": "2026-06-06",
@@ -706,7 +675,8 @@
           0,
           0
         ],
-        "daily": 3
+        "daily": 3,
+        "weekly": 29
       },
       {
         "day": "2026-06-07",
@@ -886,8 +856,7 @@
           0,
           0
         ],
-        "daily": 17,
-        "weekly": 20
+        "daily": 17
       },
       {
         "day": "2026-06-13",
@@ -917,7 +886,8 @@
           0,
           0
         ],
-        "daily": 3
+        "daily": 3,
+        "weekly": 8
       },
       {
         "day": "2026-06-14",
@@ -925,6 +895,36 @@
           0,
           0,
           0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "daily": 4
+      },
+      {
+        "day": "2026-06-15",
+        "hourly": [
+          0,
+          0,
+          1,
           0,
           0,
           0,
@@ -947,52 +947,20 @@
           0,
           0
         ],
-        "daily": 0
+        "daily": 1
       }
     ]
   },
   "hits": {
     "hits": [
       {
-        "count": 113,
+        "count": 118,
         "path_id": 88673470,
         "path": "/",
         "event": false,
         "title": "626 Labs — Imagine Something Else",
         "max": 15,
         "stats": [
-          {
-            "day": "2026-05-15",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 0,
-            "weekly": 15,
-            "monthly": 77
-          },
           {
             "day": "2026-05-16",
             "hourly": [
@@ -1021,7 +989,9 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 18,
+            "monthly": 77
           },
           {
             "day": "2026-05-17",
@@ -1201,8 +1171,7 @@
               0,
               0
             ],
-            "daily": 3,
-            "weekly": 56
+            "daily": 3
           },
           {
             "day": "2026-05-23",
@@ -1232,7 +1201,8 @@
               0,
               0
             ],
-            "daily": 2
+            "daily": 2,
+            "weekly": 56
           },
           {
             "day": "2026-05-24",
@@ -1412,8 +1382,7 @@
               0,
               0
             ],
-            "daily": 3,
-            "weekly": 10
+            "daily": 3
           },
           {
             "day": "2026-05-30",
@@ -1443,7 +1412,8 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 7
           },
           {
             "day": "2026-05-31",
@@ -1504,7 +1474,7 @@
               0
             ],
             "daily": 2,
-            "monthly": 36
+            "monthly": 41
           },
           {
             "day": "2026-06-02",
@@ -1624,8 +1594,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 12
+            "daily": 0
           },
           {
             "day": "2026-06-06",
@@ -1655,7 +1624,8 @@
               0,
               0
             ],
-            "daily": 3
+            "daily": 3,
+            "weekly": 29
           },
           {
             "day": "2026-06-07",
@@ -1835,8 +1805,7 @@
               0,
               0
             ],
-            "daily": 17,
-            "weekly": 20
+            "daily": 17
           },
           {
             "day": "2026-06-13",
@@ -1866,7 +1835,8 @@
               0,
               0
             ],
-            "daily": 3
+            "daily": 3,
+            "weekly": 8
           },
           {
             "day": "2026-06-14",
@@ -1874,6 +1844,36 @@
               0,
               0,
               0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 4
+          },
+          {
+            "day": "2026-06-15",
+            "hourly": [
+              0,
+              0,
+              1,
               0,
               0,
               0,
@@ -1896,12 +1896,12 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 1
           }
         ]
       }
     ],
-    "total": 113,
+    "total": 118,
     "more": false
   },
   "refs": {
@@ -1914,24 +1914,30 @@
       },
       {
         "name": "",
-        "count": 41,
+        "count": 43,
         "ref_scheme": "o"
       },
       {
         "id": "twitter.com/search?q=https%3A%2F%2Ft.co%2Ft6Q6w56DEH",
         "name": "twitter.com/search?q=https%3A%2F%2Ft.co%2Ft6Q6w56DEH",
-        "count": 7,
+        "count": 8,
         "ref_scheme": "h"
       },
       {
         "id": "Google",
         "name": "Google",
-        "count": 2,
+        "count": 3,
         "ref_scheme": "g"
       },
       {
         "id": "bing.com",
         "name": "bing.com",
+        "count": 1,
+        "ref_scheme": "h"
+      },
+      {
+        "id": "docs.google.com",
+        "name": "docs.google.com",
         "count": 1,
         "ref_scheme": "h"
       },
@@ -1949,12 +1955,12 @@
       {
         "id": "US",
         "name": "United States",
-        "count": 58
+        "count": 59
       },
       {
         "id": "IN",
         "name": "India",
-        "count": 10
+        "count": 11
       },
       {
         "id": "CA",
@@ -1992,6 +1998,11 @@
         "count": 2
       },
       {
+        "id": "ES",
+        "name": "Spain",
+        "count": 2
+      },
+      {
         "id": "GB",
         "name": "United Kingdom",
         "count": 2
@@ -1999,11 +2010,6 @@
       {
         "id": "RO",
         "name": "Romania",
-        "count": 2
-      },
-      {
-        "id": "VN",
-        "name": "Vietnam",
         "count": 2
       }
     ],
@@ -2014,7 +2020,7 @@
       {
         "id": "Chrome",
         "name": "Chrome",
-        "count": 73
+        "count": 77
       },
       {
         "name": "",
@@ -2043,12 +2049,12 @@
       {
         "id": "Windows",
         "name": "Windows",
-        "count": 36
+        "count": 38
       },
       {
         "id": "Android",
         "name": "Android",
-        "count": 21
+        "count": 22
       },
       {
         "id": "macOS",
@@ -2063,7 +2069,7 @@
       {
         "id": "Chrome OS",
         "name": "Chrome OS",
-        "count": 2
+        "count": 3
       }
     ],
     "more": false
