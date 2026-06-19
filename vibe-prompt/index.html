@@ -5,33 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preload" as="font" type="font/woff2" href="/fonts/SpaceGrotesk-Variable.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-Variable.woff2" crossorigin />
-  <title>vibe-sec · Security audit for what your AI shipped · 626Labs</title>
-  <meta name="description" content="Claude Code plugin that audits vibe-coded apps for secrets, auth gaps, CVEs, and OWASP Top 10 issues — with fixes scaled to your app type." />
-  <link rel="canonical" href="https://626labs.dev/vibe-sec/" />
+  <title>vibe-prompt · Audit the prompts your app ships. · 626Labs</title>
+  <meta name="description" content="Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs." />
+  <link rel="canonical" href="https://626labs.dev/vibe-prompt/" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
-  <meta property="og:title" content="vibe-sec · Security audit for vibe-coded apps" />
-  <meta property="og:description" content="Claude Code plugin that audits vibe-coded apps for secrets, auth gaps, CVEs, and OWASP Top 10 issues — with fixes scaled to your app type." />
-  <meta property="og:url" content="https://626labs.dev/vibe-sec/" />
-  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-sec-banner-1280x640.png" />
+  <meta property="og:title" content="vibe-prompt · Audit the prompts your app ships." />
+  <meta property="og:description" content="Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs." />
+  <meta property="og:url" content="https://626labs.dev/vibe-prompt/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-prompt-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="vibe-sec · Security audit for vibe-coded apps" />
-  <meta name="twitter:description" content="Claude Code plugin that audits vibe-coded apps for secrets, auth gaps, CVEs, and OWASP Top 10 issues — with fixes scaled to your app type." />
-  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-sec-banner-1280x640.png" />
+  <meta name="twitter:title" content="vibe-prompt · Audit the prompts your app ships." />
+  <meta name="twitter:description" content="Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-prompt-banner-1280x640.png" />
 
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "@id": "https://626labs.dev/vibe-sec/#software",
-  "name": "vibe-sec",
-  "description": "Claude Code plugin that audits vibe-coded apps for secrets, auth gaps, CVEs, and OWASP Top 10 issues — with fixes scaled to your app type.",
-  "url": "https://626labs.dev/vibe-sec/",
+  "@id": "https://626labs.dev/vibe-prompt/#software",
+  "name": "vibe-prompt",
+  "description": "Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs.",
+  "url": "https://626labs.dev/vibe-prompt/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Claude Code",
-  "image": "https://626labs.dev/assets/brand/plugins/vibe-sec-banner-1280x640.png",
+  "image": "https://626labs.dev/assets/brand/plugins/vibe-prompt-banner-1280x640.png",
   "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
@@ -44,7 +44,7 @@
     "name": "626 Labs",
     "url": "https://626labs.dev/"
   },
-  "softwareVersion": "0.9.0",
+  "softwareVersion": "0.7.1",
   "license": "https://opensource.org/licenses/MIT"
 }
   </script>
@@ -302,8 +302,8 @@
         </a>
         <span class="brand-sep" aria-hidden="true">/</span>
         <span class="brand-current">
-          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-sec-icon-transparent-512.png" alt="" /></span>
-          <span>vibe-sec</span>
+          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-prompt-icon-transparent-512.png" alt="" /></span>
+          <span>vibe-prompt</span>
         </span>
       </div>
       <a href="#install" class="btn btn-ghost">Install</a>
@@ -317,16 +317,15 @@
         <div class="hero-grid">
           <div class="hero-left">
             <span class="eyebrow">626Labs · Claude Code plugin</span>
-            <h1>Security audit for the app your AI just shipped.</h1>
-            <p class="hero-subhead">vibe-sec scans vibe-coded apps for the predictable security gaps AI prototyping leaves behind &mdash; secrets in source, sketchy auth, stale dependencies, open CORS &mdash; and generates fixes proportional to what your app actually needs. For solo builders shipping fast and not wanting to get burned.</p>
+            <h1>Audit the prompts your app ships.</h1>
+            <p class="hero-subhead">Close the prompt loop: scan, audit, eval, grade, fix. vibe-prompt is the prompt-audit and behavioral-testing layer for vibe-coded apps that ship LLM features &mdash; running 13 structural smell checks across 5 dimensions, evaluating against your production model with a calibrated LLM-judge, and routing confident fixes to ready-to-apply diffs.</p>
             <div class="hero-ctas">
-              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-sec" class="btn btn-ghost">View on GitHub</a>
+              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/Vibe-Prompt" class="btn btn-ghost">View on GitHub</a>
             </div>
             <div class="hero-meta">
-              <span>v0.9.0</span><span>·</span><span>9 commands</span><span>·</span><span>tier-aware</span><span>·</span><span>MIT</span>
+              <span>v0.7.1</span><span>·</span><span>9 commands</span><span>·</span><span>F1-F13 smells</span><span>·</span><span>MIT</span>
             </div>
-            <p class="hero-caps"><span class="captag">Includes</span>9 commands &middot; 10 skills</p>
-            <p class="hero-validated"><span class="vtag">Validated</span>A real Firebase app.</p>
+            <p class="hero-caps"><span class="captag">Includes</span>9 commands &middot; 13 skills</p>
           </div>
 
           <div class="hero-right">
@@ -335,18 +334,21 @@
                 <span class="term-dot r"></span>
                 <span class="term-dot y"></span>
                 <span class="term-dot g"></span>
-                <span class="term-label">vibe-sec ~</span>
+                <span class="term-label">vibe-prompt ~</span>
               </div>
               <div class="term-body">
-                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-sec:scan</span></div>
-                <div><span class="agent">vibe-sec v0.9.0</span> · classifying app, then scanning...</div>
-                <div>  &rarr; tier: <span class="key">public-facing</span> · 247 files</div>
+                <div><span class="prompt">$</span> <span class="cmd">/vibe-prompt:scan</span></div>
+                <div><span class="agent">[vibe-prompt]</span> Scanning prompt sites... <span class="ok">done</span></div>
+                <div>  &rarr; <span class="key">14 prompt sites</span> found across <span class="path">src/</span></div>
+                <div>  &rarr; read-only &mdash; nothing changed</div>
                 <div>&nbsp;</div>
-                <div>  <span class="key">CRITICAL</span>  OPENAI_API_KEY            <span class="path">src/lib/ai.ts:14</span></div>
-                <div>  <span class="key">CRITICAL</span>  DATABASE_URL_W/_CREDS     <span class="path">.env.local:3</span></div>
-                <div>  <span class="muted">HIGH</span>      GITHUB_PAT_CLASSIC        <span class="path">scripts/deploy.js:8</span></div>
+                <div><span class="prompt">$</span> <span class="cmd">/vibe-prompt:audit</span></div>
+                <div><span class="agent">[vibe-prompt]</span> Running F1&ndash;F13 checks...</div>
+                <div>  &rarr; schema tightness: <span class="muted">2 issues</span> &middot; persona consistency: <span class="ok">clean</span></div>
+                <div>  &rarr; injection resistance: <span class="muted">F11 flagged</span> &rarr; handoff to vibe-sec</div>
                 <div>&nbsp;</div>
-                <div>  &rarr; four-band report: <span class="path">.vibe-sec/state/audit.json</span><span class="term-cursor"></span></div>
+                <div><span class="prompt">$</span> <span class="cmd">/vibe-prompt:grade</span></div>
+                <div><span class="agent">[vibe-prompt]</span> Composite grade: <span class="key">B+</span> &mdash; regression vs baseline: <span class="ok">none</span><span class="term-cursor"></span></div>
               </div>
             </div>
           </div>
@@ -358,64 +360,72 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">01 · What it does</span>
-          <h2>The predictable fingerprint of an AI-built app — found and fixed.</h2>
-          <p class="lead">When an LLM builds your app, it optimizes for a working demo. vibe-sec classifies the gap between that and a deployable system, then works through it systematically &mdash; deferring to gitleaks, OSV-Scanner, and Semgrep when they're installed, and falling back to an in-house baseline when they're not.</p>
+          <h2>Nine commands across the prompt lifecycle.</h2>
+          <p class="lead">From inventory to fix, every command in the loop is a direct call. Read-only by default &mdash; real model calls only on :eval, behind a cost gate.</p>
         </div>
 
         <div class="cards-grid">
           <div class="card">
-            <span class="cmd">/vibe-sec:scan</span>
-            <h3>Fast secret scan.</h3>
-            <p class="desc">Defers to gitleaks / trufflehog when present, runs an in-house Layer A scanner when not. Classifies the app first so every finding is weighted by deployment tier, not an abstract ideal.</p>
+            <span class="cmd">/vibe-prompt:scan</span>
+            <h3>Inventory every prompt site.</h3>
+            <p class="desc">Reads the codebase and maps every place an LLM prompt is constructed or dispatched. Read-only &mdash; nothing is changed, nothing is written. The starting point for the rest of the loop.</p>
+            <p class="reach">Reach for it <em>when you want to know what your app is actually sending to the model</em>.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-sec:audit</span>
-            <h3>Full tier-calibrated audit.</h3>
-            <p class="desc">One pass across all twelve concerns &mdash; secrets, dependencies, supply chain, config posture, crypto/PII, auth, the OWASP top 10, rate-limiting, license compliance, and data posture &mdash; resolved into a single report across four severity bands.</p>
+            <span class="cmd">/vibe-prompt:audit</span>
+            <h3>Run 13 structural smell checks.</h3>
+            <p class="desc">Applies the F1&ndash;F13 taxonomy across five dimensions &mdash; schema tightness, persona consistency, instruction clarity, token efficiency, and injection resistance. No model calls, no cost.</p>
+            <p class="reach">Reach for it <em>before an eval run, or any time you change a prompt</em>.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-sec:deps</span>
-            <h3>Dependency + supply-chain check.</h3>
-            <p class="desc">CVE cross-reference against direct and transitive deps, lockfile integrity, pinned-vs-floating audit, and typosquat detection &mdash; fast enough to run on every change.</p>
+            <span class="cmd">/vibe-prompt:eval</span>
+            <h3>Behavioral test against production.</h3>
+            <p class="desc">Runs test cases against your real model with a calibrated LLM-judge. Cost-gated &mdash; you confirm spend before any call goes out. Surfaces behavioral drift that static checks can't catch.</p>
+            <p class="reach">Reach for it <em>when you need ground truth on how the prompt behaves, not just how it reads</em>.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-sec:fix</span>
-            <h3>Confidence-routed remediation.</h3>
-            <p class="desc">Automated for high-confidence hygiene (gitignore entries, security headers, secrets out of source); guided templates for architectural issues. Destructive actions are gated behind explicit overrides.</p>
+            <span class="cmd">/vibe-prompt:grade</span>
+            <h3>Composite grade + regression check.</h3>
+            <p class="desc">Rolls scan, audit, and eval signals into a composite grade and compares it against your monotonic baseline &mdash; so regressions show up as deltas, not surprises.</p>
+            <p class="reach">Reach for it <em>on every PR that touches a prompt</em>.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-sec:gate</span>
-            <h3>CI pass/fail gate.</h3>
-            <p class="desc">Exit codes 0/1/2 against your app's tier, with GitHub Actions annotations. Drops into a workflow without configuration.</p>
+            <span class="cmd">/vibe-prompt:remediate</span>
+            <h3>Confidence-routed fix diffs.</h3>
+            <p class="desc">Routes high-confidence findings to ready-to-apply diffs and lower-confidence ones to annotated review files. Backs up every prompt before touching it and keeps rollback explicit.</p>
+            <p class="reach">Reach for it <em>after audit surfaces issues you want to fix</em>.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-sec:threat-model</span>
-            <h3>Threat-model synthesis.</h3>
-            <p class="desc">STRIDE / DREAD analysis from your app's real surface area. Outputs a Mermaid diagram plus Threat Dragon JSON you can open and edit.</p>
+            <span class="cmd">/vibe-prompt:iterate</span>
+            <h3>Propose new AI features.</h3>
+            <p class="desc">Reads your product and audit history, then proposes concrete AI feature candidates grounded in what your current prompt surface already handles well.</p>
+            <p class="reach">Reach for it <em>when you want to extend your LLM surface, not just maintain it</em>.</p>
           </div>
-        </div>
 
-        <div class="sub-head">
-          <h3>Three more commands.</h3>
-          <span class="hint">Run any directly — no scan required.</span>
-        </div>
-        <div class="mini-grid">
-          <div class="mini">
-            <span class="name">/vibe-sec</span>
-            <p class="desc">Router. State-aware next-step for your security posture.</p>
+          <div class="card">
+            <span class="cmd">/vibe-prompt:radar</span>
+            <h3>Model-news digest.</h3>
+            <p class="desc">Pulls a digest of model releases, capability changes, and pricing shifts relevant to your current stack. No eval calls &mdash; read-only.</p>
+            <p class="reach">Reach for it <em>when a model update lands and you want to know if anything breaks</em>.</p>
           </div>
-          <div class="mini">
-            <span class="name">:posture</span>
-            <p class="desc">Read-only tier-aware summary from cached state — no re-scan.</p>
+
+          <div class="card">
+            <span class="cmd">/vibe-prompt:evolve-prompt</span>
+            <h3>L3 self-improvement.</h3>
+            <p class="desc">Reads vibe-prompt's own session and friction logs, then proposes concrete edits to its own SKILLs and evaluation templates. Never auto-applies.</p>
+            <p class="reach">Reach for it <em>when the audit keeps missing something you're catching manually</em>.</p>
           </div>
-          <div class="mini">
-            <span class="name">:research</span>
-            <p class="desc">Re-run one concern's domain research to refresh the living briefs.</p>
+
+          <div class="card">
+            <span class="cmd">/vibe-prompt</span>
+            <h3>State-aware router.</h3>
+            <p class="desc">Reads your project state &mdash; last scan age, open audit findings, baseline freshness &mdash; and recommends the right next command. Asks before launching anything.</p>
+            <p class="reach">Reach for it <em>when you're not sure where in the loop you are</em>.</p>
           </div>
         </div>
       </div>
@@ -424,16 +434,17 @@
     <section class="brain">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">02 · How it works</span>
-          <h2>Three layers, one classifier, fixes you can ship.</h2>
+          <span class="eyebrow">02 · How it&#x27;s built</span>
+          <h2>Scan, audit, eval, grade, fix — in that order.</h2>
         </div>
         <div class="brain-grid">
           <div>
-            <p>vibe-sec separates security into three layers that compound. <strong>Hygiene</strong> is fully automatable: secrets out of source, headers added, CORS locked down. <strong>Architecture</strong> requires understanding how the app is built &mdash; does the auth actually protect the routes it claims to? <strong>Threat modeling</strong> asks what the realistic attack vectors are given this app's deployment context, and proposes a model for you to validate.</p>
-            <p>The classifier is what keeps it from being generic. The same finding &mdash; say, missing rate limiting &mdash; might be critical for a payment API and informational for a personal static site. vibe-sec classifies your app first (prototype → regulated enterprise); the tier sets the bar, not a one-size-fits-all checklist.</p>
+            <p>The loop runs left to right: <strong>scan</strong> inventories every prompt site read-only, <strong>audit</strong> applies the F1&ndash;F13 taxonomy statically, <strong>eval</strong> runs behavioral tests against your production model behind a cost gate, <strong>grade</strong> rolls everything into a composite score compared against a monotonic baseline, and <strong>remediate</strong> routes confident fixes to diffs with backup and explicit rollback. Each step is a standalone call &mdash; run the whole loop or drop in at any stage.</p>
+            <p>The <strong>F1&ndash;F13 taxonomy</strong> covers 13 structural smell classes across five scoring dimensions: schema tightness (are outputs constrained or freeform?), persona consistency (does the assistant's identity hold across turns?), instruction clarity (are directives specific enough to survive model updates?), token efficiency (is the prompt spending tokens on things that matter?), and injection resistance (is user input sanitized before it reaches the model?). F10&ndash;F12 are the injection-surface smells &mdash; when those trigger, vibe-prompt hands off directly to <strong>vibe-sec</strong>, which carries the injection findings through its own security posture loop. The two plugins compose, neither depends on the other.</p>
+            <p>The eval step uses a <strong>calibrated LLM-judge</strong>: a secondary model call that scores the primary output against a rubric derived from your audit findings. Calibration means the judge's pass threshold is tuned against known-good and known-bad examples from your own baseline, not a generic rubric &mdash; so the score means something specific to your app. Every eval run costs real tokens; the cost gate ensures you confirm spend before anything goes out.</p>
           </div>
           <div>
-            <div class="callout">Goal: from &quot;I have a vibe-coded app&quot; to &quot;I know what&#x27;s insecure&quot; in under 2 minutes.</div>
+            <div class="callout">Read-only by default. Real model calls only on :eval, behind an explicit cost gate. Nothing leaves your machine except the eval request you confirm.</div>
           </div>
         </div>
       </div>
@@ -443,21 +454,30 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">03 · Get it</span>
-          <h2>Install.</h2>
+          <h2>Two channels.</h2>
         </div>
 
-        <div class="install-grid solo">
+        <div class="install-grid">
           <div class="card install-card">
             <h3>Stable <span class="badge">marketplace</span></h3>
-            <p class="blurb">Nine commands, tier-aware. Latest main from the vibe-sec repo; a tagged release promotes it to the aggregated vibe-plugins marketplace.</p>
+            <p class="blurb">Tagged releases, promoted via the Vibe Plugins marketplace.</p>
             <div class="codeblock">
               <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
-              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-sec
-/plugin install vibe-sec</pre>
+              <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
+/plugin install vibe-prompt@vibe-plugins</pre>
+            </div>
+          </div>
+          <div class="card install-card">
+            <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
+            <p class="blurb">Latest main from this repo.</p>
+            <div class="codeblock">
+              <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
+              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/Vibe-Prompt
+/plugin install vibe-prompt</pre>
             </div>
           </div>
         </div>
-        <p class="install-note">Prefer a standalone binary for CI? npm install -g @esthernandez/vibe-sec-cli runs the secret scanner with no Claude Code required. vibe-sec defers to gitleaks, OSV-Scanner, and Semgrep when they&#x27;re present.</p>
+        <p class="install-note">Read-only by default; real vendor calls only on :eval behind a cost gate. Composes with vibe-sec for injection handoff.</p>
       </div>
     </section>
 
@@ -505,12 +525,11 @@
               <div class="role">tests that matter</div>
             </div>
           </a>
-          <a href="/vibe-sec/" class="family-card here">
+          <a href="/vibe-sec/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-sec-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-sec</div>
               <div class="role">security posture</div>
-            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-taker/" class="family-card">
@@ -555,11 +574,12 @@
               <div class="role">thesis authoring</div>
             </div>
           </a>
-          <a href="/vibe-prompt/" class="family-card">
+          <a href="/vibe-prompt/" class="family-card here">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-prompt-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-prompt</div>
               <div class="role">prompt audit + behavioral eval</div>
+            <div class="you">You are here</div>
             </div>
           </a>
         </div>

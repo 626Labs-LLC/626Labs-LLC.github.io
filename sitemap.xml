@@ -56,6 +56,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://626labs.dev/vibe-prompt/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://626labs.dev/vibe-sec/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -119,6 +124,12 @@
   <url>
     <loc>https://626labs.dev/editorial/2026-05-29-same-code-triple-thinking/</loc>
     <lastmod>2026-05-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://626labs.dev/editorial/2026-06-19-vibe-plugins-thirteen/</loc>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

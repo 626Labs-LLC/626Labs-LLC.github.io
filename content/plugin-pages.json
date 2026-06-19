@@ -12,7 +12,8 @@
     { "id": "vibe-wrap", "name": "vibe-wrap", "role": "end-of-session wrap-up", "href": "/vibe-wrap/" },
     { "id": "vibe-insights", "name": "vibe-insights", "role": "session retrospective", "href": "/vibe-insights/" },
     { "id": "thesis-engine", "name": "thesis-engine", "role": "research feeder", "href": "/thesis-engine/" },
-    { "id": "vibe-thesis", "name": "vibe-thesis", "role": "thesis authoring", "href": "/vibe-thesis/" }
+    { "id": "vibe-thesis", "name": "vibe-thesis", "role": "thesis authoring", "href": "/vibe-thesis/" },
+    { "id": "vibe-prompt", "name": "vibe-prompt", "role": "prompt audit + behavioral eval", "href": "/vibe-prompt/" }
   ],
   "plugins": {
     "vibe-iterate": {
@@ -69,7 +70,7 @@
               { "name": ":scan-releases [pkg]", "desc": "What's new in this lib since you last bumped." },
               { "name": ":rate &lt;idea&gt;", "desc": "Score an idea on impact / fit / effort / regression-risk / user-trust." },
               { "name": ":ship &lt;brief&gt;", "desc": "Express lane. Skip ingestion, ship from a brief." },
-              { "name": ":upgrade &lt;pkg&gt;", "desc": "Surgical library bump with codemods if available." }
+              { "name": ":upgrade &lt;pkg&gt;", "desc": "Surgical library bump with codemods if available. Understands csproj/.NET projects via NuGet &mdash; bootstrap, scan-releases, and upgrade all work in .NET repos, not just JS/TS." }
             ]
           }
         },
@@ -174,7 +175,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Vibe coding with a map.",
       "subhead": "{{fact:cmd_vibe-cartographer_word}} slash commands that take you from idea spark to shipped app &mdash; spec-first, persona-aware, with persistent memory that gets sharper every run. Built for builders who move fast and don't want to lose the thread.",
-      "heroMeta": ["v1.8.0", "{{fact:cmd_vibe-cartographer}} commands", "MIT", "Level 3"],
+      "heroMeta": ["v1.10.1", "{{fact:cmd_vibe-cartographer}} commands", "MIT", "Level 3.5"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer" }
@@ -183,7 +184,7 @@
         "label": "vibe-cartographer ~",
         "lines": [
           "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-cartographer:onboard</span>",
-          "<span class=\"agent\">Cart v1.8.0</span> &mdash; let's plot your course.",
+          "<span class=\"agent\">Cart v1.10.1</span> &mdash; let's plot your course.",
           "  What are you working on?",
           "&nbsp;",
           "<span class=\"prompt\">&gt;</span> A CLI that scrapes structured data from job boards.",
@@ -225,7 +226,7 @@
           "heading": "A plugin that learns from every run.",
           "paragraphs": [
             "Vibe Cartographer is built on the <strong>Self-Evolving Plugin Framework</strong> &mdash; the thesis that a plugin should be more useful on its tenth run than its first, not because you learned it, but because it learned you. Three capabilities drive that: self-repair, self-teach, and self-evolve. The deepest is self-evolve: <strong>/evolve</strong> reads your session logs and friction signals, then proposes concrete edits to its own commands &mdash; with your consent, one change at a time.",
-            "As of v1.8.0, Cart is at <strong>Level 3</strong> of the maturity ladder. It shares a unified builder profile with the rest of the family &mdash; onboard once, and your persona, experience level, and preferences carry across every plugin."
+            "Cart is at <strong>Level 3.5</strong> of the maturity ladder. It shares a unified builder profile with the rest of the family &mdash; onboard once, and your persona, experience level, and preferences carry across every plugin."
           ],
           "callout": "No telemetry. Session data stays on your machine."
         }
@@ -369,7 +370,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Tests your app actually needs.",
       "subhead": "vibe-test reads your app, classifies it by type and deployment risk, and generates the tests proportional to that risk &mdash; not a boilerplate dump, not a pass/fail coverage meter. For builders who shipped vibe-coded apps with thin-to-zero coverage and no clear path to fixing that.",
-      "heroMeta": ["v0.2.4", "7 commands", "JS / TS", "626Labs"],
+      "heroMeta": ["v0.3.0", "7 commands", "JS / TS", "626Labs"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-test" }
@@ -378,7 +379,7 @@
         "label": "vibe-test ~",
         "lines": [
           "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-test:audit</span>",
-          "<span class=\"agent\">vibe-test v0.2.4</span> · Auditing my-app...",
+          "<span class=\"agent\">vibe-test v0.3.0</span> · Auditing my-app...",
           "&nbsp;",
           "  App type   <span class=\"path\">SPA + API (React + Firebase)</span>",
           "  Tier       <span class=\"key\">Public-facing</span>",
@@ -400,7 +401,7 @@
           "lead": "vibe-test classifies your app against a five-tier maturity matrix and generates tests proportional to what you actually shipped — then hands you a runbook and CI config so the practice survives after the plugin stops running.",
           "cards": [
             { "command": "/vibe-test", "title": "Plugin entry point.", "desc": "First-run or returning welcome. Lists the subcommands in plain language, detects whether a prior audit exists, and asks what to do next. No scanning." },
-            { "command": "/vibe-test:audit", "title": "App inventory and gap analysis.", "desc": "Scans routes, components, models, integrations. Classifies app type and maturity tier, measures coverage with an honest denominator, and surfaces three harness-break finding types as first-class findings." },
+            { "command": "/vibe-test:audit", "title": "App inventory and gap analysis.", "desc": "Scans routes, components, models, integrations. Classifies app type and maturity tier across an expanded set of recognized shapes &mdash; and declines honestly when the app type won't benefit from generated tests. Measures coverage with an honest denominator and surfaces three harness-break finding types as first-class findings." },
             { "command": "/vibe-test:generate", "title": "Confidence-tiered test generation.", "desc": "Generates in three lanes: high-confidence auto-writes to tests/, medium stages for batch review, low shows inline for accept/reject. Matches your framework idioms." },
             { "command": "/vibe-test:fix", "title": "Diagnose and repair broken tests.", "desc": "Distinguishes harness-level breaks from test-logic breaks and routes repairs by confidence. Rolls back generated tests to pending when they're the source of CI breakage." },
             { "command": "/vibe-test:coverage", "title": "Honest-denominator coverage.", "desc": "Detects cherry-picked denominators and proposes &mdash; never silently applies &mdash; the adapter diff to fix them. Emits a CI-friendly JSON sidecar." },
@@ -437,7 +438,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Security audit for the app your AI just shipped.",
       "subhead": "vibe-sec scans vibe-coded apps for the predictable security gaps AI prototyping leaves behind &mdash; secrets in source, sketchy auth, stale dependencies, open CORS &mdash; and generates fixes proportional to what your app actually needs. For solo builders shipping fast and not wanting to get burned.",
-      "heroMeta": ["v0.6.0", "9 commands", "tier-aware", "MIT"],
+      "heroMeta": ["v0.9.0", "9 commands", "tier-aware", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-sec" }
@@ -446,7 +447,7 @@
         "label": "vibe-sec ~",
         "lines": [
           "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-sec:scan</span>",
-          "<span class=\"agent\">vibe-sec v0.6.0</span> · classifying app, then scanning...",
+          "<span class=\"agent\">vibe-sec v0.9.0</span> · classifying app, then scanning...",
           "  &rarr; tier: <span class=\"key\">public-facing</span> · 247 files",
           "&nbsp;",
           "  <span class=\"key\">CRITICAL</span>  OPENAI_API_KEY            <span class=\"path\">src/lib/ai.ts:14</span>",
@@ -464,7 +465,7 @@
           "lead": "When an LLM builds your app, it optimizes for a working demo. vibe-sec classifies the gap between that and a deployable system, then works through it systematically &mdash; deferring to gitleaks, OSV-Scanner, and Semgrep when they're installed, and falling back to an in-house baseline when they're not.",
           "cards": [
             { "command": "/vibe-sec:scan", "title": "Fast secret scan.", "desc": "Defers to gitleaks / trufflehog when present, runs an in-house Layer A scanner when not. Classifies the app first so every finding is weighted by deployment tier, not an abstract ideal." },
-            { "command": "/vibe-sec:audit", "title": "Full tier-calibrated audit.", "desc": "One pass across all ten concerns &mdash; secrets, dependencies, supply chain, config posture, crypto/PII, auth, the OWASP top 10, rate-limiting, and more &mdash; resolved into a single report across four severity bands." },
+            { "command": "/vibe-sec:audit", "title": "Full tier-calibrated audit.", "desc": "One pass across all twelve concerns &mdash; secrets, dependencies, supply chain, config posture, crypto/PII, auth, the OWASP top 10, rate-limiting, license compliance, and data posture &mdash; resolved into a single report across four severity bands." },
             { "command": "/vibe-sec:deps", "title": "Dependency + supply-chain check.", "desc": "CVE cross-reference against direct and transitive deps, lockfile integrity, pinned-vs-floating audit, and typosquat detection &mdash; fast enough to run on every change." },
             { "command": "/vibe-sec:fix", "title": "Confidence-routed remediation.", "desc": "Automated for high-confidence hygiene (gitignore entries, security headers, secrets out of source); guided templates for architectural issues. Destructive actions are gated behind explicit overrides." },
             { "command": "/vibe-sec:gate", "title": "CI pass/fail gate.", "desc": "Exit codes 0/1/2 against your app's tier, with GitHub Actions annotations. Drops into a workflow without configuration." },
@@ -664,7 +665,7 @@
           "lead": "Two commands. Phase 1 reads your codebase autonomously, names the aha moment, and ranks the stops. Phase 2 runs five interview gates, then builds the tour. (Phase 1 also calls fit honestly &mdash; if a tour won't help, you'll know before Phase 2.)",
           "cards": [
             { "command": "/vibe-walk:discover", "title": "Autonomous surface discovery + verdict.", "desc": "Reads your orientation docs, route surface, and component composition. Names the aha moment, ranks 8&ndash;12 candidate stops, checks anchor-readiness, and delivers the verdict: <strong>build</strong> / <strong>don't build</strong> / <strong>cheaper first</strong>. No questions. Fully autonomous.", "reach": "Reach for it <em>before you've committed to building a tour</em>." },
-            { "command": "/vibe-walk:walk", "title": "Five gates, then a complete tour.", "desc": "Confirms mode (walkthrough vs training), trigger model, substrate, aha moment, and user role &mdash; then builds: Driver.js module, anchor-injection codemod, 6-event analytics wiring, and a persistent replay entry point.", "reach": "Reach for it <em>after discover returns a build verdict</em>." }
+            { "command": "/vibe-walk:walk", "title": "Five gates, then a complete tour.", "desc": "Confirms mode (walkthrough vs training), trigger model, substrate, aha moment, and user role &mdash; then builds: Driver.js module, anchor-injection codemod, 6-event analytics wiring, and a persistent replay entry point. Emitted tours carry a keyboard/accessibility contract: focus returns on close, enforced at emit time.", "reach": "Reach for it <em>after discover returns a build verdict</em>." }
           ],
           "mini": {
             "heading": "Three more commands.",
@@ -818,6 +819,74 @@
         "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-wrap\n/plugin install vibe-wrap",
         "stableBlurb": "Latest main from the vibe-wrap repo. A tagged release promotes it to the aggregated vibe-plugins marketplace.",
         "note": "Python 3.11+ and Git on PATH. Pure stdlib — no third-party dependencies. 626Labs MCP optional (one of four decision-log backends)."
+      }
+    },
+
+    "vibe-prompt": {
+      "name": "vibe-prompt",
+      "metaTitle": "vibe-prompt · Audit the prompts your app ships. · 626Labs",
+      "ogTitle": "vibe-prompt · Audit the prompts your app ships.",
+      "metaDescription": "Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs.",
+      "ogImage": "/assets/brand/plugins/vibe-prompt-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Audit the prompts your app ships.",
+      "subhead": "Close the prompt loop: scan, audit, eval, grade, fix. vibe-prompt is the prompt-audit and behavioral-testing layer for vibe-coded apps that ship LLM features &mdash; running 13 structural smell checks across 5 dimensions, evaluating against your production model with a calibrated LLM-judge, and routing confident fixes to ready-to-apply diffs.",
+      "heroMeta": ["v0.7.1", "9 commands", "F1-F13 smells", "MIT"],
+      "ctas": {
+        "primary": { "label": "Install plugin" },
+        "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Prompt" }
+      },
+      "terminal": {
+        "label": "vibe-prompt ~",
+        "lines": [
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-prompt:scan</span>",
+          "<span class=\"agent\">[vibe-prompt]</span> Scanning prompt sites... <span class=\"ok\">done</span>",
+          "  &rarr; <span class=\"key\">14 prompt sites</span> found across <span class=\"path\">src/</span>",
+          "  &rarr; read-only &mdash; nothing changed",
+          "&nbsp;",
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-prompt:audit</span>",
+          "<span class=\"agent\">[vibe-prompt]</span> Running F1&ndash;F13 checks...",
+          "  &rarr; schema tightness: <span class=\"muted\">2 issues</span> &middot; persona consistency: <span class=\"ok\">clean</span>",
+          "  &rarr; injection resistance: <span class=\"muted\">F11 flagged</span> &rarr; handoff to vibe-sec",
+          "&nbsp;",
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-prompt:grade</span>",
+          "<span class=\"agent\">[vibe-prompt]</span> Composite grade: <span class=\"key\">B+</span> &mdash; regression vs baseline: <span class=\"ok\">none</span><span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "Nine commands across the prompt lifecycle.",
+          "lead": "From inventory to fix, every command in the loop is a direct call. Read-only by default &mdash; real model calls only on :eval, behind a cost gate.",
+          "cards": [
+            { "command": "/vibe-prompt:scan", "title": "Inventory every prompt site.", "desc": "Reads the codebase and maps every place an LLM prompt is constructed or dispatched. Read-only &mdash; nothing is changed, nothing is written. The starting point for the rest of the loop.", "reach": "Reach for it <em>when you want to know what your app is actually sending to the model</em>." },
+            { "command": "/vibe-prompt:audit", "title": "Run 13 structural smell checks.", "desc": "Applies the F1&ndash;F13 taxonomy across five dimensions &mdash; schema tightness, persona consistency, instruction clarity, token efficiency, and injection resistance. No model calls, no cost.", "reach": "Reach for it <em>before an eval run, or any time you change a prompt</em>." },
+            { "command": "/vibe-prompt:eval", "title": "Behavioral test against production.", "desc": "Runs test cases against your real model with a calibrated LLM-judge. Cost-gated &mdash; you confirm spend before any call goes out. Surfaces behavioral drift that static checks can't catch.", "reach": "Reach for it <em>when you need ground truth on how the prompt behaves, not just how it reads</em>." },
+            { "command": "/vibe-prompt:grade", "title": "Composite grade + regression check.", "desc": "Rolls scan, audit, and eval signals into a composite grade and compares it against your monotonic baseline &mdash; so regressions show up as deltas, not surprises.", "reach": "Reach for it <em>on every PR that touches a prompt</em>." },
+            { "command": "/vibe-prompt:remediate", "title": "Confidence-routed fix diffs.", "desc": "Routes high-confidence findings to ready-to-apply diffs and lower-confidence ones to annotated review files. Backs up every prompt before touching it and keeps rollback explicit.", "reach": "Reach for it <em>after audit surfaces issues you want to fix</em>." },
+            { "command": "/vibe-prompt:iterate", "title": "Propose new AI features.", "desc": "Reads your product and audit history, then proposes concrete AI feature candidates grounded in what your current prompt surface already handles well.", "reach": "Reach for it <em>when you want to extend your LLM surface, not just maintain it</em>." },
+            { "command": "/vibe-prompt:radar", "title": "Model-news digest.", "desc": "Pulls a digest of model releases, capability changes, and pricing shifts relevant to your current stack. No eval calls &mdash; read-only.", "reach": "Reach for it <em>when a model update lands and you want to know if anything breaks</em>." },
+            { "command": "/vibe-prompt:evolve-prompt", "title": "L3 self-improvement.", "desc": "Reads vibe-prompt's own session and friction logs, then proposes concrete edits to its own SKILLs and evaluation templates. Never auto-applies.", "reach": "Reach for it <em>when the audit keeps missing something you're catching manually</em>." },
+            { "command": "/vibe-prompt", "title": "State-aware router.", "desc": "Reads your project state &mdash; last scan age, open audit findings, baseline freshness &mdash; and recommends the right next command. Asks before launching anything.", "reach": "Reach for it <em>when you're not sure where in the loop you are</em>." }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it's built",
+          "heading": "Scan, audit, eval, grade, fix — in that order.",
+          "paragraphs": [
+            "The loop runs left to right: <strong>scan</strong> inventories every prompt site read-only, <strong>audit</strong> applies the F1&ndash;F13 taxonomy statically, <strong>eval</strong> runs behavioral tests against your production model behind a cost gate, <strong>grade</strong> rolls everything into a composite score compared against a monotonic baseline, and <strong>remediate</strong> routes confident fixes to diffs with backup and explicit rollback. Each step is a standalone call &mdash; run the whole loop or drop in at any stage.",
+            "The <strong>F1&ndash;F13 taxonomy</strong> covers 13 structural smell classes across five scoring dimensions: schema tightness (are outputs constrained or freeform?), persona consistency (does the assistant's identity hold across turns?), instruction clarity (are directives specific enough to survive model updates?), token efficiency (is the prompt spending tokens on things that matter?), and injection resistance (is user input sanitized before it reaches the model?). F10&ndash;F12 are the injection-surface smells &mdash; when those trigger, vibe-prompt hands off directly to <strong>vibe-sec</strong>, which carries the injection findings through its own security posture loop. The two plugins compose, neither depends on the other.",
+            "The eval step uses a <strong>calibrated LLM-judge</strong>: a secondary model call that scores the primary output against a rubric derived from your audit findings. Calibration means the judge's pass threshold is tuned against known-good and known-bad examples from your own baseline, not a generic rubric &mdash; so the score means something specific to your app. Every eval run costs real tokens; the cost gate ensures you confirm spend before anything goes out."
+          ],
+          "callout": "Read-only by default. Real model calls only on :eval, behind an explicit cost gate. Nothing leaves your machine except the eval request you confirm."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-prompt@vibe-plugins",
+        "canary": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Prompt\n/plugin install vibe-prompt",
+        "note": "Read-only by default; real vendor calls only on :eval behind a cost gate. Composes with vibe-sec for injection handoff."
       }
     }
   }

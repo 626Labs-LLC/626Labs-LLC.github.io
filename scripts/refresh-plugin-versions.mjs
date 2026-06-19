@@ -36,10 +36,12 @@ const headers = {
   ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
 };
 
-// "v1.2.3" / "1.2" -> comparable [1,2,3]; non-semver tags sort lowest.
+// "v1.2.3" / "1.2" / "vibe-sec-v0.9.0" -> comparable [1,2,3]; non-semver tags sort lowest.
 function semverKey(tag) {
-  const m = String(tag).replace(/^v/i, "").match(/^(\d+)(?:\.(\d+))?(?:\.(\d+))?/);
-  return m ? [+(m[1] || 0), +(m[2] || 0), +(m[3] || 0)] : [-1, 0, 0];
+  const bare = String(tag).replace(/^.*?-v?(?=\d)/i, '').replace(/^v/i, '');
+  const m = bare.match(/^(\d+)(?:\.(\d+))?(?:\.(\d+))?/);
+  if (!m) return [-1, 0, 0];
+  return [Number(m[1] || 0), Number(m[2] || 0), Number(m[3] || 0)];
 }
 function cmpDesc(a, b) {
   const ka = semverKey(a), kb = semverKey(b);
@@ -50,7 +52,7 @@ function cmpDesc(a, b) {
 async function latestTag(repo) {
   const res = await fetch(`https://api.github.com/repos/${repo}/tags?per_page=100`, { headers });
   if (!res.ok) throw new Error(`tags HTTP ${res.status}`);
-  const tags = (await res.json()).map((t) => t.name).filter((n) => /^v?\d+\./i.test(n));
+  const tags = (await res.json()).map((t) => t.name).filter((n) => /(?:^|-)v?\d+\./i.test(n));
   if (!tags.length) return null;
   tags.sort(cmpDesc);
   return tags[0];
@@ -96,7 +98,10 @@ let failures = 0;
 for (const [id, repo] of Object.entries(REPOS)) {
   try {
     const tag = await latestTag(repo);
-    if (tag) versions[id] = tag.startsWith("v") ? tag : `v${tag}`;
+    if (tag) {
+      const bare = String(tag).replace(/^.*?-v?(?=\d)/i, '').replace(/^v/i, '');
+      versions[id] = 'v' + bare;
+    }
     const caps = await capabilities(repo);
     stats[id] = caps;
     const vchip = (versions[id] || "(no tag)").padEnd(10);
