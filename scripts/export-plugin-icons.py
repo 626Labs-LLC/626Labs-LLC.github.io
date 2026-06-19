@@ -16,7 +16,6 @@ Plugins:
   thesis-engine      → cog feeding a page
   vibe-walk          → two staggered footprints
   vibe-wrap          → breadcrumb trail into a wrapped summary card
-  vibe-prompt        → prompt bubble: chevron + audited text lines
 
 Outputs (under assets/brand/plugins/):
   <id>-banner-1500x500.png — repo README banner
@@ -31,11 +30,6 @@ ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
 OUT = ASSETS / "brand" / "plugins"
 FONTS = ROOT / "fonts"
-# The fonts dir consolidated to variable fonts after this script's last run;
-# prefer the static Regular when present, fall back to the Variable file
-# (JetBrains Mono Variable defaults to wght 400 == Regular).
-_MONO = FONTS / "JetBrainsMono-Regular.ttf"
-MONO_TTF = _MONO if _MONO.exists() else FONTS / "JetBrainsMono-Variable.ttf"
 CLAUDE_SPARKLE_SRC = ASSETS / "anthropic" / "claude-sparkle.png"
 
 OUT.mkdir(parents=True, exist_ok=True)
@@ -446,22 +440,56 @@ def glyph_insights(primary, secondary):
 
 
 def glyph_prompt(primary, secondary):
-    """Speech bubble holding a terminal chevron + two prompt-text lines —
-    the prompt-engineering loop: what you say to the model, audited."""
+    """Terminal-window motif: a rounded-rectangle frame (the shell) containing
+    a bold chevron/caret ('>') in primary and a block cursor in secondary.
+    The frame gives the caret+cursor a single cohesive containing shape so the
+    mark reads as one object at icon scale (≤32px), matching the sibling idiom
+    of glyph_sec (shield), glyph_wrap (card), glyph_keystone (arch).
+    Motif is centered on the 200×200 canvas with the content center-mass on x=100.
+    """
     img = _new_glyph()
     draw = ImageDraw.Draw(img)
-    # Bubble body
-    draw.rounded_rectangle([35, 45, 165, 135], radius=14,
-                           outline=primary + (255,), width=3)
-    # Bubble tail (open triangle, bottom-left)
-    draw.line([(62, 134), (52, 160)], fill=primary + (255,), width=3)
-    draw.line([(52, 160), (82, 134)], fill=primary + (255,), width=3)
-    # Terminal chevron `>` — the accent (the prompt itself)
-    draw.line([(58, 74), (74, 90)], fill=secondary + (255,), width=3)
-    draw.line([(74, 90), (58, 106)], fill=secondary + (255,), width=3)
-    # Prompt text lines
-    draw.line([(88, 82), (140, 82)], fill=primary + (255,), width=3)
-    draw.line([(88, 98), (126, 98)], fill=primary + (255,), width=3)
+    cx, cy = GLYPH_SIZE // 2, GLYPH_SIZE // 2
+
+    # Terminal window frame — the containing shape.
+    # Sized to fill the canvas like siblings' shields / cards.
+    fr_l, fr_t, fr_r, fr_b = 28, 38, 172, 162
+    fr_radius = 14
+    draw.rounded_rectangle([fr_l, fr_t, fr_r, fr_b], radius=fr_radius,
+                           outline=primary + (255,), width=4)
+
+    # Title-bar separator — thin rule just below the top of the frame
+    # (suggests a terminal chrome header, like a window title bar)
+    bar_y = fr_t + 22
+    draw.line([(fr_l + 4, bar_y), (fr_r - 4, bar_y)], fill=primary + (120,), width=2)
+
+    # Three tiny dots in the title bar (macOS / window chrome affordance)
+    for i, dot_color in enumerate([primary, primary, secondary]):
+        dot_cx = fr_l + 14 + i * 14
+        dot_cy = fr_t + 11
+        draw.ellipse([dot_cx - 4, dot_cy - 4, dot_cx + 4, dot_cy + 4],
+                     fill=dot_color + (180,))
+
+    # Chevron caret '>' inside the frame — heavy strokes for small-scale legibility
+    # Content zone: x in [36, 164], y below bar_y+6. Center content around cx=100.
+    tip_x = 105       # tip lands just right of center for optical balance with cursor
+    tip_y = cy + 8    # vertically centered in the content zone
+    arm = 26          # vertical reach of each arm (was 30; slightly tighter to fit frame)
+    stem = 24         # horizontal reach back to the spine
+    draw.line([(tip_x - stem, tip_y - arm), (tip_x, tip_y)],
+              fill=primary + (255,), width=5)
+    draw.line([(tip_x, tip_y), (tip_x - stem, tip_y + arm)],
+              fill=primary + (255,), width=5)
+
+    # Block cursor — solid filled rectangle, secondary color.
+    # Filled block reads better than an underscore at 32px.
+    cur_x = tip_x + 10
+    cur_w = 28
+    cur_h = 20
+    cur_y = tip_y - cur_h // 2
+    draw.rectangle([cur_x, cur_y, cur_x + cur_w, cur_y + cur_h],
+                   fill=secondary + (255,))
+
     return img
 
 
@@ -479,7 +507,7 @@ GLYPHS = {
     "footprints":   glyph_walk,
     "wrap":         glyph_wrap,
     "lens":         glyph_insights,
-    "prompt_bubble": glyph_prompt,
+    "prompt_glyph": glyph_prompt,
 }
 
 
@@ -550,8 +578,8 @@ PLUGINS = [
     },
     {
         "id": "vibe-prompt", "name": "VIBE PROMPT",
-        "tagline": "close the prompt loop",
-        "glyph": "prompt_bubble", "primary": CYAN, "secondary": MAGENTA,
+        "tagline": "Audit the prompts your app ships.",
+        "glyph": "prompt_glyph", "primary": CYAN, "secondary": MAGENTA,
     },
 ]
 
@@ -606,7 +634,12 @@ def build_banner(plugin, out_path, size=(1500, 500)):
     sparkle_w = sparkle_target_h + int(W * 0.04)
     text_avail_w = W - text_x - sparkle_w - int(W * 0.06)
     draw = ImageDraw.Draw(canvas)
-    tag_font = ImageFont.truetype(str(MONO_TTF), max(14, int(H * 0.044)))
+    _tag_font_raw = ImageFont.truetype(str(FONTS / "JetBrainsMono-Variable.ttf"), max(14, int(H * 0.044)))
+    try:
+        _tag_font_raw.set_variation_by_axes([400])
+    except (AttributeError, Exception):
+        pass  # Pillow version doesn't support axis pinning; render as-is
+    tag_font = _tag_font_raw
 
     # Spaced caps: single space between letters. Auto-fit the font size so
     # long names like "VIBE CARTOGRAPHER" don't overflow into the sparkle.
@@ -614,7 +647,7 @@ def build_banner(plugin, out_path, size=(1500, 500)):
     max_name = max(28, int(H * 0.112))
     name_size = max_name
     while name_size > 18:
-        name_font = ImageFont.truetype(str(MONO_TTF), name_size)
+        name_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Variable.ttf"), name_size)
         nb = draw.textbbox((0, 0), spaced, font=name_font)
         if (nb[2] - nb[0]) <= text_avail_w:
             break
@@ -633,7 +666,7 @@ def build_banner(plugin, out_path, size=(1500, 500)):
     draw.text((text_x, block_top + name_h + gap), tagline, font=tag_font, fill=DIM + (255,))
 
     # 626 Labs lockup top-right (tiny)
-    sub_font = ImageFont.truetype(str(MONO_TTF), max(11, int(H * 0.026)))
+    sub_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Variable.ttf"), max(11, int(H * 0.026)))
     lockup = "626 LABS  ·  for Claude Code"
     lk_bbox = draw.textbbox((0, 0), lockup, font=sub_font)
     lk_w = lk_bbox[2] - lk_bbox[0]
@@ -661,15 +694,20 @@ def build_square(plugin, out_path):
     canvas.alpha_composite(glyph, dest=((W - glyph_size) // 2, int(H * 0.14)))
 
     draw = ImageDraw.Draw(canvas)
-    name_font = ImageFont.truetype(str(MONO_TTF), 56)
-    tag_font = ImageFont.truetype(str(MONO_TTF), 22)
-    sub_font = ImageFont.truetype(str(MONO_TTF), 16)
+    name_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Variable.ttf"), 56)
+    _tag_font_sq = ImageFont.truetype(str(FONTS / "JetBrainsMono-Variable.ttf"), 22)
+    try:
+        _tag_font_sq.set_variation_by_axes([400])
+    except (AttributeError, Exception):
+        pass  # Pillow version doesn't support axis pinning; render as-is
+    tag_font = _tag_font_sq
+    sub_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Variable.ttf"), 16)
 
     spaced = " ".join(plugin["name"])
     target_w = int(W * 0.86)
     name_size = 64
     while name_size > 22:
-        name_font = ImageFont.truetype(str(MONO_TTF), name_size)
+        name_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Variable.ttf"), name_size)
         nb = draw.textbbox((0, 0), spaced, font=name_font)
         if (nb[2] - nb[0]) <= target_w:
             break

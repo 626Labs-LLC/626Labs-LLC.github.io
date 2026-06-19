@@ -414,7 +414,7 @@
     {
       "id": "vibe-sec",
       "title": "Vibe Sec",
-      "description": "The security gaps AI prototyping leaves behind are predictable — leaked secrets, sketchy auth, missing input validation, stale dependencies. Vibe Sec audits across ten concerns, calibrated to where your app actually runs, then writes the fix and routes it by confidence so nothing destructive lands on its own. Fast secret and dependency scans, a STRIDE threat model, and a CI gate that fails the build before the gap ships.",
+      "description": "The security gaps AI prototyping leaves behind are predictable — leaked secrets, sketchy auth, missing input validation, stale dependencies. Vibe Sec audits across twelve concerns, calibrated to where your app actually runs, then writes the fix and routes it by confidence so nothing destructive lands on its own. Fast secret and dependency scans, a STRIDE threat model, and a CI gate that fails the build before the gap ships.",
       "tags": [
         {
           "label": "Plugin",
@@ -484,6 +484,44 @@
       "claudeCode": true,
       "meta": "<code>/vibe-wrap</code> · end-of-session handoff",
       "productPage": "/vibe-wrap/",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-walk",
+      "title": "Vibe Walk",
+      "tagline": "Tours your users actually finish.",
+      "description": "vibe-walk reads your app, names the aha moment, and builds a spotlight tour you own outright — Driver.js module, anchor codemod, six analytics events wired to track what actually lands. And it's honest about fit: if a tour won't help, it tells you before you build one.",
+      "tags": [
+        { "label": "Plugin", "tone": "cyan" },
+        { "label": "walkthroughs", "tone": "magenta" },
+        { "label": "Live", "tone": "live" }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/Vibe-Walk",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "meta": "<code>/vibe-walk</code> · spotlight tours + fit verdict",
+      "productPage": "/vibe-walk/",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-prompt",
+      "title": "Vibe Prompt",
+      "tagline": "Close the prompt loop: scan, audit, eval, grade, fix.",
+      "description": "vibe-prompt inventories every prompt your site uses, then audits each one across five structural dimensions — catching the 13 flagged failure patterns (F1–F13) that range from missing persona to absent output constraints. A calibrated LLM judge runs behavioral eval so you catch regressions, not just structural smells. Confidence-routed fixes apply changes only where the signal is clear; uncertain ones surface for your call. Handoff to vibe-sec is built in for prompts that touch sensitive surfaces.",
+      "tags": [
+        { "label": "Plugin", "tone": "cyan" },
+        { "label": "prompts", "tone": "magenta" },
+        { "label": "Live", "tone": "live" }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/Vibe-Prompt",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "meta": "<code>/vibe-prompt</code> · prompt audit + behavioral eval",
+      "productPage": "/vibe-prompt/",
       "screenshots": []
     },
     {
