@@ -66,7 +66,7 @@ def test_resolve_tokens_unknown_raises():
 
 def test_real_facts_smoke():
     f = site_facts.facts()
-    assert f["claude_plugins"] == 11       # live + claudeCode (added vibe-insights)
-    assert f["family_count"] == 12         # plugin-pages family[] (added vibe-insights)
+    assert f["claude_plugins"] == 13       # live + claudeCode (vibe-walk + vibe-prompt counted -> 13)
+    assert f["family_count"] == 13         # plugin-pages family[] (added vibe-prompt)
     assert f["widget_count"] == 1
-    assert f["cmd_vibe-cartographer"] == 13  # derived live from data/plugin-stats.json (13 command files)
+    assert f["cmd_vibe-cartographer"] == 14  # derived live from data/plugin-stats.json (14 command files)
