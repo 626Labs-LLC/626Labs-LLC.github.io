@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-19T10:39:38.354Z",
+  "generatedAt": "2026-06-20T09:18:13.650Z",
   "count": 45,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-06-19T10:06:58Z",
+      "pushed_at": "2026-06-20T08:36:30Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -37,7 +37,7 @@
       "description": "Native Windows (.NET 10 / WinUI 3) rewrite of the 626 Labs Mod Launcher. Phase 1 (ModManager.Core) complete: 157 tests green.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher",
       "language": "C#",
-      "pushed_at": "2026-06-19T05:27:07Z",
+      "pushed_at": "2026-06-20T03:42:37Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -48,8 +48,8 @@
       "name": "626-mod-plugins",
       "description": "Off-Store plugins for the 626 Mod Launcher — mod-source integrations like Nexus, built and signed here so the Store build stays sealed.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-plugins",
-      "language": null,
-      "pushed_at": "2026-06-18T22:53:47Z",
+      "language": "C#",
+      "pushed_at": "2026-06-19T14:00:40Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -290,7 +290,7 @@
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
       "pushed_at": "2026-06-13T00:56:45Z",
-      "stargazers_count": 2,
+      "stargazers_count": 3,
       "archived": false,
       "fork": false
     },
@@ -445,7 +445,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-06-18T15:04:15Z",
+      "pushed_at": "2026-06-19T15:03:04Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
