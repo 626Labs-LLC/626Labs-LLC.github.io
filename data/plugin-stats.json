@@ -29,6 +29,11 @@
     "skills": 2,
     "agents": 0
   },
+  "vibe-prompt": {
+    "commands": 9,
+    "skills": 13,
+    "agents": 0
+  },
   "vibe-sec": {
     "commands": 9,
     "skills": 10,
@@ -57,11 +62,6 @@
   "vibe-wrap": {
     "commands": 0,
     "skills": 7,
-    "agents": 0
-  },
-  "vibe-prompt": {
-    "commands": 9,
-    "skills": 13,
     "agents": 0
   }
 }
