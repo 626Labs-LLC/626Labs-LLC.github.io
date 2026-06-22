@@ -5,12 +5,12 @@
   "vibe-insights": "v0.3.0",
   "vibe-iterate": "v1.3.0",
   "vibe-keystone": "v0.2.1",
+  "vibe-lingual": "v0.1.0",
   "vibe-prompt": "v0.7.1",
   "vibe-sec": "v0.9.0",
   "vibe-taker": "v0.1.2",
   "vibe-test": "v0.3.0",
   "vibe-thesis": "v0.2.0",
   "vibe-walk": "v0.3.0",
-  "vibe-wrap": "v0.3.0",
-  "vibe-lingual": "v0.1.0"
+  "vibe-wrap": "v0.3.0"
 }
