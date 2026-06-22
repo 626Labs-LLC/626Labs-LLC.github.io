@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-21T09:52:36.796Z",
-  "count": 45,
+  "generatedAt": "2026-06-22T12:07:45.899Z",
+  "count": 46,
   "owners": [
     "user:estevanhernandez-stack-ed",
     "org:626Labs-LLC"
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-06-21T09:30:58Z",
+      "pushed_at": "2026-06-22T11:26:07Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -25,7 +25,7 @@
       "description": "626 Mod Launcher Games",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-game-manifest",
       "language": "Standard ML",
-      "pushed_at": "2026-06-15T17:34:27Z",
+      "pushed_at": "2026-06-22T07:49:42Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -439,13 +439,25 @@
       "fork": false
     },
     {
+      "full_name": "estevanhernandez-stack-ed/Vibe-Lingual",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "Vibe-Lingual",
+      "description": "Localize your app's UI without corrupting its logic — the i18n member of the Vibe plugin family. Deep on next-intl + App Router; honest about the rest.",
+      "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Lingual",
+      "language": "JavaScript",
+      "pushed_at": "2026-06-22T01:24:49Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
       "full_name": "estevanhernandez-stack-ed/vibe-plugins",
       "owner": "estevanhernandez-stack-ed",
       "name": "vibe-plugins",
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-06-20T14:46:03Z",
+      "pushed_at": "2026-06-22T01:26:44Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
