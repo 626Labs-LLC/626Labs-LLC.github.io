@@ -56,6 +56,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://626labs.dev/vibe-lingual/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://626labs.dev/vibe-prompt/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

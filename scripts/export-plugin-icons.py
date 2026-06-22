@@ -493,6 +493,32 @@ def glyph_prompt(primary, secondary):
     return img
 
 
+def glyph_lingual(primary, secondary):
+    """Globe motif: a heavy primary circle (the world) with an equator and two
+    latitude lines, crossed by a secondary meridian — the universal
+    internationalization / localization mark. Bold strokes for icon-scale
+    legibility, cyan+magenta paired. Centered on the 200x200 canvas."""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    cx, cy = GLYPH_SIZE // 2, GLYPH_SIZE // 2
+    r = 70
+
+    # Globe outline — the containing shape.
+    draw.ellipse([cx - r, cy - r, cx + r, cy + r], outline=primary + (255,), width=5)
+
+    # Equator — full-width horizontal across the middle.
+    draw.line([(cx - r, cy), (cx + r, cy)], fill=primary + (255,), width=4)
+
+    # Two latitude lines, inset to sit inside the sphere.
+    for dy in (36, -36):
+        draw.line([(cx - 58, cy + dy), (cx + 58, cy + dy)], fill=primary + (200,), width=3)
+
+    # Secondary meridian — a vertical longitude ellipse, the paired accent.
+    draw.ellipse([cx - 40, cy - r, cx + 40, cy + r], outline=secondary + (255,), width=4)
+
+    return img
+
+
 GLYPHS = {
     "node_graph":   glyph_cartographer,
     "compass":      glyph_iterate,
@@ -508,6 +534,7 @@ GLYPHS = {
     "wrap":         glyph_wrap,
     "lens":         glyph_insights,
     "prompt_glyph": glyph_prompt,
+    "globe":        glyph_lingual,
 }
 
 
@@ -580,6 +607,11 @@ PLUGINS = [
         "id": "vibe-prompt", "name": "VIBE PROMPT",
         "tagline": "Audit the prompts your app ships.",
         "glyph": "prompt_glyph", "primary": CYAN, "secondary": MAGENTA,
+    },
+    {
+        "id": "vibe-lingual", "name": "VIBE LINGUAL",
+        "tagline": "localize without corrupting logic",
+        "glyph": "globe", "primary": CYAN, "secondary": MAGENTA,
     },
 ]
 

@@ -13,7 +13,8 @@
     { "id": "vibe-insights", "name": "vibe-insights", "role": "session retrospective", "href": "/vibe-insights/" },
     { "id": "thesis-engine", "name": "thesis-engine", "role": "research feeder", "href": "/thesis-engine/" },
     { "id": "vibe-thesis", "name": "vibe-thesis", "role": "thesis authoring", "href": "/vibe-thesis/" },
-    { "id": "vibe-prompt", "name": "vibe-prompt", "role": "prompt audit + behavioral eval", "href": "/vibe-prompt/" }
+    { "id": "vibe-prompt", "name": "vibe-prompt", "role": "prompt audit + behavioral eval", "href": "/vibe-prompt/" },
+    { "id": "vibe-lingual", "name": "vibe-lingual", "role": "i18n retrofit, codemod-safe", "href": "/vibe-lingual/" }
   ],
   "plugins": {
     "vibe-iterate": {
@@ -887,6 +888,101 @@
         "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-prompt@vibe-plugins",
         "canary": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Prompt\n/plugin install vibe-prompt",
         "note": "Read-only by default; real vendor calls only on :eval behind a cost gate. Composes with vibe-sec for injection handoff."
+      }
+    },
+    "vibe-lingual": {
+      "name": "vibe-lingual",
+      "metaTitle": "vibe-lingual · Localize your app's UI without corrupting its logic. · 626Labs",
+      "ogTitle": "vibe-lingual · Localize your app's UI without corrupting its logic.",
+      "metaDescription": "Claude Code plugin for i18n retrofits. Classifies every user-facing string by kind, audits the stack for localization gotchas, then runs a confidence-routed extract → wire → translate → guard loop that mutates only with per-file backups. Deep on next-intl + App Router. By 626Labs.",
+      "ogImage": "/assets/brand/plugins/vibe-lingual-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Localize your app's UI without corrupting its logic.",
+      "subhead": "vibe-lingual is the i18n-retrofit layer for vibe-coded apps. It classifies every user-facing string by kind, audits the stack for the gotchas that bite localization retrofits, then runs a confidence-routed extract &rarr; wire &rarr; translate &rarr; guard loop that mutates only with per-file backups and idempotent re-runs &mdash; deep on next-intl + App Router, honest about the rest.",
+      "heroMeta": [
+        "v0.1.0",
+        "5 commands",
+        "next-intl",
+        "MIT"
+      ],
+      "ctas": {
+        "primary": {
+          "label": "Install plugin"
+        },
+        "secondary": {
+          "label": "View on GitHub",
+          "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Lingual"
+        }
+      },
+      "terminal": {
+        "label": "vibe-lingual ~",
+        "lines": [
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-lingual:scan</span>",
+          "<span class=\"agent\">[vibe-lingual]</span> Classifying user-facing strings... <span class=\"ok\">done</span>",
+          "  &rarr; <span class=\"key\">720 strings</span> across <span class=\"key\">~67 components</span>, by kind",
+          "  &rarr; readiness brief written &mdash; read-only, nothing changed",
+          "&nbsp;",
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-lingual:localize</span>",
+          "<span class=\"agent\">[vibe-lingual]</span> extract &rarr; wire &rarr; translate &rarr; guard...",
+          "  &rarr; per-file backups written &middot; idempotent re-run safe",
+          "  &rarr; catalog parity: <span class=\"ok\">clean</span> &middot; jsx-no-literals ratchet: <span class=\"key\">+12</span><span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "Five commands across the localization retrofit.",
+          "lead": "From a read-only readiness scan to the guarded mutation loop, every step is a direct call. It mutates only with per-file backups &mdash; and every re-run is idempotent.",
+          "cards": [
+            {
+              "command": "/vibe-lingual:scan",
+              "title": "Classify every user-facing string.",
+              "desc": "Reads the codebase and tags every user-facing string by kind &mdash; JSX text, placeholder, aria-label, title, alt, toast, locale-sensitive date &mdash; then emits a six-block readiness brief. Read-only; nothing is changed.",
+              "reach": "Reach for it <em>before you commit to a localization pass, to see the real surface</em>."
+            },
+            {
+              "command": "/vibe-lingual:audit",
+              "title": "Catch the i18n gotchas first.",
+              "desc": "Audits the stack for the traps that bite retrofits: firebase-admin in SSR, structural-vs-presentational Intl, the timeZone decision, RTL surfaces, dynamic-route guard globs. Names them before they corrupt a render.",
+              "reach": "Reach for it <em>when the stack is non-trivial and you want the landmines mapped</em>."
+            },
+            {
+              "command": "/vibe-lingual:localize",
+              "title": "Extract, wire, translate, guard.",
+              "desc": "The confidence-routed mutation loop: extracts strings to catalogs, wires the components, translates, and guards the result. Mutates only with per-file backups; re-runs are idempotent. Deep on next-intl + App Router.",
+              "reach": "Reach for it <em>when the scan looks right and you're ready to move strings safely</em>."
+            },
+            {
+              "command": "/vibe-lingual:vitals",
+              "title": "Health-check the localization.",
+              "desc": "Catalog parity, the jsx-no-literals ratchet, and the guards that keep the localization honest as the app grows &mdash; so a new untranslated string shows up as a failed check, not a shipped bug.",
+              "reach": "Reach for it <em>on every PR after the first localization pass lands</em>."
+            },
+            {
+              "command": "/vibe-lingual",
+              "title": "State-aware router.",
+              "desc": "Reads where you are &mdash; scanned, wired, translated, guarded &mdash; and recommends the right next command. Asks before launching anything.",
+              "reach": "Reach for it <em>when you're not sure where in the retrofit you are</em>."
+            }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it's built",
+          "heading": "Scan, audit, localize, guard — codemod-safe.",
+          "paragraphs": [
+            "The loop runs left to right: <strong>scan</strong> classifies every user-facing string read-only and writes a six-block readiness brief, <strong>audit</strong> names the stack-specific gotchas that corrupt i18n retrofits, <strong>localize</strong> runs the confidence-routed extract &rarr; wire &rarr; translate &rarr; guard codemod, and <strong>vitals</strong> holds the line afterward with catalog-parity and jsx-no-literals guards. Every mutation writes a per-file backup first, and every re-run is idempotent &mdash; run it twice and nothing doubles.",
+            "It is <strong>deep on next-intl + App Router</strong>: cookie-driven locale, a catalog parity guard, a jsx-no-literals ratchet that tightens as you translate, and the ESM jest patch the stack needs. For everything else there is a real <strong>adapter seam</strong> that reports an honest <em>not-yet-implemented</em> rather than mishandling a stack it doesn't fully understand &mdash; a decline you can trust beats a silent corruption.",
+            "It earned that trust by <strong>dogfooding on Celestia3</strong>: localizing most of a live app &mdash; 720 strings across ~67 components &mdash; surfaced four of vibe-lingual's own codemod bugs, and the safety rails caught every one before it reached a green branch. <em>Structural-green &ne; works</em> is the throughline &mdash; the tests passing is necessary, not sufficient; the dogfood on a real app was the truth at every scale."
+          ],
+          "callout": "Mutates only with per-file backups and idempotent re-runs. Deep on next-intl + App Router; an honest not-yet-implemented for the rest, never a silent mishandle."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-lingual@vibe-plugins",
+        "canary": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Lingual\n/plugin install vibe-lingual",
+        "note": "Read-only scan + audit by default; the localize codemod mutates only with per-file backups and idempotent re-runs. Deep on next-intl + App Router; honest not-yet-implemented for other stacks."
       }
     }
   }
