@@ -525,6 +525,34 @@
       "screenshots": []
     },
     {
+      "id": "vibe-lingual",
+      "title": "Vibe Lingual",
+      "tagline": "Localize your app's UI without corrupting its logic.",
+      "description": "vibe-lingual is the i18n-retrofit layer for vibe-coded apps. It scans every user-facing string by kind — JSX text, placeholder, aria-label, title, alt, toast, locale-sensitive date — audits the stack for the gotchas that bite localization retrofits, then runs a confidence-routed extract → wire → translate → guard loop that mutates only with per-file backups and idempotent re-runs. Deep on next-intl + App Router, with a real adapter seam that reports an honest not-yet-implemented for the rest instead of mishandling them. Validated by localizing most of Celestia3 — 720 strings across ~67 components.",
+      "tags": [
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "i18n",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/Vibe-Lingual",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "meta": "<code>/vibe-lingual</code> · i18n retrofit, codemod-safe",
+      "productPage": "/vibe-lingual/",
+      "screenshots": []
+    },
+    {
       "id": "rbx15-shirt-pants",
       "title": "RBX15 Classic Shirt and Pants Maker",
       "description": "Native desktop editor for Roblox Classic (R15) shirt and pants templates, built for the exact 585×559 template grid. Layer-based compositing with non-destructive adjustments — brightness, contrast, saturation, hue, and per-channel RGB shift, all real-time — plus drawing tools, fullbleed / mirror / meme-tee presets, and a word-art generator with 15 fonts. Built on Electron for Windows. Free on the Microsoft Store.",

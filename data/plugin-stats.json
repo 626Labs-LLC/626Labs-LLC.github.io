@@ -63,5 +63,10 @@
     "commands": 0,
     "skills": 7,
     "agents": 0
+  },
+  "vibe-lingual": {
+    "commands": 5,
+    "skills": 10,
+    "agents": 0
   }
 }
