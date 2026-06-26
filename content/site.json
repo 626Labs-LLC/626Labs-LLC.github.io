@@ -378,7 +378,7 @@
     {
       "id": "sanduhr",
       "title": "Sanduhr für Claude",
-      "description": "Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Burn-rate projection, pace markers, sparkline trends, five hand-tuned glass themes — plus an AI-agent theme prompt that turns a reference image into a drop-in JSON theme. Free on the Microsoft Store with real Win11 Mica glass, Apple-notarized for Mac with Sparkle auto-updates, single-file Python for everyone else. No telemetry — the only network call is to claude.ai with your own cookie.",
+      "description": "Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Burn-rate projection, pace markers, sparkline trends, five hand-tuned glass themes — plus an AI-agent theme prompt that turns a reference image into a drop-in JSON theme. The v3.1 widget overhaul rebuilt the chrome: a compact mode that collapses to the busiest tier, a hover-lift bottom icon strip with a theme flyout, a taskbar button that tracks pin state, a native rounded close button, and a range-normalized sparkline that reads even at low usage. Free on the Microsoft Store with real Win11 Mica glass, Apple-notarized for Mac with Sparkle auto-updates, single-file Python for everyone else. No telemetry — the only network call is to claude.ai with your own cookie.",
       "tags": [
         {
           "label": "macOS",
@@ -648,7 +648,7 @@
     {
       "id": "rororo",
       "title": "RORORO",
-      "description": "Multi-launcher for Windows — run multiple Roblox clients side by side, each signed in as a different saved account. Native .NET 10 / WPF, DPAPI-encrypted account vault tied to your Windows user, embedded WebView2 login so your password never touches the app process. System-tray UX with state-coloured ring, per-game launch routing, Velopack auto-update. v1.4 ships a plugin host — named-pipe IPC, declared capabilities, consent sheet at install. Mac-native sibling and the first plugin (RoRoRo Ur Task, per-window macro recorder) shipped the same day. Free on the Microsoft Store. Independent third-party tool — not affiliated with Roblox Corporation.",
+      "description": "Multi-launcher for Windows — run multiple Roblox clients side by side, each signed in as a different saved account. Native .NET 10 / WPF, DPAPI-encrypted account vault tied to your Windows user, embedded WebView2 login so your password never touches the app process. System-tray UX with state-coloured ring, per-game launch routing, Velopack auto-update. Now at v1.7: a hardened plugin host — sideload-only, https-only installs, named-pipe IPC with per-capability consent — plus multi-instance recovery (stop-all-instances and reload-on-error from the tray) and a signed roblox-compat feed published on every release. Mac-native sibling and the first plugin, RoRoRo Ur Task, a per-window macro recorder. Free on the Microsoft Store. Independent third-party tool — not affiliated with Roblox Corporation.",
       "tags": [
         {
           "label": "Windows",
