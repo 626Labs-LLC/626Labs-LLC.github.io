@@ -4,7 +4,7 @@ subtitle: "Thirteen Claude Code plugins on one shared spine — an opinionated a
 tagline: "AI ships code fast. The lifecycle around it is where things rot. Thirteen plugins, one spine, the whole arc from idea to maintained."
 published: 2026-06-19
 author: "Este Hernandez"
-draft: false
+draft: true
 ---
 
 <p>AI will write you a working app in an afternoon. It will not keep it alive. The code is the easy part now — the lifecycle <em>around</em> the code is where a vibe-coded afternoon turns into a thing nobody can ship to real users. Scoping it. Documenting it. Testing it. Securing it. Auditing the prompts it ships. Deciding what to build next. That is the surface that rots, quietly, while the demo still runs.</p>
