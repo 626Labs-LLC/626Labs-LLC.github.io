@@ -20,10 +20,13 @@
 - [x] Design approved + **revised** (dedicated server + The Architect), spec committed, decisions logged.
 - [x] Discord application + bot created by Este; description + tags set (below).
 - [x] Discord MCP connected to Claude Code (verified 2026-07-03 — bot `626 Labs#2412`).
-- [ ] **Este creates the empty dedicated 626 Labs server** and invites the bot.
-- [ ] Part A scaffolded (channels + roles + branding + The Architect's welcome/FAQ) — **next session** (Claude Code restart so the discord tools load).
+- [x] Discord MCP tools live in-session + guild pre-flight check run (2026-07-03, session 2).
+- [ ] **Este creates the empty dedicated 626 Labs server**, invites the bot (widened perm list — see Retarget), and retargets `DISCORD_GUILD_ID`.
+- [ ] Part A scaffolded (channels + roles + branding + The Architect's welcome/FAQ) — payload staged at `docs/626-discord-part-a-payload.md`; blocked only on the retarget.
 - [ ] The Architect persona (public surface) instantiated for the bot's behavior.
 - [ ] Part B (lean poster sibling) spec + build.
+
+> **⚠ Guild check (2026-07-03, session 2):** `DISCORD_GUILD_ID` still targets the **personal server** (`It's Just Este's server`, `1188607231466410084`), and `list_guilds` shows the bot in only that guild. The scaffold was correctly deferred — do not build until the Retarget below is done and `get_guild_info` names the dedicated server.
 
 ## The bot (identity)
 
@@ -37,9 +40,10 @@
 ### Prerequisites (human-only)
 
 1. Discord application + bot created. *(done)*
-2. Invite the bot to the personal server with **only** these permissions:
-   Manage Channels, Manage Roles, Send Messages, Embed Links, Read Message History.
-   *(The MCP advertises 24 perms incl. Kick/Ban/Moderate — not needed for scaffolding. Widen only if a later step requires it.)*
+2. Invite the bot to the **dedicated server** with these permissions:
+   Manage Channels, Manage Roles, **Manage Server**, **Manage Expressions**,
+   **Manage Messages**, Send Messages, Embed Links, Read Message History.
+   *(The three bolded were added 2026-07-03: the revised Part A sets the server icon — Manage Server; uploads the emoji set — Manage Expressions; pins the welcome/FAQ — Manage Messages. Still no Kick/Ban/Moderate/Administrator — grant those only when the moderation job starts.)*
 3. Enable gateway intents (dev portal → Bot): **Server Members** + **Message Content**. Required for the MCP to boot; more than a poster-bot needs, fine for a personal bot.
 
 ### Connect the Discord MCP (Claude Code, user scope) — VERIFIED 2026-07-03
@@ -65,9 +69,28 @@
    $env:DISCORD_TOKEN = Read-Host "token"; $env:DISCORD_GUILD_ID = Read-Host "server id"; npx -y "@quadslab.io/discord-mcp" check
    ```
 3. **`✖ Connection failed: Used disallowed intents`** = the #1 real blocker. Dev portal → Bot → **Privileged Gateway Intents** → enable **Server Members** + **Message Content** → **Save Changes**. (Save is easy to miss.)
-4. **`check` reporting "14 permissions missing / 42%"** is fine — that grades against the MCP's full 24-perm toolset (Kick/Ban/Manage Server/…). Scaffolding needs only Manage Channels + Manage Roles + Send Messages + Embed Links + Read History, which the invite grants. Don't re-invite for the rest unless a later step needs it.
+4. **`check` reporting "14 permissions missing / 42%"** is fine — that grades against the MCP's full 24-perm toolset (Kick/Ban/Manage Server/…). The revised Part A perm list (prerequisite 2 above) is what the invite actually needs. Don't re-invite for the rest unless a later step needs it.
+5. **The guild ID is a build-target, not just a credential.** Run `get_guild_info` / `list_guilds` before scaffolding anything — on 2026-07-03 the config still pointed at the personal server, and the pre-flight check was the only thing between the scaffold and the wrong server.
+
+### Retarget to the dedicated server (do this before any scaffold)
+
+Found 2026-07-03 (session 2): the MCP config still points at the personal server. Steps, in order:
+
+1. **Este:** create the empty dedicated 626 Labs server (a bot cannot create a server — Discord user only).
+2. **Este:** invite `626 Labs#2412` to it via the dev portal OAuth2 URL generator, with the widened permission list above.
+3. **Este:** copy the new server ID (Developer Mode → right-click server icon → Copy Server ID).
+4. Update the user-scope MCP config — remove, then re-add with the same token and the NEW guild id:
+
+   ```powershell
+   claude mcp remove -s user discord
+   claude mcp add-json -s user discord '{"command":"npx","args":["-y","@quadslab.io/discord-mcp"],"env":{"DISCORD_TOKEN":"YOUR_TOKEN","DISCORD_GUILD_ID":"NEW_SERVER_ID"}}'
+   ```
+
+5. **Restart Claude Code** (stdio MCPs load at boot), then in the fresh session run the pre-flight gate: `get_guild_info` must name the dedicated server and `list_guilds` must show the bot in it. Then execute `docs/626-discord-part-a-payload.md`.
 
 ### Scaffold (run via the MCP once tools are live)
+
+> Full staged payload — exact tool sequence, asset→emoji map, welcome/FAQ copy: `docs/626-discord-part-a-payload.md`.
 
 Create category **626 Labs** containing:
 
@@ -78,7 +101,7 @@ Create category **626 Labs** containing:
 | `#support` | Help + FAQ; cuts DM load | Open; pin the FAQ |
 | `#ideas` | Feature requests | Open |
 
-- **Roles:** the bot role (perms above); optional `@builder` self-assign role. No deep hierarchy — this is a category inside a personal server.
+- **Roles:** the bot role (perms above); optional `@builder` self-assign role. No deep hierarchy — lean even on the dedicated server.
 - **Onboarding:** pin a welcome in `#general` (what 626 Labs is, the channel guide, links to 626labs.dev + the Microsoft Store). One-line header in `#releases`.
 - **`#support` FAQ seed (pin):** the CAPTCHA-is-normal explainer; "update RoRoRo to 1.8 first"; install-a-plugin-from-URL steps (Plugins → Install → paste release URL → walk the consent sheet).
 
