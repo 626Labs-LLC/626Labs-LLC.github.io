@@ -5,8 +5,17 @@
   <link href="https://626labs.dev/#field-notes"/>
   <link rel="self" type="application/atom+xml" href="https://626labs.dev/feed.xml"/>
   <id>https://626labs.dev/feed.xml</id>
-  <updated>2026-06-26T00:00:00Z</updated>
+  <updated>2026-07-03T00:00:00Z</updated>
   <author><name>626 Labs</name></author>
+  <entry>
+    <title>RoRoRo grew eyes, hands, and a heartbeat</title>
+    <link href="https://626labs.dev/editorial/2026-07-03-rororo-grew-a-family/"/>
+    <id>https://626labs.dev/editorial/2026-07-03-rororo-grew-a-family/</id>
+    <updated>2026-07-03T00:00:00Z</updated>
+    <published>2026-07-03T00:00:00Z</published>
+    <author><name>Este Hernandez</name></author>
+    <summary>The Roblox multi-launcher you could recommend on camera now has three plugins (perception, action, and a keep-alive), wired together by a consent-gated bridge that never leaves your machine.</summary>
+  </entry>
   <entry>
     <title>The first 626 Labs Day</title>
     <link href="https://626labs.dev/editorial/2026-06-26-the-first-626-day/"/>
