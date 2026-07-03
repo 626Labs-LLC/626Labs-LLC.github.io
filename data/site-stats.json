@@ -1,49 +1,17 @@
 {
-  "generatedAt": "2026-07-02T09:43:39.307Z",
+  "generatedAt": "2026-07-03T09:42:28.996Z",
   "source": "goatcounter",
   "site": "626labs.dev",
   "range": {
-    "start": "2026-06-02",
-    "end": "2026-07-02",
+    "start": "2026-06-03",
+    "end": "2026-07-03",
     "days": 30
   },
   "total": {
-    "total": 56,
+    "total": 57,
     "total_events": 0,
     "total_utc": 56,
     "stats": [
-      {
-        "day": "2026-06-02",
-        "hourly": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "daily": 1,
-        "weekly": 11,
-        "monthly": 55
-      },
       {
         "day": "2026-06-03",
         "hourly": [
@@ -72,7 +40,9 @@
           0,
           0
         ],
-        "daily": 1
+        "daily": 1,
+        "weekly": 12,
+        "monthly": 54
       },
       {
         "day": "2026-06-04",
@@ -252,8 +222,7 @@
           0,
           0
         ],
-        "daily": 2,
-        "weekly": 28
+        "daily": 2
       },
       {
         "day": "2026-06-10",
@@ -283,7 +252,8 @@
           0,
           0
         ],
-        "daily": 1
+        "daily": 1,
+        "weekly": 27
       },
       {
         "day": "2026-06-11",
@@ -463,8 +433,7 @@
           0,
           0
         ],
-        "daily": 1,
-        "weekly": 7
+        "daily": 1
       },
       {
         "day": "2026-06-17",
@@ -494,7 +463,8 @@
           0,
           0
         ],
-        "daily": 3
+        "daily": 3,
+        "weekly": 7
       },
       {
         "day": "2026-06-18",
@@ -674,8 +644,7 @@
           0,
           1
         ],
-        "daily": 1,
-        "weekly": 8
+        "daily": 1
       },
       {
         "day": "2026-06-24",
@@ -705,7 +674,8 @@
           0,
           0
         ],
-        "daily": 0
+        "daily": 0,
+        "weekly": 8
       },
       {
         "day": "2026-06-25",
@@ -885,8 +855,7 @@
           0,
           0
         ],
-        "daily": 1,
-        "weekly": 2
+        "daily": 1
       },
       {
         "day": "2026-07-01",
@@ -917,7 +886,8 @@
           0
         ],
         "daily": 1,
-        "monthly": 1
+        "weekly": 3,
+        "monthly": 3
       },
       {
         "day": "2026-07-02",
@@ -944,55 +914,53 @@
           0,
           0,
           0,
+          1,
+          0
+        ],
+        "daily": 1
+      },
+      {
+        "day": "2026-07-03",
+        "hourly": [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
           0,
           0
         ],
-        "daily": 0
+        "daily": 1
       }
     ]
   },
   "hits": {
     "hits": [
       {
-        "count": 52,
+        "count": 51,
         "path_id": 88673470,
         "path": "/",
         "event": false,
         "title": "626 Labs — Imagine Something Else",
         "max": 15,
         "stats": [
-          {
-            "day": "2026-06-02",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 1,
-            "weekly": 11,
-            "monthly": 51
-          },
           {
             "day": "2026-06-03",
             "hourly": [
@@ -1021,7 +989,9 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 12,
+            "monthly": 50
           },
           {
             "day": "2026-06-04",
@@ -1201,8 +1171,7 @@
               0,
               0
             ],
-            "daily": 2,
-            "weekly": 28
+            "daily": 2
           },
           {
             "day": "2026-06-10",
@@ -1232,7 +1201,8 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 27
           },
           {
             "day": "2026-06-11",
@@ -1412,8 +1382,7 @@
               0,
               0
             ],
-            "daily": 1,
-            "weekly": 7
+            "daily": 1
           },
           {
             "day": "2026-06-17",
@@ -1443,7 +1412,8 @@
               0,
               0
             ],
-            "daily": 3
+            "daily": 3,
+            "weekly": 7
           },
           {
             "day": "2026-06-18",
@@ -1623,8 +1593,7 @@
               0,
               1
             ],
-            "daily": 1,
-            "weekly": 5
+            "daily": 1
           },
           {
             "day": "2026-06-24",
@@ -1654,7 +1623,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 4
           },
           {
             "day": "2026-06-25",
@@ -1834,8 +1804,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 1
+            "daily": 0
           },
           {
             "day": "2026-07-01",
@@ -1866,6 +1835,7 @@
               0
             ],
             "daily": 1,
+            "weekly": 1,
             "monthly": 1
           },
           {
@@ -1897,19 +1867,9 @@
               0
             ],
             "daily": 0
-          }
-        ]
-      },
-      {
-        "count": 4,
-        "path_id": 93366467,
-        "path": "/rororo.html",
-        "event": false,
-        "title": "RORORO — multi-launcher for Roblox · 626 Labs",
-        "max": 1,
-        "stats": [
+          },
           {
-            "day": "2026-06-02",
+            "day": "2026-07-03",
             "hourly": [
               0,
               0,
@@ -1936,9 +1896,18 @@
               0,
               0
             ],
-            "daily": 0,
-            "monthly": 4
-          },
+            "daily": 0
+          }
+        ]
+      },
+      {
+        "count": 6,
+        "path_id": 93366467,
+        "path": "/rororo.html",
+        "event": false,
+        "title": "RORORO — multi-launcher for Roblox · 626 Labs",
+        "max": 1,
+        "stats": [
           {
             "day": "2026-06-03",
             "hourly": [
@@ -1967,7 +1936,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "monthly": 4
           },
           {
             "day": "2026-06-04",
@@ -2567,8 +2537,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 3
+            "daily": 0
           },
           {
             "day": "2026-06-24",
@@ -2598,7 +2567,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 4
           },
           {
             "day": "2026-06-25",
@@ -2778,8 +2748,7 @@
               0,
               0
             ],
-            "daily": 1,
-            "weekly": 1
+            "daily": 1
           },
           {
             "day": "2026-07-01",
@@ -2809,7 +2778,9 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 2,
+            "monthly": 2
           },
           {
             "day": "2026-07-02",
@@ -2836,15 +2807,45 @@
               0,
               0,
               0,
+              1,
+              0
+            ],
+            "daily": 1
+          },
+          {
+            "day": "2026-07-03",
+            "hourly": [
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
               0,
               0
             ],
-            "daily": 0
+            "daily": 1
           }
         ]
       }
     ],
-    "total": 56,
+    "total": 57,
     "more": false
   },
   "refs": {
@@ -2873,26 +2874,20 @@
         "ref_scheme": "g"
       },
       {
+        "id": "www.bing.com",
+        "name": "www.bing.com",
+        "count": 4,
+        "ref_scheme": "h"
+      },
+      {
         "id": "chatgpt.com",
         "name": "chatgpt.com",
         "count": 3,
         "ref_scheme": "c"
       },
       {
-        "id": "www.bing.com",
-        "name": "www.bing.com",
-        "count": 2,
-        "ref_scheme": "h"
-      },
-      {
         "id": "docs.google.com",
         "name": "docs.google.com",
-        "count": 1,
-        "ref_scheme": "h"
-      },
-      {
-        "id": "www.linkedin.com",
-        "name": "www.linkedin.com",
         "count": 1,
         "ref_scheme": "h"
       },
@@ -2910,11 +2905,16 @@
       {
         "id": "US",
         "name": "United States",
-        "count": 29
+        "count": 27
       },
       {
         "id": "IN",
         "name": "India",
+        "count": 3
+      },
+      {
+        "id": "PH",
+        "name": "Philippines",
         "count": 3
       },
       {
@@ -2935,11 +2935,6 @@
       {
         "id": "ES",
         "name": "Spain",
-        "count": 2
-      },
-      {
-        "id": "PH",
-        "name": "Philippines",
         "count": 2
       },
       {
@@ -2984,7 +2979,7 @@
       {
         "id": "Safari",
         "name": "Safari",
-        "count": 8
+        "count": 7
       },
       {
         "id": "Firefox",
@@ -2999,12 +2994,12 @@
       {
         "id": "Windows",
         "name": "Windows",
-        "count": 21
+        "count": 22
       },
       {
         "id": "iOS",
         "name": "iOS",
-        "count": 18
+        "count": 17
       },
       {
         "id": "macOS",
@@ -3014,7 +3009,7 @@
       {
         "id": "Android",
         "name": "Android",
-        "count": 6
+        "count": 5
       },
       {
         "id": "Linux",
