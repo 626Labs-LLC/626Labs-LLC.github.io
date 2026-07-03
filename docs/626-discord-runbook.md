@@ -17,8 +17,8 @@
 
 - [x] Design approved, spec committed, decision logged.
 - [x] Discord application + bot created by Este; description + tags set (below).
-- [ ] Discord MCP connected to Claude Code.
-- [ ] Part A scaffolded (category + channels + roles + onboarding).
+- [x] Discord MCP connected to Claude Code (verified 2026-07-03 — bot `626 Labs#2412` on "It's Just Este's server").
+- [ ] Part A scaffolded (category + channels + roles + onboarding) — **next session** (needs a Claude Code restart so the discord tools load).
 - [ ] Part B (bot) spec + build.
 
 ## The bot (identity)
@@ -38,19 +38,30 @@
    *(The MCP advertises 24 perms incl. Kick/Ban/Moderate — not needed for scaffolding. Widen only if a later step requires it.)*
 3. Enable gateway intents (dev portal → Bot): **Server Members** + **Message Content**. Required for the MCP to boot; more than a poster-bot needs, fine for a personal bot.
 
-### Connect the Discord MCP (Claude Code, user scope)
+### Connect the Discord MCP (Claude Code, user scope) — VERIFIED 2026-07-03
 
 - **Get the server (guild) ID:** Discord → User Settings → Advanced → **Developer Mode** on → right-click the server icon → **Copy Server ID**.
-- **Add at user scope** (keeps the token out of the repo). **PowerShell (estate default) — one line, no `\` continuation:**
+- **Add at user scope with `add-json`** (keeps the token out of the repo). Use the JSON form — the `claude mcp add ... -e ... -- npx ...` flag form mis-parses `npx`'s `-y` in PowerShell:
 
   ```powershell
-  claude mcp add discord -s user -e "DISCORD_TOKEN=<your-bot-token>" -e "DISCORD_GUILD_ID=<your-server-id>" -- npx -y "@quadslab.io/discord-mcp"
+  claude mcp add-json -s user discord '{"command":"npx","args":["-y","@quadslab.io/discord-mcp"],"env":{"DISCORD_TOKEN":"YOUR_TOKEN","DISCORD_GUILD_ID":"YOUR_ID"}}'
   ```
 
-  Quotes keep PowerShell from choking on the `=`, `@`, and `/`. (Bash/zsh: the same on one line, or use `\` — never `\` in PowerShell, it uses backtick `` ` ``.)
-  Fallback: same server in the **user** MCP config, never the project `.mcp.json`.
-- **Restart Claude Code** and open a fresh session — MCP servers load at startup, so the session where you added it won't see the tools; the next one will.
-- **Verify:** `npx @quadslab.io/discord-mcp check`.
+  - Substitute `YOUR_TOKEN` / `YOUR_ID` inside the JSON — no `<>`, no extra quotes. Keep the single quotes wrapping the JSON (PowerShell passes them literally).
+  - **`args` is `["-y","@quadslab.io/discord-mcp"]` with NO `start`.** When launched via config (stdin not a TTY) the server auto-starts; `... start` is for standalone runs only and breaks the MCP mode.
+  - Never the project `.mcp.json` — user scope only.
+- **Restart Claude Code** and open a fresh session — stdio MCP servers load at startup, so the session where you added it won't see the tools; the next one will. `-y` auto-installs the package on first launch (give it a few seconds).
+- **Verify:** `claude mcp get discord` should read connected.
+
+#### Gotchas (the exact order they bit, 2026-07-03)
+
+1. **`claude mcp get` shows "Failed to connect" for any server added mid-session** — it only launches on boot. Restart before diagnosing.
+2. **`... check` shows Token/Guild "NOT SET"** when run bare — it reads your *shell* env, not the MCP config's. To validate credentials, feed them in for the one command:
+   ```powershell
+   $env:DISCORD_TOKEN = Read-Host "token"; $env:DISCORD_GUILD_ID = Read-Host "server id"; npx -y "@quadslab.io/discord-mcp" check
+   ```
+3. **`✖ Connection failed: Used disallowed intents`** = the #1 real blocker. Dev portal → Bot → **Privileged Gateway Intents** → enable **Server Members** + **Message Content** → **Save Changes**. (Save is easy to miss.)
+4. **`check` reporting "14 permissions missing / 42%"** is fine — that grades against the MCP's full 24-perm toolset (Kick/Ban/Manage Server/…). Scaffolding needs only Manage Channels + Manage Roles + Send Messages + Embed Links + Read History, which the invite grants. Don't re-invite for the rest unless a later step needs it.
 
 ### Scaffold (run via the MCP once tools are live)
 
