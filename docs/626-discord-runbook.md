@@ -41,16 +41,14 @@
 ### Connect the Discord MCP (Claude Code, user scope)
 
 - **Get the server (guild) ID:** Discord → User Settings → Advanced → **Developer Mode** on → right-click the server icon → **Copy Server ID**.
-- **Add at user scope** (keeps the token out of the repo):
+- **Add at user scope** (keeps the token out of the repo). **PowerShell (estate default) — one line, no `\` continuation:**
 
-  ```bash
-  claude mcp add discord -s user \
-    -e DISCORD_TOKEN=<your-bot-token> \
-    -e DISCORD_GUILD_ID=<your-server-id> \
-    -- npx -y @quadslab.io/discord-mcp
+  ```powershell
+  claude mcp add discord -s user -e "DISCORD_TOKEN=<your-bot-token>" -e "DISCORD_GUILD_ID=<your-server-id>" -- npx -y "@quadslab.io/discord-mcp"
   ```
 
-  Fallback: same block in the **user** MCP config, never the project `.mcp.json`.
+  Quotes keep PowerShell from choking on the `=`, `@`, and `/`. (Bash/zsh: the same on one line, or use `\` — never `\` in PowerShell, it uses backtick `` ` ``.)
+  Fallback: same server in the **user** MCP config, never the project `.mcp.json`.
 - **Restart Claude Code** and open a fresh session — MCP servers load at startup, so the session where you added it won't see the tools; the next one will.
 - **Verify:** `npx @quadslab.io/discord-mcp check`.
 
