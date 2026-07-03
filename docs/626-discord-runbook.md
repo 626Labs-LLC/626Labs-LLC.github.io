@@ -21,12 +21,12 @@
 - [x] Discord application + bot created by Este; description + tags set (below).
 - [x] Discord MCP connected to Claude Code (verified 2026-07-03 — bot `626 Labs#2412`).
 - [x] Discord MCP tools live in-session + guild pre-flight check run (2026-07-03, session 2).
-- [ ] **Este creates the empty dedicated 626 Labs server**, invites the bot (widened perm list — see Retarget), and retargets `DISCORD_GUILD_ID`.
-- [ ] Part A scaffolded (channels + roles + branding + The Architect's welcome/FAQ) — payload staged at `docs/626-discord-part-a-payload.md`; blocked only on the retarget.
+- [x] **Dedicated server created + retargeted** (2026-07-03 evening): server **626Labs** (`1522751947130798130`), bot invited with the widened perm list, `DISCORD_GUILD_ID` swapped in the personal-seat config (backup: `.claude.json.bak-discord-retarget`).
+- [ ] Part A scaffolded (channels + roles + branding + The Architect's welcome/FAQ) — payload staged at `docs/626-discord-part-a-payload.md`; needs one Claude Code restart so the MCP boots against the new server, then run the pre-flight gate and execute.
 - [ ] The Architect persona (public surface) instantiated for the bot's behavior.
 - [ ] Part B (lean poster sibling) spec + build.
 
-> **⚠ Guild check (2026-07-03, session 2):** `DISCORD_GUILD_ID` still targets the **personal server** (`It's Just Este's server`, `1188607231466410084`), and `list_guilds` shows the bot in only that guild. The scaffold was correctly deferred — do not build until the Retarget below is done and `get_guild_info` names the dedicated server.
+> **⚠ Guild check (2026-07-03, session 2):** `DISCORD_GUILD_ID` still targeted the **personal server** (`It's Just Este's server`, `1188607231466410084`), and `list_guilds` showed the bot in only that guild. The scaffold was correctly deferred. **Resolved same evening:** retarget complete — server **626Labs** (`1522751947130798130`), bot invited, config swapped. Scaffold session still opens with the pre-flight gate: `get_guild_info` must name `626Labs`.
 
 ## The bot (identity)
 
