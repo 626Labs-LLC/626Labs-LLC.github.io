@@ -6,20 +6,24 @@
 > **Design + decisions:** `626labs-hub/docs/superpowers/specs/2026-07-03-626-discord-design.md`.
 > **Dashboard decision:** `q2r0jAktCqm2vYNNBU4c` (project 626 Portfolio Hub).
 
+> **⚠ REVISED 2026-07-03 — dedicated server + The Architect.** The plan pivoted from "category in the personal server" to a **dedicated 626 Labs server** run by **The Architect (public surface)** — a persona with real channel controls (scaffold, brand, welcome, moderate, post). The portable release-poster is deferred to a lean sibling. Full pivot + reasoning in the design doc's **Revision** section. The channel layout, poller, and Store-signal design below still hold — those are how the Architect posts releases.
+
 ## What this is
 
-626 Labs' Discord presence: a release feed + community + answer-once-help-many support home, plus a server-agnostic release-announcement bot. **Staged** — scaffold inside Este's personal server now, build the bot to travel, stand up a dedicated 626 Labs server when there's an audience to move. Two projects:
+626 Labs' Discord: a **dedicated server** — release feed + community + answer-once-help-many support — run by **The Architect** bot personality with channel + moderation controls. Plus a lean, installable release-poster sibling for other servers, later.
 
-- **Part A — server scaffold** (ships first; this runbook).
-- **Part B — release bot** (its own spec + repo, next).
+- **Part A — dedicated server scaffold + The Architect** (ships first; this runbook).
+- **Part B — lean installable release-poster sibling** (its own spec + repo, later).
 
 ## Status (2026-07-03)
 
-- [x] Design approved, spec committed, decision logged.
+- [x] Design approved + **revised** (dedicated server + The Architect), spec committed, decisions logged.
 - [x] Discord application + bot created by Este; description + tags set (below).
-- [x] Discord MCP connected to Claude Code (verified 2026-07-03 — bot `626 Labs#2412` on "It's Just Este's server").
-- [ ] Part A scaffolded (category + channels + roles + onboarding) — **next session** (needs a Claude Code restart so the discord tools load).
-- [ ] Part B (bot) spec + build.
+- [x] Discord MCP connected to Claude Code (verified 2026-07-03 — bot `626 Labs#2412`).
+- [ ] **Este creates the empty dedicated 626 Labs server** and invites the bot.
+- [ ] Part A scaffolded (channels + roles + branding + The Architect's welcome/FAQ) — **next session** (Claude Code restart so the discord tools load).
+- [ ] The Architect persona (public surface) instantiated for the bot's behavior.
+- [ ] Part B (lean poster sibling) spec + build.
 
 ## The bot (identity)
 

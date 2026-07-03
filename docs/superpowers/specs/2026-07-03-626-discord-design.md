@@ -1,7 +1,30 @@
 # 626 Labs Discord — server scaffold + release bot — design
 
-> **Date:** 2026-07-03 · **Status:** approved (brainstorm, 626labs-hub seat)
-> **Scope:** two decomposed projects — (A) a 626 Labs home in Este's personal Discord server, scaffolded now; (B) a server-agnostic release-announcement bot, built after this design. Part A and Part B each get their own implementation plan; Part A ships first.
+> **Date:** 2026-07-03 · **Status:** approved, **revised same day** (see Revision below)
+> **Scope:** (A) a **dedicated 626 Labs Discord server** run by **The Architect** (public surface) — a persona with real channel controls (scaffold, welcome, moderate, post); (B) a lean, installable release-poster sibling, later. Part A ships first.
+
+## Revision — dedicated server + The Architect personality (2026-07-03)
+
+The original design (below) chose a **staged** approach: a category in Este's personal server now, a portable poster-bot as the centerpiece. Mid-execution, two things changed it:
+
+1. **Branding.** Full asset-branding (server icon, banner, emoji set) only lands on a server 626 owns; a category renting space in a personal server can't carry the identity. → **Dedicated 626 Labs server now.**
+2. **Personality with hands.** The estate has scaffolded personas before (The Architect, the voice work) but never wired one to real actions. The Discord MCP gives channel + moderation controls, so the bot becomes **The Architect (public surface)** running the room in character — release-posting is one of its jobs, alongside welcoming, moderating, answering. → **Persona-with-controls, not a poster.**
+
+The portable release-poster (original Part B) doesn't die; it becomes a **lean sibling for later** so the powerful Architect identity stays on 626's own turf (blast-radius: the Architect's token rides in the third-party MCP + any deployed service).
+
+**Revised decisions supersede the "Server home" row below.** The rest (channel layout, poller delivery, watch scope, Store signal) still holds — those are how The Architect posts releases.
+
+| Fork | Revised decision |
+|---|---|
+| Server home | **Dedicated 626 Labs server.** Este creates the empty server; the MCP scaffolds structure + branding end to end. |
+| Who runs it | **The Architect, public surface** — same persona as the co-pilot + dashboard AI ("same name, same brain, different surface"), tuned to a community register. One branded bot, broad perms, on 626's own server. |
+| The bot's jobs | Scaffold + brand the server, welcome, moderate (timeouts/warnings via Moderate Members), answer support, **and** post releases. Driven interactively via the MCP (Claude Code / Desktop) + the automated release poller. |
+| Portable poster | **Deferred to a lean sibling** — a separate minimal-perm identity for installing on *other* servers, so the Architect's power stays home. |
+| Blast radius | The Architect bot holds broad perms + its token lives in the third-party MCP. Acceptable on a server 626 fully owns; grant narrow, grant late, pull perms back when a task is done. |
+
+---
+
+## Original design (staged approach — superseded on Server home + centerpiece)
 
 ## Context
 
