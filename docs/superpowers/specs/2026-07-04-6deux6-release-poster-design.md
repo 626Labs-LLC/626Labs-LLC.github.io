@@ -193,6 +193,23 @@ entire install. Config gains a `voice` block: `{ "model": "<current-haiku-id>",
   @everyone lockdown silences bots without their own overwrite — runbook gotcha 7);
   put the bot token in the repo's `DISCORD_TOKEN` secret.
 
+## Verification readiness (pre-wide-launch, not pre-build)
+
+Discord app verification gates growth past ~75 servers and grants the trust badge —
+irrelevant for The Architect's bot (one server forever), future-required for 6deux6.
+The portal checklist (seen 2026-07-04) needs three things:
+
+1. **Team ownership** — Este creates a "626 Labs" Team in the dev portal and
+   transfers 6deux6 (and the other 626 apps) into it. One-time, covers all apps.
+2. **Terms of Service + Privacy Policy links** — two short pages hosted on the hub
+   at `626labs.dev/legal/`, drafted during the 6deux6 build. 6deux6's honest privacy
+   story: it stores no user data whatsoever — no message content, no user IDs; its
+   only state is public product version numbers in a public JSON file.
+3. Everything else (install link, 2FA, language) already passes.
+
+None of this blocks the v1 build — verification is submitted when the bot goes
+public-installable.
+
 ## Out of scope (v1)
 
 - Slash commands, two-way anything, moderation — 6deux6 posts, full stop.
