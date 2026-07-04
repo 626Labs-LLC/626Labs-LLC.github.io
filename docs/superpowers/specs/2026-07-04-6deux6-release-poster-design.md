@@ -29,6 +29,7 @@ The powerful identity (The Architect, broad perms) stays home on 626's own serve
 | Double-announce rule | Each watch target has exactly **one** source in config. RORORO (in both the Store and GitHub) watches displaycatalog — its audience installs from the Store. |
 | State | `state.json` committed back to the repo after each successful run, retry+rebase push loop (the pattern the hub's six bots prove). |
 | Repo | **`6deux6`**, public, under `estevanhernandez-stack-ed`. |
+| Voice | **Hybrid** (locked 2026-07-04): voice-crafted templates as the deterministic base; optional Claude blurb pass (Haiku) when an `ANTHROPIC_API_KEY` secret is present. The voice ships as a swappable `voice.md` — bring-your-own-personality is part of the portability story. |
 
 ## Architecture
 
@@ -59,6 +60,13 @@ config.json ─→ poller ─→ [github.js | displaycatalog.js] ─→ diff vs 
 - **`src/embed.js`** — pure function: release → Discord embed JSON (format below).
 - **`src/discord.js`** — REST post with the bot token; 429-aware (honors
   `retry_after`), fails loudly on 4xx.
+- **`src/voice.js`** — the personality layer. If `ANTHROPIC_API_KEY` is set, calls
+  Claude (small tier — Haiku; model id in config with a current default) with
+  `voice.md` + the release notes + product context, and returns a 1–2 sentence
+  in-voice blurb (hard cap 300 chars, post-truncated if the model runs long). On any
+  failure — key absent, timeout, 4xx/5xx — returns null and the embed builder falls
+  back to the template excerpt path. The LLM can delay a post by one API call; it
+  can never block one.
 - **`src/state.js`** — read/write `state.json`; the workflow commits it back with a
   retry+rebase loop identical to the hub bots'.
 - **`src/index.js`** — orchestration + `--dry-run` flag (prints embeds, writes no
@@ -107,6 +115,28 @@ target silent — it announces from its next release, not its whole history.
 - **Footer:** `6deux6 · the 626 Labs release feed` + family tag.
 - Sparing emoji allowed (Discord register): 🚀 prefix on the title, nothing else.
 
+## Voice + personality
+
+The 626 publishing voice is a first-class component, not decoration:
+
+- **`voice.md`** — a distilled voice prompt committed in the repo: builder-to-builder,
+  second person, punchline first, no corporate speak (the banned-words list rides
+  along), sparing emoji, "Imagine Something Else." as the registered closer. Distilled
+  from the estate's publishing + announce skills at build time. Forkers replace this
+  one file to give the bot THEIR voice — the personality is config, not code.
+- **Templates carry the voice on their own.** Title patterns ("`<product> <version>`
+  just shipped"), a per-family flavor line, and the footer are written in-voice so a
+  keyless fork or an API outage still sounds like the brand, just less bespoke.
+- **The blurb pass adds the bespoke layer.** With a key present, `voice.js` writes the
+  embed description from the actual release notes — what shipped, why it matters, one
+  or two sentences, in-voice. The template excerpt is the always-there floor.
+- **Boundary:** 6deux6's personality lives in its copy. It does not converse, react,
+  or hold presence (REST-only — presence requires a gateway connection it doesn't
+  have). On the 626 server, conversation is The Architect's job; 6deux6 is the byline.
+- **Portal surfaces:** the app's About/description carries the release-feed copy and
+  tagline (human-set in the dev portal — the API doesn't expose app descriptions to
+  the bot itself).
+
 ## Config shape
 
 ```json
@@ -120,9 +150,12 @@ target silent — it announces from its next release, not its whole history.
 }
 ```
 
-Secrets: `DISCORD_TOKEN` (repo secret). `channelId` is plain config — channel IDs
-aren't secrets. A stranger forks the repo, edits `config.json`, sets one secret,
-enables the workflow. That is the entire install.
+Secrets: `DISCORD_TOKEN` (repo secret, required) and `ANTHROPIC_API_KEY` (repo
+secret, optional — presence enables the voice blurb pass). `channelId` is plain
+config — channel IDs aren't secrets. A stranger forks the repo, edits `config.json`,
+sets one secret (two if they want the LLM voice), enables the workflow. That is the
+entire install. Config gains a `voice` block: `{ "model": "<current-haiku-id>",
+"maxChars": 300 }` — the enabled/disabled switch is simply whether the key exists.
 
 ## Error handling
 
@@ -133,12 +166,15 @@ enables the workflow. That is the entire install.
   a configuration error a human must see.
 - Malformed `PackageFullName` (no version match) → treat as fetch failure for that
   target, log the raw string for diagnosis.
+- Voice pass failure (timeout, quota, bad key) → log, fall back to the template
+  excerpt, post anyway. The announcement never waits on the personality.
 
 ## Testing
 
 - Unit: `diff.js` (new/same/null/cold-start cases, the never-double-post invariant),
   `embed.js` (families, truncation, notes-less Store targets), version parsing in
-  `displaycatalog.js`.
+  `displaycatalog.js`, `voice.js` fallback chain (no key / API error / over-long
+  blurb → cap) with the Claude call mocked.
 - Fixtures: canned GitHub + displaycatalog JSON responses; no live calls in tests.
 - Integration: `node src/index.js --dry-run` against real config = the local dev
   loop and the pre-merge smoke test.
