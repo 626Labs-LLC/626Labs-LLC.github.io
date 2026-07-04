@@ -112,7 +112,8 @@ Create category **626 Labs** containing:
 Own repo, Node scheduled poller, ~hourly. **Two sources → `#releases`:**
 
 - **GitHub Releases API** — a config list of repos: the Claude plugins (Vibe family) + the RoRoRo plugins (`rororo-ur-task`, `Ur-OCR`, `rororo-ur-afk`) + any GitHub-releasing app (RORORO).
-- **Hub Store data** — `626labs-hub/content/site.json` (products with `storeUrl`) + `content/facts-supplement.json` (Store versions) for the 6 Microsoft Store apps, which never hit GitHub Releases.
+- **Hub Store data** — `626labs-hub/content/site.json` (products with `storeUrl`) + `content/facts-supplement.json` (Store release count) for the 6 Microsoft Store apps, which never hit GitHub Releases.
+- **Store-signal upgrade (verified 2026-07-04):** the Microsoft Store display catalog is a real programmatic version source — `https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=<ProductId>&market=US&languages=en-us`, unauthenticated, returns `PackageFullName`s with exact versions (pulled all 6 apps in one pass: RORORO 1.8.0.0, Sanduhr 3.1.0.0, …). Product IDs come from each product's `storeUrl` in site.json. The Part B spec should weigh polling this directly vs hub-data-driven (or use it as the poller with hub data as the human-verified cross-check). Note: site.json carries NO per-app version fields — the hub was never a per-version source; the count in facts-supplement is its only Store fact.
 
 Diffs against last-seen state (idempotent, no double-posts). Posts branded embeds: product, version, family tag (`plugin`/`rororo`/`store`), notes excerpt, link, 626 cyan/magenta, sparing emoji. Config-driven watch-list → channel for installability. Deployable as a scheduled Firebase Function (`guestbuzz-cineperks`) or a GitHub Action in its own repo. **Gets its own spec + implementation plan** — see the design doc's "Part B" and "Open items" (plugin repo watch-list, Function-vs-Action host, embed formatting).
 
