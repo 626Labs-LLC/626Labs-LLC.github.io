@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-03T09:20:25.703Z",
-  "count": 46,
+  "generatedAt": "2026-07-04T08:39:14.740Z",
+  "count": 48,
   "owners": [
     "user:estevanhernandez-stack-ed",
     "org:626Labs-LLC"
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-07-03T08:41:55Z",
+      "pushed_at": "2026-07-04T08:15:47Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -24,8 +24,8 @@
       "name": "626-game-manifest",
       "description": "626 Mod Launcher Games",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-game-manifest",
-      "language": "Standard ML",
-      "pushed_at": "2026-07-02T04:52:06Z",
+      "language": "Python",
+      "pushed_at": "2026-07-04T05:12:10Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -37,7 +37,7 @@
       "description": "Native Windows (.NET 10 / WinUI 3) rewrite of the 626 Labs Mod Launcher. Phase 1 (ModManager.Core) complete: 157 tests green.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher",
       "language": "C#",
-      "pushed_at": "2026-07-02T04:50:00Z",
+      "pushed_at": "2026-07-03T20:00:46Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -86,6 +86,18 @@
       "html_url": "https://github.com/estevanhernandez-stack-ed/626labs-themes",
       "language": "HTML",
       "pushed_at": "2026-06-12T12:42:39Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
+      "full_name": "estevanhernandez-stack-ed/6deux6",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "6deux6",
+      "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
+      "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
+      "language": "JavaScript",
+      "pushed_at": "2026-07-04T03:19:52Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -271,13 +283,25 @@
       "fork": false
     },
     {
+      "full_name": "estevanhernandez-stack-ed/rororo-ur-afk",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "rororo-ur-afk",
+      "description": null,
+      "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk",
+      "language": "C#",
+      "pushed_at": "2026-07-03T18:52:22Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
       "full_name": "estevanhernandez-stack-ed/rororo-ur-task",
       "owner": "estevanhernandez-stack-ed",
       "name": "rororo-ur-task",
       "description": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't bound. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "language": "C#",
-      "pushed_at": "2026-07-02T20:36:18Z",
+      "pushed_at": "2026-07-03T21:13:04Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -289,7 +313,7 @@
       "description": "Multiroblox as current as possible",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
-      "pushed_at": "2026-07-03T02:17:17Z",
+      "pushed_at": "2026-07-04T03:45:42Z",
       "stargazers_count": 4,
       "archived": false,
       "fork": false
@@ -373,7 +397,7 @@
       "description": "RoRoRo plugin — watches user-defined screen regions for OCR text or color triggers and fires keybinds when they match. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Ur-OCR",
       "language": "C#",
-      "pushed_at": "2026-07-03T05:14:32Z",
+      "pushed_at": "2026-07-03T18:52:20Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -457,7 +481,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-07-02T14:45:35Z",
+      "pushed_at": "2026-07-03T14:46:05Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
