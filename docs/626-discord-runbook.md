@@ -24,7 +24,8 @@
 - [x] **Dedicated server created + retargeted** (2026-07-03 evening): server **626Labs** (`1522751947130798130`), bot invited with the widened perm list, `DISCORD_GUILD_ID` swapped in the personal-seat config (backup: `.claude.json.bak-discord-retarget`).
 - [x] **Part A scaffolded** (2026-07-03 night): 4 channels + #releases lockdown (with bot-role allow overwrite) + builder role + brand icon + server description + 18 emoji + welcome/header/FAQ posted and pinned + bot status. Two live catches: the @everyone send-deny also silences the bot without its own overwrite, and pins need the new **Pin Messages** permission (gotcha 6).
 - [ ] The Architect persona (public surface) instantiated for the bot's behavior.
-- [ ] Part B (lean poster sibling) spec + build.
+- [x] **Part B spec'd + built + deployed** (2026-07-04): **6deux6** (renamed Noctis app) live at `estevanhernandez-stack-ed/6deux6` — zero-dep Node, 30/30 tests, hourly Action. First CI run seeded 19 targets and committed state. Spec: `docs/superpowers/specs/2026-07-04-6deux6-release-poster-design.md`; plan: `docs/superpowers/plans/2026-07-04-6deux6-release-poster.md`.
+- [ ] Five tag-only repos (vibe-iterate, vibe-test, vibe-sec, vibe-insights, vibe-wrap) never hit the Releases API — cut GitHub Releases on them (preferred; notes feed the voice) or add tag-fallback to 6deux6's github source.
 
 > **⚠ Guild check (2026-07-03, session 2):** `DISCORD_GUILD_ID` still targeted the **personal server** (`It's Just Este's server`, `1188607231466410084`), and `list_guilds` showed the bot in only that guild. The scaffold was correctly deferred. **Resolved same evening:** retarget complete — server **626Labs** (`1522751947130798130`), bot invited, config swapped. Scaffold session still opens with the pre-flight gate: `get_guild_info` must name `626Labs`.
 
@@ -73,6 +74,7 @@
 5. **The guild ID is a build-target, not just a credential.** Run `get_guild_info` / `list_guilds` before scaffolding anything — on 2026-07-03 the config still pointed at the personal server, and the pre-flight check was the only thing between the scaffold and the wrong server.
 6. **Pins need the dedicated Pin Messages permission** — Discord split it out of Manage Messages (2025), and classic invite bitmasks don't carry it. Symptom: sends/embeds/emoji all work, every pin bounces "Missing Permissions" while the role visibly holds ManageMessages. Fix: Server Settings → Roles → bot role → enable **Pin Messages**. (Caught live 2026-07-03.)
 7. **A read-only channel silences the bot too.** The @everyone deny on Send Messages strips the bot unless its role gets its own channel allow overwrite. Set the bot-role allow in the same breath as the lockdown.
+8. **The MCP's write tools cache the world at boot.** Channels, roles, and members created after the MCP process starts are invisible to mutating tools (set_channel_permissions, send_message to a new channel) even though `list_*` tools fetch fresh and see them. Fix: restart Claude Code, or do the one mutation in the Discord UI.
 
 ### Retarget to the dedicated server (do this before any scaffold)
 
