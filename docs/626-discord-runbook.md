@@ -22,7 +22,7 @@
 - [x] Discord MCP connected to Claude Code (verified 2026-07-03 — bot `626 Labs#2412`).
 - [x] Discord MCP tools live in-session + guild pre-flight check run (2026-07-03, session 2).
 - [x] **Dedicated server created + retargeted** (2026-07-03 evening): server **626Labs** (`1522751947130798130`), bot invited with the widened perm list, `DISCORD_GUILD_ID` swapped in the personal-seat config (backup: `.claude.json.bak-discord-retarget`).
-- [ ] Part A scaffolded (channels + roles + branding + The Architect's welcome/FAQ) — payload staged at `docs/626-discord-part-a-payload.md`; needs one Claude Code restart so the MCP boots against the new server, then run the pre-flight gate and execute.
+- [x] **Part A scaffolded** (2026-07-03 night): 4 channels + #releases lockdown (with bot-role allow overwrite) + builder role + brand icon + server description + 18 emoji + welcome/header/FAQ posted and pinned + bot status. Two live catches: the @everyone send-deny also silences the bot without its own overwrite, and pins need the new **Pin Messages** permission (gotcha 6).
 - [ ] The Architect persona (public surface) instantiated for the bot's behavior.
 - [ ] Part B (lean poster sibling) spec + build.
 
@@ -71,6 +71,8 @@
 3. **`✖ Connection failed: Used disallowed intents`** = the #1 real blocker. Dev portal → Bot → **Privileged Gateway Intents** → enable **Server Members** + **Message Content** → **Save Changes**. (Save is easy to miss.)
 4. **`check` reporting "14 permissions missing / 42%"** is fine — that grades against the MCP's full 24-perm toolset (Kick/Ban/Manage Server/…). The revised Part A perm list (prerequisite 2 above) is what the invite actually needs. Don't re-invite for the rest unless a later step needs it.
 5. **The guild ID is a build-target, not just a credential.** Run `get_guild_info` / `list_guilds` before scaffolding anything — on 2026-07-03 the config still pointed at the personal server, and the pre-flight check was the only thing between the scaffold and the wrong server.
+6. **Pins need the dedicated Pin Messages permission** — Discord split it out of Manage Messages (2025), and classic invite bitmasks don't carry it. Symptom: sends/embeds/emoji all work, every pin bounces "Missing Permissions" while the role visibly holds ManageMessages. Fix: Server Settings → Roles → bot role → enable **Pin Messages**. (Caught live 2026-07-03.)
+7. **A read-only channel silences the bot too.** The @everyone deny on Send Messages strips the bot unless its role gets its own channel allow overwrite. Set the bot-role allow in the same breath as the lockdown.
 
 ### Retarget to the dedicated server (do this before any scaffold)
 
