@@ -229,7 +229,8 @@ def build_banner(size: tuple[int, int], icon: Image.Image, out_path: Path):
     inter_italic = ImageFont.truetype(str(FONTS / "Inter-Italic-Variable.ttf"), tag_size)
     inter_italic.set_variation_by_axes([14, 400])
     kicker_size = max(11, int(word_size * 0.18))
-    jb_mono = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), kicker_size)
+    jb_mono = ImageFont.truetype(str(FONTS / "JetBrainsMono-Variable.ttf"), kicker_size)
+    jb_mono.set_variation_by_axes([400])
 
     draw = ImageDraw.Draw(canvas)
 
@@ -283,6 +284,7 @@ def main():
         ((1500, 500), "banner-1500x500.png"),       # X / Twitter header
         ((1280, 640), "banner-1280x640.png"),       # GitHub repo header
         ((1200, 630), "banner-1200x630.png"),       # OG / generic social
+        ((1920, 1080), "discord-splash-1920x1080.png"),  # Discord invite splash
     ]:
         build_banner(size, icon, OUT / name)
 
