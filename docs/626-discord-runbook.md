@@ -109,6 +109,16 @@ Create category **626 Labs** containing:
 
 ## Part B — release bot (next project)
 
+**Identity (locked 2026-07-04): Noctis** — Este's existing Discord application
+(ID `1475660206099927164`, created 2026-02-24, originally a local-LLM
+experiment; its old bot role still sits in the personal server). Reused as the
+lean poster so The Architect's broad-perm token stays home. Minimal-perm invite
+URL (View Channel + Send Messages + Embed Links + Read Message History only):
+`https://discord.com/oauth2/authorize?client_id=1475660206099927164&scope=bot&permissions=84992`
+— don't invite anywhere until the poster code exists. Public key not needed (no
+interaction webhooks for a poller). Bot token: user-scope config / keychain at
+deploy time, never chat, never a repo.
+
 Own repo, Node scheduled poller, ~hourly. **Two sources → `#releases`:**
 
 - **GitHub Releases API** — a config list of repos: the Claude plugins (Vibe family) + the RoRoRo plugins (`rororo-ur-task`, `Ur-OCR`, `rororo-ur-afk`) + any GitHub-releasing app (RORORO).
