@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-05T08:54:54.289Z",
+  "generatedAt": "2026-07-06T10:26:02.063Z",
   "count": 48,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-07-05T08:34:32Z",
+      "pushed_at": "2026-07-06T09:47:22Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -25,7 +25,7 @@
       "description": "626 Mod Launcher Games",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-game-manifest",
       "language": "Python",
-      "pushed_at": "2026-07-04T05:12:10Z",
+      "pushed_at": "2026-07-06T07:24:32Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -481,7 +481,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-07-04T14:31:00Z",
+      "pushed_at": "2026-07-05T14:31:37Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
