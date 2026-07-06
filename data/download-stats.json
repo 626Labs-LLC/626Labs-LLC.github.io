@@ -217,7 +217,7 @@
       ]
     },
     "estevanhernandez-stack-ed/ROROROblox": {
-      "total": 1929,
+      "total": 1931,
       "releases": [
         {
           "tag": "v1.9.0.0",
@@ -238,12 +238,12 @@
         {
           "tag": "v1.8.0.0",
           "published": "2026-07-02",
-          "total": 394,
+          "total": 396,
           "assets": {
             "plugins-catalog.json": 0,
             "RELEASES": 0,
             "releases.win.json": 14,
-            "roblox-compat.json": 376,
+            "roblox-compat.json": 378,
             "RORORO-1.8.0-delta.nupkg": 0,
             "RORORO-1.8.0-full.nupkg": 1,
             "RORORO-win-Portable.zip": 1,
@@ -514,14 +514,14 @@
       ]
     },
     "estevanhernandez-stack-ed/Ur-OCR": {
-      "total": 41,
+      "total": 42,
       "releases": [
         {
           "tag": "v0.4.0",
           "published": "2026-07-03",
-          "total": 7,
+          "total": 8,
           "assets": {
-            "manifest.json": 3,
+            "manifest.json": 4,
             "manifest.sha256": 2,
             "plugin.zip": 2
           }
@@ -828,14 +828,14 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-afk": {
-      "total": 29,
+      "total": 30,
       "releases": [
         {
           "tag": "v0.5.0",
           "published": "2026-07-06",
-          "total": 4,
+          "total": 5,
           "assets": {
-            "manifest.json": 2,
+            "manifest.json": 3,
             "manifest.sha256": 1,
             "plugin.zip": 1
           }
@@ -903,14 +903,14 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-task": {
-      "total": 141,
+      "total": 144,
       "releases": [
         {
           "tag": "v0.5.0",
           "published": "2026-07-03",
-          "total": 10,
+          "total": 13,
           "assets": {
-            "manifest.json": 4,
+            "manifest.json": 7,
             "manifest.sha256": 3,
             "plugin.zip": 3
           }
