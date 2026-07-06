@@ -474,6 +474,7 @@
     <a href="index.html" class="brand"><span class="mark"></span> 626 Labs</a>
     <div class="links">
       <a href="index.html">The lab</a>
+      <a href="rororo-plugins.html">Plugins</a>
       <a href="https://github.com/estevanhernandez-stack-ed/ROROROblox">Source</a>
       <a href="https://apps.microsoft.com/detail/9NMJCS390KWB" class="cta">
         Get RORORO
@@ -505,7 +506,7 @@
     </div>
     <aside class="hd-r">
       <div class="row"><span>Platforms</span><b>Windows &middot; macOS</b></div>
-      <div class="row"><span>Latest &middot; Windows</span><b>v1.4.1</b></div>
+      <div class="row"><span>Latest &middot; Windows</span><b id="win-latest">v1.8.0</b></div>
       <div class="row"><span>Plugin host</span><b>v1.4 contract</b></div>
       <div class="row"><span>License</span><b>MIT &middot; open source</b></div>
       <div class="row"><span>Price</span><b>Free</b></div>
@@ -684,7 +685,7 @@ brew install --cask rororo</code>
   <div class="section-hd">
     <div class="l">
       <h2>Plugins</h2>
-      <p>v1.4 opened RORORO on Windows to plugins &mdash; and this is where you find them.</p>
+      <p>v1.4 opened RORORO on Windows to plugins &mdash; browse them all on the <a href="rororo-plugins.html">plugin marketplace</a>.</p>
     </div>
     <div class="r">v1.4 plugin host</div>
   </div>
@@ -694,18 +695,19 @@ brew install --cask rororo</code>
   </div>
 
   <div class="plugin-list">
-    <div class="plugin live">
-      <div class="pl-l">
-        <div class="pl-name">
-          <h4>RoRoRo Ur Task</h4>
-          <span class="status live">Live &middot; v0.2.0</span>
+    <!-- Live plugins render here from data/rororo-plugins.json — the same
+         nightly-refreshed catalog the marketplace page uses, so this list
+         can't go stale when a plugin ships. Static fallback inside. -->
+    <div id="live-plugins" style="display:contents">
+      <noscript>
+        <div class="plugin live">
+          <div class="pl-l">
+            <div class="pl-name"><h4>RoRoRo plugins</h4><span class="status live">Live</span></div>
+            <p>Ur Task, Ur OCR, and Ur AFK &mdash; browse versions and install links on the marketplace.</p>
+          </div>
+          <a class="pl-link" href="rororo-plugins.html">Open the marketplace</a>
         </div>
-        <p>Per-window-aware macro recorder. Records bind to a Roblox account; playback refuses to fire keys or clicks into any other alt's window, and stops cold if you alt-tab away or the bound window closes. F8 to record, F5 to play, Esc to abort. The reference plugin for the SDK.</p>
-      </div>
-      <a class="pl-link" href="https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases">
-        Get the plugin
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
-      </a>
+      </noscript>
     </div>
     <div class="plugin">
       <div class="pl-l">
@@ -800,6 +802,51 @@ brew install --cask rororo</code>
   </div>
 
 </div>
+
+<script>
+// Live plugin list + current Windows version, from the nightly-refreshed
+// marketplace data (data/rororo-plugins.json). On any failure the static
+// content stands — this only ever upgrades the page.
+(function () {
+  fetch('data/rororo-plugins.json')
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      if (data.host && data.host.version) {
+        var v = document.getElementById('win-latest');
+        if (v) v.textContent = 'v' + data.host.version.replace(/(\.0)+$/, '');
+      }
+      var mount = document.getElementById('live-plugins');
+      if (!mount || !data.plugins) return;
+      data.plugins.forEach(function (p) {
+        var card = document.createElement('div');
+        card.className = 'plugin live';
+        var l = document.createElement('div');
+        l.className = 'pl-l';
+        var nameRow = document.createElement('div');
+        nameRow.className = 'pl-name';
+        var h = document.createElement('h4');
+        h.textContent = p.name;
+        var status = document.createElement('span');
+        status.className = 'status live';
+        status.textContent = 'Live · v' + p.version;
+        nameRow.appendChild(h);
+        nameRow.appendChild(status);
+        var desc = document.createElement('p');
+        desc.textContent = p.description;
+        l.appendChild(nameRow);
+        l.appendChild(desc);
+        var link = document.createElement('a');
+        link.className = 'pl-link';
+        link.href = 'rororo-plugins.html';
+        link.innerHTML = 'Install from the marketplace <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>';
+        card.appendChild(l);
+        card.appendChild(link);
+        mount.appendChild(card);
+      });
+    })
+    .catch(function () { /* static fallback stands */ });
+})();
+</script>
 
 <!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
 <script data-goatcounter="https://626labs.goatcounter.com/count"

@@ -64,7 +64,7 @@ references and one-off design artifacts.
 
 ## CI workflows
 
-The 6 bot workflows that push to main:
+The 8 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
@@ -72,12 +72,14 @@ The 6 bot workflows that push to main:
 | `refresh-bacon-shards.yml` | Daily 06:00 UTC | Pulls bacon shard data from Firestore (uses `FIREBASE_SA_JSON` secret). |
 | `rebuild-hub.yml` | Push to `content/site.json` or `content/stories/**` | Builds Field Note social cards (`build-og-cards.py` → `assets/og/`) then re-runs render-hub.py and commits drift. Needs `Pillow`+`numpy` (in `requirements.txt`). |
 | `track-traffic.yml` | Daily 06:00 UTC | Auto-discovers all public, non-fork, non-archived repos under `estevanhernandez-stack-ed` (user) and `626Labs-LLC` (org), then pulls GitHub traffic metrics for each. Uses `TRAFFIC_PAT` (user-scope, needs Administration:Read on every tracked repo) and `TRAFFIC_PAT_ORG` (optional org-scope override — without it, org repos fall back to GH_TOKEN and 403 on the Traffic API). |
+| `track-downloads.yml` | Daily 06:15 UTC | Snapshots release-asset `download_count` for every repo in `data/repos.json` that ships release assets → `data/download-stats.json` (current detail) + `data/downloads.csv` (daily lifetime totals; day-over-day diff = downloads that day). Public data — implicit `GITHUB_TOKEN` only. |
 | `fetch-site-stats.yml` | Daily 06:30 UTC | Pulls GoatCounter visit stats for `626labs.dev` and writes `data/site-stats.json` (uses `GOATCOUNTER_TOKEN` secret). |
+| `refresh-rororo-plugins.yml` | Daily 06:45 UTC | Reads the same `plugins-catalog.json` the RoRoRo app reads (off ROROROblox's latest release), enriches each entry with live release version/date/installs → `data/rororo-plugins.json`. `rororo-plugins.html` and the plugins section of `rororo.html` render from it client-side; warns on catalog-vs-release drift. |
 | `refresh-plugin-versions.yml` | Daily 07:00 UTC | Reads each plugin repo's latest tag (`content/plugin-repos.json` → GitHub API), writes `data/plugin-versions.json`, re-renders plugin pages so version chips can't drift. Default `GITHUB_TOKEN` reads public tags — no extra secret. |
 
 **Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
-All six use a retry+rebase loop on `git push` to handle the race where two
+All eight use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
 Plus one read-only checker (doesn't push):

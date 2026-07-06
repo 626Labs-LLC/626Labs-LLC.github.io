@@ -1,0 +1,53 @@
+name: Track Downloads
+
+on:
+  schedule:
+    # 06:15 UTC daily — staggered inside the 06:00/06:30/07:00 job cluster.
+    - cron: '15 6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: track-downloads
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    # Don't re-trigger on our own bot commit. Same guard as the other push jobs.
+    if: github.actor != 'github-actions[bot]'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Snapshot release-asset download counts
+        env:
+          # Release data is public — the default token is only for rate limits.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/track-downloads.mjs
+
+      - name: Commit + push if changed
+        run: |
+          if [[ -z "$(git status --porcelain data/download-stats.json data/downloads.csv)" ]]; then
+            echo "No download movement."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/download-stats.json data/downloads.csv
+          git commit -m "chore(download-data): snapshot $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; rebasing onto remote main and retrying..."
+            git pull --rebase origin main
+            sleep $((attempt * 3))
+          done
+          echo "::error::Failed to push after 5 attempts."
+          exit 1

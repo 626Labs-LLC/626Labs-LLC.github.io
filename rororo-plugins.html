@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>RoRoRo Plugin Marketplace · 626 Labs</title>
+<meta name="description" content="Every RoRoRo plugin in one place — live versions, install links, and what each one does. The same catalog the app reads, on the web. An independent third-party tool — not affiliated with Roblox Corporation." />
+<meta property="og:title" content="RoRoRo Plugin Marketplace" />
+<meta property="og:description" content="Every RoRoRo plugin in one place — live versions, install links, and what each one does. Refreshed automatically whenever a plugin ships." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://626labs.dev/rororo-plugins.html" />
+<meta property="og:image" content="https://626labs.dev/assets/thumb-rororo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="favicon-626.png" />
+
+<style>
+  /* ---------- Web fonts ---------- */
+  @import url('/fonts/fonts.css');
+
+  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
+  :root {
+    --brand-navy:        #192e44;
+    --brand-navy-deep:   #0f1f31;
+    --brand-cyan:        #17d4fa;
+    --brand-cyan-bright: #5ce6ff;
+    --brand-magenta:     #f22f89;
+
+    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
+
+    --ink-0:   #ffffff;
+    --ink-200: #c4cdda;
+    --ink-300: #a4aebd;
+    --ink-400: #99a4b4;
+
+    --fg-1: var(--ink-0);
+    --fg-2: var(--ink-200);
+    --fg-3: var(--ink-300);
+    --fg-muted: var(--ink-400);
+
+    --bg-0: var(--brand-navy-deep);
+
+    --border-1: rgba(255,255,255,.08);
+    --border-2: rgba(255,255,255,.14);
+    --border-accent: rgba(23,212,250,.45);
+
+    --r-md: 10px;
+    --r-lg: 14px;
+    --r-xl: 20px;
+
+    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+    --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
+
+    --ease-out: cubic-bezier(.2,.7,.2,1);
+    --dur-fast: 120ms;
+    --dur-med: 220ms;
+  }
+
+  html, body { margin:0; padding:0; min-height:100vh; }
+  body{
+    background:
+      radial-gradient(1200px 700px at 18% -10%, rgba(23,212,250,.10), transparent 60%),
+      radial-gradient(1100px 700px at 92% 110%, rgba(242,47,137,.10), transparent 60%),
+      var(--bg-0);
+    color:var(--fg-1);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *{ box-sizing:border-box; }
+  a{ color:var(--brand-cyan); }
+
+  /* ---------- Subtle circuit grid backdrop ---------- */
+  .grid-bg{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      linear-gradient(rgba(23,212,250,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23,212,250,.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    background: rgba(15,31,49,.65);
+    border-bottom: 1px solid var(--border-1);
+  }
+  .topnav-inner{
+    max-width: 1180px; margin: 0 auto; padding: 14px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em;
+  }
+  .brand{
+    display:inline-flex; align-items:center; gap:10px;
+    color: var(--fg-1); text-decoration:none;
+    text-transform: uppercase; font-weight:600; letter-spacing:.18em;
+  }
+  .brand .mark{
+    width:18px; height:18px; border-radius:50%;
+    background: var(--brand-gradient);
+    box-shadow: 0 0 12px rgba(23,212,250,.5);
+  }
+  .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; align-items:center; }
+  .topnav .links a{ color:var(--fg-3); text-decoration:none; transition: color var(--dur-fast); }
+  .topnav .links a:hover{ color: var(--brand-cyan); }
+  .topnav .links a.cta{ color: var(--brand-cyan); }
+
+  /* ---------- Layout ---------- */
+  .wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding: 56px 32px 72px; }
+
+  .hero h1{
+    font-family:var(--font-display); font-weight:700;
+    font-size: clamp(30px, 4.5vw, 44px); line-height:1.08; margin:0 0 14px;
+  }
+  .hero h1 em{ font-style:normal; background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero p.dek{ max-width:720px; color:var(--fg-2); font-size:16px; line-height:1.65; margin:0 0 10px; }
+  .hero .fine{ font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--fg-muted); }
+
+  /* ---------- Host strip ---------- */
+  .host-strip{
+    margin: 34px 0 40px;
+    display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px;
+    background: rgba(25,46,68,.5);
+    border:1px solid var(--border-1); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke);
+    padding: 16px 20px;
+  }
+  .host-strip .hs-key{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--fg-muted);
+  }
+  .host-strip .hs-ver{ font-family:var(--font-mono); font-size:13px; color:var(--brand-cyan); }
+  .host-strip .spacer{ flex:1; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
+    padding: 9px 16px; border-radius: 9px; text-decoration:none; cursor:pointer;
+    border:1px solid var(--border-2); color:var(--fg-2); background: rgba(255,255,255,.03);
+    transition: border-color var(--dur-fast), color var(--dur-fast), background var(--dur-fast);
+  }
+  .btn:hover{ border-color: var(--border-accent); color: var(--fg-1); }
+  .btn.primary{
+    border:none; color:#08131e; font-weight:600;
+    background: var(--brand-gradient);
+  }
+  .btn.primary:hover{ filter: brightness(1.1); }
+
+  /* ---------- Cards ---------- */
+  .cards{ display:grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap:18px; }
+  .card{
+    display:flex; flex-direction:column; gap:12px;
+    background: rgba(25,46,68,.5);
+    border:1px solid var(--border-1); border-radius: var(--r-xl);
+    box-shadow: var(--shadow-2), var(--inner-stroke);
+    padding: 22px;
+    transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+  }
+  .card:hover{ border-color: var(--border-accent); transform: translateY(-2px); }
+  .card .head{ display:flex; align-items:center; gap:14px; }
+  .card .avatar{
+    width:44px; height:44px; flex-shrink:0; border-radius: 12px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:16px; color:#08131e;
+    background: var(--brand-gradient);
+    box-shadow: 0 0 14px rgba(23,212,250,.35);
+  }
+  .card h3{ font-family:var(--font-display); font-size:18px; font-weight:600; margin:0; }
+  .card .ver{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.06em;
+    color:var(--brand-cyan); background:rgba(23,212,250,.08);
+    border:1px solid rgba(23,212,250,.3); border-radius: 7px; padding:2px 8px;
+    white-space:nowrap;
+  }
+  .card p.desc{ font-size:13.5px; color:var(--fg-3); line-height:1.6; margin:0; flex:1; }
+  .card .meta{
+    display:flex; flex-wrap:wrap; gap:6px 16px;
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--fg-muted);
+  }
+  .card .meta b{ color:var(--fg-3); font-weight:500; }
+  .card .actions{ display:flex; flex-wrap:wrap; gap:8px; margin-top:2px; }
+  .card .actions .btn{ padding: 8px 13px; font-size:11.5px; }
+
+  .cards-fallback{
+    background: rgba(25,46,68,.5); border:1px solid var(--border-1); border-radius: var(--r-lg);
+    padding: 22px; color:var(--fg-3); font-size:14px; line-height:1.6;
+  }
+
+  /* ---------- Toast ---------- */
+  .toast{
+    position:fixed; left:50%; bottom:32px; transform: translateX(-50%) translateY(16px);
+    z-index:100; opacity:0; pointer-events:none;
+    background:#0b1826; border:1px solid var(--border-accent); border-radius: 10px;
+    box-shadow: var(--shadow-2);
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.04em; color:var(--fg-1);
+    padding: 12px 18px; max-width: 90vw;
+    transition: opacity var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+  }
+  .toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
+  .toast b{ color: var(--brand-cyan); font-weight:500; }
+
+  /* ---------- How-to ---------- */
+  .section-hd{ margin: 52px 0 18px; display:flex; align-items:baseline; justify-content:space-between; gap:18px; }
+  .section-hd h2{ font-family:var(--font-display); font-size:24px; font-weight:600; margin:0; }
+  .section-hd .r{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-muted); }
+  .howto{
+    display:grid; grid-template-columns: 1fr 1fr; gap:18px;
+  }
+  .howto-col{
+    background: rgba(25,46,68,.5); border:1px solid var(--border-1); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke); padding: 20px 22px;
+  }
+  .howto-key{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--brand-cyan); margin-bottom:12px;
+  }
+  .howto ol{ margin:0; padding-left:20px; color:var(--fg-3); font-size:13.5px; line-height:1.7; }
+  .howto ol b, .howto p b{ color:var(--fg-2); font-weight:500; }
+  .howto p{ margin:0 0 12px; color:var(--fg-3); font-size:13.5px; line-height:1.7; }
+  .howto code{
+    font-family:var(--font-mono); font-size:12px; color:var(--brand-cyan-bright);
+    background:rgba(23,212,250,.06); border-radius:5px; padding:1px 5px;
+  }
+  .howto a{ text-decoration:none; }
+  .howto a:hover{ text-decoration:underline; }
+
+  .footnote{
+    margin-top: 56px; padding-top: 22px; border-top:1px solid var(--border-1);
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px 24px;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--fg-muted);
+  }
+  .footnote a{ color:var(--fg-3); text-decoration:none; }
+  .footnote a:hover{ color:var(--brand-cyan); }
+
+  @media (max-width: 760px){
+    .wrap{ padding: 40px 20px 56px; }
+    .topnav-inner{ padding: 12px 20px; }
+    .topnav .links{ gap:14px; }
+    .howto{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg" aria-hidden="true"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html"><span class="mark"></span>626 Labs</a>
+    <div class="links">
+      <a href="rororo.html">RoRoRo</a>
+      <a href="https://github.com/estevanhernandez-stack-ed/ROROROblox">GitHub</a>
+      <a class="cta" href="#get-rororo">Get RoRoRo</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>The RoRoRo <em>plugin marketplace</em></h1>
+    <p class="dek">
+      Every RoRoRo plugin in one place — what it does, the version that's actually shipped,
+      and the link that installs it. This page reads the <b>same catalog the app reads</b>,
+      then checks each plugin's live releases, so it can't go stale when a plugin ships.
+    </p>
+    <p class="fine">Refreshed automatically · same data as the in-app marketplace</p>
+  </div>
+
+  <div class="host-strip" id="get-rororo">
+    <span class="hs-key">You'll need RoRoRo first</span>
+    <span class="hs-ver" id="host-ver"></span>
+    <span class="spacer"></span>
+    <a class="btn primary" id="host-store" href="https://apps.microsoft.com/detail/9NMJCS390KWB">Microsoft Store</a>
+    <a class="btn" id="host-setup" href="https://github.com/estevanhernandez-stack-ed/ROROROblox/releases">Direct download</a>
+  </div>
+
+  <div class="cards" id="cards"></div>
+  <div class="cards-fallback" id="cards-fallback" hidden>
+    Couldn't load the live catalog just now — the plugins themselves are fine. Browse them
+    directly: <a href="https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases">Ur Task</a> ·
+    <a href="https://github.com/estevanhernandez-stack-ed/Ur-OCR/releases">Ur OCR</a> ·
+    <a href="https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases">Ur AFK</a>.
+  </div>
+
+  <div class="section-hd">
+    <h2>Installing a plugin</h2>
+    <div class="r">two ways in</div>
+  </div>
+
+  <div class="howto">
+    <div class="howto-col">
+      <div class="howto-key">If your RoRoRo has the Plugins window</div>
+      <ol>
+        <li>Direct-download builds (v1.9+): open <b>Plugins</b> — the marketplace is built in. Pick a plugin, click <b>Install</b>, done.</li>
+        <li>On an older build, or to install anything by hand: click <b>Copy install URL</b> on a card here, then paste it into <b>Plugins &rarr; Install</b>.</li>
+        <li>RoRoRo fetches the manifest and <b>verifies the SHA-256</b> before unpacking anything, then shows a <b>consent sheet</b> — every capability the plugin wants, itemized, each one yours to allow.</li>
+        <li><b>Restart RoRoRo.</b> Plugins start with the host, so a fresh install runs after the restart prompt.</li>
+      </ol>
+    </div>
+    <div class="howto-col">
+      <div class="howto-key">Why the Store build sends you here</div>
+      <p>The Microsoft Store edition can't ship the in-app marketplace (Store policy draws the line at downloadable code), so <b>this page is its marketplace</b> — same catalog, same plugins.</p>
+      <p>Store users: plugins install the same way — <b>Copy install URL</b> here, paste into <b>Plugins &rarr; Install</b> in the app. The SHA-256 check and the consent sheet work identically on every edition.</p>
+      <p>Building your own? A plugin is a separate signed Windows app on the gRPC contract — ship <code>manifest.json</code> + <code>manifest.sha256</code> + <code>plugin.zip</code> as a GitHub release. Start at the <a href="https://github.com/estevanhernandez-stack-ed/ROROROblox/blob/main/docs/plugins/AUTHOR_GUIDE.md">plugin author guide</a>.</p>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <span>"Roblox" is a trademark of Roblox Corporation. RoRoRo and its plugins are independent third-party tools.</span>
+    <span>626 Labs LLC &middot; Imagine Something Else. &middot; <a href="rororo.html">RoRoRo</a> &middot; <a href="index.html">Lab</a> &middot; <a href="privacy.html">Privacy</a></span>
+  </div>
+
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  var toastEl = document.getElementById('toast');
+  var toastTimer = null;
+  function toast(html) {
+    toastEl.innerHTML = html;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 3600);
+  }
+
+  function monogram(name) {
+    var words = name.replace(/^RoRoRo\s+/i, '').split(/\s+/);
+    return words.slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function render(data) {
+    if (data.host) {
+      document.getElementById('host-ver').textContent = 'v' + data.host.version + ' current';
+      if (data.host.storeUrl) document.getElementById('host-store').href = data.host.storeUrl;
+      if (data.host.setupUrl) document.getElementById('host-setup').href = data.host.setupUrl;
+    }
+    var cards = document.getElementById('cards');
+    data.plugins.forEach(function (p) {
+      var card = el('div', 'card');
+
+      var head = el('div', 'head');
+      head.appendChild(el('div', 'avatar', monogram(p.name)));
+      var titleWrap = el('div');
+      titleWrap.style.cssText = 'display:flex;align-items:center;gap:10px;flex-wrap:wrap;';
+      titleWrap.appendChild(el('h3', null, p.name));
+      titleWrap.appendChild(el('span', 'ver', 'v' + p.version));
+      head.appendChild(titleWrap);
+      card.appendChild(head);
+
+      card.appendChild(el('p', 'desc', p.description));
+
+      var meta = el('div', 'meta');
+      if (p.releasedAt) {
+        var m1 = el('span'); m1.append('updated '); m1.appendChild(el('b', null, p.releasedAt));
+        meta.appendChild(m1);
+      }
+      if (p.minHostVersion) {
+        var m2 = el('span'); m2.append('needs RoRoRo ');
+        m2.appendChild(el('b', null, p.minHostVersion.replace(/(\.0)+$/, '') + '+'));
+        meta.appendChild(m2);
+      }
+      if (typeof p.installs === 'number' && p.installs > 0) {
+        var m3 = el('span'); m3.appendChild(el('b', null, String(p.installs))); m3.append(' installs');
+        meta.appendChild(m3);
+      }
+      card.appendChild(meta);
+
+      var actions = el('div', 'actions');
+      var copyBtn = el('button', 'btn primary', 'Copy install URL');
+      copyBtn.addEventListener('click', function () {
+        navigator.clipboard.writeText(p.installUrl).then(function () {
+          toast('Copied. In RoRoRo: <b>Plugins &rarr; Install</b>, paste, go.');
+        }, function () {
+          toast('Copy blocked — the URL is: <b>' + p.installUrl + '</b>');
+        });
+      });
+      actions.appendChild(copyBtn);
+      var zip = el('a', 'btn', 'plugin.zip');
+      zip.href = p.zipUrl;
+      actions.appendChild(zip);
+      var src = el('a', 'btn', 'Source');
+      src.href = p.repoUrl;
+      actions.appendChild(src);
+      card.appendChild(actions);
+
+      cards.appendChild(card);
+    });
+  }
+
+  fetch('data/rororo-plugins.json')
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(render)
+    .catch(function () {
+      document.getElementById('cards-fallback').hidden = false;
+    });
+})();
+</script>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
