@@ -229,7 +229,8 @@ def build_banner(size: tuple[int, int], icon: Image.Image, out_path: Path):
     inter_italic = ImageFont.truetype(str(FONTS / "Inter-Italic-Variable.ttf"), tag_size)
     inter_italic.set_variation_by_axes([14, 400])
     kicker_size = max(11, int(word_size * 0.18))
-    jb_mono = ImageFont.truetype(str(FONTS / "JetBrainsMono-Regular.ttf"), kicker_size)
+    jb_mono = ImageFont.truetype(str(FONTS / "JetBrainsMono-Variable.ttf"), kicker_size)
+    jb_mono.set_variation_by_axes([400])
 
     draw = ImageDraw.Draw(canvas)
 
@@ -274,6 +275,46 @@ def build_banner(size: tuple[int, int], icon: Image.Image, out_path: Path):
     print(f"  wrote {out_path}  ({W}x{H})")
 
 
+def build_animated_icon(icon: Image.Image):
+    """626 heartbeat — animated server icon (Discord boost perk).
+
+    Navy field, static mark, cyan + magenta glows pulsing in a lub-dub
+    heartbeat rhythm. GIF because Discord animated icons are GIF-only;
+    512x512, 2s loop. Bump centers sit at 0.15/0.43 of the cycle so the
+    loop seam lands in the rest beat (no visible pop).
+    """
+    import math
+
+    SIZE = 512
+    N_FRAMES = 40
+    FRAME_MS = 50  # 40 x 50ms = 2.0s loop
+    icon_sized = icon.resize((int(SIZE * 0.78),) * 2, Image.LANCZOS)
+    icon_xy = (SIZE - icon_sized.width) // 2
+
+    def beat(t: float) -> float:
+        """Two gaussian bumps (lub, softer dub), then rest."""
+        b = 0.0
+        for center, width, amp in ((0.15, 0.05, 1.0), (0.43, 0.07, 0.65)):
+            b += amp * math.exp(-((t - center) ** 2) / (2 * width**2))
+        return b
+
+    frames = []
+    for i in range(N_FRAMES):
+        k = beat(i / N_FRAMES)
+        f = Image.new("RGBA", (SIZE, SIZE), NAVY + (255,))
+        f.alpha_composite(radial_glow(SIZE, SIZE, 0.30, 0.32, CYAN, int(28 + 70 * k), 0.55))
+        f.alpha_composite(radial_glow(SIZE, SIZE, 0.72, 0.70, MAGENTA, int(24 + 60 * k), 0.58))
+        f.alpha_composite(icon_sized, dest=(icon_xy, icon_xy))
+        frames.append(f.convert("RGB").convert("P", palette=Image.ADAPTIVE, colors=256))
+
+    out_path = OUT / "icon-animated-512.gif"
+    frames[0].save(
+        out_path, save_all=True, append_images=frames[1:],
+        duration=FRAME_MS, loop=0, optimize=True,
+    )
+    print(f"  wrote {out_path}  (512x512, {N_FRAMES} frames, 2.0s loop)")
+
+
 def main():
     print("Building transparent icon…")
     icon = build_transparent_icon()
@@ -283,8 +324,12 @@ def main():
         ((1500, 500), "banner-1500x500.png"),       # X / Twitter header
         ((1280, 640), "banner-1280x640.png"),       # GitHub repo header
         ((1200, 630), "banner-1200x630.png"),       # OG / generic social
+        ((1920, 1080), "discord-splash-1920x1080.png"),  # Discord invite splash
     ]:
         build_banner(size, icon, OUT / name)
+
+    print("\nBuilding animated icon…")
+    build_animated_icon(icon)
 
 
 if __name__ == "__main__":
