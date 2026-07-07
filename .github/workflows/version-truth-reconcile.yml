@@ -2,7 +2,7 @@ name: version-truth reconcile
 
 # Nightly dashboard version corrector: stored project versions must match the
 # latest shipped (non-prerelease) GitHub release of each linked repo. Uses the
-# scoped version-truth-bot agent key (manage_projects only) â€” see
+# scoped version-truth-bot agent key (manage_projects only) — see
 # scripts/reconcile-dashboard-versions.mjs. Commit-free: this bot writes to
 # the dashboard API and the run log, never to the repo.
 
@@ -32,6 +32,8 @@ jobs:
       - name: Reconcile dashboard versions
         env:
           MCP_VERSION_TRUTH_KEY: ${{ secrets.MCP_VERSION_TRUTH_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # TRAFFIC_PAT: user-scope fine-grained PAT covering the tracked
+          # repos — the default token is hub-scoped and 404s on private repos.
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_PAT }}
           DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
         run: node scripts/reconcile-dashboard-versions.mjs

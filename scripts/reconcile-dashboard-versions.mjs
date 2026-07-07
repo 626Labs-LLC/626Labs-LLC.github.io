@@ -97,6 +97,12 @@ console.log(`${projects.length} projects, ${linked.length} with linked repos`);
 const corrections = [];
 const skips = [];
 
+const repoProjectCount = new Map();
+for (const p of linked) {
+  const full = repoFullName(p.repoUrl);
+  repoProjectCount.set(full, (repoProjectCount.get(full) || 0) + 1);
+}
+
 for (const p of linked) {
   const full = repoFullName(p.repoUrl);
   let releases;
@@ -115,6 +121,24 @@ for (const p of linked) {
     .sort((a, b) => new Date(b.published_at) - new Date(a.published_at))[0];
   if (!shipped) {
     skips.push(`${p.name}: no shipped (non-prerelease) releases — left alone`);
+    continue;
+  }
+
+  // Judgment guards (keystone: latest_tag vs version splits take judgment):
+  // 1. Product-prefixed tags (vibe-test-v0.2.3) in multi-product repos are a
+  //    PLUGIN's version, not the project's. Report, never write.
+  if (!/^v?\d/.test(shipped.tag_name)) {
+    skips.push(
+      `${p.name}: latest release tag is product-prefixed (${shipped.tag_name}) — judgment lane, not auto-corrected`
+    );
+    continue;
+  }
+  // 2. One repo feeding several dashboard projects (QuizShow x4, platform
+  //    splits) cannot give every project the same version. Report only.
+  if (repoProjectCount.get(full) > 1) {
+    skips.push(
+      `${p.name}: repo ${full} is shared by ${repoProjectCount.get(full)} projects — judgment lane, not auto-corrected`
+    );
     continue;
   }
 
