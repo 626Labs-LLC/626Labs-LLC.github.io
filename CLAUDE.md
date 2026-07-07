@@ -50,7 +50,7 @@ references and one-off design artifacts.
 | `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 6 bot workflows that push to main + 1 link checker. All push-to-main workflows have retry+rebase loops. |
+| `.github/workflows/` | 8 bot workflows that push to main, 1 dashboard API bot, and 1 link checker. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 
 ---
@@ -77,15 +77,16 @@ The 8 bot workflows that push to main:
 | `refresh-rororo-plugins.yml` | Daily 06:45 UTC | Reads the same `plugins-catalog.json` the RoRoRo app reads (off ROROROblox's latest release), enriches each entry with live release version/date/installs → `data/rororo-plugins.json`. `rororo-plugins.html` and the plugins section of `rororo.html` render from it client-side; warns on catalog-vs-release drift. |
 | `refresh-plugin-versions.yml` | Daily 07:00 UTC | Reads each plugin repo's latest tag (`content/plugin-repos.json` → GitHub API), writes `data/plugin-versions.json`, re-renders plugin pages so version chips can't drift. Default `GITHUB_TOKEN` reads public tags — no extra secret. |
 
-**Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
+**Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`, `MCP_VERSION_TRUTH_KEY`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
 All eight use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
-Plus one read-only checker (doesn't push):
+Plus two that never commit to this repo:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
+| `version-truth-reconcile.yml` | Daily 08:00 UTC (~3am Chicago) | Corrects drifted 626 dashboard project versions to the latest shipped (non-prerelease) GitHub release per linked repo, via the MCP REST API with the scoped `version-truth-bot` agent key (`MCP_VERSION_TRUTH_KEY`, manage_projects only). Refuses to write past 8 drifts in one run (systemic-change fuse). Dispatch with `dry_run` to preview. |
 | `link-check.yml` | Push to `**/*.html` or `**/*.md`, weekly Mon 13:00 UTC | Lychee link-check. Opens an issue on broken links during scheduled runs only. |
 
 ---

@@ -1,0 +1,37 @@
+name: version-truth reconcile
+
+# Nightly dashboard version corrector: stored project versions must match the
+# latest shipped (non-prerelease) GitHub release of each linked repo. Uses the
+# scoped version-truth-bot agent key (manage_projects only) — see
+# scripts/reconcile-dashboard-versions.mjs. Commit-free: this bot writes to
+# the dashboard API and the run log, never to the repo.
+
+on:
+  schedule:
+    - cron: '0 8 * * *' # ~3am America/Chicago (2am in winter)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report drift without writing'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Reconcile dashboard versions
+        env:
+          MCP_VERSION_TRUTH_KEY: ${{ secrets.MCP_VERSION_TRUTH_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: node scripts/reconcile-dashboard-versions.mjs
