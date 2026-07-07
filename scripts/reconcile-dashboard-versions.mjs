@@ -42,10 +42,12 @@ async function mcp(tool, body) {
     throw new Error(`${tool} ${body.action}: HTTP ${res.status} ${await res.text().then((t) => t.slice(0, 200))}`);
   }
   const json = await res.json();
-  // REST wraps the MCP handler result: { success, agent, tool, result }.
-  // The handler's payload is result.content[0].text — usually JSON, sometimes
-  // a plain confirmation string. Tolerate both.
-  const text = json?.result?.content?.[0]?.text;
+  // REST wraps the MCP handler result as { success, agent, tool, result }
+  // where result is the handler's content text JOINED into one string
+  // (mcp-server routes/api.ts). Usually JSON, sometimes a confirmation
+  // sentence. Tolerate both, plus the raw-content shape for local runs.
+  const text =
+    typeof json?.result === 'string' ? json.result : json?.result?.content?.[0]?.text;
   if (typeof text !== 'string') return json;
   try {
     return JSON.parse(text);
