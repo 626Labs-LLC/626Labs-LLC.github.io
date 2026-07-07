@@ -150,6 +150,26 @@ for (const p of linked) {
   }
   if (liveNum === storedNum) continue;
 
+  // Branch-scoped links track a branch, not the repo's releases — e.g.
+  // Sanduhr (macOS) pins the mac-native branch at 0.1.0 while main ships the
+  // Windows v3.1.0 releases. Only fetched for drift candidates (cheap).
+  try {
+    const detail = await mcp('manage_projects', { action: 'get', projectId: p.id });
+    const linkBranch = detail?.githubRepo?.branch;
+    if (linkBranch) {
+      const repoMeta = await gh(`/repos/${full}`);
+      if (repoMeta && linkBranch !== repoMeta.default_branch) {
+        skips.push(
+          `${p.name}: linked to branch ${linkBranch} (default ${repoMeta.default_branch}) — releases are repo-level, judgment lane`
+        );
+        continue;
+      }
+    }
+  } catch (err) {
+    skips.push(`${p.name}: branch check failed (${err.message}) — not auto-corrected`);
+    continue;
+  }
+
   corrections.push({
     projectId: p.id,
     name: p.name,
