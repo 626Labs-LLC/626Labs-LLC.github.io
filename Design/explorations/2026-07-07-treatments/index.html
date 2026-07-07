@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treatment exploration — 626 Labs</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { padding: var(--s-16) var(--s-6); }
+.wrap { max-width: 1240px; margin: 0 auto; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: var(--t-micro); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .12em; color: var(--fg-muted);
+}
+h1 { margin: var(--s-3) 0; }
+.lede { color: var(--fg-3); max-width: 60ch; margin-bottom: var(--s-12); }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.dir {
+  display: block; text-decoration: none; color: var(--fg-1);
+  background: var(--bg-2); border: 1px solid var(--border-1); border-radius: var(--r-md);
+  overflow: hidden; box-shadow: var(--inner-stroke);
+}
+.dir:hover { border-color: var(--border-accent); }
+.dir .mini { height: 140px; border-bottom: 1px solid var(--border-1); }
+.dir .meta { padding: var(--s-5); }
+.dir .num { font-family: var(--font-mono); font-size: var(--t-micro); letter-spacing: .12em; color: var(--fg-muted); text-transform: uppercase; }
+.dir h2 { font-size: var(--t-h4); margin: var(--s-2) 0; }
+.dir p { font-size: var(--t-body-sm); color: var(--fg-2); }
+.mini-circuit {
+  background:
+    radial-gradient(circle at 30% 40%, rgba(23,212,250,.9) 2px, transparent 3px),
+    radial-gradient(circle at 70% 65%, rgba(242,47,137,.9) 2px, transparent 3px),
+    linear-gradient(90deg, rgba(23,212,250,.10) 1px, transparent 1px),
+    linear-gradient(0deg,  rgba(23,212,250,.10) 1px, transparent 1px),
+    var(--bg-1);
+  background-size: auto, auto, 32px 32px, 32px 32px, auto;
+}
+.mini-blueprint {
+  background:
+    linear-gradient(90deg, rgba(23,212,250,.06) 1px, transparent 1px),
+    linear-gradient(0deg,  rgba(23,212,250,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23,212,250,.14) 1px, transparent 1px),
+    linear-gradient(0deg,  rgba(23,212,250,.14) 1px, transparent 1px),
+    var(--brand-navy-deep);
+  background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+}
+.mini-phosphor {
+  background:
+    radial-gradient(70% 90% at 50% 50%, rgba(23,212,250,.16), transparent 70%),
+    repeating-linear-gradient(0deg, rgba(5,12,24,.5) 0 1px, transparent 1px 3px),
+    var(--ink-950);
+}
+.mini-noise {
+  background:
+    radial-gradient(circle, rgba(23,212,250,.55) 1px, transparent 1.6px) 0 0 / 6px 6px,
+    linear-gradient(135deg, rgba(23,212,250,.10), rgba(242,47,137,.10)),
+    var(--bg-1);
+}
+.mini-aurora {
+  background:
+    radial-gradient(70% 90% at 25% 20%, rgba(23,212,250,.35), transparent 60%),
+    radial-gradient(70% 90% at 78% 80%, rgba(242,47,137,.30), transparent 60%),
+    var(--ink-950);
+}
+.mini-hex {
+  background-color: var(--bg-1);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='97'><path d='M28 0 56 16.17v32.33L28 64.67 0 48.5V16.17zM28 64.67 56 80.83v16.17M28 64.67 0 80.83v16.17' fill='none' stroke='%2317d4fa' stroke-opacity='.14'/></svg>");
+}
+@media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="eyebrow">Treatment exploration · 2026-07-07 · tokens locked, treatments open</p>
+  <h1>Six directions</h1>
+  <p class="lede">Same tokens, same specimens, six treatments. Open each sheet, judge keep / kill / remix. Winners get an iteration round, then promotion into the design skill.</p>
+  <div class="grid">
+    <a class="dir" href="circuit-bloom.html">
+      <div class="mini mini-circuit"></div>
+      <div class="meta"><p class="num">Direction 1</p><h2>Circuit Bloom</h2><p>Traces promoted from whisper to composition.</p></div>
+    </a>
+    <a class="dir" href="blueprint.html">
+      <div class="mini mini-blueprint"></div>
+      <div class="meta"><p class="num">Direction 2</p><h2>Blueprint</h2><p>The brand as an engineering drawing.</p></div>
+    </a>
+    <a class="dir" href="phosphor-terminal.html">
+      <div class="mini mini-phosphor"></div>
+      <div class="meta"><p class="num">Direction 3</p><h2>Phosphor Terminal</h2><p>Late-night studio monitors, made literal.</p></div>
+    </a>
+    <a class="dir" href="signal-noise.html">
+      <div class="mini mini-noise"></div>
+      <div class="meta"><p class="num">Direction 4</p><h2>Signal Noise</h2><p>Analog texture on the digital duo.</p></div>
+    </a>
+    <a class="dir" href="aurora-depth.html">
+      <div class="mini mini-aurora"></div>
+      <div class="meta"><p class="num">Direction 5</p><h2>Aurora Depth</h2><p>Elevation by light, not shadow.</p></div>
+    </a>
+    <a class="dir" href="hex-lattice.html">
+      <div class="mini mini-hex"></div>
+      <div class="meta"><p class="num">Direction 6</p><h2>Hex Lattice</h2><p>The logo's hexagon as structure.</p></div>
+    </a>
+  </div>
+</main>
+</body>
+</html>
