@@ -13,7 +13,9 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 TOKEN_FILE = HERE.parent.parent / "colors_and_type.css"
 
-HEX_RE = re.compile(r"(?:#|%23)([0-9a-fA-F]{6})\b")
+# {3,8} so short (#f00) and alpha (#17d4faff) forms are CAUGHT and rejected
+# (the allowed set holds only 6-digit token values), never silently skipped.
+HEX_RE = re.compile(r"(?:#|%23)([0-9a-fA-F]{3,8})\b")
 RGB_RE = re.compile(r"rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})")
 
 
