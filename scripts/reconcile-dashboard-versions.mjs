@@ -69,6 +69,13 @@ async function gh(path) {
   return res.json();
 }
 
+// list returns repoUrl flattened from githubRepo.url — parse owner/repo out
+// of https or ssh forms, tolerating trailing .git.
+function repoFullName(url) {
+  const m = String(url ?? '').match(/github\.com[/:]([^/\s]+\/[^/\s]+?)(?:\.git)?(?:[/\s]|$)/i);
+  return m ? m[1] : null;
+}
+
 // "v1.9.0.0", "vibe-sec-v1.2.3", "3.1.0" → "1.9.0.0" / "1.2.3" / "3.1.0"
 function numericVersion(s) {
   const m = String(s ?? '').match(/(\d+\.\d+(?:\.\d+){0,2})/);
@@ -83,7 +90,7 @@ if (!Array.isArray(projects)) {
 }
 
 const linked = projects.filter(
-  (p) => p?.githubRepo?.fullName && p.status !== 'Archived'
+  (p) => repoFullName(p?.repoUrl) && p.status !== 'Archived'
 );
 console.log(`${projects.length} projects, ${linked.length} with linked repos`);
 
@@ -91,7 +98,7 @@ const corrections = [];
 const skips = [];
 
 for (const p of linked) {
-  const full = p.githubRepo.fullName.replace(/\.git$/i, '');
+  const full = repoFullName(p.repoUrl);
   let releases;
   try {
     releases = await gh(`/repos/${full}/releases?per_page=30`);
