@@ -67,6 +67,16 @@ h1 { margin: var(--s-3) 0; }
   background-color: var(--bg-1);
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='97'><path d='M28 0 56 16.17v32.33L28 64.67 0 48.5V16.17zM28 64.67 56 80.83v16.17M28 64.67 0 80.83v16.17' fill='none' stroke='%2317d4fa' stroke-opacity='.14'/></svg>");
 }
+.mini-phosblue {
+  background:
+    radial-gradient(70% 90% at 50% 50%, rgba(23,212,250,.16), transparent 70%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.5) 0 1px, transparent 1px 3px),
+    linear-gradient(90deg, rgba(23,212,250,.09) 1px, transparent 1px),
+    linear-gradient(0deg,  rgba(23,212,250,.09) 1px, transparent 1px),
+    rgb(0,0,0);
+  background-size: auto, auto, 20px 20px, 20px 20px;
+}
+.round-label { margin: var(--s-10) 0 var(--s-4); }
 @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -99,6 +109,13 @@ h1 { margin: var(--s-3) 0; }
     <a class="dir" href="hex-lattice.html">
       <div class="mini mini-hex"></div>
       <div class="meta"><p class="num">Direction 6</p><h2>Hex Lattice</h2><p>The logo's hexagon as structure.</p></div>
+    </a>
+  </div>
+  <p class="eyebrow round-label">Round 2 · remixes</p>
+  <div class="grid">
+    <a class="dir" href="phosphor-blueprint.html">
+      <div class="mini mini-phosblue"></div>
+      <div class="meta"><p class="num">Remix 1 · Phosphor × Blueprint</p><h2>Phosphor Blueprint</h2><p>The drawing is the monitor — terminal kit over an absolute-black drafting grid.</p></div>
     </a>
   </div>
 </main>
