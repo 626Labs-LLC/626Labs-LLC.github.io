@@ -331,6 +331,20 @@ def main():
     print("\nBuilding animated icon…")
     build_animated_icon(icon)
 
+    print("\nBuilding press portrait…")
+    build_press_portrait()
+
+
+def build_press_portrait():
+    """256-wide icon+wordmark portrait for the press page's download button.
+    press.html links assets/brand/logo-portrait-256.png; this makes that a
+    real, versioned output instead of a gitignored ghost (link-check #71)."""
+    portrait = Image.open(ASSETS / "logo-portrait-720x1080.png").convert("RGB")
+    w = 256
+    h = round(portrait.height * w / portrait.width)
+    portrait.resize((w, h), Image.LANCZOS).save(OUT / "logo-portrait-256.png", "PNG", optimize=True)
+    print(f"  wrote {OUT / 'logo-portrait-256.png'}  ({w}x{h})")
+
 
 if __name__ == "__main__":
     main()

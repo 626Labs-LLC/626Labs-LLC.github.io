@@ -38,9 +38,8 @@ Profile.pdf
 anthropic_fellows.*
 docs/github-sponsors-profile.md
 
-# Stray brand files NOT produced by export-brand.py (its output set is the
-# icon + banners; these portrait crops are unreferenced churn). Ignored so
-# they can't be committed to the generated assets/brand/ dir by accident.
+# Stray brand files NOT produced by export-brand.py. The 256 portrait was
+# promoted to a real export 2026-07-06 (press.html links it — link-check #71);
+# the 128 stays ignored as unreferenced churn.
 assets/brand/logo-portrait-128.png
-assets/brand/logo-portrait-256.png
 .gitnexus
