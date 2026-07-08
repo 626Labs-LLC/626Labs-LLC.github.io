@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-07-07T10:06:15.592Z",
+  "generatedAt": "2026-07-08T09:07:17.456Z",
   "source": "goatcounter",
   "site": "626labs.dev",
   "range": {
-    "start": "2026-06-07",
-    "end": "2026-07-07",
+    "start": "2026-06-08",
+    "end": "2026-07-08",
     "days": 30
   },
   "total": {
-    "total": 63,
+    "total": 65,
     "total_events": 0,
-    "total_utc": 64,
+    "total_utc": 66,
     "stats": [
       {
-        "day": "2026-06-07",
+        "day": "2026-06-08",
         "hourly": [
           0,
           0,
@@ -23,7 +23,9 @@
           0,
           0,
           0,
-          2,
+          0,
+          0,
+          1,
           0,
           0,
           0,
@@ -33,46 +35,14 @@
           0,
           0,
           0,
-          0,
-          0,
-          0,
+          1,
           0,
           0,
           0
         ],
         "daily": 2,
-        "weekly": 28,
-        "monthly": 49
-      },
-      {
-        "day": "2026-06-08",
-        "hourly": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "daily": 3
+        "weekly": 29,
+        "monthly": 46
       },
       {
         "day": "2026-06-09",
@@ -252,8 +222,7 @@
           0,
           0
         ],
-        "daily": 4,
-        "weekly": 12
+        "daily": 4
       },
       {
         "day": "2026-06-15",
@@ -283,7 +252,8 @@
           0,
           0
         ],
-        "daily": 1
+        "daily": 1,
+        "weekly": 8
       },
       {
         "day": "2026-06-16",
@@ -463,8 +433,7 @@
           0,
           0
         ],
-        "daily": 0,
-        "weekly": 3
+        "daily": 0
       },
       {
         "day": "2026-06-22",
@@ -494,7 +463,8 @@
           0,
           0
         ],
-        "daily": 0
+        "daily": 0,
+        "weekly": 4
       },
       {
         "day": "2026-06-23",
@@ -674,8 +644,7 @@
           0,
           1
         ],
-        "daily": 1,
-        "weekly": 12
+        "daily": 1
       },
       {
         "day": "2026-06-29",
@@ -705,7 +674,8 @@
           1,
           0
         ],
-        "daily": 4
+        "daily": 4,
+        "weekly": 13
       },
       {
         "day": "2026-06-30",
@@ -766,7 +736,7 @@
           0
         ],
         "daily": 1,
-        "monthly": 14
+        "monthly": 19
       },
       {
         "day": "2026-07-02",
@@ -886,8 +856,7 @@
           0,
           1
         ],
-        "daily": 2,
-        "weekly": 8
+        "daily": 2
       },
       {
         "day": "2026-07-06",
@@ -917,10 +886,41 @@
           0,
           0
         ],
-        "daily": 6
+        "daily": 6,
+        "weekly": 11
       },
       {
         "day": "2026-07-07",
+        "hourly": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "daily": 5
+      },
+      {
+        "day": "2026-07-08",
         "hourly": [
           0,
           0,
@@ -962,7 +962,7 @@
         "max": 15,
         "stats": [
           {
-            "day": "2026-06-07",
+            "day": "2026-06-08",
             "hourly": [
               0,
               0,
@@ -972,7 +972,9 @@
               0,
               0,
               0,
-              2,
+              0,
+              0,
+              1,
               0,
               0,
               0,
@@ -982,46 +984,14 @@
               0,
               0,
               0,
-              0,
-              0,
-              0,
+              1,
               0,
               0,
               0
             ],
             "daily": 2,
-            "weekly": 28,
-            "monthly": 45
-          },
-          {
-            "day": "2026-06-08",
-            "hourly": [
-              1,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0
-            ],
-            "daily": 3
+            "weekly": 29,
+            "monthly": 42
           },
           {
             "day": "2026-06-09",
@@ -1201,8 +1171,7 @@
               0,
               0
             ],
-            "daily": 4,
-            "weekly": 12
+            "daily": 4
           },
           {
             "day": "2026-06-15",
@@ -1232,7 +1201,8 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 8
           },
           {
             "day": "2026-06-16",
@@ -1412,8 +1382,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 2
+            "daily": 0
           },
           {
             "day": "2026-06-22",
@@ -1443,7 +1412,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 3
           },
           {
             "day": "2026-06-23",
@@ -1623,8 +1593,7 @@
               0,
               1
             ],
-            "daily": 1,
-            "weekly": 5
+            "daily": 1
           },
           {
             "day": "2026-06-29",
@@ -1654,7 +1623,8 @@
               1,
               0
             ],
-            "daily": 2
+            "daily": 2,
+            "weekly": 4
           },
           {
             "day": "2026-06-30",
@@ -1715,7 +1685,7 @@
               0
             ],
             "daily": 1,
-            "monthly": 7
+            "monthly": 10
           },
           {
             "day": "2026-07-02",
@@ -1835,8 +1805,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 5
+            "daily": 0
           },
           {
             "day": "2026-07-06",
@@ -1866,10 +1835,41 @@
               0,
               0
             ],
-            "daily": 5
+            "daily": 5,
+            "weekly": 8
           },
           {
             "day": "2026-07-07",
+            "hourly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 3
+          },
+          {
+            "day": "2026-07-08",
             "hourly": [
               0,
               0,
@@ -1901,7 +1901,7 @@
         ]
       },
       {
-        "count": 10,
+        "count": 11,
         "path_id": 93366467,
         "path": "/rororo.html",
         "event": false,
@@ -1909,7 +1909,7 @@
         "max": 1,
         "stats": [
           {
-            "day": "2026-06-07",
+            "day": "2026-06-08",
             "hourly": [
               0,
               0,
@@ -1940,36 +1940,6 @@
             "monthly": 4
           },
           {
-            "day": "2026-06-08",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 0
-          },
-          {
             "day": "2026-06-09",
             "hourly": [
               0,
@@ -2357,8 +2327,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 1
+            "daily": 0
           },
           {
             "day": "2026-06-22",
@@ -2388,7 +2357,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-06-23",
@@ -2568,8 +2538,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 7
+            "daily": 0
           },
           {
             "day": "2026-06-29",
@@ -2599,7 +2568,8 @@
               0,
               0
             ],
-            "daily": 2
+            "daily": 2,
+            "weekly": 9
           },
           {
             "day": "2026-06-30",
@@ -2660,7 +2630,7 @@
               0
             ],
             "daily": 0,
-            "monthly": 6
+            "monthly": 7
           },
           {
             "day": "2026-07-02",
@@ -2780,8 +2750,7 @@
               0,
               1
             ],
-            "daily": 2,
-            "weekly": 2
+            "daily": 2
           },
           {
             "day": "2026-07-06",
@@ -2811,10 +2780,41 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-07-07",
+            "hourly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 1
+          },
+          {
+            "day": "2026-07-08",
             "hourly": [
               0,
               0,
@@ -2846,43 +2846,13 @@
         ]
       },
       {
-        "count": 1,
+        "count": 2,
         "path_id": 94314529,
         "path": "/rororo-plugins.html",
         "event": false,
         "title": "RoRoRo Plugin Marketplace · 626 Labs",
         "max": 1,
         "stats": [
-          {
-            "day": "2026-06-07",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 0
-          },
           {
             "day": "2026-06-08",
             "hourly": [
@@ -3602,7 +3572,7 @@
               0
             ],
             "daily": 0,
-            "monthly": 1
+            "monthly": 2
           },
           {
             "day": "2026-07-02",
@@ -3722,8 +3692,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 1
+            "daily": 0
           },
           {
             "day": "2026-07-06",
@@ -3753,10 +3722,41 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 2
           },
           {
             "day": "2026-07-07",
+            "hourly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 1
+          },
+          {
+            "day": "2026-07-08",
             "hourly": [
               0,
               0,
@@ -3788,27 +3788,33 @@
         ]
       }
     ],
-    "total": 63,
+    "total": 65,
     "more": false
   },
   "refs": {
     "stats": [
       {
         "name": "",
-        "count": 20,
+        "count": 19,
         "ref_scheme": "o"
-      },
-      {
-        "id": "t.co",
-        "name": "t.co",
-        "count": 12,
-        "ref_scheme": "h"
       },
       {
         "id": "Google",
         "name": "Google",
-        "count": 10,
+        "count": 12,
         "ref_scheme": "g"
+      },
+      {
+        "id": "t.co",
+        "name": "t.co",
+        "count": 11,
+        "ref_scheme": "h"
+      },
+      {
+        "id": "www.bing.com",
+        "name": "www.bing.com",
+        "count": 7,
+        "ref_scheme": "h"
       },
       {
         "id": "twitter.com/search?q=https%3A%2F%2Ft.co%2Ft6Q6w56DEH",
@@ -3817,16 +3823,16 @@
         "ref_scheme": "h"
       },
       {
-        "id": "www.bing.com",
-        "name": "www.bing.com",
-        "count": 6,
-        "ref_scheme": "h"
-      },
-      {
         "id": "chatgpt.com",
         "name": "chatgpt.com",
         "count": 3,
         "ref_scheme": "c"
+      },
+      {
+        "id": "github.com/estevanhernandez-stack-ed/ROROROblox",
+        "name": "github.com/estevanhernandez-stack-ed/ROROROblox",
+        "count": 2,
+        "ref_scheme": "h"
       },
       {
         "id": "docs.google.com",
@@ -3845,12 +3851,6 @@
         "name": "copilot.com",
         "count": 1,
         "ref_scheme": "c"
-      },
-      {
-        "id": "github.com/estevanhernandez-stack-ed/ROROROblox",
-        "name": "github.com/estevanhernandez-stack-ed/ROROROblox",
-        "count": 1,
-        "ref_scheme": "h"
       }
     ],
     "more": false
@@ -3860,12 +3860,7 @@
       {
         "id": "US",
         "name": "United States",
-        "count": 28
-      },
-      {
-        "id": "DE",
-        "name": "Germany",
-        "count": 3
+        "count": 32
       },
       {
         "id": "IN",
@@ -3878,8 +3873,8 @@
         "count": 3
       },
       {
-        "id": "AU",
-        "name": "Australia",
+        "id": "DE",
+        "name": "Germany",
         "count": 2
       },
       {
@@ -3901,6 +3896,11 @@
         "id": "TR",
         "name": "Turkey",
         "count": 2
+      },
+      {
+        "id": "AU",
+        "name": "Australia",
+        "count": 1
       },
       {
         "id": "BA",
@@ -3925,7 +3925,7 @@
       {
         "id": "Chrome",
         "name": "Chrome",
-        "count": 45
+        "count": 48
       },
       {
         "name": "",
@@ -3934,7 +3934,7 @@
       {
         "id": "Safari",
         "name": "Safari",
-        "count": 7
+        "count": 6
       },
       {
         "id": "Firefox",
@@ -3949,7 +3949,7 @@
       {
         "id": "Windows",
         "name": "Windows",
-        "count": 27
+        "count": 30
       },
       {
         "id": "iOS",
@@ -3957,9 +3957,9 @@
         "count": 15
       },
       {
-        "id": "macOS",
-        "name": "macOS",
-        "count": 8
+        "id": "Linux",
+        "name": "Linux",
+        "count": 7
       },
       {
         "id": "Android",
@@ -3967,8 +3967,8 @@
         "count": 6
       },
       {
-        "id": "Linux",
-        "name": "Linux",
+        "id": "macOS",
+        "name": "macOS",
         "count": 6
       },
       {
