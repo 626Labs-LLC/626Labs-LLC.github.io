@@ -511,6 +511,9 @@
       }
     }
     h1 { text-shadow: var(--pb-bloom-cyan); }
+    /* PB icon stabilizer — solid app/family icon tiles: compensate the
+       scanline dimming so the marks read bright and stable. */
+    img[src*="rororo-family"] { filter: brightness(1.3) saturate(1.08); }
   </style>
 </head>
 <body>

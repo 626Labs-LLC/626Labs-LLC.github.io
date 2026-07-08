@@ -1635,6 +1635,17 @@
         radial-gradient(80% 60% at 20% 0%, rgba(23,212,250,.08) 0%, transparent 60%),
         radial-gradient(60% 60% at 100% 100%, rgba(242,47,137,.06) 0%, transparent 60%);
     }
+    /* PB icon stabilizer — marks are bright phosphor: the bloom fills the
+       raster gaps so line-art icons read stable under the scanlines instead
+       of chopped into dashes. Transparent line-art assets only — never a
+       baked-field raster (a lit field reads as a glowing slab). */
+    .nav-brand svg, .mark-logo img,
+    img[src*="icon-transparent"], img[src*="mark-transparent"] {
+      filter: brightness(1.5) saturate(1.15)
+              drop-shadow(0 0 1px rgba(23,212,250,.9))
+              drop-shadow(0 0 4px rgba(23,212,250,.4))
+              drop-shadow(0 0 10px rgba(23,212,250,.18));
+    }
     @media (max-width: 720px) {
       body { /* coarse grid only on small screens — fine grid reads as noise */
         background:
@@ -1726,7 +1737,7 @@
         <div class="mark-ring r1"></div>
       </div>
       <div class="mark-logo">
-        <img src="logo.png" alt="626 Labs — Imagine Something Else"/>
+        <img src="assets/brand/logo-lockup-transparent-1080.png" alt="626 Labs — Imagine Something Else"/>
       </div>
       <!-- SITE_JSON:hero-chips:start -->
       <div class="mark-chips">

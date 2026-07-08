@@ -333,18 +333,35 @@ def build_animated_icon(icon: Image.Image):
 
 def build_site_favicon(icon: Image.Image):
     """favicon-626.png at the repo root — the browser-tab icon every page
-    links. PB field, mark centered at ~82% so it survives 16px rendering.
-    Script-owned as of pass 4; the old hand-made navy one is retired."""
+    links. Black field, no ambient glows (they read as murk at tab sizes),
+    mark at ~90% brightened toward full phosphor with a bloom underlay so
+    the strokes stay bright and stable at 16px. Script-owned as of pass 4;
+    re-tuned same week: Este wanted the mark brighter and more stable."""
     SIZE = 512
     f = Image.new("RGBA", (SIZE, SIZE), PB_FIELD + (255,))
-    f.alpha_composite(radial_glow(SIZE, SIZE, 0.32, 0.34, CYAN, 60, 0.55))
-    f.alpha_composite(radial_glow(SIZE, SIZE, 0.70, 0.68, MAGENTA, 52, 0.58))
-    mark = icon.resize((int(SIZE * 0.82),) * 2, Image.LANCZOS)
+    mark = icon.resize((int(SIZE * 0.90),) * 2, Image.LANCZOS)
+    arr = np.array(mark).astype(np.float64)
+    arr[..., :3] = np.clip(arr[..., :3] * 1.35, 0, 255)
+    mark = Image.fromarray(arr.astype(np.uint8), "RGBA")
     off = (SIZE - mark.width) // 2
+    halo = mark.filter(ImageFilter.GaussianBlur(14))
+    f.alpha_composite(halo, dest=(off, off))
     f.alpha_composite(mark, dest=(off, off))
     out_path = ASSETS.parent / "favicon-626.png"
     f.convert("RGB").save(out_path, "PNG", optimize=True)
     print(f"  wrote {out_path}  ({SIZE}x{SIZE})")
+
+
+def build_transparent_lockup():
+    """logo-lockup-transparent-1080.png — the square hero lockup (icon +
+    wordmark + tagline) with the navy field keyed out. The homepage hero
+    mark uses this on the Phosphor Blueprint field; the baked-navy logo.png
+    stays at the root as the key source."""
+    src = Image.open(ROOT / "logo.png").convert("RGBA")
+    keyed = color_key(src)
+    out_path = OUT / "logo-lockup-transparent-1080.png"
+    keyed.save(out_path, "PNG", optimize=True)
+    print(f"  wrote {out_path}  ({keyed.width}x{keyed.height})")
 
 
 def main():
@@ -368,6 +385,9 @@ def main():
 
     print("\nBuilding site favicon…")
     build_site_favicon(icon)
+
+    print("\nBuilding transparent lockup…")
+    build_transparent_lockup()
 
 
 def build_press_portrait():
