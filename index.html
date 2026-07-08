@@ -1548,7 +1548,8 @@
     }
     .footer-links {
       display: flex;
-      gap: var(--s-5);
+      flex-wrap: wrap;
+      gap: var(--s-3) var(--s-5);
       font-family: var(--font-mono);
       font-size: 12px;
       letter-spacing: 0.04em;
@@ -3162,7 +3163,7 @@
     // ── drawing ───────────────────────────────────
     function bgFill() {
       var g = ctx.createRadialGradient(W * .6, H * .4, 0, W * .6, H * .4, W * .7);
-      g.addColorStop(0, "#14283f"); g.addColorStop(1, "#0f1f31");
+      g.addColorStop(0, "#050c18"); g.addColorStop(1, "#000000"); /* PB: ink-950 core fading to the black field */
       ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     }
     function dot(x, y, r, color, alpha, blur) {
