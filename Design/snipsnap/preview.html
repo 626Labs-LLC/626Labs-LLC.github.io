@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SnipSnap — icon concepts</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap');
+  :root{--navy:#0f1f31;--navy-2:#132840;--cyan:#17d4fa;--magenta:#f22f89;--fg:#eef7ff;--fg-2:#9fb3c8;--border:rgba(255,255,255,.08)}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--navy);color:var(--fg);font-family:Inter,system-ui,sans-serif;padding:48px 32px;max-width:1240px;margin:0 auto}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4vw,42px);letter-spacing:-.02em}
+  h2{font-family:'Space Grotesk',sans-serif;font-size:22px;margin:56px 0 8px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+  .dek{color:var(--fg-2);max-width:68ch;line-height:1.55;margin-top:10px}
+  .rule{height:2px;width:120px;background:linear-gradient(90deg,var(--cyan),var(--magenta));border:0;margin:18px 0 0}
+  .row{display:flex;gap:24px;flex-wrap:wrap;margin-top:22px;align-items:flex-start}
+  .card{background:var(--navy-2);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center}
+  .card .name{font-family:'Space Grotesk',sans-serif;font-weight:700;margin-top:14px}
+  .card .role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2);margin-top:5px;max-width:230px}
+  .ramp{display:flex;align-items:flex-end;gap:16px;justify-content:center;margin-top:14px}
+</style>
+</head>
+<body>
+  <div class="eyebrow">626 Labs / SnipSnap · SnapSnip</div>
+  <h1>The capture that knows what it is</h1>
+  <hr class="rule">
+  <p class="dek">The current icon is a monogram in a marquee — true of every snipping tool ever shipped.
+  The product's actual pitch is context: every capture gets window metadata, a smart name, and on-device
+  redaction. Both concepts keep the dashed marquee (Store continuity) and swap the monogram for the differentiator.</p>
+
+  <h2>Current</h2>
+  <div class="row">
+    <div class="card"><img src="../../assets/roundup/snipsnap/logo-1240.png" width="160" height="160"><div class="name">SnapSnip today</div><div class="role">SS monogram · marquee · cursor</div></div>
+  </div>
+
+  <h2>Concept A — the tag</h2>
+  <div class="row">
+    <div class="card">
+      <img src="concept-a-tag.svg" width="200" height="200">
+      <div class="name">Snip, tagged</div>
+      <div class="role">A magenta context tag hangs off the capture — metadata attached at the moment of snip</div>
+      <div class="ramp"><img src="concept-a-tag.svg" width="64" height="64"><img src="concept-a-tag.svg" width="32" height="32"><img src="concept-a-tag.svg" width="20" height="20"></div>
+    </div>
+  </div>
+
+  <h2>Concept B — names itself</h2>
+  <div class="row">
+    <div class="card">
+      <img src="concept-b-name.svg" width="200" height="200">
+      <div class="name">Capture → name</div>
+      <div class="role">The snip resolves into its own filename — smart rename as the hero, caret still blinking</div>
+      <div class="ramp"><img src="concept-b-name.svg" width="64" height="64"><img src="concept-b-name.svg" width="32" height="32"><img src="concept-b-name.svg" width="20" height="20"></div>
+    </div>
+  </div>
+
+  <footer style="margin-top:72px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2)">626 Labs / Imagine Something Else</footer>
+</body>
+</html>

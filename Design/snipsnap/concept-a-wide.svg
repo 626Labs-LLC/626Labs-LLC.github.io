@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 300" width="620" height="300">
+  <!-- Wide tile: full-bleed navy, the tagged snip centered. -->
+  <rect width="620" height="300" fill="#0f1f31"/>
+  <g transform="translate(182,22) scale(1)">
+    <rect x="42" y="42" width="128" height="128" rx="8" fill="rgba(23,212,250,0.06)" stroke="#17d4fa" stroke-width="9" stroke-dasharray="20 13" stroke-linecap="round"/>
+    <path d="M 166,166 Q 178,170 184,182" fill="none" stroke="#eef7ff" stroke-width="6" stroke-linecap="round"/>
+    <g transform="rotate(-20 196 196)">
+      <rect x="158" y="176" width="82" height="46" rx="11" fill="#f22f89"/>
+      <circle cx="172" cy="199" r="6.5" fill="#0f1f31"/>
+      <line x1="188" y1="190" x2="226" y2="190" stroke="#eef7ff" stroke-width="8" stroke-linecap="round"/>
+      <line x1="188" y1="208" x2="212" y2="208" stroke="#eef7ff" stroke-width="8" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

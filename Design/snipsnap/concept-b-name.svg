@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- SnipSnap concept B — the capture that names itself. -->
+  <defs>
+    <linearGradient id="duo" x1="44" y1="0" x2="172" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17d4fa"/><stop offset="1" stop-color="#f22f89"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="52" fill="#0f1f31"/>
+  <!-- marquee -->
+  <rect x="40" y="38" width="176" height="118" rx="8" fill="rgba(23,212,250,0.06)" stroke="#17d4fa" stroke-width="9" stroke-dasharray="20 13" stroke-linecap="round"/>
+  <!-- cursor inside the capture -->
+  <path d="M 168,102 L 168,140 L 177,131 L 185,146 L 194,141 L 186,126 L 198,124 Z" fill="#eef7ff"/>
+  <!-- the name resolving below -->
+  <line x1="46" y1="190" x2="172" y2="190" stroke="url(#duo)" stroke-width="15" stroke-linecap="round"/>
+  <rect x="182" y="181" width="10" height="18" rx="2" fill="#17d4fa"/>
+  <line x1="46" y1="218" x2="124" y2="218" stroke="#eef7ff" stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+</svg>
