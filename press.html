@@ -520,6 +520,15 @@
         radial-gradient(closest-side, rgba(242,47,137,.10), transparent 70%) 130% 140% / 80% 120% no-repeat,
         var(--pb-field);
     }
+    /* PB icon stabilizer — transparent line-art marks read stable under the
+       scanlines. Preview-only (the downloadable files are untouched); baked-
+       field rasters (logo-portrait, banners) stay unfiltered. */
+    img[src*="icon-transparent"], img[src*="mark-transparent"] {
+      filter: brightness(1.5) saturate(1.15)
+              drop-shadow(0 0 1px rgba(23,212,250,.9))
+              drop-shadow(0 0 4px rgba(23,212,250,.4))
+              drop-shadow(0 0 10px rgba(23,212,250,.18));
+    }
   </style>
 </head>
 <body>
