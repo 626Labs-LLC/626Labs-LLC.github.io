@@ -109,7 +109,7 @@
       z-index: 50;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      background: rgba(15, 31, 49, 0.72);
+      background: rgba(0,0,0, 0.72);
       border-bottom: 1px solid var(--border-1);
     }
     .nav-inner {
@@ -350,9 +350,58 @@
       letter-spacing: 0.02em;
     }
     .footer-meta .brand-tagline { color: var(--cyan); }
+  
+    /* ============================================================
+       Phosphor Blueprint — treatment layer (adopted 2026-07-07)
+       Append-only override + in-place navy-glass swaps; matches the
+       homepage treatment (626labs.dev PR #73).
+       ============================================================ */
+    :root {
+      --pb-field: rgb(0,0,0);
+      --pb-grid-fine: rgba(23,212,250,.05);
+      --pb-grid-coarse: rgba(23,212,250,.11);
+      --pb-scanline: rgba(0,0,0,.42);
+      --pb-panel: rgba(0,0,0,.72);
+      --pb-panel-border: rgba(23,212,250,.25);
+      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
+      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+    }
+    .pb-scanlines {
+      position: fixed; inset: 0; pointer-events: none; z-index: 60;
+      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+    }
+
+    :root {
+      --bg-0: var(--pb-field);
+      --bg-1: rgba(0,0,0,.6);
+      --bg-2: rgba(0,0,0,.72);
+      --border-1: rgba(23,212,250,.14);
+      --border-2: rgba(23,212,250,.25);
+    }
+
+    body {
+      background:
+        linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
+        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
+        var(--pb-field);
+      background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+    }
+    @media (max-width: 720px) {
+      body {
+        background:
+          linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
+          linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
+          var(--pb-field);
+        background-size: 120px 120px, 120px 120px;
+      }
+    }
+    h1 { text-shadow: var(--pb-bloom-cyan); }
   </style>
 </head>
 <body>
+  <div class="pb-scanlines" aria-hidden="true"></div>
 
 <nav class="nav">
   <div class="nav-inner">
