@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- RBX15 concept B — the unwrap. The unfolded template cross every Roblox creator knows. -->
+  <rect width="256" height="256" rx="52" fill="#0f1f31"/>
+  <g stroke="#0f1f31" stroke-width="0">
+    <rect x="100" y="40" width="56" height="56" rx="8" fill="#f22f89"/>
+    <rect x="38" y="100" width="56" height="56" rx="8" fill="#0d94b8"/>
+    <rect x="100" y="100" width="56" height="56" rx="8" fill="#17d4fa"/>
+    <rect x="162" y="100" width="56" height="56" rx="8" fill="#0d94b8"/>
+    <rect x="100" y="162" width="56" height="56" rx="8" fill="#22405e"/>
+  </g>
+  <!-- fold hints -->
+  <g stroke="#eef7ff" stroke-width="3.5" stroke-dasharray="8 7" stroke-linecap="round" opacity="0.6">
+    <line x1="104" y1="98" x2="152" y2="98"/>
+    <line x1="98" y1="104" x2="98" y2="152"/>
+    <line x1="158" y1="104" x2="158" y2="152"/>
+    <line x1="104" y1="158" x2="152" y2="158"/>
+  </g>
+</svg>
