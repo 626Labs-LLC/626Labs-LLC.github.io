@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- RoRoRo host — three-layer isometric stack. Ro / Ro / Ro. -->
+  <rect width="256" height="256" rx="52" fill="#0f1f31"/>
+  <!-- top slab: cyan -->
+  <polygon points="128,42 208,82 128,122 48,82" fill="#6ceafd"/>
+  <polygon points="48,82 128,122 128,156 48,116" fill="#0d94b8"/>
+  <polygon points="128,122 208,82 208,116 128,156" fill="#12bfe3"/>
+  <!-- middle slab: magenta -->
+  <polygon points="48,116 128,156 128,190 48,150" fill="#b81f66"/>
+  <polygon points="128,156 208,116 208,150 128,190" fill="#f22f89"/>
+  <!-- bottom slab: teal -->
+  <polygon points="48,150 128,190 128,224 48,184" fill="#1a9f8b"/>
+  <polygon points="128,190 208,150 208,184 128,224" fill="#2ee6c9"/>
+</svg>

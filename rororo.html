@@ -866,6 +866,11 @@ brew install --cask rororo</code>
       }
       var mount = document.getElementById('live-plugins');
       if (!mount || !data.plugins) return;
+      var FAMILY_ICONS = {
+        '626labs.ur-afk': 'assets/rororo-family/ur-afk.svg',
+        '626labs.ur-ocr': 'assets/rororo-family/ur-ocr.svg',
+        '626labs.ur-task': 'assets/rororo-family/ur-task.svg'
+      };
       data.plugins.forEach(function (p) {
         var card = document.createElement('div');
         card.className = 'plugin live';
@@ -878,6 +883,13 @@ brew install --cask rororo</code>
         var status = document.createElement('span');
         status.className = 'status live';
         status.textContent = 'Live · v' + p.version;
+        if (FAMILY_ICONS[p.id]) {
+          var ic = document.createElement('img');
+          ic.src = FAMILY_ICONS[p.id];
+          ic.alt = '';
+          ic.style.cssText = 'width:26px;height:26px;border-radius:7px;flex-shrink:0;';
+          nameRow.appendChild(ic);
+        }
         nameRow.appendChild(h);
         nameRow.appendChild(status);
         var desc = document.createElement('p');

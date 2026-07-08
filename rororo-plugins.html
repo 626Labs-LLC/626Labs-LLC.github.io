@@ -172,6 +172,8 @@
     background: var(--brand-gradient);
     box-shadow: 0 0 14px rgba(23,212,250,.35);
   }
+  .card .avatar.family{ background:none; overflow:hidden; }
+  .card .avatar.family img{ width:100%; height:100%; display:block; }
   .card h3{ font-family:var(--font-display); font-size:18px; font-weight:600; margin:0; }
   .card .ver{
     font-family:var(--font-mono); font-size:11px; letter-spacing:.06em;
@@ -346,6 +348,24 @@
     return n;
   }
 
+  var FAMILY_ICONS = {
+    '626labs.ur-afk': 'assets/rororo-family/ur-afk.svg',
+    '626labs.ur-ocr': 'assets/rororo-family/ur-ocr.svg',
+    '626labs.ur-task': 'assets/rororo-family/ur-task.svg'
+  };
+
+  function avatarFor(p) {
+    if (FAMILY_ICONS[p.id]) {
+      var av = el('div', 'avatar family');
+      var im = document.createElement('img');
+      im.src = FAMILY_ICONS[p.id];
+      im.alt = '';
+      av.appendChild(im);
+      return av;
+    }
+    return el('div', 'avatar', monogram(p.name));
+  }
+
   function render(data) {
     if (data.host) {
       document.getElementById('host-ver').textContent = 'v' + data.host.version + ' current';
@@ -357,7 +377,7 @@
       var card = el('div', 'card');
 
       var head = el('div', 'head');
-      head.appendChild(el('div', 'avatar', monogram(p.name)));
+      head.appendChild(avatarFor(p));
       var titleWrap = el('div');
       titleWrap.style.cssText = 'display:flex;align-items:center;gap:10px;flex-wrap:wrap;';
       titleWrap.appendChild(el('h3', null, p.name));

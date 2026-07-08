@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoRoRo family — icon system proposal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap');
+  :root{
+    --navy:#0f1f31; --navy-2:#132840; --cyan:#17d4fa; --magenta:#f22f89; --teal:#2ee6c9;
+    --fg:#eef7ff; --fg-2:#9fb3c8; --border:rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--navy);color:var(--fg);font-family:Inter,system-ui,sans-serif;padding:48px 32px;max-width:1240px;margin:0 auto}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4vw,42px);letter-spacing:-.02em}
+  h2{font-family:'Space Grotesk',sans-serif;font-size:22px;margin:56px 0 8px;letter-spacing:-.01em}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+  .dek{color:var(--fg-2);max-width:68ch;line-height:1.55;margin-top:10px}
+  .rule{height:2px;width:120px;background:linear-gradient(90deg,var(--cyan),var(--magenta));border:0;margin:18px 0 0}
+  .row{display:flex;gap:24px;flex-wrap:wrap;margin-top:22px}
+  .card{background:var(--navy-2);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+  .card img{display:block;margin:0 auto}
+  .card .name{font-family:'Space Grotesk',sans-serif;font-weight:700;margin-top:14px}
+  .card .role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2);margin-top:5px}
+  .ramp{display:flex;align-items:flex-end;gap:20px}
+  .ramp img{image-rendering:auto}
+  .old{filter:none;background:#fff;border-radius:10px}
+  .concept{background:var(--navy-2);border:1px solid var(--border);border-left:2px solid var(--cyan);border-radius:10px;padding:18px 22px;margin-top:22px;line-height:1.55;color:var(--fg-2);max-width:80ch}
+  .concept b{color:var(--fg)}
+  .stackdemo{display:flex;align-items:center;gap:8px;margin-top:22px;flex-wrap:wrap}
+  .stackdemo .plus,.stackdemo .eq{font-family:'Space Grotesk',sans-serif;font-size:30px;color:var(--fg-2)}
+  footer{margin-top:72px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2)}
+</style>
+</head>
+<body>
+  <div class="eyebrow">626 Labs / RoRoRo family</div>
+  <h1>The stack and the slice</h1>
+  <hr class="rule">
+  <p class="dek">The host mark is a stack of three layers — Ro, Ro, Ro. Plugins are layers.
+  So each plugin icon is one isometric slice of the host cube: function glyph printed on its top face,
+  one family color per plugin, a cyan→magenta rim tying every slice back to the duo.
+  The old hexagon outline survives on its own terms — an iso slice reads as a hexagon.</p>
+
+  <h2>The family</h2>
+  <div class="row">
+    <div class="card"><img src="rororo-host.svg" width="160" height="160" alt=""><div class="name">RoRoRo</div><div class="role">Host · the stack</div></div>
+    <div class="card"><img src="ur-task.svg" width="160" height="160" alt=""><div class="name">Ur Task</div><div class="role">Magenta slice · macros</div></div>
+    <div class="card"><img src="ur-afk.svg" width="160" height="160" alt=""><div class="name">Ur AFK</div><div class="role">Cyan slice · keep-alive</div></div>
+    <div class="card"><img src="ur-ocr.svg" width="160" height="160" alt=""><div class="name">Ur OCR</div><div class="role">Teal slice · perception</div></div>
+  </div>
+
+  <div class="stackdemo">
+    <img src="ur-afk.svg" width="72" height="72" alt=""><span class="plus">+</span>
+    <img src="ur-task.svg" width="72" height="72" alt=""><span class="plus">+</span>
+    <img src="ur-ocr.svg" width="72" height="72" alt=""><span class="eq">=</span>
+    <img src="rororo-host.svg" width="96" height="96" alt="">
+  </div>
+
+  <h2>Size ramp</h2>
+  <p class="dek">Store tile, list row, tray. The glyphs are solid fills and fat strokes — no thin lines to vanish at 24px.</p>
+  <div class="row">
+    <div class="ramp"><img src="ur-task.svg" width="128" height="128"><img src="ur-task.svg" width="64" height="64"><img src="ur-task.svg" width="32" height="32"><img src="ur-task.svg" width="20" height="20"></div>
+    <div class="ramp"><img src="ur-afk.svg" width="128" height="128"><img src="ur-afk.svg" width="64" height="64"><img src="ur-afk.svg" width="32" height="32"><img src="ur-afk.svg" width="20" height="20"></div>
+    <div class="ramp"><img src="ur-ocr.svg" width="128" height="128"><img src="ur-ocr.svg" width="64" height="64"><img src="ur-ocr.svg" width="32" height="32"><img src="ur-ocr.svg" width="20" height="20"></div>
+  </div>
+
+  <h2>Before / after</h2>
+  <div class="row">
+    <div class="card"><img class="old" src="../../assets/roundup/rororo-ur-task/icon.png" width="128" height="128"><div class="role">Ur Task · current</div></div>
+    <div class="card"><img src="ur-task.svg" width="128" height="128"><div class="role">Ur Task · proposed</div></div>
+    <div class="card"><img class="old" src="../../assets/roundup/rororo-ur-afk/icon.png" width="128" height="128"><div class="role">Ur AFK · current</div></div>
+    <div class="card"><img src="ur-afk.svg" width="128" height="128"><div class="role">Ur AFK · proposed</div></div>
+    <div class="card"><img class="old" src="../../assets/roundup/ur-ocr/icon.png" width="128" height="128"><div class="role">Ur OCR · current</div></div>
+    <div class="card"><img src="ur-ocr.svg" width="128" height="128"><div class="role">Ur OCR · proposed</div></div>
+  </div>
+
+  <div class="concept">
+    <b>Why this works.</b> The host cube is already on the Microsoft Store — it stays, lightly retuned to the
+    brand tokens. The plugins stop borrowing a second visual language and start being what they are in the
+    product: layers that slot into the stack. Future plugins get a slice and a glyph on day one — the system
+    scales without a meeting. Marketplace page bonus: slices can animate into the stack.
+  </div>
+
+  <footer>626 Labs / Imagine Something Else</footer>
+</body>
+</html>

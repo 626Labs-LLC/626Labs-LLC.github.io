@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- RoRoRo Ur OCR — the teal slice. Watches regions, reads triggers. -->
+  <defs>
+    <linearGradient id="rim" x1="48" y1="74" x2="208" y2="154" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17d4fa"/><stop offset="1" stop-color="#f22f89"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="52" fill="#0f1f31"/>
+  <polygon points="128,74 208,114 128,154 48,114" fill="#132840"/>
+  <polygon points="48,114 128,154 128,192 48,152" fill="#1a9f8b"/>
+  <polygon points="128,154 208,114 208,152 128,192" fill="#2ee6c9"/>
+  <!-- scan glyph: brackets + read lines -->
+  <g transform="translate(128,114) scale(1,0.5) rotate(-45)" fill="none" stroke="#eef7ff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M -40,-22 L -40,-36 L -26,-36"/>
+    <path d="M 26,-36 L 40,-36 L 40,-22"/>
+    <path d="M 40,22 L 40,36 L 26,36"/>
+    <path d="M -26,36 L -40,36 L -40,22"/>
+    <line x1="-20" y1="0" x2="20" y2="0"/>
+  </g>
+  <polygon points="128,74 208,114 128,154 48,114" fill="none" stroke="url(#rim)" stroke-width="4" stroke-linejoin="round"/>
+</svg>

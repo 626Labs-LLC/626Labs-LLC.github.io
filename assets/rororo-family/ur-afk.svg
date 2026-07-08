@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- RoRoRo Ur AFK — the cyan slice. Pulse over the keyboard; the spacebar is the one key ever sent. -->
+  <defs>
+    <linearGradient id="rim" x1="48" y1="74" x2="208" y2="154" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17d4fa"/><stop offset="1" stop-color="#f22f89"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="52" fill="#0f1f31"/>
+  <polygon points="128,74 208,114 128,154 48,114" fill="#132840"/>
+  <polygon points="48,114 128,154 128,192 48,152" fill="#0d94b8"/>
+  <polygon points="128,154 208,114 208,152 128,192" fill="#17d4fa"/>
+  <g transform="translate(128,114) scale(1,0.5) rotate(-45)">
+    <!-- keyboard body -->
+    <rect x="-46" y="-4" width="92" height="46" rx="7" fill="#eef7ff" opacity="0.13"/>
+    <!-- key row 1 -->
+    <g fill="#eef7ff" opacity="0.9">
+      <rect x="-40" y="2" width="10" height="9" rx="2.5"/>
+      <rect x="-27" y="2" width="10" height="9" rx="2.5"/>
+      <rect x="-14" y="2" width="10" height="9" rx="2.5"/>
+      <rect x="-1"  y="2" width="10" height="9" rx="2.5"/>
+      <rect x="12"  y="2" width="10" height="9" rx="2.5"/>
+      <rect x="25"  y="2" width="15" height="9" rx="2.5"/>
+      <!-- key row 2, staggered -->
+      <rect x="-40" y="14" width="13" height="9" rx="2.5"/>
+      <rect x="-24" y="14" width="10" height="9" rx="2.5"/>
+      <rect x="-11" y="14" width="10" height="9" rx="2.5"/>
+      <rect x="2"   y="14" width="10" height="9" rx="2.5"/>
+      <rect x="15"  y="14" width="10" height="9" rx="2.5"/>
+      <rect x="28"  y="14" width="12" height="9" rx="2.5"/>
+      <!-- bottom row: modifiers + spacebar -->
+      <rect x="-40" y="26" width="14" height="9" rx="2.5"/>
+      <rect x="26"  y="26" width="14" height="9" rx="2.5"/>
+    </g>
+    <!-- the spacebar: the one key ever sent -->
+    <rect x="-22" y="26" width="44" height="9" rx="3" fill="#17d4fa"/>
+    <!-- keep-alive pulse above -->
+    <polyline points="-44,-20 -20,-20 -12,-38 2,-10 10,-20 44,-20" fill="none" stroke="#eef7ff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <polygon points="128,74 208,114 128,154 48,114" fill="none" stroke="url(#rim)" stroke-width="4" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- RoRoRo Ur Task — the magenta slice. Record once, play on any alt. -->
+  <defs>
+    <linearGradient id="rim" x1="48" y1="74" x2="208" y2="154" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17d4fa"/><stop offset="1" stop-color="#f22f89"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="52" fill="#0f1f31"/>
+  <!-- slice body -->
+  <polygon points="128,74 208,114 128,154 48,114" fill="#132840"/>
+  <polygon points="48,114 128,154 128,192 48,152" fill="#b81f66"/>
+  <polygon points="128,154 208,114 208,152 128,192" fill="#f22f89"/>
+  <!-- glyph, iso-projected onto the top face -->
+  <g transform="translate(128,114) scale(1,0.5) rotate(-45)">
+    <circle cx="-26" cy="0" r="15" fill="#eef7ff"/>
+    <path d="M 2,-22 L 42,0 L 2,22 Z" fill="#eef7ff"/>
+  </g>
+  <!-- family rim: the duo, always paired -->
+  <polygon points="128,74 208,114 128,154 48,114" fill="none" stroke="url(#rim)" stroke-width="4" stroke-linejoin="round"/>
+</svg>
