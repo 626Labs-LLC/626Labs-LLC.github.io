@@ -72,9 +72,41 @@
     @media (prefers-reduced-motion: reduce) {
       * { transition-duration: 0.01ms !important; }
     }
+  
+    /* ============================================================
+       Phosphor Blueprint — treatment layer (adopted 2026-07-07)
+       Append-only override + in-place navy-glass swaps; matches the
+       homepage treatment (626labs.dev PR #73).
+       ============================================================ */
+    :root {
+      --pb-field: rgb(0,0,0);
+      --pb-grid-fine: rgba(23,212,250,.05);
+      --pb-grid-coarse: rgba(23,212,250,.11);
+      --pb-scanline: rgba(0,0,0,.42);
+      --pb-panel: rgba(0,0,0,.72);
+      --pb-panel-border: rgba(23,212,250,.25);
+      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
+      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+    }
+    .pb-scanlines {
+      position: fixed; inset: 0; pointer-events: none; z-index: 60;
+      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+    }
+
+    body {
+      background:
+        radial-gradient(60% 50% at 30% 20%, rgba(23,212,250,.16) 0%, transparent 60%),
+        radial-gradient(45% 45% at 78% 70%, rgba(242,47,137,.13) 0%, transparent 60%),
+        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
+        var(--pb-field);
+      background-size: auto, auto, 120px 120px, 120px 120px;
+    }
+    h1 { text-shadow: var(--pb-bloom-cyan); }
   </style>
 </head>
 <body>
+  <div class="pb-scanlines" aria-hidden="true"></div>
   <main id="main">
     <div class="eyebrow">626 Labs · page not found</div>
     <p class="code">404</p>
