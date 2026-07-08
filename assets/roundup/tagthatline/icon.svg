@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- Deep, premium purple radial gradient -->
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" stop-color="#8B31CF"/>
+      <stop offset="40%" stop-color="#4F118A"/>
+      <stop offset="100%" stop-color="#14062E"/>
+    </radialGradient>
+    
+    <!-- Vibrant gold gradient -->
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFE66D"/>
+      <stop offset="50%" stop-color="#FCA311"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    
+    <!-- Gold stroke gradient -->
+    <linearGradient id="gold-stroke" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#FFA500"/>
+    </linearGradient>
+    
+    <!-- Glow filter for text and stars -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    
+    <!-- Drop shadow for main elements -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Background base with rounded corners -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  
+  <!-- Subtle circular accent rings -->
+  <g opacity="0.1" stroke="#FFF" stroke-width="2">
+     <circle cx="256" cy="256" r="160" fill="none" stroke-dasharray="8 16"/>
+     <circle cx="256" cy="256" r="220" fill="none" stroke-dasharray="16 28"/>
+  </g>
+
+  <!-- Clapperboard / Speech Bubble Hybrid -->
+  <g filter="url(#shadow)" transform="translate(96, 96)">
+    <!-- Base Board -->
+    <rect x="0" y="80" width="320" height="200" rx="20" fill="#18181A" stroke="url(#gold-stroke)" stroke-width="4"/>
+    
+    <!-- Speech Bubble Tail pointing downward -->
+    <path d="M120,280 L160,330 L200,280 Z" fill="#18181A" />
+    <path d="M120,280 L160,330 L200,280" fill="none" stroke="url(#gold-stroke)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Fix inner line gap created by overlapping borders -->
+    <line x1="122" y1="280" x2="198" y2="280" stroke="#18181A" stroke-width="6"/>
+
+    <!-- Clapper top bar (angled) -->
+    <g transform="rotate(-12 0 80)">
+       <!-- Clapper background -->
+       <path d="M0,80 L320,80 L320,30 L0,30 Z" fill="#222" stroke="url(#gold-stroke)" stroke-width="4" stroke-linejoin="round"/>
+       <!-- Gold diagonal stripes -->
+       <polygon points="30,30 70,30 40,80 0,80" fill="url(#gold)"/>
+       <polygon points="120,30 160,30 130,80 90,80" fill="url(#gold)"/>
+       <polygon points="210,30 250,30 220,80 180,80" fill="url(#gold)"/>
+       <polygon points="300,30 320,30 320,50 310,80 270,80" fill="url(#gold)"/>
+    </g>
+  </g>
+  
+  <!-- Text Overlay Inside Clapperboard -->
+  <text x="256" y="225" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="4">TAG THAT</text>
+  <text x="256" y="305" font-family="system-ui, -apple-system, sans-serif" font-size="84" font-weight="900" fill="url(#gold)" text-anchor="middle" letter-spacing="6" filter="url(#glow)">LINE</text>
+
+  <!-- Accent elements (sparkles) -->
+  <path d="M80 100 L88 120 L110 128 L88 136 L80 156 L72 136 L50 128 L72 120 Z" fill="url(#gold)" filter="url(#glow)"/>
+  <path d="M420 340 L425 355 L440 360 L425 365 L420 380 L415 365 L400 360 L415 355 Z" fill="#FFFFFF" opacity="0.9"/>
+  <path d="M390 100 L393 110 L403 113 L393 116 L390 126 L387 116 L377 113 L387 110 Z" fill="url(#gold)"/>
+</svg>
