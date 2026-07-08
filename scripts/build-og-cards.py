@@ -48,7 +48,8 @@ ICON = ASSETS / "brand" / "icon-transparent-512.png"
 # Brand tokens — mirror scripts/export-brand.py (the canonical source).
 CYAN = (23, 212, 250)
 MAGENTA = (242, 47, 137)
-NAVY = (15, 31, 49)
+NAVY = (15, 31, 49)          # legacy field — superseded by PB_FIELD
+PB_FIELD = (0, 0, 0)         # Phosphor Blueprint field (adopted 2026-07-07)
 INK = (231, 237, 245)
 DIM = (138, 153, 174)
 
@@ -91,6 +92,18 @@ def _radial_glow(cx: float, cy: float, color, max_alpha: int, radius: float) -> 
     return Image.fromarray(arr, "RGBA")
 
 
+def _drafting_grid() -> Image.Image:
+    """Phosphor Blueprint two-scale drafting grid (adopted 2026-07-07):
+    24px cyan lines at ~5% alpha + 120px at ~11%, over the black field."""
+    arr = np.zeros((H, W, 4), dtype=np.uint8)
+    for step, alpha in ((24, 13), (120, 28)):
+        arr[::step, :, :3] = CYAN
+        arr[::step, :, 3] = np.maximum(arr[::step, :, 3], alpha)
+        arr[:, ::step, :3] = CYAN
+        arr[:, ::step, 3] = np.maximum(arr[:, ::step, 3], alpha)
+    return Image.fromarray(arr, "RGBA")
+
+
 def _gradient_strip(width: int, height: int, c1, c2) -> Image.Image:
     """Horizontal c1->c2 gradient, vectorized."""
     t = np.linspace(0, 1, max(1, width))[None, :, None]
@@ -124,7 +137,8 @@ def build_card(story: dict, rh) -> Image.Image:
     author = str(story.get("author") or "626 Labs").strip()
     read_min = rh._reading_minutes(str(story.get("_body", "")))
 
-    canvas = Image.new("RGBA", (W, H), NAVY + (255,))
+    canvas = Image.new("RGBA", (W, H), PB_FIELD + (255,))
+    canvas.alpha_composite(_drafting_grid())
     canvas.alpha_composite(_radial_glow(0.16, 0.22, CYAN, 78, 0.55))
     canvas.alpha_composite(_radial_glow(0.86, 0.84, MAGENTA, 66, 0.58))
     draw = ImageDraw.Draw(canvas)
