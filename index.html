@@ -1646,6 +1646,16 @@
               drop-shadow(0 0 4px rgba(23,212,250,.4))
               drop-shadow(0 0 10px rgba(23,212,250,.18));
     }
+    /* The Bacon Trail widget plays crisp — no CRT over the quiz. Lift it
+       above the scanline overlay (60); the nav rides higher (70) and carries
+       its own scanlines so it still reads CRT while staying above the
+       lifted widget when it scrolls past. */
+    .play-widget { position: relative; z-index: 61; }
+    nav.nav { z-index: 70; }
+    nav.nav::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+    }
     @media (max-width: 720px) {
       body { /* coarse grid only on small screens — fine grid reads as noise */
         background:
