@@ -167,10 +167,22 @@
       "tagline": "NASA-grade astrology AI.",
       "description": "An AI technomancer that reads the actual sky. The Swiss Ephemeris engine was rebuilt to astronomical precision — not the second-rate math most astrology apps ship — so every chart is observatory-accurate. Converse with the Athanor, an AI oracle grounded in your real natal chart, across the Natal Compass, Aura Cam, Arithmancy, Tarot, Rituals, Chronos forecasts, Celebrity Match, Synastry, and the Grimoire.",
       "tags": [
-        { "label": "Web app", "tone": "cyan" },
-        { "label": "AI astrology", "tone": "magenta" },
-        { "label": "Freemium", "tone": "cyan" },
-        { "label": "Live", "tone": "live" }
+        {
+          "label": "Web app",
+          "tone": "cyan"
+        },
+        {
+          "label": "AI astrology",
+          "tone": "magenta"
+        },
+        {
+          "label": "Freemium",
+          "tone": "cyan"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
       ],
       "status": "live",
       "repo": "estevanhernandez-stack-ed/Celestia3",
@@ -217,9 +229,18 @@
       "tagline": "The /insights you wish you had.",
       "description": "The deep retrospective for your Claude Code work — the verbose /insights over your full history and every machine you code on. Coverage, where-was-I recall, token/cost with the cache reveal, trends, how-you-work, ranked open threads, decisions, languages, per-session friction, and a synthesized read of how you actually work. Personal by default, no telemetry; keep any source or repo local-only.",
       "tags": [
-        { "label": "Plugin", "tone": "cyan" },
-        { "label": "analytics", "tone": "magenta" },
-        { "label": "Live", "tone": "live" }
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "analytics",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
       ],
       "status": "live",
       "repo": "estevanhernandez-stack-ed/vibe-insights",
@@ -473,9 +494,18 @@
       "tagline": "Sessions wrap themselves when the trail is already there.",
       "description": "End-of-session wrap-up that reads the breadcrumb trail your toolkit already left instead of cold-reconstructing from git log. Multi-repo aware — it surfaces what shipped across every repo you touched, what's still uncommitted, and what's still unpushed, then gates commit and push on the current repo only. The result is a written record you can read, share, or paste into a status update.",
       "tags": [
-        { "label": "Plugin", "tone": "cyan" },
-        { "label": "session-wrap", "tone": "magenta" },
-        { "label": "Live", "tone": "live" }
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "session-wrap",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
       ],
       "status": "live",
       "repo": "estevanhernandez-stack-ed/vibe-wrap",
@@ -492,9 +522,18 @@
       "tagline": "Tours your users actually finish.",
       "description": "vibe-walk reads your app, names the aha moment, and builds a spotlight tour you own outright — Driver.js module, anchor codemod, six analytics events wired to track what actually lands. And it's honest about fit: if a tour won't help, it tells you before you build one.",
       "tags": [
-        { "label": "Plugin", "tone": "cyan" },
-        { "label": "walkthroughs", "tone": "magenta" },
-        { "label": "Live", "tone": "live" }
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "walkthroughs",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
       ],
       "status": "live",
       "repo": "estevanhernandez-stack-ed/Vibe-Walk",
@@ -511,9 +550,18 @@
       "tagline": "Close the prompt loop: scan, audit, eval, grade, fix.",
       "description": "vibe-prompt inventories every prompt your site uses, then audits each one across five structural dimensions — catching the 13 flagged failure patterns (F1–F13) that range from missing persona to absent output constraints. A calibrated LLM judge runs behavioral eval so you catch regressions, not just structural smells. Confidence-routed fixes apply changes only where the signal is clear; uncertain ones surface for your call. Handoff to vibe-sec is built in for prompts that touch sensitive surfaces.",
       "tags": [
-        { "label": "Plugin", "tone": "cyan" },
-        { "label": "prompts", "tone": "magenta" },
-        { "label": "Live", "tone": "live" }
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "prompts",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
       ],
       "status": "live",
       "repo": "estevanhernandez-stack-ed/Vibe-Prompt",
@@ -676,8 +724,7 @@
       "banner": "assets/thumb-rororo.png",
       "meta": "Free · Windows + macOS · plugin-extensible",
       "screenshots": []
-    }
-,
+    },
     {
       "id": "mod-launcher",
       "title": "626 Mod Launcher",
@@ -705,7 +752,7 @@
       "npm": null,
       "install": null,
       "storeUrl": "https://apps.microsoft.com/detail/9N53V6RRJK95",
-      "productPage": null,
+      "productPage": "mod-launcher-games.html",
       "banner": "assets/thumb-mod-launcher.png",
       "meta": "Free on MS Store · Windows native",
       "screenshots": []
@@ -888,7 +935,11 @@
       "Fort Worth, TX"
     ],
     "starMap": {
-      "products": ["Celestia 3", "RORORO", "We See You at the Movies"]
+      "products": [
+        "Celestia 3",
+        "RORORO",
+        "We See You at the Movies"
+      ]
     },
     "paragraphs": [
       "626 Labs builds modern tools for practices that have been running on spreadsheets, paper, and inherited habits for decades — or, in the case of astrology, a few thousand years. The brief is simple: look at a field that everyone assumes is \"fine the way it is,\" and ship the version it should have had all along.",

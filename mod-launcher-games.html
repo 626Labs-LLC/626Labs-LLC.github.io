@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Supported games · 626 Mod Launcher · 626 Labs</title>
+<meta name="description" content="Every game the 626 Mod Launcher supports — engine-curated quick-pick setups and Nexus-identified titles, live from the signed game feed. Updates itself as curation lands." />
+<meta property="og:title" content="626 Mod Launcher — supported games" />
+<meta property="og:description" content="The live list of games the 626 Mod Launcher supports, straight from the game feed. New games land without an app update." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://626labs.dev/mod-launcher-games.html" />
+<meta property="og:image" content="https://626labs.dev/assets/thumb-mod-launcher.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="favicon-626.png" />
+
+<style>
+  /* ---------- Web fonts ---------- */
+  @import url('/fonts/fonts.css');
+
+  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
+  :root {
+    --brand-navy:        #192e44;
+    --brand-navy-deep:   #0f1f31;
+    --brand-cyan:        #17d4fa;
+    --brand-cyan-bright: #5ce6ff;
+    --brand-magenta:     #f22f89;
+
+    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
+
+    --ink-0:   #ffffff;
+    --ink-200: #c4cdda;
+    --ink-300: #a4aebd;
+    --ink-400: #99a4b4;
+
+    --fg-1: var(--ink-0);
+    --fg-2: var(--ink-200);
+    --fg-3: var(--ink-300);
+    --fg-muted: var(--ink-400);
+
+    --bg-0: var(--brand-navy-deep);
+
+    --border-1: rgba(255,255,255,.08);
+    --border-2: rgba(255,255,255,.14);
+    --border-accent: rgba(23,212,250,.45);
+
+    --r-md: 10px;
+    --r-lg: 14px;
+    --r-xl: 20px;
+
+    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+    --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
+
+    --ease-out: cubic-bezier(.2,.7,.2,1);
+    --dur-fast: 120ms;
+    --dur-med: 220ms;
+  }
+
+  html, body { margin:0; padding:0; min-height:100vh; }
+  body{
+    background:
+      radial-gradient(1200px 700px at 18% -10%, rgba(23,212,250,.10), transparent 60%),
+      radial-gradient(1100px 700px at 92% 110%, rgba(242,47,137,.10), transparent 60%),
+      var(--bg-0);
+    color:var(--fg-1);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *{ box-sizing:border-box; }
+  a{ color:var(--brand-cyan); }
+
+  /* ---------- Subtle circuit grid backdrop ---------- */
+  .grid-bg{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      linear-gradient(rgba(23,212,250,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23,212,250,.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    background: rgba(15,31,49,.65);
+    border-bottom: 1px solid var(--border-1);
+  }
+  .topnav-inner{
+    max-width: 1180px; margin: 0 auto; padding: 14px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em;
+  }
+  .brand{
+    display:inline-flex; align-items:center; gap:10px;
+    color: var(--fg-1); text-decoration:none;
+    text-transform: uppercase; font-weight:600; letter-spacing:.18em;
+  }
+  .brand .mark{
+    width:18px; height:18px; border-radius:50%;
+    background: var(--brand-gradient);
+    box-shadow: 0 0 12px rgba(23,212,250,.5);
+  }
+  .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; align-items:center; }
+  .topnav .links a{ color:var(--fg-3); text-decoration:none; transition: color var(--dur-fast); }
+  .topnav .links a:hover{ color: var(--brand-cyan); }
+  .topnav .links a.cta{ color: var(--brand-cyan); }
+
+  /* ---------- Layout ---------- */
+  .wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding: 56px 32px 72px; }
+
+  .hero h1{
+    font-family:var(--font-display); font-weight:700;
+    font-size: clamp(30px, 4.5vw, 44px); line-height:1.08; margin:0 0 14px;
+  }
+  .hero h1 em{ font-style:normal; background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero p.dek{ max-width:720px; color:var(--fg-2); font-size:16px; line-height:1.65; margin:0 0 10px; }
+  .hero .fine{ font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--fg-muted); }
+  .hero .fine b{ color:var(--brand-cyan); font-weight:500; }
+
+  /* ---------- Get-the-launcher strip ---------- */
+  .host-strip{
+    margin: 34px 0 40px;
+    display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px;
+    background: rgba(25,46,68,.5);
+    border:1px solid var(--border-1); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke);
+    padding: 16px 20px;
+  }
+  .host-strip .hs-key{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--fg-muted);
+  }
+  .host-strip .spacer{ flex:1; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
+    padding: 9px 16px; border-radius: 9px; text-decoration:none; cursor:pointer;
+    border:1px solid var(--border-2); color:var(--fg-2); background: rgba(255,255,255,.03);
+    transition: border-color var(--dur-fast), color var(--dur-fast), background var(--dur-fast);
+  }
+  .btn:hover{ border-color: var(--border-accent); color: var(--fg-1); }
+  .btn.primary{
+    border:none; color:#08131e; font-weight:600;
+    background: var(--brand-gradient);
+  }
+  .btn.primary:hover{ filter: brightness(1.1); }
+
+  /* ---------- Section headers ---------- */
+  .section-hd{ margin: 52px 0 18px; display:flex; align-items:baseline; justify-content:space-between; gap:18px; }
+  .section-hd h2{ font-family:var(--font-display); font-size:24px; font-weight:600; margin:0; }
+  .section-hd .r{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-muted); }
+  .section-dek{ margin:-8px 0 18px; color:var(--fg-3); font-size:13.5px; line-height:1.6; max-width:720px; }
+
+  /* ---------- Featured cover rail ---------- */
+  .covers{ display:grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap:16px; }
+  .cover-card{ display:flex; flex-direction:column; gap:8px; }
+  .cover-frame{
+    position:relative; aspect-ratio: 2 / 3; border-radius: var(--r-md); overflow:hidden;
+    border:1px solid var(--border-1);
+    box-shadow: var(--shadow-2), var(--inner-stroke);
+    background: linear-gradient(160deg, var(--brand-navy) 0%, var(--brand-navy-deep) 100%);
+    transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+  }
+  .cover-card:hover .cover-frame{ border-color: var(--border-accent); transform: translateY(-2px); }
+  .cover-frame img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .cover-ph{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:44px;
+    background:
+      radial-gradient(120% 90% at 15% 0%, rgba(23,212,250,.22), transparent 55%),
+      radial-gradient(120% 90% at 90% 100%, rgba(242,47,137,.20), transparent 55%),
+      linear-gradient(160deg, var(--brand-navy) 0%, var(--brand-navy-deep) 100%);
+    color: var(--fg-1); text-shadow: 0 0 24px rgba(23,212,250,.35);
+  }
+  .cover-rank{
+    position:absolute; top:8px; left:8px;
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.08em;
+    color:#08131e; font-weight:600;
+    background: var(--brand-gradient);
+    border-radius: 6px; padding: 2px 7px;
+    box-shadow: 0 0 10px rgba(23,212,250,.4);
+  }
+  .cover-name{ font-family:var(--font-display); font-size:13.5px; font-weight:600; line-height:1.3; }
+  .cover-eng{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--fg-muted);
+  }
+
+  /* ---------- Game rows ---------- */
+  .rows{ display:flex; flex-direction:column; gap:8px; }
+  .row{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    background: rgba(25,46,68,.5);
+    border:1px solid var(--border-1); border-radius: var(--r-md);
+    box-shadow: var(--inner-stroke);
+    padding: 11px 16px;
+    transition: border-color var(--dur-fast);
+  }
+  .row:hover{ border-color: var(--border-accent); }
+  .row .name{ font-family:var(--font-display); font-size:14.5px; font-weight:600; }
+  .row .chip{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--brand-cyan); background:rgba(23,212,250,.08);
+    border:1px solid rgba(23,212,250,.3); border-radius: 6px; padding:2px 7px;
+    white-space:nowrap;
+  }
+  .row .chip.magenta{
+    color:var(--brand-magenta); background:rgba(242,47,137,.08); border-color:rgba(242,47,137,.35);
+  }
+  .row .spacer{ flex:1; }
+  .row .rlinks{ display:flex; gap:14px; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; }
+  .row .rlinks a{ text-decoration:none; color:var(--fg-3); }
+  .row .rlinks a:hover{ color:var(--brand-cyan); }
+
+  /* ---------- States ---------- */
+  .loading{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--fg-muted); padding: 28px 0;
+  }
+  .fallback{
+    background: rgba(25,46,68,.5); border:1px solid var(--border-1); border-radius: var(--r-lg);
+    padding: 22px; color:var(--fg-3); font-size:14px; line-height:1.6;
+  }
+
+  /* ---------- Request CTA ---------- */
+  .request-strip{
+    margin-top: 52px;
+    display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px;
+    background: rgba(25,46,68,.5);
+    border:1px solid var(--border-1); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke);
+    padding: 18px 20px;
+  }
+  .request-strip .q{ font-family:var(--font-display); font-size:16px; font-weight:600; }
+  .request-strip .d{ color:var(--fg-3); font-size:13px; }
+  .request-strip .spacer{ flex:1; }
+
+  .footnote{
+    margin-top: 56px; padding-top: 22px; border-top:1px solid var(--border-1);
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px 24px;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--fg-muted);
+  }
+  .footnote a{ color:var(--fg-3); text-decoration:none; }
+  .footnote a:hover{ color:var(--brand-cyan); }
+
+  @media (max-width: 760px){
+    .wrap{ padding: 40px 20px 56px; }
+    .topnav-inner{ padding: 12px 20px; }
+    .topnav .links{ gap:14px; }
+    .covers{ grid-template-columns: repeat(auto-fill, minmax(116px, 1fr)); gap:12px; }
+    .row .rlinks{ width:100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg" aria-hidden="true"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html"><span class="mark"></span>626 Labs</a>
+    <div class="links">
+      <a href="https://github.com/estevanhernandez-stack-ed/626-mod-launcher">GitHub</a>
+      <a href="https://github.com/estevanhernandez-stack-ed/626-game-manifest">Game feed</a>
+      <a class="cta" href="#get-launcher">Get the launcher</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Every game the launcher <em>already knows</em></h1>
+    <p class="dek">
+      The 626 Mod Launcher ships with a signed game feed — engines, mod folders, Nexus
+      identities — so supported games set up in a couple of clicks. This page reads the
+      <b>same feed the app reads</b>, live. When a new game lands in curation, it shows
+      up here and in the launcher without either one shipping an update.
+    </p>
+    <p class="fine" id="hero-fine">loading the live list…</p>
+  </div>
+
+  <div class="host-strip" id="get-launcher">
+    <span class="hs-key">Get 626 Mod Launcher</span>
+    <span class="spacer"></span>
+    <a class="btn primary" href="https://apps.microsoft.com/detail/9N53V6RRJK95">Microsoft Store</a>
+    <a class="btn" href="https://github.com/estevanhernandez-stack-ed/626-mod-launcher/releases">Direct download</a>
+  </div>
+
+  <div class="loading" id="loading">Fetching the live game feed…</div>
+
+  <div class="fallback" id="fallback" hidden>
+    The live list is momentarily unavailable — the games are fine, the fetch isn't.
+    See the full list on
+    <a href="https://github.com/estevanhernandez-stack-ed/626-game-manifest/blob/main/SUPPORTED-GAMES.md">GitHub</a>.
+  </div>
+
+  <div id="content" hidden>
+
+    <div class="section-hd">
+      <h2>Featured</h2>
+      <div class="r">quick-pick, ranked</div>
+    </div>
+    <div class="covers" id="featured"></div>
+
+    <div class="section-hd">
+      <h2>Engine-curated</h2>
+      <div class="r" id="curated-count"></div>
+    </div>
+    <p class="section-dek">
+      Quick-pick setup — the launcher already knows the engine and the mod folder.
+      Add the game, drop a mod, play.
+    </p>
+    <div class="rows" id="curated"></div>
+
+    <div class="section-hd">
+      <h2>Nexus-identified</h2>
+      <div class="r" id="nexus-count"></div>
+    </div>
+    <p class="section-dek">
+      Known on Nexus Mods; the launcher detects the engine from the game folder at
+      runtime. Everything still toggles reversibly.
+    </p>
+    <div class="rows" id="nexus"></div>
+
+    <div class="request-strip">
+      <div>
+        <div class="q">Missing a game?</div>
+        <div class="d">Request it with the facts you have — Steam ID, engine if you know it. Curation lands fast.</div>
+      </div>
+      <span class="spacer"></span>
+      <a class="btn primary" href="https://github.com/estevanhernandez-stack-ed/626-game-manifest/issues/new?template=game-request.yml">Request a game</a>
+      <a class="btn" href="https://raw.githubusercontent.com/estevanhernandez-stack-ed/626-game-manifest/main/supported-games.json">Raw JSON</a>
+    </div>
+
+  </div>
+
+  <div class="footnote">
+    <span>Game names and cover art belong to their publishers. Covers served from Steam's public CDN.</span>
+    <span>626 Labs LLC &middot; Imagine Something Else. &middot; <a href="index.html">Lab</a> &middot; <a href="privacy.html">Privacy</a></span>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var FEED = 'https://raw.githubusercontent.com/estevanhernandez-stack-ed/626-game-manifest/main/supported-games.json';
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function coverUrl(steamAppId) {
+    return 'https://cdn.cloudflare.steamstatic.com/steam/apps/' + steamAppId + '/library_600x900.jpg';
+  }
+
+  // Cover frame: real art when the CDN has it; the launcher's own placeholder language
+  // (initial on the navy field, cyan/magenta paired) when it doesn't. Never a broken image.
+  function coverFrame(game, rank) {
+    var frame = el('div', 'cover-frame');
+    var ph = el('div', 'cover-ph', (game.name || '?').trim().charAt(0).toUpperCase());
+    frame.appendChild(ph);
+    if (game.steamAppId) {
+      var img = document.createElement('img');
+      img.loading = 'lazy';
+      img.alt = game.name + ' cover art';
+      img.addEventListener('error', function () { img.remove(); });
+      img.src = coverUrl(game.steamAppId);
+      frame.appendChild(img);
+    }
+    if (rank != null) frame.appendChild(el('span', 'cover-rank', '#' + rank));
+    return frame;
+  }
+
+  function gameRow(game, curated) {
+    var row = el('div', 'row');
+    row.appendChild(el('span', 'name', game.name));
+    if (curated && game.engine) row.appendChild(el('span', 'chip', game.engine));
+    if (!curated) row.appendChild(el('span', 'chip magenta', 'nexus'));
+    row.appendChild(el('span', 'spacer'));
+    var links = el('div', 'rlinks');
+    if (game.steamUrl) {
+      var s = el('a', null, 'Steam'); s.href = game.steamUrl; s.rel = 'noopener'; links.appendChild(s);
+    }
+    if (game.nexusUrl) {
+      var n = el('a', null, 'Nexus'); n.href = game.nexusUrl; n.rel = 'noopener'; links.appendChild(n);
+    }
+    row.appendChild(links);
+    return row;
+  }
+
+  function render(data) {
+    var c = data.counts || {};
+    document.getElementById('hero-fine').innerHTML = '';
+    var fine = document.getElementById('hero-fine');
+    var b = el('b', null, String(c.total || data.games.length) + ' games');
+    fine.appendChild(b);
+    fine.append(' · ' + (c.engineCurated || 0) + ' engine-curated · ' + (c.nexusOnly || 0) + ' Nexus-identified');
+    if (data.generatedUtc) fine.append(' · feed updated ' + data.generatedUtc.slice(0, 10));
+
+    var featured = data.games.filter(function (g) { return typeof g.featured === 'number'; })
+      .sort(function (a, b2) { return a.featured - b2.featured; });
+    var featuredWrap = document.getElementById('featured');
+    featured.forEach(function (g) {
+      var card = el('div', 'cover-card');
+      card.appendChild(coverFrame(g, g.featured));
+      card.appendChild(el('div', 'cover-name', g.name));
+      if (g.engine) card.appendChild(el('div', 'cover-eng', g.engine));
+      featuredWrap.appendChild(card);
+    });
+
+    var curatedWrap = document.getElementById('curated');
+    var nexusWrap = document.getElementById('nexus');
+    var curatedN = 0, nexusN = 0;
+    data.games.forEach(function (g) {
+      if (g.tier === 'engine-curated') { curatedWrap.appendChild(gameRow(g, true)); curatedN++; }
+      else if (g.tier === 'nexus-only') { nexusWrap.appendChild(gameRow(g, false)); nexusN++; }
+    });
+    document.getElementById('curated-count').textContent = curatedN + ' games';
+    document.getElementById('nexus-count').textContent = nexusN + ' games';
+
+    document.getElementById('loading').hidden = true;
+    document.getElementById('content').hidden = false;
+  }
+
+  function fail() {
+    document.getElementById('loading').hidden = true;
+    document.getElementById('fallback').hidden = false;
+    document.getElementById('hero-fine').textContent = 'live list unavailable — see GitHub below';
+  }
+
+  fetch(FEED)
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      if (!data || data.schemaVersion !== 1 || !Array.isArray(data.games)) throw new Error('schema');
+      render(data);
+    })
+    .catch(fail);
+})();
+</script>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
