@@ -254,9 +254,54 @@
     @media (max-width: 540px) {
       .mini-grid { grid-template-columns: 1fr; }
     }
+
+    /* ============================================================
+       Phosphor Blueprint — treatment layer (adopted 2026-07-07)
+       Append-only override; base system above stays intact.
+       Matches the homepage treatment (626labs.dev PR #73).
+       ============================================================ */
+    :root {
+      --pb-field: rgb(0,0,0);
+      --pb-grid-fine: rgba(23,212,250,.05);
+      --pb-grid-coarse: rgba(23,212,250,.11);
+      --pb-scanline: rgba(0,0,0,.42);
+      --pb-panel: rgba(0,0,0,.72);
+      --pb-panel-border: rgba(23,212,250,.25);
+      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
+      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+    }
+    body {
+      background:
+        linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
+        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
+        var(--pb-field);
+      background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+    }
+    .pb-scanlines {
+      position: fixed; inset: 0; pointer-events: none; z-index: 60; /* above nav (50), below skip-link (200) */
+      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+    }
+    nav.top { background: rgba(0,0,0,.72); border-bottom-color: var(--pb-panel-border); }
+    h1 { text-shadow: var(--pb-bloom-cyan); }
+    .term, .card, .mini, .family-card { background: var(--pb-panel); }
+    .card, .mini, .family-card { border-color: rgba(23,212,250,.14); }
+    .codeblock { background: rgba(0,0,0,.85); }
+    .btn-primary:hover { box-shadow: var(--pb-trail); }
+    @media (max-width: 720px) {
+      body { /* coarse grid only on small screens — fine grid reads as noise */
+        background:
+          linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
+          linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
+          var(--pb-field);
+        background-size: 120px 120px, 120px 120px;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="pb-scanlines" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <nav class="top">
