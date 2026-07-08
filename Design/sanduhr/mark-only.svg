@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="66 36 124 184" width="496" height="736">
+  <!-- Sanduhr — vector rebuild of the shipped hourglass. Cyan unspent above,
+       magenta spent below, grains mid-fall. Same identity, sharper glass. -->
+  <defs>
+    <linearGradient id="pour" x1="128" y1="131" x2="128" y2="160" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17d4fa"/><stop offset="1" stop-color="#f22f89"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- top sand: what's left -->
+  <polygon points="103,86 153,86 128,126" fill="#17d4fa"/>
+  <!-- bottom pile: what's spent -->
+  <polygon points="98,196 158,196 128,158" fill="#f22f89"/>
+  <!-- falling grains -->
+  <line x1="128" y1="133" x2="128" y2="158" stroke="url(#pour)" stroke-width="5" stroke-linecap="round" stroke-dasharray="2.5 7"/>
+  <!-- glass -->
+  <path d="M 86,58 L 128,124 L 170,58" fill="none" stroke="#bfe9f7" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 86,198 L 128,132 L 170,198" fill="none" stroke="#bfe9f7" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- frame -->
+  <rect x="72" y="42" width="112" height="12" rx="5" fill="#eef7ff"/>
+  <rect x="72" y="202" width="112" height="12" rx="5" fill="#eef7ff"/>
+</svg>
