@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-07T09:44:42.490Z",
+  "generatedAt": "2026-07-08T08:31:03.479Z",
   "count": 48,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-07-07T08:59:30Z",
+      "pushed_at": "2026-07-08T08:02:01Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -37,7 +37,7 @@
       "description": "Native Windows (.NET 10 / WinUI 3) rewrite of the 626 Labs Mod Launcher. Phase 1 (ModManager.Core) complete: 157 tests green.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher",
       "language": "C#",
-      "pushed_at": "2026-07-03T20:00:46Z",
+      "pushed_at": "2026-07-08T02:45:21Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -60,8 +60,8 @@
       "name": "626labs-design",
       "description": "626 Labs design system — colors, type, brand assets, UI kit. Source of truth for ThesisStudio, BlogStudio, and other 626 Labs surfaces.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626labs-design",
-      "language": "HTML",
-      "pushed_at": "2026-05-25T01:55:33Z",
+      "language": "CSS",
+      "pushed_at": "2026-07-08T00:22:32Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -73,7 +73,7 @@
       "description": "Design",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626labs-plugin",
       "language": "CSS",
-      "pushed_at": "2026-05-24T01:22:03Z",
+      "pushed_at": "2026-07-08T00:22:36Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -481,7 +481,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-07-07T09:13:14Z",
+      "pushed_at": "2026-07-07T15:00:06Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
