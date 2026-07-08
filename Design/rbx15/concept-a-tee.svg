@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- RBX15 concept A — the template tee. Blocky R15 shirt with template seam guides. -->
+  <rect width="256" height="256" rx="52" fill="#0f1f31"/>
+  <!-- sleeves, flush to the torso -->
+  <rect x="50" y="80" width="40" height="54" rx="7" fill="#f22f89"/>
+  <rect x="166" y="80" width="40" height="54" rx="7" fill="#f22f89"/>
+  <!-- torso -->
+  <rect x="88" y="80" width="80" height="102" rx="7" fill="#17d4fa"/>
+  <!-- collar notch -->
+  <path d="M 110,80 Q 128,94 146,80 Z" fill="#0f1f31"/>
+  <!-- template seams: interior fold guides -->
+  <g stroke="#0f1f31" stroke-width="4" stroke-dasharray="9 8" stroke-linecap="round" opacity="0.8">
+    <line x1="92" y1="86" x2="92" y2="176"/>
+    <line x1="164" y1="86" x2="164" y2="176"/>
+  </g>
+  <line x1="98" y1="130" x2="158" y2="130" stroke="#eef7ff" stroke-width="4" stroke-dasharray="9 8" stroke-linecap="round" opacity="0.5"/>
+</svg>
