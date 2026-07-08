@@ -7,7 +7,7 @@
   <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-Variable.woff2" crossorigin />
   <title>626 Labs — Imagine Something Else</title>
   <meta name="description" content="626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins. Enterprise grade, reached for via vibe coding." />
-  <meta name="theme-color" content="#0f1f31" />
+  <meta name="theme-color" content="#000000" />
   <link rel="canonical" href="https://626labs.dev/" />
   <link rel="icon" type="image/png" href="favicon-626.png" />
   <link rel="alternate" type="application/atom+xml" title="626 Labs — Field Notes" href="/feed.xml" />
@@ -1575,9 +1575,59 @@
     }
 
     section[id] { scroll-margin-top: 72px; }
+    /* ============================================================
+       Phosphor Blueprint — treatment layer (adopted 2026-07-07)
+       Append-only override; base system above stays intact.
+       Spec: docs/superpowers/specs/2026-07-07-site-phosphor-blueprint-design.md
+       ============================================================ */
+    :root {
+      --pb-field: rgb(0,0,0);
+      --pb-grid-fine: rgba(23,212,250,.05);
+      --pb-grid-coarse: rgba(23,212,250,.11);
+      --pb-scanline: rgba(0,0,0,.42);
+      --pb-panel: rgba(0,0,0,.72);
+      --pb-panel-border: rgba(23,212,250,.25);
+      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
+      --pb-bloom-magenta: 0 0 8px rgba(242,47,137,.6);
+      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+
+      /* navy retires on this surface */
+      --bg-0: var(--pb-field);
+      --bg-1: rgba(0,0,0,.6);
+      --bg-2: rgba(0,0,0,.72);
+      --border-1: rgba(23,212,250,.14);
+      --border-2: rgba(23,212,250,.25);
+    }
+    body {
+      background:
+        linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
+        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
+        var(--pb-field);
+      background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+    }
+    .pb-scanlines {
+      position: fixed; inset: 0; pointer-events: none; z-index: 60; /* above nav (50), below skip-link (200) */
+      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+    }
+    nav.nav { background: rgba(0,0,0,.72); }
+    header.hero h1 { text-shadow: var(--pb-bloom-cyan); }
+    .hero-bg .grid { display: none; } /* body's drafting grid owns the field — two grids moiré */
+    .btn-primary:hover { box-shadow: var(--pb-trail); }
+    @media (max-width: 720px) {
+      body { /* coarse grid only on small screens — fine grid reads as noise */
+        background:
+          linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
+          linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
+          var(--pb-field);
+        background-size: 120px 120px, 120px 120px;
+      }
+    }
   </style>
 </head>
 <body>
+<div class="pb-scanlines" aria-hidden="true"></div>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
