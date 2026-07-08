@@ -34,7 +34,8 @@ KEY_HI = 150   # at this distance → fully opaque foreground
 
 CYAN = (23, 212, 250)
 MAGENTA = (242, 47, 137)
-NAVY = (15, 31, 49)
+NAVY = (15, 31, 49)          # legacy field — kept for reference/inputs
+PB_FIELD = (0, 0, 0)         # Phosphor Blueprint field (adopted 2026-07-07)
 INK = (231, 237, 245)
 DIM = (138, 153, 174)
 
@@ -162,6 +163,19 @@ def gradient_h(width: int, height: int, c1, c2) -> Image.Image:
     return grad
 
 
+def drafting_grid(width: int, height: int) -> Image.Image:
+    """Phosphor Blueprint two-scale drafting grid (adopted 2026-07-07):
+    24px cyan lines at ~5% alpha + 120px at ~11%. Composite over the black
+    field before the glows. Page-texture only — icons stay grid-free."""
+    arr = np.zeros((height, width, 4), dtype=np.uint8)
+    for step, alpha in ((24, 13), (120, 28)):
+        arr[::step, :, :3] = CYAN
+        arr[::step, :, 3] = np.maximum(arr[::step, :, 3], alpha)
+        arr[:, ::step, :3] = CYAN
+        arr[:, ::step, 3] = np.maximum(arr[:, ::step, 3], alpha)
+    return Image.fromarray(arr, "RGBA")
+
+
 def radial_glow(width: int, height: int, cx: float, cy: float, color, max_alpha: int, radius: float) -> Image.Image:
     """Soft radial alpha falloff at (cx,cy) — coords as fractions of size."""
     layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
@@ -181,11 +195,13 @@ def radial_glow(width: int, height: int, cx: float, cy: float, color, max_alpha:
 def build_banner(size: tuple[int, int], icon: Image.Image, out_path: Path):
     """Compose a brand banner.
 
-    Layout: navy bg + radial glows, transparent icon left, wordmark + tagline
-    right of the icon, hairline cyan→magenta gradient under the wordmark.
+    Layout: Phosphor Blueprint field (black + drafting grid) + radial glows,
+    transparent icon left, wordmark + tagline right of the icon, hairline
+    cyan→magenta gradient under the wordmark.
     """
     W, H = size
-    canvas = Image.new("RGBA", (W, H), NAVY + (255,))
+    canvas = Image.new("RGBA", (W, H), PB_FIELD + (255,))
+    canvas.alpha_composite(drafting_grid(W, H))
 
     # Brand mood: cyan glow top-left, magenta glow bottom-right.
     canvas.alpha_composite(radial_glow(W, H, 0.18, 0.30, CYAN, 80, 0.50))
@@ -301,7 +317,7 @@ def build_animated_icon(icon: Image.Image):
     frames = []
     for i in range(N_FRAMES):
         k = beat(i / N_FRAMES)
-        f = Image.new("RGBA", (SIZE, SIZE), NAVY + (255,))
+        f = Image.new("RGBA", (SIZE, SIZE), PB_FIELD + (255,))  # PB field; no grid at icon scale
         f.alpha_composite(radial_glow(SIZE, SIZE, 0.30, 0.32, CYAN, int(28 + 70 * k), 0.55))
         f.alpha_composite(radial_glow(SIZE, SIZE, 0.72, 0.70, MAGENTA, int(24 + 60 * k), 0.58))
         f.alpha_composite(icon_sized, dest=(icon_xy, icon_xy))
@@ -313,6 +329,22 @@ def build_animated_icon(icon: Image.Image):
         duration=FRAME_MS, loop=0, optimize=True,
     )
     print(f"  wrote {out_path}  (512x512, {N_FRAMES} frames, 2.0s loop)")
+
+
+def build_site_favicon(icon: Image.Image):
+    """favicon-626.png at the repo root — the browser-tab icon every page
+    links. PB field, mark centered at ~82% so it survives 16px rendering.
+    Script-owned as of pass 4; the old hand-made navy one is retired."""
+    SIZE = 512
+    f = Image.new("RGBA", (SIZE, SIZE), PB_FIELD + (255,))
+    f.alpha_composite(radial_glow(SIZE, SIZE, 0.32, 0.34, CYAN, 60, 0.55))
+    f.alpha_composite(radial_glow(SIZE, SIZE, 0.70, 0.68, MAGENTA, 52, 0.58))
+    mark = icon.resize((int(SIZE * 0.82),) * 2, Image.LANCZOS)
+    off = (SIZE - mark.width) // 2
+    f.alpha_composite(mark, dest=(off, off))
+    out_path = ASSETS.parent / "favicon-626.png"
+    f.convert("RGB").save(out_path, "PNG", optimize=True)
+    print(f"  wrote {out_path}  ({SIZE}x{SIZE})")
 
 
 def main():
@@ -333,6 +365,9 @@ def main():
 
     print("\nBuilding press portrait…")
     build_press_portrait()
+
+    print("\nBuilding site favicon…")
+    build_site_favicon(icon)
 
 
 def build_press_portrait():
