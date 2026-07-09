@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T08:31:03.479Z",
+  "generatedAt": "2026-07-09T09:41:48.415Z",
   "count": 48,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-07-08T08:02:01Z",
+      "pushed_at": "2026-07-09T09:03:03Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -37,7 +37,7 @@
       "description": "Native Windows (.NET 10 / WinUI 3) rewrite of the 626 Labs Mod Launcher. Phase 1 (ModManager.Core) complete: 157 tests green.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher",
       "language": "C#",
-      "pushed_at": "2026-07-08T02:45:21Z",
+      "pushed_at": "2026-07-08T15:54:26Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -49,7 +49,7 @@
       "description": "Off-Store plugins for the 626 Mod Launcher — mod-source integrations like Nexus, built and signed here so the Store build stays sealed.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-plugins",
       "language": "C#",
-      "pushed_at": "2026-07-02T04:50:05Z",
+      "pushed_at": "2026-07-08T15:15:44Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -97,7 +97,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-07-07T01:01:15Z",
+      "pushed_at": "2026-07-08T16:39:36Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -253,7 +253,7 @@
       "description": "R15 Shirt and Pants Template Editor",
       "html_url": "https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants",
       "language": "HTML",
-      "pushed_at": "2026-04-20T21:20:40Z",
+      "pushed_at": "2026-07-08T17:54:41Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -289,7 +289,7 @@
       "description": null,
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk",
       "language": "C#",
-      "pushed_at": "2026-07-07T00:00:39Z",
+      "pushed_at": "2026-07-08T16:46:53Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -301,7 +301,7 @@
       "description": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't bound. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "language": "C#",
-      "pushed_at": "2026-07-06T23:44:46Z",
+      "pushed_at": "2026-07-08T16:46:56Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -313,7 +313,7 @@
       "description": "Multiroblox as current as possible",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
-      "pushed_at": "2026-07-07T01:52:31Z",
+      "pushed_at": "2026-07-09T03:34:32Z",
       "stargazers_count": 4,
       "archived": false,
       "fork": false
@@ -349,7 +349,7 @@
       "description": "Native Windows 11 + macOS glass widget that projects when you'll hit your Claude usage cap — burn-rate, pace markers, live token-burn from local Claude Code sessions, and five glass themes. Independent third-party tool. MIT.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
       "language": "C#",
-      "pushed_at": "2026-07-06T18:21:13Z",
+      "pushed_at": "2026-07-08T18:16:37Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -397,7 +397,7 @@
       "description": "RoRoRo plugin — watches user-defined screen regions for OCR text or color triggers and fires keybinds when they match. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Ur-OCR",
       "language": "C#",
-      "pushed_at": "2026-07-06T20:13:35Z",
+      "pushed_at": "2026-07-08T16:46:58Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -481,7 +481,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-07-07T15:00:06Z",
+      "pushed_at": "2026-07-09T09:12:05Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
