@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Dashboard concept B — the wire. The platform's nervous system: one live pulse
+       running through the hexagon, cyan in, magenta out. -->
+  <defs>
+    <linearGradient id="pulse" x1="36" y1="128" x2="220" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17d4fa"/><stop offset="1" stop-color="#f22f89"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="52" fill="#0f1f31"/>
+  <polygon points="128,50 195.5,89 195.5,167 128,206 60.5,167 60.5,89"
+           fill="none" stroke="#3b5a7d" stroke-width="8" stroke-linejoin="round"/>
+  <!-- the pulse -->
+  <polyline points="36,128 100,128 118,90 140,166 156,128 220,128"
+            fill="none" stroke="url(#pulse)" stroke-width="10"
+            stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="52 42 152 172" width="152" height="172">
+  <!-- The agent mesh, no plate — for compositing onto any navy surface. -->
+  <defs>
+    <linearGradient id="rim" x1="60" y1="60" x2="196" y2="196" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17d4fa"/><stop offset="1" stop-color="#f22f89"/>
+    </linearGradient>
+  </defs>
+  <polygon points="128,50 195.5,89 195.5,167 128,206 60.5,167 60.5,89"
+           fill="none" stroke="url(#rim)" stroke-width="9" stroke-linejoin="round"/>
+  <circle cx="128" cy="128" r="24" fill="none" stroke="#eef7ff" stroke-width="2" opacity="0.12"/>
+  <g stroke-width="6" stroke-linecap="round" opacity="0.65">
+    <line x1="128" y1="110" x2="128" y2="93" stroke="#f22f89"/>
+    <line x1="114" y1="137" x2="97" y2="148" stroke="#2ee6c9"/>
+    <line x1="142" y1="137" x2="159" y2="148" stroke="#17d4fa"/>
+  </g>
+  <circle cx="128" cy="78" r="13" fill="#f22f89"/>
+  <circle cx="84" cy="156" r="13" fill="#2ee6c9"/>
+  <circle cx="172" cy="156" r="13" fill="#17d4fa"/>
+  <circle cx="128" cy="128" r="15" fill="#eef7ff"/>
+  <circle cx="128" cy="128" r="7" fill="#0f1f31"/>
+</svg>
