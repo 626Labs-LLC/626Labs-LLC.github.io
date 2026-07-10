@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-09T09:41:48.415Z",
-  "count": 48,
+  "generatedAt": "2026-07-10T09:37:47.370Z",
+  "count": 49,
   "owners": [
     "user:estevanhernandez-stack-ed",
     "org:626Labs-LLC"
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-07-09T09:03:03Z",
+      "pushed_at": "2026-07-10T08:53:56Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -301,7 +301,7 @@
       "description": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't bound. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "language": "C#",
-      "pushed_at": "2026-07-08T16:46:56Z",
+      "pushed_at": "2026-07-10T01:51:17Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -313,7 +313,7 @@
       "description": "Multiroblox as current as possible",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
-      "pushed_at": "2026-07-09T03:34:32Z",
+      "pushed_at": "2026-07-10T03:11:08Z",
       "stargazers_count": 4,
       "archived": false,
       "fork": false
@@ -373,7 +373,7 @@
       "description": "Claude Skill/Pipeline for thesis fodder",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Thesis-Engine",
       "language": "Python",
-      "pushed_at": "2026-06-10T01:42:58Z",
+      "pushed_at": "2026-07-10T03:34:04Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -403,13 +403,25 @@
       "fork": false
     },
     {
+      "full_name": "estevanhernandez-stack-ed/vibe-access",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "vibe-access",
+      "description": null,
+      "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-access",
+      "language": "JavaScript",
+      "pushed_at": "2026-07-10T03:34:24Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
       "full_name": "estevanhernandez-stack-ed/vibe-cartographer",
       "owner": "estevanhernandez-stack-ed",
       "name": "vibe-cartographer",
       "description": "Plot your course from idea to shipped app — spec-driven development as a Claude Code plugin, delivered as 8 slash commands (onboard, scope, prd, spec, checklist, build, iterate, reflect). 626Labs LLC.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer",
       "language": "JavaScript",
-      "pushed_at": "2026-07-06T22:27:44Z",
+      "pushed_at": "2026-07-10T03:33:58Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -421,7 +433,7 @@
       "description": "AI-powered documentation gap analyzer for modern codebases — scans your project, classifies what you've built, identifies missing technical docs, and generates them from your existing artifacts. Drop it on any codebase. 626Labs LLC.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Doc",
       "language": "TypeScript",
-      "pushed_at": "2026-06-10T03:27:21Z",
+      "pushed_at": "2026-07-10T03:35:22Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -433,7 +445,7 @@
       "description": "It's like Claude's Insights, but more vibey.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-insights",
       "language": "Python",
-      "pushed_at": "2026-07-06T20:28:19Z",
+      "pushed_at": "2026-07-10T03:35:25Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -445,7 +457,7 @@
       "description": "Post-ship product iteration — the sibling to vibe-cartographer. Pick a mode (feature-add, competitive, ux-polish, bug-bash), ship one PR. Ingests competitor changelogs, framework releases, and your feedback.md. Maintains your Atlas.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-iterate",
       "language": "Python",
-      "pushed_at": "2026-07-06T20:02:04Z",
+      "pushed_at": "2026-07-10T03:34:09Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -457,7 +469,7 @@
       "description": "If your Claude.md surface is weak, your entire architecture could crumble down.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-Keystone",
       "language": null,
-      "pushed_at": "2026-06-09T21:35:48Z",
+      "pushed_at": "2026-07-10T03:34:06Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -469,7 +481,7 @@
       "description": "Localize your app's UI without corrupting its logic — the i18n member of the Vibe plugin family. Deep on next-intl + App Router; honest about the rest.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Lingual",
       "language": "JavaScript",
-      "pushed_at": "2026-06-22T01:24:49Z",
+      "pushed_at": "2026-07-10T03:34:21Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -481,7 +493,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-07-09T09:12:05Z",
+      "pushed_at": "2026-07-10T09:11:40Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -493,7 +505,7 @@
       "description": null,
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Prompt",
       "language": "Python",
-      "pushed_at": "2026-06-10T05:05:12Z",
+      "pushed_at": "2026-07-10T03:34:19Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -505,7 +517,7 @@
       "description": "Vibe Sec — security gap finder for vibe-coded apps. Secret-leak scanner CLI shipping now; full plugin in development. Canary channel; stable channel via @626labs vibe-plugins marketplace.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-sec",
       "language": "TypeScript",
-      "pushed_at": "2026-07-06T20:28:00Z",
+      "pushed_at": "2026-07-10T03:34:02Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -517,7 +529,7 @@
       "description": "Take it with you. Capture a feature out of one repo as a portable bundle; plant it into another and adapt to the destination stack.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-taker",
       "language": "Python",
-      "pushed_at": "2026-07-06T22:27:46Z",
+      "pushed_at": "2026-07-10T03:34:11Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -529,7 +541,7 @@
       "description": "Vibe Test — diagnostic-and-retrofit testing plugin for vibe-coded apps. Canary channel for beta testers; stable channel via @626labs vibe-plugins marketplace.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-test",
       "language": "TypeScript",
-      "pushed_at": "2026-07-06T20:28:31Z",
+      "pushed_at": "2026-07-10T03:34:00Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -541,7 +553,7 @@
       "description": "Start with a strong stance before you even ask for a line of code",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Thesis",
       "language": "JavaScript",
-      "pushed_at": "2026-06-09T18:04:43Z",
+      "pushed_at": "2026-07-10T03:35:24Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -553,7 +565,7 @@
       "description": "Vibe-Walk — generate user onboarding for your app, but only when it earns one. A 626Labs vibe-* plugin.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Walk",
       "language": "Python",
-      "pushed_at": "2026-06-10T04:20:09Z",
+      "pushed_at": "2026-07-10T03:34:14Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -565,7 +577,7 @@
       "description": "Session wrap-up that reads the breadcrumb trail your toolkit already left — surfaces what shipped, what's uncommitted, what's unpushed, and gates commit + push interactively.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-wrap",
       "language": "Python",
-      "pushed_at": "2026-07-06T20:28:05Z",
+      "pushed_at": "2026-07-10T03:34:17Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
