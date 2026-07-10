@@ -556,9 +556,10 @@ def render_product_foot(p: dict) -> str:
     meta = p.get("meta", "")
 
     if product_page:
+        label = p.get("productPageLabel") or "Open product page"
         link = (
             f'<a class="product-link" href="{attr(product_page)}">'
-            "Open product page "
+            f"{esc(label)} "
             '<svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>'
             "</a>"
         )
