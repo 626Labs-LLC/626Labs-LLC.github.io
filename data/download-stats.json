@@ -241,8 +241,55 @@
       ]
     },
     "estevanhernandez-stack-ed/ROROROblox": {
-      "total": 2432,
+      "total": 1850,
       "releases": [
+        {
+          "tag": "v1.11.1.0",
+          "published": "2026-07-11",
+          "total": 23,
+          "assets": {
+            "plugins-catalog.json": 0,
+            "RELEASES": 0,
+            "releases.win.json": 0,
+            "roblox-compat.json": 22,
+            "RORORO-1.11.1-delta.nupkg": 0,
+            "RORORO-1.11.1-full.nupkg": 0,
+            "RORORO-win-Portable.zip": 0,
+            "RORORO-win-Setup.exe": 1
+          }
+        },
+        {
+          "tag": "v1.11.0.0",
+          "published": "2026-07-11",
+          "prerelease": true,
+          "total": 5,
+          "assets": {
+            "plugins-catalog.json": 0,
+            "RELEASES": 0,
+            "releases.win.json": 1,
+            "roblox-compat.json": 3,
+            "RORORO-1.11.0-delta.nupkg": 0,
+            "RORORO-1.11.0-full.nupkg": 1,
+            "RORORO-win-Portable.zip": 0,
+            "RORORO-win-Setup.exe": 0
+          }
+        },
+        {
+          "tag": "v1.10.0.0",
+          "published": "2026-07-10",
+          "prerelease": true,
+          "total": 3,
+          "assets": {
+            "plugins-catalog.json": 0,
+            "RELEASES": 0,
+            "releases.win.json": 0,
+            "roblox-compat.json": 1,
+            "RORORO-1.10.0-delta.nupkg": 0,
+            "RORORO-1.10.0-full.nupkg": 0,
+            "RORORO-win-Portable.zip": 2,
+            "RORORO-win-Setup.exe": 0
+          }
+        },
         {
           "tag": "v1.9.1.0",
           "published": "2026-07-07",
@@ -263,7 +310,7 @@
           "tag": "v1.9.0.0",
           "published": "2026-07-06",
           "prerelease": true,
-          "total": 4,
+          "total": 5,
           "assets": {
             "plugins-catalog.json": 0,
             "RELEASES": 0,
@@ -272,31 +319,31 @@
             "RORORO-1.9.0-delta.nupkg": 0,
             "RORORO-1.9.0-full.nupkg": 0,
             "RORORO-win-Portable.zip": 0,
-            "RORORO-win-Setup.exe": 4
+            "RORORO-win-Setup.exe": 5
           }
         },
         {
           "tag": "v1.8.0.0",
           "published": "2026-07-02",
-          "total": 795,
+          "total": 140,
           "assets": {
-            "plugins-catalog.json": 9,
+            "plugins-catalog.json": 10,
             "RELEASES": 0,
-            "releases.win.json": 29,
-            "roblox-compat.json": 747,
+            "releases.win.json": 36,
+            "roblox-compat.json": 81,
             "RORORO-1.8.0-delta.nupkg": 0,
-            "RORORO-1.8.0-full.nupkg": 4,
+            "RORORO-1.8.0-full.nupkg": 6,
             "RORORO-win-Portable.zip": 1,
-            "RORORO-win-Setup.exe": 5
+            "RORORO-win-Setup.exe": 6
           }
         },
         {
           "tag": "untagged-c68c6274cb58fbbfbb95",
           "published": "2026-06-13",
-          "total": 119,
+          "total": 126,
           "assets": {
             "RELEASES": 1,
-            "releases.win.json": 82,
+            "releases.win.json": 89,
             "RORORO-1.4.3-delta.nupkg": 1,
             "RORORO-1.4.3-full.nupkg": 2,
             "RORORO-win-Portable.zip": 1,
@@ -306,11 +353,11 @@
         {
           "tag": "v1.7.0.0",
           "published": "2026-05-29",
-          "total": 596,
+          "total": 603,
           "assets": {
             "dev-cert.cer": 1,
             "RELEASES": 1,
-            "releases.win.json": 96,
+            "releases.win.json": 103,
             "roblox-compat.json": 479,
             "RORORO-1.7.0-delta.nupkg": 1,
             "RORORO-1.7.0-full.nupkg": 2,
@@ -322,11 +369,11 @@
         {
           "tag": "v1.6.0.0",
           "published": "2026-05-21",
-          "total": 111,
+          "total": 118,
           "assets": {
             "dev-cert.cer": 0,
             "RELEASES": 0,
-            "releases.win.json": 104,
+            "releases.win.json": 111,
             "roblox-compat.json": 1,
             "RORORO-1.6.0-delta.nupkg": 0,
             "RORORO-1.6.0-full.nupkg": 1,
@@ -338,11 +385,11 @@
         {
           "tag": "v1.5.0.0",
           "published": "2026-05-21",
-          "total": 106,
+          "total": 113,
           "assets": {
             "dev-cert.cer": 0,
             "RELEASES": 0,
-            "releases.win.json": 105,
+            "releases.win.json": 112,
             "RORORO-1.5.0-delta.nupkg": 0,
             "RORORO-1.5.0-full.nupkg": 1,
             "RORORO-Sideload.msix": 0,
@@ -353,12 +400,12 @@
         {
           "tag": "v1.4.2.0",
           "published": "2026-05-14",
-          "total": 132,
+          "total": 138,
           "assets": {
             "assets.win.json": 0,
             "dev-cert.cer": 0,
             "RELEASES": 0,
-            "releases.win.json": 115,
+            "releases.win.json": 121,
             "RORORO-1.4.2-delta.nupkg": 0,
             "RORORO-1.4.2-full.nupkg": 1,
             "RORORO-Sideload.msix": 0,
@@ -369,11 +416,11 @@
         {
           "tag": "v1.4.1.0",
           "published": "2026-05-12",
-          "total": 125,
+          "total": 130,
           "assets": {
             "dev-cert.cer": 0,
             "RELEASES": 0,
-            "releases.win.json": 119,
+            "releases.win.json": 124,
             "RORORO-1.4.1-delta.nupkg": 0,
             "RORORO-1.4.1-full.nupkg": 3,
             "RORORO-Sideload.msix": 0,
@@ -384,11 +431,11 @@
         {
           "tag": "v1.4.0.0",
           "published": "2026-05-11",
-          "total": 121,
+          "total": 123,
           "assets": {
             "dev-cert.cer": 0,
             "RELEASES": 0,
-            "releases.win.json": 119,
+            "releases.win.json": 121,
             "RORORO-1.4.0-delta.nupkg": 1,
             "RORORO-1.4.0-full.nupkg": 1,
             "RORORO-Sideload.msix": 0,
@@ -703,14 +750,14 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-mac": {
-      "total": 281,
+      "total": 282,
       "releases": [
         {
           "tag": "v0.7.0",
           "published": "2026-05-13",
-          "total": 32,
+          "total": 33,
           "assets": {
-            "RORORO.pkg": 32
+            "RORORO.pkg": 33
           }
         },
         {
