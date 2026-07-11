@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Conundrum by Este · merch built by a machine · 626 Labs</title>
+<meta name="description" content="Conundrum by Este is the 626 Labs merch shop — streetwear-grade prints designed by an AI pipeline and shipped print-on-demand. Socks, joggers, totes, hats. Every design AI-generated, human-approved." />
+<meta property="og:title" content="Conundrum by Este — merch built by a machine" />
+<meta property="og:description" content="The 626 Labs merch shop. AI-designed, human-approved, print-on-demand. See what's selling and the nine-stage pipeline behind it." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://626labs.dev/conundrum.html" />
+<meta property="og:image" content="https://626labs.dev/assets/thumb-conundrum.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="favicon-626.png" />
+
+<style>
+  /* ---------- Web fonts ---------- */
+  @import url('/fonts/fonts.css');
+
+  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
+  :root {
+    --brand-navy:        #192e44;
+    --brand-navy-deep:   #0f1f31;
+    --brand-cyan:        #17d4fa;
+    --brand-cyan-bright: #5ce6ff;
+    --brand-magenta:     #f22f89;
+
+    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
+
+    --ink-0:   #ffffff;
+    --ink-200: #c4cdda;
+    --ink-300: #a4aebd;
+    --ink-400: #99a4b4;
+
+    --fg-1: var(--ink-0);
+    --fg-2: var(--ink-200);
+    --fg-3: var(--ink-300);
+    --fg-muted: var(--ink-400);
+
+    --bg-0: var(--brand-navy-deep);
+
+    --border-1: rgba(255,255,255,.08);
+    --border-2: rgba(255,255,255,.14);
+
+    --r-md: 10px;
+    --r-lg: 14px;
+
+    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --ease-out: cubic-bezier(.2,.7,.2,1);
+    --dur-fast: 120ms;
+    --dur-med: 220ms;
+  }
+
+  html, body { margin:0; padding:0; min-height:100vh; }
+  body{
+    background: var(--bg-0);
+    color:var(--fg-1);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  *{ box-sizing:border-box; }
+  a{ color:var(--brand-cyan); }
+
+  .grid-bg{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+  }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-bottom: 1px solid var(--border-1);
+  }
+  .topnav-inner{
+    max-width: 1180px; margin: 0 auto; padding: 14px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em;
+  }
+  .brand{
+    display:inline-flex; align-items:center; gap:10px;
+    color: var(--fg-1); text-decoration:none;
+    text-transform: uppercase; font-weight:600; letter-spacing:.18em;
+  }
+  .brand .mark{ width:20px; height:20px; display:block; }
+  .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; align-items:center; }
+  .topnav .links a{ color:var(--fg-3); text-decoration:none; transition: color var(--dur-fast); }
+  .topnav .links a:hover{ color: var(--brand-cyan); }
+  .topnav .links a.cta{ color: var(--brand-cyan); }
+
+  /* ---------- Layout ---------- */
+  .wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding: 56px 32px 72px; }
+
+  /* ---------- Hero ---------- */
+  .hero{ display:flex; flex-wrap:wrap; align-items:center; gap:28px 48px; margin-bottom:56px; }
+  .hero .logo{ width:min(220px, 40vw); height:auto; }
+  .hero h1{
+    font-family:var(--font-display); font-weight:700;
+    font-size: clamp(30px, 4.5vw, 46px); line-height:1.08; margin:0 0 12px;
+  }
+  .hero h1 em{ font-style:normal; background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero .house{ font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--fg-muted); margin:0 0 14px; }
+  .hero p.dek{ max-width:640px; color:var(--fg-2); font-size:16px; line-height:1.65; margin:0 0 22px; }
+  .shop-cta{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--font-mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase;
+    color:#04121b; background:var(--brand-cyan); text-decoration:none;
+    padding:12px 22px; border-radius:var(--r-md); font-weight:600;
+    transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-fast);
+  }
+  .shop-cta:hover{ transform: translateY(-1px); }
+
+  /* ---------- Gallery ---------- */
+  .section-eyebrow{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--brand-cyan); margin:0 0 8px;
+  }
+  h2{ font-family:var(--font-display); font-weight:700; font-size:clamp(22px,3vw,30px); margin:0 0 10px; }
+  .section-lead{ color:var(--fg-2); max-width:640px; line-height:1.65; margin:0 0 26px; }
+
+  .merch-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+    gap:22px; margin-bottom:64px;
+  }
+  .merch-card{
+    position:relative; display:block; text-decoration:none;
+    border:1px solid var(--border-1); border-radius:var(--r-lg);
+    overflow:hidden; background:#0b1622;
+    transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-med);
+  }
+  .merch-card:hover{ transform:translateY(-3px); border-color:var(--brand-cyan); }
+  .merch-img{ width:100%; aspect-ratio:1/1; object-fit:cover; display:block; }
+  .merch-chip{
+    position:absolute; top:12px; left:12px;
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:#04121b; background:var(--brand-cyan);
+    padding:4px 9px; border-radius:999px; font-weight:600;
+  }
+  .merch-meta{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:14px 16px; }
+  .merch-title{ color:var(--fg-1); font-size:14px; font-weight:600; line-height:1.35; }
+  .merch-price{ font-family:var(--font-mono); color:var(--brand-magenta); font-size:13px; white-space:nowrap; }
+
+  /* ---------- The machine ---------- */
+  .machine{ border-top:1px solid var(--border-1); padding-top:48px; }
+  .stages{
+    display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 26px; padding:0; list-style:none;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
+  }
+  .stages li{
+    color:var(--fg-2); border:1px solid var(--border-2); border-radius:999px;
+    padding:7px 14px; background:rgba(25,46,68,.5);
+  }
+  .stages li b{ color:var(--brand-cyan); font-weight:500; margin-right:6px; }
+  .pull{
+    border-left:2px solid var(--brand-magenta); margin:26px 0; padding:6px 0 6px 18px;
+    font-family:var(--font-display); font-size:18px; color:var(--fg-1); max-width:560px; line-height:1.5;
+  }
+  .machine p{ color:var(--fg-2); max-width:680px; line-height:1.7; }
+  .repo-cta{
+    display:inline-flex; align-items:center; gap:10px; margin-top:18px;
+    font-family:var(--font-mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--brand-cyan); text-decoration:none;
+    border:1px solid var(--brand-cyan); padding:11px 20px; border-radius:var(--r-md);
+    transition: box-shadow var(--dur-med) var(--ease-out);
+  }
+  .repo-cta .ic{ width:16px; height:16px; stroke:currentColor; stroke-width:2; fill:none; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--border-1); margin-top:72px; padding:26px 32px;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--fg-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    max-width:1180px; margin-left:auto; margin-right:auto;
+  }
+  footer a{ color:var(--fg-3); text-decoration:none; }
+  footer a:hover{ color:var(--brand-cyan); }
+
+  @media (max-width:640px){
+    .topnav-inner{ padding:12px 18px; }
+    .wrap{ padding:40px 18px 56px; }
+    .hero{ gap:20px; }
+  }
+
+  /* ==================================================================
+     Phosphor Blueprint treatment — the drawing is the monitor.
+     Same override-block pattern as mod-launcher-games.html.
+     ================================================================== */
+  :root {
+    --pb-field: rgb(0,0,0);
+    --pb-grid-fine: rgba(23,212,250,.05);
+    --pb-grid-coarse: rgba(23,212,250,.11);
+    --pb-scanline: rgba(0,0,0,.42);
+    --pb-panel: rgba(0,0,0,.72);
+    --pb-panel-border: rgba(23,212,250,.25);
+    --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
+    --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+
+    --bg-0: var(--pb-field);
+    --border-1: rgba(23,212,250,.14);
+    --border-2: rgba(23,212,250,.25);
+  }
+
+  .pb-scanlines {
+    position: fixed; inset: 0; pointer-events: none; z-index: 60;
+    background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+  }
+
+  body {
+    background:
+      linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
+      linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
+      linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
+      linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
+      var(--pb-field);
+    background-size: 56px 56px, 56px 56px, 280px 280px, 280px 280px, auto;
+  }
+
+  .topnav { background: rgba(0,0,0,.72); border-bottom-color: var(--pb-panel-border); }
+  .stages li, .merch-card { background: var(--pb-panel); }
+  h1 { text-shadow: var(--pb-bloom-cyan); }
+  .shop-cta:hover, .repo-cta:hover { box-shadow: var(--pb-trail); }
+
+  /* Crisp-lift: product photography plays scanline-free (overlay is 60);
+     the nav rides at 70 and carries its own scanlines so it still reads
+     CRT while covering the lifted gallery on scroll. Same pattern as the
+     Bacon Trail quiz (PR #78). */
+  .merch-grid { position: relative; z-index: 61; }
+  .topnav { z-index: 70; }
+  .topnav::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+  }
+</style>
+</head>
+<body>
+
+<div class="pb-scanlines" aria-hidden="true"></div>
+<div class="grid-bg" aria-hidden="true"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html"><img class="mark" src="assets/conundrum-logo.png" alt="" />626 Labs</a>
+    <div class="links">
+      <a href="index.html#work">Products</a>
+      <a href="index.html#thinking">Field Notes</a>
+      <a class="cta" href="#" id="nav-shop" data-etsy="shop">Shop on Etsy</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- Hero: Conundrum voice -->
+  <section class="hero">
+    <img class="logo" src="assets/conundrum-logo.png" alt="Conundrum by Este logo" />
+    <div>
+      <p class="house">626 Labs presents</p>
+      <h1>Conundrum <em>by Este</em></h1>
+      <p class="dek">Merch with a plot twist: every design here came out of a machine
+        that was taught taste. Bold prints, zero clip-art energy, socks that go
+        harder than they need to. AI-generated, human-approved, printed on demand.</p>
+      <a class="shop-cta" href="#" id="hero-shop" data-etsy="shop">Shop on Etsy</a>
+    </div>
+  </section>
+
+  <!-- Gallery: Conundrum voice, renderer-owned -->
+  <section>
+    <p class="section-eyebrow">The lineup</p>
+    <h2>What's moving</h2>
+    <p class="section-lead">Ordered by what actually sells and gets seen — not by
+      what we're precious about. Tap through to the listing.</p>
+    <div class="merch-grid">
+      <!-- SITE_JSON:conundrum-products:start -->
+      <!-- SITE_JSON:conundrum-products:end -->
+    </div>
+  </section>
+
+  <!-- The machine: 626 voice -->
+  <section class="machine">
+    <p class="section-eyebrow">The machine behind it</p>
+    <h2>Nine stages, concept to listing</h2>
+    <p>Every product in the shop rode the same pipeline: a Python script library
+      that takes a concept to a live Etsy listing with a human approval gate at
+      the end. Gemini generates the art, a QA pass filters the AI slop, classical
+      CV cuts the background, PIL composites the type, and one base artwork fans
+      out into a full variant matrix before anything uploads.</p>
+    <ul class="stages">
+      <li><b>01</b>concept</li>
+      <li><b>02</b>generate — textless, always</li>
+      <li><b>03</b>QA — the AI-slop filter</li>
+      <li><b>04</b>background removal</li>
+      <li><b>05</b>text composite</li>
+      <li><b>06</b>variant matrix</li>
+      <li><b>07</b>upload</li>
+      <li><b>08</b>create product</li>
+      <li><b>09</b>publish — human go required</li>
+    </ul>
+    <p class="pull">The model never writes the words. Art generates textless;
+      type gets composited after — so the lettering is always real.</p>
+    <p>The pipeline is being cleaned up for a public release. When it ships,
+      the code lands here.</p>
+    <!-- SITE_JSON:conundrum-repo:start -->
+    <!-- SITE_JSON:conundrum-repo:end -->
+  </section>
+
+</main>
+
+<footer>
+  <span>Conundrum by Este x 626 Labs</span>
+  <span><a href="index.html">626labs.dev</a> · Imagine Something Else.</span>
+</footer>
+
+<script>
+(function () {
+  // The shop URL lives in one place: swap SHOP_URL at Task 5 render time is NOT
+  // needed — it is baked here once, from site.json's conundrum.etsyUrl.
+  var SHOP_URL = 'ETSY_SHOP_URL_PLACEHOLDER';
+  document.getElementById('hero-shop').href = SHOP_URL;
+  document.getElementById('nav-shop').href = SHOP_URL;
+
+  // Outbound Etsy click events -> GoatCounter (event paths: etsy-click/<slug>).
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[data-etsy]') : null;
+    if (!a || !window.goatcounter || !window.goatcounter.count) return;
+    window.goatcounter.count({
+      path: 'etsy-click/' + a.getAttribute('data-etsy'),
+      title: 'Etsy click: ' + a.getAttribute('data-etsy'),
+      event: true,
+    });
+  });
+})();
+</script>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
