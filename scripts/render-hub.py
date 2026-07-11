@@ -46,6 +46,7 @@ import site_facts  # sibling module in scripts/ (added to sys.path when run as a
 ROOT = Path(__file__).resolve().parent.parent
 SITE_JSON = ROOT / "content" / "site.json"
 INDEX_HTML = ROOT / "index.html"
+CONUNDRUM_HTML = ROOT / "conundrum.html"
 STORIES_DIR = ROOT / "content" / "stories"
 # Local Field Notes render to on-site reading pages under here:
 # editorial/<slug>/index.html, served at /editorial/<slug>/.
@@ -1752,6 +1753,21 @@ def main(argv: list[str]) -> int:
         out = substitute_zone(out, "contact", render_contact(content["contact"]))
     out = apply_section_toggles(out, content.get("sections") or {})
 
+    # conundrum.html — shop page zones (gallery + repo CTA). Only when the
+    # conundrum key exists; the page and key ship together.
+    conundrum_new = conundrum_old = None
+    if "conundrum" in content:
+        conundrum_old = CONUNDRUM_HTML.read_text(encoding="utf-8")
+        conundrum_new = substitute_zone(
+            conundrum_old, "conundrum-products",
+            render_conundrum_products(content["conundrum"]),
+        )
+        conundrum_new = substitute_zone(
+            conundrum_new, "conundrum-repo",
+            render_conundrum_repo(content["conundrum"]),
+        )
+    conundrum_changed = conundrum_new is not None and conundrum_new != conundrum_old
+
     feed_new = render_atom_feed(stories)
     feed_old = FEED_PATH.read_text(encoding="utf-8") if FEED_PATH.exists() else None
 
@@ -1773,7 +1789,8 @@ def main(argv: list[str]) -> int:
     if "--check" in argv:
         stale = [name for name, drifted in
                  (("index.html", index_changed), ("feed.xml", feed_changed),
-                  ("sitemap.xml", sitemap_changed)) if drifted]
+                  ("sitemap.xml", sitemap_changed),
+                  ("conundrum.html", conundrum_changed)) if drifted]
         stale += [p.relative_to(ROOT).as_posix() for p in stale_stories]
         stale += [f"{d.relative_to(ROOT).as_posix()}/ (orphaned — prune)" for d in orphans]
         if stale:
@@ -1794,6 +1811,10 @@ def main(argv: list[str]) -> int:
         print(f"index.html rebuilt from {SITE_JSON.relative_to(ROOT)}")
     else:
         print("index.html already matches content/site.json — no change.")
+
+    if conundrum_changed:
+        CONUNDRUM_HTML.write_text(conundrum_new, encoding="utf-8")
+        print("conundrum.html zones rebuilt from content/site.json")
 
     if feed_changed:
         FEED_PATH.write_text(feed_new, encoding="utf-8")
