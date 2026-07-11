@@ -31,6 +31,10 @@ split is documented in POD_Pipeline's CLAUDE.md and is load-bearing for this des
    sanitization completes. Two announce beats.
 5. **Scope amendment:** GoatCounter outbound-click events on Etsy links are IN
    scope (~10 lines, no new services). Everything else in Out of Scope stays out.
+6. **Gallery ordering is performance-informed (Este, spec review):** default
+   order = what actually sells and gets seen, not aesthetic preference. See
+   "Performance-informed ordering" below. Keeping the ranking fresh over time is
+   an acknowledged open question — deliberately deferred, not designed now.
 
 ## Page structure — conundrum.html
 
@@ -66,7 +70,8 @@ New top-level `conundrum` key:
       "title": "Fire & Ice Spider Monster Joggers",
       "price": "$46.99",
       "image": "assets/screenshots/conundrum/fire-ice-joggers.jpg",
-      "etsyListing": "https://www.etsy.com/listing/…"
+      "etsyListing": "https://www.etsy.com/listing/…",
+      "chip": "recently sold"
     }
   ]
 }
@@ -76,8 +81,42 @@ New top-level `conundrum` key:
   listing page at build time and confirm with Este before merge.
 - `repoUrl`: null until the public pipeline repo ships; then set → rebuild → the
   repo CTA appears. Phase 2 is this one field.
-- `products[]`: curated by hand (Remy handoff or admin edit). Images live under
+- `products[]`: curated by hand (Remy handoff or admin edit). **Array order is
+  the display order** — the ranking IS the curation. Images live under
   `assets/screenshots/conundrum/` so the admin uploader stays compatible.
+- `chip` (optional): short performance label rendered on the card — "recently
+  sold", "most viewed". A label, never a number (see Copy rules).
+
+## Performance-informed ordering
+
+Este's directive: the top of the gallery reflects what's actually selling and
+getting seen. Defaults, in priority order:
+
+1. **Recent sales first.** Items with recent sales rank above everything else,
+   most recent first.
+2. **Views as tiebreaker / filler.** Among the rest, most-viewed (Etsy Shop
+   Manager stats) rank higher.
+
+Data sources — and where each one runs:
+
+- **Sales: programmatic, pipeline-side.** Printify's orders endpoint
+  (`/shops/{shop_id}/orders.json`) sees every sale; `PRINTIFY_TOKEN` already
+  lives in POD_Pipeline. A small helper there (a `pod`-style verb) pulls recent
+  orders, maps them to listings, and emits a ranked ordering (or the reordered
+  `products[]` snippet) for pasting into site.json. **Secrets never enter the
+  hub repo** — the pipeline computes, the site consumes committed data.
+- **Views: manual, Etsy Shop Manager.** No public API without Etsy app approval.
+  Este reads the numbers off the dashboard when (re)ordering. Fine for a
+  curated gallery that refreshes on drops.
+
+For v1 launch the initial order is set manually from Shop Manager stats; the
+pipeline helper can land with v1 or trail it — it changes the refresh workflow,
+not the page.
+
+**Freshness (deferred):** performance-ranked defaults are self-entrenching — top
+items get the clicks, clicks feed the ranking. How to keep the gallery fresh
+(rotation slots, "new drop" pinning, decay windows) is a follow-up discussion
+after v1 ships with real click data from the GoatCounter events.
 
 ## Grid card — index.html (via site.json)
 
@@ -111,6 +150,7 @@ path as index.html. Consequences that come free:
 
 - **No counts baked into copy** ("9 products", "14 socks") — the catalog churns
   with Etsy renewal-fee cuts; stale numbers on a shop page read worse than none.
+  Performance chips follow the same rule: "recently sold" yes, "12 sold" no.
 - Conundrum voice in hero + gallery; 626 voice in the machine section.
 - Listing titles quoted verbatim from Etsy where shown.
 - No emoji (site surface).
@@ -146,10 +186,12 @@ path as index.html. Consequences that come free:
 ## Inputs needed before/at build
 
 - Etsy shop URL (derive from live listing, confirm with Este).
-- Curated product picks: 6–9 heroes. Reassessment keepers are the starting
-  slate: Fire & Ice Spider Monster Joggers, Watercolor x Neon Spider Monster
-  Joggers, Fire & Ice Spider Monster Shorts, the 8 meme socks (subset). Final
-  slate confirmed with Este at implementation.
+- Curated product picks: 6–9 heroes, **ordered by the performance defaults**
+  (recent sales first, then views — read from Etsy Shop Manager for v1).
+  Reassessment keepers are the candidate slate: Fire & Ice Spider Monster
+  Joggers, Watercolor x Neon Spider Monster Joggers, Fire & Ice Spider Monster
+  Shorts, the 8 meme socks (subset). Final slate + order confirmed with Este at
+  implementation.
 - Product mockup images exported from Printify (manual pull, committed to
   `assets/screenshots/conundrum/`).
 - Conundrum logo cut copied from POD_Pipeline into `assets/`.
