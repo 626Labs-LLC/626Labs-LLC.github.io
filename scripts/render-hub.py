@@ -110,7 +110,7 @@ def substitute_zone(source: str, zone: str, rendered: str, js: bool = False) -> 
         )
     match = pattern.search(source)
     if not match:
-        raise RuntimeError(f"zone marker not found in index.html: {zone!r}")
+        raise RuntimeError(f"zone marker not found: {zone!r}")
 
     start_marker = match.group(1)
     end_marker = match.group(3)
@@ -276,6 +276,12 @@ PRODUCT_SIGILS = {
         '<svg class="ic-lg ic" viewBox="0 0 24 24">'
         '<path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z"/>'
         '<circle cx="18.5" cy="5.5" r="1.3"/></svg>'
+    ),
+    "conundrum": (
+        # Price tag outline + punch hole
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.83z"/>'
+        '<path d="M7 7h.01"/></svg>'
     ),
 }
 
@@ -621,7 +627,7 @@ def render_conundrum_products(conundrum: dict) -> str:
             f'target="_blank" rel="noopener" '
             f'data-etsy="{attr(_etsy_slug(p.get("title")))}">\n'
             f'  <img class="merch-img" src="{attr(p.get("image"))}" '
-            f'alt="{attr(p.get("title"))}" loading="lazy" />{chip}\n'
+            f'alt="" loading="lazy" />{chip}\n'
             f'  <div class="merch-meta">\n'
             f'    <div class="merch-title">{esc(p.get("title"))}</div>\n'
             f'    <div class="merch-price">{esc(p.get("price"))}</div>\n'

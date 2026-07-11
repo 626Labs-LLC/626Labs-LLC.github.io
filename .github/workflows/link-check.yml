@@ -51,6 +51,7 @@ jobs:
             --exclude '^https?://medium\.com/@'
             --exclude '^https?://github\.com/.*/settings/?$'
             --exclude '^https?://(www\.)?themoviedb\.org/settings/'
+            --exclude '^https?://www\.etsy\.com/'
             --accept '200,204,301,302,307,308,429'
             './**/*.html'
             './**/*.md'
