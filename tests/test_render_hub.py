@@ -65,3 +65,67 @@ def test_sitemap_honors_exclude(tmp_path, monkeypatch):
     monkeypatch.setattr(render_hub, "SITEMAP_EXCLUDE", frozenset({"drafts"}))
     xml = render_hub.render_sitemap(root=tmp_path)
     assert "drafts" not in xml
+
+
+# ─── conundrum shop page zones ──────────────────────────────────────
+
+def _conundrum(**over):
+    base = {
+        "etsyUrl": "https://www.etsy.com/shop/ConundrumByEste",
+        "repoUrl": None,
+        "products": [
+            {
+                "title": "Fire & Ice Spider Monster Joggers",
+                "price": "$46.99",
+                "image": "assets/screenshots/conundrum/fire-ice-spider-monster-joggers.jpg",
+                "etsyListing": "https://www.etsy.com/listing/111",
+                "chip": "recently sold",
+            },
+            {
+                "title": "Not My Problem Penguin Crew Socks",
+                "price": "$21.99",
+                "image": "assets/screenshots/conundrum/not-my-problem-penguin-crew-socks.jpg",
+                "etsyListing": "https://www.etsy.com/listing/222",
+            },
+        ],
+    }
+    base.update(over)
+    return base
+
+
+def test_conundrum_products_renders_cards_in_array_order():
+    html = render_hub.render_conundrum_products(_conundrum())
+    assert html.count('class="merch-card"') == 2
+    assert html.index("Fire &amp; Ice") < html.index("Penguin")
+    assert 'href="https://www.etsy.com/listing/111"' in html
+    assert 'src="assets/screenshots/conundrum/fire-ice-spider-monster-joggers.jpg"' in html
+    assert "$46.99" in html
+
+
+def test_conundrum_products_chip_is_optional():
+    html = render_hub.render_conundrum_products(_conundrum())
+    assert html.count('class="merch-chip"') == 1
+    assert "recently sold" in html
+
+
+def test_conundrum_products_slugs_data_etsy():
+    html = render_hub.render_conundrum_products(_conundrum())
+    assert 'data-etsy="fire-ice-spider-monster-joggers"' in html
+
+
+def test_conundrum_products_empty_list_renders_nothing():
+    assert render_hub.render_conundrum_products(_conundrum(products=[])) == ""
+
+
+def test_conundrum_repo_collapses_when_null():
+    assert render_hub.render_conundrum_repo(_conundrum()) == ""
+    assert render_hub.render_conundrum_repo(_conundrum(repoUrl="")) == ""
+
+
+def test_conundrum_repo_renders_when_set():
+    html = render_hub.render_conundrum_repo(
+        _conundrum(repoUrl="https://github.com/626Labs-LLC/pod-pipeline")
+    )
+    assert 'href="https://github.com/626Labs-LLC/pod-pipeline"' in html
+    assert 'class="repo-cta"' in html
+    assert "Read the code" in html

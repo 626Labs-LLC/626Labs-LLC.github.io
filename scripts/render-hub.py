@@ -596,6 +596,56 @@ def render_product_foot(p: dict) -> str:
         </div>"""
 
 
+# ─── conundrum shop page (conundrum.html zones) ─────────────────────
+def _etsy_slug(title: str) -> str:
+    """Stable slug for GoatCounter etsy-click event paths."""
+    return re.sub(r"[^a-z0-9]+", "-", (title or "").lower()).strip("-")
+
+
+def render_conundrum_products(conundrum: dict) -> str:
+    """Gallery cards for the SITE_JSON:conundrum-products zone.
+
+    Array order IS display order (performance-ranked upstream). Chips are
+    optional labels, never numbers.
+    """
+    cards = []
+    for p in conundrum.get("products") or []:
+        chip = (
+            f'\n  <span class="merch-chip">{esc(p.get("chip"))}</span>'
+            if p.get("chip")
+            else ""
+        )
+        cards.append(
+            f'<a class="merch-card" href="{attr(p.get("etsyListing"))}" '
+            f'target="_blank" rel="noopener" '
+            f'data-etsy="{attr(_etsy_slug(p.get("title")))}">\n'
+            f'  <img class="merch-img" src="{attr(p.get("image"))}" '
+            f'alt="{attr(p.get("title"))}" loading="lazy" />{chip}\n'
+            f'  <div class="merch-meta">\n'
+            f'    <div class="merch-title">{esc(p.get("title"))}</div>\n'
+            f'    <div class="merch-price">{esc(p.get("price"))}</div>\n'
+            f"  </div>\n"
+            f"</a>"
+        )
+    return "\n".join(cards)
+
+
+def render_conundrum_repo(conundrum: dict) -> str:
+    """Repo CTA for the SITE_JSON:conundrum-repo zone.
+
+    Collapses to nothing while repoUrl is unset — no placeholder ships.
+    """
+    repo = (conundrum.get("repoUrl") or "").strip()
+    if not repo:
+        return ""
+    return (
+        f'<a class="repo-cta" href="{attr(repo)}" target="_blank" '
+        f'rel="noopener" data-etsy="repo">Read the code '
+        '<svg class="ic arrow" viewBox="0 0 24 24">'
+        '<path d="M5 12h14M13 5l7 7-7 7"/></svg></a>'
+    )
+
+
 def render_product(p: dict) -> str:
     flagship = bool(p.get("flagship"))
     wip = p.get("status") == "wip"
