@@ -191,6 +191,7 @@ hand-edit the bundle output at `widget-bacon-trail/`.
 | Regenerate a brand banner / icon | `python3 scripts/export-brand.py` |
 | Check why the site looks stale | `python3 scripts/render-hub.py --check` |
 | See bot run status | Admin → Ops tab |
+| Ship a new top-level page | Merge (the sitemap updates itself) → then GSC: URL Inspection → Request Indexing for the new URL at search.google.com/search-console. Agents: list the new public URL(s) in every ship report — this step is part of the workflow, not optional polish. Sitemap re-submission is never needed (same URL; Google re-reads it). |
 
 ---
 
