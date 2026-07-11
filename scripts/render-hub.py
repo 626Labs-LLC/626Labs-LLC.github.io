@@ -283,6 +283,13 @@ PRODUCT_SIGILS = {
         '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.83z"/>'
         '<path d="M7 7h.01"/></svg>'
     ),
+    "pod-pipeline": (
+        # Stacked layers — one artwork fanning into a variant matrix
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<path d="M12 2L2 7l10 5 10-5-10-5z"/>'
+        '<path d="M2 17l10 5 10-5"/>'
+        '<path d="M2 12l10 5 10-5"/></svg>'
+    ),
 }
 
 # Flagship-only decorative preview (terminal mock + bullets), keyed by id.

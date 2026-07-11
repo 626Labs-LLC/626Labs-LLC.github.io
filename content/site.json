@@ -790,6 +790,40 @@
       "banner": "assets/thumb-conundrum.png",
       "meta": "POD merch · Etsy · AI-designed",
       "screenshots": []
+    },
+    {
+      "id": "pod-pipeline",
+      "title": "626 POD Pipeline",
+      "tagline": "Concept to live Etsy listing — nine stages, one human gate.",
+      "description": "The open-source engine behind Conundrum by Este: a Python script library that takes a concept to a live Etsy listing in nine stages. Gemini art generation, an AI-slop QA gate, classical-CV background removal, PIL type compositing, and a variant matrix that fans one artwork into a full product line before Printify upload and Etsy publish. No app server, no build step, a JSON-backed catalog — and a human go gates every publish.",
+      "tags": [
+        {
+          "label": "Python",
+          "tone": "cyan"
+        },
+        {
+          "label": "open source",
+          "tone": "magenta"
+        },
+        {
+          "label": "AI pipeline",
+          "tone": "cyan"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "626Labs-LLC/626labs-pod-pipeline",
+      "npm": null,
+      "install": null,
+      "storeUrl": null,
+      "productPage": "conundrum.html",
+      "productPageLabel": "See what it ships",
+      "banner": null,
+      "meta": "Open source · Python · Gemini + Printify",
+      "screenshots": []
     }
   ],
   "conundrum": {
