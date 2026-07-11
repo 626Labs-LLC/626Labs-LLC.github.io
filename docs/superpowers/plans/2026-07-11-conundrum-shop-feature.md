@@ -466,11 +466,10 @@ Model: `mod-launcher-games.html` (freshest standalone page — same head pattern
     text-transform:uppercase; color:var(--brand-cyan); margin:0 0 8px;
   }
   h2{ font-family:var(--font-display); font-weight:700; font-size:clamp(22px,3vw,30px); margin:0 0 10px; }
-  .section-lead{ color:var(--fg-2); max-width:640px; line-height:1.65; margin:0 0 26px; }
 
   .merch-grid{
     display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
-    gap:22px; margin-bottom:64px;
+    gap:22px; margin:18px 0 64px;
   }
   .merch-card{
     position:relative; display:block; text-decoration:none;
@@ -617,8 +616,6 @@ Model: `mod-launcher-games.html` (freshest standalone page — same head pattern
   <section>
     <p class="section-eyebrow">The lineup</p>
     <h2>What's moving</h2>
-    <p class="section-lead">Ordered by what actually sells and gets seen — not by
-      what we're precious about. Tap through to the listing.</p>
     <div class="merch-grid">
       <!-- SITE_JSON:conundrum-products:start -->
       <!-- SITE_JSON:conundrum-products:end -->
