@@ -149,12 +149,13 @@ for want in SLATE:
     })
     print(f"saved {dest}")
 
-pathlib.Path("../manifest_conundrum.json").write_text(json.dumps(manifest, indent=2))
-print("\nmanifest written NEXT TO the repo (not inside it): ../manifest_conundrum.json")
+MANIFEST = pathlib.Path(r"<scratchpad>/manifest_conundrum.json")  # controller supplies the real scratchpad path
+MANIFEST.write_text(json.dumps(manifest, indent=2))
+print(f"\nmanifest written to the session scratchpad (never the repo or Projects root): {MANIFEST}")
 ```
 
 Run: `python <scratchpad>/harvest_mockups.py` from the repo root.
-Expected: the visible-product list prints; extend `SLATE` to 6-9 picks using that list (favor reassessment keepers: the three spider items + best meme socks); re-run; 6-9 JPGs land in `assets/screenshots/conundrum/` and the manifest (titles, image paths, listing URLs) is written OUTSIDE the repo tree for Task 5 to consume.
+Expected: the visible-product list prints; extend `SLATE` to 6-9 picks using that list (favor reassessment keepers: the three spider items + best meme socks); re-run; 6-9 JPGs land in `assets/screenshots/conundrum/` and the manifest (titles, image paths, listing URLs) is written to the session scratchpad for Task 5 to consume.
 
 If Printify auth fails (token missing/rotated): STOP and flag to Este — do not fall back to scraping Etsy.
 
@@ -787,7 +788,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 - Regenerated: `index.html`, `sitemap.xml`, `conundrum.html` zones (by the renderer)
 
 **Interfaces:**
-- Consumes: Task 1's asset filenames + the harvest manifest (`../manifest_conundrum.json`, outside the repo); Task 4's wiring.
+- Consumes: Task 1's asset filenames + the harvest manifest (`<scratchpad>/manifest_conundrum.json`); Task 4's wiring.
 - Produces: the live data other surfaces read. Phase 2 contract: setting `conundrum.repoUrl` to the public repo URL is the ONLY edit needed to light the repo CTA.
 
 - [ ] **Step 1: Derive the shop URL**
@@ -797,7 +798,7 @@ Fetch any harvested `etsyListing` URL (plain GET, no auth) and extract the shop 
 ```python
 # <scratchpad>/shop_url.py
 import re, requests, json, pathlib
-manifest = json.loads(pathlib.Path("../manifest_conundrum.json").read_text())
+manifest = json.loads(pathlib.Path(r"<scratchpad>/manifest_conundrum.json").read_text())
 r = requests.get(manifest[0]["etsyListing"], timeout=30,
                  headers={"User-Agent": "Mozilla/5.0"})
 m = re.search(r'https://www\.etsy\.com/shop/[A-Za-z0-9]+', r.text)
