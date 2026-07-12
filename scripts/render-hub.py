@@ -290,6 +290,12 @@ PRODUCT_SIGILS = {
         '<path d="M2 17l10 5 10-5"/>'
         '<path d="M2 12l10 5 10-5"/></svg>'
     ),
+    "vibe-family": (
+        # Constellation — the family as connected stars
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<path d="M5 19l6-8 4 3 4-9"/>'
+        '<path d="M5 19h.01M11 11h.01M15 14h.01M19 5h.01"/></svg>'
+    ),
 }
 
 # Flagship-only decorative preview (terminal mock + bullets), keyed by id.
@@ -329,6 +335,42 @@ FLAGSHIP_PREVIEWS = {
             </div>
           </div>
         </div>""",
+    "vibe-family": """
+        <div class="product-preview">
+          <div class="preview-frame">
+            <div class="preview-dots"><span></span><span></span><span></span></div>
+            <div class="preview-body">
+              <div><span class="muted">/</span><span class="k">vibe-family</span> <span class="muted">// one playbook, across the family</span></div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> /plan · idea in, spec out</div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> /build · spec in, shipped code out</div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> /wrap · session closed, memory updated</div>
+              <div><span class="muted"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> /vibe-test:gate · /vibe-sec:scan · /vibe-doc:generate</span></div>
+              <div><span class="muted">shared </span><span class="k">spec</span><span class="muted"> · every plugin reads the same playbook</span></div>
+            </div>
+          </div>
+          <div class="preview-bullets">
+            <div class="preview-bullet">
+              <div class="num">01</div>
+              <div class="txt"><b>Plan.</b> Idea to shipped-app blueprint, one command chain, no lost thread.</div>
+            </div>
+            <div class="preview-bullet">
+              <div class="num">02</div>
+              <div class="txt"><b>Iterate.</b> Competitor scans, feature adds, and UX passes land as one PR and one Atlas entry.</div>
+            </div>
+            <div class="preview-bullet">
+              <div class="num">03</div>
+              <div class="txt"><b>Document.</b> Docs generate from the diff and drift-check themselves against it.</div>
+            </div>
+            <div class="preview-bullet">
+              <div class="num">04</div>
+              <div class="txt"><b>Test.</b> Coverage gates and regression checks run before the merge, not after.</div>
+            </div>
+            <div class="preview-bullet">
+              <div class="num">05</div>
+              <div class="txt"><b>Secure.</b> Secret scans and dependency audits ride the same loop, not a separate ask.</div>
+            </div>
+          </div>
+        </div>""",
 }
 
 # Badge palette defaults — matches the current hard-coded palette.
@@ -354,6 +396,7 @@ SHIELDS_RELEASE = {
 # Keyed by product id. Flagship-only.
 PRODUCT_CATEGORY_LABELS = {
     "vibe-cartographer": "SPEC-DRIVEN · SELF-EVOLVING",
+    "vibe-family": "SPEC-DRIVEN · SELF-EVOLVING · ONE PLAYBOOK",
 }
 
 # Foot-row meta text now lives on each product entry in site.json as `meta`.
