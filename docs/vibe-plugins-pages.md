@@ -25,7 +25,7 @@ This is the same no-build, inline-CSS idiom as the rest of the hub (see
      `git add assets/brand/plugins/<id>-*.png` and `git restore` the rest.
 
 2. **Add content.** In `content/plugin-pages.json`:
-   - Add the plugin to the top-level `family` array (`id`, `name`, `role`, `href: "/<id>/"`).
+   - Add the plugin to the top-level `family` array (`id`, `name`, `role`, `href: "/<id>/"`, `beat` optional — raw HTML, shown on the family index).
    - Add a `plugins.<id>` entry. Copy an existing one as the shape. Source the content from the plugin's own repo — **no fabrication**; command names, counts, and descriptions must be accurate.
 
 3. **Generate.** `python scripts/render-plugin-pages.py` writes `<id>/index.html` and refreshes `plugins/index.html` and the family section on every other page.
@@ -74,8 +74,16 @@ The generator renders some fields as **raw HTML** (so you can use `&mdash;`,
 `&rarr;`, `<strong>`, `<em>`) and others **escaped** (plain text only — entities
 would double-escape):
 
-- **Raw HTML:** `subhead`, card `desc`, card `reach`, prose `paragraphs`, `terminal.lines`.
+- **Raw HTML:** `subhead`, card `desc`, card `reach`, prose `paragraphs`, `terminal.lines`, `family[].beat`.
 - **Escaped (plain text):** `name`, `eyebrow`, all headings, card `title`, card `command`, `callout`, `mini.name`.
+
+The top-level `thesis` object (rendered by `render_thesis` onto `/plugins/#thesis`)
+follows the same split:
+
+- **Raw HTML:** `thesis.lead`, `thesis.quote`, `thesis.paragraphs[]`, `thesis.artifacts[].blurb`.
+- **Escaped (plain text):** `thesis.eyebrow`, `thesis.headline`, `thesis.cta.label`,
+  `thesis.cta.href`, `thesis.artifacts[].eyebrow`, `thesis.artifacts[].title`,
+  `thesis.artifacts[].links[].label`, `thesis.artifacts[].links[].href`.
 
 ## Terminal demo markup
 
