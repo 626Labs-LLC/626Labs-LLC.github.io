@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Foundation Wall — About The Lab treatment (626 Labs)</title>
+<!--
+  Editorial tokens: imported via ../../editorial.css, same relative path
+  contract as index.html and the sibling sheets — resolves to
+  /Design/editorial.css when served from repo root (python -m http.server
+  at repo root, browse this file under
+  /Design/explorations/2026-07-12-about-treatments/). Fonts are
+  root-absolute (/fonts/...) inside editorial.css's own @import, so they
+  resolve regardless of this file's depth.
+-->
+<link rel="stylesheet" href="../../editorial.css">
+<!--
+  AA CONTRAST — computed 2026-07-12, WCAG 2.1 relative-luminance formula
+  (L = 0.2126R + 0.7152G + 0.0722B on linearized sRGB channels; ratio =
+  (Lmax+0.05)/(Lmin+0.05)). Scope: this sheet's new --at-wall-* tokens
+  only — the --ed-* pairs are editorial.css's own contract, not re-derived
+  here (informational reuse noted at the bottom of this block).
+
+  --at-wall-brass (hex 7C5A18, muted antique bronze), used as TEXT for
+  every donor-wall-style tracked-caps element — plaque numbers, exhibit
+  captions under quotes, and the "In Honor Of" / date donor-lines. All of
+  these sit on the plaque's own surface (--ed-paper-soft, inside
+  .wall-frame) or directly on the page field (--ed-paper, header/footer):
+    vs --ed-paper       (hex F7F5F0): L(brass)=0.1166, L(paper)=0.9137      -> 5.78:1  PASS (floor 4.5:1)
+    vs --ed-paper-soft  (hex FAFAF7): L(paper-soft)=0.9541                 -> 6.03:1  PASS (floor 4.5:1)
+    vs --ed-paper-deep  (hex EFEBE2): L(paper-deep)=0.8326 — used nowhere
+      as a brass-text backdrop in this sheet, computed anyway as a floor
+      check in case a future edit reuses the divider band              -> 5.30:1  PASS (floor 4.5:1)
+  Comfortable margin above the 4.5:1 body-text floor on every paper tone
+  in editorial.css — "subtle" by hue (a bronze, not a gold), not by
+  contrast.
+
+  --at-wall-brass-bright (hex 9A7628, a lighter bronze), used ONLY for the
+  large decorative quote-mark glyph (44px, .wall-quotemark) that opens
+  each blockquote — a large-display use, never body text:
+    vs --ed-paper:      3.86:1  PASS (floor 3:1)
+    vs --ed-paper-soft: 4.02:1  PASS (floor 3:1) — its actual backdrop,
+      since the glyph always sits inside .wall-frame-inner
+    vs --ed-paper-deep: 3.53:1  PASS (floor 3:1)
+  This token FAILS the 4.5:1 body-text floor (3.86–4.02) by design — it is
+  never used below display size. Kept as a separate token from
+  --at-wall-brass rather than reusing one value at two contrast tiers, so
+  a future edit can't accidentally drop a body-text element onto it.
+
+  --at-wall-brass-line, --at-wall-brass-wash, --at-wall-plaque-shadow are
+  decorative-only (inner-frame hairline, corner rivets, kicker-band tint,
+  mounted-plaque drop shadow) — never used as text color, so no
+  text/background pair applies.
+
+  Existing --ed-* pairs reused here (informational, not re-gated):
+  --ed-ink/--ed-paper-soft ~14.6:1 (plaque titles, body prose),
+  --ed-ink-2/--ed-paper-soft ~10.7:1 (dek, values-scene passage lead),
+  --ed-ink-3/--ed-paper ~4.96:1 (header wing note, footer colophon) — all
+  clear the 4.5:1 floor at their actual sizes, per editorial.css's own
+  palette contract.
+
+  Font note: --font-serif (editorial.css) leads with 'Source Serif 4',
+  but only Inter, Space Grotesk and JetBrains Mono are self-hosted in
+  /fonts/fonts.css. Body serif here resolves to the stack's next link
+  ('Iowan Old Style' on Mac, 'Georgia' on Windows/most Linux) — a
+  pre-existing base-layer gap flagged identically by sheet-family-ledger,
+  not something introduced by this sheet.
+-->
+<style>
+  :root {
+    --at-wall-brass:         #7C5A18;             /* donor-wall text — plaque numbers, exhibit captions, donor-lines. AA-checked above. */
+    --at-wall-brass-bright:  #9A7628;              /* large-display brass — quote-mark glyph only. AA-checked above. */
+    --at-wall-brass-line:    rgba(124,90,24,.32);  /* inner-frame hairline + corner rivets, not text */
+    --at-wall-brass-wash:    rgba(124,90,24,.05);  /* kicker-band tint, not text */
+    --at-wall-plaque-shadow: rgba(15,31,49,.12);   /* mounted-plaque drop shadow, not text */
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+
+  /* ---------- Quiet back link ---------- */
+  .wall-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ed-ink-3);
+    text-decoration: none;
+    margin: 28px 0 0 24px;
+  }
+  .wall-back:hover { color: var(--ed-link-hover); }
+
+  /* ---------- Lobby header ---------- */
+  .wall-header {
+    max-width: var(--ed-page-max);
+    margin: 0 auto;
+    padding: 20px 24px 0;
+  }
+  .wall-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: var(--ed-t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    margin: 20px 0 20px;
+  }
+  .wall-title { margin-top: 0; }
+  .wall-directory {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    margin: 0 0 40px;
+  }
+  .wall-header-rule {
+    height: 1px;
+    max-width: var(--ed-page-max);
+    background: var(--ed-rule-strong);
+    margin-bottom: 8px;
+  }
+
+  /* ---------- Plaque scaffold (one per specimen section) ---------- */
+  .wall-plaque {
+    padding: 64px 24px;
+  }
+  .wall-plaque:first-of-type { padding-top: 56px; }
+
+  .wall-frame {
+    position: relative;
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 9px;
+    border: 1px solid var(--ed-rule-strong);
+    border-radius: 3px;
+    background: var(--ed-paper-soft);
+    box-shadow:
+      0 1px 2px var(--at-wall-plaque-shadow),
+      0 14px 30px -10px var(--at-wall-plaque-shadow);
+  }
+  /* Corner rivets — the plaque reads as mounted, not printed */
+  .wall-frame::before,
+  .wall-frame::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--at-wall-brass-line);
+  }
+  .wall-frame::before { left: 15px; }
+  .wall-frame::after { right: 15px; }
+
+  .wall-frame-inner {
+    border: 1px solid var(--at-wall-brass-line);
+    padding: 44px 48px 40px;
+  }
+
+  .wall-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--at-wall-brass);
+    background: var(--at-wall-brass-wash);
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 2px;
+    margin: 0 0 22px;
+  }
+
+  .wall-open {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    margin: 0 0 8px;
+  }
+
+  .wall-donor-line {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--at-wall-brass);
+    margin: 0 0 32px;
+  }
+  .wall-open + .wall-passage,
+  .wall-open + .wall-provenance {
+    margin-top: 32px;
+  }
+
+  /* ---------- Passages (body-prose quotes) ---------- */
+  .wall-passage {
+    margin: 0 0 8px;
+    padding: 0;
+    border: 0;
+    position: relative;
+  }
+  .wall-quotemark {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 44px;
+    line-height: 1;
+    color: var(--at-wall-brass-bright);
+    margin: 0 0 -8px;
+    user-select: none;
+  }
+  .wall-passage p {
+    font-family: var(--font-serif);
+    font-size: var(--ed-t-body);
+    line-height: var(--ed-lh-body);
+    color: var(--ed-ink);
+    margin: 0 0 1em;
+    text-wrap: pretty;
+    hanging-punctuation: first last;
+  }
+  .wall-passage p:last-child { margin-bottom: 0; }
+
+  /* Exhibit-label caption — sits under every quote, museum-placard style */
+  .wall-caption {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--at-wall-brass);
+    margin: 14px 0 34px;
+    padding-top: 14px;
+    border-top: 1px solid var(--ed-rule);
+  }
+  .wall-caption:last-child { margin-bottom: 0; }
+
+  /* ---------- Keystone quotes — three small plates in one plaque ---------- */
+  .wall-plate {
+    margin: 0 0 28px;
+    padding-top: 24px;
+    border-top: 2px solid var(--at-wall-brass-line);
+  }
+  .wall-plate:first-of-type { border-top: 0; padding-top: 0; }
+  .wall-plate:last-child { margin-bottom: 0; }
+  .wall-plate-quote {
+    margin: 0;
+  }
+  .wall-plate-quote p {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--ed-t-pull);
+    line-height: var(--ed-lh-pull);
+    color: var(--ed-ink);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .wall-plate .wall-caption {
+    border-top: 0;
+    padding-top: 0;
+    margin: 14px 0 0;
+  }
+
+  /* ---------- Artifact plaque — the specimen case ---------- */
+  .wall-artifact-file {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: var(--ed-ink);
+    margin: 0 0 14px;
+    word-break: break-word;
+  }
+  .wall-artifact p.wall-body {
+    font-family: var(--font-serif);
+    font-size: var(--ed-t-body);
+    line-height: var(--ed-lh-body);
+    color: var(--ed-ink);
+    margin: 0 0 24px;
+  }
+  .wall-tag {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.82em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--at-wall-brass);
+  }
+  .wall-artifact-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--at-wall-brass);
+    padding-top: 18px;
+    border-top: 1px solid var(--ed-rule);
+    margin: 0;
+  }
+
+  /* ---------- Footer colophon ---------- */
+  .wall-footer {
+    max-width: var(--ed-page-max);
+    margin: 0 auto;
+    padding: 24px 24px 96px;
+    text-align: center;
+  }
+  .wall-footer-rule {
+    height: 1px;
+    background: var(--ed-rule-strong);
+    margin-bottom: 32px;
+  }
+  .wall-colophon {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ed-ink-3);
+    margin: 0 0 20px;
+  }
+  .wall-colophon .accent {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+    color: var(--at-wall-brass);
+    text-transform: uppercase;
+  }
+  .wall-footer .wall-back {
+    margin: 0;
+    justify-content: center;
+  }
+
+  @media (max-width: 640px) {
+    .wall-plaque { padding: 44px 16px; }
+    .wall-frame-inner { padding: 32px 24px 28px; }
+    .wall-open { font-size: 22px; }
+  }
+</style>
+</head>
+<body class="ed-page">
+
+  <a class="wall-back" href="index.html">&larr; About The Lab — treatment bake-off</a>
+
+  <header class="wall-header">
+    <p class="wall-eyebrow">626 Labs — foundation wall</p>
+    <h1 class="ed-title wall-title">About The Lab</h1>
+    <p class="ed-dek">The record, mounted where the whole lobby can read it.</p>
+    <p class="wall-directory">Wing I of VII &middot; permanent collection</p>
+    <div class="wall-header-rule"></div>
+  </header>
+
+  <main class="wall-main">
+
+    <!-- I. Epigraph -->
+    <section class="wall-plaque" id="epigraph">
+      <div class="wall-frame">
+        <div class="wall-frame-inner">
+          <p class="wall-kicker">Plaque 01</p>
+          <h2 class="wall-open">Epigraph</h2>
+
+          <blockquote class="wall-passage">
+            <span class="wall-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>You are going to do it. You know you can, now just do it.</p>
+          </blockquote>
+          <p class="wall-caption">Q30</p>
+
+          <blockquote class="wall-passage">
+            <span class="wall-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>He would just ask how and I would pretend that the call was breaking up and leave</p>
+          </blockquote>
+          <p class="wall-caption">Q30 &middot; follow-up</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- II. Founding night -->
+    <section class="wall-plaque" id="founding-night">
+      <div class="wall-frame">
+        <div class="wall-frame-inner">
+          <p class="wall-kicker">Plaque 02</p>
+          <h2 class="wall-open">Founding Night</h2>
+          <p class="wall-donor-line">August 8 &middot; 3:45 PM &mdash; 10:45 PM</p>
+
+          <blockquote class="wall-passage">
+            <span class="wall-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>So I finished my last maual report August 8th at 3:45 and asked gemini to write up a POC for a fandango scraper. 7 hours later I had results in google Colab. Moved over to VS Code over the course of that week and deployed my first version of that app to a droplet, which is still running today, 11 months later.</p>
+          </blockquote>
+          <p class="wall-caption">Q1</p>
+
+          <blockquote class="wall-passage">
+            <span class="wall-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>10:45 that first night, but then 45 minues later it wouldn't scrape anymore.  It took 3 days to realize how static colab is and that the exaclt line of code was searching an exact date with data that expires 20 minutes after show start.  That was the first clue I needed more stability,, but by the end of the first week I had an actual application a monolithic code stack, but something. Then I knew for sure.</p>
+          </blockquote>
+          <p class="wall-caption">Q11 &middot; in full</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- III. The name -->
+    <section class="wall-plaque" id="the-name">
+      <div class="wall-frame">
+        <div class="wall-frame-inner">
+          <p class="wall-kicker">Plaque 03</p>
+          <h2 class="wall-open">The Name</h2>
+          <p class="wall-donor-line">Exchange &mdash; 626</p>
+
+          <blockquote class="wall-passage">
+            <span class="wall-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>626, i think this part of the number is called the exchange, in northside buildings didn't get painted much so their old phone numbers stood for years 626 as I passed by, leaving the neighborhood each day for school.  I know people "rep" their area code, but this isn't that, 626 is the shape of homebase. The dirt and the asphalt that I played on, the place I always wanted to go back to when I was far. Where I was protected, challenged, and built.  Like I said before I never got much from school, as soon as kids became more aware the differences that a kid can't change started to matter more that number got used a lot more.  But not for incoming calls, for data. I had an outlet when I didn't fit in and it wasn't a shady group, but technology itself. How can I make this computer faster, how do i fix it now, how can I make this mine.</p>
+            <p>I could always use Stage Productions. I love a good film, I am not a disney freak, but when I was younger I really saw myself in Stitch and when it was revealed he was project 626 I felt like we were intertwined. Nowadays I am feeling more like a Rocket Racoon, but I want to respect calling home. Not the neighborhood, the house, the heart.</p>
+          </blockquote>
+          <p class="wall-caption">Q7</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- IV. A values scene -->
+    <section class="wall-plaque" id="values-scene">
+      <div class="wall-frame">
+        <div class="wall-frame-inner">
+          <p class="wall-kicker">Plaque 04</p>
+          <h2 class="wall-open">A Values Scene</h2>
+          <p class="wall-donor-line">In Honor Of &mdash; The Father</p>
+
+          <blockquote class="wall-passage">
+            <span class="wall-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>my father. The man who restored cars under a tarp in a makeshift painting room in the backyard so my siter would have a bit of achance with her early 80s bmw at a private scool. Changed a transmission in a way too slanted drivveway. Had 120 speakers in his old white checvy van. Put 2 18 inch subs in the trunk of a 1980 bmw 320. Built a clone of a bose stadium speaker after purchasing 1, getting the model numbers of the drivers and ordering replacement parts, building the cabinet by hand and all.</p>
+          </blockquote>
+          <p class="wall-caption">Q16 &middot; in full</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- V. Keystone quotes -->
+    <section class="wall-plaque" id="keystone-quotes">
+      <div class="wall-frame">
+        <div class="wall-frame-inner">
+          <p class="wall-kicker">Plaque 05</p>
+          <h2 class="wall-open">Keystone Quotes</h2>
+          <p class="wall-donor-line">Three inscriptions, permanent collection</p>
+
+          <div class="wall-plate">
+            <blockquote class="wall-plate-quote"><p>I build tools, because care doesn't always scale</p></blockquote>
+            <p class="wall-caption">Plate 05.i</p>
+          </div>
+          <div class="wall-plate">
+            <blockquote class="wall-plate-quote"><p>How do I want them to remember me, like a monkey's paw or their favorite genie</p></blockquote>
+            <p class="wall-caption">Plate 05.ii</p>
+          </div>
+          <div class="wall-plate">
+            <blockquote class="wall-plate-quote"><p>It's not a drawer it is an arsenal of repositories</p></blockquote>
+            <p class="wall-caption">Plate 05.iii</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VI. Artifact block -->
+    <section class="wall-plaque wall-artifact" id="artifact">
+      <div class="wall-frame">
+        <div class="wall-frame-inner">
+          <p class="wall-kicker">Plaque 06</p>
+          <h2 class="wall-open">The Artifact</h2>
+          <p class="wall-donor-line">Case I &mdash; the founding-night notebook</p>
+
+          <p class="wall-artifact-file">PriceScoutalpha.ipynb</p>
+          <p class="wall-body">PriceScoutalpha.ipynb &mdash; the founding night's notebook. August 8th, 3:45 pm to 10:45 pm. 300 KB. <span class="wall-tag">Preserved.</span></p>
+
+          <p class="wall-artifact-meta">Acquired &mdash; Aug 8, 3:45 PM&ndash;10:45 PM &middot; 300 KB</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VII. A lineage close -->
+    <section class="wall-plaque" id="lineage-close">
+      <div class="wall-frame">
+        <div class="wall-frame-inner">
+          <p class="wall-kicker">Plaque 07</p>
+          <h2 class="wall-open">A Lineage Close</h2>
+
+          <blockquote class="wall-passage">
+            <span class="wall-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>In a thousand years none of this may matter much, but what can matter is how the 7 kids that come from this house do things and how the kids that come from each of their houses do things and so on and so forth for a thousand years. And if they can look back and see where it started and have a clearer picture of where they need to go then that is it</p>
+          </blockquote>
+          <p class="wall-caption">Q25</p>
+
+          <blockquote class="wall-passage">
+            <span class="wall-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>My kids will inherit it the same way each of my siblings is carrying on Stage Productions.</p>
+          </blockquote>
+          <p class="wall-caption">Q28</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="wall-footer">
+    <div class="wall-footer-rule"></div>
+    <p class="wall-colophon">Mounted, floor one &mdash; <span class="accent">Wing I of VII</span></p>
+    <a class="wall-back" href="index.html">&larr; Back to the bake-off</a>
+  </footer>
+
+</body>
+</html>
