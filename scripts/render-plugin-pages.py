@@ -248,7 +248,38 @@ STYLE = """
     .family-card .name { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--ink-0); margin-bottom: 2px; }
     .family-card .role { color: var(--ink-300); font-size: 14px; }
     .family-card .fc-caps { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: var(--ink-400); margin-top: 6px; }
+    .family-card .fc-beat { color: var(--ink-300); font-size: 13px; line-height: 1.45; margin-top: 8px; }
     .family-card .you { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cyan); margin-top: 6px; }
+
+    /* Thesis section (/plugins/ only) — reuses section-head/eyebrow/container/card idioms above */
+    section.thesis { padding: 80px 0; border-top: 1px solid rgba(255,255,255,.06); background: linear-gradient(180deg, transparent 0%, rgba(23,212,250,.03) 100%); }
+    section.thesis blockquote {
+      margin: 0 0 32px; padding: 20px 24px;
+      border-left: 3px solid var(--cyan);
+      background: rgba(23,212,250,.05);
+      color: var(--cyan-pale);
+      font-family: 'Space Grotesk', sans-serif;
+      font-style: italic;
+      font-size: clamp(18px, 1.8vw, 22px);
+      line-height: 1.45;
+      border-radius: var(--r-sm);
+      max-width: 820px;
+    }
+    section.thesis p { color: var(--ink-200); font-size: 15.5px; max-width: 780px; margin: 0 0 16px; line-height: 1.65; }
+    section.thesis strong { color: var(--ink-0); font-weight: 600; }
+    section.thesis .thesis-link { margin-top: 8px; margin-bottom: 32px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; letter-spacing: 0.02em; }
+    section.thesis .thesis-link a { color: var(--cyan); display: inline-flex; align-items: center; gap: 6px; }
+    section.thesis .thesis-link a:hover { color: var(--cyan-pale); }
+    section.thesis .thesis-link svg { width: 14px; height: 14px; }
+    section.thesis .thesis-artifacts { margin-top: 16px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,.06); display: grid; gap: 20px; }
+    section.thesis .thesis-artifact { max-width: 780px; }
+    section.thesis .artifact-eyebrow { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--magenta-pale); margin-bottom: 8px; }
+    section.thesis .artifact-title { margin: 0 0 8px; font-size: 22px; }
+    section.thesis .artifact-blurb { color: var(--ink-200); margin: 0 0 16px !important; }
+    section.thesis .artifact-links { display: flex; gap: 20px; flex-wrap: wrap; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; }
+    section.thesis .artifact-links a { color: var(--cyan); display: inline-flex; align-items: center; gap: 6px; }
+    section.thesis .artifact-links a:hover { color: var(--cyan-pale); }
+    section.thesis .artifact-links svg { width: 14px; height: 14px; }
 
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -259,7 +290,7 @@ STYLE = """
     @media (max-width: 720px) {
       footer .row { flex-direction: column; gap: 12px; }
       .cards-grid, .cards-grid.cols-3 { grid-template-columns: 1fr; }
-      section.work, section.brain, section.install, section.family { padding: 56px 0; }
+      section.work, section.brain, section.install, section.family, section.thesis { padding: 56px 0; }
       .card { padding: 20px; }
       .install-grid { grid-template-columns: 1fr; }
       .family-grid { grid-template-columns: 1fr; }
@@ -749,6 +780,77 @@ def render_page(p, family):
     return "".join(parts)
 
 
+def render_thesis(thesis):
+    """The `.thesis` section on /plugins/ — the Self-Evolving Plugin
+    Framework pitch, migrated down from the homepage's `thinking` section
+    (content copied verbatim; Task A4 removes the homepage copy).
+
+    Collapses to "" when `thesis` is absent from plugin-pages.json.
+    Escaping follows this file's convention: eyebrow/headline/artifact
+    title/cta label are escaped; lead/quote/paragraphs/blurb are raw HTML,
+    matching the sibling prose fields documented in the file's $comment.
+    """
+    if not thesis:
+        return ""
+    eyebrow = e(thesis.get("eyebrow", ""))
+    headline = e(thesis.get("headline", ""))
+    lead = thesis.get("lead", "")
+    quote = thesis.get("quote", "")
+    paragraphs = thesis.get("paragraphs") or []
+    cta = thesis.get("cta") or {}
+    artifacts = thesis.get("artifacts") or []
+
+    lead_html = f'\n          <p class="lead">{lead}</p>' if lead else ""
+    quote_html = f'\n        <blockquote>{quote}</blockquote>' if quote else ""
+    para_html = "\n".join(f'        <p>{p}</p>' for p in paragraphs)
+
+    cta_html = ""
+    if cta.get("label") and cta.get("href"):
+        cta_html = f"""
+        <div class="thesis-link">
+          <a href="{e(cta['href'])}">{e(cta['label'])} <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        </div>"""
+
+    artifacts_html = ""
+    if artifacts:
+        cards = []
+        for art in artifacts:
+            a_eyebrow = e(art.get("eyebrow", ""))
+            a_title = e(art.get("title", ""))
+            a_blurb = art.get("blurb", "")
+            links = art.get("links") or []
+            link_lines = [
+                f'              <a href="{e(l["href"])}">{e(l["label"])} '
+                f'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+                f'stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" '
+                f'aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>'
+                for l in links if l.get("label") and l.get("href")
+            ]
+            cards.append(
+                '          <div class="card thesis-artifact">\n'
+                f'            <div class="artifact-eyebrow">{a_eyebrow}</div>\n'
+                f'            <h3 class="artifact-title">{a_title}</h3>\n'
+                f'            <p class="artifact-blurb">{a_blurb}</p>\n'
+                '            <div class="artifact-links">\n'
+                + "\n".join(link_lines) + "\n"
+                + '            </div>\n'
+                '          </div>'
+            )
+        artifacts_html = '\n        <div class="thesis-artifacts">\n' + "\n".join(cards) + "\n        </div>"
+
+    return f"""
+    <section class="thesis" id="thesis">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">{eyebrow}</span>
+          <h2>{headline}</h2>{lead_html}
+        </div>{quote_html}
+{para_html}{cta_html}{artifacts_html}
+      </div>
+    </section>
+"""
+
+
 def render_index(data):
     """The /plugins/ family index."""
     family = data["family"]
@@ -756,11 +858,12 @@ def render_index(data):
     for f in family:
         caps = caps_text(f["id"])
         caps_html = f'\n              <div class="fc-caps">{caps}</div>' if caps else ""
+        beat_html = f'\n              <div class="fc-beat">{f["beat"]}</div>' if f.get("beat") else ""
         cards.append(f"""          <a href="{e(f['href'])}" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="{icon_path(f['id'])}" alt="" /></span>
             <div>
               <div class="name">{e(f['name'])}</div>
-              <div class="role">{e(f['role'])}</div>{caps_html}
+              <div class="role">{e(f['role'])}</div>{caps_html}{beat_html}
             </div>
           </a>""")
     count_word = num_word(len(family))
@@ -832,7 +935,8 @@ def render_index(data):
       </div>
     </section>
 """
-    return head + nav + "\n  <main id=\"main\">\n" + hero + grid + "\n  </main>\n" + render_footer() + "\n</body>\n</html>\n"
+    thesis_html = render_thesis(data.get("thesis"))
+    return head + nav + "\n  <main id=\"main\">\n" + hero + grid + thesis_html + "\n  </main>\n" + render_footer() + "\n</body>\n</html>\n"
 
 
 def build():

@@ -1,21 +1,52 @@
 {
   "$comment": "Per-plugin landing-page content. Rendered by scripts/render-plugin-pages.py. See docs/vibe-plugins-pages.md. Fields rendered as raw HTML (allow entities): subhead, card.desc, card.reach, prose paragraphs, terminal lines. Escaped (plain text only): name, eyebrow, headings, card.title, card.command, callout, mini.name.",
   "family": [
-    { "id": "vibe-cartographer", "name": "vibe-cartographer", "role": "idea → v1", "href": "/vibe-cartographer/" },
-    { "id": "vibe-iterate", "name": "vibe-iterate", "role": "v1 → v1+n", "href": "/vibe-iterate/" },
-    { "id": "vibe-keystone", "name": "vibe-keystone", "role": "bootstrap any repo", "href": "/vibe-keystone/" },
-    { "id": "vibe-doc", "name": "vibe-doc", "role": "documentation completeness", "href": "/vibe-doc/" },
-    { "id": "vibe-test", "name": "vibe-test", "role": "tests that matter", "href": "/vibe-test/" },
-    { "id": "vibe-sec", "name": "vibe-sec", "role": "security posture", "href": "/vibe-sec/" },
-    { "id": "vibe-taker", "name": "vibe-taker", "role": "move features between repos", "href": "/vibe-taker/" },
-    { "id": "vibe-walk", "name": "vibe-walk", "role": "onboarding tours", "href": "/vibe-walk/" },
-    { "id": "vibe-wrap", "name": "vibe-wrap", "role": "end-of-session wrap-up", "href": "/vibe-wrap/" },
-    { "id": "vibe-insights", "name": "vibe-insights", "role": "session retrospective", "href": "/vibe-insights/" },
-    { "id": "thesis-engine", "name": "thesis-engine", "role": "research feeder", "href": "/thesis-engine/" },
-    { "id": "vibe-thesis", "name": "vibe-thesis", "role": "thesis authoring", "href": "/vibe-thesis/" },
-    { "id": "vibe-prompt", "name": "vibe-prompt", "role": "prompt audit + behavioral eval", "href": "/vibe-prompt/" },
-    { "id": "vibe-lingual", "name": "vibe-lingual", "role": "i18n retrofit, codemod-safe", "href": "/vibe-lingual/" }
+    { "id": "vibe-cartographer", "name": "vibe-cartographer", "role": "idea → v1", "href": "/vibe-cartographer/", "beat": "Idea to shipped v1 through spec-driven commands &mdash; scope, PRD, spec, build. Hands the baton to vibe-iterate once real users show up." },
+    { "id": "vibe-iterate", "name": "vibe-iterate", "role": "v1 → v1+n", "href": "/vibe-iterate/", "beat": "Where Cart's map ends, vibe-iterate keeps going &mdash; v1 to v1+n, one PR per session. Defers cleanly when Cart's installed in the same repo." },
+    { "id": "vibe-keystone", "name": "vibe-keystone", "role": "bootstrap any repo", "href": "/vibe-keystone/", "beat": "Inventories a repo before writing a line, then interviews you for real conventions. Adapts the file to repo type instead of a placeholder-padded template." },
+    { "id": "vibe-doc", "name": "vibe-doc", "role": "documentation completeness", "href": "/vibe-doc/", "beat": "Scans for documentation gaps against a maturity standard, then generates the missing docs from artifacts you already have. Source-cited, no fabrication." },
+    { "id": "vibe-test", "name": "vibe-test", "role": "tests that matter", "href": "/vibe-test/", "beat": "Classifies your app's risk tier and generates the tests proportional to it. Catches broken test harnesses other coverage tools take on faith." },
+    { "id": "vibe-sec", "name": "vibe-sec", "role": "security posture", "href": "/vibe-sec/", "beat": "Audits vibe-coded apps for the security gaps AI prototyping predictably leaves, tiered by deployment risk. Picks up injection findings handed off from vibe-prompt." },
+    { "id": "vibe-taker", "name": "vibe-taker", "role": "move features between repos", "href": "/vibe-taker/", "beat": "Captures a feature out of one repo as a portable bundle &mdash; architecture, contract, prompts, gotchas &mdash; and plants it into another with stack-aware adaptation." },
+    { "id": "vibe-walk", "name": "vibe-walk", "role": "onboarding tours", "href": "/vibe-walk/", "beat": "Reads your app, names the aha moment, and builds a spotlight tour you own outright &mdash; or says honestly when a tour won't help." },
+    { "id": "vibe-wrap", "name": "vibe-wrap", "role": "end-of-session wrap-up", "href": "/vibe-wrap/", "beat": "Reads the breadcrumb trail sibling plugins already left instead of reconstructing from git log. One gesture at session end names what shipped and what's still open." },
+    { "id": "vibe-insights", "name": "vibe-insights", "role": "session retrospective", "href": "/vibe-insights/", "beat": "The verbose retrospective /insights never gave you &mdash; coverage, where-was-I recall, the cache reveal, a read of how you actually work. Personal by default, all local." },
+    { "id": "thesis-engine", "name": "thesis-engine", "role": "research feeder", "href": "/thesis-engine/", "beat": "Does the cold-start research before you can write &mdash; ranked topics, sourced notes, a ready bibliography. Feeds directly into vibe-thesis; the drafting stays there." },
+    { "id": "vibe-thesis", "name": "vibe-thesis", "role": "thesis authoring", "href": "/vibe-thesis/", "beat": "Scaffolds and co-authors thesis-shaped writing toward a rendered PDF. The voice pipeline &mdash; capture, smooth, guard &mdash; keeps Claude in the loop without losing your voice." },
+    { "id": "vibe-prompt", "name": "vibe-prompt", "role": "prompt audit + behavioral eval", "href": "/vibe-prompt/", "beat": "Closes the prompt loop for apps that ship LLM features &mdash; scan, audit, eval, grade, remediate. Hands injection findings straight to vibe-sec instead of guessing at severity." },
+    { "id": "vibe-lingual", "name": "vibe-lingual", "role": "i18n retrofit, codemod-safe", "href": "/vibe-lingual/", "beat": "Classifies every user-facing string, audits the stack for i18n gotchas, then localizes with per-file backups. Deep on next-intl and App Router, honest about the rest." }
   ],
+  "thesis": {
+    "eyebrow": "The playbook",
+    "headline": "The thinking behind it.",
+    "lead": "Every Vibe plugin follows the same architectural playbook — an Apache-licensed spec that makes the claims checkable, not aspirational.",
+    "quote": "A plugin should be more useful on its tenth run than on its first — not because the user learned it, but because it learned the user.",
+    "paragraphs": [
+      "The <strong>Self-Evolving Plugin Framework</strong> is three disciplines stacked on top of each other: self-repair, self-teach, self-evolve. A plugin that can fix itself when it breaks, teach itself what the user actually wanted, and rewrite its own guidance when the pattern repeats. Each discipline earns its rung on a five-level maturity ladder — sixteen named patterns across the climb, one Apache-licensed spec, and a scorecard so the claims are checkable, not aspirational.",
+      "Vibe Cartographer sits at <strong>Level 3.5</strong> right now — the highest rung any public plugin has reached — and every new plugin we ship gets benchmarked against the same ladder. The framework isn't marketing. It's how we keep the work honest when nobody's watching."
+    ],
+    "cta": {
+      "label": "Read the framework doc",
+      "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer/blob/main/docs/self-evolving-plugins-framework.md"
+    },
+    "artifacts": [
+      {
+        "eyebrow": "Companion thesis",
+        "title": "From legitimate to sustainable.",
+        "blurb": "A builder's doctrine for vibe-coded software that lasts. Five tenets — Legitimacy, Discipline, Quality, Trust, Coherence — for native builders shipping AI-built artifacts to real users.",
+        "links": [
+          {
+            "label": "Read the thesis",
+            "href": "/thesis.html"
+          },
+          {
+            "label": "Open the chart",
+            "href": "/workflow.html"
+          }
+        ]
+      }
+    ]
+  },
   "plugins": {
     "vibe-iterate": {
       "name": "vibe-iterate",
