@@ -41,7 +41,7 @@ references and one-off design artifacts.
 | Path | What it is |
 |---|---|
 | `index.html` | The live site. Hand-written shell with `SITE_JSON:<zone>:start/end` markers that get filled by render-hub.py. The About star map's CSS + JS live in the static shell; its markup + data blob are emitted by `render_about()` (config: `about.starMap` in site.json — remove the block to disable the panel). Versions in star tooltips come from a runtime fetch of `data/plugin-versions.json`, never from the render. |
-| `content/site.json` | Source of truth for everything editorial — hero, products, lab, play, about, support, contact, thinking, labRuns. |
+| `content/site.json` | Source of truth for everything editorial — hero, products, pluginFamily, lab, play, about, support, contact, labRuns. |
 | `content/stories/*.md` | Long-form case studies. Edited via the admin's Stories tab. |
 | `admin/` + `admin-dashboard.html` | Babel-in-browser React admin. PAT-auth against this repo. Edits site.json, uploads to assets/, manages stories, surfaces bot run status. |
 | `apps/widget-bacon-trail/` | The embedded Birthday Bacon Trail widget. Bundle output lives at `widget-bacon-trail/` (root) so GH Pages serves it at `/widget-bacon-trail/`. The `functions/` subdir is a separate Firebase Cloud Functions project (`logPlay` endpoint, deployed to `guestbuzz-cineperks`) — see its own README. |

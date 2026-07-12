@@ -10,7 +10,10 @@ Zones handled:
 - hero         — eyebrow, h1, sub, actions, meta
 - hero-chips   — chips around the animated logo
 - products     — the 5 product cards in the Work section
-- thinking     — the Thinking section essays
+- thinking     — the Thinking section essays. Dormant: the `thinking` content
+                 key was removed from site.json (the pitch moved to
+                 /plugins/#thesis), so this zone renders empty regardless of
+                 sections.thinking.enabled. See the note at SECTION_IDS.
 - stories      — auto-discovered Field Notes from content/stories/*.md
                  (any frontmatter-fenced .md without `draft: true`)
 - lab-runs     — "How the lab runs" section
@@ -1763,6 +1766,11 @@ def render_sitemap(stories: list[dict] | None = None, root: Path = ROOT) -> str:
 
 # ─── section toggles ────────────────────────────────────────────────
 # Maps sections keys in site.json → DOM id of the <section> element.
+# NOTE: re-enabling "thinking" needs BOTH the `thinking` content key back in
+# site.json AND sections.thinking.enabled: true — flipping the toggle alone
+# can't revive it, since main() only renders the zone when the key is present
+# (see the `"thinking" in content` guard below), leaving no <section id=
+# "thinking"> element for this toggle to find.
 SECTION_IDS = {
     "thinking": "thinking",
     "labRuns":  "lab-runs",
