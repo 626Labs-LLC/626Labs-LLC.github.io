@@ -235,7 +235,38 @@
     .family-card .name { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--ink-0); margin-bottom: 2px; }
     .family-card .role { color: var(--ink-300); font-size: 14px; }
     .family-card .fc-caps { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: var(--ink-400); margin-top: 6px; }
+    .family-card .fc-beat { color: var(--ink-300); font-size: 13px; line-height: 1.45; margin-top: 8px; }
     .family-card .you { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cyan); margin-top: 6px; }
+
+    /* Thesis section (/plugins/ only) — reuses section-head/eyebrow/container/card idioms above */
+    section.thesis { padding: 80px 0; border-top: 1px solid rgba(255,255,255,.06); background: linear-gradient(180deg, transparent 0%, rgba(23,212,250,.03) 100%); }
+    section.thesis blockquote {
+      margin: 0 0 32px; padding: 20px 24px;
+      border-left: 3px solid var(--cyan);
+      background: rgba(23,212,250,.05);
+      color: var(--cyan-pale);
+      font-family: 'Space Grotesk', sans-serif;
+      font-style: italic;
+      font-size: clamp(18px, 1.8vw, 22px);
+      line-height: 1.45;
+      border-radius: var(--r-sm);
+      max-width: 820px;
+    }
+    section.thesis p { color: var(--ink-200); font-size: 15.5px; max-width: 780px; margin: 0 0 16px; line-height: 1.65; }
+    section.thesis strong { color: var(--ink-0); font-weight: 600; }
+    section.thesis .thesis-link { margin-top: 8px; margin-bottom: 32px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; letter-spacing: 0.02em; }
+    section.thesis .thesis-link a { color: var(--cyan); display: inline-flex; align-items: center; gap: 6px; }
+    section.thesis .thesis-link a:hover { color: var(--cyan-pale); }
+    section.thesis .thesis-link svg { width: 14px; height: 14px; }
+    section.thesis .thesis-artifacts { margin-top: 16px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,.06); display: grid; gap: 20px; }
+    section.thesis .thesis-artifact { max-width: 780px; }
+    section.thesis .artifact-eyebrow { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--magenta-pale); margin-bottom: 8px; }
+    section.thesis .artifact-title { margin: 0 0 8px; font-size: 22px; }
+    section.thesis .artifact-blurb { color: var(--ink-200); margin: 0 0 16px !important; }
+    section.thesis .artifact-links { display: flex; gap: 20px; flex-wrap: wrap; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; }
+    section.thesis .artifact-links a { color: var(--cyan); display: inline-flex; align-items: center; gap: 6px; }
+    section.thesis .artifact-links a:hover { color: var(--cyan-pale); }
+    section.thesis .artifact-links svg { width: 14px; height: 14px; }
 
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -246,7 +277,7 @@
     @media (max-width: 720px) {
       footer .row { flex-direction: column; gap: 12px; }
       .cards-grid, .cards-grid.cols-3 { grid-template-columns: 1fr; }
-      section.work, section.brain, section.install, section.family { padding: 56px 0; }
+      section.work, section.brain, section.install, section.family, section.thesis { padding: 56px 0; }
       .card { padding: 20px; }
       .install-grid { grid-template-columns: 1fr; }
       .family-grid { grid-template-columns: 1fr; }
@@ -359,6 +390,7 @@
               <div class="name">vibe-cartographer</div>
               <div class="role">idea → v1</div>
               <div class="fc-caps">14 commands &middot; 18 skills</div>
+              <div class="fc-beat">Idea to shipped v1 through spec-driven commands &mdash; scope, PRD, spec, build. Hands the baton to vibe-iterate once real users show up.</div>
             </div>
           </a>
           <a href="/vibe-iterate/" class="family-card">
@@ -367,6 +399,7 @@
               <div class="name">vibe-iterate</div>
               <div class="role">v1 → v1+n</div>
               <div class="fc-caps">18 skills</div>
+              <div class="fc-beat">Where Cart's map ends, vibe-iterate keeps going &mdash; v1 to v1+n, one PR per session. Defers cleanly when Cart's installed in the same repo.</div>
             </div>
           </a>
           <a href="/vibe-keystone/" class="family-card">
@@ -375,6 +408,7 @@
               <div class="name">vibe-keystone</div>
               <div class="role">bootstrap any repo</div>
               <div class="fc-caps">2 skills</div>
+              <div class="fc-beat">Inventories a repo before writing a line, then interviews you for real conventions. Adapts the file to repo type instead of a placeholder-padded template.</div>
             </div>
           </a>
           <a href="/vibe-doc/" class="family-card">
@@ -383,6 +417,7 @@
               <div class="name">vibe-doc</div>
               <div class="role">documentation completeness</div>
               <div class="fc-caps">5 commands &middot; 7 skills &middot; 3 agents</div>
+              <div class="fc-beat">Scans for documentation gaps against a maturity standard, then generates the missing docs from artifacts you already have. Source-cited, no fabrication.</div>
             </div>
           </a>
           <a href="/vibe-test/" class="family-card">
@@ -391,6 +426,7 @@
               <div class="name">vibe-test</div>
               <div class="role">tests that matter</div>
               <div class="fc-caps">8 commands &middot; 14 skills</div>
+              <div class="fc-beat">Classifies your app's risk tier and generates the tests proportional to it. Catches broken test harnesses other coverage tools take on faith.</div>
             </div>
           </a>
           <a href="/vibe-sec/" class="family-card">
@@ -399,6 +435,7 @@
               <div class="name">vibe-sec</div>
               <div class="role">security posture</div>
               <div class="fc-caps">9 commands &middot; 10 skills</div>
+              <div class="fc-beat">Audits vibe-coded apps for the security gaps AI prototyping predictably leaves, tiered by deployment risk. Picks up injection findings handed off from vibe-prompt.</div>
             </div>
           </a>
           <a href="/vibe-taker/" class="family-card">
@@ -407,6 +444,7 @@
               <div class="name">vibe-taker</div>
               <div class="role">move features between repos</div>
               <div class="fc-caps">3 commands &middot; 6 skills</div>
+              <div class="fc-beat">Captures a feature out of one repo as a portable bundle &mdash; architecture, contract, prompts, gotchas &mdash; and plants it into another with stack-aware adaptation.</div>
             </div>
           </a>
           <a href="/vibe-walk/" class="family-card">
@@ -415,6 +453,7 @@
               <div class="name">vibe-walk</div>
               <div class="role">onboarding tours</div>
               <div class="fc-caps">9 skills &middot; 3 agents</div>
+              <div class="fc-beat">Reads your app, names the aha moment, and builds a spotlight tour you own outright &mdash; or says honestly when a tour won't help.</div>
             </div>
           </a>
           <a href="/vibe-wrap/" class="family-card">
@@ -423,6 +462,7 @@
               <div class="name">vibe-wrap</div>
               <div class="role">end-of-session wrap-up</div>
               <div class="fc-caps">7 skills</div>
+              <div class="fc-beat">Reads the breadcrumb trail sibling plugins already left instead of reconstructing from git log. One gesture at session end names what shipped and what's still open.</div>
             </div>
           </a>
           <a href="/vibe-insights/" class="family-card">
@@ -431,6 +471,7 @@
               <div class="name">vibe-insights</div>
               <div class="role">session retrospective</div>
               <div class="fc-caps">1 skill</div>
+              <div class="fc-beat">The verbose retrospective /insights never gave you &mdash; coverage, where-was-I recall, the cache reveal, a read of how you actually work. Personal by default, all local.</div>
             </div>
           </a>
           <a href="/thesis-engine/" class="family-card">
@@ -439,6 +480,7 @@
               <div class="name">thesis-engine</div>
               <div class="role">research feeder</div>
               <div class="fc-caps">4 commands &middot; 1 skill</div>
+              <div class="fc-beat">Does the cold-start research before you can write &mdash; ranked topics, sourced notes, a ready bibliography. Feeds directly into vibe-thesis; the drafting stays there.</div>
             </div>
           </a>
           <a href="/vibe-thesis/" class="family-card">
@@ -447,6 +489,7 @@
               <div class="name">vibe-thesis</div>
               <div class="role">thesis authoring</div>
               <div class="fc-caps">5 commands &middot; 10 skills</div>
+              <div class="fc-beat">Scaffolds and co-authors thesis-shaped writing toward a rendered PDF. The voice pipeline &mdash; capture, smooth, guard &mdash; keeps Claude in the loop without losing your voice.</div>
             </div>
           </a>
           <a href="/vibe-prompt/" class="family-card">
@@ -455,6 +498,7 @@
               <div class="name">vibe-prompt</div>
               <div class="role">prompt audit + behavioral eval</div>
               <div class="fc-caps">9 commands &middot; 13 skills</div>
+              <div class="fc-beat">Closes the prompt loop for apps that ship LLM features &mdash; scan, audit, eval, grade, remediate. Hands injection findings straight to vibe-sec instead of guessing at severity.</div>
             </div>
           </a>
           <a href="/vibe-lingual/" class="family-card">
@@ -463,8 +507,36 @@
               <div class="name">vibe-lingual</div>
               <div class="role">i18n retrofit, codemod-safe</div>
               <div class="fc-caps">5 commands &middot; 10 skills</div>
+              <div class="fc-beat">Classifies every user-facing string, audits the stack for i18n gotchas, then localizes with per-file backups. Deep on next-intl and App Router, honest about the rest.</div>
             </div>
           </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="thesis" id="thesis">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">The playbook</span>
+          <h2>The thinking behind it.</h2>
+          <p class="lead">Every Vibe plugin follows the same architectural playbook — an Apache-licensed spec that makes the claims checkable, not aspirational.</p>
+        </div>
+        <blockquote>A plugin should be more useful on its tenth run than on its first — not because the user learned it, but because it learned the user.</blockquote>
+        <p>The <strong>Self-Evolving Plugin Framework</strong> is three disciplines stacked on top of each other: self-repair, self-teach, self-evolve. A plugin that can fix itself when it breaks, teach itself what the user actually wanted, and rewrite its own guidance when the pattern repeats. Each discipline earns its rung on a five-level maturity ladder — sixteen named patterns across the climb, one Apache-licensed spec, and a scorecard so the claims are checkable, not aspirational.</p>
+        <p>Vibe Cartographer sits at <strong>Level 3.5</strong> right now — the highest rung any public plugin has reached — and every new plugin we ship gets benchmarked against the same ladder. The framework isn't marketing. It's how we keep the work honest when nobody's watching.</p>
+        <div class="thesis-link">
+          <a href="https://github.com/estevanhernandez-stack-ed/vibe-cartographer/blob/main/docs/self-evolving-plugins-framework.md">Read the framework doc <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        </div>
+        <div class="thesis-artifacts">
+          <div class="card thesis-artifact">
+            <div class="artifact-eyebrow">Companion thesis</div>
+            <h3 class="artifact-title">From legitimate to sustainable.</h3>
+            <p class="artifact-blurb">A builder's doctrine for vibe-coded software that lasts. Five tenets — Legitimacy, Discipline, Quality, Trust, Coherence — for native builders shipping AI-built artifacts to real users.</p>
+            <div class="artifact-links">
+              <a href="/thesis.html">Read the thesis <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+              <a href="/workflow.html">Open the chart <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            </div>
+          </div>
         </div>
       </div>
     </section>

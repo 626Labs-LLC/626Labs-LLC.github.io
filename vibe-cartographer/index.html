@@ -269,7 +269,38 @@
     .family-card .name { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--ink-0); margin-bottom: 2px; }
     .family-card .role { color: var(--ink-300); font-size: 14px; }
     .family-card .fc-caps { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: var(--ink-400); margin-top: 6px; }
+    .family-card .fc-beat { color: var(--ink-300); font-size: 13px; line-height: 1.45; margin-top: 8px; }
     .family-card .you { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cyan); margin-top: 6px; }
+
+    /* Thesis section (/plugins/ only) — reuses section-head/eyebrow/container/card idioms above */
+    section.thesis { padding: 80px 0; border-top: 1px solid rgba(255,255,255,.06); background: linear-gradient(180deg, transparent 0%, rgba(23,212,250,.03) 100%); }
+    section.thesis blockquote {
+      margin: 0 0 32px; padding: 20px 24px;
+      border-left: 3px solid var(--cyan);
+      background: rgba(23,212,250,.05);
+      color: var(--cyan-pale);
+      font-family: 'Space Grotesk', sans-serif;
+      font-style: italic;
+      font-size: clamp(18px, 1.8vw, 22px);
+      line-height: 1.45;
+      border-radius: var(--r-sm);
+      max-width: 820px;
+    }
+    section.thesis p { color: var(--ink-200); font-size: 15.5px; max-width: 780px; margin: 0 0 16px; line-height: 1.65; }
+    section.thesis strong { color: var(--ink-0); font-weight: 600; }
+    section.thesis .thesis-link { margin-top: 8px; margin-bottom: 32px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; letter-spacing: 0.02em; }
+    section.thesis .thesis-link a { color: var(--cyan); display: inline-flex; align-items: center; gap: 6px; }
+    section.thesis .thesis-link a:hover { color: var(--cyan-pale); }
+    section.thesis .thesis-link svg { width: 14px; height: 14px; }
+    section.thesis .thesis-artifacts { margin-top: 16px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,.06); display: grid; gap: 20px; }
+    section.thesis .thesis-artifact { max-width: 780px; }
+    section.thesis .artifact-eyebrow { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--magenta-pale); margin-bottom: 8px; }
+    section.thesis .artifact-title { margin: 0 0 8px; font-size: 22px; }
+    section.thesis .artifact-blurb { color: var(--ink-200); margin: 0 0 16px !important; }
+    section.thesis .artifact-links { display: flex; gap: 20px; flex-wrap: wrap; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; }
+    section.thesis .artifact-links a { color: var(--cyan); display: inline-flex; align-items: center; gap: 6px; }
+    section.thesis .artifact-links a:hover { color: var(--cyan-pale); }
+    section.thesis .artifact-links svg { width: 14px; height: 14px; }
 
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -280,7 +311,7 @@
     @media (max-width: 720px) {
       footer .row { flex-direction: column; gap: 12px; }
       .cards-grid, .cards-grid.cols-3 { grid-template-columns: 1fr; }
-      section.work, section.brain, section.install, section.family { padding: 56px 0; }
+      section.work, section.brain, section.install, section.family, section.thesis { padding: 56px 0; }
       .card { padding: 20px; }
       .install-grid { grid-template-columns: 1fr; }
       .family-grid { grid-template-columns: 1fr; }
