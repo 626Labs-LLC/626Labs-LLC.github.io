@@ -12,7 +12,7 @@
     },
     "secondaryCta": {
       "label": "Read the thesis",
-      "href": "#thinking"
+      "href": "/plugins/"
     },
     "meta": [
       {
@@ -53,7 +53,7 @@
   },
   "sections": {
     "thinking": {
-      "enabled": true
+      "enabled": false
     },
     "labRuns": {
       "enabled": true
@@ -73,37 +73,6 @@
     "about": {
       "enabled": true
     }
-  },
-  "thinking": {
-    "eyebrow": "02 · The thesis",
-    "headline": "The thinking behind it.",
-    "lead": "Every Vibe plugin follows the same architectural playbook — an Apache-licensed spec that makes the claims checkable, not aspirational.",
-    "quote": "A plugin should be more useful on its tenth run than on its first — not because the user learned it, but because it learned the user.",
-    "paragraphs": [
-      "The <strong>Self-Evolving Plugin Framework</strong> is three disciplines stacked on top of each other: self-repair, self-teach, self-evolve. A plugin that can fix itself when it breaks, teach itself what the user actually wanted, and rewrite its own guidance when the pattern repeats. Each discipline earns its rung on a five-level maturity ladder — sixteen named patterns across the climb, one Apache-licensed spec, and a scorecard so the claims are checkable, not aspirational.",
-      "Vibe Cartographer sits at <strong>Level 3.5</strong> right now — the highest rung any public plugin has reached — and every new plugin we ship gets benchmarked against the same ladder. The framework isn't marketing. It's how we keep the work honest when nobody's watching."
-    ],
-    "cta": {
-      "label": "Read the framework doc",
-      "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer/blob/main/docs/self-evolving-plugins-framework.md"
-    },
-    "artifacts": [
-      {
-        "eyebrow": "Companion thesis",
-        "title": "From legitimate to sustainable.",
-        "blurb": "A builder's doctrine for vibe-coded software that lasts. Five tenets — Legitimacy, Discipline, Quality, Trust, Coherence — for native builders shipping AI-built artifacts to real users.",
-        "links": [
-          {
-            "label": "Read the thesis",
-            "href": "thesis.html"
-          },
-          {
-            "label": "Open the chart",
-            "href": "workflow.html"
-          }
-        ]
-      }
-    ]
   },
   "labRuns": {
     "eyebrow": "03 · Behind the scenes",
@@ -825,6 +794,31 @@
       "screenshots": []
     }
   ],
+  "pluginFamily": {
+    "memberIds": ["vibe-cartographer", "vibe-iterate", "vibe-insights", "vibe-keystone",
+                  "vibe-doc", "vibe-test", "vibe-thesis", "thesis-engine", "vibe-sec",
+                  "vibe-taker", "vibe-wrap", "vibe-walk", "vibe-prompt", "vibe-lingual"],
+    "card": {
+      "id": "vibe-family",
+      "title": "The Vibe Plugin Family",
+      "description": "One coordinated family of Claude Code plugins — planning, iteration, docs, tests, security, research authoring — installed independently, composed when present. Every plugin follows the same Apache-licensed playbook: self-repair, self-teach, self-evolve, so the tenth run beats the first. {{fact:claude_plugins}} plugins, one spine.",
+      "tags": [
+        {"label": "Claude Code", "tone": "cyan"},
+        {"label": "plugin family", "tone": "magenta"},
+        {"label": "self-evolving", "tone": "cyan"},
+        {"label": "Live", "tone": "live"}
+      ],
+      "status": "live",
+      "flagship": true,
+      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "npm": null, "install": null, "storeUrl": null,
+      "productPage": "plugins/",
+      "productPageLabel": "Meet the family",
+      "banner": null,
+      "meta": "Claude Code · Apache-2.0 spec · one playbook",
+      "screenshots": []
+    }
+  },
   "conundrum": {
     "etsyUrl": "https://www.etsy.com/shop/ConundrumByEste",
     "repoUrl": "https://github.com/626Labs-LLC/626labs-pod-pipeline",
