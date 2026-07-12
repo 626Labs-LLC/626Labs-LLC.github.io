@@ -1,4 +1,5 @@
 <!-- SPECIMEN — verbatim transcript excerpts. Do not edit wording. No phone numbers, no employer name. -->
+<!-- Author-approved spelling correction (Este, 2026-07-12): "maual" -> "manual". Transcript itself stays verbatim. -->
 
 # About The Lab — specimen pack (2026-07-12)
 
@@ -20,7 +21,7 @@ Privacy: no 10-digit or 7-digit number appears anywhere below; no employer name 
 
 *From Q1:*
 
-> So I finished my last maual report August 8th at 3:45 and asked gemini to write up a POC for a fandango scraper. 7 hours later I had results in google Colab. Moved over to VS Code over the course of that week and deployed my first version of that app to a droplet, which is still running today, 11 months later.
+> So I finished my last manual report August 8th at 3:45 and asked gemini to write up a POC for a fandango scraper. 7 hours later I had results in google Colab. Moved over to VS Code over the course of that week and deployed my first version of that app to a droplet, which is still running today, 11 months later.
 
 *Q11 answer, in full:*
 
