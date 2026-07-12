@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Long Now Terminal — About The Lab treatment (626 Labs)</title>
+<!--
+  Editorial tokens: imported via ../../editorial.css, same relative path
+  contract as index.html and the sibling sheets — resolves to
+  /Design/editorial.css when served from repo root (python -m http.server
+  at repo root, browse this file under
+  /Design/explorations/2026-07-12-about-treatments/). Fonts are
+  root-absolute (/fonts/...) inside editorial.css's own @import, so they
+  resolve regardless of this file's depth.
+-->
+<link rel="stylesheet" href="../../editorial.css">
+<!--
+  AA CONTRAST — computed 2026-07-12, WCAG 2.1 relative-luminance formula
+  (L = 0.2126R + 0.7152G + 0.0722B on linearized sRGB channels; ratio =
+  (Lmax+0.05)/(Lmin+0.05)). Scope: this sheet's new --at-lnt-* tokens only
+  — the --ed-* pairs are editorial.css's own contract, not re-derived here
+  (informational reuse noted below).
+
+  --at-lnt-cyan-ink (hex 097088, a darkened/desaturated cyan holding the
+  same ~191deg hue as --ed-link, hex 0FA8C9), used as TEXT for every rail
+  value, the eyebrow, source tags, and the artifact status stamp — all
+  sitting on --ed-paper or --ed-paper-soft directly, or on
+  --at-lnt-cyan-wash over --ed-paper-soft for the pill-shaped tags
+  (composite computed separately below):
+    vs --ed-paper       (F7F5F0): L(paper)=0.9138       -> 5.23:1  PASS (floor 4.5:1)
+    vs --ed-paper-soft  (FAFAF7): L(paper-soft)=0.9541   -> 5.45:1  PASS (floor 4.5:1)
+    vs --at-lnt-cyan-wash composited over --ed-paper-soft (5 percent alpha
+      of the cyan lifts paper-soft to approximately hex EEF6F5, L=0.9069):
+                                                          -> 5.19:1  PASS (floor 4.5:1)
+      — the wash shifts background luminance by under two points, nowhere
+      near enough to threaten the floor.
+
+  --at-lnt-cyan-bright (hex 0C8AA6, a lighter cyan on the same hue), used
+  ONLY for the large-display retrieval-year numeral (03026,
+  clamp(40px,6vw,64px) — always far above the 24px/18.66px-bold
+  large-text threshold), never body text:
+    vs --ed-paper:      3.70:1  PASS (floor 3:1)
+    vs --ed-paper-soft:  3.86:1  PASS (floor 3:1)
+  This token FAILS the 4.5:1 body-text floor by design — kept as a
+  separate token from --at-lnt-cyan-ink so a future edit can't drop it
+  onto body text by accident (same discipline sheet-foundation-wall used
+  for --at-wall-brass-bright).
+
+  --at-lnt-cyan-line, --at-lnt-cyan-wash are decorative-only (hairlines,
+  corner reticle ticks on every retrieved passage/card, chip borders and
+  backgrounds) — never used as text color on their own, so no
+  text/background pair applies beyond the wash composite already checked
+  above.
+
+  FINDING — base-layer --ed-link gap (verified, not fixed here): this
+  direction's hard rule calls for "restrained cyan links from --ed-link,"
+  so before inventing --at-lnt-cyan-ink this sheet computed --ed-link
+  (hex 0FA8C9) directly against --ed-paper: L(link)=0.3233 ->
+  (0.9138+.05)/(0.3233+.05) = 2.58:1. That fails AA at every size — under
+  the 3:1 large-text floor, let alone the 4.5:1 body floor — which means
+  editorial.css's own .ed-eyebrow (13px/600, inherits var(--ed-link) by
+  default) is already non-compliant everywhere it ships, including
+  sheet-family-ledger's unmodified reuse of that exact class. This sheet
+  does NOT use bare --ed-link for any of its own text — its eyebrow, rail
+  values, and tags all route through --at-lnt-cyan-ink instead. Real
+  anchor elements (the back-link's hover state, editorial.css's own
+  .ed-article a) still inherit --ed-link/--ed-link-hover unmodified as
+  the shared base-layer contract, matching both sibling sheets. Flagging
+  --ed-link's paper contrast as a promotion candidate alongside the
+  font-stack gap the sibling sheets already flagged below.
+
+  Existing --ed-* pairs reused here (informational, not re-gated):
+  --ed-ink/--ed-paper-soft ~14.6:1 (passage + artifact body text),
+  --ed-ink-2/--ed-paper ~11.2:1 (dek), --ed-ink-3/--ed-paper ~4.96:1
+  (rail labels, footer colophon) — all clear the 4.5:1 floor at their
+  actual sizes, per editorial.css's own palette contract.
+
+  Font note: --font-serif (editorial.css) leads with 'Source Serif 4',
+  but only Inter, Space Grotesk and JetBrains Mono are self-hosted in
+  /fonts/fonts.css. Body serif here resolves to the stack's next link
+  ('Iowan Old Style' on Mac, 'Georgia' on Windows/most Linux) — the same
+  pre-existing base-layer gap already flagged identically by both sibling
+  sheets, not something introduced here.
+-->
+<style>
+  :root {
+    --at-lnt-cyan-ink:    #097088;              /* AA-safe cyan text — eyebrow, rail values, tags, status stamp. AA-checked above. */
+    --at-lnt-cyan-bright: #0C8AA6;               /* large-display-only cyan — retrieval-year numeral. AA-checked above (3:1 floor, never body text). */
+    --at-lnt-cyan-line:   rgba(15,168,201,.30);  /* hairlines, corner reticle ticks, chip borders — not text */
+    --at-lnt-cyan-wash:   rgba(15,168,201,.05);  /* chip + frontispiece backdrop tint — not text */
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+
+  /* ---------- Quiet back link ---------- */
+  .lnt-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ed-ink-3);
+    text-decoration: none;
+    margin: 28px 0 0 24px;
+  }
+  .lnt-back:hover { color: var(--ed-link-hover); }
+
+  /* ---------- Header / frontispiece ---------- */
+  .lnt-header {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 20px 24px 0;
+  }
+  .lnt-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--at-lnt-cyan-ink);
+    margin: 24px 0 20px;
+  }
+  .lnt-title { margin-top: 0; }
+
+  .lnt-frontispiece {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 28px;
+    border-top: 1px solid var(--at-lnt-cyan-line);
+    border-bottom: 1px solid var(--at-lnt-cyan-line);
+    padding: 24px 0;
+    margin: 44px 0 0;
+  }
+  .lnt-fr-meta { display: flex; flex-direction: column; gap: 7px; }
+  .lnt-fr-row {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: .06em;
+    color: var(--at-lnt-cyan-ink);
+    margin: 0;
+  }
+  .lnt-fr-row .k {
+    color: var(--ed-ink-3);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-right: 10px;
+  }
+  .lnt-fr-year { text-align: right; }
+  .lnt-fr-year-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 64px);
+    letter-spacing: .01em;
+    line-height: 1;
+    color: var(--at-lnt-cyan-bright);
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .lnt-fr-year-cap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    margin: 8px 0 0;
+  }
+  @media (max-width: 640px) {
+    .lnt-frontispiece { flex-direction: column; align-items: flex-start; }
+    .lnt-fr-year { text-align: left; }
+  }
+
+  /* ---------- Record scaffold (one per specimen section) ---------- */
+  .lnt-record {
+    padding: 96px 24px;
+    border-bottom: 1px solid var(--ed-rule);
+  }
+  .lnt-record:first-of-type { padding-top: 72px; }
+  .lnt-record:last-of-type { border-bottom: 0; padding-bottom: 120px; }
+  .lnt-record-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .lnt-rail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .07em;
+    margin: 0 0 28px;
+  }
+  .lnt-rail-item { color: var(--at-lnt-cyan-ink); text-transform: uppercase; }
+  .lnt-rail-item .k { color: var(--ed-ink-3); margin-right: 6px; }
+  .lnt-rail-sep { color: var(--ed-ink-muted); }
+
+  .lnt-open {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 26px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    margin: 0 0 36px;
+  }
+
+  /* Shared corner-reticle frame — the retrieved-record motif, used on
+     passages, keystone-quote cards, and the artifact card. Two small
+     tick marks, opposite corners — a scan/registration mark, not a
+     scanline. */
+  .lnt-frame { position: relative; }
+  .lnt-frame::before, .lnt-frame::after {
+    content: '';
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-style: solid;
+    border-color: var(--at-lnt-cyan-line);
+    border-width: 0;
+  }
+  .lnt-frame::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
+  .lnt-frame::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+
+  /* ---------- Passages (body-prose quotes) ---------- */
+  .lnt-passage {
+    margin: 0 0 4px;
+    padding: 28px 32px;
+    border: 1px solid var(--ed-rule);
+    background: var(--ed-paper-soft);
+  }
+  .lnt-passage p {
+    font-family: var(--font-serif);
+    font-size: var(--ed-t-body);
+    line-height: var(--ed-lh-body);
+    color: var(--ed-ink);
+    margin: 0 0 1em;
+    text-wrap: pretty;
+    hanging-punctuation: first last;
+  }
+  .lnt-passage p:last-child { margin-bottom: 0; }
+
+  /* Source tag — the archive-catalog restyling of the provenance label */
+  .lnt-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--at-lnt-cyan-ink);
+    background: var(--at-lnt-cyan-wash);
+    border: 1px solid var(--at-lnt-cyan-line);
+    border-radius: 999px;
+    padding: 5px 12px;
+    margin: 10px 0 32px;
+  }
+  .lnt-passage:last-of-type + .lnt-tag:last-child,
+  .lnt-tag:last-child { margin-bottom: 0; }
+
+  /* ---------- Keystone quotes — three record cards ---------- */
+  .lnt-pull-card {
+    padding: 32px 32px 30px;
+    border: 1px solid var(--ed-rule);
+    background: var(--ed-paper-soft);
+    margin: 0 0 20px;
+  }
+  .lnt-pull-card:last-child { margin-bottom: 0; }
+  .lnt-pull-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--at-lnt-cyan-ink);
+    margin: 0 0 18px;
+  }
+  .lnt-pull-quote { margin: 0; }
+  .lnt-pull-quote p {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--ed-t-pull);
+    line-height: var(--ed-lh-pull);
+    color: var(--ed-ink);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ---------- Artifact card ---------- */
+  .lnt-artifact-card {
+    padding: 32px 32px 28px;
+    border: 1px solid var(--ed-rule);
+    background: var(--ed-paper-soft);
+  }
+  .lnt-artifact-file {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: var(--ed-ink);
+    margin: 0 0 14px;
+    word-break: break-word;
+  }
+  .lnt-artifact-body {
+    font-family: var(--font-serif);
+    font-size: var(--ed-t-body);
+    line-height: var(--ed-lh-body);
+    color: var(--ed-ink);
+    margin: 0 0 24px;
+  }
+  .lnt-status {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: .82em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--at-lnt-cyan-ink);
+  }
+  .lnt-artifact-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--at-lnt-cyan-ink);
+    padding-top: 18px;
+    border-top: 1px solid var(--ed-rule);
+    margin: 0;
+  }
+  .lnt-artifact-meta .k { color: var(--ed-ink-3); margin-right: 6px; }
+
+  /* ---------- Footer colophon ---------- */
+  .lnt-footer {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 24px 24px 96px;
+    text-align: center;
+  }
+  .lnt-footer-rule {
+    height: 1px;
+    background: var(--at-lnt-cyan-line);
+    margin-bottom: 32px;
+  }
+  .lnt-colophon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    margin: 0 0 20px;
+  }
+  .lnt-colophon .accent { color: var(--at-lnt-cyan-ink); }
+  .lnt-footer .lnt-back { margin: 0; justify-content: center; }
+
+  @media (max-width: 640px) {
+    .lnt-header { padding: 20px 16px 0; }
+    .lnt-record { padding: 56px 16px; }
+    .lnt-record:first-of-type { padding-top: 40px; }
+    .lnt-record:last-of-type { padding-bottom: 72px; }
+    .lnt-open { font-size: 21px; }
+    .lnt-passage { padding: 22px 20px; }
+    .lnt-pull-card { padding: 24px 20px 22px; }
+    .lnt-artifact-card { padding: 24px 20px 22px; }
+    .lnt-footer { padding: 24px 16px 72px; }
+  }
+</style>
+</head>
+<body class="ed-page">
+
+  <a class="lnt-back" href="index.html">&larr; About The Lab — treatment bake-off</a>
+
+  <header class="lnt-header">
+    <p class="lnt-eyebrow">626 Labs — Long Now Archive</p>
+    <h1 class="ed-title lnt-title">About The Lab</h1>
+    <p class="ed-dek">A record retrieved from the archive.</p>
+
+    <div class="lnt-frontispiece">
+      <div class="lnt-fr-meta">
+        <p class="lnt-fr-row"><span class="k">Accession</span> 626-AR-001</p>
+        <p class="lnt-fr-row"><span class="k">Source</span> founding-interview-transcript.md</p>
+        <p class="lnt-fr-row"><span class="k">Access</span> read-only</p>
+        <p class="lnt-fr-row"><span class="k">Sections</span> 07</p>
+      </div>
+      <div class="lnt-fr-year">
+        <p class="lnt-fr-year-num">03026</p>
+        <p class="lnt-fr-year-cap">retrieval year &middot; 1000 years on</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="lnt-main">
+
+    <!-- I. Epigraph -->
+    <section class="lnt-record" id="epigraph">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.001</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">Epigraph</h2>
+
+        <blockquote class="lnt-passage lnt-frame">
+          <p>You are going to do it. You know you can, now just do it.</p>
+        </blockquote>
+        <p class="lnt-tag">Source &middot; Q30</p>
+
+        <blockquote class="lnt-passage lnt-frame">
+          <p>He would just ask how and I would pretend that the call was breaking up and leave</p>
+        </blockquote>
+        <p class="lnt-tag">Source &middot; Q30, follow-up</p>
+      </div>
+    </section>
+
+    <!-- II. Founding night -->
+    <section class="lnt-record" id="founding-night">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.002</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">Founding Night</h2>
+
+        <blockquote class="lnt-passage lnt-frame">
+          <p>So I finished my last maual report August 8th at 3:45 and asked gemini to write up a POC for a fandango scraper. 7 hours later I had results in google Colab. Moved over to VS Code over the course of that week and deployed my first version of that app to a droplet, which is still running today, 11 months later.</p>
+        </blockquote>
+        <p class="lnt-tag">Source &middot; Q1</p>
+
+        <blockquote class="lnt-passage lnt-frame">
+          <p>10:45 that first night, but then 45 minues later it wouldn't scrape anymore.  It took 3 days to realize how static colab is and that the exaclt line of code was searching an exact date with data that expires 20 minutes after show start.  That was the first clue I needed more stability,, but by the end of the first week I had an actual application a monolithic code stack, but something. Then I knew for sure.</p>
+        </blockquote>
+        <p class="lnt-tag">Source &middot; Q11, in full</p>
+      </div>
+    </section>
+
+    <!-- III. The name -->
+    <section class="lnt-record" id="the-name">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.003</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">The Name</h2>
+
+        <blockquote class="lnt-passage lnt-frame">
+          <p>626, i think this part of the number is called the exchange, in northside buildings didn't get painted much so their old phone numbers stood for years 626 as I passed by, leaving the neighborhood each day for school.  I know people "rep" their area code, but this isn't that, 626 is the shape of homebase. The dirt and the asphalt that I played on, the place I always wanted to go back to when I was far. Where I was protected, challenged, and built.  Like I said before I never got much from school, as soon as kids became more aware the differences that a kid can't change started to matter more that number got used a lot more.  But not for incoming calls, for data. I had an outlet when I didn't fit in and it wasn't a shady group, but technology itself. How can I make this computer faster, how do i fix it now, how can I make this mine.</p>
+          <p>I could always use Stage Productions. I love a good film, I am not a disney freak, but when I was younger I really saw myself in Stitch and when it was revealed he was project 626 I felt like we were intertwined. Nowadays I am feeling more like a Rocket Racoon, but I want to respect calling home. Not the neighborhood, the house, the heart.</p>
+        </blockquote>
+        <p class="lnt-tag">Source &middot; Q7</p>
+      </div>
+    </section>
+
+    <!-- IV. A values scene -->
+    <section class="lnt-record" id="values-scene">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.004</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">A Values Scene</h2>
+
+        <blockquote class="lnt-passage lnt-frame">
+          <p>my father. The man who restored cars under a tarp in a makeshift painting room in the backyard so my siter would have a bit of achance with her early 80s bmw at a private scool. Changed a transmission in a way too slanted drivveway. Had 120 speakers in his old white checvy van. Put 2 18 inch subs in the trunk of a 1980 bmw 320. Built a clone of a bose stadium speaker after purchasing 1, getting the model numbers of the drivers and ordering replacement parts, building the cabinet by hand and all.</p>
+        </blockquote>
+        <p class="lnt-tag">Source &middot; Q16, in full</p>
+      </div>
+    </section>
+
+    <!-- V. Keystone quotes -->
+    <section class="lnt-record" id="keystone-quotes">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.005</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">Keystone Quotes</h2>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.005.i</p>
+          <blockquote class="lnt-pull-quote"><p>I build tools, because care doesn't always scale</p></blockquote>
+        </div>
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.005.ii</p>
+          <blockquote class="lnt-pull-quote"><p>How do I want them to remember me, like a monkey's paw or their favorite genie</p></blockquote>
+        </div>
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.005.iii</p>
+          <blockquote class="lnt-pull-quote"><p>It's not a drawer it is an arsenal of repositories</p></blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- VI. Artifact block -->
+    <section class="lnt-record" id="artifact">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.006</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">The Artifact</h2>
+
+        <div class="lnt-artifact-card lnt-frame">
+          <p class="lnt-artifact-file">PriceScoutalpha.ipynb</p>
+          <p class="lnt-artifact-body">PriceScoutalpha.ipynb &mdash; the founding night's notebook. August 8th, 3:45 pm to 10:45 pm. 300 KB. <span class="lnt-status">Preserved.</span></p>
+          <p class="lnt-artifact-meta"><span class="k">Window</span> 3:45 PM&ndash;10:45 PM <span class="lnt-rail-sep">/</span> <span class="k">Size</span> 300 KB</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VII. A lineage close -->
+    <section class="lnt-record" id="lineage-close">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.007</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">A Lineage Close</h2>
+
+        <blockquote class="lnt-passage lnt-frame">
+          <p>In a thousand years none of this may matter much, but what can matter is how the 7 kids that come from this house do things and how the kids that come from each of their houses do things and so on and so forth for a thousand years. And if they can look back and see where it started and have a clearer picture of where they need to go then that is it</p>
+        </blockquote>
+        <p class="lnt-tag">Source &middot; Q25</p>
+
+        <blockquote class="lnt-passage lnt-frame">
+          <p>My kids will inherit it the same way each of my siblings is carrying on Stage Productions.</p>
+        </blockquote>
+        <p class="lnt-tag">Source &middot; Q28</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="lnt-footer">
+    <div class="lnt-footer-rule"></div>
+    <p class="lnt-colophon">End of record &mdash; <span class="accent">626-AR-001</span></p>
+    <a class="lnt-back" href="index.html">&larr; Back to the bake-off</a>
+  </footer>
+
+</body>
+</html>
