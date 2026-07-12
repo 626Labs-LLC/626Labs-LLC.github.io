@@ -129,3 +129,42 @@ def test_conundrum_repo_renders_when_set():
     assert 'href="https://github.com/626Labs-LLC/pod-pipeline"' in html
     assert 'class="repo-cta"' in html
     assert "Read the code" in html
+
+
+# ─── plugin-family grouping ─────────────────────────────────────────
+
+def _products():
+    mk = lambda i: {"id": i, "title": i, "description": "d", "tags": [], "status": "live"}
+    return [mk("celestia-3"), mk("vibe-cartographer"), mk("vibe-doc"),
+            mk("rororo"), mk("vibe-test"), mk("conundrum")]
+
+
+def _family():
+    return {
+        "memberIds": ["vibe-cartographer", "vibe-doc", "vibe-test"],
+        "card": {"id": "vibe-family", "title": "The Vibe Plugin Family",
+                 "description": "One playbook.", "tags": [], "status": "live",
+                 "flagship": True, "repo": "estevanhernandez-stack-ed/vibe-plugins",
+                 "productPage": "plugins/", "productPageLabel": "Meet the family"},
+    }
+
+
+def test_family_grouping_collapses_members_in_place():
+    html = render_hub.render_products(_products(), _family())
+    assert html.count('<article class="product') == 4  # 3 non-members + 1 family card
+    assert "The Vibe Plugin Family" in html
+    assert html.index("celestia-3") < html.index("The Vibe Plugin Family") < html.index("rororo")
+    for member in ("vibe-doc", "vibe-test"):
+        assert f"<h3>{member}</h3>" not in html
+
+
+def test_family_grouping_absent_config_is_identity():
+    prods = _products()
+    assert render_hub.render_products(prods) == render_hub.render_products(prods, None)
+    assert render_hub.render_products(prods).count('<article class="product') == 6
+
+
+def test_family_flagship_head_links_product_page():
+    html = render_hub.render_products(_products(), _family())
+    assert 'href="plugins/"' in html
+    assert "Meet the family" in html

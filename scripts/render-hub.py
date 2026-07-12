@@ -686,6 +686,18 @@ def render_product(p: dict) -> str:
     # Flagship cards get a heavier head with a category label.
     if flagship:
         category = PRODUCT_CATEGORY_LABELS.get(pid, "FLAGSHIP")
+        if p.get("productPage"):
+            head_link = (
+                f'<a class="product-link" href="{attr(p.get("productPage"))}">'
+                f'{esc(p.get("productPageLabel") or "Open product page")} '
+                '<svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></a>'
+            )
+        else:
+            head_link = (
+                f'<a class="product-link" href="https://github.com/{attr(p.get("repo", ""))}">'
+                'Open repo '
+                '<svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></a>'
+            )
         head = f"""\
         <div class="product-head">
           <div style="display:flex;align-items:center;gap:16px">
@@ -699,10 +711,7 @@ def render_product(p: dict) -> str:
               <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-muted);letter-spacing:.08em">{esc(category)}</div>
             </div>
           </div>
-          <a class="product-link" href="https://github.com/{attr(p.get("repo", ""))}">
-            Open repo
-            <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </a>
+          {head_link}
         </div>"""
     else:
         head = f"""\
@@ -736,8 +745,25 @@ def render_product(p: dict) -> str:
     return "\n".join(parts)
 
 
-def render_products(products: list[dict]) -> str:
-    return "\n\n".join(render_product(p) for p in products)
+def render_products(products: list[dict], plugin_family: dict | None = None) -> str:
+    """Product cards, with an optional presentation-level family collapse.
+
+    plugin_family = {"memberIds": [...], "card": {...}} folds every member
+    into one card, emitted at the FIRST member's grid position. products[]
+    data is never mutated — facts, star map, and plugin pages keep deriving.
+    """
+    if not plugin_family:
+        return "\n\n".join(render_product(p) for p in products)
+    members = set(plugin_family.get("memberIds") or [])
+    out, family_emitted = [], False
+    for p in products:
+        if p.get("id") in members:
+            if not family_emitted:
+                out.append(render_product(plugin_family["card"]))
+                family_emitted = True
+            continue
+        out.append(render_product(p))
+    return "\n\n".join(out)
 
 
 # ─── lab pool ───────────────────────────────────────────────────────
@@ -1746,10 +1772,12 @@ def main(argv: list[str]) -> int:
     out = src
     out = substitute_zone(out, "hero", render_hero(content["hero"]))
     out = substitute_zone(out, "hero-chips", render_chips(content["hero"]["chips"]))
-    out = substitute_zone(out, "products", render_products(content["products"]))
+    out = substitute_zone(out, "products",
+                          render_products(content["products"], content.get("pluginFamily")))
     out = substitute_zone(out, "lab-pool", render_lab_pool(content["lab"]), js=True)
-    if "thinking" in content:
-        out = substitute_zone(out, "thinking", render_thinking(content["thinking"]))
+    out = substitute_zone(
+        out, "thinking",
+        render_thinking(content["thinking"]) if "thinking" in content else "")
     out = substitute_zone(out, "stories", render_field_notes(stories))
     if "labRuns" in content:
         out = substitute_zone(out, "lab-runs", render_lab_runs(content["labRuns"]))
