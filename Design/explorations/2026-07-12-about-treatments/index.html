@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>About The Lab — treatment bake-off (2026-07-12)</title>
+<!--
+  Editorial tokens: imported via ../../editorial.css (relative from this
+  file's location, Design/explorations/2026-07-12-about-treatments/, up to
+  Design/editorial.css). Resolves correctly when served from repo root
+  (python -m http.server at repo root, browse this file under /Design/...)
+  because the browser resolves the relative href against the served URL,
+  landing on /Design/editorial.css either way. No tokens are inlined here —
+  every color/type value below is a var() of an --ed-* token.
+-->
+<link rel="stylesheet" href="../../editorial.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  .bakeoff-shell {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 72px 24px 140px;
+  }
+  .bakeoff-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: var(--ed-t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ed-link);
+    margin: 0 0 20px;
+  }
+  .bakeoff-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: var(--ed-t-h1);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--ed-ink);
+    margin: 0 0 24px;
+  }
+  .bakeoff-intro {
+    font-family: var(--font-serif);
+    font-size: var(--ed-t-dek);
+    font-style: italic;
+    line-height: 1.45;
+    color: var(--ed-ink-2);
+    max-width: 42em;
+    margin: 0 0 56px;
+  }
+  .bakeoff-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .bakeoff-card {
+    display: block;
+    border: 1px solid var(--ed-rule);
+    border-radius: 14px;
+    padding: 28px 32px;
+    background: var(--ed-paper-soft);
+    text-decoration: none;
+    transition: border-color 160ms, background 160ms;
+  }
+  .bakeoff-card:hover {
+    border-color: var(--ed-link);
+    background: #fff;
+  }
+  .bakeoff-card .slug {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    margin: 0 0 10px;
+  }
+  .bakeoff-card .name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ed-ink);
+    margin: 0 0 8px;
+  }
+  .bakeoff-card .thesis {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ed-ink-2);
+    margin: 0;
+  }
+  .bakeoff-card.pending {
+    opacity: 0.6;
+  }
+  .bakeoff-card.pending .thesis {
+    font-style: italic;
+  }
+</style>
+</head>
+<body class="ed-page">
+  <div class="bakeoff-shell">
+    <p class="bakeoff-eyebrow">626 Labs — design bake-off</p>
+    <h1 class="bakeoff-title">About The Lab — treatment bake-off (2026-07-12)</h1>
+    <p class="bakeoff-intro">Three directions, one specimen, rubric line one: soften the institution.</p>
+
+    <div class="bakeoff-grid">
+      <a class="bakeoff-card pending" href="sheet-family-ledger.html" data-slug="family-ledger">
+        <p class="slug">family-ledger</p>
+        <p class="name">The Family Ledger</p>
+        <p class="thesis">Placeholder — name, one-line thesis, and link filled in by task C2.</p>
+      </a>
+
+      <a class="bakeoff-card pending" href="sheet-foundation-wall.html" data-slug="foundation-wall">
+        <p class="slug">foundation-wall</p>
+        <p class="name">The Foundation Wall</p>
+        <p class="thesis">Placeholder — name, one-line thesis, and link filled in by task C3.</p>
+      </a>
+
+      <a class="bakeoff-card pending" href="sheet-long-now-terminal.html" data-slug="long-now-terminal">
+        <p class="slug">long-now-terminal</p>
+        <p class="name">The Long Now Terminal</p>
+        <p class="thesis">Placeholder — name, one-line thesis, and link filled in by task C4.</p>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
