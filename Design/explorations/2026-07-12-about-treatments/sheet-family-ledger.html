@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Family Ledger — About The Lab treatment (626 Labs)</title>
+<!--
+  Editorial tokens: imported via ../../editorial.css, same relative path
+  contract as index.html — resolves to /Design/editorial.css when served
+  from repo root (python -m http.server at repo root, browse this file
+  under /Design/explorations/2026-07-12-about-treatments/). Fonts are
+  root-absolute (/fonts/...) inside editorial.css's own @import, so they
+  resolve regardless of this file's depth.
+-->
+<link rel="stylesheet" href="../../editorial.css">
+<!--
+  AA CONTRAST — computed 2026-07-12, WCAG 2.1 relative-luminance formula
+  (L = 0.2126R + 0.7152G + 0.0722B on linearized sRGB channels; ratio =
+  (Lmax+0.05)/(Lmin+0.05)). Scope: this sheet's new --at-ledger-* tokens
+  only — the --ed-* pairs are editorial.css's own contract, not re-derived
+  here.
+
+  --at-ledger-stamp (hex 7A2331, ink-stamp oxblood), used as TEXT (the
+  EST. seal's paper-colored glyphs sit on a solid stamp-fill circle, so
+  the same pair reads both directions) and as the ledger table's
+  MARK-column color on bare paper:
+    vs --ed-paper (hex F7F5F0): L(stamp)=0.0556, L(paper)=0.9136 -> 9.12:1
+       (body-text pair, floor 4.5:1) PASS
+    vs --ed-paper-soft (hex FAFAF7, the artifact card / seal backdrop):
+       L(paper-soft)=0.9541 -> 9.51:1 PASS
+
+  --at-ledger-stamp-ring, --at-ledger-line-hi, --at-ledger-line-lo,
+  --at-ledger-zebra are decorative-only (seal ring glow, engraved-rule
+  bevel highlight/shadow, a 3.5%-alpha ledger-table row wash) — never
+  used as text color, so no text/background pair applies. The zebra wash
+  sits under --ed-ink body text (already ~15:1 on bare --ed-paper per
+  editorial.css's own palette); a 3.5% dark overlay shifts effective
+  paper luminance by a low single-digit percent, nowhere near the 4.5:1
+  floor.
+
+  Existing --ed-* pairs reused here (informational, not re-gated):
+  --ed-ink/--ed-paper ~15.3:1, --ed-ink-2/--ed-paper ~11.2:1,
+  --ed-ink-3/--ed-paper ~4.96:1 (captions, folio numbers, table headers —
+  all pass the 4.5:1 floor at their actual sizes).
+
+  Font note: --font-serif (editorial.css) leads with 'Source Serif 4',
+  but only Inter, Space Grotesk and JetBrains Mono are self-hosted in
+  /fonts/fonts.css. Body serif here resolves to the stack's next link
+  ('Iowan Old Style' on Mac, 'Georgia' on Windows/most Linux) — a
+  pre-existing base-layer gap, not something introduced by this sheet.
+  Flagging as a promotion candidate: self-host Source Serif 4 (or commit
+  to Georgia project-wide) the next time editorial.css changes hands.
+-->
+<style>
+  :root {
+    --at-ledger-stamp:       #7A2331;               /* ink-stamp oxblood — the EST. seal + ledger MARK column */
+    --at-ledger-stamp-ring:  rgba(122,35,49,.35);    /* decorative seal glow, not text */
+    --at-ledger-line-hi:     rgba(255,255,255,.7);   /* engraved-rule bevel highlight, not text */
+    --at-ledger-line-lo:     rgba(15,31,49,.22);     /* engraved-rule bevel shadow, not text */
+    --at-ledger-zebra:       rgba(15,31,49,.035);    /* ledger-table row wash, not text */
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+
+  /* ---------- Quiet back link ---------- */
+  .ledger-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ed-ink-3);
+    text-decoration: none;
+    margin: 28px 0 0 24px;
+  }
+  .ledger-back:hover { color: var(--ed-link-hover); }
+
+  /* ---------- Letterhead ---------- */
+  .ledger-header {
+    max-width: var(--ed-page-max);
+    margin: 0 auto;
+    padding: 20px 24px 0;
+    position: relative;
+  }
+  .ledger-seal {
+    position: absolute;
+    top: 4px;
+    right: 24px;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: var(--at-ledger-stamp);
+    box-shadow: 0 0 0 3px var(--at-ledger-stamp-ring);
+    transform: rotate(-6deg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+  }
+  .ledger-seal .mark {
+    color: var(--ed-paper);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .ledger-seal .num {
+    color: var(--ed-paper);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin-top: 3px;
+  }
+  @media (max-width: 560px) {
+    .ledger-seal { position: static; margin: 0 auto 24px; }
+  }
+
+  .ledger-title { margin-top: 20px; }
+
+  .ledger-rule {
+    height: 2px;
+    margin: 36px 0 0;
+    background: var(--at-ledger-line-lo);
+    box-shadow: 0 1px 0 var(--at-ledger-line-hi);
+  }
+  .ledger-header .ledger-rule { max-width: var(--ed-page-max); }
+
+  /* ---------- Ledger entries (one per specimen section) ---------- */
+  .ledger-entry {
+    padding: 56px 0;
+    border-bottom: 1px solid var(--ed-rule);
+  }
+  .ledger-entry:last-of-type { border-bottom: 0; }
+
+  .ledger-entry-grid {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 660px);
+    column-gap: 24px;
+    max-width: 756px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  @media (max-width: 560px) {
+    .ledger-entry-grid { grid-template-columns: 1fr; padding: 0 20px; }
+    .ledger-folio { margin-bottom: 10px; }
+  }
+
+  .ledger-folio {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    padding-top: 6px;
+  }
+
+  .ledger-open {
+    font-family: var(--font-serif);
+    font-variant-caps: small-caps;
+    font-weight: 600;
+    font-size: 27px;
+    letter-spacing: .03em;
+    color: var(--ed-ink);
+    margin: 0 0 28px;
+  }
+
+  .ledger-provenance {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    margin: 28px 0 8px;
+  }
+  .ledger-provenance:first-of-type { margin-top: 0; }
+
+  .ledger-passage {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .ledger-passage p {
+    font-family: var(--font-serif);
+    font-size: var(--ed-t-body);
+    line-height: var(--ed-lh-body);
+    color: var(--ed-ink);
+    margin: 0 0 1em;
+    text-wrap: pretty;
+    hanging-punctuation: first last;
+  }
+  .ledger-passage p:last-child { margin-bottom: 0; }
+
+  .ledger-quotemark {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 44px;
+    line-height: 1;
+    color: var(--ed-rule-strong);
+    margin: 0 0 -10px;
+    user-select: none;
+  }
+
+  /* Keystone pull-quotes — the ledger's own inscription-card form */
+  .ledger-inscription {
+    border: 1px solid var(--ed-rule);
+    border-left: 3px solid var(--at-ledger-stamp);
+    border-radius: 0 10px 10px 0;
+    background: var(--ed-paper-soft);
+    padding: 26px 28px;
+    margin: 0 0 20px;
+  }
+  .ledger-inscription:last-child { margin-bottom: 0; }
+  .ledger-inscription .stub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    margin: 0 0 12px;
+  }
+  .ledger-inscription blockquote {
+    margin: 0;
+  }
+  .ledger-inscription p {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--ed-t-pull);
+    line-height: var(--ed-lh-pull);
+    color: var(--ed-ink);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Artifact card */
+  .ledger-artifact {
+    border: 1px solid var(--ed-rule);
+    border-radius: 12px;
+    background: var(--ed-paper-soft);
+    padding: 28px 28px 24px;
+    position: relative;
+  }
+  .ledger-artifact::before {
+    content: '';
+    position: absolute;
+    left: 24px; right: 24px; top: 0;
+    height: 2px;
+    background: var(--at-ledger-line-lo);
+    box-shadow: 0 1px 0 var(--at-ledger-line-hi);
+  }
+  .ledger-artifact .filename {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: var(--ed-ink);
+    margin: 10px 0 12px;
+    word-break: break-word;
+  }
+  .ledger-artifact p {
+    font-family: var(--font-serif);
+    font-size: var(--ed-t-body);
+    line-height: var(--ed-lh-body);
+    color: var(--ed-ink);
+    margin: 0;
+  }
+  .ledger-artifact .stamped {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.82em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--at-ledger-stamp);
+  }
+
+  /* ---------- Founding-night ledger table ---------- */
+  .ledger-table-wrap { margin-top: 32px; }
+  .ledger-table-caption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    margin: 0 0 14px;
+  }
+  .ledger-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .ledger-table col.when { width: 148px; }
+  .ledger-table col.mark { width: 52px; }
+  .ledger-table thead th {
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ed-ink-3);
+    padding: 0 12px 10px 0;
+    border-bottom: 1px solid var(--ed-rule-strong);
+  }
+  .ledger-table tbody td {
+    padding: 12px 12px 12px 0;
+    border-bottom: 1px solid var(--ed-rule);
+    vertical-align: top;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ed-ink);
+  }
+  .ledger-table tbody tr:nth-child(even) td { background: var(--at-ledger-zebra); }
+  .ledger-table tbody tr:last-child td { border-bottom: 0; }
+  .ledger-table .when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: .04em;
+    color: var(--ed-ink-2);
+    white-space: nowrap;
+  }
+  .ledger-table .entry {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ed-ink);
+  }
+  .ledger-table .mark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--at-ledger-stamp);
+    text-align: right;
+  }
+
+  @media (max-width: 560px) {
+    .ledger-table, .ledger-table thead, .ledger-table tbody,
+    .ledger-table th, .ledger-table td, .ledger-table tr { display: block; }
+    .ledger-table thead { display: none; }
+    .ledger-table tbody tr {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--ed-rule);
+    }
+    .ledger-table tbody tr:nth-child(even) { background: var(--at-ledger-zebra); }
+    .ledger-table tbody tr:nth-child(even) td { background: transparent; }
+    .ledger-table tbody td {
+      padding: 3px 4px;
+      border-bottom: 0;
+    }
+    .ledger-table td::before {
+      content: attr(data-label);
+      display: inline-block;
+      min-width: 64px;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ed-ink-3);
+      margin-right: 8px;
+    }
+    .ledger-table .mark { text-align: left; }
+  }
+
+  /* Account-number tag — the numeral 626 as the ledger's own account mark */
+  .ledger-acct {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    border: 1px solid var(--ed-rule-strong);
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin: 0 0 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+  }
+  .ledger-acct b {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0;
+    color: var(--ed-ink);
+    text-transform: none;
+  }
+
+  /* ---------- Footer colophon ---------- */
+  .ledger-footer {
+    max-width: var(--ed-page-max);
+    margin: 0 auto;
+    padding: 0 24px 96px;
+    text-align: center;
+  }
+  .ledger-colophon {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ed-ink-3);
+    margin: 32px 0 20px;
+  }
+  .ledger-colophon .seal-word {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .1em;
+    color: var(--at-ledger-stamp);
+    text-transform: uppercase;
+  }
+  .ledger-footer .ledger-back {
+    margin: 0;
+    justify-content: center;
+  }
+</style>
+</head>
+<body class="ed-page">
+
+  <a class="ledger-back" href="index.html">&larr; About The Lab — treatment bake-off</a>
+
+  <header class="ledger-header">
+    <p class="ed-eyebrow">626 Labs — household record</p>
+    <h1 class="ed-title ledger-title">About The Lab</h1>
+    <p class="ed-dek">A ledger kept for the house.</p>
+    <div class="ledger-seal" aria-hidden="true">
+      <span class="mark">Est.</span>
+      <span class="num">626</span>
+    </div>
+    <div class="ledger-rule"></div>
+  </header>
+
+  <main class="ledger-main">
+
+    <!-- I. Epigraph -->
+    <section class="ledger-entry" id="epigraph">
+      <div class="ledger-entry-grid">
+        <div class="ledger-folio" aria-hidden="true">Fol. I</div>
+        <div>
+          <h2 class="ledger-open">Epigraph</h2>
+
+          <p class="ledger-provenance">Q30</p>
+          <blockquote class="ledger-passage">
+            <span class="ledger-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>You are going to do it. You know you can, now just do it.</p>
+          </blockquote>
+
+          <p class="ledger-provenance">Q30, follow-up</p>
+          <blockquote class="ledger-passage">
+            <span class="ledger-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>He would just ask how and I would pretend that the call was breaking up and leave</p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- II. Founding night -->
+    <section class="ledger-entry" id="founding-night">
+      <div class="ledger-entry-grid">
+        <div class="ledger-folio" aria-hidden="true">Fol. II</div>
+        <div>
+          <h2 class="ledger-open">Founding Night</h2>
+
+          <p class="ledger-provenance">Q1</p>
+          <blockquote class="ledger-passage">
+            <span class="ledger-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>So I finished my last maual report August 8th at 3:45 and asked gemini to write up a POC for a fandango scraper. 7 hours later I had results in google Colab. Moved over to VS Code over the course of that week and deployed my first version of that app to a droplet, which is still running today, 11 months later.</p>
+          </blockquote>
+
+          <p class="ledger-provenance">Q11, in full</p>
+          <blockquote class="ledger-passage">
+            <span class="ledger-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>10:45 that first night, but then 45 minues later it wouldn't scrape anymore.  It took 3 days to realize how static colab is and that the exaclt line of code was searching an exact date with data that expires 20 minutes after show start.  That was the first clue I needed more stability,, but by the end of the first week I had an actual application a monolithic code stack, but something. Then I knew for sure.</p>
+          </blockquote>
+
+          <div class="ledger-table-wrap">
+            <p class="ledger-table-caption">The first week, by the clock &mdash; excerpted from Q1 / Q11</p>
+            <table class="ledger-table">
+              <colgroup>
+                <col class="when"><col><col class="mark">
+              </colgroup>
+              <thead>
+                <tr><th>When</th><th>Entry</th><th>Mark</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="when" data-label="When">Aug 8 &middot; 3:45 PM</td>
+                  <td class="entry" data-label="Entry">finished my last maual report</td>
+                  <td class="mark" data-label="Mark">E.</td>
+                </tr>
+                <tr>
+                  <td class="when" data-label="When">Aug 8</td>
+                  <td class="entry" data-label="Entry">asked gemini to write up a POC for a fandango scraper</td>
+                  <td class="mark" data-label="Mark">E.</td>
+                </tr>
+                <tr>
+                  <td class="when" data-label="When">+7 hours</td>
+                  <td class="entry" data-label="Entry">had results in google Colab</td>
+                  <td class="mark" data-label="Mark">E.</td>
+                </tr>
+                <tr>
+                  <td class="when" data-label="When">10:45 PM</td>
+                  <td class="entry" data-label="Entry">10:45 that first night, but then 45 minues later it wouldn't scrape anymore</td>
+                  <td class="mark" data-label="Mark">E.</td>
+                </tr>
+                <tr>
+                  <td class="when" data-label="When">+3 days</td>
+                  <td class="entry" data-label="Entry">It took 3 days to realize how static colab is</td>
+                  <td class="mark" data-label="Mark">E.</td>
+                </tr>
+                <tr>
+                  <td class="when" data-label="When">End of wk. 1</td>
+                  <td class="entry" data-label="Entry">by the end of the first week I had an actual application a monolithic code stack, but something</td>
+                  <td class="mark" data-label="Mark">E.</td>
+                </tr>
+                <tr>
+                  <td class="when" data-label="When">+11 months</td>
+                  <td class="entry" data-label="Entry">still running today, 11 months later</td>
+                  <td class="mark" data-label="Mark">E.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- III. The name -->
+    <section class="ledger-entry" id="the-name">
+      <div class="ledger-entry-grid">
+        <div class="ledger-folio" aria-hidden="true">Fol. III</div>
+        <div>
+          <h2 class="ledger-open">The Name</h2>
+          <p class="ledger-acct">Acct. no. <b>626</b></p>
+
+          <p class="ledger-provenance">Q7</p>
+          <blockquote class="ledger-passage">
+            <span class="ledger-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>626, i think this part of the number is called the exchange, in northside buildings didn't get painted much so their old phone numbers stood for years 626 as I passed by, leaving the neighborhood each day for school.  I know people "rep" their area code, but this isn't that, 626 is the shape of homebase. The dirt and the asphalt that I played on, the place I always wanted to go back to when I was far. Where I was protected, challenged, and built.  Like I said before I never got much from school, as soon as kids became more aware the differences that a kid can't change started to matter more that number got used a lot more.  But not for incoming calls, for data. I had an outlet when I didn't fit in and it wasn't a shady group, but technology itself. How can I make this computer faster, how do i fix it now, how can I make this mine.</p>
+            <p>I could always use Stage Productions. I love a good film, I am not a disney freak, but when I was younger I really saw myself in Stitch and when it was revealed he was project 626 I felt like we were intertwined. Nowadays I am feeling more like a Rocket Racoon, but I want to respect calling home. Not the neighborhood, the house, the heart.</p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- IV. A values scene -->
+    <section class="ledger-entry" id="values-scene">
+      <div class="ledger-entry-grid">
+        <div class="ledger-folio" aria-hidden="true">Fol. IV</div>
+        <div>
+          <h2 class="ledger-open">A Values Scene</h2>
+
+          <p class="ledger-provenance">Q16, in full</p>
+          <blockquote class="ledger-passage">
+            <span class="ledger-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>my father. The man who restored cars under a tarp in a makeshift painting room in the backyard so my siter would have a bit of achance with her early 80s bmw at a private scool. Changed a transmission in a way too slanted drivveway. Had 120 speakers in his old white checvy van. Put 2 18 inch subs in the trunk of a 1980 bmw 320. Built a clone of a bose stadium speaker after purchasing 1, getting the model numbers of the drivers and ordering replacement parts, building the cabinet by hand and all.</p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- V. Keystone quotes -->
+    <section class="ledger-entry" id="keystone-quotes">
+      <div class="ledger-entry-grid">
+        <div class="ledger-folio" aria-hidden="true">Fol. V</div>
+        <div>
+          <h2 class="ledger-open">Keystone Quotes</h2>
+
+          <div class="ledger-inscription">
+            <p class="stub">Inscription i</p>
+            <blockquote><p>I build tools, because care doesn't always scale</p></blockquote>
+          </div>
+          <div class="ledger-inscription">
+            <p class="stub">Inscription ii</p>
+            <blockquote><p>How do I want them to remember me, like a monkey's paw or their favorite genie</p></blockquote>
+          </div>
+          <div class="ledger-inscription">
+            <p class="stub">Inscription iii</p>
+            <blockquote><p>It's not a drawer it is an arsenal of repositories</p></blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VI. Artifact block -->
+    <section class="ledger-entry" id="artifact">
+      <div class="ledger-entry-grid">
+        <div class="ledger-folio" aria-hidden="true">Fol. VI</div>
+        <div>
+          <h2 class="ledger-open">The Artifact</h2>
+          <p class="ledger-provenance">Provenance &mdash; the founding-night notebook</p>
+
+          <div class="ledger-artifact">
+            <p class="filename">PriceScoutalpha.ipynb</p>
+            <p>PriceScoutalpha.ipynb &mdash; the founding night's notebook. August 8th, 3:45 pm to 10:45 pm. 300 KB. <span class="stamped">Preserved.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VII. A lineage close -->
+    <section class="ledger-entry" id="lineage-close">
+      <div class="ledger-entry-grid">
+        <div class="ledger-folio" aria-hidden="true">Fol. VII</div>
+        <div>
+          <h2 class="ledger-open">A Lineage Close</h2>
+
+          <p class="ledger-provenance">Q25</p>
+          <blockquote class="ledger-passage">
+            <span class="ledger-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>In a thousand years none of this may matter much, but what can matter is how the 7 kids that come from this house do things and how the kids that come from each of their houses do things and so on and so forth for a thousand years. And if they can look back and see where it started and have a clearer picture of where they need to go then that is it</p>
+          </blockquote>
+
+          <p class="ledger-provenance">Q28</p>
+          <blockquote class="ledger-passage">
+            <span class="ledger-quotemark" aria-hidden="true">&ldquo;</span>
+            <p>My kids will inherit it the same way each of my siblings is carrying on Stage Productions.</p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="ledger-footer">
+    <div class="ledger-rule"></div>
+    <p class="ledger-colophon">Kept in the ledger &mdash; <span class="seal-word">Est. 626</span></p>
+    <a class="ledger-back" href="index.html">&larr; Back to the bake-off</a>
+  </footer>
+
+</body>
+</html>
