@@ -69,7 +69,7 @@ def _family():
 
 def test_family_grouping_collapses_members_in_place():
     html = render_hub.render_products(_products(), _family())
-    assert html.count('class="product') == 4          # 3 non-members + 1 family card
+    assert html.count('<article class="product') == 4          # 3 non-members + 1 family card
     assert "The Vibe Plugin Family" in html
     assert html.index("celestia-3") < html.index("The Vibe Plugin Family") < html.index("rororo")
     for member in ("vibe-doc", "vibe-test"):
@@ -151,7 +151,7 @@ In main(): change the products call and the thinking zone —
 
 - [ ] **Step 4: Run tests**
 
-Run: `python -m pytest tests/ -v` — all pass (existing 36 + 3 new). Then `python scripts/render-hub.py --check` — exit 0 (no site.json config yet, identity behavior).
+Run: `python -m pytest tests/ -v` — all pass (existing 36 + 3 new). Then `python scripts/render-hub.py` — expect "index.html rebuilt": vibe-cartographer's flagship card already carries `productPage`, so its head link flips from "Open repo" to its product page. This interim drift is accepted-by-design (it's a correct improvement and the card folds away entirely at Task A4). Then `python scripts/render-hub.py --check` — exit 0. Commit the regenerated index.html with the two source files.
 
 - [ ] **Step 5: Commit**
 
