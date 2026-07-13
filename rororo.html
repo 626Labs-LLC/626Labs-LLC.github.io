@@ -558,8 +558,8 @@
     </div>
     <aside class="hd-r">
       <div class="row"><span>Platforms</span><b>Windows &middot; macOS</b></div>
-      <div class="row"><span>Latest &middot; Windows</span><b id="win-latest">v1.8.0</b></div>
-      <div class="row"><span>Plugin host</span><b>v1.4 contract</b></div>
+      <div class="row"><span>Latest &middot; Windows</span><b id="win-latest">v1.11.1</b></div>
+      <div class="row"><span>Plugin host</span><b>Named-pipe &middot; consent-gated</b></div>
       <div class="row"><span>License</span><b>MIT &middot; open source</b></div>
       <div class="row"><span>Price</span><b>Free</b></div>
     </aside>
@@ -615,7 +615,7 @@ brew install --cask rororo</code>
   <div class="section-hd">
     <div class="l">
       <h2>What it does</h2>
-      <p>The launcher core &mdash; the same shape on both platforms, native on each.</p>
+      <p>The launcher core is the same shape on both platforms &mdash; the deep roster tooling below it ships Windows-first.</p>
     </div>
     <div class="r">The launcher</div>
   </div>
@@ -624,17 +624,17 @@ brew install --cask rororo</code>
     <div class="feature">
       <div class="key">01 &middot; MULTI-INSTANCE</div>
       <h4>One-click multi-instance</h4>
-      <p>A tray toggle holds the Roblox singleton lock so multiple clients run side by side. The official client, unmodified &mdash; no injection, no DevTools, no registry edits.</p>
+      <p>A tray toggle holds the Roblox singleton lock so multiple clients run side by side. The official client, unmodified &mdash; no injection, no DevTools, no registry edits. The tray ring reads at a glance: cyan on, slate off, magenta error.</p>
     </div>
     <div class="feature">
       <div class="key">02 &middot; VAULT</div>
       <h4>Saved-account vault</h4>
-      <p>Add your alts once via an embedded login window. Cookies are encrypted at rest and tied to your machine &mdash; DPAPI on Windows, Keychain on macOS.</p>
+      <p>Add your alts once via an embedded login window. Cookies are encrypted at rest and tied to your machine &mdash; DPAPI on Windows, Keychain on macOS &mdash; with a passphrase-encrypted export when you move PCs.</p>
     </div>
     <div class="feature">
       <div class="key">03 &middot; LAUNCH AS</div>
       <h4>Launch As</h4>
-      <p>One click spawns each saved account straight into your default game URL. Set the game once; every alt lands there.</p>
+      <p>One click spawns each saved account straight into your default game, a saved private server, or any pasted share link. Set it once; every alt lands where you pointed it.</p>
     </div>
     <div class="feature">
       <div class="key">04 &middot; LOGIN</div>
@@ -642,14 +642,44 @@ brew install --cask rororo</code>
       <p>Login happens on Roblox's own page inside an embedded browser. RORORO is the window frame, not the form handler &mdash; it only ever captures the session cookie set after a successful login.</p>
     </div>
     <div class="feature">
-      <div class="key">05 &middot; TRAY UX</div>
-      <h4>State-coloured tray ring</h4>
-      <p>Read your setup at a glance: cyan ring means the lock is held and multi-instance is on, slate means off, magenta means error. No menu-diving.</p>
+      <div class="key">05 &middot; SQUAD LAUNCH</div>
+      <h4>Whole squad, one server</h4>
+      <p>Send a set of accounts into the same private server in three trust-aware phases &mdash; direct joins, an anchor, then followers. Careful mode waits for each alt to land before sending the next.</p>
     </div>
     <div class="feature">
-      <div class="key">06 &middot; UPDATES</div>
+      <div class="key">06 &middot; FRIEND FOLLOW</div>
+      <h4>Follow a friend in</h4>
+      <p>Pick any friend of your main account &mdash; not just your saved alts &mdash; and launch straight into their server. If they aren't joinable, RORORO says so instead of bouncing.</p>
+    </div>
+    <div class="feature">
+      <div class="key">07 &middot; ROUTING</div>
+      <h4>A library for games and servers</h4>
+      <p>Keep saved games and private servers, set defaults, and route different alts into different servers in one batch. Local renames and tags keep a deep roster legible &mdash; Roblox-side names untouched.</p>
+    </div>
+    <div class="feature">
+      <div class="key">08 &middot; PRESENCE</div>
+      <h4>Live roster status</h4>
+      <p>Every row shows the real game it's in &mdash; "In Pet Sim 99", "At Roblox home" &mdash; plus an idle chip that turns amber when an alt has sat too long. One tray ping; the threshold is yours.</p>
+    </div>
+    <div class="feature">
+      <div class="key">09 &middot; STREAMER MODE</div>
+      <h4>Stream without leaking your alts</h4>
+      <p>One flip disguises the whole roster &mdash; stand-in names and hand-drawn avatars across every row, banner, modal, and Roblox window title. Private-server links hide behind a reveal-only pill. Disguises persist across restarts.</p>
+    </div>
+    <div class="feature">
+      <div class="key">10 &middot; FPS LIMITER</div>
+      <h4>Per-account FPS caps</h4>
+      <p>Cap each alt's FPS from its row before launch &mdash; farm accounts low, your main uncapped. Plays nice with Bloxstrap and warns when the two would fight.</p>
+    </div>
+    <div class="feature">
+      <div class="key">11 &middot; PLUGINS</div>
+      <h4>Consent-gated plugins</h4>
+      <p>Extend RORORO with out-of-process plugins &mdash; separate signed apps behind a per-capability consent sheet, SHA-verified at install. The Ur family (Task, OCR, AFK) is live on the <a href="rororo-plugins.html">marketplace</a>.</p>
+    </div>
+    <div class="feature">
+      <div class="key">12 &middot; UPDATES</div>
       <h4>Auto-update built in</h4>
-      <p>Velopack on Windows, Sparkle on macOS. When Roblox shifts under the launcher, the fix ships to you without a reinstall.</p>
+      <p>Velopack on Windows, Sparkle on macOS. When Roblox shifts under the launcher, the fix ships to you without a reinstall &mdash; the compat config even updates remotely, no new binary needed.</p>
     </div>
   </div>
 
@@ -708,15 +738,16 @@ brew install --cask rororo</code>
 
   <div class="platform-split">
     <div class="platform win">
-      <div class="key">Windows 11</div>
+      <div class="key">Windows 10 &middot; 11</div>
       <h3>RORORO for Windows</h3>
       <div class="stack">.NET 10 LTS &middot; C# 14 &middot; WPF</div>
       <ul>
         <li><span class="tick">&#9656;</span><span>Multi-instance via a <b>singleton-mutex hold</b> &mdash; typed P/Invokes, no client touch.</span></li>
         <li><span class="tick">&#9656;</span><span><b>DPAPI-encrypted</b> account vault &mdash; cookies tied to your Windows user; a copied file won't decrypt elsewhere.</span></li>
-        <li><span class="tick">&#9656;</span><span>Squad Launch, Friend Follow, join-by-link, per-game routing, local renames.</span></li>
-        <li><span class="tick">&#9656;</span><span>The <b>plugin host</b> &mdash; v1.4's named-pipe extension surface (see below).</span></li>
-        <li><span class="tick">&#9656;</span><span>Velopack auto-update &middot; Microsoft Store + GitHub Releases.</span></li>
+        <li><span class="tick">&#9656;</span><span>Squad Launch, Friend Follow, join-by-link, private servers, per-game routing, local renames.</span></li>
+        <li><span class="tick">&#9656;</span><span><b>Presence + idle awareness</b> per row, and <b>streamer mode</b> to disguise the roster on stream.</span></li>
+        <li><span class="tick">&#9656;</span><span>The <b>plugin host</b> &mdash; the named-pipe extension surface behind the Ur plugin family (see below).</span></li>
+        <li><span class="tick">&#9656;</span><span>Velopack auto-update &middot; Microsoft Store + GitHub Releases &middot; Windows 10 22H2 and up.</span></li>
       </ul>
     </div>
     <div class="platform mac">
