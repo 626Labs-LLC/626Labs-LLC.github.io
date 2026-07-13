@@ -168,3 +168,22 @@ def test_family_flagship_head_links_product_page():
     html = render_hub.render_products(_products(), _family())
     assert 'href="plugins/"' in html
     assert "Meet the family" in html
+
+
+# ─── founding (section 02) ───────────────────────────────────────────
+
+def _founding():
+    return {"eyebrow": "02 · The founding", "headline": "It started with a Nintendo",
+            "quote": "I build tools, because care doesn't always scale",
+            "paragraphs": ["<strong>First</strong> para.", "Second para."],
+            "door": {"label": "Read the whole story", "href": "about.html"}}
+
+
+def test_founding_renders_section_with_door():
+    html = render_hub.render_founding(_founding())
+    assert 'id="founding"' in html and 'href="about.html"' in html
+    assert "Read the whole story" in html and "care doesn" in html
+
+
+def test_founding_paragraphs_render_raw_html():
+    assert "<strong>First</strong>" in render_hub.render_founding(_founding())

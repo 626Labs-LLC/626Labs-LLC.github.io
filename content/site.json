@@ -55,6 +55,9 @@
     "thinking": {
       "enabled": false
     },
+    "founding": {
+      "enabled": true
+    },
     "labRuns": {
       "enabled": true
     },
@@ -72,6 +75,21 @@
     },
     "about": {
       "enabled": true
+    }
+  },
+  "founding": {
+    "eyebrow": "02 · The founding",
+    "headline": "626 Labs builds exact-fit software.",
+    "quote": "I build tools, because care doesn't always scale.",
+    "paragraphs": [
+      "626 Labs builds exact-fit software. The founding argument is simple: it has never been easier to have the exact tools we need, and too much money has been going to too many companies for tools that only half fit. So we build and maintain our own, at a quality that rivals enterprise software, made to enhance the work people do instead of taking their jobs. We are here to make great products, even if only a handful of people need them. That's ok.",
+      "The line the lab was built on belongs to its founder: \"I build tools, because care doesn't always scale.\" It is translation: take the care a person already has and build it into something that keeps working after their attention has to move on.",
+      "We hold that use converts skeptics. Not a demo, not a number, not a story: the tool working in someone's hands. The data in our tools is gathered, not assumed. The bar is a well-put-together piece of technology, and the bar is enterprise-grade. The edge of the portfolio is two words: play nice.",
+      "So the lab builds for inheritors it has not met. 626 is a phone exchange: the first three digits of the founder's parents' old phone number, digits that stood for years on unpainted buildings as he passed, leaving the neighborhood for school. The pattern has run once before: his father's sound and light company, Stage Productions, is carried on today by each of his siblings. The seven kids from his house will inherit 626 Labs the same way. Even one more is a win."
+    ],
+    "door": {
+      "label": "Read the whole story",
+      "href": "about.html"
     }
   },
   "labRuns": {
@@ -1056,7 +1074,7 @@
       "That posture is what pulled us into the old empires — legacy operations, safety inspections, hotels, cinema exhibition. Off-the-shelf vendors build for the brochure. We build operator-first — the domain expert in the loop, the AI coder on the keyboard — and ship the tool the shift manager actually needed.",
       "The Vibe plugins — <strong>{{fact:live_plugin_names}}</strong> — are the other half of the work. Vibe coding is the fastest way to turn an idea into running software right now. It's also the easiest way to end up with something that can't survive production. The plugins close that gap: planning, docs, tests, security, all built so a vibe-coded afternoon holds up in front of real users.",
       "<strong>We See You at the Movies</strong> is the gaming wedge. Trivia and head-to-head card battles are warm-ups for bigger things on deck.",
-      "Every 626 Labs app is built like it might be seen by a thousand pairs of eyes, even when it may only ever be seen by one. That's the standard. I've deployed more apps to production than I ever imagined, and the bar keeps going up."
+      "Every 626 Labs app is built like it might be seen by a thousand pairs of eyes, even when it may only ever be seen by one. That's the standard. I've deployed more apps to production than I ever imagined, and the bar keeps going up. <a href=\"about.html\">Read the whole story.</a>"
     ],
     "principles": [
       {

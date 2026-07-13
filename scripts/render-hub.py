@@ -1048,6 +1048,59 @@ def render_thinking(thinking: dict) -> str:
     return "\n".join(parts)
 
 
+# ─── founding (section 02 — the founding story teaser) ──────────────
+def render_founding(founding: dict) -> str:
+    """Render the `.founding` section — homepage teaser for the founding
+    story, with a door to about.html.
+
+    Mirrors the retired `render_thinking`'s section structure and reuses
+    its `.thinking` CSS classes verbatim (only the section id changes,
+    to `founding`) — no new CSS needed. `paragraphs[]` are emitted as raw
+    HTML so inline <strong>/<em> carry through; eyebrow/headline/quote are
+    escaped; `door` (label/href) renders like the old CTA link.
+    """
+    eyebrow = esc(founding.get("eyebrow", ""))
+    headline = esc(founding.get("headline", ""))
+    quote = esc(founding.get("quote", ""))
+    paragraphs = founding.get("paragraphs") or []
+    door = founding.get("door") or {}
+
+    para_html = "\n".join(f"    <p>{p}</p>" for p in paragraphs)  # raw HTML on purpose
+
+    door_html = ""
+    if door.get("label") and door.get("href"):
+        door_html = (
+            '    <div class="thinking-link">\n'
+            f'      <a href="{attr(door["href"])}">\n'
+            f'        {esc(door["label"])}\n'
+            '        <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>\n'
+            '      </a>\n'
+            '    </div>'
+        )
+
+    blockquote_html = f'    <blockquote>\n      {quote}\n    </blockquote>' if quote else ""
+
+    parts = [
+        '<section class="section thinking" id="founding">',
+        '  <div class="wrap">',
+        '    <div class="section-head">',
+        '      <div>',
+        f'        <div class="eyebrow"><span>{eyebrow}</span><span class="line"></span></div>',
+        f'        <h2>{headline}</h2>',
+        '      </div>',
+        '    </div>',
+    ]
+    if blockquote_html:
+        parts.append(blockquote_html)
+    if para_html:
+        parts.append(para_html)
+    if door_html:
+        parts.append(door_html)
+    parts.append('  </div>')
+    parts.append('</section>')
+    return "\n".join(parts)
+
+
 # ─── support / sponsors CTA ─────────────────────────────────────────
 SPONSOR_HEART_SVG = (
     '<svg viewBox="0 0 16 16" aria-hidden="true">'
@@ -1773,6 +1826,7 @@ def render_sitemap(stories: list[dict] | None = None, root: Path = ROOT) -> str:
 # "thinking"> element for this toggle to find.
 SECTION_IDS = {
     "thinking": "thinking",
+    "founding": "founding",
     "labRuns":  "lab-runs",
     "lab":      "lab",
     "play":     "play",
@@ -1829,6 +1883,9 @@ def main(argv: list[str]) -> int:
     out = substitute_zone(
         out, "thinking",
         render_thinking(content["thinking"]) if "thinking" in content else "")
+    out = substitute_zone(
+        out, "founding",
+        render_founding(content["founding"]) if "founding" in content else "")
     out = substitute_zone(out, "stories", render_field_notes(stories))
     if "labRuns" in content:
         out = substitute_zone(out, "lab-runs", render_lab_runs(content["labRuns"]))
