@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>PREVIEW — About The Lab in the Long Now Terminal (626 Labs)</title>
+<!--
+  PREVIEW — NOT THE SHIPPED PAGE.
+  This renders the FULL verbatim body-v3.md copy for "About the lab"
+  (source: 626Labs-Publishing/works/2026-07-11-founding-interview/
+  01_POSTS/2026-07-12-about-the-lab/body-v3.md) inside the winning
+  Long Now Terminal treatment from this bake-off, so the founder can
+  review prose + treatment together before the real page is built.
+  Every word of body copy below is copied verbatim from body-v3.md —
+  no rewording, no trimming. Structural mapping:
+    - h1                         -> .lnt-title (ed-title)
+    - each markdown h2           -> one .lnt-record (rail + .lnt-open)
+    - each markdown paragraph    -> one .lnt-prose <p>, unedited, in order
+    - attributed quoted lines    -> ALSO duplicated into a .lnt-pull-card
+                                     immediately after their paragraph,
+                                     using the sheet's own keystone-quote
+                                     styling (nothing removed from the
+                                     paragraph — the quote is pulled AND
+                                     kept in place, classic pull-quote
+                                     convention)
+    - "Where 626 comes from"     -> one distinct .lnt-artifact-card,
+                                     the sheet's "distinct record" idiom,
+                                     holding both closer paragraphs
+                                     verbatim as its body
+
+  Editorial tokens: same relative-path contract as the sheet this is
+  built from — resolves to /Design/editorial.css when served from repo
+  root (see the root README on `python -m http.server` from repo root).
+-->
+<link rel="stylesheet" href="../../editorial.css">
+<!--
+  --at-lnt-* token block reused VERBATIM (values unchanged) from
+  sheet-long-now-terminal.html, the winning treatment in this bake-off,
+  audited 2026-07-12 for AA contrast against --ed-paper / --ed-paper-soft
+  (WCAG 2.1 relative-luminance formula). See that file's own header
+  comment for the full per-token contrast math — not re-derived here
+  since the values are identical, not new tokens. Two small additions
+  below (.lnt-prose, .lnt-preview-banner) reference these same tokens
+  via var() only; no new raw colors are introduced.
+-->
+<style>
+  :root {
+    --at-lnt-cyan-ink:    #097088;              /* AA-safe cyan text — eyebrow, rail values, tags, status stamp. AA-checked in sheet-long-now-terminal.html. */
+    --at-lnt-cyan-bright: #0C8AA6;               /* large-display-only cyan — retrieval-year numeral. AA-checked (3:1 floor, never body text). */
+    --at-lnt-cyan-line:   rgba(15,168,201,.30);  /* hairlines, corner reticle ticks, chip borders — not text */
+    --at-lnt-cyan-wash:   rgba(15,168,201,.05);  /* chip + frontispiece backdrop tint — not text */
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+
+  /* ---------- Preview banner (new — this file only) ---------- */
+  .lnt-preview-banner {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--at-lnt-cyan-ink);
+    background: var(--at-lnt-cyan-wash);
+    border-bottom: 1px solid var(--at-lnt-cyan-line);
+  }
+
+  /* ---------- Quiet back link ---------- */
+  .lnt-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ed-ink-3);
+    text-decoration: none;
+    margin: 28px 0 0 24px;
+  }
+  .lnt-back:hover { color: var(--ed-link-hover); }
+
+  /* ---------- Header / frontispiece ---------- */
+  .lnt-header {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 20px 24px 0;
+  }
+  .lnt-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--at-lnt-cyan-ink);
+    margin: 24px 0 20px;
+  }
+  .lnt-title { margin-top: 0; }
+
+  .lnt-frontispiece {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 28px;
+    border-top: 1px solid var(--at-lnt-cyan-line);
+    border-bottom: 1px solid var(--at-lnt-cyan-line);
+    padding: 24px 0;
+    margin: 44px 0 0;
+  }
+  .lnt-fr-meta { display: flex; flex-direction: column; gap: 7px; }
+  .lnt-fr-row {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: .06em;
+    color: var(--at-lnt-cyan-ink);
+    margin: 0;
+  }
+  .lnt-fr-row .k {
+    color: var(--ed-ink-3);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-right: 10px;
+  }
+  .lnt-fr-year { text-align: right; }
+  .lnt-fr-year-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 64px);
+    letter-spacing: .01em;
+    line-height: 1;
+    color: var(--at-lnt-cyan-bright);
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .lnt-fr-year-cap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    margin: 8px 0 0;
+  }
+  @media (max-width: 640px) {
+    .lnt-frontispiece { flex-direction: column; align-items: flex-start; }
+    .lnt-fr-year { text-align: left; }
+  }
+
+  /* ---------- Record scaffold (one per section) ---------- */
+  .lnt-record {
+    padding: 96px 24px;
+    border-bottom: 1px solid var(--ed-rule);
+  }
+  .lnt-record:first-of-type { padding-top: 72px; }
+  .lnt-record:last-of-type { border-bottom: 0; padding-bottom: 120px; }
+  .lnt-record-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .lnt-rail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .07em;
+    margin: 0 0 28px;
+  }
+  .lnt-rail-item { color: var(--at-lnt-cyan-ink); text-transform: uppercase; }
+  .lnt-rail-item .k { color: var(--ed-ink-3); margin-right: 6px; }
+  .lnt-rail-sep { color: var(--ed-ink-muted); }
+
+  .lnt-open {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 26px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    margin: 0 0 36px;
+  }
+
+  /* Shared corner-reticle frame — retrieved-record motif */
+  .lnt-frame { position: relative; }
+  .lnt-frame::before, .lnt-frame::after {
+    content: '';
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-style: solid;
+    border-color: var(--at-lnt-cyan-line);
+    border-width: 0;
+  }
+  .lnt-frame::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
+  .lnt-frame::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+
+  /* ---------- Plain running prose (new — this file only) ----------
+     Same typography as .lnt-passage p (var-only, no new colors), just
+     without the boxed/framed quote chrome — this doc's body copy is
+     the lab's own institutional prose, not retrieved transcript, so it
+     reads as plain paragraphs between the pulled attributed quotes. */
+  .lnt-prose {
+    font-family: var(--font-serif);
+    font-size: var(--ed-t-body);
+    line-height: var(--ed-lh-body);
+    color: var(--ed-ink);
+    margin: 0 0 1.4em;
+    text-wrap: pretty;
+    hanging-punctuation: first last;
+  }
+  .lnt-prose:last-child { margin-bottom: 0; }
+
+  /* ---------- Passages (kept for parity; unused by this preview's
+     body copy, since none of it is retrieved-transcript quotation —
+     see .lnt-pull-card below for the attributed-quote treatment) --- */
+  .lnt-passage {
+    margin: 0 0 4px;
+    padding: 28px 32px;
+    border: 1px solid var(--ed-rule);
+    background: var(--ed-paper-soft);
+  }
+  .lnt-passage p {
+    font-family: var(--font-serif);
+    font-size: var(--ed-t-body);
+    line-height: var(--ed-lh-body);
+    color: var(--ed-ink);
+    margin: 0 0 1em;
+    text-wrap: pretty;
+    hanging-punctuation: first last;
+  }
+  .lnt-passage p:last-child { margin-bottom: 0; }
+
+  .lnt-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--at-lnt-cyan-ink);
+    background: var(--at-lnt-cyan-wash);
+    border: 1px solid var(--at-lnt-cyan-line);
+    border-radius: 999px;
+    padding: 5px 12px;
+    margin: 10px 0 32px;
+  }
+
+  /* ---------- Keystone / pull-quote cards — the attributed quotes -- */
+  .lnt-pull-card {
+    padding: 32px 32px 30px;
+    border: 1px solid var(--ed-rule);
+    background: var(--ed-paper-soft);
+    margin: 0 0 32px;
+  }
+  .lnt-pull-card:last-child { margin-bottom: 0; }
+  .lnt-pull-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--at-lnt-cyan-ink);
+    margin: 0 0 18px;
+  }
+  .lnt-pull-quote { margin: 0; }
+  .lnt-pull-quote p {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--ed-t-pull);
+    line-height: var(--ed-lh-pull);
+    color: var(--ed-ink);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ---------- Artifact card — the closer's distinct record block --- */
+  .lnt-artifact-card {
+    padding: 32px 32px 28px;
+    border: 1px solid var(--ed-rule);
+    background: var(--ed-paper-soft);
+  }
+  .lnt-artifact-file {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: var(--ed-ink);
+    margin: 0 0 14px;
+    word-break: break-word;
+  }
+  .lnt-artifact-body {
+    font-family: var(--font-serif);
+    font-size: var(--ed-t-body);
+    line-height: var(--ed-lh-body);
+    color: var(--ed-ink);
+    margin: 0 0 24px;
+    text-wrap: pretty;
+    hanging-punctuation: first last;
+  }
+  .lnt-status {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: .82em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--at-lnt-cyan-ink);
+  }
+  .lnt-artifact-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--at-lnt-cyan-ink);
+    padding-top: 18px;
+    border-top: 1px solid var(--ed-rule);
+    margin: 0;
+  }
+  .lnt-artifact-meta .k { color: var(--ed-ink-3); margin-right: 6px; }
+
+  /* ---------- Footer colophon ---------- */
+  .lnt-footer {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 24px 24px 96px;
+    text-align: center;
+  }
+  .lnt-footer-rule {
+    height: 1px;
+    background: var(--at-lnt-cyan-line);
+    margin-bottom: 32px;
+  }
+  .lnt-colophon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    margin: 0 0 20px;
+  }
+  .lnt-colophon .accent { color: var(--at-lnt-cyan-ink); }
+  .lnt-footer .lnt-back { margin: 0; justify-content: center; }
+
+  @media (max-width: 640px) {
+    .lnt-header { padding: 20px 16px 0; }
+    .lnt-record { padding: 56px 16px; }
+    .lnt-record:first-of-type { padding-top: 40px; }
+    .lnt-record:last-of-type { padding-bottom: 72px; }
+    .lnt-open { font-size: 21px; }
+    .lnt-passage { padding: 22px 20px; }
+    .lnt-pull-card { padding: 24px 20px 22px; }
+    .lnt-artifact-card { padding: 24px 20px 22px; }
+    .lnt-footer { padding: 24px 16px 72px; }
+  }
+</style>
+</head>
+<body class="ed-page">
+
+  <div class="lnt-preview-banner">PREVIEW &mdash; not the shipped page</div>
+
+  <a class="lnt-back" href="index.html">&larr; About The Lab &mdash; treatment bake-off</a>
+
+  <header class="lnt-header">
+    <p class="lnt-eyebrow">626 Labs &mdash; Long Now Archive</p>
+    <h1 class="ed-title lnt-title">About the lab</h1>
+    <p class="ed-dek">A record retrieved from the archive.</p>
+
+    <div class="lnt-frontispiece">
+      <div class="lnt-fr-meta">
+        <p class="lnt-fr-row"><span class="k">Accession</span> 626-AR-002</p>
+        <p class="lnt-fr-row"><span class="k">Source</span> about-the-lab/body-v3.md</p>
+        <p class="lnt-fr-row"><span class="k">Access</span> read-only</p>
+        <p class="lnt-fr-row"><span class="k">Sections</span> 07</p>
+      </div>
+      <div class="lnt-fr-year">
+        <p class="lnt-fr-year-num">03026</p>
+        <p class="lnt-fr-year-cap">retrieval year &middot; 1000 years on</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="lnt-main">
+
+    <!-- I. Opening -->
+    <section class="lnt-record" id="opening">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.001</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">Opening</h2>
+
+        <p class="lnt-prose">626 Labs builds exact-fit software. The founding argument is simple: it has never been easier to have the exact tools we need, and too much money has been going to too many companies for tools that only half fit. So we build and maintain our own, at a quality that rivals enterprise software, made to enhance the work people do instead of taking their jobs. We are here to make great products, even if only a handful of people need them. That's ok.</p>
+      </div>
+    </section>
+
+    <!-- II. Care doesn't always scale -->
+    <section class="lnt-record" id="care-doesnt-always-scale">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.002</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">Care doesn't always scale</h2>
+
+        <p class="lnt-prose">The lab's first position is about attention. A person's care for the people around them runs out of hands long before it runs out of intent: the manager who wants every store to get the same diligence, the builder who wants every user to get the real answer. We hold that the right response is not automation for its own sake. It is translation: take the care a person already has and build it into something that keeps working after their attention has to move on.</p>
+
+        <p class="lnt-prose">The line the lab was built on belongs to its founder: "I build tools, because care doesn't always scale."</p>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.002.i</p>
+          <blockquote class="lnt-pull-quote"><p>I build tools, because care doesn't always scale.</p></blockquote>
+        </div>
+
+        <p class="lnt-prose">Who is the care for? Workers, users, and other builders. A tool should give a person more time to focus on the next thing, and maybe help them find out what that next thing is. It should never take anyone's job, and it should never take the doing away from a person who wanted to do it.</p>
+
+        <p class="lnt-prose">This position predates the lab. Its founder has spent his working life helping people from sixteen to eighty-plus do their jobs to the best of their abilities, from swing manager at sixteen to area general manager of a large-footprint cinema complex. Working in the undervalued field of the restaurant/film exhibition industry helped expand the surface of exposure. We see the value: work that helps people do their best deserves the smartest minds willing to do it.</p>
+      </div>
+    </section>
+
+    <!-- III. Exact-fit beats half-fit -->
+    <section class="lnt-record" id="exact-fit-beats-half-fit">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.003</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">Exact-fit beats half-fit</h2>
+
+        <p class="lnt-prose">Vendorware half fits by design: it is built for the average of a thousand buyers and lands squarely on none of them. We hold that a small team that understands its own problem can build the exact tool and maintain it, and that the maintaining is what earns the trust. The case made for the lab's first build was never "here is an app." It was: "We can build and maintain our own tools. Here is a build and I am learning to maintain it."</p>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.003.i</p>
+          <blockquote class="lnt-pull-quote"><p>We can build and maintain our own tools. Here is a build and I am learning to maintain it.</p></blockquote>
+        </div>
+
+        <p class="lnt-prose">That first build started as a spreadsheet problem: a twice-a-year comp report that meant scouring a website across a seventy-eight-store region, on an Excel form too limiting to carry the answer.</p>
+
+        <p class="lnt-prose">We hold that use converts skeptics. Not a demo, not a number, not a story: the tool working in someone's hands until skepticism has nothing left to stand on. The data in our tools is gathered, not assumed. When a Roblox multi-instance tool shipped from the MS Store instead of GitHub, users in a Discord clan channel were genuinely excited. Where a tool ships from is part of the trust, so the lab ships through front doors.</p>
+
+        <p class="lnt-prose">The build discipline runs on a flywheel: what the lab builds today is the blueprint for something bigger built professionally tomorrow.</p>
+      </div>
+    </section>
+
+    <!-- IV. Best effort is the standard -->
+    <section class="lnt-record" id="best-effort-is-the-standard">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.004</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">Best effort is the standard</h2>
+
+        <p class="lnt-prose">The colleagues here include agents, and the agents have names. The founder's rule: "names are fun and everything deserves to have one if it wants one." A named persona is preset intent: the tool knows why you came to talk to it and holds the domain it was told it belongs to. The first was The Architect, named inside the lab's own dashboard when the work needed a systems engineer to say which way was up.</p>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.004.i</p>
+          <blockquote class="lnt-pull-quote"><p>names are fun and everything deserves to have one if it wants one.</p></blockquote>
+        </div>
+
+        <p class="lnt-prose">The management doctrine behind this predates the lab as well. Its founder has managed people most of his life and holds that even the best people will slip, and that is ok, we're human. Agents changed the equation: with agents, best effort is the standard, which moves the whole weight onto the quality of the instructions. So the lab writes instructions as if they are load-bearing, because they are, and it documents lessons so they are paid for once. The doctrine is the founder's, word for word: "Learn from other people's mistakes, they are free. Make mistakes, don't repeat them."</p>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.004.ii</p>
+          <blockquote class="lnt-pull-quote"><p>Learn from other people's mistakes, they are free. Make mistakes, don't repeat them.</p></blockquote>
+        </div>
+
+        <p class="lnt-prose">The bar is a well-put-together piece of technology, and the bar is enterprise-grade. We do not copy anyone's product to get there. We study the expectations the best software has already set: what users take for granted before they trust a tool, what quality feels like when nobody has to think about it. Then we build our own way up to that standard and measure against it with nowhere to hide. The Vibe plugin family exists for exactly this reason: the discipline that holds a build to the bar, made repeatable, so the tenth project clears it as surely as the first.</p>
+
+        <p class="lnt-prose">This conviction predates the lab by a generation. The founder is from a line of builders, all with different tools, but the same goal, quality and longevity. The lab builds to the same test: set the work next to the real thing and listen.</p>
+
+        <p class="lnt-prose">Presentation is part of the standard, not a costume; in the founder's words, "when it is business time button up." The lab's apps pass the storefront gates of a well-established tech giant, and to anyone who reads the portfolio as a junk drawer, look closer. "It's not a drawer it is an arsenal of repositories."</p>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.004.iii</p>
+          <blockquote class="lnt-pull-quote"><p>when it is business time button up.</p></blockquote>
+        </div>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.004.iv</p>
+          <blockquote class="lnt-pull-quote"><p>It's not a drawer it is an arsenal of repositories.</p></blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- V. Play Nice -->
+    <section class="lnt-record" id="play-nice">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.005</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">Play Nice</h2>
+
+        <p class="lnt-prose">The edge of the portfolio is two words: play nice. Nothing extractive, nothing predatory, nothing that treats a person as the product. When people guessed that RoRoRo was probably going to steal account info, the founder's reply became standing policy: "nah I don't want any of y'alls stuff."</p>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.005.i</p>
+          <blockquote class="lnt-pull-quote"><p>nah I don't want any of y'alls stuff.</p></blockquote>
+        </div>
+
+        <p class="lnt-prose">The money position follows the same line. The lab would rather earn from companies it trusts to work in the best interest of people than from individuals themselves, and the free tools for the gaming and building community stay free. The founder's rider stands: "I do take tips though ;)"</p>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.005.ii</p>
+          <blockquote class="lnt-pull-quote"><p>I do take tips though ;)</p></blockquote>
+        </div>
+
+        <p class="lnt-prose">Every product also has to pass a durability test, asked in the founder's words: "would I feel good about selling it to them and walking away, would it last?" A tool should be remembered like a favorite genie, not a monkey's paw.</p>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.005.iii</p>
+          <blockquote class="lnt-pull-quote"><p>would I feel good about selling it to them and walking away, would it last?</p></blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- VI. Built to be inherited -->
+    <section class="lnt-record" id="built-to-be-inherited">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.006</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">Built to be inherited</h2>
+
+        <p class="lnt-prose">Digital ownership is revocable. The lab watched a rights deal end and consumers lose films they had "bought," and it holds the conclusion as doctrine, in the founder's words: "The only thing that can last is doing your best because you are able to, not for a reward, but to make an impact on a person who can carry it forward."</p>
+
+        <div class="lnt-pull-card lnt-frame">
+          <p class="lnt-pull-id">Rec 626.006.i</p>
+          <blockquote class="lnt-pull-quote"><p>The only thing that can last is doing your best because you are able to, not for a reward, but to make an impact on a person who can carry it forward.</p></blockquote>
+        </div>
+
+        <p class="lnt-prose">So the lab builds for inheritors it has not met: code held to standard before anyone asks for it, documentation written so the lesson transmits without the author in the room. In a thousand years, little of the software may matter. What can matter is how the people who carry the standard do things, and what they hand forward in turn.</p>
+      </div>
+    </section>
+
+    <!-- VII. Where 626 comes from — the closer, as a distinct archive-record block -->
+    <section class="lnt-record" id="where-626-comes-from">
+      <div class="lnt-record-inner">
+        <div class="lnt-rail">
+          <span class="lnt-rail-item"><span class="k">Rec</span> 626.007</span>
+          <span class="lnt-rail-sep" aria-hidden="true">/</span>
+          <span class="lnt-rail-item"><span class="k">Retrieved</span> 03026-07-12</span>
+        </div>
+        <h2 class="lnt-open">Where 626 comes from</h2>
+
+        <div class="lnt-artifact-card lnt-frame">
+          <p class="lnt-artifact-file">Where 626 comes from &mdash; origin record</p>
+          <p class="lnt-artifact-body">626 is a phone exchange: the first three digits of the founder's parents' old phone number, digits that stood for years on unpainted buildings as he passed, leaving the neighborhood for school. He calls 626 "the shape of homebase": where he was protected, challenged, and built. The lab began in one evening. He closed his last manual comp report at 3:45 pm on an August 8th and had scraper results on the command line by 10:45 that night; the notebook from that night is preserved in the lab's records. The pattern has run once before: his father's sound and light company, Stage Productions, is carried on today by each of his siblings. The seven kids from his house will inherit 626 Labs the same way. If the lab's tools bring one more builder to the same standard, that seven can be eight. Even one more is a win.</p>
+          <p class="lnt-artifact-body">The founder's note to his own first day still stands: "You are going to do it. You know you can, now just do it."</p>
+          <p class="lnt-artifact-meta"><span class="k">Accession</span> 626-AR-002 <span class="lnt-rail-sep">/</span> <span class="k">Status</span> Preserved</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="lnt-footer">
+    <div class="lnt-footer-rule"></div>
+    <p class="lnt-colophon">End of record &mdash; <span class="accent">626-AR-002</span></p>
+    <a class="lnt-back" href="index.html">&larr; Back to the bake-off</a>
+  </footer>
+
+</body>
+</html>
