@@ -47,7 +47,7 @@ words are a separate gate (see Prose review, below).
    house and handed down, not a permanence claim for its own sake.
    Stage Productions is the proof this already works: it outlived its
    founder once, carried by the siblings.
-3. **Would a 3026-descendant feel addressed?** The closing line of the
+3. **Would a 2026-descendant feel addressed?** The closing line of the
    prose ("in a thousand years none of this may matter much, but...")
    is the actual thesis of the piece. A treatment that only illustrates
    that sentence is doing less than one built around it.
@@ -66,7 +66,7 @@ household keeps, not a thing an institution mounts. It's also the
 warmest of the three on sight: small-caps serif openers, warm paper, a
 table that reads like it was actually kept by hand rather than
 generated. Where it under-delivers is rubric 3 — nothing in the chrome
-gestures past the present day; a descendant reading it in 3026 gets the
+gestures past the present day; a descendant reading it in 2026 gets the
 same ledger anyone reads it today.
 
 **The Foundation Wall** — seven mounted plaques, brass corner rivets, a
@@ -86,8 +86,8 @@ second.
 
 **The Long Now Terminal** — a records room retrieving the founding file
 from a thousand years out: monospace rec-ids (Rec 626.001 through .007),
-a large cyan "03026" retrieval-year numeral in the frontispiece, a
-"Retrieved 03026-07-12" stamp repeating on every record, corner-reticle
+a large cyan "02026" retrieval-year numeral in the frontispiece, a
+"Retrieved 02026-07-12" stamp repeating on every record, corner-reticle
 scan marks framing each passage and card. This is the only direction
 built structurally around rubric 3 rather than illustrating it after the
 fact — the whole page's apparatus performs the closing line instead of
