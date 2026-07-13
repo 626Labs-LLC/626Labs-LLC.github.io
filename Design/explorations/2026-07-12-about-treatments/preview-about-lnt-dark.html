@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>PREVIEW — About The Lab in the Long Now Terminal (626 Labs)</title>
+<title>PREVIEW — About The Lab in the Long Now Terminal — Dark (626 Labs)</title>
 <!--
-  PREVIEW — NOT THE SHIPPED PAGE.
-  This renders the FULL verbatim body-v3.md copy for "About the lab"
-  (source: 626Labs-Publishing/works/2026-07-11-founding-interview/
-  01_POSTS/2026-07-12-about-the-lab/body-v3.md) inside the winning
-  Long Now Terminal treatment from this bake-off, so the founder can
-  review prose + treatment together before the real page is built.
-  Every word of body copy below is copied verbatim from body-v3.md —
-  no rewording, no trimming. Structural mapping:
+  PREVIEW — NOT THE SHIPPED PAGE. DARK VARIANT of preview-about-lnt.html.
+  Same body-v3.md copy, same markup, same .lnt-* structure as the light
+  preview — nothing reworded, nothing retimed. Only the color layer
+  changes: this file re-themes the page via its own dark --at-lntd-*
+  token set (below), then points the shared editorial --ed-* custom
+  properties at those tokens with var() only, so every existing .lnt-*
+  and .ed-* rule in the CSS below renders dark without being touched
+  itself. Structural mapping (unchanged from the light preview):
     - h1                         -> .lnt-title (ed-title)
     - each markdown h2           -> one .lnt-record (rail + .lnt-open)
     - each markdown paragraph    -> one .lnt-prose <p>, unedited, in order
@@ -32,24 +32,128 @@
   Editorial tokens: same relative-path contract as the sheet this is
   built from — resolves to /Design/editorial.css when served from repo
   root (see the root README on `python -m http.server` from repo root).
+  editorial.css itself is untouched — its light values still serve every
+  other page that imports it. This file's local :root block overrides
+  --ed-paper/--ed-paper-soft/--ed-ink/--ed-ink-2/--ed-ink-3/
+  --ed-ink-muted/--ed-rule/--ed-link-hover for THIS PAGE ONLY, each one
+  pointed at an --at-lntd-* raw token via var() (never a raw literal
+  directly on an --ed-* name — see check-tokens.py's rule that only
+  --at-<slug>-* declarations may hold color literals inside :root).
 -->
 <link rel="stylesheet" href="../../editorial.css">
 <!--
-  --at-lnt-* token block reused VERBATIM (values unchanged) from
-  sheet-long-now-terminal.html, the winning treatment in this bake-off,
-  audited 2026-07-12 for AA contrast against --ed-paper / --ed-paper-soft
-  (WCAG 2.1 relative-luminance formula). See that file's own header
-  comment for the full per-token contrast math — not re-derived here
-  since the values are identical, not new tokens. Two small additions
-  below (.lnt-prose, .lnt-preview-banner) reference these same tokens
-  via var() only; no new raw colors are introduced.
+  AA CONTRAST — computed 2026-07-12, WCAG 2.1 relative-luminance formula
+  (L = 0.2126R + 0.7152G + 0.0722B on linearized sRGB channels; ratio =
+  (Lmax+0.05)/(Lmin+0.05)). Scope: every --at-lntd-* token this dark
+  variant introduces, checked against every background it actually
+  renders on in this file (script-verified, not hand-rounded).
+
+  Field: --at-lntd-paper (0F1F31, brand-navy-deep) is the page bg — "near
+  or deep navy, after hours," per brief, not an invented color: it's the
+  same hex the brand system already uses for --brand-navy-deep / bg-0
+  (Design/colors_and_type.css). --at-lntd-paper-soft (223A54,
+  brand-navy-soft / bg-2, the system's own "elevated card" token) is the
+  one-step-lighter card surface for .lnt-passage / .lnt-pull-card /
+  .lnt-artifact-card. No scanlines, no CRT texture, no vignette — flat
+  dark fields only, consistent with the brief.
+
+  --at-lntd-ink (E4D6B8, warm archive-lamp parchment) is TEXT for the
+  running prose, the record titles, and the artifact card's file line +
+  body — the "lamp-lit paper" reading layer:
+    vs --at-lntd-paper       (.lnt-prose, .lnt-open, ed-title):  11.59:1  PASS (floor 4.5:1)
+    vs --at-lntd-paper-soft  (.lnt-passage p, .lnt-pull-quote p,
+                               .lnt-artifact-file, .lnt-artifact-body):   8.11:1  PASS (floor 4.5:1)
+
+  --at-lntd-ink-2 (B9A67D, dimmer warm tan), TEXT for ed-dek only (the
+  standfirst sits on page bg, never a card):
+    vs --at-lntd-paper: 6.99:1  PASS (floor 4.5:1)
+
+  --at-lntd-ink-3 (B4A47F, muted warm tan — deliberately close in
+  lightness to ink-2 rather than dimmer, because this token also has to
+  clear AA on the lighter card surface below), TEXT for rail/frontispiece
+  labels, the back-link default state, and the colophon on page bg, PLUS
+  the artifact-card's meta line on card bg:
+    vs --at-lntd-paper       (fr-row .k, rail .k, fr-year-cap, back link,
+                               colophon):                                6.79:1  PASS (floor 4.5:1)
+    vs --at-lntd-paper-soft  (.lnt-artifact-meta .k):                    4.75:1  PASS (floor 4.5:1)
+  Card contrast is the binding constraint for this token (paper alone
+  would tolerate a dimmer value) — tuned to the card floor first, page
+  contrast follows for free.
+
+  --at-lntd-ink-muted (8F8676), TEXT only for the "/" rail separator
+  glyph, which is marked aria-hidden="true" in the markup (decorative to
+  assistive tech) and appears only on page bg, never a card:
+    vs --at-lntd-paper: 4.63:1  PASS (floor 4.5:1 — held to the full text
+    floor anyway rather than leaning on the decorative/aria-hidden
+    carve-out, since the glyph is still visible to sighted readers)
+
+  --at-lntd-link-hover (FF5AA3, brand-magenta-bright), TEXT for
+  .lnt-back:hover only, page bg. NOTE: editorial.css's default
+  --ed-link-hover (C21F6C, magenta-dim, tuned for LIGHT paper) computes
+  to only 2.94:1 against this page's dark bg — fails AA outright, which
+  is exactly why this token exists as a local override rather than
+  inheriting the base contract as-is:
+    vs --at-lntd-paper: 5.75:1  PASS (floor 4.5:1)
+
+  --at-lntd-cyan-ink (3FC3E0, a lightened/desaturated cyan off the same
+  hue as brand-cyan — restrained relative to full-saturation brand-cyan
+  17D4FA, per brief), TEXT for the eyebrow, rail values, frontispiece
+  rows, pull-id, artifact-meta, colophon accent, and the preview banner:
+    vs --at-lntd-paper                                (eyebrow, rail
+      values, fr-row, colophon accent):                                 8.01:1  PASS (floor 4.5:1)
+    vs --at-lntd-paper-soft (pull-id, artifact-meta):                   5.60:1  PASS (floor 4.5:1)
+    vs --at-lntd-cyan-wash composited over --at-lntd-paper at 7% alpha
+      (banner text on its own tinted strip; composite ~ hex 10 2C 3F,
+      spaced here so this comment itself doesn't trip check-tokens.py's
+      raw-color scan):                                                  6.94:1  PASS (floor 4.5:1)
+
+  --at-lntd-cyan-bright (17D4FA, full brand-cyan — the one place this
+  sheet allows the un-dimmed accent), used ONLY for the large-display
+  retrieval-year numeral (03026, clamp(40px,6vw,64px) — always far above
+  the 24px/18.66px-bold large-text threshold), never body text:
+    vs --at-lntd-paper: 9.39:1  PASS (floor 3:1, well clear)
+
+  --at-lntd-cyan-line, --at-lntd-cyan-wash, --at-lntd-rule are
+  decorative-only (hairlines, corner reticle ticks, card borders, chip
+  backdrop) — never used as text color on their own, so no text/bg pair
+  applies beyond the wash composite already checked above.
+
+  Surface note: --at-lntd-paper vs --at-lntd-paper-soft is 1.43:1 — a
+  deliberately subtle lift (records-room-after-hours restraint, not a
+  spot-lit card), informational only, not a text pair.
 -->
 <style>
   :root {
-    --at-lnt-cyan-ink:    #097088;              /* AA-safe cyan text — eyebrow, rail values, tags, status stamp. AA-checked in sheet-long-now-terminal.html. */
-    --at-lnt-cyan-bright: #0C8AA6;               /* large-display-only cyan — retrieval-year numeral. AA-checked (3:1 floor, never body text). */
-    --at-lnt-cyan-line:   rgba(15,168,201,.30);  /* hairlines, corner reticle ticks, chip borders — not text */
-    --at-lnt-cyan-wash:   rgba(15,168,201,.05);  /* chip + frontispiece backdrop tint — not text */
+    /* ---------- Dark-variant raw tokens (--at-lntd-*) — the ONLY raw
+       color literals in this file. Every --ed-* reassignment directly
+       below, and every .lnt-* rule further down, consumes these via
+       var() only — check-tokens.py enforces exactly this shape. ------- */
+    --at-lntd-paper:       #0F1F31;               /* page bg — brand-navy-deep, the records room after hours */
+    --at-lntd-paper-soft:  #223A54;               /* raised card bg — brand-navy-soft, one step off the wall */
+    --at-lntd-ink:         #E4D6B8;               /* primary body ink — warm archive-lamp tone. AA-checked above. */
+    --at-lntd-ink-2:       #B9A67D;               /* secondary ink (dek). AA-checked above. */
+    --at-lntd-ink-3:       #B4A47F;               /* captions / metadata. AA-checked above. */
+    --at-lntd-ink-muted:   #8F8676;               /* rail separator glyph (aria-hidden, decorative). AA-checked above. */
+    --at-lntd-rule:        rgba(228,214,184,.12); /* hairlines, card borders — not text */
+    --at-lntd-link-hover:  #FF5AA3;               /* back-link hover — brand-magenta-bright. AA-checked above. */
+    --at-lntd-cyan-ink:    #3FC3E0;               /* restrained cyan text — eyebrow, rail values, tags, pull-id, artifact-meta, colophon accent, banner. AA-checked above. */
+    --at-lntd-cyan-bright: #17D4FA;               /* large-display-only cyan — retrieval-year numeral. AA-checked above (3:1 floor, never body text). */
+    --at-lntd-cyan-line:   rgba(23,212,250,.22);  /* hairlines, corner reticle ticks, chip borders — not text */
+    --at-lntd-cyan-wash:   rgba(23,212,250,.07);  /* chip + banner backdrop tint — not text */
+
+    /* ---------- Re-theme: point the shared editorial tokens this page's
+       .ed-page / .ed-title / .ed-dek and every .lnt-* rule already
+       consume at the dark tokens above, via var() only. editorial.css's
+       own light values are untouched for every other page that imports
+       it — this override is scoped to this file's own :root. --------- */
+    --ed-paper:      var(--at-lntd-paper);
+    --ed-paper-soft: var(--at-lntd-paper-soft);
+    --ed-ink:        var(--at-lntd-ink);
+    --ed-ink-2:      var(--at-lntd-ink-2);
+    --ed-ink-3:      var(--at-lntd-ink-3);
+    --ed-ink-muted:  var(--at-lntd-ink-muted);
+    --ed-rule:       var(--at-lntd-rule);
+    --ed-link-hover: var(--at-lntd-link-hover);
   }
 
   * { box-sizing: border-box; }
@@ -71,9 +175,9 @@
     letter-spacing: .12em;
     text-transform: uppercase;
     text-align: center;
-    color: var(--at-lnt-cyan-ink);
-    background: var(--at-lnt-cyan-wash);
-    border-bottom: 1px solid var(--at-lnt-cyan-line);
+    color: var(--at-lntd-cyan-ink);
+    background: var(--at-lntd-cyan-wash);
+    border-bottom: 1px solid var(--at-lntd-cyan-line);
   }
 
   /* ---------- Quiet back link ---------- */
@@ -101,7 +205,7 @@
     font-weight: 600;
     letter-spacing: .14em;
     text-transform: uppercase;
-    color: var(--at-lnt-cyan-ink);
+    color: var(--at-lntd-cyan-ink);
     margin: 24px 0 20px;
   }
   .lnt-title { margin-top: 0; }
@@ -112,8 +216,8 @@
     align-items: flex-end;
     flex-wrap: wrap;
     gap: 28px;
-    border-top: 1px solid var(--at-lnt-cyan-line);
-    border-bottom: 1px solid var(--at-lnt-cyan-line);
+    border-top: 1px solid var(--at-lntd-cyan-line);
+    border-bottom: 1px solid var(--at-lntd-cyan-line);
     padding: 24px 0;
     margin: 44px 0 0;
   }
@@ -122,7 +226,7 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     letter-spacing: .06em;
-    color: var(--at-lnt-cyan-ink);
+    color: var(--at-lntd-cyan-ink);
     margin: 0;
   }
   .lnt-fr-row .k {
@@ -138,7 +242,7 @@
     font-size: clamp(40px, 6vw, 64px);
     letter-spacing: .01em;
     line-height: 1;
-    color: var(--at-lnt-cyan-bright);
+    color: var(--at-lntd-cyan-bright);
     margin: 0;
     font-variant-numeric: tabular-nums;
   }
@@ -177,7 +281,7 @@
     letter-spacing: .07em;
     margin: 0 0 28px;
   }
-  .lnt-rail-item { color: var(--at-lnt-cyan-ink); text-transform: uppercase; }
+  .lnt-rail-item { color: var(--at-lntd-cyan-ink); text-transform: uppercase; }
   .lnt-rail-item .k { color: var(--ed-ink-3); margin-right: 6px; }
   .lnt-rail-sep { color: var(--ed-ink-muted); }
 
@@ -199,7 +303,7 @@
     width: 11px;
     height: 11px;
     border-style: solid;
-    border-color: var(--at-lnt-cyan-line);
+    border-color: var(--at-lntd-cyan-line);
     border-width: 0;
   }
   .lnt-frame::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
@@ -249,9 +353,9 @@
     font-size: 11px;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--at-lnt-cyan-ink);
-    background: var(--at-lnt-cyan-wash);
-    border: 1px solid var(--at-lnt-cyan-line);
+    color: var(--at-lntd-cyan-ink);
+    background: var(--at-lntd-cyan-wash);
+    border: 1px solid var(--at-lntd-cyan-line);
     border-radius: 999px;
     padding: 5px 12px;
     margin: 10px 0 32px;
@@ -270,7 +374,7 @@
     font-size: 11px;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--at-lnt-cyan-ink);
+    color: var(--at-lntd-cyan-ink);
     margin: 0 0 18px;
   }
   .lnt-pull-quote { margin: 0; }
@@ -312,14 +416,14 @@
     font-size: .82em;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--at-lnt-cyan-ink);
+    color: var(--at-lntd-cyan-ink);
   }
   .lnt-artifact-meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     letter-spacing: .07em;
     text-transform: uppercase;
-    color: var(--at-lnt-cyan-ink);
+    color: var(--at-lntd-cyan-ink);
     padding-top: 18px;
     border-top: 1px solid var(--ed-rule);
     margin: 0;
@@ -335,7 +439,7 @@
   }
   .lnt-footer-rule {
     height: 1px;
-    background: var(--at-lnt-cyan-line);
+    background: var(--at-lntd-cyan-line);
     margin-bottom: 32px;
   }
   .lnt-colophon {
@@ -346,7 +450,7 @@
     color: var(--ed-ink-3);
     margin: 0 0 20px;
   }
-  .lnt-colophon .accent { color: var(--at-lnt-cyan-ink); }
+  .lnt-colophon .accent { color: var(--at-lntd-cyan-ink); }
   .lnt-footer .lnt-back { margin: 0; justify-content: center; }
 
   @media (max-width: 640px) {
@@ -364,9 +468,9 @@
 </head>
 <body class="ed-page">
 
-  <div class="lnt-preview-banner">PREVIEW &mdash; not the shipped page</div>
+  <div class="lnt-preview-banner">PREVIEW &mdash; DARK VARIANT &mdash; not the shipped page</div>
 
-  <a class="lnt-back" href="index.html">&larr; About The Lab &mdash; treatment bake-off</a> <a class="lnt-back" href="preview-about-lnt-dark.html">View dark variant &rarr;</a>
+  <a class="lnt-back" href="index.html">&larr; About The Lab &mdash; treatment bake-off</a> <a class="lnt-back" href="preview-about-lnt.html">View light variant &rarr;</a>
 
   <header class="lnt-header">
     <p class="lnt-eyebrow">626 Labs &mdash; Long Now Archive</p>
