@@ -23,7 +23,7 @@ around it.
   `#0f1f31` field. Space Grotesk display, Inter body, JetBrains Mono code
   + small UPPERCASE meta labels with +0.12em tracking.
 - **Voice:** Builder-to-builder, second person, sentence case. No
-  "empower / leverage / seamlessly / unlock / unleash." Em-dashes welcome.
+  "empower / leverage / seamlessly / unlock / unleash." Em-dashes minimal; commas, periods, colons by default.
   No emoji in UI copy or marketing surfaces. Tagline: *Imagine Something Else.*
 
 ## Design system
