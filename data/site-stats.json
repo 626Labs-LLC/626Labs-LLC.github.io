@@ -1,49 +1,17 @@
 {
-  "generatedAt": "2026-07-29T09:22:15.474Z",
+  "generatedAt": "2026-07-30T09:14:46.391Z",
   "source": "goatcounter",
   "site": "626labs.dev",
   "range": {
-    "start": "2026-06-29",
-    "end": "2026-07-29",
+    "start": "2026-06-30",
+    "end": "2026-07-30",
     "days": 30
   },
   "total": {
-    "total": 294,
+    "total": 299,
     "total_events": 1,
-    "total_utc": 293,
+    "total_utc": 299,
     "stats": [
-      {
-        "day": "2026-06-29",
-        "hourly": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "daily": 3,
-        "weekly": 12,
-        "monthly": 4
-      },
       {
         "day": "2026-06-30",
         "hourly": [
@@ -72,7 +40,9 @@
           0,
           0
         ],
-        "daily": 1
+        "daily": 1,
+        "weekly": 15,
+        "monthly": 1
       },
       {
         "day": "2026-07-01",
@@ -103,7 +73,7 @@
           0
         ],
         "daily": 1,
-        "monthly": 290
+        "monthly": 298
       },
       {
         "day": "2026-07-02",
@@ -253,8 +223,7 @@
           0,
           0
         ],
-        "daily": 6,
-        "weekly": 45
+        "daily": 6
       },
       {
         "day": "2026-07-07",
@@ -284,7 +253,8 @@
           0,
           0
         ],
-        "daily": 5
+        "daily": 5,
+        "weekly": 59
       },
       {
         "day": "2026-07-08",
@@ -464,8 +434,7 @@
           0,
           0
         ],
-        "daily": 20,
-        "weekly": 122
+        "daily": 20
       },
       {
         "day": "2026-07-14",
@@ -495,7 +464,8 @@
           0,
           0
         ],
-        "daily": 24
+        "daily": 24,
+        "weekly": 123
       },
       {
         "day": "2026-07-15",
@@ -675,8 +645,7 @@
           1,
           1
         ],
-        "daily": 21,
-        "weekly": 96
+        "daily": 21
       },
       {
         "day": "2026-07-21",
@@ -706,7 +675,8 @@
           0,
           1
         ],
-        "daily": 6
+        "daily": 6,
+        "weekly": 83
       },
       {
         "day": "2026-07-22",
@@ -886,8 +856,7 @@
           1,
           0
         ],
-        "daily": 8,
-        "weekly": 19
+        "daily": 8
       },
       {
         "day": "2026-07-28",
@@ -917,7 +886,8 @@
           1,
           0
         ],
-        "daily": 8
+        "daily": 8,
+        "weekly": 19
       },
       {
         "day": "2026-07-29",
@@ -925,6 +895,36 @@
           1,
           1,
           1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "daily": 11
+      },
+      {
+        "day": "2026-07-30",
+        "hourly": [
+          0,
+          0,
+          0,
           0,
           0,
           0,
@@ -947,52 +947,20 @@
           0,
           0
         ],
-        "daily": 3
+        "daily": 0
       }
     ]
   },
   "hits": {
     "hits": [
       {
-        "count": 216,
+        "count": 221,
         "path_id": 93366467,
         "path": "/rororo.html",
         "event": false,
         "title": "RORORO — multi-launcher for Roblox · 626 Labs",
         "max": 4,
         "stats": [
-          {
-            "day": "2026-06-29",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 2,
-            "weekly": 9,
-            "monthly": 3
-          },
           {
             "day": "2026-06-30",
             "hourly": [
@@ -1021,7 +989,9 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 7,
+            "monthly": 1
           },
           {
             "day": "2026-07-01",
@@ -1052,7 +1022,7 @@
               0
             ],
             "daily": 0,
-            "monthly": 213
+            "monthly": 220
           },
           {
             "day": "2026-07-02",
@@ -1202,8 +1172,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 17
+            "daily": 0
           },
           {
             "day": "2026-07-07",
@@ -1233,7 +1202,8 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 24
           },
           {
             "day": "2026-07-08",
@@ -1413,8 +1383,7 @@
               0,
               0
             ],
-            "daily": 7,
-            "weekly": 95
+            "daily": 7
           },
           {
             "day": "2026-07-14",
@@ -1444,7 +1413,8 @@
               0,
               0
             ],
-            "daily": 18
+            "daily": 18,
+            "weekly": 105
           },
           {
             "day": "2026-07-15",
@@ -1624,8 +1594,7 @@
               1,
               1
             ],
-            "daily": 17,
-            "weekly": 78
+            "daily": 17
           },
           {
             "day": "2026-07-21",
@@ -1655,7 +1624,8 @@
               0,
               1
             ],
-            "daily": 6
+            "daily": 6,
+            "weekly": 67
           },
           {
             "day": "2026-07-22",
@@ -1835,8 +1805,7 @@
               0,
               0
             ],
-            "daily": 6,
-            "weekly": 17
+            "daily": 6
           },
           {
             "day": "2026-07-28",
@@ -1866,7 +1835,8 @@
               1,
               0
             ],
-            "daily": 8
+            "daily": 8,
+            "weekly": 18
           },
           {
             "day": "2026-07-29",
@@ -1874,6 +1844,36 @@
               1,
               1,
               1,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              1,
+              1,
+              0
+            ],
+            "daily": 10
+          },
+          {
+            "day": "2026-07-30",
+            "hourly": [
+              0,
+              0,
+              0,
               0,
               0,
               0,
@@ -1896,7 +1896,7 @@
               0,
               0
             ],
-            "daily": 3
+            "daily": 0
           }
         ]
       },
@@ -1908,38 +1908,6 @@
         "title": "626 Labs — Imagine Something Else",
         "max": 4,
         "stats": [
-          {
-            "day": "2026-06-29",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0
-            ],
-            "daily": 1,
-            "weekly": 3,
-            "monthly": 1
-          },
           {
             "day": "2026-06-30",
             "hourly": [
@@ -1968,7 +1936,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 7
           },
           {
             "day": "2026-07-01",
@@ -1999,7 +1968,7 @@
               0
             ],
             "daily": 1,
-            "monthly": 53
+            "monthly": 54
           },
           {
             "day": "2026-07-02",
@@ -2149,8 +2118,7 @@
               0,
               0
             ],
-            "daily": 5,
-            "weekly": 22
+            "daily": 5
           },
           {
             "day": "2026-07-07",
@@ -2180,7 +2148,8 @@
               0,
               0
             ],
-            "daily": 3
+            "daily": 3,
+            "weekly": 22
           },
           {
             "day": "2026-07-08",
@@ -2360,8 +2329,7 @@
               0,
               0
             ],
-            "daily": 5,
-            "weekly": 15
+            "daily": 5
           },
           {
             "day": "2026-07-14",
@@ -2391,7 +2359,8 @@
               0,
               0
             ],
-            "daily": 4
+            "daily": 4,
+            "weekly": 14
           },
           {
             "day": "2026-07-15",
@@ -2571,8 +2540,7 @@
               0,
               0
             ],
-            "daily": 4,
-            "weekly": 12
+            "daily": 4
           },
           {
             "day": "2026-07-21",
@@ -2602,7 +2570,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 10
           },
           {
             "day": "2026-07-22",
@@ -2782,8 +2751,7 @@
               1,
               0
             ],
-            "daily": 2,
-            "weekly": 2
+            "daily": 2
           },
           {
             "day": "2026-07-28",
@@ -2813,10 +2781,41 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-07-29",
+            "hourly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 1
+          },
+          {
+            "day": "2026-07-30",
             "hourly": [
               0,
               0,
@@ -2856,36 +2855,6 @@
         "max": 2,
         "stats": [
           {
-            "day": "2026-06-29",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 0
-          },
-          {
             "day": "2026-06-30",
             "hourly": [
               0,
@@ -2913,7 +2882,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-07-01",
@@ -3094,8 +3064,7 @@
               0,
               0
             ],
-            "daily": 1,
-            "weekly": 3
+            "daily": 1
           },
           {
             "day": "2026-07-07",
@@ -3125,7 +3094,8 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 3
           },
           {
             "day": "2026-07-08",
@@ -3305,8 +3275,7 @@
               0,
               0
             ],
-            "daily": 1,
-            "weekly": 2
+            "daily": 1
           },
           {
             "day": "2026-07-14",
@@ -3336,7 +3305,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-07-15",
@@ -3516,8 +3486,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 5
+            "daily": 0
           },
           {
             "day": "2026-07-21",
@@ -3547,7 +3516,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 5
           },
           {
             "day": "2026-07-22",
@@ -3788,19 +3758,9 @@
               0
             ],
             "daily": 0
-          }
-        ]
-      },
-      {
-        "count": 7,
-        "path_id": 94437643,
-        "path": "/mod-launcher-games.html",
-        "event": false,
-        "title": "Supported games · 626 Mod Launcher · 626 Labs",
-        "max": 1,
-        "stats": [
+          },
           {
-            "day": "2026-06-29",
+            "day": "2026-07-30",
             "hourly": [
               0,
               0,
@@ -3828,7 +3788,17 @@
               0
             ],
             "daily": 0
-          },
+          }
+        ]
+      },
+      {
+        "count": 7,
+        "path_id": 94437643,
+        "path": "/mod-launcher-games.html",
+        "event": false,
+        "title": "Supported games · 626 Mod Launcher · 626 Labs",
+        "max": 1,
+        "stats": [
           {
             "day": "2026-06-30",
             "hourly": [
@@ -4038,8 +4008,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 3
+            "daily": 0
           },
           {
             "day": "2026-07-07",
@@ -4069,7 +4038,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 6
           },
           {
             "day": "2026-07-08",
@@ -4249,8 +4219,7 @@
               0,
               0
             ],
-            "daily": 3,
-            "weekly": 4
+            "daily": 3
           },
           {
             "day": "2026-07-14",
@@ -4280,7 +4249,8 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 1
           },
           {
             "day": "2026-07-15",
@@ -4731,19 +4701,9 @@
               0
             ],
             "daily": 0
-          }
-        ]
-      },
-      {
-        "count": 3,
-        "path_id": 94919150,
-        "path": "/conundrum.html",
-        "event": false,
-        "title": "Conundrum by Este · merch built by a machine · 626 Labs",
-        "max": 1,
-        "stats": [
+          },
           {
-            "day": "2026-06-29",
+            "day": "2026-07-30",
             "hourly": [
               0,
               0,
@@ -4771,7 +4731,17 @@
               0
             ],
             "daily": 0
-          },
+          }
+        ]
+      },
+      {
+        "count": 3,
+        "path_id": 94919150,
+        "path": "/conundrum.html",
+        "event": false,
+        "title": "Conundrum by Este · merch built by a machine · 626 Labs",
+        "max": 1,
+        "stats": [
           {
             "day": "2026-06-30",
             "hourly": [
@@ -5011,7 +4981,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 2
           },
           {
             "day": "2026-07-08",
@@ -5191,8 +5162,7 @@
               0,
               0
             ],
-            "daily": 2,
-            "weekly": 3
+            "daily": 2
           },
           {
             "day": "2026-07-14",
@@ -5222,7 +5192,8 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 1
           },
           {
             "day": "2026-07-15",
@@ -5673,19 +5644,9 @@
               0
             ],
             "daily": 0
-          }
-        ]
-      },
-      {
-        "count": 2,
-        "path_id": 94963004,
-        "path": "/about.html",
-        "event": false,
-        "title": "About the Lab · 626 Labs",
-        "max": 1,
-        "stats": [
+          },
           {
-            "day": "2026-06-29",
+            "day": "2026-07-30",
             "hourly": [
               0,
               0,
@@ -5713,7 +5674,17 @@
               0
             ],
             "daily": 0
-          },
+          }
+        ]
+      },
+      {
+        "count": 2,
+        "path_id": 94963004,
+        "path": "/about.html",
+        "event": false,
+        "title": "About the Lab · 626 Labs",
+        "max": 1,
+        "stats": [
           {
             "day": "2026-06-30",
             "hourly": [
@@ -5953,7 +5924,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-07-08",
@@ -6133,8 +6105,7 @@
               0,
               0
             ],
-            "daily": 1,
-            "weekly": 2
+            "daily": 1
           },
           {
             "day": "2026-07-14",
@@ -6164,7 +6135,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-07-15",
@@ -6588,6 +6560,36 @@
           },
           {
             "day": "2026-07-29",
+            "hourly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 0
+          },
+          {
+            "day": "2026-07-30",
             "hourly": [
               0,
               0,
@@ -6627,36 +6629,6 @@
         "max": 1,
         "stats": [
           {
-            "day": "2026-06-29",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 0
-          },
-          {
             "day": "2026-06-30",
             "hourly": [
               0,
@@ -6895,7 +6867,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-07-08",
@@ -7075,8 +7048,7 @@
               0,
               0
             ],
-            "daily": 1,
-            "weekly": 1
+            "daily": 1
           },
           {
             "day": "2026-07-14",
@@ -7557,19 +7529,9 @@
               0
             ],
             "daily": 0
-          }
-        ]
-      },
-      {
-        "count": 1,
-        "path_id": 88673491,
-        "path": "/workflow.html",
-        "event": false,
-        "title": "Operating tenets — 626 Labs",
-        "max": 1,
-        "stats": [
+          },
           {
-            "day": "2026-06-29",
+            "day": "2026-07-30",
             "hourly": [
               0,
               0,
@@ -7597,7 +7559,17 @@
               0
             ],
             "daily": 0
-          },
+          }
+        ]
+      },
+      {
+        "count": 1,
+        "path_id": 88673491,
+        "path": "/workflow.html",
+        "event": false,
+        "title": "Operating tenets — 626 Labs",
+        "max": 1,
+        "stats": [
           {
             "day": "2026-06-30",
             "hourly": [
@@ -8227,8 +8199,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 1
+            "daily": 0
           },
           {
             "day": "2026-07-21",
@@ -8258,7 +8229,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-07-22",
@@ -8499,11 +8471,41 @@
               0
             ],
             "daily": 0
+          },
+          {
+            "day": "2026-07-30",
+            "hourly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 0
           }
         ]
       }
     ],
-    "total": 294,
+    "total": 299,
     "more": false
   },
   "refs": {
@@ -8511,24 +8513,24 @@
       {
         "id": "www.bing.com",
         "name": "www.bing.com",
-        "count": 119,
+        "count": 122,
         "ref_scheme": "h"
       },
       {
         "id": "Google",
         "name": "Google",
-        "count": 49,
+        "count": 50,
         "ref_scheme": "g"
       },
       {
         "name": "",
-        "count": 46,
+        "count": 47,
         "ref_scheme": "o"
       },
       {
         "id": "Yahoo",
         "name": "Yahoo",
-        "count": 42,
+        "count": 43,
         "ref_scheme": "g"
       },
       {
@@ -8550,12 +8552,6 @@
         "ref_scheme": "c"
       },
       {
-        "id": "copilot.com",
-        "name": "copilot.com",
-        "count": 2,
-        "ref_scheme": "c"
-      },
-      {
         "id": "apps.microsoft.com",
         "name": "apps.microsoft.com",
         "count": 1,
@@ -8566,6 +8562,12 @@
         "name": "www.qwant.com",
         "count": 1,
         "ref_scheme": "h"
+      },
+      {
+        "id": "copilot.com",
+        "name": "copilot.com",
+        "count": 1,
+        "ref_scheme": "c"
       },
       {
         "id": "github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants",
@@ -8581,12 +8583,12 @@
       {
         "id": "US",
         "name": "United States",
-        "count": 139
+        "count": 142
       },
       {
         "id": "PH",
         "name": "Philippines",
-        "count": 26
+        "count": 25
       },
       {
         "id": "BR",
@@ -8611,7 +8613,7 @@
       {
         "id": "HK",
         "name": "Hong Kong",
-        "count": 8
+        "count": 7
       },
       {
         "id": "SG",
@@ -8646,12 +8648,12 @@
       {
         "id": "Chrome",
         "name": "Chrome",
-        "count": 282
+        "count": 287
       },
       {
         "id": "Safari",
         "name": "Safari",
-        "count": 13
+        "count": 12
       },
       {
         "id": "Firefox",
@@ -8666,7 +8668,7 @@
       {
         "id": "Windows",
         "name": "Windows",
-        "count": 211
+        "count": 217
       },
       {
         "id": "Linux",
@@ -8676,7 +8678,7 @@
       {
         "id": "macOS",
         "name": "macOS",
-        "count": 25
+        "count": 24
       },
       {
         "id": "Android",
@@ -8686,7 +8688,7 @@
       {
         "id": "iOS",
         "name": "iOS",
-        "count": 8
+        "count": 7
       }
     ],
     "more": false
