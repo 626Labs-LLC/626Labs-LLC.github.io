@@ -459,7 +459,7 @@
     <div class="tldr">
       <div class="tldr-label">The short version</div>
       <ul>
-        <li>626 Labs runs a static portfolio site at <strong>626labs.dev</strong>. No analytics. No cookies. No tracking pixels. No forms.</li>
+        <li>626 Labs runs a static portfolio site at <strong>626labs.dev</strong>. We use GoatCounter, a privacy-friendly, cookieless analytics service, to count page views &mdash; no cookies, no tracking pixels, no forms, no personal data.</li>
         <li>The Claude Code plugins we publish run <strong>locally on your machine</strong>. They do not phone home to 626 Labs.</li>
         <li>Some plugins integrate with third-party services (Discord, Figma, Anthropic's API, etc.) only when you choose to configure them with your own credentials. Those services have their own privacy policies.</li>
         <li>Our desktop and Microsoft Store apps run on your device with <strong>no 626 Labs account and no telemetry sent to us</strong>. Section 05 covers each app, verified against its code.</li>
@@ -487,10 +487,16 @@
     <p>
       When you visit any website &mdash; including ours &mdash; the hosting provider receives standard request information needed to serve the page. For 626labs.dev, that provider is <strong>GitHub Pages</strong>, and the data they collect (such as IP address, user agent, and referrer) is governed by GitHub's privacy practices. See <a class="inline-link" href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's privacy statement</a> for details. We do not see, store, or use that data ourselves.
     </p>
+    <p>
+      <strong>Analytics.</strong> Every page on 626labs.dev, including this one, loads <a class="inline-link" href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a>, a privacy-friendly, cookieless analytics service, to count page views. GoatCounter does not use cookies, localStorage, or any other browser storage, and it does not store your IP address, your full user-agent string, or any tracker ID that could follow you across sites &mdash; it briefly holds the site name, IP address, and user agent in memory for up to 8 hours to deduplicate a visit into a session, represented by a randomly generated string, then discards it; that intermediate step is never written to its database. What it does record is aggregate: page views and referrers by day and hour, along with browser, operating system, a coarse location derived from IP address, language, and screen width. GoatCounter does not share this data with any third party. See <a class="inline-link" href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noopener">GoatCounter's privacy policy</a> for the full details.
+    </p>
+    <p>
+      On the Conundrum shop page, clicking an outbound link &mdash; a "Shop on Etsy" link, an individual product listing, or the open-source repo link &mdash; sends GoatCounter an event recording which link was clicked, so we can see which links get outbound clicks. No other page on the site tracks individual clicks.
+    </p>
 
     <h3>What is not collected</h3>
     <ul>
-      <li>No analytics (no Google Analytics, Plausible, Fathom, PostHog, or similar).</li>
+      <li>No Google Analytics, Meta Pixel, Plausible, Fathom, PostHog, or any other advertising-linked analytics &mdash; GoatCounter, described above, is the one analytics tool we use, and it isn't built for advertising.</li>
       <li>No advertising or remarketing trackers.</li>
       <li>No first-party cookies set by 626 Labs.</li>
       <li>No contact forms, comment systems, or account systems.</li>
