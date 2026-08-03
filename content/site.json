@@ -715,7 +715,7 @@
     {
       "id": "mod-launcher",
       "title": "626 Mod Launcher",
-      "description": "A reversible, atomic mod toggler for PC games — Bethesda, Unreal, FromSoft, BepInEx, Stardew SMAPI, and more. Disabling a mod moves its files to a holding folder instead of deleting them, so every toggle is reversible and every state change writes atomically — lose power mid-toggle and your library survives. Drag a zip onto the window and it identifies the mod, fills in the real name, author, and source link, then installs it where the loader actually expects. Free on the Microsoft Store as the signed sealed-core build (no SmartScreen warning); the GitHub build adds Nexus integration. No ads, no telemetry, no account.",
+      "description": "A reversible, atomic mod toggler for PC games — Bethesda, Unreal, FromSoft, BepInEx, Stardew SMAPI, and more. Disabling a mod moves its files to a holding folder instead of deleting them, so every toggle is reversible and every state change writes atomically — lose power mid-toggle and your library survives. Drag a zip onto the window and it identifies the mod, fills in the real name, author, and source link, then installs it where the loader actually expects. Free on the Microsoft Store as the signed sealed-core build (no SmartScreen warning); the GitHub build adds Nexus integration, and 626 Mod Launcher is officially accepted by Nexus Mods. No ads, no telemetry, no account.",
       "tags": [
         {
           "label": "Windows",
