@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — 626 Labs</title>
-  <meta name="description" content="How 626 Labs handles information on 626labs.dev, in email, and through the Claude Code plugins we publish." />
+  <meta name="description" content="How 626 Labs handles information on 626labs.dev, in email, through the Claude Code plugins we publish, and in our desktop and Microsoft Store apps." />
   <link rel="icon" type="image/png" href="favicon-626.png" />
 
   <meta property="og:title" content="Privacy Policy — 626 Labs" />
-  <meta property="og:description" content="How 626 Labs handles information on 626labs.dev, in email, and through the Claude Code plugins we publish." />
+  <meta property="og:description" content="How 626 Labs handles information on 626labs.dev, in email, through the Claude Code plugins we publish, and in our desktop and Microsoft Store apps." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://626labs.dev/privacy.html" />
   <meta property="og:image" content="https://626labs.dev/logo.png" />
@@ -277,6 +277,7 @@
       margin: var(--s-8) 0 var(--s-2);
       color: var(--fg-1);
     }
+    main.policy h2[id], main.policy h3[id] { scroll-margin-top: 72px; }
     main.policy p, main.policy li {
       color: var(--fg-2);
       max-width: 68ch;
@@ -441,13 +442,13 @@
   <div class="wrap page-hero-inner">
     <div class="eyebrow">
       <span class="pulse"></span>
-      <span>Legal · Effective 2026-04-27</span>
+      <span>Legal · Effective 2026-08-03</span>
     </div>
     <h1 class="page-title">Privacy <span class="accent">Policy</span></h1>
     <p class="page-meta">
       626 Labs LLC <span class="sep">·</span>
       Fort Worth, Texas <span class="sep">·</span>
-      Last updated 2026-04-27
+      Last updated 2026-08-03
     </p>
   </div>
 </header>
@@ -461,12 +462,13 @@
         <li>626 Labs runs a static portfolio site at <strong>626labs.dev</strong>. No analytics. No cookies. No tracking pixels. No forms.</li>
         <li>The Claude Code plugins we publish run <strong>locally on your machine</strong>. They do not phone home to 626 Labs.</li>
         <li>Some plugins integrate with third-party services (Discord, Figma, Anthropic's API, etc.) only when you choose to configure them with your own credentials. Those services have their own privacy policies.</li>
+        <li>Our desktop and Microsoft Store apps run on your device with <strong>no 626 Labs account and no telemetry sent to us</strong>. Section 05 covers each app, verified against its code.</li>
         <li>If you email us, we keep the email so we can reply. We don't sell or share your information.</li>
       </ul>
     </div>
 
     <p>
-      This policy explains how 626 Labs LLC ("<strong>626 Labs</strong>," "<strong>we</strong>," "<strong>us</strong>") handles information across our website, our email correspondence, and the Claude Code plugins we publish. We try to be honest about what we collect and why, in plain language.
+      This policy explains how 626 Labs LLC ("<strong>626 Labs</strong>," "<strong>we</strong>," "<strong>us</strong>") handles information across our website, our email correspondence, the Claude Code plugins we publish, and the desktop and Microsoft Store apps we ship. We try to be honest about what we collect and why, in plain language.
     </p>
 
     <hr/>
@@ -542,12 +544,127 @@
       Our plugins are published as source code across two GitHub accounts operated by 626 Labs: the company organization at <a class="inline-link" href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">github.com/626Labs-LLC</a> and the founder's personal account at <a class="inline-link" href="https://github.com/estevanhernandez-stack-ed" target="_blank" rel="noopener">github.com/estevanhernandez-stack-ed</a>, where most day-to-day work lives. You are welcome to inspect any plugin's code to verify its data behavior. If you find anything that contradicts this policy, please let us know &mdash; we will fix it.
     </p>
 
-    <h2><span class="num">05</span>Children's privacy</h2>
+    <h2 id="store-apps"><span class="num">05</span>Desktop and Microsoft Store apps</h2>
+    <p>
+      626 Labs ships desktop apps through the Microsoft Store and GitHub Releases. They share one posture: they run on your device, they require no 626 Labs account, they show no advertising, and none of them sends telemetry, analytics, or crash reports to 626 Labs. One app, SnapSnip, keeps a diagnostic log that never leaves your machine; its subsection describes that log exactly. Uninstall behavior varies by app and install channel, so each subsection states what uninstall removes and what survives. Every app below answers the same five questions in the same order: what is collected, where data lives, what touches the network, which third parties are involved, and what removal looks like.
+    </p>
+
+    <h3 id="privacy-rororo">RoRoRo (ROROROblox)</h3>
+    <p>
+      <strong>What is collected.</strong> Nothing is collected by 626 Labs. RoRoRo contains no telemetry, analytics, or crash reporting, and no 626 Labs server appears anywhere in its network surface. To enable multi-account launching, the app captures your Roblox session cookie and basic profile details when you sign in; that data stays on your device.
+    </p>
+    <p>
+      <strong>Where data lives.</strong> Saved accounts live in an encrypted vault at <code>%LOCALAPPDATA%\ROROROblox\accounts.dat</code>, protected with Windows DPAPI and tied to your Windows user account. Settings and app logs are plain files in the same folder; logs stay local, are kept for 30 days, and never contain your session cookie. You sign in on Roblox's own login page inside an embedded browser window (WebView2); the app stores the resulting session cookie, not your password, and the temporary browser profile used for each sign-in is deleted after capture and again at startup. The optional account export is a file written to a location you choose, encrypted with a password you set.
+    </p>
+    <p>
+      <strong>What touches the network.</strong> While RoRoRo is running it makes periodic calls to Roblox services for your saved accounts, covering sign-in, launching, avatars, game details, friends, and a presence heartbeat that refreshes about every 25 seconds. It also contacts GitHub for two things: an update check, at most once every 24 hours, and a Roblox compatibility feed fetched at startup. The compatibility feed is signature-verified: the app checks an ECDSA signature against a public key pinned in the binary before reading the feed, and anything that fails verification is rejected in favor of built-in defaults. On the GitHub build only, opening the Plugins window fetches a plugin catalog from GitHub, and installing a plugin downloads it over HTTPS and verifies its SHA-256 hash; the Microsoft Store build has no plugin marketplace.
+    </p>
+    <p>
+      <strong>Third parties.</strong> Roblox Corporation, under Roblox's own privacy policy, for every Roblox call above. GitHub, for public, unauthenticated reads of releases and feeds.
+    </p>
+    <p>
+      <strong>Removal.</strong> A Microsoft Store uninstall removes the app's package data through standard Windows package removal. A GitHub (.exe) uninstall removes the install directory but leaves <code>%LOCALAPPDATA%\ROROROblox\</code>, which holds the account vault, settings, and logs; delete that folder to remove everything. The in-app diagnostics bundle is a zip file that only you create and only you send.
+    </p>
+
+    <h3 id="privacy-sanduhr">Sanduhr</h3>
+    <p>
+      <strong>What is collected.</strong> Nothing is sent to 626 Labs, and there is no telemetry, analytics, or crash reporting on either platform. Sanduhr works with data you give it: two Claude session cookies you supply (<code>sessionKey</code> and <code>cf_clearance</code>), the usage data it reads from claude.ai with those cookies, and your local Claude Code session logs (token, model, working-directory, and skill data) for per-project views. All of it stays on your device.
+    </p>
+    <p>
+      <strong>Where data lives.</strong> On Windows, your credentials are stored in Windows Credential Manager under the service name <code>com.626labs.sanduhr</code>, one set of entries per saved account. Usage history is a 30-day rolling window under <code>%APPDATA%\Sanduhr\</code>, alongside settings and a statusline snapshot that stores your account label as a short hash, never the raw label. An opt-in vault archive of your Claude Code logs lives at <code>%LOCALAPPDATA%\Sanduhr\vault\</code> and is kept until you purge it from inside the app. Operational logs record status codes and error types, never credentials. On macOS, credentials are stored today in a permissions-restricted plaintext file at <code>~/Library/Application Support/Sanduhr/credentials.json</code>: readable only by your user account, but not encrypted and not in the system Keychain. Migration to the Keychain is planned.
+    </p>
+    <p>
+      <strong>What touches the network.</strong> Sanduhr talks to claude.ai with your own session to read your organization list, your usage data, and, on Windows, the Daily Routines budget, and it loads claude.ai's sign-in page when you add an account. On Windows, live fetches run through a hidden embedded browser (Microsoft WebView2) with your cookies injected into that embedded browser only; the app does not read your regular browser's profile. Update checks are the only other traffic: the Windows GitHub (.exe) build checks GitHub Releases at most once every 24 hours, and the macOS build checks a Sparkle update feed hosted on GitHub Pages every 24 hours. The Microsoft Store build does not run the GitHub update check; it updates through the Store.
+    </p>
+    <p>
+      <strong>Third parties.</strong> Anthropic (claude.ai), under your own agreement with Anthropic, since every request uses your session. Microsoft WebView2 (embedded Chromium) as the fetch transport on Windows. GitHub, which hosts both update feeds. Sanduhr also ships a local MCP server: it listens only over stdio, never the network, and it can expose your usage and per-project token data to MCP clients you configure on your own machine, such as Claude Code.
+    </p>
+    <p>
+      <strong>Removal.</strong> On Windows, uninstalling Sanduhr does not remove the Credential Manager entries, on either the GitHub (.exe) or Microsoft Store install, and does not remove <code>%APPDATA%\Sanduhr\</code> or <code>%LOCALAPPDATA%\Sanduhr\</code>. Use Sign Out in the app for each account before uninstalling: it deletes that account's credentials and history, and signing out of the last account also clears the embedded browser profile. You can also delete the <code>com.626labs.sanduhr</code> entries yourself in Windows Credential Manager and remove the two folders. On macOS, dragging Sanduhr to the Trash does not remove <code>~/Library/Application Support/Sanduhr/</code>, including the credentials file; delete that folder to clear it.
+    </p>
+
+    <h3 id="privacy-mod-launcher">626 Mod Launcher</h3>
+    <p>
+      <strong>What is collected.</strong> Nothing is collected by 626 Labs. There is no account, no telemetry, and no analytics. Crash and error information is written to a local log file and never transmitted.
+    </p>
+    <p>
+      <strong>Where data lives.</strong> Your Nexus Mods sign-in token is stored at <code>%APPDATA%\ModManagerBuilder\nexus.json</code>, encrypted with Windows DPAPI and tied to your Windows user account; it is never sent to 626 Labs. Settings, game registrations, and profile data live under <code>%APPDATA%\ModManagerBuilder\</code>; logs, caches, and update stamps live under <code>%LOCALAPPDATA%\ModManagerBuilder\</code>. When the launcher removes a mod file from a game folder, it moves the file to a holding area instead of deleting it.
+    </p>
+    <p>
+      <strong>What touches the network.</strong> Three distinct paths, each with a different destination:
+    </p>
+    <ul>
+      <li><strong>Game definitions.</strong> The launcher fetches its game manifest directly from GitHub (the public <code>626-game-manifest</code> repository), verifies the manifest's ECDSA signature against a key pinned in the app before trusting it, and checks at most once every 24 hours, controlled by the auto-update definitions setting. Your IP address goes to GitHub, not to 626 Labs.</li>
+      <li><strong>CurseForge metadata.</strong> Mod lookups go to <code>626-mod-metadata-proxy.626labs.workers.dev</code>, a Cloudflare Worker we operate for one reason: it holds the CurseForge API key server-side so the key does not ship inside the app. The Worker forwards a fixed allowlist of CurseForge lookup requests and returns the responses. 626 Labs does not log and does not retain requests to this proxy: the Worker's code contains no logging or storage, and its Cloudflare observability features are disabled. Cloudflare, as the network provider, processes standard request metadata such as your IP address in transit, under Cloudflare's own privacy policy.</li>
+      <li><strong>Nexus Mods.</strong> Signing in to Nexus uses OAuth directly between your machine and Nexus Mods; that traffic and your Nexus account are governed by Nexus Mods' privacy policy.</li>
+    </ul>
+    <p>
+      The launcher also checks GitHub Releases for its own updates at most once every 24 hours. The Microsoft Store build ships with no plugin feed; the GitHub build can fetch its optional Nexus integration plugin and verifies it before loading.
+    </p>
+    <p>
+      <strong>Third parties.</strong> GitHub (manifest and update reads), Cloudflare (hosts and carries the proxy's traffic), CurseForge (receives the lookup requests the proxy forwards, under CurseForge's terms), and Nexus Mods (direct OAuth, under Nexus's policy).
+    </p>
+    <p>
+      <strong>Removal.</strong> There is no server-side account or state to delete; everything the launcher stores is on your device. Uninstalling does not specifically wipe the stored Nexus token or the two data folders above; delete <code>%APPDATA%\ModManagerBuilder\</code> and <code>%LOCALAPPDATA%\ModManagerBuilder\</code> to remove everything. Mod files the launcher moved out of a game folder remain in their holding location until you delete them.
+    </p>
+
+    <h3 id="privacy-rbx15">RBX15 Classic Shirt and Pants Maker</h3>
+    <p>
+      <strong>What is collected.</strong> Nothing. There are no accounts, no telemetry, no analytics, and no crash reporting.
+    </p>
+    <p>
+      <strong>Where data lives.</strong> Exported PNG templates and <code>.r15proj</code> project files are written through the standard save dialog to locations you choose, and the app persists no settings of its own. The embedded browser runtime the app is built on (Electron) keeps a standard runtime cache under <code>%APPDATA%\RBX15 Classic Shirt and Pants Maker\</code>, which includes cached copies of the fonts described below.
+    </p>
+    <p>
+      <strong>What touches the network.</strong> One destination: Google Fonts. The editor loads its typefaces from Google's font servers on every launch, so Google receives a standard web request, including your IP address, governed by Google's privacy policy. Nothing else: no update checks (the .exe build updates by downloading a new installer; the Store build updates through the Store), no APIs, no cloud sync.
+    </p>
+    <p>
+      <strong>Third parties.</strong> Google (fonts).
+    </p>
+    <p>
+      <strong>Removal.</strong> Uninstalling removes the app. The runtime cache folder at <code>%APPDATA%\RBX15 Classic Shirt and Pants Maker\</code> may survive an .exe uninstall; delete it manually if you want every trace gone. Files you exported stay where you saved them.
+    </p>
+
+    <h3 id="privacy-snapsnip">SnapSnip</h3>
+    <p>
+      <strong>What is collected.</strong> SnapSnip is the one 626 Labs app that keeps a diagnostic log, and that log never leaves your device: there is no upload code, no cloud endpoint, and the app package declares no internet capability. The log records five event types (snip captured, redaction rule hit, pipeline failure, latency, and user feedback) as counts, categories, and timings, capped at 10 MB with one rotation file. No window-title text, no URLs, and no image content appear in any record; an automated check in our build fails the build if such a field is ever added. The app-name field in each record comes from a fixed 21-entry allowlist, and anything not on the list is recorded as "other". The log is on by default, and you can turn it off in Settings, effective immediately.
+    </p>
+    <p>
+      <strong>Where data lives.</strong> Screenshots are saved to your <code>Pictures\Screenshots</code> folder (or its OneDrive-redirected equivalent) as PNG files with embedded metadata. Settings and the diagnostic log live under <code>%LOCALAPPDATA%\SnipSnap\</code>; collections and rename-undo data live under <code>%LOCALAPPDATA%\SnapSnip\</code> (the app's internal name is SnipSnap, so both spellings appear on disk). Window titles used for naming are processed in memory and redacted on your device before anything is written: financial numbers, SSN-shaped numbers, email addresses, phone numbers, currency amounts, and private-browsing or password-manager windows are stripped, the unredacted title is never written to disk, and any redaction failure falls back to a timestamp-only filename.
+    </p>
+    <p>
+      <strong>What touches the network.</strong> Nothing. The code contains no live network endpoint, and the app package declares no internet capability.
+    </p>
+    <p>
+      <strong>Third parties.</strong> None.
+    </p>
+    <p>
+      <strong>Removal.</strong> Uninstalling removes the app; your screenshots stay in your Pictures folder. If you enabled start-with-Windows, that setting writes a <code>SnipSnap.Standalone</code> entry under <code>HKCU\Software\Microsoft\Windows\CurrentVersion\Run</code> that uninstall may not remove: turn autostart off in Settings before uninstalling, or delete the entry manually. Delete the two data folders above to clear settings, the diagnostic log, and collections.
+    </p>
+
+    <h3 id="privacy-rtclickpng">RTClickPng (Right Click to PNG)</h3>
+    <p>
+      <strong>What is collected.</strong> Nothing. The app has no accounts, no telemetry, and no analytics, and it ships with zero third-party packages, so no such SDK exists in it even indirectly.
+    </p>
+    <p>
+      <strong>Where data lives.</strong> Settings are three small preferences in <code>settings.json</code> inside the app's package folder at <code>%LOCALAPPDATA%\Packages\626LabsLLC.RightClicktoPNG_wz1chhb2h2v4a\LocalState\</code>. Converted images are written beside the source file; "Copy as PNG" and "Copy as JPEG" place the result on the clipboard and write no file at all. The settings app writes a small local crash log, type name and message only, never file contents, at <code>%LOCALAPPDATA%\RTClickPng.Settings.crash.log</code>.
+    </p>
+    <p>
+      <strong>What touches the network.</strong> Nothing. The app links no networking libraries and declares no internet capability. There are no update checks; updates come through the Microsoft Store.
+    </p>
+    <p>
+      <strong>Third parties.</strong> None.
+    </p>
+    <p>
+      <strong>Removal.</strong> Context-menu entries are registered declaratively through the app package, so Windows removes them at uninstall with no registry leftovers, and settings live in the package folder Windows deletes with the app. The crash log at <code>%LOCALAPPDATA%\RTClickPng.Settings.crash.log</code> may remain after uninstall; delete it manually if it is present.
+    </p>
+
+    <h2><span class="num">06</span>Children's privacy</h2>
     <p>
       Our website and our plugins are intended for a general developer audience and are not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child has sent us personal information, contact us and we will delete it.
     </p>
 
-    <h2><span class="num">06</span>Your rights</h2>
+    <h2><span class="num">07</span>Your rights</h2>
     <p>
       Depending on where you live, you may have rights under laws such as the EU/UK GDPR or the California Consumer Privacy Act (CCPA) &mdash; for example, the right to access, correct, delete, or port personal information that a business holds about you, and the right to object to certain processing.
     </p>
@@ -555,17 +672,17 @@
       Because the website does not collect personal information and our plugins keep their data on your own machine, the only personal information we typically hold is the content of email correspondence you have sent us. You can exercise your rights over that information by emailing <a class="inline-link" href="mailto:estevan@626labs.dev">estevan@626labs.dev</a>. We do not sell personal information.
     </p>
 
-    <h2><span class="num">07</span>Security</h2>
+    <h2><span class="num">08</span>Security</h2>
     <p>
       We take reasonable steps to protect the limited information we hold &mdash; including using a reputable email provider with two-factor authentication, and storing source code in version control with access controls. No system is perfectly secure, however, and we cannot guarantee absolute security of information transmitted over the internet.
     </p>
 
-    <h2><span class="num">08</span>Changes to this policy</h2>
+    <h2><span class="num">09</span>Changes to this policy</h2>
     <p>
       We may update this policy from time to time as our practices, the products we publish, or applicable law evolves. The "Effective" and "Last updated" dates at the top of the page reflect the current version. Material changes will be reflected by an updated effective date and, where appropriate, a note on the homepage. The previous version's substance can always be reconstructed from this site's git history at <a class="inline-link" href="https://github.com/626Labs-LLC/626Labs-LLC.github.io" target="_blank" rel="noopener">our public repository</a>.
     </p>
 
-    <h2><span class="num">09</span>Contact</h2>
+    <h2><span class="num">10</span>Contact</h2>
     <p>
       For any privacy question, request, or concern, reach out:
     </p>
