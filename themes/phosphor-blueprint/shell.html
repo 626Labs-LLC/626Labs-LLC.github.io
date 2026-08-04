@@ -1,0 +1,2949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/SpaceGrotesk-Variable.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-Variable.woff2" crossorigin />
+  <title>626 Labs — Imagine Something Else</title>
+  <meta name="description" content="626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins. Enterprise grade, reached for via vibe coding." />
+  <meta name="theme-color" content="#000000" />
+  <link rel="canonical" href="https://626labs.dev/" />
+  <link rel="icon" type="image/png" href="favicon-626.png" />
+  <link rel="alternate" type="application/atom+xml" title="626 Labs — Field Notes" href="/feed.xml" />
+
+  <meta property="og:site_name" content="626 Labs" />
+  <meta property="og:title" content="626 Labs — Imagine Something Else" />
+  <meta property="og:description" content="626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins. Enterprise grade, reached for via vibe coding." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://626labs.dev/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="626 Labs LLC — Imagine Something Else" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="626 Labs — Imagine Something Else" />
+  <meta name="twitter:description" content="626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins. Enterprise grade, reached for via vibe coding." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://626labs.dev/#website",
+        "url": "https://626labs.dev/",
+        "name": "626 Labs",
+        "description": "626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins.",
+        "publisher": { "@id": "https://626labs.dev/#org" },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://626labs.dev/#org",
+        "name": "626 Labs",
+        "legalName": "626 Labs LLC",
+        "url": "https://626labs.dev/",
+        "logo": "https://626labs.dev/assets/brand/icon-transparent-512.png",
+        "description": "Builder studio shipping vibe-coded SaaS, native apps, and Claude Code plugins.",
+        "founder": { "@id": "https://626labs.dev/#estevan" },
+        "sameAs": [
+          "https://github.com/626Labs-LLC",
+          "https://github.com/estevanhernandez-stack-ed",
+          "https://www.etsy.com/shop/ConundrumByEste",
+          "https://apps.microsoft.com/search/publisher?name=626Labs+LLC",
+          "https://x.com/626Labs"
+        ]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://626labs.dev/#estevan",
+        "name": "Estevan Hernandez",
+        "url": "https://626labs.dev/",
+        "jobTitle": "Founder",
+        "worksFor": { "@id": "https://626labs.dev/#org" },
+        "sameAs": [
+          "https://github.com/estevanhernandez-stack-ed"
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    /* 626 Labs Design System — see ~/.claude/skills/626labs-design + /Design */
+    @import url('/fonts/fonts.css');
+
+    :root {
+      --navy-deep: #0f1f31;
+      --navy-mid:  #192e44;
+      --navy-hi:   #223a54;
+      --navy-line: #2a3a5c;
+      --cyan:      #17d4fa;
+      --cyan-pale: #5ce6ff;
+      --cyan-dim:  #0fa8c9;
+      --magenta:   #f22f89;
+      --magenta-pale: #ff5aa3;
+      --ink-0:     #ffffff;
+      --ink-950:   #050c18;
+      --text:      #e8f2ff;
+      --text-sec:  #a8c2d9;
+      --text-dim:  #9fafc0;
+      --text-mute: #92a5bd;
+      --ok:        #2bd99a;
+      --warn:      #ffb454;
+
+      --bg-0: var(--navy-deep);
+      --bg-1: var(--navy-mid);
+      --bg-2: var(--navy-hi);
+      --fg-1: var(--text);
+      --fg-2: var(--text-sec);
+      --fg-3: var(--text-dim);
+      --fg-muted: var(--text-mute);
+
+      --border-1: rgba(255,255,255,.08);
+      --border-2: rgba(255,255,255,.14);
+      --border-strong: rgba(255,255,255,.24);
+      --border-accent: rgba(23,212,250,.45);
+
+      --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+      --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
+      --glow-cyan: 0 0 0 1px rgba(23,212,250,.35), 0 0 24px rgba(23,212,250,.35);
+      --glow-magenta: 0 0 0 1px rgba(242,47,137,.35), 0 0 24px rgba(242,47,137,.35);
+      --glow-duo: 0 0 24px rgba(23,212,250,.22), 0 0 48px rgba(242,47,137,.16);
+      --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
+
+      --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+      --shadow-3: 0 12px 32px rgba(0,0,0,.55);
+
+      --ease-out: cubic-bezier(.2,.7,.2,1);
+      --ease-in-out: cubic-bezier(.7,0,.3,1);
+      --dur-fast: 120ms;
+      --dur-med: 220ms;
+      --dur-slow: 380ms;
+
+      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+      --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+      --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+      --r-pill: 999px;
+
+      --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg-0);
+      color: var(--fg-1);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.55;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    .skip-link {
+      position: absolute; left: 12px; top: -56px; z-index: 200;
+      background: var(--cyan); color: var(--navy-deep);
+      padding: 10px 18px; border-radius: 8px;
+      font-weight: 600; font-size: 14px;
+      transition: top 140ms ease;
+    }
+    .skip-link:focus { top: 12px; outline: 2px solid var(--ink-0); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 var(--s-8);
+    }
+    @media (max-width: 720px) { .wrap { padding: 0 var(--s-5); } }
+
+    .ic { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .ic-lg { width: 20px; height: 20px; }
+    .ic-xl { width: 24px; height: 24px; }
+
+    /* ========== Nav ========== */
+    nav.nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(15, 31, 49, 0.72);
+      border-bottom: 1px solid var(--border-1);
+    }
+    .nav-inner {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-6);
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+    .nav-brand .brand-626 { color: var(--cyan); }
+    .nav-brand .brand-labs { color: var(--fg-1); }
+    .nav-links {
+      display: flex;
+      gap: var(--s-6);
+      font-size: 14px;
+      color: var(--fg-2);
+    }
+    .nav-links a {
+      position: relative;
+      padding: 6px 2px;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--fg-1); }
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: -2px;
+      height: 1px;
+      background: var(--brand-gradient);
+    }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-950);
+      background: var(--cyan);
+      padding: 8px 14px;
+      border-radius: var(--r-md);
+      border: none;
+      box-shadow: 0 0 0 1px rgba(23,212,250,.4), 0 0 18px rgba(23,212,250,.25);
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .nav-cta:hover {
+      background: var(--cyan-pale);
+      box-shadow: 0 0 0 1px rgba(92,230,255,.55), 0 0 28px rgba(23,212,250,.5);
+    }
+    @media (max-width: 720px) { .nav-links { display: none; } }
+
+    /* ========== Hero ========== */
+    header.hero {
+      position: relative;
+      padding: clamp(64px, 10vw, 128px) 0 clamp(80px, 12vw, 144px);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .hero-bg .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(23,212,250,.055) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(242,47,137,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 75%);
+    }
+    .hero-bg .glow-a {
+      position: absolute;
+      top: -10%; left: -10%;
+      width: 70%; height: 70%;
+      background: radial-gradient(closest-side, rgba(23,212,250,.25), transparent 70%);
+      filter: blur(60px);
+    }
+    .hero-bg .glow-b {
+      position: absolute;
+      bottom: -20%; right: -10%;
+      width: 70%; height: 70%;
+      background: radial-gradient(closest-side, rgba(242,47,137,.22), transparent 70%);
+      filter: blur(60px);
+    }
+    .hero-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: var(--s-16);
+      align-items: center;
+    }
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: 1fr; gap: var(--s-12); }
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-3);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--fg-3);
+      margin-bottom: var(--s-6);
+    }
+    .eyebrow .pulse {
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 10px var(--ok);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.85); }
+    }
+    .eyebrow .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(23,212,250,.3), transparent);
+      max-width: 60px;
+    }
+
+    header.hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 6.2vw, 80px);
+      line-height: 0.98;
+      letter-spacing: -0.035em;
+      font-weight: 700;
+      margin: 0 0 var(--s-6);
+      color: var(--fg-1);
+      text-wrap: balance;
+    }
+    header.hero h1 .accent {
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-sub {
+      font-size: clamp(17px, 1.6vw, 20px);
+      line-height: 1.55;
+      color: var(--fg-2);
+      max-width: 540px;
+      margin: 0 0 var(--s-10);
+      text-wrap: pretty;
+    }
+    .hero-actions {
+      display: flex;
+      gap: var(--s-4);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 20px;
+      border-radius: var(--r-md);
+      border: none;
+      transition: all var(--dur-fast) var(--ease-out);
+      letter-spacing: -0.005em;
+    }
+    .btn-primary {
+      background: var(--cyan);
+      color: var(--ink-950);
+      box-shadow: 0 0 0 1px rgba(23,212,250,.4), 0 0 24px rgba(23,212,250,.3);
+    }
+    .btn-primary:hover {
+      background: var(--cyan-pale);
+      box-shadow: 0 0 0 1px rgba(92,230,255,.6), 0 0 36px rgba(23,212,250,.55);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--fg-1);
+      border: 1px solid var(--border-2);
+    }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,.06);
+      border-color: var(--border-strong);
+    }
+    .btn-gradient {
+      background: var(--brand-gradient);
+      color: var(--ink-950);
+    }
+    .btn-gradient:hover { filter: brightness(1.08); }
+
+    .hero-meta {
+      margin-top: var(--s-10);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-6) var(--s-8);
+      padding-top: var(--s-6);
+      border-top: 1px solid var(--border-1);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--fg-3);
+    }
+    .hero-meta b {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--fg-1);
+      text-transform: none;
+      letter-spacing: -0.01em;
+      margin-top: 4px;
+    }
+
+    /* ========== Hero mark stage ========== */
+    .mark-stage {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      max-width: 480px;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mark-rings {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .mark-ring {
+      position: absolute;
+      left: 50%; top: 50%;
+      border: 1px solid rgba(23,212,250,.18);
+      border-radius: 999px;
+      transform: translate(-50%, -50%);
+    }
+    .mark-ring.r1 { width: 58%; height: 58%; border-color: rgba(23,212,250,.28); animation: spin 42s linear infinite; border-right-color: rgba(242,47,137,.35); }
+    .mark-ring.r2 { width: 76%; height: 76%; border-color: rgba(242,47,137,.15); animation: spin 68s linear infinite reverse; border-bottom-color: rgba(23,212,250,.35); }
+    .mark-ring.r3 { width: 96%; height: 96%; border-color: rgba(255,255,255,.05); }
+    @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+    .mark-logo {
+      position: relative;
+      width: 54%;
+      aspect-ratio: 1 / 1;
+      filter: drop-shadow(0 0 40px rgba(23,212,250,.25)) drop-shadow(0 0 80px rgba(242,47,137,.18));
+      z-index: 2;
+      animation: bob 8s ease-in-out infinite;
+    }
+    .mark-logo img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      mix-blend-mode: screen;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .mark-chips {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .mark-chip {
+      position: absolute;
+      padding: 6px 10px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.04em;
+      color: var(--fg-2);
+      background: rgba(15, 31, 49, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-pill);
+      white-space: nowrap;
+      box-shadow: var(--shadow-2);
+    }
+    .mark-chip .dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .mark-chip.magenta .dot { background: var(--magenta); box-shadow: 0 0 8px var(--magenta); }
+    .mark-chip.success .dot { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+    .chip-a { top: 6%; left: -6%; }
+    .chip-b { top: 24%; right: -6%; }
+    .chip-c { bottom: 18%; left: -8%; }
+    .chip-d { bottom: 4%; right: -2%; }
+
+    @media (max-width: 960px) {
+      .mark-stage { margin: 0 auto; max-width: 340px; }
+    }
+
+    /* ========== Section head ========== */
+    section.section {
+      padding: clamp(72px, 8vw, 120px) 0;
+      position: relative;
+    }
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--s-6);
+      margin-bottom: var(--s-10);
+      flex-wrap: wrap;
+    }
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.4vw, 42px);
+      font-weight: 600;
+      margin: var(--s-4) 0 0;
+      letter-spacing: -0.02em;
+      color: var(--fg-1);
+      text-wrap: balance;
+    }
+    .section-head p {
+      font-size: 15px;
+      color: var(--fg-3);
+      max-width: 440px;
+      margin: 0;
+      line-height: 1.55;
+      text-wrap: pretty;
+    }
+
+    /* ========== Product grid ========== */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: var(--s-4);
+    }
+    article.product {
+      grid-column: span 3;
+      position: relative;
+      background: var(--bg-2);
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-lg);
+      padding: var(--s-8);
+      overflow: hidden;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color var(--dur-med) var(--ease-out);
+      box-shadow: var(--inner-stroke);
+    }
+    article.product:hover { border-color: var(--border-accent); }
+    article.product.flagship {
+      grid-column: span 6;
+      min-height: 380px;
+      background:
+        radial-gradient(60% 100% at 0% 0%, rgba(23,212,250,.16) 0%, transparent 60%),
+        radial-gradient(60% 100% at 100% 100%, rgba(242,47,137,.14) 0%, transparent 60%),
+        var(--bg-2);
+      border: 1px solid rgba(23,212,250,.32);
+    }
+    article.product.wip { opacity: 0.85; }
+    .product-visual {
+      margin: calc(var(--s-8) * -1) calc(var(--s-8) * -1) var(--s-6);
+      background: var(--bg-1);
+      border-bottom: 1px solid var(--border-1);
+      overflow: hidden;
+    }
+    .product-visual img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 var(--s-5);
+    }
+    .store-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1 1 180px;
+      min-width: 180px;
+      height: 54px;
+      padding: 0 16px;
+      background: rgba(15, 31, 49, 0.55);
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-md);
+      color: var(--fg-1);
+      text-decoration: none;
+      transition: border-color var(--dur-med) var(--ease-out), background var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+      box-sizing: border-box;
+    }
+    .store-badge:hover {
+      border-color: var(--border-accent);
+      background: rgba(23, 212, 250, 0.08);
+      color: var(--fg-1);
+      transform: translateY(-1px);
+    }
+    .store-badge svg {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      color: var(--fg-1);
+    }
+    .store-badge-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+      min-width: 0;
+    }
+    .store-badge-top {
+      font-size: 9.5px;
+      font-weight: 500;
+      color: var(--fg-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .store-badge-bottom {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--fg-1);
+      letter-spacing: -0.005em;
+    }
+    @media (max-width: 960px) {
+      .products { grid-template-columns: repeat(2, 1fr); }
+      article.product, article.product.flagship { grid-column: span 2; min-height: 280px; }
+    }
+    @media (max-width: 600px) {
+      .products { grid-template-columns: 1fr; }
+      article.product, article.product.flagship { grid-column: span 1; }
+    }
+
+    .product-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-4);
+      margin-bottom: var(--s-5);
+    }
+    .product-sigil {
+      width: 44px; height: 44px;
+      border-radius: var(--r-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(23,212,250,.08);
+      border: 1px solid var(--border-1);
+      color: var(--cyan);
+      flex-shrink: 0;
+    }
+    article.product.flagship .product-sigil {
+      background: var(--brand-gradient);
+      color: var(--ink-950);
+      box-shadow: 0 0 24px rgba(23,212,250,.4);
+      border-color: transparent;
+    }
+    .product-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: var(--r-pill);
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border-1);
+      color: var(--fg-3);
+      font-weight: 500;
+    }
+    .tag.cyan    { color: var(--cyan); border-color: rgba(23,212,250,.28); background: rgba(23,212,250,.06); }
+    .tag.magenta { color: var(--magenta-pale); border-color: rgba(242,47,137,.28); background: rgba(242,47,137,.06); }
+    .tag.live    { color: var(--ok); border-color: rgba(43,217,154,.3); background: rgba(43,217,154,.08); }
+    .tag.wip     { color: var(--warn); border-color: rgba(255,180,84,.3); background: rgba(255,180,84,.08); }
+
+    article.product h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 var(--s-3);
+      letter-spacing: -0.015em;
+      color: var(--fg-1);
+    }
+    article.product.flagship h3 { font-size: 28px; }
+    .product-desc {
+      color: var(--fg-2);
+      font-size: 14.5px;
+      line-height: 1.55;
+      margin: 0 0 var(--s-5);
+      text-wrap: pretty;
+    }
+    .product-desc + .badges { margin-top: 0; }
+    .badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0 0 var(--s-4);
+      align-items: center;
+    }
+    .badges img { height: 22px; }
+
+    .product-cta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 0 var(--s-5);
+    }
+    .product-cta .btn { font-size: 14px; padding: 10px 18px; }
+
+    .install {
+      margin: 0 0 var(--s-5);
+      padding: 12px 14px;
+      background: rgba(15, 31, 49, 0.7);
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-md);
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--cyan-pale);
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    .install .label {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 4px;
+    }
+    .install code {
+      font-family: var(--font-mono);
+      color: var(--cyan-pale);
+      background: transparent;
+      padding: 0;
+    }
+    .install code .prompt {
+      color: var(--fg-muted);
+      user-select: none;
+      margin-right: 6px;
+    }
+
+    .product-body { flex: 1; }
+    .product-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-4);
+      padding-top: var(--s-4);
+      border-top: 1px dashed var(--border-1);
+      margin-top: auto;
+    }
+    .product-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--fg-3);
+      letter-spacing: 0.04em;
+    }
+    .product-meta code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: var(--cyan);
+    }
+    .product-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--fg-1);
+      transition: gap var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    }
+    .product-link:hover { color: var(--cyan); gap: 10px; }
+
+    /* ========== Flagship inner preview ========== */
+    .product-preview {
+      margin-top: var(--s-6);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: var(--s-6);
+      align-items: stretch;
+    }
+    @media (max-width: 760px) { .product-preview { grid-template-columns: 1fr; } }
+
+    .preview-frame {
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-md);
+      background: var(--bg-1);
+      padding: var(--s-3);
+      position: relative;
+      overflow: hidden;
+      min-height: 180px;
+    }
+    .preview-frame::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 28px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border-1);
+    }
+    .preview-dots {
+      position: absolute;
+      top: 9px; left: 10px;
+      display: flex; gap: 5px;
+    }
+    .preview-dots span {
+      width: 9px; height: 9px; border-radius: 999px;
+      background: rgba(255,255,255,.18);
+    }
+    .preview-body {
+      margin-top: 28px;
+      padding: var(--s-3);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.75;
+      color: var(--fg-3);
+    }
+    .preview-body .k { color: var(--cyan); }
+    .preview-body .m { color: var(--magenta-pale); }
+    .preview-body .s { color: var(--ok); }
+    .preview-body .muted { color: var(--fg-muted); }
+
+    .preview-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+    .preview-bullet {
+      display: flex;
+      gap: var(--s-3);
+      align-items: flex-start;
+    }
+    .preview-bullet .num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--cyan);
+      min-width: 22px;
+      padding-top: 2px;
+      letter-spacing: 0.05em;
+    }
+    .preview-bullet .txt {
+      font-size: 13px;
+      color: var(--fg-2);
+      line-height: 1.5;
+    }
+    .preview-bullet .txt b { color: var(--fg-1); font-weight: 600; }
+
+    /* ========== Thinking ========== */
+    section.thinking {
+      background:
+        radial-gradient(80% 60% at 0% 0%, rgba(23,212,250,.05) 0%, transparent 60%),
+        var(--bg-0);
+      border-top: 1px solid var(--border-1);
+      border-bottom: 1px solid var(--border-1);
+    }
+    section.thinking blockquote {
+      margin: 0 0 var(--s-6);
+      padding: var(--s-5) var(--s-6);
+      border-left: 3px solid var(--cyan);
+      background: rgba(23,212,250,.05);
+      color: var(--cyan-pale);
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(18px, 1.8vw, 22px);
+      line-height: 1.45;
+      border-radius: 4px;
+      max-width: 820px;
+      letter-spacing: -0.005em;
+    }
+    section.thinking p {
+      color: var(--fg-2);
+      font-size: 15.5px;
+      max-width: 780px;
+      margin: 0 0 var(--s-4);
+      line-height: 1.65;
+    }
+    section.thinking strong { color: var(--fg-1); font-weight: 600; }
+    section.thinking .thinking-link {
+      margin-top: var(--s-4);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+    }
+    section.thinking .thinking-link a {
+      color: var(--cyan);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    section.thinking .thinking-link a:hover { color: var(--cyan-pale); }
+
+    /* Thinking artifact card — secondary thesis pieces under the main pitch */
+    section.thinking .thinking-artifacts {
+      margin-top: var(--s-8);
+      padding-top: var(--s-6);
+      border-top: 1px solid var(--border-1);
+      display: grid;
+      gap: var(--s-4);
+    }
+    section.thinking .thinking-artifact {
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-lg);
+      padding: var(--s-5) var(--s-6);
+      background:
+        linear-gradient(135deg, rgba(23,212,250,.04), rgba(242,47,137,.03)),
+        rgba(255,255,255,.012);
+      max-width: 780px;
+    }
+    section.thinking .artifact-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 8px;
+    }
+    section.thinking .artifact-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      letter-spacing: -0.012em;
+      color: var(--fg-1);
+    }
+    section.thinking .artifact-blurb {
+      margin: 0 0 var(--s-4) !important;
+      color: var(--fg-2);
+    }
+    section.thinking .artifact-links {
+      display: flex; gap: var(--s-5);
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    section.thinking .artifact-links a {
+      color: var(--cyan);
+      display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none;
+      transition: color 120ms;
+    }
+    section.thinking .artifact-links a:hover { color: var(--cyan-pale); }
+    section.thinking .artifact-links a svg { width: 14px; height: 14px; }
+
+    /* ========== Field Notes ========== */
+    section.field-notes {
+      background:
+        radial-gradient(70% 50% at 100% 0%, rgba(242,47,137,.04) 0%, transparent 60%),
+        var(--bg-0);
+      border-bottom: 1px solid var(--border-1);
+    }
+    section.field-notes .field-notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--s-5);
+      margin-top: var(--s-6);
+    }
+    section.field-notes .field-note {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: var(--s-5) var(--s-5);
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-lg);
+      background:
+        linear-gradient(135deg, rgba(23,212,250,.03), rgba(242,47,137,.025)),
+        rgba(255,255,255,.012);
+      transition: border-color 120ms;
+    }
+    section.field-notes .field-note:hover { border-color: var(--border-accent); }
+    section.field-notes .field-note-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--magenta);
+    }
+    section.field-notes .field-note-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.012em;
+      margin: 0;
+      color: var(--fg-1);
+    }
+    section.field-notes .field-note-subtitle {
+      font-size: 14.5px;
+      color: var(--fg-2);
+      line-height: 1.6;
+      margin: 0;
+    }
+    section.field-notes .field-note-tagline {
+      border-left: 2px solid var(--cyan);
+      padding: 4px 0 4px 12px;
+      margin: 0;
+      font-style: italic;
+      font-size: 13.5px;
+      color: var(--cyan-pale);
+      line-height: 1.5;
+    }
+    section.field-notes .field-note-link {
+      margin-top: auto;
+      padding-top: 4px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+    section.field-notes .field-note-link a {
+      color: var(--cyan);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: color 120ms;
+    }
+    section.field-notes .field-note-link a:hover { color: var(--cyan-pale); }
+    section.field-notes .field-note-link a svg { width: 14px; height: 14px; }
+    section.field-notes .field-notes-subscribe {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: var(--s-6);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      text-decoration: none;
+      border: 1px solid var(--border-2);
+      padding: 8px 14px;
+      border-radius: var(--r-md);
+      transition: border-color 120ms, color 120ms, background 120ms;
+    }
+    section.field-notes .field-notes-subscribe:hover {
+      border-color: var(--border-accent);
+      background: rgba(23,212,250,.06);
+      color: var(--cyan-pale);
+    }
+    section.field-notes .field-notes-subscribe svg { width: 14px; height: 14px; }
+
+    /* ========== How the lab runs ========== */
+    section.lab-runs .frames {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: var(--s-5);
+      align-items: start;
+    }
+    @media (max-width: 760px) {
+      section.lab-runs .frames { grid-template-columns: 1fr; }
+    }
+    section.lab-runs .frame {
+      position: relative;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      border: 1px solid rgba(23,212,250,.25);
+      background: var(--brand-gradient-soft);
+      box-shadow: 0 24px 72px -24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(23,212,250,.08);
+    }
+    section.lab-runs .frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    section.lab-runs .frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 80px rgba(15, 31, 49, 0.4);
+      border-radius: var(--r-lg);
+    }
+    section.lab-runs .frame-tag {
+      position: absolute;
+      top: 12px; left: 12px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(15, 31, 49, 0.75);
+      color: var(--cyan-pale);
+      border: 1px solid rgba(23,212,250,.3);
+      padding: 3px 9px;
+      border-radius: var(--r-pill);
+      backdrop-filter: blur(6px);
+      font-weight: 500;
+      z-index: 2;
+    }
+    section.lab-runs .caption {
+      display: flex;
+      gap: var(--s-6);
+      flex-wrap: wrap;
+      margin-top: var(--s-6);
+    }
+    section.lab-runs .caption p {
+      color: var(--fg-2);
+      font-size: 14.5px;
+      line-height: 1.6;
+      max-width: 540px;
+      margin: 0;
+    }
+
+    /* ========== Lab shelf ========== */
+    section.lab .shelf {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--s-4);
+    }
+    section.lab .lab-card {
+      display: flex;
+      flex-direction: column;
+      padding: var(--s-5);
+      background: var(--bg-2);
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-lg);
+      transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+      box-shadow: var(--inner-stroke);
+    }
+    section.lab .lab-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+    section.lab .lab-card .thumb {
+      position: relative;
+      display: block;
+      margin: 0 0 var(--s-4);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-0);
+      border: 1px solid var(--border-1);
+    }
+    section.lab .lab-card .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .25s ease, filter var(--dur-fast) ease;
+    }
+    section.lab .lab-card .thumb:hover img {
+      transform: scale(1.03);
+      filter: brightness(1.08);
+    }
+    section.lab .lab-card .thumb.video::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 44px; height: 44px;
+      margin: -22px 0 0 -22px;
+      border-radius: 999px;
+      background: rgba(15, 31, 49, 0.78) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%23e8f2ff' d='M5.5 3.5v9l7-4.5z'/></svg>") center/18px no-repeat;
+      border: 1.5px solid rgba(232, 242, 255, 0.8);
+      pointer-events: none;
+      transition: background-color var(--dur-fast) ease;
+    }
+    section.lab .lab-card .thumb.video:hover::after {
+      background-color: rgba(242, 47, 137, 0.85);
+    }
+    section.lab .lab-card .thumb.static { cursor: default; background: var(--bg-0); }
+    section.lab .lab-card .thumb.static img { object-fit: contain; }
+    section.lab .lab-card .thumb.static:hover img { transform: none; filter: none; }
+    section.lab .lab-card h4 {
+      margin: 0 0 4px;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--fg-1);
+      letter-spacing: -0.01em;
+    }
+    section.lab .lab-card .meta {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      margin: 0 0 var(--s-3);
+    }
+    section.lab .lab-card p {
+      margin: 0 0 var(--s-3);
+      color: var(--fg-2);
+      font-size: 13.5px;
+      line-height: 1.55;
+      flex: 1;
+    }
+    section.lab .lab-card .links {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--fg-3);
+      letter-spacing: 0.02em;
+      padding-top: var(--s-3);
+      border-top: 1px dashed var(--border-1);
+    }
+    section.lab .lab-card .links a { color: var(--cyan); }
+    section.lab .lab-card .links a:hover { color: var(--cyan-pale); }
+    section.lab .shuffle-note {
+      margin-top: var(--s-5);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--fg-muted);
+      letter-spacing: 0.06em;
+      text-align: right;
+    }
+    section.lab .shuffle-note button {
+      background: none;
+      border: none;
+      color: var(--cyan);
+      font: inherit;
+      cursor: pointer;
+      padding: 0;
+    }
+    section.lab .shuffle-note button:hover { color: var(--cyan-pale); text-decoration: underline; }
+
+    /* ========== Play (embedded games) ========== */
+    section.play {
+      background:
+        radial-gradient(70% 50% at 50% 0%, rgba(23,212,250,.06) 0%, transparent 60%),
+        var(--bg-0);
+      border-top: 1px solid var(--border-1);
+    }
+    .play-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: var(--s-6);
+      max-width: 480px;
+      margin: var(--s-8) auto 0;
+    }
+    .play-grid.two-up {
+      max-width: 900px;
+    }
+    @media (min-width: 960px) {
+      .play-grid.two-up {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .play-widget {
+      width: 100%;
+      max-width: 420px;
+    }
+    .play-aside {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--s-4);
+      max-width: 440px;
+    }
+    .play-link {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      border: 1px solid var(--border-2);
+      padding: 8px 14px;
+      border-radius: var(--r-md);
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .play-link:hover {
+      border-color: var(--border-accent);
+      background: rgba(23,212,250,.06);
+      color: var(--cyan-pale);
+    }
+
+    /* ========== About / Manifesto ========== */
+    section.manifesto {
+      background:
+        radial-gradient(80% 60% at 20% 0%, rgba(23,212,250,.08) 0%, transparent 60%),
+        radial-gradient(60% 60% at 100% 100%, rgba(242,47,137,.06) 0%, transparent 60%),
+        var(--bg-0);
+      border-top: 1px solid var(--border-1);
+      border-bottom: 1px solid var(--border-1);
+    }
+    .manifesto-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: var(--s-12);
+      align-items: start;
+    }
+    @media (max-width: 960px) { .manifesto-inner { grid-template-columns: 1fr; gap: var(--s-8); } }
+
+    section.manifesto h2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0;
+      color: var(--fg-1);
+      text-wrap: balance;
+    }
+    section.manifesto h2 em {
+      font-style: normal;
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .manifesto-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+      font-size: 15.5px;
+      line-height: 1.65;
+      color: var(--fg-2);
+      max-width: 560px;
+    }
+    .manifesto-body p { margin: 0; text-wrap: pretty; }
+    .manifesto-body p strong { color: var(--fg-1); font-weight: 600; }
+    .manifesto-body p a {
+      color: var(--cyan);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .manifesto-body p a:hover { color: var(--cyan-pale); }
+
+    .principles {
+      margin-top: var(--s-10);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-4);
+    }
+    @media (max-width: 760px) { .principles { grid-template-columns: 1fr; } }
+    .principle {
+      padding: var(--s-6);
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-md);
+      background: rgba(255,255,255,0.015);
+    }
+    .principle .num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      margin-bottom: var(--s-3);
+    }
+    .principle h4 {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      margin: 0 0 var(--s-2);
+      color: var(--fg-1);
+      letter-spacing: -0.01em;
+    }
+    .principle p {
+      font-size: 13.5px;
+      color: var(--fg-3);
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* ── About star map ─────────────────────────── */
+    .starmap {
+      margin-top: var(--s-10);
+      position: relative;
+      border: 1px solid rgba(23, 212, 250, 0.18);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      background: radial-gradient(ellipse at 60% 40%, #14283f 0%, var(--bg-0) 70%);
+    }
+    .starmap-sky { display: block; width: 100%; height: 340px; }
+    @media (max-width: 760px) { .starmap-sky { height: 240px; } }
+    .starmap-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--s-4);
+      padding: 10px 14px;
+      border-top: 1px solid var(--border-1);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-2);
+    }
+    .starmap-legend { display: flex; flex-wrap: wrap; gap: var(--s-4); }
+    .starmap-legend .lg { display: inline-flex; align-items: center; gap: 6px; }
+    .starmap-legend .lg::before {
+      content: "";
+      width: 7px; height: 7px; border-radius: 50%;
+    }
+    .starmap-legend .lg-plugin::before   { background: var(--cyan); box-shadow: 0 0 6px rgba(23, 212, 250, 0.8); }
+    .starmap-legend .lg-flagship::before { background: var(--magenta); box-shadow: 0 0 6px rgba(242, 47, 137, 0.8); }
+    .starmap-legend .lg-product::before  { background: #e8f6ff; box-shadow: 0 0 6px rgba(232, 246, 255, 0.7); }
+    @media (max-width: 600px) {
+      .starmap-caption { flex-direction: column; align-items: flex-start; gap: 6px; }
+    }
+    .starmap-tooltip {
+      position: absolute;
+      z-index: 2;
+      pointer-events: none;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-1);
+      background: rgba(10, 22, 38, 0.92);
+      border: 1px solid rgba(23, 212, 250, 0.35);
+      border-radius: 6px;
+      padding: 5px 9px;
+      white-space: nowrap;
+      max-width: calc(100% - 12px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stack {
+      display: flex;
+      gap: var(--s-2);
+      flex-wrap: wrap;
+      margin-top: var(--s-5);
+    }
+    .stack-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--border-1);
+      background: rgba(255,255,255,0.02);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--fg-2);
+      letter-spacing: 0.02em;
+    }
+
+    /* ========== Support ========== */
+    section.support { padding: var(--s-12) 0; border-top: 1px solid var(--border-1); }
+    .support-box {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s-6);
+      padding: var(--s-6) var(--s-8);
+      background: linear-gradient(135deg, rgba(242,47,137,.08), rgba(23,212,250,.05));
+      border: 1px solid rgba(242,47,137,.25);
+      border-radius: var(--r-lg);
+    }
+    .support-copy { flex: 1; min-width: 260px; }
+    .support-copy h3 {
+      margin: 0 0 6px;
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--fg-1);
+      letter-spacing: -0.005em;
+    }
+    .support-copy p {
+      margin: 0;
+      color: var(--fg-2);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 640px;
+    }
+    .sponsor-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: rgba(242,47,137,.15);
+      border: 1px solid rgba(242,47,137,.5);
+      color: var(--fg-1);
+      border-radius: var(--r-pill);
+      font-weight: 500;
+      font-size: 14px;
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .sponsor-cta:hover {
+      background: rgba(242,47,137,.25);
+      border-color: var(--magenta);
+      transform: translateY(-1px);
+    }
+    .sponsor-cta svg { width: 16px; height: 16px; fill: var(--magenta); }
+
+    /* ========== Contact ========== */
+    section.contact .contact-inner {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--s-12);
+      align-items: center;
+    }
+    @media (max-width: 760px) {
+      section.contact .contact-inner { grid-template-columns: 1fr; gap: var(--s-8); }
+    }
+    section.contact h2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      margin: 0 0 var(--s-4);
+      color: var(--fg-1);
+    }
+    .contact-sub {
+      color: var(--fg-2);
+      font-size: 17px;
+      line-height: 1.55;
+      margin: 0 0 var(--s-8);
+      max-width: 460px;
+    }
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+    .contact-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-4);
+      padding: var(--s-5) var(--s-6);
+      border: 1px solid var(--border-1);
+      border-radius: var(--r-md);
+      background: var(--bg-2);
+      transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+    }
+    .contact-row:hover { border-color: var(--border-accent); background: var(--bg-1); }
+    .contact-row .label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 2px;
+    }
+    .contact-row .value {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--fg-1);
+    }
+    .contact-row .arrow {
+      color: var(--fg-3);
+      transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    }
+    .contact-row:hover .arrow { color: var(--cyan); transform: translateX(3px); }
+
+    /* ========== Footer ========== */
+    footer {
+      padding: var(--s-10) 0 var(--s-12);
+      border-top: 1px solid var(--border-1);
+      color: var(--fg-3);
+      font-size: 13px;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--s-6);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3) var(--s-5);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+    .footer-links a { color: var(--fg-3); transition: color var(--dur-fast) var(--ease-out); }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--fg-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      max-width: 720px;
+    }
+    .footer-meta .brand-tagline { color: var(--cyan); }
+
+    /* ========== Hairline divider ========== */
+    hr.hair {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(23,212,250,.35), rgba(242,47,137,.35), transparent);
+      border: 0;
+      margin: 0;
+      opacity: 0.6;
+    }
+
+    section[id] { scroll-margin-top: 72px; }
+  </style>
+  <!-- Theme treatment layer — see themes/phosphor-blueprint/theme.json -->
+  <link rel="stylesheet" href="/themes/phosphor-blueprint/tokens.css">
+</head>
+<body>
+<div class="pb-scanlines" aria-hidden="true"></div>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- =============== NAV =============== -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="nav-brand" href="#top">
+      <svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+        <defs>
+          <linearGradient id="navg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#17d4fa"/>
+            <stop offset="100%" stop-color="#f22f89"/>
+          </linearGradient>
+        </defs>
+        <polygon points="16,3 28,10 28,22 16,29 4,22 4,10" fill="none" stroke="url(#navg)" stroke-width="1.6"/>
+        <circle cx="16" cy="16" r="3.2" fill="none" stroke="#17d4fa" stroke-width="1.3"/>
+        <path d="M8 16 L12.5 16 M19.5 16 L24 16 M16 8.5 L16 12.5 M16 19.5 L16 23.5" stroke="#f22f89" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <span><span class="brand-626">626</span><span class="brand-labs">Labs</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="/plugins/">Plugins</a>
+      <a href="plugins/#thesis">Thinking</a>
+      <a href="#field-notes">Field Notes</a>
+      <a href="#lab">Lab</a>
+      <a href="#about">About</a>
+      <a href="https://github.com/sponsors/estevanhernandez-stack-ed">Sponsor</a>
+    </div>
+    <a href="#contact" class="nav-cta">
+      Get in touch
+      <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<main id="main">
+<!-- =============== HERO =============== -->
+<header class="hero" id="top">
+  <div class="hero-bg">
+    <div class="grid"></div>
+    <div class="glow-a"></div>
+    <div class="glow-b"></div>
+  </div>
+  <div class="wrap hero-inner">
+    <div>
+      <!-- SITE_JSON:hero:start -->
+      <div class="eyebrow">
+        <span class="pulse"></span>
+        <span>626 Labs LLC · Fort Worth, TX</span>
+        <span class="line"></span>
+      </div>
+      <h1>
+        Stabilize your builds<br/>
+        <span class="accent">Ready for the 2nd User.</span>
+      </h1>
+      <p class="hero-sub">
+        Claude Code plugins for builders who vibe-code fast and still ship for real. Planning, docs, tests, security — with a native Windows/macOS widget for pacing your usage.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#work">See the work<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a class="btn btn-ghost" href="/plugins/#thesis">Read the thesis</a>
+      </div>
+      <div class="hero-meta">
+        <div>Deployed<b>14 plugins · 1 widget · 6 Microsoft Store Releases</b></div>
+        <div>Stack<b>TypeScript · Swift · Python · C#</b></div>
+        <div>Distribution<b>Claude Code · macOS · Windows · Replit</b></div>
+      </div>
+      <!-- SITE_JSON:hero:end -->
+    </div>
+
+    <div class="mark-stage" aria-hidden="true">
+      <div class="mark-rings">
+        <div class="mark-ring r3"></div>
+        <div class="mark-ring r2"></div>
+        <div class="mark-ring r1"></div>
+      </div>
+      <div class="mark-logo">
+        <img src="assets/brand/logo-lockup-transparent-1080.png" alt="626 Labs — Imagine Something Else"/>
+      </div>
+      <!-- SITE_JSON:hero-chips:start -->
+      <div class="mark-chips">
+        <div class="mark-chip chip-a"><span class="dot"></span>vibe-cartographer</div>
+        <div class="mark-chip chip-b"><span class="dot"></span>vibe-iterate</div>
+        <div class="mark-chip magenta chip-c"><span class="dot"></span>vibe-doc</div>
+        <div class="mark-chip success chip-d"><span class="dot"></span>vibe-test · live</div>
+      </div>
+      <!-- SITE_JSON:hero-chips:end -->
+    </div>
+  </div>
+</header>
+
+<hr class="hair"/>
+
+<!-- =============== WORK =============== -->
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>01 · Portfolio</span><span class="line"></span></div>
+        <h2>The work, shipping.</h2>
+      </div>
+      <p>Fourteen plugins shipped plus native Windows and macOS apps. All open source. The plugins built on a shared spine: an opinionated agent that reads the code before it touches it.</p>
+    </div>
+
+    <div class="products">
+      <!-- SITE_JSON:products:start -->
+      <article class="product flagship">
+        <div class="product-head">
+          <div style="display:flex;align-items:center;gap:16px">
+            <div class="product-sigil">
+              <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M5 19l6-8 4 3 4-9"/><path d="M5 19h.01M11 11h.01M15 14h.01M19 5h.01"/></svg>
+            </div>
+            <div>
+              <div class="product-tags" style="margin-bottom:4px">
+                <span class="tag cyan">Claude Code</span><span class="tag magenta">plugin family</span><span class="tag cyan">self-evolving</span><span class="tag live">Live</span>
+              </div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-muted);letter-spacing:.08em">SPEC-DRIVEN · SELF-EVOLVING · ONE PLAYBOOK</div>
+            </div>
+          </div>
+          <a class="product-link" href="plugins/">Meet the family <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+        <h3>The Vibe Plugin Family</h3>
+        <p class="product-desc">One coordinated family of Claude Code plugins — planning, iteration, docs, tests, security, research authoring — installed independently, composed when present. Every plugin follows the same Apache-licensed playbook: self-repair, self-teach, self-evolve, so the tenth run beats the first. 14 plugins, one spine.</p>
+
+        <div class="product-preview">
+          <div class="preview-frame">
+            <div class="preview-dots"><span></span><span></span><span></span></div>
+            <div class="preview-body">
+              <div><span class="muted">/</span><span class="k">vibe-family</span> <span class="muted">// one playbook, across the family</span></div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> /plan · idea in, spec out</div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> /build · spec in, shipped code out</div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> /wrap · session closed, memory updated</div>
+              <div><span class="muted"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> /vibe-test:gate · /vibe-sec:scan · /vibe-doc:generate</span></div>
+              <div><span class="muted">shared </span><span class="k">spec</span><span class="muted"> · every plugin reads the same playbook</span></div>
+            </div>
+          </div>
+          <div class="preview-bullets">
+            <div class="preview-bullet">
+              <div class="num">01</div>
+              <div class="txt"><b>Plan.</b> Idea to shipped-app blueprint, one command chain, no lost thread.</div>
+            </div>
+            <div class="preview-bullet">
+              <div class="num">02</div>
+              <div class="txt"><b>Iterate.</b> Competitor scans, feature adds, and UX passes land as one PR and one Atlas entry.</div>
+            </div>
+            <div class="preview-bullet">
+              <div class="num">03</div>
+              <div class="txt"><b>Document.</b> Docs generate from the diff and drift-check themselves against it.</div>
+            </div>
+            <div class="preview-bullet">
+              <div class="num">04</div>
+              <div class="txt"><b>Test.</b> Coverage gates and regression checks run before the merge, not after.</div>
+            </div>
+            <div class="preview-bullet">
+              <div class="num">05</div>
+              <div class="txt"><b>Secure.</b> Secret scans and dependency audits ride the same loop, not a separate ask.</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z"/><circle cx="18.5" cy="5.5" r="1.3"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">Web app</span><span class="tag magenta">AI astrology</span><span class="tag cyan">Freemium</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>Celestia 3</h3>
+        <p class="product-desc">An AI technomancer that reads the actual sky. The Swiss Ephemeris engine was rebuilt to astronomical precision — not the second-rate math most astrology apps ship — so every chart is observatory-accurate. Converse with the Athanor, an AI oracle grounded in your real natal chart, across the Natal Compass, Aura Cam, Arithmancy, Tarot, Rituals, Chronos forecasts, Celebrity Match, Synastry, and the Grimoire. The full tarot library is live and editorially reviewed card by card, a free birth-chart calculator needs no login, and a /learn library of placement readings keeps growing toward full coverage. Synastry readings now save to your Grimoire instead of re-running the AI every time you revisit a past match.</p>
+        <div class="product-cta">
+          <a class="btn btn-primary" href="https://celestia.626labs.dev" target="_blank" rel="noopener">Start free<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="btn btn-ghost" href="https://www.youtube.com/watch?v=HV8dUMReNgI" target="_blank" rel="noopener">Watch demo</a>
+        </div>
+        <div class="product-foot">
+          <div class="product-meta">Free to explore · ascend from $3.99/mo · cancel anytime</div>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-visual">
+          <img src="assets/sanduhr-card-shot.png" alt="Sanduhr für Claude — card banner screenshot" loading="lazy" />
+        </div>
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M6 2h12M6 22h12M6 2v4c0 2.5 6 4 6 6s-6 1.5-6 4v6M18 2v4c0 2.5-6 4-6 6s6 1.5 6 4v6"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">macOS</span><span class="tag cyan">Windows</span><span class="tag magenta">native</span><span class="tag cyan">privacy</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>Sanduhr für Claude</h3>
+        <p class="product-desc">Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Burn-rate projection, pace markers, sparkline trends, five hand-tuned glass themes — and per-model weekly meters that track your Claude Fable 5 allowance automatically: when Anthropic adds a limit for a new model, its bar just appears, no update needed. The Claude Usage tab turns your local Claude Code logs into a dashboard — sessions stacked by project with agent roll-up, weekly trends, a clickable usage calendar, sent/received splits, CSV export — with an opt-in local vault so your history outlives Claude Code's 30-day log cleanup. Threshold alerts chime softly when a pool crosses your line. Free on the Microsoft Store with real Win11 Mica glass, Apple-notarized for Mac with Sparkle auto-updates, single-file Python for everyone else. No telemetry — the only network call is to claude.ai with your own cookie.</p>
+        <div class="badge-row">
+          <a class="store-badge" href="https://apps.microsoft.com/detail/9NH3NK2RGCF5" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">Get it from</span>
+              <span class="store-badge-bottom">Microsoft Store</span>
+            </div>
+          </a>
+          <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">View on</span>
+              <span class="store-badge-bottom">GitHub</span>
+            </div>
+          </a>
+        </div>
+        <div class="product-foot">
+          <div class="product-meta">Free on MS Store · Mac + Win native</div>
+          <a class="product-link" href="/sanduhr/">Open product page <svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-visual">
+          <img src="assets/thumb-rbx15.png" alt="RBX15 Classic Shirt and Pants Maker — card banner screenshot" loading="lazy" />
+        </div>
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M4 7l5-3 3 2 3-2 5 3-2 3-2-1v11H8V9L6 10z"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">Windows</span><span class="tag magenta">native</span><span class="tag cyan">Roblox tooling</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>RBX15 Classic Shirt and Pants Maker</h3>
+        <p class="product-desc">Native desktop editor for Roblox Classic (R15) shirt and pants templates, built for the exact 585×559 template grid. Layer-based compositing with non-destructive adjustments — brightness, contrast, saturation, hue, and per-channel RGB shift, all real-time — plus drawing tools, fullbleed / mirror / meme-tee presets, and a word-art generator with 15 fonts. Built on Electron for Windows. Free on the Microsoft Store.</p>
+        <div class="badge-row">
+          <a class="store-badge" href="https://apps.microsoft.com/detail/9mv9g4xfj8s0" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">Get it from</span>
+              <span class="store-badge-bottom">Microsoft Store</span>
+            </div>
+          </a>
+          <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">View on</span>
+              <span class="store-badge-bottom">GitHub</span>
+            </div>
+          </a>
+        </div>
+        <div class="product-foot">
+          <div class="product-meta">Windows · Roblox creator tooling</div>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-visual">
+          <img src="assets/thumb-rtclickpng.png" alt="Right Click PNG — card banner screenshot" loading="lazy" />
+        </div>
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M5 3v17l4.5-3.5 2.5 5 2-1-2.5-5h5.5z"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">Windows</span><span class="tag magenta">shell extension</span><span class="tag cyan">native</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>Right Click PNG</h3>
+        <p class="product-desc">Adds 'Convert to PNG' and 'Copy as PNG' to the File Explorer right-click menu — decodes .webp / .avif / .heic / .bmp / .tif / .gif locally, no network round trip. C++/WinRT shell extension plus a .NET 9 AOT engine, seven bundled decoders, 85 tests green. Idea to Microsoft Store in 24 hours, built with Vibe Cartographer.</p>
+        <div class="badge-row">
+          <a class="store-badge" href="https://apps.microsoft.com/detail/9PKKLK6R5WFL" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">Get it from</span>
+              <span class="store-badge-bottom">Microsoft Store</span>
+            </div>
+          </a>
+          <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/RTClickPng" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">View on</span>
+              <span class="store-badge-bottom">GitHub</span>
+            </div>
+          </a>
+        </div>
+        <div class="product-foot">
+          <div class="product-meta">Windows shell extension · 24h build</div>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-visual">
+          <img src="assets/thumb-snapsnip.png" alt="SnapSnip — card banner screenshot" loading="lazy" />
+        </div>
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-xl ic" viewBox="0 0 24 24"><path d="M1 6v16l7-3 8 3 7-3V3l-7 3-8-3-7 3z"/><path d="M8 3v16M16 6v16"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">Windows</span><span class="tag magenta">native</span><span class="tag cyan">privacy</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>SnapSnip</h3>
+        <p class="product-desc">Automatically renames full-window snips based on metadata. Reads the active app and window title at capture time, writes a context-rich filename, and embeds structured XMP — turns 'Screenshot 2026-04-29 142301.png' into 'Outlook — Q3 forecast — 2026-04-29 142301.png'. Three on-device redaction presets (Strict / Balanced / Permissive). Privacy by default — no network calls.</p>
+        <div class="badge-row">
+          <a class="store-badge" href="https://apps.microsoft.com/detail/9PBX8F5TR0VR" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">Get it from</span>
+              <span class="store-badge-bottom">Microsoft Store</span>
+            </div>
+          </a>
+        </div>
+        <div class="product-foot">
+          <div class="product-meta">Windows native · context-aware screenshots</div>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-visual">
+          <img src="assets/thumb-rororo.png" alt="RORORO — card banner screenshot" loading="lazy" />
+        </div>
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-xl ic" viewBox="0 0 24 24"><path d="M1 6v16l7-3 8 3 7-3V3l-7 3-8-3-7 3z"/><path d="M8 3v16M16 6v16"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">Windows</span><span class="tag magenta">native</span><span class="tag cyan">Roblox tooling</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>RORORO</h3>
+        <p class="product-desc">Multi-launcher for Windows — run multiple Roblox clients side by side, each signed in as a different saved account. Native .NET 10 / WPF, DPAPI-encrypted account vault tied to your Windows user, embedded WebView2 login so your password never touches the app process. System-tray UX with state-coloured ring, per-game launch routing, Velopack auto-update. A hardened plugin host — sideload-only, https-only installs, named-pipe IPC with per-capability consent — with an in-app marketplace to browse, install, and update the Ur family in one click. Watches every client's memory and offers a one-click Recycle before a memory leak takes the window down, alongside stray-process cleanup, tray-residence recovery, Limited-account detection, idle-awareness that warns before Roblox's AFK kick, and a signed roblox-compat feed published on every release. Trust-aware Squad Launch lands a group in the same server together, and streamer mode swaps in fake names and avatars when you're live. Mac-native sibling, and a three-plugin family: Ur Task (portable, window-aware macros), Ur OCR (screen triggers that fire keybinds or Ur Task macros), and Ur AFK (one-tap keep-alive). Free on the Microsoft Store. Independent third-party tool — not affiliated with Roblox Corporation.</p>
+        <div class="badge-row">
+          <a class="store-badge" href="https://apps.microsoft.com/detail/9NMJCS390KWB" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">Get it from</span>
+              <span class="store-badge-bottom">Microsoft Store</span>
+            </div>
+          </a>
+          <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/ROROROblox" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">View on</span>
+              <span class="store-badge-bottom">GitHub</span>
+            </div>
+          </a>
+        </div>
+        <div class="product-foot">
+          <div class="product-meta">Free · Windows + macOS · plugin-extensible</div>
+          <a class="product-link" href="rororo.html">Open product page <svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-visual">
+          <img src="assets/thumb-mod-launcher.png" alt="626 Mod Launcher — card banner screenshot" loading="lazy" />
+        </div>
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-xl ic" viewBox="0 0 24 24"><path d="M1 6v16l7-3 8 3 7-3V3l-7 3-8-3-7 3z"/><path d="M8 3v16M16 6v16"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">Windows</span><span class="tag magenta">native</span><span class="tag cyan">mods</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>626 Mod Launcher</h3>
+        <p class="product-desc">A reversible, atomic mod toggler for PC games — Bethesda, Unreal, FromSoft, BepInEx, Stardew SMAPI, and more. Disabling a mod moves its files to a holding folder instead of deleting them, so every toggle is reversible and every state change writes atomically — lose power mid-toggle and your library survives. Drag a zip onto the window and it identifies the mod, fills in the real name, author, and source link, then installs it where the loader actually expects. Free on the Microsoft Store as the signed sealed-core build (no SmartScreen warning); the GitHub build adds Nexus integration, and 626 Mod Launcher is officially accepted by Nexus Mods. No ads, no telemetry, no account.</p>
+        <div class="badge-row">
+          <a class="store-badge" href="https://apps.microsoft.com/detail/9N53V6RRJK95" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">Get it from</span>
+              <span class="store-badge-bottom">Microsoft Store</span>
+            </div>
+          </a>
+          <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/626-mod-launcher" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-top">View on</span>
+              <span class="store-badge-bottom">GitHub</span>
+            </div>
+          </a>
+        </div>
+        <div class="product-foot">
+          <div class="product-meta">Free on MS Store · Windows native</div>
+          <a class="product-link" href="mod-launcher-games.html">Browse supported games <svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-visual">
+          <img src="assets/thumb-conundrum.png" alt="Conundrum by Este — card banner screenshot" loading="lazy" />
+        </div>
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.83z"/><path d="M7 7h.01"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag magenta">Merch</span><span class="tag cyan">Etsy</span><span class="tag magenta">AI pipeline</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>Conundrum by Este</h3>
+        <p class="product-desc">The 626 Labs merch shop — streetwear-grade prints designed by an AI pipeline and sold print-on-demand on Etsy. Gemini generates the art (always textless — type is composited after, so the lettering is real), a QA pass filters the AI slop, classical CV cuts the backgrounds, and one base artwork fans out into a full variant matrix before anything ships. Human approval gates every publish. Socks, joggers, totes, hats.</p>
+        <div class="product-foot">
+          <div class="product-meta">POD merch · Etsy · AI-designed</div>
+          <a class="product-link" href="conundrum.html">Visit the shop <svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+
+      <article class="product">
+        <div class="product-head">
+          <div class="product-sigil">
+            <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="product-tags">
+            <span class="tag cyan">Python</span><span class="tag magenta">open source</span><span class="tag cyan">AI pipeline</span><span class="tag live">Live</span>
+          </div>
+        </div>
+        <h3>626 POD Pipeline</h3>
+        <p class="product-desc">The open-source engine behind Conundrum by Este: a Python script library that takes a concept to a live Etsy listing in nine stages. Gemini art generation, an AI-slop QA gate, classical-CV background removal, PIL type compositing, and a variant matrix that fans one artwork into a full product line before Printify upload and Etsy publish. No app server, no build step, a JSON-backed catalog — and a human go gates every publish.</p>
+        <div class="product-foot">
+          <div class="product-meta">Open source · Python · Gemini + Printify</div>
+          <a class="product-link" href="https://github.com/626Labs-LLC/626labs-pod-pipeline">Open repo <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+      </article>
+      <!-- SITE_JSON:products:end -->
+    </div>
+  </div>
+</section>
+
+<!-- =============== THINKING =============== -->
+<!-- SITE_JSON:thinking:start -->
+
+<!-- SITE_JSON:thinking:end -->
+
+<!-- =============== FOUNDING (section 02) =============== -->
+<!-- SITE_JSON:founding:start -->
+<section class="section thinking" id="founding">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>02 · The founding</span><span class="line"></span></div>
+        <h2>626 Labs builds exact-fit software.</h2>
+      </div>
+    </div>
+    <blockquote>
+      I build tools, because care doesn't always scale.
+    </blockquote>
+    <p>626 Labs builds exact-fit software. The founding argument is simple: it has never been easier to have the exact tools we need, and too much money has been going to too many companies for tools that only half fit. So we build and maintain our own, at a quality that rivals enterprise software, made to enhance the work people do instead of taking their jobs. We are here to make great products, even if only a handful of people need them. That's ok.</p>
+    <p>The line the lab was built on belongs to its founder: "I build tools, because care doesn't always scale." It is translation: take the care a person already has and build it into something that keeps working after their attention has to move on.</p>
+    <p>We hold that use converts skeptics. Not a demo, not a number, not a story: the tool working in someone's hands. The data in our tools is gathered, not assumed. The bar is a well-put-together piece of technology, and the bar is enterprise-grade. The edge of the portfolio is two words: play nice.</p>
+    <p>So the lab builds for inheritors it has not met. 626 is a phone exchange: the first three digits of the founder's parents' old phone number, digits that stood for years on unpainted buildings as he passed, leaving the neighborhood for school. The pattern has run once before: his father's sound and light company, Stage Productions, is carried on today by each of his siblings. The seven kids from his house will inherit 626 Labs the same way. Even one more is a win.</p>
+    <div class="thinking-link">
+      <a href="about.html">
+        Read the whole story
+        <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+<!-- SITE_JSON:founding:end -->
+
+<!-- =============== FIELD NOTES =============== -->
+<!-- Auto-discovered from content/stories/*.md (frontmatter, draft: false). -->
+<!-- Section collapses entirely when zero published stories exist. -->
+<!-- SITE_JSON:stories:start -->
+<section class="section field-notes" id="field-notes">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>Field Notes</span><span class="line"></span></div>
+        <h2>What we shipped, what bit us, what we'd do differently.</h2>
+      </div>
+      <p>Long-form retrospectives — the unfiltered version of what each launch actually looked like.</p>
+    </div>
+    <div class="field-notes-grid">
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-07-03</div>
+        <h3 class="field-note-title">RoRoRo grew eyes, hands, and a heartbeat</h3>
+        <p class="field-note-subtitle">The Roblox multi-launcher you could recommend on camera now has three plugins (perception, action, and a keep-alive), wired together by a consent-gated bridge that never leaves your machine.</p>
+        <p class="field-note-tagline">A launcher became a platform. Three plugins, one nervous system, and a trust bar that holds at every rung.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-07-03-rororo-grew-a-family/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-06-26</div>
+        <h3 class="field-note-title">The first 626 Labs Day</h3>
+        <p class="field-note-subtitle">Today is 6/26/26, the first 626 Day since 626 Labs existed. The whole surface is shipped and live in one window: 14 Claude Code plugins and 6 Microsoft Store apps, one new and two with major updates this week.</p>
+        <p class="field-note-tagline">The whole surface is shipped and live, and on 6/26 that's allowed to be the whole point.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-06-26-the-first-626-day/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-29</div>
+        <h3 class="field-note-title">Same code, 3x the thinking: what I did with my first 8 hours with Opus 4.8.</h3>
+        <p class="field-note-subtitle">I turned on max-orchestration to see what would happen. Eight sessions later the agent had burned three times the tokens and written the same amount of code. The extra went into tests it caught before I saw them, and into a run that stopped answering the wheel once it started.</p>
+        <p class="field-note-tagline">3.2x the tokens, the same lines of code. The extra went into care, not output, and into a run that stopped answering the wheel.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-05-29-same-code-triple-thinking/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-24 · vibe-walk</div>
+        <h3 class="field-note-title">vibe-walk builds the onboarding tour, and tells you when not to</h3>
+        <p class="field-note-subtitle">A Claude Code plugin that reads your app, builds an instrumented spotlight tour you own, and is honest when a tour won't help.</p>
+        <p class="field-note-tagline">Tours your users actually finish.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-05-24-vibe-walk-launch/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-23 · vibe-insights</div>
+        <h3 class="field-note-title">I complained that /insights wasn't insightful. Seven hours later I had a plugin that beats it.</h3>
+        <p class="field-note-subtitle">It grabs insights from every Claude Code building surface you use, walls work from personal, and can even tell you the story of how it got built.</p>
+        <p class="field-note-tagline">Get /insights across all of your vibe- coding surfaces.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/vibe-insights-build-2026-05-23/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-23 · vibe-wrap</div>
+        <h3 class="field-note-title">I said it's Evolve day. I left with a plugin I'd forgotten we'd planned.</h3>
+        <p class="field-note-subtitle">I went in to evolve two plugins. The agent cleared the whole backlog, and out came vibe-wrap, a session-wrap plugin I'd forgotten we planned. It shipped anyway.</p>
+        <p class="field-note-tagline">The plugin whose entire job is making sure you don't have to remember got finished because an earlier session left exactly that kind of trail.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/vibe-wrap-build-2026-05-23/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-06 · RoRoRo · Medium</div>
+        <h3 class="field-note-title">RoRoRo: the Roblox multi-launcher you can recommend on camera</h3>
+        <p class="field-note-subtitle">Three days from first commit to Microsoft Store. The build was a day; the wait was two.</p>
+        <p class="field-note-tagline">A native Roblox multi-launcher built trustworthy through real packaging, signatures, and transparent attribution.</p>
+        <div class="field-note-link">
+          <a href="https://ai.plainenglish.io/rororo-the-roblox-multi-launcher-you-can-recommend-on-camera-162cb542a51f?source=friends_link&amp;sk=8840456f1bd18f501f00d05eee3154cc" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-06 · Medium</div>
+        <h3 class="field-note-title">Three Pipelines</h3>
+        <p class="field-note-subtitle">Same doctrine, three institutional shapes for deploying AI-generated code across different organizational scales.</p>
+        <p class="field-note-tagline">Vibe coding deploys through three institutional shapes: the forge, the gauntlet, and the foundation.</p>
+        <div class="field-note-link">
+          <a href="https://ai.plainenglish.io/three-pipelines-659efa424e81?source=friends_link&amp;sk=6d5227e966bed3eac8dffd3915082380" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-04-29 · Medium</div>
+        <h3 class="field-note-title">From Legitimate to Sustainable</h3>
+        <p class="field-note-subtitle">A builder's guide to vibe-coded software that lasts, works for more than one user, and scales without trapping the builder in maintenance.</p>
+        <p class="field-note-tagline">Five commitments turn AI-built software from works-once artifacts into durable, production-ready systems.</p>
+        <div class="field-note-link">
+          <a href="https://ai.plainenglish.io/from-legitimate-to-sustainable-2c281edde513?source=friends_link&amp;sk=37308198a3e1f62e1814966976c5e8d8" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-04-29 · Medium</div>
+        <h3 class="field-note-title">The Second User</h3>
+        <p class="field-note-subtitle">How I built seven Claude Code plugins from real workflow friction points.</p>
+        <p class="field-note-tagline">Seven Claude Code plugins catch the gaps before users do, turning demos into sustainable software.</p>
+        <div class="field-note-link">
+          <a href="https://ai.plainenglish.io/the-second-user-457cbec2a69c?source=friends_link&amp;sk=228a3b6fbe83a513b0f3a7c1137ea546" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+      </article>
+    </div>
+    <a class="field-notes-subscribe" href="/feed.xml">Subscribe via Atom<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a>
+  </div>
+</section>
+<!-- SITE_JSON:stories:end -->
+
+<!-- =============== LAB RUNS =============== -->
+<!-- SITE_JSON:lab-runs:start -->
+<section class="section lab-runs" id="lab-runs">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>03 · Behind the scenes</span><span class="line"></span></div>
+        <h2>How the lab runs.</h2>
+      </div>
+      <p>Every project above lives inside a purpose-built agent OS — private, not yet open source. The plugins are the lessons it taught us.</p>
+    </div>
+    <div class="frames">
+      <div class="frame">
+        <span class="frame-tag">Universe</span>
+        <img src="assets/dashboard-universe.png" alt="The Lab Dashboard — Universe view, every 626 Labs project as a node in a constellation." loading="lazy"/>
+      </div>
+      <div class="frame">
+        <span class="frame-tag">Full expansion</span>
+        <img src="assets/lab-runs/1777493163128-screenshot-2026-04-13-210705.png" alt="Trying to gain every view of our apps that we can so we understand them inside and out." loading="lazy"/>
+      </div>
+      <div class="frame">
+        <span class="frame-tag">Operations</span>
+        <img src="assets/dashboard-projects.png" alt="The Lab Dashboard — project list with live health, recent decisions, and autopilot status." loading="lazy"/>
+      </div>
+    </div>
+    <div class="caption">
+      <p>The 626 Labs Dashboard is a private agent OS — Operation Center, decisions log, Architect AI, and Scanner / Voice / Whiteboard inputs — running as one surface across every active project. It watches the work, logs the decisions, and keeps the threads connected when we context-switch between a hotel app, a theater tool, and a plugin release in the same afternoon.</p>
+      <p>The Dashboard itself isn't open source. The Vibe plugins are — they're the lessons the Dashboard taught us, refactored so any builder on Claude Code gets the same tailwind.</p>
+    </div>
+  </div>
+</section>
+<!-- SITE_JSON:lab-runs:end -->
+
+<!-- =============== LAB SHELF =============== -->
+<section class="section lab" id="lab">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>04 · Also from the lab</span><span class="line"></span></div>
+        <h2>Other things we've shipped.</h2>
+      </div>
+      <p>While figuring out the plugins. Eight projects per load, reshuffled from a larger pool — hit shuffle for a fresh slate.</p>
+    </div>
+    <div class="shelf" id="lab-shelf"></div>
+    <div class="shuffle-note">
+      <button type="button" id="shuffle-btn">↻ shuffle</button>
+    </div>
+  </div>
+</section>
+
+<!-- =============== PLAY (embedded games) =============== -->
+<!-- SITE_JSON:play:start -->
+<section class="section play" id="play">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>05 · Play</span><span class="line"></span></div>
+        <h2>Also, we make games.</h2>
+      </div>
+      <div class="play-aside">
+        <p>A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).</p>
+        <a class="play-link" href="/bacon-trail/">Open full page ↗</a>
+      </div>
+    </div>
+    <div class="play-grid">
+        <div id="bacon-widget" class="play-widget"></div>
+    </div>
+    <!-- widget assets -->
+    <link rel="stylesheet" href="/widget-bacon-trail/widget.css" />
+    <script src="/widget-bacon-trail/widget.js" defer></script>
+      <script>window.addEventListener("DOMContentLoaded", function(){if(window.BaconTrailWidget){BaconTrailWidget.init({container: document.getElementById("bacon-widget"), "ctaUrl": "#work", "ctaLabel": "See the full suite \u2192"});}});</script>
+  </div>
+</section>
+<!-- SITE_JSON:play:end -->
+
+<!-- =============== ABOUT / MANIFESTO =============== -->
+<!-- SITE_JSON:about:start -->
+<section class="section manifesto" id="about">
+  <div class="wrap manifesto-inner">
+    <div>
+      <div class="eyebrow"><span>06 · About 626 Labs</span><span class="line"></span></div>
+      <h2>New ideas to <em>old logic.</em></h2>
+      <div class="stack">
+        <span class="stack-chip">TypeScript</span>
+        <span class="stack-chip">Swift</span>
+        <span class="stack-chip">Python</span>
+        <span class="stack-chip">Claude Code</span>
+        <span class="stack-chip">React 19</span>
+        <span class="stack-chip">Fort Worth, TX</span>
+      </div>
+    </div>
+    <div class="manifesto-body">
+      <p>626 Labs builds modern tools for practices that have been running on spreadsheets, paper, and inherited habits for decades — or, in the case of astrology, a few thousand years. The brief is simple: look at a field that everyone assumes is "fine the way it is," and ship the version it should have had all along.</p>
+      <p>The proof case is <strong>Celestia 3</strong>. AI joined with tarot, numerology, and astrology in one surface. Partway through the build, we discovered the default Swiss Ephemeris engine drifted at the second-precision level. We didn't ship around it. We repaired the engine ourselves and met the NASA-grade bar. The point isn't the math — it's the posture. When the bar moves mid-build, we move with it.</p>
+      <p>That posture is what pulled us into the old empires — legacy operations, safety inspections, hotels, cinema exhibition. Off-the-shelf vendors build for the brochure. We build operator-first — the domain expert in the loop, the AI coder on the keyboard — and ship the tool the shift manager actually needed.</p>
+      <p>The Vibe plugins — <strong>Cartographer, Iterate, Insights, Keystone, Doc, Test, Thesis, Engine, Sec, Taker, Wrap, Walk, Prompt, Lingual</strong> — are the other half of the work. Vibe coding is the fastest way to turn an idea into running software right now. It's also the easiest way to end up with something that can't survive production. The plugins close that gap: planning, docs, tests, security, all built so a vibe-coded afternoon holds up in front of real users.</p>
+      <p><strong>We See You at the Movies</strong> is the gaming wedge. Trivia and head-to-head card battles are warm-ups for bigger things on deck.</p>
+      <p>Every 626 Labs app is built like it might be seen by a thousand pairs of eyes, even when it may only ever be seen by one. That's the standard. I've deployed more apps to production than I ever imagined, and the bar keeps going up. <a href="about.html">Read the whole story.</a></p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <figure class="starmap" id="plugin-constellation">
+      <canvas class="starmap-sky" aria-hidden="true"></canvas>
+      <div class="starmap-tooltip" hidden></div>
+      <figcaption class="starmap-caption">
+        <span class="starmap-label">The plugin constellation</span>
+        <span class="starmap-legend">
+          <span class="lg lg-plugin">live plugin</span>
+          <span class="lg lg-flagship">flagship</span>
+          <span class="lg lg-product">products</span>
+        </span>
+      </figcaption>
+    </figure>
+    <script type="application/json" id="starmap-data">{"plugins":[{"flagship":true,"id":"vibe-cartographer","name":"Vibe Cartographer"},{"flagship":false,"id":"vibe-iterate","name":"Vibe Iterate"},{"flagship":false,"id":"vibe-insights","name":"Vibe Insights"},{"flagship":false,"id":"vibe-keystone","name":"Vibe Keystone"},{"flagship":false,"id":"vibe-doc","name":"Vibe Doc"},{"flagship":false,"id":"vibe-test","name":"Vibe Test"},{"flagship":false,"id":"vibe-thesis","name":"Vibe Thesis"},{"flagship":false,"id":"thesis-engine","name":"Thesis Engine"},{"flagship":false,"id":"vibe-sec","name":"Vibe Sec"},{"flagship":false,"id":"vibe-taker","name":"Vibe Taker"},{"flagship":false,"id":"vibe-wrap","name":"Vibe Wrap"},{"flagship":false,"id":"vibe-walk","name":"Vibe Walk"},{"flagship":false,"id":"vibe-prompt","name":"Vibe Prompt"},{"flagship":false,"id":"vibe-lingual","name":"Vibe Lingual"}],"products":[{"name":"Celestia 3"},{"name":"RORORO"},{"name":"We See You at the Movies"}]}</script>
+  </div>
+
+  <div class="wrap">
+    <div class="principles">
+      <div class="principle">
+        <div class="num">P/01</div>
+        <h4>Agents read first.</h4>
+        <p>No plugin touches a codebase before it's read the codebase. Context over cleverness — always.</p>
+      </div>
+      <div class="principle">
+        <div class="num">P/02</div>
+        <h4>Operator in the loop.</h4>
+        <p>The shift manager knows what the tool needs. We build with them, not at them. The domain expert stays on the keyboard.</p>
+      </div>
+      <div class="principle">
+        <div class="num">P/03</div>
+        <h4>Built for a thousand eyes.</h4>
+        <p>Enterprise grade even when the app may only ever be seen by one. That's the standard. It keeps the work honest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- SITE_JSON:about:end -->
+
+<!-- =============== SUPPORT =============== -->
+<!-- SITE_JSON:support:start -->
+<section class="support" id="support">
+  <div class="wrap">
+    <div class="support-box">
+      <div class="support-copy">
+        <h3>Keep the lab running.</h3>
+        <p>Every 626 Labs plugin is MIT-licensed and maintained on nights and weekends. If the Vibe ecosystem is saving you time, GitHub Sponsors is the cleanest way to say thanks — and to keep the next plugin on schedule.</p>
+      </div>
+      <a class="sponsor-cta" href="https://github.com/sponsors/estevanhernandez-stack-ed">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 008 13.393a20.561 20.561 0 003.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.749.749 0 01-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5zM8 14.25l-.345.666-.002-.001-.006-.003-.018-.01a7.643 7.643 0 01-.31-.17 22.075 22.075 0 01-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.08 22.08 0 01-3.744 2.584l-.018.01-.006.003h-.002L8 14.25z"/></svg>
+        Sponsor on GitHub
+      </a>
+    </div>
+  </div>
+</section>
+<!-- SITE_JSON:support:end -->
+
+<!-- =============== CONTACT =============== -->
+<!-- SITE_JSON:contact:start -->
+<section class="section contact" id="contact">
+  <div class="wrap contact-inner">
+    <div>
+      <div class="eyebrow"><span>07 · Contact</span><span class="line"></span></div>
+      <h2>Build something with us.</h2>
+      <p class="contact-sub">Got a codebase that needs rounding out? Want early access to the Dashboard? Email is the fastest way in. GitHub works too — we answer both.</p>
+      <a class="btn btn-gradient" href="mailto:estevan@626labs.dev">
+        estevan@626labs.dev
+        <svg class="ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 4l8 8 8-8"/></svg>
+      </a>
+    </div>
+    <div class="contact-list">
+      <a class="contact-row" href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">
+        <div>
+          <div class="label">github org</div>
+          <div class="value">@626Labs-LLC</div>
+        </div>
+        <svg class="ic arrow ic-lg" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+      <a class="contact-row" href="https://github.com/estevanhernandez-stack-ed" target="_blank" rel="noopener">
+        <div>
+          <div class="label">maintainer</div>
+          <div class="value">@estevanhernandez-stack-ed</div>
+        </div>
+        <svg class="ic arrow ic-lg" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+      <a class="contact-row" href="mailto:estevan@626labs.dev">
+        <div>
+          <div class="label">email</div>
+          <div class="value">estevan@626labs.dev</div>
+        </div>
+        <svg class="ic arrow ic-lg" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+      <a class="contact-row" href="https://github.com/sponsors/estevanhernandez-stack-ed" target="_blank" rel="noopener">
+        <div>
+          <div class="label">support</div>
+          <div class="value">github sponsors</div>
+        </div>
+        <svg class="ic arrow ic-lg" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+<!-- SITE_JSON:contact:end -->
+
+</main>
+
+<!-- =============== FOOTER =============== -->
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-meta">
+      © 2026 626 Labs LLC · <span class="brand-tagline">Imagine Something Else.</span><br/>
+      &ldquo;Claude&rdquo; and &ldquo;claude.ai&rdquo; are trademarks of Anthropic PBC, used nominatively.
+    </div>
+    <div class="footer-links">
+      <a href="#work">Work</a>
+      <a href="plugins/#thesis">Thinking</a>
+      <a href="#field-notes">Field Notes</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="thesis.html">Thesis</a>
+      <a href="workflow.html">Workflow</a>
+      <a href="editorial/">Editorial</a>
+      <a href="press.html">Press</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ============================================================
+  //  LAB_POOL — JS-shuffled "Also from the lab" shelf
+  // ============================================================
+  const LAB_POOL = [
+    // SITE_JSON:lab-pool:start
+
+      {
+            "name": "Project L.A.D.D.E.R.",
+            "meta": "Local-first education · Gemma",
+            "desc": "Multimodal learning framework that runs local-first with Gemma — built to bridge the access gap when connectivity isn't a given. Teacher dashboard rolls up live engagement, subject-level averages, and behavioral flags so interventions happen in-class, not after grading.",
+            "image": "assets/thumb-ladder.png",
+            "links": [
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/LADDER"
+                  }
+            ]
+      },
+      {
+            "name": "Lobby Engagement Suite",
+            "meta": "Cinema + hotel kiosks · Firebase",
+            "desc": "Seven movie-themed engagement apps on a shared monorepo — CinePerks trivia kiosks for cinemas, GuestBuzz trivia for hotels, Reel Battles head-to-head, Reel Words puzzles, Birthday Bacon Trail, and Box Office Heads Up. Built to turn lobby idle time into loyalty signups and brand touch.",
+            "image": "assets/thumb-cinegame.png",
+            "links": [
+                  {
+                        "label": "Play Reel Battles demo",
+                        "href": "https://replit.com/@esteH777/Reel-Battles"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/QuizShow"
+                  }
+            ]
+      },
+      {
+            "name": "Safety Assistant",
+            "meta": "Deployed app · Replit",
+            "desc": "Stop drowning in unread inspection PDFs. Drop a messy PDF, incident form, or screenshot — the AI extracts hazards, ranks severity, and returns a prioritized action plan in seconds. Deployed live on Replit.",
+            "image": "assets/thumb-safety-assistant.png",
+            "links": [
+                  {
+                        "label": "Launch",
+                        "href": "https://safety-assistant.replit.app"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/Safety_Assistant"
+                  }
+            ]
+      },
+      {
+            "name": "Cleanup Ranger",
+            "meta": "Civic tech · Community",
+            "desc": "Community-driven park-cleanup app. Track hazards and trash at local parks; pin what you've cleaned.",
+            "video": "TsYYHhk8qtE",
+            "links": [
+                  {
+                        "label": "Watch demo",
+                        "href": "https://youtu.be/TsYYHhk8qtE"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/Cleanup-Ranger"
+                  }
+            ]
+      },
+      {
+            "name": "Tag That Line",
+            "meta": "Word game · AI",
+            "desc": "A tag-the-line word game — built fast, videoed, shipped. Watch the demo to see it in motion.",
+            "video": "XoMzjYhVLgE",
+            "links": [
+                  {
+                        "label": "Watch demo",
+                        "href": "https://youtu.be/XoMzjYhVLgE"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/tagthatline"
+                  }
+            ]
+      },
+      {
+            "name": "Writer's Studio",
+            "meta": "Creative tooling · VS Code",
+            "desc": "A VS Code workspace template for AI-assisted iterative fiction writing. Fork it, fill it, write. The Tenth Doctor / Rose Tyler special \"The Beat That Shook the Void\" shipped on Wattpad from this scaffold.",
+            "image": "assets/thumb-writer-studio.jpg",
+            "links": [
+                  {
+                        "label": "Read on Wattpad",
+                        "href": "https://www.wattpad.com/myworks/409598532-the-beat-that-shook-the-void-a-doctor-who-special"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/WriterStudio"
+                  }
+            ]
+      },
+      {
+            "name": "Replit Certification",
+            "meta": "Credential · Replit",
+            "desc": "Replit Level 3 \"Proficient Builder\" certification — public receipts for being taken seriously on the platform.",
+            "image": "assets/thumb-replit-cert.jpg",
+            "links": [
+                  {
+                        "label": "View",
+                        "href": "https://replit-certifications.replit.app/esteH777"
+                  }
+            ]
+      },
+      {
+            "name": "BeatsMasher",
+            "meta": "Deployed app · Replit",
+            "desc": "Browser-based beat-slicing and mash-up tool. Tone.js + wavesurfer + essentia.js for beat detection, SoundTouch for time-stretch, lamejs for export. React front, Express back, Replit Agent 4 built the scaffold.",
+            "image": "assets/thumb-beatsmasher.png",
+            "links": [
+                  {
+                        "label": "Launch",
+                        "href": "https://BeatsMasher-esteH777.replit.app"
+                  },
+                  {
+                        "label": "GitHub",
+                        "href": "https://github.com/estevanhernandez-stack-ed/BeatsMasher"
+                  }
+            ]
+      },
+      {
+            "name": "ColorCast",
+            "meta": "Coloring sheets · React Native",
+            "desc": "Turns movie posters into coloring sheets. Scan a poster or pick from your gallery, choose Simple / Medium / Advanced detail, then export as free-color line art or paint-by-number. Mobile app, deployed on Replit.",
+            "image": "assets/thumb-colorcast.png",
+            "links": [
+                  {
+                        "label": "Launch",
+                        "href": "https://replit.com/@esteH777/Poster-Colorizer"
+                  }
+            ]
+      }
+    // SITE_JSON:lab-pool:end
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function el(tag, opts) {
+    const node = document.createElement(tag);
+    if (opts && opts.className) node.className = opts.className;
+    if (opts && opts.text != null) node.textContent = opts.text;
+    if (opts && opts.href) node.setAttribute('href', opts.href);
+    return node;
+  }
+
+  function renderLabShelf() {
+    const shelf = document.getElementById('lab-shelf');
+    if (!shelf) return;
+    shelf.textContent = '';
+    const picks = shuffle(LAB_POOL).slice(0, 8);
+    picks.forEach(p => {
+      const card = el('article', { className: 'lab-card' });
+      if (p.video) {
+        const thumb = el('a', {
+          className: 'thumb video',
+          href: 'https://www.youtube.com/watch?v=' + p.video
+        });
+        thumb.setAttribute('target', '_blank');
+        thumb.setAttribute('rel', 'noopener');
+        thumb.setAttribute('aria-label', 'Watch ' + p.name + ' demo on YouTube');
+        const img = document.createElement('img');
+        img.src = 'https://img.youtube.com/vi/' + encodeURIComponent(p.video) + '/hqdefault.jpg';
+        img.alt = p.name + ' demo thumbnail';
+        img.loading = 'lazy';
+        thumb.appendChild(img);
+        card.appendChild(thumb);
+      } else if (p.image) {
+        const thumb = el('div', { className: 'thumb static' });
+        const img = document.createElement('img');
+        img.src = p.image;
+        img.alt = p.name + ' thumbnail';
+        img.loading = 'lazy';
+        thumb.appendChild(img);
+        card.appendChild(thumb);
+      }
+      card.appendChild(el('h4', { text: p.name }));
+      card.appendChild(el('p', { className: 'meta', text: p.meta }));
+      card.appendChild(el('p', { text: p.desc }));
+      const links = el('div', { className: 'links' });
+      p.links.forEach((l, i) => {
+        if (i > 0) links.appendChild(document.createTextNode(' \u00B7 '));
+        links.appendChild(el('a', { href: l.href, text: l.label }));
+      });
+      card.appendChild(links);
+      shelf.appendChild(card);
+    });
+  }
+
+  // ============================================================
+  //  maskStaleBadges — hide download badges when shields.io
+  //  reports "package not found or too new"
+  // ============================================================
+  async function maskStaleBadges() {
+    const badges = document.querySelectorAll('img[data-maskable="true"]');
+    for (const img of badges) {
+      try {
+        const res = await fetch(img.src, { cache: 'no-cache' });
+        if (!res.ok) { img.remove(); continue; }
+        const text = await res.text();
+        if (/not found|too new|invalid|error/i.test(text)) {
+          img.remove();
+        }
+      } catch {
+        // Network / CORS — leave the badge rather than guess.
+      }
+    }
+  }
+
+  // ============================================================
+  //  Smooth scroll + active nav state via IntersectionObserver
+  // ============================================================
+  function wireNav() {
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        if (!id) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        window.scrollTo({
+          top: target.getBoundingClientRect().top + window.scrollY - 56,
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    const links = document.querySelectorAll('.nav-links a');
+    const sectionIds = ['work', 'thinking', 'lab-runs', 'lab', 'about', 'contact'];
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sectionIds.forEach(id => {
+      const elt = document.getElementById(id);
+      if (elt) observer.observe(elt);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderLabShelf();
+    const btn = document.getElementById('shuffle-btn');
+    if (btn) btn.addEventListener('click', renderLabShelf);
+    maskStaleBadges();
+    wireNav();
+  });
+</script>
+
+<script>
+  // ============================================================
+  //  STARMAP — the plugin constellation in #about
+  //  Data: #starmap-data blob (emitted by render-hub.py).
+  //  Versions: runtime fetch of data/plugin-versions.json —
+  //  never baked into the render (see spec: byte-stable --check).
+  //  Deterministic by construction: FNV-1a jitter + seeded dust.
+  //  Colors are canvas-side literals (canvas can't read CSS vars
+  //  without getComputedStyle); keep in sync with :root tokens.
+  // ============================================================
+  (function () {
+    "use strict";
+    var panel = document.getElementById("plugin-constellation");
+    var dataEl = document.getElementById("starmap-data");
+    if (!panel || !dataEl) return;
+    var canvas = panel.querySelector(".starmap-sky");
+    var tooltip = panel.querySelector(".starmap-tooltip");
+    if (!canvas || !canvas.getContext) return;
+    var data;
+    try { data = JSON.parse(dataEl.textContent); } catch (e) { return; }
+    var plugins = data.plugins || [];
+    var prodNames = (data.products || []).map(function (p) { return p.name; });
+    if (!plugins.length) return;
+
+    var CYAN = "#17d4fa", MAG = "#f22f89", DUST = "#cfe9f5", PROD = "#e8f6ff";
+    var ctx = canvas.getContext("2d");
+    var tooltipPad = 12;
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // ── deterministic helpers ─────────────────────
+    function fnv1a(str) {
+      var h = 0x811c9dc5;
+      for (var i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 0x01000193) >>> 0;
+      }
+      return h >>> 0;
+    }
+    function mulberry32(a) {
+      return function () {
+        a |= 0; a = (a + 0x6D2B79F5) | 0;
+        var t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    function jitter(id) {
+      var h = fnv1a(id);
+      return [
+        ((h & 0xffff) / 0xffff - 0.5) * 0.06,
+        (((h >>> 16) & 0xffff) / 0xffff - 0.5) * 0.06
+      ];
+    }
+
+    // ── the curated spine ─────────────────────────
+    // Hand-designed wave (normalized coords). Slots sample it
+    // arc-length-evenly, so any plugin count lays out sanely.
+    var SPINE = [[.07,.60],[.20,.36],[.36,.64],[.52,.32],[.68,.58],[.84,.38],[.94,.55]];
+    var PROD_ANCHORS = [[.07,.15],[.92,.12],[.12,.87],[.93,.83],[.50,.08]];
+
+    function spineAt(t) {
+      var segs = [], total = 0, i, dx, dy, len;
+      for (i = 0; i < SPINE.length - 1; i++) {
+        dx = SPINE[i+1][0] - SPINE[i][0];
+        dy = SPINE[i+1][1] - SPINE[i][1];
+        len = Math.sqrt(dx*dx + dy*dy);
+        segs.push(len); total += len;
+      }
+      var target = t * total, acc = 0;
+      for (i = 0; i < segs.length; i++) {
+        if (acc + segs[i] >= target) {
+          var k = segs[i] ? (target - acc) / segs[i] : 0;
+          return [
+            SPINE[i][0] + (SPINE[i+1][0] - SPINE[i][0]) * k,
+            SPINE[i][1] + (SPINE[i+1][1] - SPINE[i][1]) * k
+          ];
+        }
+        acc += segs[i];
+      }
+      return SPINE[SPINE.length - 1].slice();
+    }
+
+    // ── layout (recomputed on resize) ─────────────
+    var W = 0, H = 0, stars = [], prods = [], dust = [], edges = [];
+    function layout() {
+      var dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = canvas.clientWidth; H = canvas.clientHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var padX = 26, padY = 30;
+      function px(n) { return padX + n[0] * (W - 2 * padX); }
+      function py(n) { return padY + n[1] * (H - 2 * padY); }
+
+      stars = plugins.map(function (p, i) {
+        var slot = spineAt((i + 0.5) / plugins.length);
+        var j = jitter(p.id);
+        return {
+          kind: "plugin", id: p.id, name: p.name, flagship: !!p.flagship,
+          x: px([slot[0] + j[0], 0]), y: py([0, slot[1] + j[1]]),
+          r: p.flagship ? 3.6 : 2.7, i: i
+        };
+      });
+
+      // edges: chain along the spine + up to two deterministic cross-links
+      edges = [];
+      var n = plugins.length, i;
+      for (i = 0; i < n - 1; i++) edges.push([i, i + 1]);
+      if (n >= 5) {
+        var c0 = fnv1a(plugins[0].id) % (n - 2);
+        edges.push([c0, c0 + 2]);
+      }
+      if (n >= 8) {
+        var c1 = fnv1a(plugins[n - 1].id) % (n - 2);
+        if (c1 !== edges[edges.length - 1][0]) edges.push([c1, c1 + 2]);
+      }
+
+      prods = prodNames.slice(0, PROD_ANCHORS.length).map(function (name, i) {
+        var j = jitter(name);
+        var a = PROD_ANCHORS[i];
+        return {
+          kind: "product", id: name, name: name,
+          x: px([a[0] + j[0], 0]), y: py([0, a[1] + j[1]]), r: 2.3, i: i
+        };
+      });
+
+      var rng = mulberry32(20260609);
+      dust = [];
+      for (i = 0; i < 50; i++) {
+        dust.push({
+          x: rng() * W, y: rng() * H,
+          r: rng() < 0.12 ? 1.5 : 0.9,
+          a: 0.12 + rng() * 0.35,
+          ph: rng() * 6.28, sp: 0.5 + rng()
+        });
+      }
+    }
+
+    // ── drawing ───────────────────────────────────
+    function bgFill() {
+      var g = ctx.createRadialGradient(W * .6, H * .4, 0, W * .6, H * .4, W * .7);
+      g.addColorStop(0, "#050c18"); g.addColorStop(1, "#000000"); /* PB: ink-950 core fading to the black field */
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    }
+    function dot(x, y, r, color, alpha, blur) {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+      ctx.shadowBlur = blur; ctx.shadowColor = color;
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
+      ctx.restore();
+    }
+    var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
+    var easeOut = function (k) { return 1 - Math.pow(1 - k, 3); };
+    function easeOutBack(k) {
+      var c = 1.70158;
+      return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2);
+    }
+
+    // Reveal timeline (spec): dust 0-700, products from 200 (120 stagger,
+    // 500 each), stars from 400 (160 stagger, 380 each, overshoot),
+    // lines from 1900 (200 stagger, 450 each).
+    var revealStart = null;   // set on first 35%-visibility intersection
+    var revealT = function (now) {
+      return reduced ? Infinity : (revealStart === null ? 0 : now - revealStart);
+    };
+
+    function draw(now) {
+      var t = revealT(now);
+      var tt = now / 1000;
+      bgFill();
+      var ox = reduced ? 0 : 6 * Math.sin(tt * .05);
+      var oy = reduced ? 0 : 3 * Math.cos(tt * .04);
+
+      var dustK = easeOut(clamp(t / 700));
+      dust.forEach(function (s) {
+        var twk = reduced ? 1 : (0.7 + 0.3 * Math.sin(tt * s.sp + s.ph));
+        dot(s.x + ox * .5, s.y + oy * .5, s.r, DUST, s.a * twk * dustK, 0);
+      });
+
+      prods.forEach(function (p) {
+        var k = easeOut(clamp((t - 200 - p.i * 120) / 500));
+        var twk = reduced ? .85 : (0.7 + 0.25 * Math.sin(tt * .7 + p.i * 2));
+        dot(p.x + ox, p.y + oy, p.r, PROD, twk * k, 8 * k);
+      });
+
+      ctx.save();
+      ctx.strokeStyle = CYAN; ctx.lineWidth = 1;
+      var pulse = reduced ? 0.32 : (0.28 + 0.08 * Math.sin(tt * .8));
+      edges.forEach(function (e, j) {
+        var k = easeOut(clamp((t - 1900 - j * 200) / 450));
+        if (k <= 0) return;
+        var a = stars[e[0]], b = stars[e[1]];
+        var x1 = a.x + (b.x - a.x) * k, y1 = a.y + (b.y - a.y) * k;
+        ctx.globalAlpha = pulse * k;
+        ctx.beginPath();
+        ctx.moveTo(a.x + ox, a.y + oy);
+        ctx.lineTo(x1 + ox, y1 + oy);
+        ctx.stroke();
+      });
+      ctx.restore();
+
+      stars.forEach(function (s) {
+        var k = clamp((t - 400 - s.i * 160) / 380);
+        if (k <= 0) return;
+        var sc = k >= 1 ? 1 : easeOutBack(k);
+        var twk = reduced ? .9 : (0.75 + 0.25 * Math.sin(tt * 1.3 + s.i * 1.7));
+        dot(s.x + ox, s.y + oy, s.r * sc, s.flagship ? MAG : CYAN, twk * k, 10 * k);
+      });
+    }
+
+    // ── lifecycle: draw only while visible ────────
+    var rafId = null;
+    function loop(now) { draw(now); rafId = requestAnimationFrame(loop); }
+    function start() { if (rafId === null && !reduced) rafId = requestAnimationFrame(loop); }
+    function stop() { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } }
+
+    layout();
+    if (reduced) draw(performance.now());
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        // Last record wins — a coalesced enter+leave batch must not
+        // leave the RAF running while the panel is off-viewport.
+        var vis = entries[entries.length - 1].isIntersecting;
+        if (vis) {
+          if (reduced) { draw(performance.now()); return; }
+          if (revealStart === null) revealStart = performance.now();
+          start();
+        } else {
+          stop();
+        }
+      }, { threshold: 0.35 });
+      io.observe(panel);
+    } else {
+      // Ancient-browser fallback: settled sky, no reveal, no RAF.
+      revealStart = -1e12;
+      draw(performance.now());
+    }
+
+    window.addEventListener("resize", function () {
+      layout();
+      if (reduced || rafId === null) draw(performance.now());
+    });
+
+    // ── versions: runtime join, progressive ───────
+    var versions = {};
+    fetch("data/plugin-versions.json")
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (v) { if (v) versions = v; })
+      .catch(function () { /* tooltips degrade to name-only */ });
+
+    // ── tooltip: nearest star within 14px ─────────
+    function hit(mx, my) {
+      var best = null, bestD = 14;
+      stars.concat(prods).forEach(function (s) {
+        var d = Math.hypot(mx - s.x, my - s.y);
+        if (d < bestD) { bestD = d; best = s; }
+      });
+      return best;
+    }
+    function showTip(s) {
+      var v = s.kind === "plugin" ? versions[s.id] : null;
+      tooltip.textContent = s.id.toUpperCase() + (v ? " · " + v : "");
+      tooltip.hidden = false;
+      var tx = Math.min(s.x + tooltipPad, W - 10 - tooltip.offsetWidth);
+      var ty = Math.max(8, s.y - 10 - tooltip.offsetHeight);
+      tooltip.style.left = tx + "px";
+      tooltip.style.top = ty + "px";
+    }
+    function onPoint(e) {
+      var rect = canvas.getBoundingClientRect();
+      var s = hit(e.clientX - rect.left, e.clientY - rect.top);
+      if (s) showTip(s); else tooltip.hidden = true;
+    }
+    canvas.addEventListener("pointermove", onPoint);
+    canvas.addEventListener("pointerdown", onPoint);
+    canvas.addEventListener("pointerleave", function (e) {
+      // Touch fires pointerleave right after pointerup — hiding here
+      // would kill tap-tooltips. Touch dismissal = tap on empty sky.
+      if (e.pointerType === "mouse") tooltip.hidden = true;
+    });
+    canvas.addEventListener("pointercancel", function () { tooltip.hidden = true; });
+  })();
+</script>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

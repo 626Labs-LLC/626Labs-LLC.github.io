@@ -44,6 +44,7 @@ from pathlib import Path
 
 import markdown  # the one external dep — markdown -> HTML for Field Note pages
 import site_facts  # sibling module in scripts/ (added to sys.path when run as a script)
+import theme_registry  # sibling module in scripts/ — active theme + shell resolution
 
 # ─── paths ──────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
@@ -1868,9 +1869,21 @@ def apply_section_toggles(html: str, sections: dict) -> str:
 
 # ─── main ───────────────────────────────────────────────────────────
 def main(argv: list[str]) -> int:
+    theme_slug = None
+    if "--theme" in argv:
+        theme_slug = argv[argv.index("--theme") + 1]
+    out_dir = None
+    if "--out" in argv:
+        out_dir = Path(argv[argv.index("--out") + 1])
+
+    reg = theme_registry.load()
+    slug = theme_slug or theme_registry.active_slug(reg)
+    shell = theme_registry.theme_dir(slug) / "shell.html"
+    src = shell.read_text(encoding="utf-8") if shell.exists() else INDEX_HTML.read_text(encoding="utf-8")
+    dest = (out_dir / "index.html") if out_dir else INDEX_HTML
+
     content = json.loads(SITE_JSON.read_text(encoding="utf-8"))
     content = site_facts.resolve_tokens(content, site_facts.facts())
-    src = INDEX_HTML.read_text(encoding="utf-8")
 
     stories = discover_stories()
 
@@ -1901,6 +1914,14 @@ def main(argv: list[str]) -> int:
     if "contact" in content:
         out = substitute_zone(out, "contact", render_contact(content["contact"]))
     out = apply_section_toggles(out, content.get("sections") or {})
+
+    # Preview mode (--theme/--out): render only the page, nothing else — no
+    # feed, no sitemap, no editorial/ story pages, no orphan pruning.
+    if out_dir is not None:
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(out, encoding="utf-8")
+        print(f"preview written: {dest}")
+        return 0
 
     # conundrum.html — shop page zones (gallery + repo CTA). Only when the
     # conundrum key exists; the page and key ship together.
@@ -1956,7 +1977,8 @@ def main(argv: list[str]) -> int:
         return 0
 
     if index_changed:
-        INDEX_HTML.write_text(out, encoding="utf-8")
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(out, encoding="utf-8")
         print(f"index.html rebuilt from {SITE_JSON.relative_to(ROOT)}")
     else:
         print("index.html already matches content/site.json — no change.")

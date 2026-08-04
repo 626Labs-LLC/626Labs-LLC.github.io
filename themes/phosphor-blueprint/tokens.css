@@ -1,0 +1,89 @@
+/* ============================================================
+   Phosphor Blueprint — treatment layer (adopted 2026-07-07)
+   Append-only override; base system above stays intact.
+   Spec: docs/superpowers/specs/2026-07-07-site-phosphor-blueprint-design.md
+   ============================================================ */
+:root {
+  --pb-field: rgb(0,0,0);
+  --pb-grid-fine: rgba(23,212,250,.05);
+  --pb-grid-coarse: rgba(23,212,250,.11);
+  --pb-scanline: rgba(0,0,0,.42);
+  --pb-panel: rgba(0,0,0,.72);
+  --pb-panel-border: rgba(23,212,250,.25);
+  --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
+  --pb-bloom-magenta: 0 0 8px rgba(242,47,137,.6);
+  --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+
+  /* navy retires on this surface */
+  --bg-0: var(--pb-field);
+  --bg-1: rgba(0,0,0,.6);
+  --bg-2: rgba(0,0,0,.72);
+  --border-1: rgba(23,212,250,.14);
+  --border-2: rgba(23,212,250,.25);
+}
+body {
+  background:
+    linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
+    linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
+    linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
+    var(--pb-field);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+}
+.pb-scanlines {
+  position: fixed; inset: 0; pointer-events: none; z-index: 60; /* above nav (50), below skip-link (200) */
+  background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+}
+nav.nav { background: rgba(0,0,0,.72); }
+header.hero h1 { text-shadow: var(--pb-bloom-cyan); }
+.hero-bg .grid { display: none; } /* body's drafting grid owns the field — two grids moiré */
+.btn-primary:hover { box-shadow: var(--pb-trail); }
+.hero-meta b { text-shadow: var(--pb-bloom-cyan); } /* hero stat values bloom; tiny numerals elsewhere stay quiet */
+/* glass chips + badges: navy glass -> black glass */
+.mark-chip { background: rgba(0,0,0,.75); }
+.store-badge { background: rgba(0,0,0,.55); }
+.install { background: rgba(0,0,0,.7); }
+section.lab-runs .frame-tag { background: rgba(0,0,0,.75); }
+section.lab-runs .frame::after { box-shadow: inset 0 0 80px rgba(0,0,0,.4); }
+section.lab .lab-card .thumb.video::after {
+  background: rgba(0,0,0,.78) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%23e8f2ff' d='M5.5 3.5v9l7-4.5z'/></svg>") center/18px no-repeat;
+}
+/* sections keep their radial tints but stop covering the drafting grid */
+section.thinking { background: radial-gradient(80% 60% at 0% 0%, rgba(23,212,250,.05) 0%, transparent 60%); }
+section.field-notes { background: radial-gradient(70% 50% at 100% 0%, rgba(242,47,137,.04) 0%, transparent 60%); }
+section.play { background: radial-gradient(70% 50% at 50% 0%, rgba(23,212,250,.06) 0%, transparent 60%); }
+section.manifesto {
+  background:
+    radial-gradient(80% 60% at 20% 0%, rgba(23,212,250,.08) 0%, transparent 60%),
+    radial-gradient(60% 60% at 100% 100%, rgba(242,47,137,.06) 0%, transparent 60%);
+}
+/* PB icon stabilizer — marks are bright phosphor: the bloom fills the
+   raster gaps so line-art icons read stable under the scanlines instead
+   of chopped into dashes. Transparent line-art assets only — never a
+   baked-field raster (a lit field reads as a glowing slab). */
+.nav-brand svg, .mark-logo img,
+img[src*="icon-transparent"], img[src*="mark-transparent"] {
+  filter: brightness(1.5) saturate(1.15)
+          drop-shadow(0 0 1px rgba(23,212,250,.9))
+          drop-shadow(0 0 4px rgba(23,212,250,.4))
+          drop-shadow(0 0 10px rgba(23,212,250,.18));
+}
+/* The Bacon Trail widget plays crisp — no CRT over the quiz. Lift it
+   above the scanline overlay (60); the nav rides higher (70) and carries
+   its own scanlines so it still reads CRT while staying above the
+   lifted widget when it scrolls past. */
+.play-widget { position: relative; z-index: 61; }
+nav.nav { z-index: 70; }
+nav.nav::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+}
+@media (max-width: 720px) {
+  body { /* coarse grid only on small screens — fine grid reads as noise */
+    background:
+      linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
+      linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
+      var(--pb-field);
+    background-size: 120px 120px, 120px 120px;
+  }
+}
