@@ -1951,7 +1951,13 @@ def main(argv: list[str]) -> int:
         story_pages.append((path, new_html, new_html != old))
     orphans = orphan_story_pages(stories)
 
-    index_changed = out != src
+    # Compare against what's actually on disk at dest, not against src (the
+    # shell we read from). src is a theme template; dest is the real
+    # artifact. Comparing against src would make this trivially "unchanged"
+    # forever once dest and the shell diverge — dest is the only truthful
+    # baseline for drift detection.
+    dest_before = dest.read_text(encoding="utf-8") if dest.exists() else None
+    index_changed = out != dest_before
     feed_changed = feed_new != feed_old
     sitemap_changed = sitemap_new != sitemap_old
     stale_stories = [p for p, _, changed in story_pages if changed]
