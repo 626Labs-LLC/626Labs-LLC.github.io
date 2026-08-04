@@ -703,6 +703,92 @@ def test_main_fails_a_theme_whose_token_css_grows_an_element_rule(
     assert "a:hover" in out
 
 
+# ─── the archetype token append (_archetype_token_css) ────────────────────
+#
+# This is the only thing keeping the READING contrast check alive, and it
+# shipped without coverage. archetypes/reading.css declares none of
+# --fg-1/--fg-2/--fg-3/--pb-field/--pb-panel any more — they moved to
+# reading-tokens.css when the archetype split — and those five names are
+# exactly what theme.json's three contrastPairs are written against.
+#
+# The failure is silent by construction. If _archetype_token_css returns ""
+# for reading (a refactor, a mistyped ARCHETYPE_TOKEN_CSS key, a theme
+# naming its file something else), _applicable_contrast_pairs filters every
+# pair out as "not declared here", check_contrast is handed an empty list,
+# the doctor PRINTS "no declared pair's custom properties resolve —
+# unverified for reading" and adds ZERO errors. The theme passes with its
+# reading contrast ungraded: the rubber-stamp this module's own docstring
+# calls worse than no check at all.
+
+
+def test_archetype_token_css_returns_the_right_file_or_nothing():
+    tdir = ROOT / "themes" / "phosphor-blueprint"
+    for archetype, filename in td.ARCHETYPE_TOKEN_CSS.items():
+        got = td._archetype_token_css(archetype, tdir)
+        assert got, f"{archetype} resolved to an empty token stylesheet"
+        assert got == (tdir / "archetypes" / filename).read_text(encoding="utf-8")
+    # The archetypes with no token file of their own get "" — home is
+    # dressed by its shell's inline <style> against tokens.css, and
+    # utility.css is not split.
+    for archetype in set(td.archetypes.ARCHETYPES) - set(td.ARCHETYPE_TOKEN_CSS):
+        assert td._archetype_token_css(archetype, tdir) == ""
+
+
+def test_archetype_token_css_keys_name_files_that_exist():
+    tdir = ROOT / "themes" / "phosphor-blueprint"
+    assert set(td.ARCHETYPE_TOKEN_CSS) == {"product", "reading"}
+    for archetype, filename in td.ARCHETYPE_TOKEN_CSS.items():
+        assert archetype in td.archetypes.ARCHETYPES
+        assert (tdir / "archetypes" / filename).exists(), filename
+        assert f"archetypes/{filename}" in td.TOKEN_ONLY_CSS
+
+
+def test_reading_contrast_is_actually_GRADED_not_merely_unverified():
+    """The regression this whole block exists for, asserted on ratios.
+
+    Not "the doctor passes" — the doctor passes either way, which is the
+    problem. This asserts that reading's declared pairs RESOLVE and produce
+    real, non-zero contrast ratios, driven through _archetype_source so it
+    exercises the actual wiring rather than re-implementing it.
+    """
+    import json
+
+    tdir = ROOT / "themes" / "phosphor-blueprint"
+    pairs = json.loads((tdir / "theme.json").read_text(encoding="utf-8"))["contrastPairs"]
+    assert pairs, "the live theme declares no contrastPairs"
+
+    tokens_css = (tdir / "tokens.css").read_text(encoding="utf-8")
+    for archetype in ("reading", "product"):
+        _html, css, _zones = td._archetype_source(archetype, tdir, _good_html(), tokens_css)
+        applicable = td._applicable_contrast_pairs(css, pairs)
+        assert len(applicable) == len(pairs), (
+            f"{archetype}: only {len(applicable)} of {len(pairs)} declared pairs "
+            f"resolve — the rest are silently skipped and never graded"
+        )
+        for fg, bg, ratio in td.evaluate_contrast_pairs(css, applicable):
+            assert ratio is not None, f"{archetype}: {fg} on {bg} did not resolve"
+            assert ratio > 0, f"{archetype}: {fg} on {bg} graded {ratio}"
+            assert ratio >= td.AA_MIN_RATIO, f"{archetype}: {fg} on {bg} = {ratio}"
+
+
+def test_reading_contrast_goes_unverified_without_the_token_append():
+    """Proof that the test above is load-bearing rather than decorative:
+    with the append removed, every reading pair drops out and the doctor
+    reports 'unverified' while still passing."""
+    tdir = ROOT / "themes" / "phosphor-blueprint"
+    import json
+
+    pairs = json.loads((tdir / "theme.json").read_text(encoding="utf-8"))["contrastPairs"]
+    reading_css_alone = (tdir / "archetypes" / "reading.css").read_text(encoding="utf-8")
+
+    assert td._applicable_contrast_pairs(reading_css_alone, pairs) == []
+    failures, advisories = td.check_contrast(
+        reading_css_alone, td._applicable_contrast_pairs(reading_css_alone, pairs)
+    )
+    assert failures == []          # <- passes
+    assert advisories                # <- while saying nothing was checked
+
+
 def test_token_only_check_does_not_trip_on_an_at_sign_inside_a_token_value():
     # The scan used to run over the whole file, so a legitimate
     # `--x: url("mailto:a@b")` was reported as "found at-rule '@b'" — a

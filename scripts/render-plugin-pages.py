@@ -685,6 +685,33 @@ def build():
 def main():
     check = "--check" in sys.argv
     outputs = build()
+
+    # --list-outputs: one repo-relative, posix-style path per line, and
+    # nothing else on stdout. The CI workflows' change-detection and
+    # `git add` lists used to name these with the glob `vibe-* thesis-engine
+    # plugins`, which is wrong in two ways. The glob only self-maintains for
+    # ids starting `vibe-` — `thesis-engine` was already the counterexample
+    # and had to be hand-listed, so the next non-`vibe-` plugin id renders on
+    # the runner and is never committed, silently. And a glob that matches
+    # nothing is passed to git literally, which errors, which makes
+    # `[ -n "$(…)" ]` evaluate FALSE — reporting "no changes" instead of
+    # failing. Both workflows ask this script instead now: it is the only
+    # thing that actually knows what it writes.
+    if "--list-outputs" in sys.argv:
+        # LF explicitly, never the platform default. On Windows print()
+        # emits CRLF, and a path with a trailing \r reaches git as a
+        # different pathspec — `git add` then dies with
+        # "pathspec 'vibe-iterate/index.html?' did not match any files".
+        # Same discipline as this script's own write_text(newline="\n").
+        # reconfigure() is what actually does it: sys.stdout is a text
+        # stream, so on Windows it translates "\n" to "\r\n" on the way out
+        # no matter what the caller writes.
+        sys.stdout.reconfigure(newline="\n")
+        sys.stdout.write(
+            "".join(f"{p.relative_to(ROOT).as_posix()}\n" for p in outputs)
+        )
+        return
+
     drift = []
     for path, html in outputs.items():
         existing = path.read_text(encoding="utf-8") if path.exists() else None
