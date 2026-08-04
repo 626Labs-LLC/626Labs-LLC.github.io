@@ -67,6 +67,12 @@ jobs:
           import json
           reg = json.loads(open("content/themes.json", encoding="utf-8").read())
           print("empty=true" if not reg.get("queue") else "empty=false")
+          # The theme that's still active RIGHT NOW, before rotation touches
+          # the registry — capture_theme_screenshot(outgoing, ...) below
+          # needs this slug explicitly; reading it fresh here (rather than
+          # relying on registry state after the rotate step) means capture
+          # order never depends on rotation order.
+          print(f"outgoing={reg.get('active', '')}")
           PY
 
       - name: 'Dry run: report empty queue (no issue filed)'
@@ -88,9 +94,26 @@ jobs:
 
       # ── everything below only runs when there's a theme queued ──────────
 
+      - name: Install Playwright
+        if: steps.queue.outputs.empty == 'false'
+        # Moved ahead of freeze/capture (was previously installed just
+        # before the theme-doctor gate): both screenshot-capture steps below
+        # need a real browser now too, not just the browser gate.
+        run: |
+          set -euo pipefail
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
       - name: Freeze the outgoing theme
         if: steps.queue.outputs.empty == 'false'
         run: python scripts/freeze-theme.py "${{ steps.month.outputs.archive_month }}"
+
+      - name: Capture the retiring theme's screenshot
+        if: steps.queue.outputs.empty == 'false'
+        run: >
+          python scripts/freeze-theme.py --screenshot
+          "${{ steps.queue.outputs.outgoing }}"
+          "assets/themes/${{ steps.queue.outputs.outgoing }}.png"
 
       - name: Rotate the registry
         if: steps.queue.outputs.empty == 'false'
@@ -114,14 +137,22 @@ jobs:
 
       - name: Render the new active theme
         if: steps.queue.outputs.empty == 'false'
-        run: python scripts/render-hub.py
-
-      - name: Install Playwright (browser gate)
-        if: steps.queue.outputs.empty == 'false'
+        # render-plugin-pages.py joins render-hub.py here — the 15 per-plugin
+        # pages inline their CSS from the ACTIVE theme's archetypes/
+        # product.css (scripts/render-plugin-pages.py, wired in A5); without
+        # this, a rotation promotes a new theme but leaves those 15 pages
+        # dressed in whatever theme was active the last time this ran.
         run: |
           set -euo pipefail
-          pip install playwright
-          python -m playwright install --with-deps chromium
+          python scripts/render-hub.py
+          python scripts/render-plugin-pages.py
+
+      - name: Capture the incoming theme's screenshot
+        if: steps.queue.outputs.empty == 'false'
+        run: >
+          python scripts/freeze-theme.py --screenshot
+          "${{ steps.rotate.outputs.new_active }}"
+          "assets/themes/${{ steps.rotate.outputs.new_active }}.png"
 
       - name: 'Gate: theme doctor (new active theme, browser checks)'
         if: steps.queue.outputs.empty == 'false'
@@ -135,6 +166,10 @@ jobs:
       - name: 'Gate: render drift'
         if: steps.queue.outputs.empty == 'false'
         run: python scripts/render-hub.py --check
+
+      - name: 'Gate: plugin pages render drift'
+        if: steps.queue.outputs.empty == 'false'
+        run: python scripts/render-plugin-pages.py --check
 
       - name: 'Gate: unit tests'
         if: steps.queue.outputs.empty == 'false'
@@ -161,7 +196,22 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content/themes.json index.html feed.xml sitemap.xml conundrum.html themes.html editorial themes/archive
+          # press.html/privacy.html (theme-css link) and about.html (the
+          # easter-egg theme registry) are ALSO rewritten by render-hub.py
+          # on every rotation (their active-theme-derived zones — see
+          # UTILITY_CSS_HREFS/render_about_theme_dresses) but were missing
+          # from this list before A8 — found while auditing what a rotation
+          # actually writes vs. what got committed; without them, a live
+          # rotation would silently update those three pages on the runner's
+          # disk and never persist it, so they'd stay dressed in whatever
+          # theme was active the last time someone hand-committed them.
+          # vibe-* / thesis-engine / plugins are the 15 render-plugin-
+          # pages.py outputs (14 per-plugin pages + the family index); the
+          # glob keeps this self-maintaining as plugins are added.
+          git add content/themes.json index.html feed.xml sitemap.xml \
+            conundrum.html themes.html press.html privacy.html about.html \
+            editorial themes/archive assets/themes \
+            vibe-* thesis-engine plugins
           git commit -m "chore(themes): rotate to ${{ steps.rotate.outputs.new_active }} for ${{ steps.month.outputs.month_name }}
 
           Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"

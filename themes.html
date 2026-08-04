@@ -258,6 +258,17 @@
     }
     a.theme-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
     .theme-card.live { border-color: var(--border-accent); }
+    .theme-thumb {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1440 / 900;
+      object-fit: cover;
+      object-position: top left;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border-1);
+      background: var(--bg-0);
+      margin-bottom: var(--s-4);
+    }
     .theme-card-head {
       display: flex;
       align-items: center;
@@ -399,6 +410,7 @@
     <div class="theme-cards">
       <!-- SITE_JSON:themes:start -->
 <a class="theme-card live" href="/">
+  <img class="theme-thumb" src="/assets/themes/phosphor-blueprint.png" alt="Phosphor Blueprint thumbnail" loading="lazy" width="1440" height="900">
   <div class="theme-card-head">
     <span class="theme-status live">Live</span>
     <span class="theme-month">August 2026</span>

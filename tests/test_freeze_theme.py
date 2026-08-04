@@ -88,6 +88,59 @@ def test_freeze_excludes_widget_bacon_trail_stylesheet(tmp_path):
     assert not (out / "widget.css").exists()
 
 
+# ─── capture_theme_screenshot / --screenshot CLI ───────────────────────
+#
+# Real browser capture is exercised manually (see the task report) the same
+# way theme-doctor.py's own --browser checks are — content-health.yml's
+# pytest job never installs playwright, so these tests only exercise the
+# "playwright unavailable" degrade path, matching test_theme_doctor.py's
+# established pattern of monkeypatching the lazy-import guard rather than
+# requiring a real browser in the automated suite.
+
+def test_capture_theme_screenshot_raises_when_playwright_missing(tmp_path, monkeypatch):
+    monkeypatch.setattr(fz, "_import_sync_playwright", lambda: None)
+    try:
+        fz.capture_theme_screenshot("phosphor-blueprint", tmp_path / "shot.png")
+        assert False, "expected RuntimeError"
+    except RuntimeError as e:
+        assert "playwright" in str(e).lower()
+
+
+def test_screenshot_cli_requires_slug_and_out_path():
+    assert fz.main(["--screenshot"]) == 2
+    assert fz.main(["--screenshot", "only-slug"]) == 2
+    assert fz.main(["--screenshot", "slug", "out", "extra"]) == 2
+
+
+def test_screenshot_cli_reports_error_when_playwright_missing(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(fz, "_import_sync_playwright", lambda: None)
+    out_path = tmp_path / "shot.png"
+    rc = fz.main(["--screenshot", "phosphor-blueprint", str(out_path)])
+    assert rc == 1
+    assert not out_path.exists()
+    assert "playwright" in capsys.readouterr().err.lower()
+
+
+def test_screenshot_cli_writes_file_on_success(tmp_path, monkeypatch):
+    # capture_theme_screenshot itself is mocked out — this only proves the
+    # CLI wiring (arg parsing, success path, printed confirmation), not the
+    # real browser pipeline (covered by the manual determinism proof).
+    calls = []
+
+    def _fake_capture(slug, out_path):
+        calls.append((slug, out_path))
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_bytes(b"fake-png")
+        return out_path
+
+    monkeypatch.setattr(fz, "capture_theme_screenshot", _fake_capture)
+    out_path = tmp_path / "nested" / "shot.png"
+    rc = fz.main(["--screenshot", "phosphor-blueprint", str(out_path)])
+    assert rc == 0
+    assert out_path.read_bytes() == b"fake-png"
+    assert calls == [("phosphor-blueprint", out_path)]
+
+
 def test_freeze_flattens_colliding_basenames(tmp_path):
     # Two stylesheets named tokens.css in different directories must not
     # clobber each other in the flat archive dir — deterministic flatten

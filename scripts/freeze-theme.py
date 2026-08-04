@@ -26,17 +26,28 @@ references are an accepted, documented boundary rather than an oversight:
 
 Usage:
   python scripts/freeze-theme.py <YYYY-MM>
+  python scripts/freeze-theme.py --screenshot <slug> <out_path>
 
 Freezes the CURRENTLY RENDERED root/index.html into root/themes/archive/
 <YYYY-MM>/, along with a local copy of every root-relative
 <link rel="stylesheet" href="/..."> it references (except the excluded
 prefixes above), rewriting each href to point at its local copy. Refuses to
 overwrite an archive that already exists for that month.
+
+The `--screenshot` form is a separate, unrelated capability that lives here
+for CLI convenience (the rotation workflow already invokes this file):
+`capture_theme_screenshot(slug, out_path)` renders `slug`'s home archetype
+fresh (independent of whatever is currently live) and saves a deterministic
+1440x900 PNG to `out_path`. See that function's docstring for what
+"deterministic" means and why it's needed twice per rotation — once for the
+theme freeze() just archived, once for the theme it's being replaced by.
 """
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
+import tempfile
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
@@ -153,7 +164,150 @@ def freeze(month: str, root: Path = ROOT) -> Path:
     return archive_dir
 
 
+# ─── deterministic theme screenshots ───────────────────────────────────
+#
+# One PNG per theme (assets/themes/<slug>.png), captured twice a rotation:
+# once for the theme freeze() just archived (still true even after it's
+# retired — a slug's screenshot never changes once captured, same posture
+# as an archived month's HTML), once for the theme that just went live.
+# themes.html reads this exact path per slug (see render-hub.py's
+# `_theme_thumbnail_href`) — a theme with no file there yet renders its
+# card without a thumbnail, not with a broken <img>.
+def _import_sync_playwright():
+    """Lazy import guard, mirroring theme-doctor.py's own — playwright is
+    never a hard dependency of this repo (content-health.yml's pytest job
+    never installs it), so only capture_theme_screenshot() pays for it, and
+    only at call time."""
+    try:
+        from playwright.sync_api import sync_playwright
+        return sync_playwright
+    except ImportError:
+        return None
+
+
+def _render_theme_home(slug: str) -> str:
+    """`slug`'s home archetype, rendered fresh via render-hub.py's own
+    preview mode — the exact subprocess call theme-doctor.py already makes
+    to check an arbitrary theme's home page without touching the live
+    site. Independent of whatever content/themes.json currently says is
+    active, so capture order relative to the registry rotation never
+    matters."""
+    with tempfile.TemporaryDirectory(prefix="capture-theme-") as tmp:
+        result = subprocess.run(
+            [sys.executable, str(SCRIPTS_DIR / "render-hub.py"), "--theme", slug, "--out", tmp],
+            capture_output=True, text=True,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"render-hub.py --theme {slug} --out failed:\n{result.stdout}{result.stderr}"
+            )
+        return (Path(tmp) / "index.html").read_text(encoding="utf-8")
+
+
+def capture_theme_screenshot(slug: str, out_path: Path) -> Path:
+    """Deterministic 1440x900 PNG of `slug`'s home archetype, written to
+    `out_path`. Deterministic means:
+
+    - Fixed viewport (1440x900, no responsive breakpoint or scrollbar to
+      shift the capture).
+    - Fonts settled (`document.fonts.ready`) — no FOIT/FOUT frame.
+    - Animations off (`reduced_motion="reduce"` — Playwright emulates the
+      `prefers-reduced-motion: reduce` media feature; index.html's own CSS
+      already collapses every `animation`/`transition` under that query to
+      near-zero duration, so no page code changes for this).
+
+    Uses the same local-static-server + Playwright harness theme-doctor.py
+    already runs for its own browser checks: serve the repo root on an
+    ephemeral port, override "/" and "/index.html" with the freshly
+    rendered preview so every other root-relative asset (tokens.css, fonts,
+    images) still resolves against the real repo tree, exactly as it would
+    on the live site.
+
+    Raises RuntimeError if playwright isn't importable, the preview render
+    fails, or the browser can't launch — this only ever runs from a
+    rotation step that already requires the browser gate to pass, so a
+    silent skip here would ship a rotation with a missing or stale
+    thumbnail and nobody would know.
+    """
+    sync_playwright = _import_sync_playwright()
+    if sync_playwright is None:
+        raise RuntimeError("playwright is not installed — capture_theme_screenshot requires it")
+
+    html_text = _render_theme_home(slug)
+
+    import http.server
+    import socketserver
+    import threading
+
+    class _Handler(http.server.SimpleHTTPRequestHandler):
+        def __init__(self, *a, **kw):
+            super().__init__(*a, directory=str(ROOT), **kw)
+
+        def do_GET(self):  # noqa: N802 — stdlib method name
+            if self.path in ("/", "/index.html"):
+                body = html_text.encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
+            super().do_GET()
+
+        def log_message(self, fmt, *args):  # quiet — no per-request noise
+            pass
+
+    try:
+        httpd = socketserver.TCPServer(("127.0.0.1", 0), _Handler)
+    except OSError as e:
+        raise RuntimeError(f"could not start local server: {e}") from e
+    port = httpd.server_address[1]
+    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+    thread.start()
+
+    try:
+        with sync_playwright() as p:
+            try:
+                browser = p.chromium.launch()
+            except Exception as e:  # pragma: no cover — environment-dependent
+                raise RuntimeError(f"could not launch chromium: {e}") from e
+            try:
+                page = browser.new_page(
+                    viewport={"width": 1440, "height": 900},
+                    device_scale_factor=1,
+                    reduced_motion="reduce",
+                )
+                try:
+                    page.goto(f"http://127.0.0.1:{port}/", wait_until="load", timeout=15000)
+                    page.evaluate("document.fonts.ready")
+                    page.wait_for_timeout(300)  # let deferred/async scripts settle
+                    out_path.parent.mkdir(parents=True, exist_ok=True)
+                    page.screenshot(path=str(out_path))
+                finally:
+                    page.close()
+            finally:
+                browser.close()
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+
+    return out_path
+
+
 def main(argv: list[str]) -> int:
+    if argv[:1] == ["--screenshot"]:
+        if len(argv) != 3:
+            print("usage: freeze-theme.py --screenshot <slug> <out_path>", file=sys.stderr)
+            return 2
+        slug, out_path = argv[1], Path(argv[2])
+        try:
+            out = capture_theme_screenshot(slug, out_path)
+        except RuntimeError as e:
+            print(f"error: {e}", file=sys.stderr)
+            return 1
+        print(f"captured {slug} -> {out}")
+        return 0
+
     if len(argv) != 1:
         print("usage: freeze-theme.py <YYYY-MM>", file=sys.stderr)
         return 2
