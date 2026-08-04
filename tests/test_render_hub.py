@@ -459,6 +459,12 @@ def test_theme_css_map_covers_the_converted_reading_pages():
     assert m[render_hub.THEMES_HTML] == "tokens.css"
 
 
+def test_theme_css_map_covers_the_converted_product_pages():
+    m = render_hub.THEME_CSS_HREFS
+    assert m[render_hub.CONUNDRUM_HTML] == "archetypes/product.css"
+    assert m[render_hub.ROROROPLUGINS_HTML] == "archetypes/product.css"
+
+
 def test_theme_css_constants_agree_in_both_directions():
     # Only one direction of this pairing fails loudly. A page in
     # THEME_CSS_ONLY_PAGES but not in THEME_CSS_HREFS is a KeyError the
@@ -471,13 +477,43 @@ def test_theme_css_constants_agree_in_both_directions():
     # reintroduced by an omission no test would catch. So: set equality,
     # not membership.
     assert (
-        set(render_hub.THEME_CSS_HREFS) - {render_hub.THEMES_HTML}
+        set(render_hub.THEME_CSS_HREFS) - set(render_hub.THEME_CSS_MULTI_ZONE_PAGES)
         == set(render_hub.THEME_CSS_ONLY_PAGES)
     )
-    # themes.html is the one deliberate exclusion — main() handles it next
-    # to its gallery zone, not in this loop.
-    assert render_hub.THEMES_HTML not in render_hub.THEME_CSS_ONLY_PAGES
-    assert render_hub.THEMES_HTML in render_hub.THEME_CSS_HREFS
+    # The exclusions are deliberate and are exactly the pages main() renders
+    # in their own block, beside their other zones. A page listed in BOTH
+    # tuples gets read from disk and written back by the theme-css loop
+    # AFTER its own block wrote its other zones, silently reverting them —
+    # so the two sets must not overlap either.
+    assert not (
+        set(render_hub.THEME_CSS_MULTI_ZONE_PAGES)
+        & set(render_hub.THEME_CSS_ONLY_PAGES)
+    )
+    for page in render_hub.THEME_CSS_MULTI_ZONE_PAGES:
+        assert page in render_hub.THEME_CSS_HREFS
+
+
+def test_conundrum_keeps_its_gallery_zones_when_the_theme_css_zone_renders():
+    # conundrum.html is the first page to carry the theme-css zone AND
+    # renderer-owned content zones. main() renders it once, in its own
+    # block; this pins that a full render leaves BOTH intact rather than
+    # one overwriting the other.
+    slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
+    html = render_hub.CONUNDRUM_HTML.read_text(encoding="utf-8")
+    assert render_hub.render_theme_css_link(slug, "archetypes/product.css") in html
+    assert "<!-- SITE_JSON:conundrum-products:start -->" in html
+    assert "<!-- SITE_JSON:conundrum-repo:start -->" in html
+    assert 'class="merch-card"' in html
+
+
+def test_preview_covers_every_theme_css_page_except_themes_html():
+    # Derived, not enumerated — so a page added to THEME_CSS_HREFS is
+    # previewable in the same commit rather than silently un-gateable
+    # against a queued theme.
+    assert (
+        set(render_hub.PREVIEWABLE_THEME_CSS_PAGES)
+        == set(render_hub.THEME_CSS_HREFS) - {render_hub.THEMES_HTML}
+    )
 
 
 def test_reading_pages_href_follows_the_active_slug_not_a_hardcoded_theme():
@@ -543,12 +579,83 @@ def test_reading_pages_resolve_every_var_they_read():
         )
 
 
+def test_product_pages_href_follows_the_active_slug_not_a_hardcoded_theme():
+    for slug in ("phosphor-blueprint", "some-future-theme"):
+        for page in (render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML):
+            link = render_hub.render_theme_css_link(
+                slug, render_hub.THEME_CSS_HREFS[page]
+            )
+            assert link == (
+                f'<link rel="stylesheet" href="/themes/{slug}/archetypes/product.css">'
+            )
+
+
+def test_product_pages_carry_the_zone_and_track_the_registry_on_disk():
+    slug = render_hub.theme_registry.load()["active"]
+    expected = render_hub.render_theme_css_link(slug, "archetypes/product.css")
+    for page in (render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML):
+        html = page.read_text(encoding="utf-8")
+        assert "<!-- SITE_JSON:theme-css:start -->" in html
+        assert "<!-- SITE_JSON:theme-css:end -->" in html
+        assert expected in html
+        assert render_hub.substitute_zone(html, "theme-css", expected) == html
+
+
+def test_product_pages_define_no_token_of_their_own():
+    # Same point as the reading pair, one shade weaker by necessity.
+    # rororo-plugins.html keeps no :root at all. conundrum.html keeps one,
+    # holding the three base tokens the Phosphor Blueprint treatment
+    # REPOINTS — but every value in it has to resolve through a theme-owned
+    # name, never a literal. A literal there is a photocopy re-growing, and
+    # a photocopy is what no rotation can reach.
+    import re
+
+    style_of = lambda page: "\n".join(  # noqa: E731
+        re.findall(r"<style[^>]*>(.*?)</style>", page.read_text(encoding="utf-8"), re.S)
+    )
+
+    assert not re.search(r":root\s*\{", style_of(render_hub.ROROROPLUGINS_HTML)), (
+        "rororo-plugins.html re-grew a :root block"
+    )
+
+    for block in re.findall(r":root\s*\{(.*?)\}", style_of(render_hub.CONUNDRUM_HTML), re.S):
+        for decl in re.findall(r"(--[\w-]+)\s*:\s*([^;]+);", block):
+            name, value = decl[0], decl[1].strip()
+            assert value.startswith("var(--"), (
+                f"conundrum.html defines {name} as the literal {value!r} — "
+                "a private copy the rotation cannot reach"
+            )
+
+
+def test_product_pages_resolve_every_var_they_read():
+    # Their tokens now live in the theme, with no page-local fallback — so
+    # an unresolved var() is a straight rendering break, not a stale value.
+    # Graded against whatever content/themes.json says is ACTIVE, so inside
+    # rotate-theme.yml's gate stack (which runs pytest AFTER the registry
+    # flips) this asserts against the dress about to go live.
+    import re
+
+    slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
+    css = (
+        render_hub.ROOT / "themes" / slug / "archetypes" / "product.css"
+    ).read_text(encoding="utf-8")
+    defined = set(re.findall(r"(--[\w-]+)\s*:", css))
+    for page in (render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML):
+        used = set(re.findall(r"var\(\s*(--[\w-]+)", page.read_text(encoding="utf-8")))
+        assert not used - defined, (
+            f"{page.name} reads {sorted(used - defined)}, undefined in "
+            f"themes/{slug}/archetypes/product.css"
+        )
+
+
 def test_preview_mode_emits_the_theme_css_pages_too(tmp_path):
     # --theme/--out used to write index.html and nothing else, which left a
     # queued theme's effect on the hand-authored pages impossible to see or
     # gate before the 1st: their only theme-derived seam is the theme-css
     # <link>, and preview mode skipped the loop that rewrites it. Now every
-    # THEME_CSS_ONLY_PAGES member lands in out_dir with its zone repointed.
+    # PREVIEWABLE_THEME_CSS_PAGES member lands in out_dir with its zone
+    # repointed — including conundrum.html, whose other zones preview mode
+    # deliberately leaves alone (it previews a DRESS, not content).
     slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
 
     # Snapshot the LIVE pages before the run. Preview writes copies into
@@ -558,13 +665,14 @@ def test_preview_mode_emits_the_theme_css_pages_too(tmp_path):
     # "touches nothing." Comparing bytes is the only assertion that catches
     # it; checking out_dir's contents cannot, and neither can the absence of
     # feed.xml/sitemap.xml below.
-    before = {p: p.read_bytes() for p in render_hub.THEME_CSS_ONLY_PAGES}
+    before = {p: p.read_bytes() for p in render_hub.PREVIEWABLE_THEME_CSS_PAGES}
     before[render_hub.INDEX_HTML] = render_hub.INDEX_HTML.read_bytes()
+    before[render_hub.THEMES_HTML] = render_hub.THEMES_HTML.read_bytes()
 
     rc = render_hub.main(["--theme", slug, "--out", str(tmp_path)])
     assert rc == 0
     assert (tmp_path / "index.html").exists()
-    for page in render_hub.THEME_CSS_ONLY_PAGES:
+    for page in render_hub.PREVIEWABLE_THEME_CSS_PAGES:
         written = tmp_path / page.name
         assert written.exists(), f"preview did not emit {page.name}"
         expected = render_hub.render_theme_css_link(

@@ -13,51 +13,50 @@
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" type="image/png" href="favicon-626.png" />
 
+<!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/product.css">
+<!-- SITE_JSON:theme-css:end -->
+
 <style>
   /* ---------- Web fonts ---------- */
   @import url('/fonts/fonts.css');
 
-  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
-  :root {
-    --brand-navy:        #192e44;
-    --brand-navy-deep:   #0f1f31;
-    --brand-cyan:        #17d4fa;
-    --brand-cyan-bright: #5ce6ff;
-    --brand-magenta:     #f22f89;
+  /* ---------- Theme dress ----------
+     Brand tokens come from the ACTIVE theme's archetypes/product.css,
+     linked above and repointed by scripts/render-hub.py on every render.
+     This page used to carry a private :root copy of them; a copy is
+     something the monthly rotation cannot reach.
 
-    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
-
-    --ink-0:   #ffffff;
-    --ink-200: #c4cdda;
-    --ink-300: #a4aebd;
-    --ink-400: #99a4b4;
-
-    --fg-1: var(--ink-0);
-    --fg-2: var(--ink-200);
-    --fg-3: var(--ink-300);
-    --fg-muted: var(--ink-400);
-
-    --bg-0: var(--brand-navy-deep);
-
-    --border-1: rgba(255,255,255,.08);
-    --border-2: rgba(255,255,255,.14);
-    --border-accent: rgba(23,212,250,.45);
-
-    --r-md: 10px;
-    --r-lg: 14px;
-    --r-xl: 20px;
-
-    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-
-    --shadow-2: 0 4px 16px rgba(0,0,0,.45);
-    --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
-
-    --ease-out: cubic-bezier(.2,.7,.2,1);
-    --dur-fast: 120ms;
-    --dur-med: 220ms;
-  }
+     That stylesheet also carries the generated plugin pages' full dress
+     on bare element and generic class selectors. This page is bespoke —
+     it keeps its own layout, per the milestone's "uniform dress, not
+     uniform layout" rule — so the rules below restate what this page has
+     always rendered wherever that dress reaches markup it was never
+     written for:
+       body            line-height (product sets 1.55; this page has
+                       always run the initial value)
+       h1, h2, h3      the archetype's display tracking and heading
+                       leading
+       h1              the treatment's phosphor bloom. This is the one
+                       product surface that never took the Phosphor
+                       Blueprint treatment — it is still on the navy
+                       field — so the bloom has to be declined by name
+                       rather than simply not inherited
+       .btn            the archetype's .btn is a 15px/500 pill; this
+                       page's is a 12px mono chip
+       .cards-fallback a  the archetype underlines nothing by default;
+                       these three links have always been underlined
+                       (they only appear when the catalog fetch fails)
+     Every value below is this page's CURRENT rendering restated, never a
+     new value — the pixel gate outranks tidiness. One thing this page
+     DOES newly take from the dress: its `prefers-reduced-motion` block,
+     which zeroes transitions for readers who ask for that. It moves no
+     pixel in the resting state and it is the whole point of linking. */
+  body { line-height: normal; }
+  h1, h2, h3 { letter-spacing: normal; line-height: normal; }
+  h1 { text-shadow: none; }
+  .btn { font-weight: 400; }
+  .cards-fallback a { text-decoration-line: underline; }
 
   html, body { margin:0; padding:0; min-height:100vh; }
   body{
@@ -72,7 +71,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
   *{ box-sizing:border-box; }
-  a{ color:var(--brand-cyan); }
+  a{ color:var(--cyan); }
 
   /* ---------- Subtle circuit grid backdrop ---------- */
   .grid-bg{
@@ -110,8 +109,8 @@
   }
   .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; align-items:center; }
   .topnav .links a{ color:var(--fg-3); text-decoration:none; transition: color var(--dur-fast); }
-  .topnav .links a:hover{ color: var(--brand-cyan); }
-  .topnav .links a.cta{ color: var(--brand-cyan); }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
 
   /* ---------- Layout ---------- */
   .wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding: 56px 32px 72px; }
@@ -137,7 +136,7 @@
     font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
     color:var(--fg-muted);
   }
-  .host-strip .hs-ver{ font-family:var(--font-mono); font-size:13px; color:var(--brand-cyan); }
+  .host-strip .hs-ver{ font-family:var(--font-mono); font-size:13px; color:var(--cyan); }
   .host-strip .spacer{ flex:1; }
   .btn{
     display:inline-flex; align-items:center; gap:8px;
@@ -177,7 +176,7 @@
   .card h3{ font-family:var(--font-display); font-size:18px; font-weight:600; margin:0; }
   .card .ver{
     font-family:var(--font-mono); font-size:11px; letter-spacing:.06em;
-    color:var(--brand-cyan); background:rgba(23,212,250,.08);
+    color:var(--cyan); background:rgba(23,212,250,.08);
     border:1px solid rgba(23,212,250,.3); border-radius: 7px; padding:2px 8px;
     white-space:nowrap;
   }
@@ -207,7 +206,7 @@
     transition: opacity var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
   }
   .toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
-  .toast b{ color: var(--brand-cyan); font-weight:500; }
+  .toast b{ color: var(--cyan); font-weight:500; }
 
   /* ---------- How-to ---------- */
   .section-hd{ margin: 52px 0 18px; display:flex; align-items:baseline; justify-content:space-between; gap:18px; }
@@ -222,13 +221,13 @@
   }
   .howto-key{
     font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-    color:var(--brand-cyan); margin-bottom:12px;
+    color:var(--cyan); margin-bottom:12px;
   }
   .howto ol{ margin:0; padding-left:20px; color:var(--fg-3); font-size:13.5px; line-height:1.7; }
   .howto ol b, .howto p b{ color:var(--fg-2); font-weight:500; }
   .howto p{ margin:0 0 12px; color:var(--fg-3); font-size:13.5px; line-height:1.7; }
   .howto code{
-    font-family:var(--font-mono); font-size:12px; color:var(--brand-cyan-bright);
+    font-family:var(--font-mono); font-size:12px; color:var(--cyan-pale);
     background:rgba(23,212,250,.06); border-radius:5px; padding:1px 5px;
   }
   .howto a{ text-decoration:none; }
@@ -240,7 +239,7 @@
     font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--fg-muted);
   }
   .footnote a{ color:var(--fg-3); text-decoration:none; }
-  .footnote a:hover{ color:var(--brand-cyan); }
+  .footnote a:hover{ color:var(--cyan); }
 
   @media (max-width: 760px){
     .wrap{ padding: 40px 20px 56px; }

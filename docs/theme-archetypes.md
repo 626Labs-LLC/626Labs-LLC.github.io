@@ -539,45 +539,59 @@ undocumented, ungated gap. `themes.html`'s gallery CSS and `press.html`'s/
 `utility.css`'s extraction — `.copy-block`/`.asset-grid`/`.tldr` and
 friends) read roughly forty custom properties via `var(--x)` and never
 define any of them. Nothing required a theme's `tokens.css`,
-`archetypes/utility.css` or `archetypes/reading.css` to supply them — a
+`archetypes/product.css`, `archetypes/utility.css` or
+`archetypes/reading.css` to supply them — a
 September theme could rename or drop one, pass every existing gate
 (vocabulary only checks class names; chrome/links don't look at custom
-properties at all), and silently break five pages:
+properties at all), and silently break seven pages:
 `themes.html`/`index.html` (which each carry a hardcoded LOCAL `:root`
 fallback, cascade-earlier than the theme's own `<link>`, so a missing token
 doesn't error — it just keeps showing the OUTGOING theme's stale value
-forever) and `press.html`/`privacy.html`/`thesis.html`/`workflow.html`
+forever) and `press.html`/`privacy.html`/`thesis.html`/`workflow.html`/
+`conundrum.html`/`rororo-plugins.html`
 (which carry no fallback at all, so a missing token is a straight unresolved
-`var()`).
+`var()`). `product.css` carries the widest blast radius of the four: two
+pages LINK it, and `render-plugin-pages.py` INLINES it into fifteen more.
 
 `archetypes.REQUIRED_TOKENS` (`scripts/archetypes.py`) closes it: the exact
 set of custom-property names, derived the same way `VOCABULARY` was — by
 reading the real, shipped CSS, not designing in the abstract — union of
 every `var(--x)` in `themes.html`'s inline `<style>` plus the residual
-`<style>` blocks of `press.html`, `privacy.html`, `thesis.html` and
-`workflow.html`. `scripts/theme-doctor.py`'s `check_required_tokens()` fails
-a theme whose `tokens.css`, `archetypes/utility.css` **or**
-`archetypes/reading.css` doesn't define every one of them — all three,
-because all three are real, unguarded consumers today: `tokens.css` for
+`<style>` blocks of `press.html`, `privacy.html`, `thesis.html`,
+`workflow.html`, `conundrum.html` and `rororo-plugins.html`.
+`scripts/theme-doctor.py`'s `check_required_tokens()` fails
+a theme whose `tokens.css`, `archetypes/product.css`,
+`archetypes/utility.css` **or**
+`archetypes/reading.css` doesn't define every one of them — all four,
+because all four are real, unguarded consumers today: `tokens.css` for
 `themes.html`/`index.html`, `utility.css` for `press.html`/`privacy.html`,
-`reading.css` for `thesis.html`/`workflow.html` (their only source of these
+`reading.css` for `thesis.html`/`workflow.html`, `product.css` for
+`conundrum.html`/`rororo-plugins.html` plus the fifteen pages inlined from
+it (their only source of these
 properties, with no local fallback of their own). A theme missing even one
 fails before the archetype loop runs, named by property
 (`tokens.css: missing required custom property '--cyan'`).
 
-Three names — `--bg-2`, `--dur-med`, `--r-xl` — were admitted later, when
-`thesis.html`/`workflow.html` gave up their private token blocks. The test
+Four names — `--bg-2`, `--dur-med`, `--r-xl`, `--fg-muted` — were admitted
+later, when `thesis.html`/`workflow.html` and then
+`conundrum.html`/`rororo-plugins.html` gave up their private token blocks. The test
 for admission was narrow on purpose: **is a sibling of that token's own
 scale already required?** `--bg-0`/`--bg-1` were, so a page reading `--bg-2`
 is reading a hole in a scale the contract already half-covers. Same for
 `--dur-med` next to `--dur-fast` and `--r-xl` next to the other five radius
-steps. Completing a scale the contract already commits to is the contract
-working; every theme in the repo already defined all three, so admission
+steps. Same again for `--fg-muted`, the fourth member of a four-member
+alias family whose other three (`--fg-1`/`--fg-2`/`--fg-3`) were all
+already required, and whose underlying value (`--text-mute`) was required
+too — the contract already obliged every theme to have the color and merely
+declined to name the alias the pages read. Completing a scale the contract
+already commits to is the contract
+working; every theme in the repo already defined all four, so admission
 cost nobody anything. `--shadow-2` failed the same test — no shadow-scale
 name is in the set — and stays out, documented as a page-to-theme coupling
-rather than promoted on the strength of one page's usage.
+rather than promoted on the strength of two pages' usage.
 
-One theme-bespoke name is deliberately **excluded**: `press.html`'s
+The `--pb-*` family is deliberately **excluded**, and it is now read by
+four pages rather than one. The original case: `press.html`'s
 `.asset-preview` background reads `var(--pb-field)`, Phosphor Blueprint's
 own treatment-layer token (defined in both `tokens.css`'s and
 `utility.css`'s "Phosphor Blueprint — treatment layer" section, never in
@@ -589,12 +603,24 @@ theme is obligated to define under that exact prefix, so it's out of
 `press.html`'s `.asset-preview` onto a theme-neutral name is unrelated scope
 this fix wave didn't touch.
 
-### The 46 required tokens, grouped, and why each group matters
+`thesis.html`, `workflow.html` and `conundrum.html` extend that same
+coupling, and knowingly. Each reads a handful of `--pb-*` names in its own
+treatment rules (`--pb-field`, `--pb-grid-fine`, `--pb-grid-coarse`,
+`--pb-bloom-cyan`, and for `conundrum.html` also `--pb-scanline`,
+`--pb-panel`, `--pb-panel-border`, `--pb-hairline`, `--pb-trail`). Those
+names now resolve from the theme rather than a private copy — the coupling
+moved from "unreachable" to "theme-owned" — but they remain
+Phosphor-Blueprint-specific and out of `REQUIRED_TOKENS`. A theme built by
+mirroring `themes/phosphor-blueprint/`, which is what the build
+instructions say to do, inherits them; one written from scratch has to
+define them or restyle those rules.
+
+### The 47 required tokens, grouped, and why each group matters
 
 | Group | Tokens | Why required |
 |---|---|---|
 | Backgrounds | `--bg-0`, `--bg-1`, `--bg-2` | Page and card-surface fields. Undefined = transparent surfaces over whatever's behind them. |
-| Foreground / text | `--fg-1`, `--fg-2`, `--fg-3`, `--text`, `--text-sec`, `--text-dim`, `--text-mute` | Body/heading/secondary/meta text colors. `--fg-*` is what markup actually uses; `--text*` is what `--fg-*` resolves through (see `--fg-1: var(--text)` in `tokens.css`) — both layers are read directly somewhere in the five pages, so both are required. Undefined = unreadable (browser default, usually black-on-black here). |
+| Foreground / text | `--fg-1`, `--fg-2`, `--fg-3`, `--fg-muted`, `--text`, `--text-sec`, `--text-dim`, `--text-mute` | Body/heading/secondary/meta text colors. `--fg-*` is what markup actually uses; `--text*` is what `--fg-*` resolves through (see `--fg-1: var(--text)` in `tokens.css`) — both layers are read directly somewhere in the seven pages, so both are required. Undefined = unreadable (browser default, usually black-on-black here). |
 | Brand color + accent | `--cyan`, `--cyan-pale`, `--magenta`, `--magenta-pale`, `--navy-deep`, `--navy-mid`, `--navy-hi`, `--ink-950`, `--ok`, `--brand-gradient`, `--brand-gradient-soft` | The nav CTA, links, status pills, the two-tone gradient underline — the site's actual brand identity. Undefined = the pages stop looking like 626 Labs at all, not just "wrong theme." |
 | Borders + panel effects | `--border-1`, `--border-2`, `--border-accent`, `--inner-stroke` | Card/nav/footer hairlines and the inset highlight every panel uses. Undefined = flat, seamless panels with no separation. |
 | Typography | `--font-display`, `--font-body`, `--font-mono` | The three-typeface stack (Space Grotesk / Inter / JetBrains Mono) every heading, body line, and meta label is set in. Undefined = browser default serif/sans, breaking the brand's whole type identity. |

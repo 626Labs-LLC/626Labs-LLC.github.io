@@ -6,10 +6,11 @@ utility) a theme has to dress. First, completeness: tokens.css/theme.json,
 all four archetypes/*.html, AND archetypes/product.css + archetypes/
 utility.css + archetypes/reading.css (the three CSS artifacts real,
 unguarded consumers read at render time — see REQUIRED_ARCHETYPE_CSS), AND
-that tokens.css, archetypes/utility.css AND archetypes/reading.css each
-actually DEFINE every custom property in archetypes.REQUIRED_TOKENS —
-themes.html/press.html/privacy.html/thesis.html/workflow.html read these via
-var(--x) but carry no theme-owned fallback of their own (see
+that tokens.css and ALL THREE of those archetype stylesheets each actually
+DEFINE every custom property in archetypes.REQUIRED_TOKENS —
+themes.html/press.html/privacy.html/thesis.html/workflow.html/
+conundrum.html/rororo-plugins.html read these via var(--x) but carry no
+theme-owned fallback of their own (see
 check_required_tokens and REQUIRED_TOKENS's docstring). Then,
 per archetype: page chrome (skip-link/nav/footer/analytics, per
 ARCHETYPE_CHROME's real per-archetype profile), every internal href resolves
@@ -83,7 +84,11 @@ ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
 # this as a carried requirement, not a nice-to-have): render-plugin-pages.py
 # does `theme_dir(active)/archetypes/product.css` and reads it unguarded —
 # a theme rotating in without it raises an uncaught FileNotFoundError and
-# crashes all 15 plugin pages. press.html/privacy.html resolve
+# crashes all 15 plugin pages. conundrum.html and rororo-plugins.html then
+# made product.css load-bearing a second way: they LINK it for their base
+# token vocabulary, with no local fallback, so a theme without it (or with
+# it but missing names) leaves both pages on unresolved var()s.
+# press.html/privacy.html resolve
 # archetypes/utility.css the same unguarded way (render-hub.py's
 # THEME_CSS_HREFS zone). `reading` joins them as of A7: about.html's
 # client-side easter-egg toggle points a <link> at
@@ -713,10 +718,11 @@ def main(argv: list[str]) -> int:
     # The token-variable contract (final review Fix 1 / archetypes.
     # REQUIRED_TOKENS): themes.html reads tokens.css directly; press.html/
     # privacy.html read archetypes/utility.css; thesis.html/workflow.html
-    # read archetypes/reading.css. The last four carry no local fallback at
+    # read archetypes/reading.css; conundrum.html/rororo-plugins.html read
+    # archetypes/product.css. The last six carry no local fallback at
     # ALL — their private :root blocks are gone — so for them a missing name
     # is not a stale value, it is an unresolved var() with nothing behind
-    # it. All three files have to actually DEFINE the required set or those
+    # it. All four files have to actually DEFINE the required set or those
     # pages break on the next rotation (see REQUIRED_TOKENS's docstring) —
     # checked here, before the archetype loop, same completeness spirit as
     # REQUIRED_ARCHETYPE_CSS above, just for file CONTENT instead of file
@@ -727,12 +733,23 @@ def main(argv: list[str]) -> int:
     # author writing a genuinely new reading dress (rather than copying
     # phosphor-blueprint's) passes every gate, rotates in unattended on the
     # 1st, and puts two live pages up with dozens of unresolved var()s.
+    # product.css joined on the same rule and in the same commit as its own
+    # first linking page, and the stakes there are larger, not smaller: a
+    # product dress missing a name breaks conundrum.html and
+    # rororo-plugins.html outright (they link it, no fallback) AND leaves
+    # the 15 pages render-plugin-pages.py INLINES from it rendering with
+    # unresolved var()s too.
+    #
+    # The tuple is every archetype whose stylesheet carries base
+    # vocabulary. "home" is the one archetype absent: no page links or
+    # inlines an archetypes/home.css — index.html is rendered from the
+    # theme's shell.html against tokens.css, which is checked above.
     for label, text in (
         ("tokens.css", tokens_css),
         *(
             (f"archetypes/{REQUIRED_ARCHETYPE_CSS[a]}",
              (tdir / "archetypes" / REQUIRED_ARCHETYPE_CSS[a]).read_text(encoding="utf-8"))
-            for a in ("utility", "reading")
+            for a in ("product", "utility", "reading")
         ),
     ):
         errors += [f"{label}: {e}" for e in check_required_tokens(text)]
