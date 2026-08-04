@@ -201,6 +201,28 @@ def _import_sync_playwright():
 # callback observe the same instant on every capture. Verified with a
 # full-page (not just viewport) byte-compare — see the task report — so the
 # proof exercises exactly the code paths this comment describes.
+#
+# THIRD source, found the hard way: SVG SMIL (<animate>, <animateTransform>).
+# It runs on the SVG document timeline, which is reached by NEITHER the rAF
+# override above NOR prefers-reduced-motion — Chromium gates SMIL on neither.
+# workflow.html:546-547 pulses its sphere core (r 58->72->58, opacity
+# .85->1->.85, dur=4s, repeatCount=indefinite), and for a while that was
+# misread as Skia raster nondeterminism, because every screenshot caught the
+# pulse at a different phase and the deltas were small. It was a moving
+# circle. Nothing on index.html uses SMIL TODAY, so this changes no committed
+# thumbnail — but that is exactly the coincidence-of-current-markup this
+# whole comment exists to refuse to rely on, and the stakes here are worse
+# than a re-runnable check: a slug's screenshot is captured once and never
+# recaptured (see the note above _import_sync_playwright), so an animated
+# hero mark in some future theme would sit frozen at a random phase in the
+# gallery permanently.
+#
+# freeze_svg_animations() below is the fix. It cannot live in the init script
+# alone: that runs at document-start, when no <svg> exists yet. So the init
+# script installs it and wires it to DOMContentLoaded/load, and
+# capture_theme_screenshot calls it once more immediately before the
+# screenshot — which is what actually catches SVG built by page JS after load
+# (workflow.html constructs its sphere spokes that way).
 _DETERMINISTIC_CAPTURE_INIT_SCRIPT = """
 (() => {
   // Fixed-seed PRNG (mulberry32) replaces Math.random — same sequence
@@ -227,6 +249,22 @@ _DETERMINISTIC_CAPTURE_INIT_SCRIPT = """
     return window.setTimeout(function () { cb(FROZEN_NOW); }, 16);
   };
   window.cancelAnimationFrame = function (id) { window.clearTimeout(id); };
+
+  // SMIL freeze: pause every SVG's own timeline and rewind it to t=0, so
+  // <animate>/<animateTransform> render their first frame on every capture
+  // instead of wherever the 4s loop happened to be. Published on window so
+  // the capture can re-run it after page JS has injected its own SVG.
+  window.__freezeSvgAnimations = function () {
+    var svgs = document.querySelectorAll('svg');
+    for (var i = 0; i < svgs.length; i++) {
+      if (typeof svgs[i].pauseAnimations === 'function') {
+        svgs[i].pauseAnimations();
+        svgs[i].setCurrentTime(0);
+      }
+    }
+  };
+  document.addEventListener('DOMContentLoaded', window.__freezeSvgAnimations);
+  window.addEventListener('load', window.__freezeSvgAnimations);
 })();
 """
 
@@ -265,15 +303,24 @@ def capture_theme_screenshot(slug: str, out_path: Path, full_page: bool = False)
     - Fixed viewport (1440x900, no responsive breakpoint or scrollbar to
       shift the capture).
     - Fonts settled (`document.fonts.ready`) — no FOIT/FOUT frame.
-    - Animations off (`reduced_motion="reduce"` — Playwright emulates the
-      `prefers-reduced-motion: reduce` media feature; index.html's own CSS
-      already collapses every `animation`/`transition` under that query to
-      near-zero duration, so no page code changes for this).
+    - CSS animations and transitions off (`reduced_motion="reduce"` —
+      Playwright emulates the `prefers-reduced-motion: reduce` media feature;
+      index.html's own CSS already collapses every `animation`/`transition`
+      under that query to near-zero duration, so no page code changes for
+      this). This covers CSS only, and only where the page's own CSS honours
+      the query — it is not a general "animations off" switch, which is why
+      the next two bullets exist.
     - `Math.random()` reseeded and the animation clock frozen BEFORE any
       page script runs (`_DETERMINISTIC_CAPTURE_INIT_SCRIPT`, injected via
       `page.add_init_script`) — a capture-level guarantee, not a bet that
       every current and future bit of page JS gates its own randomness or
       timing behind `prefers-reduced-motion`.
+    - SVG SMIL paused and rewound to t=0, both from that init script's
+      DOMContentLoaded/load handlers and once more right before the shutter
+      (for SVG built by page JS after load). SMIL is driven by the SVG
+      document timeline, which neither `prefers-reduced-motion` nor the rAF
+      override reaches — this bullet exists because the two above were once
+      believed to cover it and did not.
 
     Uses the same local-static-server + Playwright harness theme-doctor.py
     already runs for its own browser checks: serve the repo root on an
@@ -344,6 +391,13 @@ def capture_theme_screenshot(slug: str, out_path: Path, full_page: bool = False)
                     page.goto(f"http://127.0.0.1:{port}/", wait_until="load", timeout=15000)
                     page.evaluate("document.fonts.ready")
                     page.wait_for_timeout(300)  # let deferred/async scripts settle
+                    # After the settle, not before: the init script's own
+                    # DOMContentLoaded/load handlers can only reach SVG that
+                    # existed by then, and page JS builds more (workflow.html's
+                    # sphere spokes). Last thing before the shutter.
+                    page.evaluate(
+                        "() => window.__freezeSvgAnimations && window.__freezeSvgAnimations()"
+                    )
                     out_path.parent.mkdir(parents=True, exist_ok=True)
                     page.screenshot(path=str(out_path), full_page=full_page)
                 finally:

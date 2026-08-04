@@ -538,15 +538,17 @@ undocumented, ungated gap. `themes.html`'s gallery CSS and `press.html`'s/
 `privacy.html`'s own page-specific residual CSS (the rules left after
 `utility.css`'s extraction — `.copy-block`/`.asset-grid`/`.tldr` and
 friends) read roughly forty custom properties via `var(--x)` and never
-define any of them. Nothing required a theme's `tokens.css` or
-`archetypes/utility.css` to supply them — a September theme could rename or
-drop one, pass every existing gate (vocabulary only checks class names;
-chrome/links don't look at custom properties at all), and silently break
-three pages: `themes.html`/`index.html` (which each carry a hardcoded LOCAL
-`:root` fallback, cascade-earlier than the theme's own `<link>`, so a
-missing token doesn't error — it just keeps showing the OUTGOING theme's
-stale value forever) and `press.html`/`privacy.html` (which carry no
-fallback at all, so a missing token is a straight unresolved `var()`).
+define any of them. Nothing required a theme's `tokens.css`,
+`archetypes/utility.css` or `archetypes/reading.css` to supply them — a
+September theme could rename or drop one, pass every existing gate
+(vocabulary only checks class names; chrome/links don't look at custom
+properties at all), and silently break five pages:
+`themes.html`/`index.html` (which each carry a hardcoded LOCAL `:root`
+fallback, cascade-earlier than the theme's own `<link>`, so a missing token
+doesn't error — it just keeps showing the OUTGOING theme's stale value
+forever) and `press.html`/`privacy.html`/`thesis.html`/`workflow.html`
+(which carry no fallback at all, so a missing token is a straight unresolved
+`var()`).
 
 `archetypes.REQUIRED_TOKENS` (`scripts/archetypes.py`) closes it: the exact
 set of custom-property names, derived the same way `VOCABULARY` was — by
@@ -592,7 +594,7 @@ this fix wave didn't touch.
 | Group | Tokens | Why required |
 |---|---|---|
 | Backgrounds | `--bg-0`, `--bg-1`, `--bg-2` | Page and card-surface fields. Undefined = transparent surfaces over whatever's behind them. |
-| Foreground / text | `--fg-1`, `--fg-2`, `--fg-3`, `--text`, `--text-sec`, `--text-dim`, `--text-mute` | Body/heading/secondary/meta text colors. `--fg-*` is what markup actually uses; `--text*` is what `--fg-*` resolves through (see `--fg-1: var(--text)` in `tokens.css`) — both layers are read directly somewhere in the three pages, so both are required. Undefined = unreadable (browser default, usually black-on-black here). |
+| Foreground / text | `--fg-1`, `--fg-2`, `--fg-3`, `--text`, `--text-sec`, `--text-dim`, `--text-mute` | Body/heading/secondary/meta text colors. `--fg-*` is what markup actually uses; `--text*` is what `--fg-*` resolves through (see `--fg-1: var(--text)` in `tokens.css`) — both layers are read directly somewhere in the five pages, so both are required. Undefined = unreadable (browser default, usually black-on-black here). |
 | Brand color + accent | `--cyan`, `--cyan-pale`, `--magenta`, `--magenta-pale`, `--navy-deep`, `--navy-mid`, `--navy-hi`, `--ink-950`, `--ok`, `--brand-gradient`, `--brand-gradient-soft` | The nav CTA, links, status pills, the two-tone gradient underline — the site's actual brand identity. Undefined = the pages stop looking like 626 Labs at all, not just "wrong theme." |
 | Borders + panel effects | `--border-1`, `--border-2`, `--border-accent`, `--inner-stroke` | Card/nav/footer hairlines and the inset highlight every panel uses. Undefined = flat, seamless panels with no separation. |
 | Typography | `--font-display`, `--font-body`, `--font-mono` | The three-typeface stack (Space Grotesk / Inter / JetBrains Mono) every heading, body line, and meta label is set in. Undefined = browser default serif/sans, breaking the brand's whole type identity. |

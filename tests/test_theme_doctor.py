@@ -467,12 +467,16 @@ def test_main_theme_with_all_archetype_css_files_clears_completeness(monkeypatch
 
 
 # ─── final review Fix 1: the required-tokens contract ──────────────────────
-# themes.html's own <style> and press.html's/privacy.html's own residual
-# <style> (the page-specific rules left after utility.css's A4 extraction)
-# read ~43 custom properties via var(--x) and never define them — nothing
-# before this required a theme's tokens.css / archetypes/utility.css to
-# supply them. See archetypes.REQUIRED_TOKENS's docstring and
-# docs/theme-archetypes.md, "The token-variable contract."
+# themes.html's own <style>, plus the residual <style> of press.html,
+# privacy.html (the page-specific rules left after utility.css's A4
+# extraction), thesis.html and workflow.html (same shape, after their private
+# :root blocks moved into reading.css) read the REQUIRED_TOKENS set via
+# var(--x) and never define them — nothing before this required a theme's
+# tokens.css / archetypes/utility.css / archetypes/reading.css to supply
+# them. The last four carry no fallback of their own at all, so for them a
+# missing name is an unresolved var(), not a stale value. See
+# archetypes.REQUIRED_TOKENS's docstring and docs/theme-archetypes.md, "The
+# token-variable contract."
 
 
 def test_required_tokens_flags_a_missing_token():
