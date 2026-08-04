@@ -1,4 +1,23 @@
 
+    /* ============================================================
+       Theme: phosphor-blueprint — product archetype, ELEMENT DRESS.
+
+       The dress only. Its token vocabulary lives beside it in
+       archetypes/product-tokens.css, which render-plugin-pages.py
+       concatenates AFTER this file before inlining the pair into the 15
+       generated product pages. After, not before, because the @import
+       below has to stay the first rule in the combined sheet or the
+       browser drops it and the whole type stack falls back.
+
+       This file is deliberately NOT what the two hand-authored product
+       pages (conundrum.html, rororo-plugins.html) link. It styles bare
+       element and generic class selectors — `body`, `a`, `a:hover`,
+       `h1, h2, h3`, `section.hero`, `.card`, `.btn`, `.brand img`,
+       `footer` — written for markup render-plugin-pages.py owns. On a
+       bespoke page those reach markup they were never written for. Those
+       pages link product-tokens.css instead; see its header for the
+       measurement that settled it.
+       ============================================================ */
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
     @import url('/fonts/fonts.css');
 
@@ -273,22 +292,13 @@
        Phosphor Blueprint — treatment layer (adopted 2026-07-07)
        Append-only override; base system above stays intact.
        Matches the homepage treatment (626labs.dev PR #73).
+
+       The --pb-* names this section spends are DEFINED in
+       archetypes/product-tokens.css, which render-plugin-pages.py
+       concatenates after this file. They moved there because
+       conundrum.html reads nine of them and links the token file only —
+       one definition, two consumers, instead of a copy per consumer.
        ============================================================ */
-    :root {
-      --pb-field: rgb(0,0,0);
-      --pb-grid-fine: rgba(23,212,250,.05);
-      --pb-grid-coarse: rgba(23,212,250,.11);
-      --pb-scanline: rgba(0,0,0,.42);
-      --pb-panel: rgba(0,0,0,.72);
-      --pb-panel-border: rgba(23,212,250,.25);
-      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
-      /* The treatment's hairline. This exact value was already hardcoded
-         below on .card/.mini/.family-card; naming it is what lets a page
-         that wears this treatment (conundrum.html) read it instead of
-         copying the number into its own :root. */
-      --pb-hairline: rgba(23,212,250,.14);
-    }
     body {
       background:
         linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
@@ -328,88 +338,3 @@
         background-size: 120px 120px, 120px 120px;
       }
     }
-
-/* ============================================================
-   Product archetype — base token vocabulary.
-
-   Everything above this line is the dress render-plugin-pages.py
-   INLINES into the 16 generated product pages (14 plugins, the family
-   index, plus the per-product shells). It speaks its own private
-   palette names (--navy-*, --ink-*, --grad-duo) and never reads a
-   single name defined below, so this section is inert for those pages.
-
-   What it is for: the two HAND-AUTHORED product pages, conundrum.html
-   and rororo-plugins.html, which LINK this file. Each of them used to
-   carry a private `:root` copied out of Design/colors_and_type.css — a
-   copy no rotation could reach, so they would have stayed in this
-   theme's colors forever while the rest of the site moved on. Moving
-   the definitions here is what makes the next theme's palette land on
-   them.
-
-   THIS SECTION IS TOKEN DEFINITIONS ONLY, and that is load-bearing.
-   The section above carries a full page dress on bare element and
-   generic class selectors (`body`, `h1`, `a`, `section.hero`, `.card`,
-   `.btn`) written for the generated pages' markup. Both linking pages
-   are bespoke: they keep their own layout, so each states in its own
-   <style> the handful of properties that dress would otherwise impose
-   on markup it was never written for. Adding element selectors HERE
-   would grow that list for every page that links this file. See each
-   page's "theme dress" comment for the exact list and why.
-
-   Values are the two pages' CURRENT rendering, drift and all — the same
-   posture archetypes/utility.css documents for press.html. The text
-   ramp is NOT the --ink-* ramp above: these pages run #ffffff/#c4cdda/
-   #a4aebd/#99a4b4, matching archetypes/reading.css rather than the
-   generated pages' #e8eef7/#c0cad8/#a4afbf/#97a4b5. Preserved exactly;
-   a future theme is free to resolve the two ramps into one.
-
-   This block is COMPLETE against archetypes.REQUIRED_TOKENS, and
-   scripts/theme-doctor.py enforces that on every theme, not just this
-   one. It has to be: neither page keeps a local fallback, so a name
-   missing here is an unresolved var() on a live page, not a
-   stale-but-valid color.
-
-   That completeness is why the spacing scale appears even though
-   neither page spends a single step of it. The theme OFFERS a scale;
-   the pages decline it. Every padding, gap, and margin stays a literal
-   in the page that owns its layout — these pages recolor monthly, they
-   do not re-layout.
-   ============================================================ */
-:root {
-  --text:      #ffffff;
-  --text-sec:  #c4cdda;
-  --text-dim:  #a4aebd;
-  --text-mute: #99a4b4;
-  --ink-950:   #050c18;
-  --ok:        #2bd99a;
-
-  --bg-0: var(--navy-deep);
-  --bg-1: var(--navy-mid);
-  --bg-2: var(--navy-hi);
-  --fg-1: var(--text);
-  --fg-2: var(--text-sec);
-  --fg-3: var(--text-dim);
-  --fg-muted: var(--text-mute);
-
-  --border-1: rgba(255,255,255,.08);
-  --border-2: rgba(255,255,255,.14);
-  --border-accent: rgba(23,212,250,.45);
-
-  --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
-  --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
-  --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
-  --shadow-2: 0 4px 16px rgba(0,0,0,.45);
-
-  --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
-  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
-
-  --r-xs: 4px; --r-pill: 999px;
-
-  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-
-  --ease-out: cubic-bezier(.2,.7,.2,1);
-  --dur-fast: 120ms;
-  --dur-med: 220ms;
-}

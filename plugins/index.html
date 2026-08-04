@@ -16,6 +16,25 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://626labs.dev/assets/brand/vibe-plugins-banner-1280x640.png" />
   <style>
+    /* ============================================================
+       Theme: phosphor-blueprint — product archetype, ELEMENT DRESS.
+
+       The dress only. Its token vocabulary lives beside it in
+       archetypes/product-tokens.css, which render-plugin-pages.py
+       concatenates AFTER this file before inlining the pair into the 15
+       generated product pages. After, not before, because the @import
+       below has to stay the first rule in the combined sheet or the
+       browser drops it and the whole type stack falls back.
+
+       This file is deliberately NOT what the two hand-authored product
+       pages (conundrum.html, rororo-plugins.html) link. It styles bare
+       element and generic class selectors — `body`, `a`, `a:hover`,
+       `h1, h2, h3`, `section.hero`, `.card`, `.btn`, `.brand img`,
+       `footer` — written for markup render-plugin-pages.py owns. On a
+       bespoke page those reach markup they were never written for. Those
+       pages link product-tokens.css instead; see its header for the
+       measurement that settled it.
+       ============================================================ */
     /* 626 Labs Design System tokens — see ../Design/colors_and_type.css */
     @import url('/fonts/fonts.css');
 
@@ -290,22 +309,13 @@
        Phosphor Blueprint — treatment layer (adopted 2026-07-07)
        Append-only override; base system above stays intact.
        Matches the homepage treatment (626labs.dev PR #73).
+
+       The --pb-* names this section spends are DEFINED in
+       archetypes/product-tokens.css, which render-plugin-pages.py
+       concatenates after this file. They moved there because
+       conundrum.html reads nine of them and links the token file only —
+       one definition, two consumers, instead of a copy per consumer.
        ============================================================ */
-    :root {
-      --pb-field: rgb(0,0,0);
-      --pb-grid-fine: rgba(23,212,250,.05);
-      --pb-grid-coarse: rgba(23,212,250,.11);
-      --pb-scanline: rgba(0,0,0,.42);
-      --pb-panel: rgba(0,0,0,.72);
-      --pb-panel-border: rgba(23,212,250,.25);
-      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
-      /* The treatment's hairline. This exact value was already hardcoded
-         below on .card/.mini/.family-card; naming it is what lets a page
-         that wears this treatment (conundrum.html) read it instead of
-         copying the number into its own :root. */
-      --pb-hairline: rgba(23,212,250,.14);
-    }
     body {
       background:
         linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
@@ -345,60 +355,87 @@
         background-size: 120px 120px, 120px 120px;
       }
     }
-
 /* ============================================================
-   Product archetype — base token vocabulary.
+   Theme: phosphor-blueprint — product archetype, TOKEN VOCABULARY.
 
-   Everything above this line is the dress render-plugin-pages.py
-   INLINES into the 16 generated product pages (14 plugins, the family
-   index, plus the per-product shells). It speaks its own private
-   palette names (--navy-*, --ink-*, --grad-duo) and never reads a
-   single name defined below, so this section is inert for those pages.
+   This file is custom-property definitions and nothing else. No element
+   selectors, no class selectors, no media queries, no @import. That is a
+   contract, enforced by scripts/theme-doctor.py's
+   check_token_css_declares_only_tokens(), not a convention — see below
+   for why it has to be.
 
-   What it is for: the two HAND-AUTHORED product pages, conundrum.html
-   and rororo-plugins.html, which LINK this file. Each of them used to
-   carry a private `:root` copied out of Design/colors_and_type.css — a
-   copy no rotation could reach, so they would have stayed in this
-   theme's colors forever while the rest of the site moved on. Moving
-   the definitions here is what makes the next theme's palette land on
-   them.
+   ── Who reads it ──────────────────────────────────────────────────────
+   1. conundrum.html and rororo-plugins.html LINK it, via the renderer-
+      owned "theme-css" zone that scripts/render-hub.py repoints at the
+      active theme on every run. Both pages used to carry a private :root
+      copy of these values, which no monthly rotation could reach.
+   2. scripts/render-plugin-pages.py CONCATENATES it after
+      archetypes/product.css and inlines the result into the 15 generated
+      product pages, so the vocabulary and the dress that spends it stay
+      one artifact from those pages' point of view. After, not before:
+      product.css opens with an @import, which CSS requires to lead the
+      sheet. See that renderer's STYLE comment for the measurement.
 
-   THIS SECTION IS TOKEN DEFINITIONS ONLY, and that is load-bearing.
-   The section above carries a full page dress on bare element and
-   generic class selectors (`body`, `h1`, `a`, `section.hero`, `.card`,
-   `.btn`) written for the generated pages' markup. Both linking pages
-   are bespoke: they keep their own layout, so each states in its own
-   <style> the handful of properties that dress would otherwise impose
-   on markup it was never written for. Adding element selectors HERE
-   would grow that list for every page that links this file. See each
-   page's "theme dress" comment for the exact list and why.
+   ── Why it is separate from product.css, which is the load-bearing part ─
+   The two bespoke pages above are hand-authored. They keep their own
+   layout: the approved spec says these pages RECOLOR monthly, they do not
+   RE-LAYOUT. A token file is a recolor. product.css is an element dress —
+   it styles `body`, `a`, `a:hover`, `h1, h2, h3`, `section.hero`, `.card`,
+   `.btn`, `.brand img`, `footer` — written for markup
+   render-plugin-pages.py owns.
 
-   Values are the two pages' CURRENT rendering, drift and all — the same
-   posture archetypes/utility.css documents for press.html. The text
-   ramp is NOT the --ink-* ramp above: these pages run #ffffff/#c4cdda/
-   #a4aebd/#99a4b4, matching archetypes/reading.css rather than the
-   generated pages' #e8eef7/#c0cad8/#a4afbf/#97a4b5. Preserved exactly;
-   a future theme is free to resolve the two ramps into one.
+   Linking that dress into a bespoke page and then neutralising it
+   property-by-property was tried, measured, and rejected. It was the worst
+   of both: the pages took every risk of the dress while eleven page-side
+   neutralisers cancelled its benefit. It also shipped a live regression
+   that no resting-state gate could see — `a:hover { text-decoration:
+   underline }` at specificity (0,1,1) outranks `.merch-card`,
+   `.shop-cta`, `.repo-cta` and `footer a`, so 14 links on the shop page
+   and 18 on the marketplace page grew a magenta underline on hover that
+   origin/main never had. A pixel harness samples the resting state; hover
+   is out of frame by construction. The split closes that class of bug
+   structurally rather than one neutraliser at a time, and the token-only
+   gate is what keeps it closed for every future theme.
+
+   ── What the values are ───────────────────────────────────────────────
+   The two pages' rendering as shipped, drift and all — same posture
+   archetypes/utility.css documents for press.html. The text ramp here is
+   NOT product.css's --ink-* ramp: these pages run #ffffff / #c4cdda /
+   #a4aebd / #99a4b4, matching archetypes/reading.css, where the generated
+   pages run #e8eef7 / #c0cad8 / #a4afbf / #97a4b5. --fg-2 therefore
+   derives through --text-sec and never through --ink-200, so the two
+   ramps cannot cross-contaminate. Names this file shares with
+   product.css's own :root (--cyan, --navy-deep, --r-md, …) carry
+   product.css's exact values — all 11 of them, asserted by
+   test_product_css_and_tokens_agree_on_every_shared_name — so the
+   concatenation order cannot change what those 15 pages render.
 
    This block is COMPLETE against archetypes.REQUIRED_TOKENS, and
-   scripts/theme-doctor.py enforces that on every theme, not just this
-   one. It has to be: neither page keeps a local fallback, so a name
-   missing here is an unresolved var() on a live page, not a
-   stale-but-valid color.
+   scripts/theme-doctor.py enforces that on every theme. It has to be:
+   neither linking page keeps a local fallback, so a name missing here is
+   an unresolved var() on a live page, not a stale-but-valid color.
 
-   That completeness is why the spacing scale appears even though
-   neither page spends a single step of it. The theme OFFERS a scale;
-   the pages decline it. Every padding, gap, and margin stays a literal
-   in the page that owns its layout — these pages recolor monthly, they
-   do not re-layout.
+   That completeness is why the spacing scale appears even though neither
+   page spends a single step of it. The theme OFFERS a scale; the pages
+   decline it. Every padding, gap, and margin stays a literal in the page
+   that owns its layout.
    ============================================================ */
 :root {
+  /* Palette — values shared with product.css's own :root, byte-for-byte. */
+  --navy-deep: #0f1f31;
+  --navy-mid:  #192e44;
+  --navy-hi:   #223a54;
+  --cyan:      #17d4fa;
+  --cyan-pale: #5ce6ff;
+  --magenta:   #f22f89;
+  --magenta-pale: #ff66a8;
+  --ink-950:   #050c18;
+  --ok:        #2bd99a;
+
   --text:      #ffffff;
   --text-sec:  #c4cdda;
   --text-dim:  #a4aebd;
   --text-mute: #99a4b4;
-  --ink-950:   #050c18;
-  --ok:        #2bd99a;
 
   --bg-0: var(--navy-deep);
   --bg-1: var(--navy-mid);
@@ -420,7 +457,8 @@
   --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
   --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
 
-  --r-xs: 4px; --r-pill: 999px;
+  --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+  --r-pill: 999px;
 
   --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   --font-body:    'Inter', system-ui, -apple-system, sans-serif;
@@ -429,6 +467,38 @@
   --ease-out: cubic-bezier(.2,.7,.2,1);
   --dur-fast: 120ms;
   --dur-med: 220ms;
+}
+
+/* ============================================================
+   Phosphor Blueprint — treatment layer tokens (adopted 2026-07-07).
+
+   These are THIS THEME's bespoke names, not base vocabulary, and they are
+   deliberately NOT in archetypes.REQUIRED_TOKENS — the same documented
+   posture press.html's var(--pb-field) and thesis.html/workflow.html's
+   --pb-* reads already carry. They live here rather than in product.css
+   because conundrum.html reads nine of them in its own treatment rules
+   and links only this file. product.css's own treatment section spends
+   the same names on its own selectors; both resolve from this one
+   definition, so a theme changing the treatment changes it once.
+
+   A theme built by mirroring themes/phosphor-blueprint/ (what the build
+   instructions say to do) inherits these. One written from scratch has to
+   define them or restyle conundrum.html's treatment block.
+   ============================================================ */
+:root {
+  --pb-field: rgb(0,0,0);
+  --pb-grid-fine: rgba(23,212,250,.05);
+  --pb-grid-coarse: rgba(23,212,250,.11);
+  --pb-scanline: rgba(0,0,0,.42);
+  --pb-panel: rgba(0,0,0,.72);
+  --pb-panel-border: rgba(23,212,250,.25);
+  --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
+  --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+  /* The treatment's hairline. This exact value was hardcoded on
+     .card/.mini/.family-card in product.css; naming it is what lets a page
+     that wears this treatment (conundrum.html) read it instead of copying
+     the number into its own :root. */
+  --pb-hairline: rgba(23,212,250,.14);
 }
   </style>
 </head>

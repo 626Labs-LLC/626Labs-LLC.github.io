@@ -4,14 +4,19 @@
 Checks all four archetypes (scripts/archetypes.py: home, product, reading,
 utility) a theme has to dress. First, completeness: tokens.css/theme.json,
 all four archetypes/*.html, AND archetypes/product.css + archetypes/
-utility.css + archetypes/reading.css (the three CSS artifacts real,
-unguarded consumers read at render time — see REQUIRED_ARCHETYPE_CSS), AND
-that tokens.css and ALL THREE of those archetype stylesheets each actually
-DEFINE every custom property in archetypes.REQUIRED_TOKENS —
+product-tokens.css + archetypes/utility.css + archetypes/reading.css (the
+four CSS artifacts real, unguarded consumers read at render time — see
+REQUIRED_ARCHETYPE_CSS and PRODUCT_TOKENS_CSS), AND that every member of
+REQUIRED_TOKEN_CSS actually
+DEFINES every custom property in archetypes.REQUIRED_TOKENS —
 themes.html/press.html/privacy.html/thesis.html/workflow.html/
 conundrum.html/rororo-plugins.html read these via var(--x) but carry no
 theme-owned fallback of their own (see
-check_required_tokens and REQUIRED_TOKENS's docstring). Then,
+check_required_tokens and REQUIRED_TOKENS's docstring). Every member of
+TOKEN_ONLY_CSS additionally has to contain NOTHING BUT token definitions
+(check_token_css_declares_only_tokens) — a token file that grows an
+element rule reaches two hand-authored pages that link it for their
+palette alone. Then,
 per archetype: page chrome (skip-link/nav/footer/analytics, per
 ARCHETYPE_CHROME's real per-archetype profile), every internal href resolves
 to a real file, the archetype's required vocabulary class set
@@ -84,10 +89,9 @@ ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
 # this as a carried requirement, not a nice-to-have): render-plugin-pages.py
 # does `theme_dir(active)/archetypes/product.css` and reads it unguarded —
 # a theme rotating in without it raises an uncaught FileNotFoundError and
-# crashes all 15 plugin pages. conundrum.html and rororo-plugins.html then
-# made product.css load-bearing a second way: they LINK it for their base
-# token vocabulary, with no local fallback, so a theme without it (or with
-# it but missing names) leaves both pages on unresolved var()s.
+# crashes all 15 plugin pages (it reads archetypes/product-tokens.css the
+# same unguarded way — see PRODUCT_TOKENS_CSS below, which is where
+# conundrum.html and rororo-plugins.html get their vocabulary).
 # press.html/privacy.html resolve
 # archetypes/utility.css the same unguarded way (render-hub.py's
 # THEME_CSS_HREFS zone). `reading` joins them as of A7: about.html's
@@ -102,6 +106,43 @@ ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
 # since its CSS is the inline <style> block in archetypes/home.html itself,
 # already covered by REQUIRED_ARCHETYPES.
 REQUIRED_ARCHETYPE_CSS = {"product": "product.css", "utility": "utility.css", "reading": "reading.css"}
+
+# The token half of the product archetype, split out of product.css so
+# conundrum.html and rororo-plugins.html can link the VOCABULARY without
+# inheriting the DRESS (bare `body`/`a:hover`/`section.hero`/`.card`/`.btn`
+# rules written for render-plugin-pages.py's templates, not for their
+# hand-authored markup). Required as its own file, and not folded into
+# REQUIRED_ARCHETYPE_CSS, because that dict is one-CSS-per-archetype and is
+# also what _archetype_source reads as "the archetype's dress."
+#
+# It has to be REQUIRED rather than optional-with-a-fallback: both pages
+# resolve it through an unguarded <link>, and render-plugin-pages.py reads
+# it with no existence guard, so a theme rotating in without it 404s two
+# live pages and raises FileNotFoundError across the other 15 — unattended,
+# on the 1st.
+PRODUCT_TOKENS_CSS = "product-tokens.css"
+
+# Every stylesheet some page reads BASE VOCABULARY out of, repo-relative to
+# the theme dir. All four must define archetypes.REQUIRED_TOKENS in full.
+REQUIRED_TOKEN_CSS = (
+    "tokens.css",                      # themes.html, index.html
+    f"archetypes/{PRODUCT_TOKENS_CSS}",  # conundrum.html, rororo-plugins.html, +15 inlined
+    "archetypes/utility.css",          # press.html, privacy.html
+    "archetypes/reading.css",          # thesis.html, workflow.html
+)
+
+# Of those, the ones that must contain NOTHING BUT token definitions.
+TOKEN_ONLY_CSS = (f"archetypes/{PRODUCT_TOKENS_CSS}",)
+
+# Real, hand-authored pages --browser opens in addition to the theme's own
+# archetype shells. Everything else in the browser check grades a shell the
+# theme ships; these grade a page the SITE ships, dressed by the theme
+# under test. Kept to the two product pages because they are the two whose
+# theme coupling is newest and whose failure is most expensive
+# (conundrum.html is the commercial Etsy surface). Each is read from
+# render-hub.py's preview output, so its stylesheet <link> points at the
+# theme being doctored rather than the active one.
+BROWSER_CHECK_LIVE_PAGES = ("conundrum.html", "rororo-plugins.html")
 
 # Real, live chrome varies by archetype today — verified by grep against the
 # actual shipped pages (vibe-cartographer/index.html, press.html,
@@ -269,6 +310,70 @@ def check_required_tokens(css: str) -> list[str]:
         for tok in sorted(archetypes.REQUIRED_TOKENS)
         if tok not in declared
     ]
+
+
+_COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
+_TOKEN_ONLY_BLOCK_RE = re.compile(r"(?P<sel>[^{}]*)\{(?P<body>[^{}]*)\}", re.S)
+
+
+def check_token_css_declares_only_tokens(css: str) -> list[str]:
+    """Enforces that a token-vocabulary stylesheet contains custom-property
+    definitions and NOTHING that paints.
+
+    Why this is a gate and not a style note. conundrum.html and
+    rororo-plugins.html are hand-authored: they keep their own layout and
+    link a theme file only for its palette. Before this split they linked
+    the product DRESS, and it shipped a regression no other gate could
+    see — `a:hover { text-decoration: underline; text-decoration-color:
+    var(--magenta) }` at specificity (0,1,1) outranks `.merch-card`,
+    `.shop-cta`, `.repo-cta` and `footer a`, so 14 links on the shop page
+    and 18 on the marketplace page grew a magenta hover underline that had
+    never been there. A pixel harness samples the resting state; hover is
+    out of frame by construction, so the bug was invisible to every
+    automated check the repo has.
+
+    The fix was structural (the two pages link tokens, not dress) and this
+    keeps it structural. Without it, a future theme's product-tokens.css
+    can quietly grow `p { margin: 0 0 24px }` and land it on both pages
+    unattended on the 1st. Missing NAMES are caught by
+    check_required_tokens; extra RULES are caught here. Neither catches the
+    other.
+
+    Rules:
+    - every block's selector must be exactly `:root` (after comment strip)
+    - every declaration inside must be a custom property (`--x: …`)
+    - no at-rules that can carry style (`@media`, `@supports`, `@import`)
+
+    utility.css and reading.css are deliberately NOT held to this — they
+    were extracted FROM press.html and thesis.html, so their element rules
+    are those pages' own dress coming home. See TOKEN_ONLY_CSS.
+    """
+    errors: list[str] = []
+    stripped = _COMMENT_RE.sub("", css)
+
+    for at_rule in re.findall(r"@[\w-]+", stripped):
+        if at_rule.lower() not in ("@charset",):
+            errors.append(
+                f"token stylesheet must declare tokens only, found at-rule "
+                f"{at_rule!r} — put it in the archetype's dress instead"
+            )
+
+    for m in _TOKEN_ONLY_BLOCK_RE.finditer(stripped):
+        selector = " ".join(m.group("sel").split())
+        if selector != ":root":
+            errors.append(
+                f"token stylesheet must declare tokens only, found selector "
+                f"{selector!r} — put it in the archetype's dress instead"
+            )
+            continue
+        for decl in m.group("body").split(";"):
+            prop = decl.split(":", 1)[0].strip()
+            if prop and not prop.startswith("--"):
+                errors.append(
+                    f"token stylesheet must declare tokens only, found "
+                    f"non-token declaration {prop!r} in :root"
+                )
+    return errors
 
 
 # ─── contrast ───────────────────────────────────────────────────────────
@@ -682,7 +787,7 @@ def main(argv: list[str]) -> int:
     # unattended rotation time.
     missing += [
         f"archetypes/{filename}"
-        for filename in REQUIRED_ARCHETYPE_CSS.values()
+        for filename in (*REQUIRED_ARCHETYPE_CSS.values(), PRODUCT_TOKENS_CSS)
         if not (tdir / "archetypes" / filename).exists()
     ]
     if missing:
@@ -709,6 +814,36 @@ def main(argv: list[str]) -> int:
                 print(f"    {line}")
             return 1
         home_html = (Path(tmp) / "index.html").read_text(encoding="utf-8")
+        # The hand-authored pages, as the theme UNDER TEST dresses them.
+        # render-hub.py's preview mode already wrote each one here with its
+        # theme-css zone repointed at `slug` (never at whatever
+        # content/themes.json currently says), so this grades the incoming
+        # dress rather than the outgoing one.
+        #
+        # Why these get opened at all: every other browser check runs
+        # against a theme's OWN archetypes/*.html shell. Nothing in the
+        # unattended gate stack ever rendered a real, hand-authored page —
+        # which meant the commercial Etsy surface was one of the pages the
+        # rotation could never see. This does not catch silent reflow, and
+        # it is not meant to; it catches the page failing to load, throwing,
+        # or scrolling sideways under the incoming theme.
+        live_page_html: dict[str, str] = {}
+        missing_previews: list[str] = []
+        for name in BROWSER_CHECK_LIVE_PAGES:
+            src = Path(tmp) / name
+            if src.exists():
+                live_page_html[name] = src.read_text(encoding="utf-8")
+            else:
+                missing_previews.append(name)
+
+    if missing_previews:
+        # Not a soft skip: it means render-hub.py's preview mode stopped
+        # emitting a page this gate is supposed to open, so the check would
+        # silently cover less than it claims.
+        print(f"FAIL {slug}")
+        for name in missing_previews:
+            print(f"  - render-hub.py --theme/--out did not emit {name} to preview")
+        return 1
 
     tokens_css = (tdir / "tokens.css").read_text(encoding="utf-8")
     theme_meta = json.loads((tdir / "theme.json").read_text(encoding="utf-8"))
@@ -719,7 +854,7 @@ def main(argv: list[str]) -> int:
     # REQUIRED_TOKENS): themes.html reads tokens.css directly; press.html/
     # privacy.html read archetypes/utility.css; thesis.html/workflow.html
     # read archetypes/reading.css; conundrum.html/rororo-plugins.html read
-    # archetypes/product.css. The last six carry no local fallback at
+    # archetypes/product-tokens.css. The last six carry no local fallback at
     # ALL — their private :root blocks are gone — so for them a missing name
     # is not a stale value, it is an unresolved var() with nothing behind
     # it. All four files have to actually DEFINE the required set or those
@@ -733,26 +868,30 @@ def main(argv: list[str]) -> int:
     # author writing a genuinely new reading dress (rather than copying
     # phosphor-blueprint's) passes every gate, rotates in unattended on the
     # 1st, and puts two live pages up with dozens of unresolved var()s.
-    # product.css joined on the same rule and in the same commit as its own
-    # first linking page, and the stakes there are larger, not smaller: a
-    # product dress missing a name breaks conundrum.html and
+    # product-tokens.css joined on the same rule and in the same commit as
+    # its own first linking page, and the stakes there are larger, not
+    # smaller: a product vocabulary missing a name breaks conundrum.html and
     # rororo-plugins.html outright (they link it, no fallback) AND leaves
-    # the 15 pages render-plugin-pages.py INLINES from it rendering with
-    # unresolved var()s too.
+    # the 15 pages render-plugin-pages.py CONCATENATES it into rendering
+    # with unresolved var()s too.
     #
-    # The tuple is every archetype whose stylesheet carries base
-    # vocabulary. "home" is the one archetype absent: no page links or
-    # inlines an archetypes/home.css — index.html is rendered from the
-    # theme's shell.html against tokens.css, which is checked above.
-    for label, text in (
-        ("tokens.css", tokens_css),
-        *(
-            (f"archetypes/{REQUIRED_ARCHETYPE_CSS[a]}",
-             (tdir / "archetypes" / REQUIRED_ARCHETYPE_CSS[a]).read_text(encoding="utf-8"))
-            for a in ("product", "utility", "reading")
-        ),
-    ):
+    # REQUIRED_TOKEN_CSS is every stylesheet a page reads base vocabulary
+    # out of. "home" contributes none: no page links or inlines an
+    # archetypes/home.css — index.html is rendered from the theme's
+    # shell.html against tokens.css, which is the first entry.
+    for label in REQUIRED_TOKEN_CSS:
+        text = (tdir / label).read_text(encoding="utf-8")
         errors += [f"{label}: {e}" for e in check_required_tokens(text)]
+
+    # The token files that exist ONLY to hold tokens have to stay that way.
+    # archetypes/utility.css and archetypes/reading.css are excluded on
+    # purpose: they were EXTRACTED from press.html and thesis.html, so their
+    # element rules are those pages' own dress coming home. product-tokens.
+    # css is the opposite case — a file split OUT of a dress precisely so
+    # two bespoke pages could take the vocabulary without the dress.
+    for label in TOKEN_ONLY_CSS:
+        text = (tdir / label).read_text(encoding="utf-8")
+        errors += [f"{label}: {e}" for e in check_token_css_declares_only_tokens(text)]
 
     archetype_html: dict[str, str] = {}
     for archetype in archetypes.ARCHETYPES:
@@ -761,7 +900,9 @@ def main(argv: list[str]) -> int:
         errors += _check_archetype(archetype, html, css, zones_flag, pairs)
 
     if browser:
-        errors += _run_browser_checks_all(archetype_html, require=require_browser)
+        errors += _run_browser_checks_all(
+            {**archetype_html, **live_page_html}, require=require_browser
+        )
 
     if errors:
         print(f"FAIL {slug}")

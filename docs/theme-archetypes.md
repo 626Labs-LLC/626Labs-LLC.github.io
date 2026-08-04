@@ -539,7 +539,7 @@ undocumented, ungated gap. `themes.html`'s gallery CSS and `press.html`'s/
 `utility.css`'s extraction — `.copy-block`/`.asset-grid`/`.tldr` and
 friends) read roughly forty custom properties via `var(--x)` and never
 define any of them. Nothing required a theme's `tokens.css`,
-`archetypes/product.css`, `archetypes/utility.css` or
+`archetypes/product-tokens.css`, `archetypes/utility.css` or
 `archetypes/reading.css` to supply them — a
 September theme could rename or drop one, pass every existing gate
 (vocabulary only checks class names; chrome/links don't look at custom
@@ -550,8 +550,9 @@ doesn't error — it just keeps showing the OUTGOING theme's stale value
 forever) and `press.html`/`privacy.html`/`thesis.html`/`workflow.html`/
 `conundrum.html`/`rororo-plugins.html`
 (which carry no fallback at all, so a missing token is a straight unresolved
-`var()`). `product.css` carries the widest blast radius of the four: two
-pages LINK it, and `render-plugin-pages.py` INLINES it into fifteen more.
+`var()`). `product-tokens.css` carries the widest blast radius of the
+four: two pages LINK it, and `render-plugin-pages.py` concatenates it into
+fifteen more.
 
 `archetypes.REQUIRED_TOKENS` (`scripts/archetypes.py`) closes it: the exact
 set of custom-property names, derived the same way `VOCABULARY` was — by
@@ -560,17 +561,57 @@ every `var(--x)` in `themes.html`'s inline `<style>` plus the residual
 `<style>` blocks of `press.html`, `privacy.html`, `thesis.html`,
 `workflow.html`, `conundrum.html` and `rororo-plugins.html`.
 `scripts/theme-doctor.py`'s `check_required_tokens()` fails
-a theme whose `tokens.css`, `archetypes/product.css`,
+a theme whose `tokens.css`, `archetypes/product-tokens.css`,
 `archetypes/utility.css` **or**
-`archetypes/reading.css` doesn't define every one of them — all four,
-because all four are real, unguarded consumers today: `tokens.css` for
+`archetypes/reading.css` doesn't define every one of them — all four
+(`REQUIRED_TOKEN_CSS`), because all four are real, unguarded consumers
+today: `tokens.css` for
 `themes.html`/`index.html`, `utility.css` for `press.html`/`privacy.html`,
-`reading.css` for `thesis.html`/`workflow.html`, `product.css` for
-`conundrum.html`/`rororo-plugins.html` plus the fifteen pages inlined from
-it (their only source of these
+`reading.css` for `thesis.html`/`workflow.html`, `product-tokens.css` for
+`conundrum.html`/`rororo-plugins.html` plus the fifteen pages concatenated
+from it (their only source of these
 properties, with no local fallback of their own). A theme missing even one
 fails before the archetype loop runs, named by property
 (`tokens.css: missing required custom property '--cyan'`).
+
+### Why the product archetype ships two CSS files
+
+`archetypes/product.css` is an element **dress**: it styles `body`, `a`,
+`a:hover`, `h1, h2, h3`, `section.hero`, `.card`, `.btn`, `.brand img`,
+`footer`. Those selectors are written for the markup
+`render-plugin-pages.py` generates. `archetypes/product-tokens.css` is the
+**vocabulary** — custom-property definitions and nothing else.
+
+The split exists because `conundrum.html` and `rororo-plugins.html` are
+hand-authored: they keep their own layout, and the spec for this milestone
+is that these pages **recolor monthly, they do not re-layout**. A token
+file is a recolor; a dress is a re-layout. They link the token half only.
+
+This was measured before it was decided. Linking the dress into both pages
+and neutralising it property-by-property was tried: it needed eleven
+page-side rules to hold 0-pixel, and it still shipped a live regression
+that no resting-state gate could see. `a:hover { text-decoration:
+underline; text-decoration-color: var(--magenta) }` has specificity
+(0,1,1), which outranks `.merch-card`, `.shop-cta`, `.repo-cta` (all
+(0,1,0)) and `footer a` (0,0,2) — 11 links across the two pages grew a
+magenta hover underline. Pixel harnesses and computed-style probes sample
+the **resting** state; hover is out of frame by construction.
+
+Two gates keep the split honest, and they catch different things.
+`check_required_tokens` catches a **missing name**.
+`check_token_css_declares_only_tokens` (`TOKEN_ONLY_CSS`) catches an
+**extra rule** — any selector other than `:root`, any non-token declaration
+inside `:root`, any style-carrying at-rule. Without the second, a future
+theme's `product-tokens.css` can grow `p { margin: 0 0 24px }` and land it
+on both pages unattended on the 1st.
+
+`render-plugin-pages.py` concatenates the two for its own 15 pages, **dress
+first**. That order is load-bearing, not cosmetic: `product.css` opens with
+`@import url('/fonts/fonts.css')`, and CSS requires `@import` to precede
+every rule but `@charset`/`@layer`. Tokens-first silently drops the import
+— measured at 1,321,489 changed pixels on `plugins/index.html` and a height
+change on every one of the 15, with no error emitted anywhere.
+`tests/test_render_plugin_pages.py` pins it.
 
 Four names — `--bg-2`, `--dur-med`, `--r-xl`, `--fg-muted` — were admitted
 later, when `thesis.html`/`workflow.html` and then

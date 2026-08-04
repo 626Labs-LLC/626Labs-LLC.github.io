@@ -14,49 +14,34 @@
 <link rel="icon" type="image/png" href="favicon-626.png" />
 
 <!-- SITE_JSON:theme-css:start -->
-<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/product.css">
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/product-tokens.css">
 <!-- SITE_JSON:theme-css:end -->
 
 <style>
   /* ---------- Web fonts ---------- */
   @import url('/fonts/fonts.css');
 
-  /* ---------- Theme dress ----------
-     Brand tokens come from the ACTIVE theme's archetypes/product.css,
-     linked above and repointed by scripts/render-hub.py on every render.
-     This page used to carry a private :root copy of them; a copy is
-     something the monthly rotation cannot reach.
+  /* ---------- Theme tokens ----------
+     Brand tokens come from the ACTIVE theme's
+     archetypes/product-tokens.css, linked above and repointed by
+     scripts/render-hub.py on every render. This page used to carry a
+     private :root copy of them; a copy is something the monthly rotation
+     cannot reach.
 
-     That stylesheet also carries the generated plugin pages' full dress
-     on bare element and generic class selectors. This page is bespoke —
-     it keeps its own layout, per the milestone's "uniform dress, not
-     uniform layout" rule — so the rules below restate what this page has
-     always rendered wherever that dress reaches markup it was never
-     written for:
-       body            line-height (product sets 1.55; this page has
-                       always run the initial value)
-       h1, h2, h3      the archetype's display tracking and heading
-                       leading
-       h1              the treatment's phosphor bloom. This is the one
-                       product surface that never took the Phosphor
-                       Blueprint treatment — it is still on the navy
-                       field — so the bloom has to be declined by name
-                       rather than simply not inherited
-       .btn            the archetype's .btn is a 15px/500 pill; this
-                       page's is a 12px mono chip
-       .cards-fallback a  the archetype underlines nothing by default;
-                       these three links have always been underlined
-                       (they only appear when the catalog fetch fails)
-     Every value below is this page's CURRENT rendering restated, never a
-     new value — the pixel gate outranks tidiness. One thing this page
-     DOES newly take from the dress: its `prefers-reduced-motion` block,
-     which zeroes transitions for readers who ask for that. It moves no
-     pixel in the resting state and it is the whole point of linking. */
-  body { line-height: normal; }
-  h1, h2, h3 { letter-spacing: normal; line-height: normal; }
-  h1 { text-shadow: none; }
-  .btn { font-weight: 400; }
-  .cards-fallback a { text-decoration-line: underline; }
+     What it links is the token file, NOT archetypes/product.css. That
+     one is the element dress for the pages render-plugin-pages.py
+     generates — it styles `body`, `a:hover`, `h1, h2, h3`, `.card`,
+     `.btn`, `footer`, all of which land on markup here that was never
+     written for them (this page has its own `.card` and its own `.btn`,
+     shaped nothing like the archetype's). This page is hand-authored and
+     keeps its own layout: it recolors monthly, it does not re-layout.
+     Every rule below this comment is this page's own and stays this
+     page's own.
+
+     Note for whoever picks up the treatment work: this is the one
+     product surface that never took the Phosphor Blueprint treatment. It
+     is still on the navy field. That is pre-existing drift, not a
+     decision made here. */
 
   html, body { margin:0; padding:0; min-height:100vh; }
   body{
