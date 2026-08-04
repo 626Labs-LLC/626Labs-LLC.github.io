@@ -1,0 +1,167 @@
+name: Rotate theme
+
+# Monthly, unattended theme rotation for 626labs.dev. The safety property this
+# workflow exists for: the site can only ever move from one verified state to
+# another. Nothing is committed or pushed unless every gate passes. An empty
+# queue is a clean no-op plus an issue, never a silent skip.
+#
+# Order: freeze the OUTGOING theme (still live at this point) -> rotate the
+# registry (queue[0] becomes active) -> render the new active theme -> gate
+# it -> commit + push, or (dry_run) stage + diff + stop.
+
+on:
+  schedule:
+    - cron: '0 9 1 * *'   # 09:00 UTC on the 1st of every month
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run every gate without committing or pushing'
+        type: boolean
+        default: false
+
+concurrency:
+  group: rotate-theme
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install -r requirements.txt pytest
+
+      - name: Compute rotation month
+        id: month
+        run: |
+          set -euo pipefail
+          echo "month=$(date -u +%Y-%m)" >> "$GITHUB_OUTPUT"
+          echo "month_name=$(date -u +'%B %Y')" >> "$GITHUB_OUTPUT"
+
+      - name: Read the registry
+        id: queue
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          reg = json.loads(open("content/themes.json", encoding="utf-8").read())
+          print("empty=true" if not reg.get("queue") else "empty=false")
+          PY
+
+      - name: Open issue — queue is empty
+        if: steps.queue.outputs.empty == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh issue create \
+            --title "Theme queue is empty" \
+            --body "Rotation ran on $(date -u +%F) with nothing queued. The site is unchanged."
+
+      # ── everything below only runs when there's a theme queued ──────────
+
+      - name: Freeze the outgoing theme
+        if: steps.queue.outputs.empty == 'false'
+        run: python scripts/freeze-theme.py "${{ steps.month.outputs.month }}"
+
+      - name: Rotate the registry
+        if: steps.queue.outputs.empty == 'false'
+        id: rotate
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import sys
+
+          sys.path.insert(0, "scripts")
+          import theme_registry as tr
+
+          reg = tr.load()
+          new_reg = tr.rotate(reg, "${{ steps.month.outputs.month }}")
+          with open("content/themes.json", "w", encoding="utf-8", newline="\n") as f:
+              json.dump(new_reg, f, indent=2)
+              f.write("\n")
+          print(f"new_active={new_reg['active']}")
+          PY
+
+      - name: Render the new active theme
+        if: steps.queue.outputs.empty == 'false'
+        run: python scripts/render-hub.py
+
+      - name: 'Gate: theme doctor (new active theme, browser checks)'
+        if: steps.queue.outputs.empty == 'false'
+        run: python scripts/theme-doctor.py "${{ steps.rotate.outputs.new_active }}" --browser
+
+      - name: 'Gate: render drift'
+        if: steps.queue.outputs.empty == 'false'
+        run: python scripts/render-hub.py --check
+
+      - name: 'Gate: unit tests'
+        if: steps.queue.outputs.empty == 'false'
+        run: python -m pytest tests/ -q
+
+      - name: 'Gate: site doctor'
+        if: steps.queue.outputs.empty == 'false'
+        run: python scripts/site-doctor.py --check
+
+      - name: 'Dry run: stage + show diff, commit nothing'
+        if: steps.queue.outputs.empty == 'false' && inputs.dry_run == true
+        run: |
+          set -euo pipefail
+          git add -A
+          echo "── staged diff (nothing will be committed) ──"
+          git diff --stat --cached
+          echo "── full status ──"
+          git status --short
+          echo "dry run: all gates passed, no commit made."
+
+      - name: Commit + push rotation
+        if: steps.queue.outputs.empty == 'false' && inputs.dry_run != true
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/themes.json index.html feed.xml sitemap.xml conundrum.html editorial themes/archive
+          git commit -m "chore(themes): rotate to ${{ steps.rotate.outputs.new_active }} for ${{ steps.month.outputs.month_name }}
+
+          Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
+          # Retry push — another bot job (rebuild-hub, build-widget,
+          # track-traffic, ...) may have pushed to main while we were
+          # rendering and gating.
+          for attempt in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; rebasing onto remote main and retrying..."
+            git pull --rebase origin main
+            sleep $((attempt * 3))
+          done
+          echo "::error::Failed to push after 5 attempts."
+          exit 1
+
+      - name: Open issue — rotation failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh issue create \
+            --title "Theme rotation failed on $(date -u +%F)" \
+            --body "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          A gate failed (or the push itself failed) before every check cleared. The commit-and-push step only runs after every gate passes, so nothing was pushed to main — the site remains at its last verified state."
