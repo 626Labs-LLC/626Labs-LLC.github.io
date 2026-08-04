@@ -20,6 +20,16 @@
 <link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/utility.css">
 <!-- SITE_JSON:theme-css:end -->
   <style>
+    /* ---------- Web fonts ----------
+       /fonts/fonts.css is a REPO-GLOBAL asset, not a theme asset, so this
+       page states its own dependency on it the way all six pages converted
+       in PR #96 do. The active theme's archetypes/utility.css also @imports
+       it today; the import is idempotent, and leaning on the theme for it
+       was always the wrong seam — a theme that dropped the line would strip
+       the brand type stack off both utility pages while every gate stayed
+       green. */
+    @import url('/fonts/fonts.css');
+
     /* ========== Body sections ========== */
     main.kit { padding: var(--s-12) 0 var(--s-16); }
     main.kit h2 {
