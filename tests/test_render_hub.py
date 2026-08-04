@@ -286,6 +286,46 @@ def test_real_themes_registry_renders_at_least_one_card():
     assert '<span class="theme-status live">Live</span>' in html
 
 
+def test_themes_gallery_card_has_no_thumbnail_when_none_captured(tmp_path):
+    # capture_theme_screenshot (scripts/freeze-theme.py) is the only writer
+    # of assets/themes/<slug>.png — a theme that hasn't been through a live
+    # rotation yet has no file there, and the card must render cleanly
+    # without an <img>, not a broken one.
+    _make_theme(tmp_path, "phosphor-blueprint")
+    reg = {"active": "phosphor-blueprint", "queue": [], "archive": []}
+    html = render_hub.render_themes_gallery(reg, root=tmp_path)
+    assert "<img" not in html
+
+
+def test_themes_gallery_card_has_thumbnail_when_captured(tmp_path):
+    _make_theme(tmp_path, "phosphor-blueprint", name="Phosphor Blueprint")
+    thumbs = tmp_path / "assets" / "themes"
+    thumbs.mkdir(parents=True)
+    (thumbs / "phosphor-blueprint.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    reg = {"active": "phosphor-blueprint", "queue": [], "archive": []}
+    html = render_hub.render_themes_gallery(reg, root=tmp_path)
+    assert (
+        '<img class="theme-thumb" src="/assets/themes/phosphor-blueprint.png" '
+        'alt="Phosphor Blueprint thumbnail" loading="lazy" width="1440" height="900">'
+    ) in html
+    # The thumbnail is the first thing inside the card, before the head chips.
+    assert html.index("theme-thumb") < html.index("theme-card-head")
+
+
+def test_theme_thumbnail_href_none_when_missing(tmp_path):
+    assert render_hub._theme_thumbnail_href("nope", tmp_path) is None
+
+
+def test_theme_thumbnail_href_present_when_captured(tmp_path):
+    thumbs = tmp_path / "assets" / "themes"
+    thumbs.mkdir(parents=True)
+    (thumbs / "phosphor-blueprint.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    assert (
+        render_hub._theme_thumbnail_href("phosphor-blueprint", tmp_path)
+        == "/assets/themes/phosphor-blueprint.png"
+    )
+
+
 # ─── About easter-egg theme registry (about.html "about-theme-toggle" zone) ─
 #
 # render_about_theme_dresses is the render-time source of truth A7's

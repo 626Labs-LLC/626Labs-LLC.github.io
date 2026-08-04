@@ -752,14 +752,34 @@ def _theme_meta(slug: str, root: Path) -> dict:
     return {"name": name, "thesis": thesis, "month": month}
 
 
+def _theme_thumbnail_href(slug: str, root: Path) -> str | None:
+    """Root-relative /assets/themes/<slug>.png href, or None when no capture
+    exists yet. scripts/freeze-theme.py's capture_theme_screenshot() is the
+    only writer of this path — the freeze step captures a retiring theme,
+    the promote step captures the incoming one (see rotate-theme.yml and
+    docs/theme-archetypes.md). A theme that hasn't been through a live
+    rotation yet (freshly queued, or the very first active theme before its
+    first capture) simply has no file here, and the card renders without a
+    thumbnail — never a broken <img>, never a placeholder."""
+    path = root / "assets" / "themes" / f"{slug}.png"
+    return f"/assets/themes/{slug}.png" if path.exists() else None
+
+
 def _render_theme_card(slug: str, status: str, month: str | None, link: str | None, root: Path) -> str:
     meta = _theme_meta(slug, root)
+    thumb_href = _theme_thumbnail_href(slug, root)
     head_bits = [f'<span class="theme-status {status}">{THEME_STATUS_LABEL[status]}</span>']
     month_label = _theme_month_label(month)
     if month_label:
         head_bits.append(f'<span class="theme-month">{esc(month_label)}</span>')
 
-    lines = [
+    lines = []
+    if thumb_href:
+        lines.append(
+            f'  <img class="theme-thumb" src="{attr(thumb_href)}" '
+            f'alt="{esc(meta["name"])} thumbnail" loading="lazy" width="1440" height="900">'
+        )
+    lines += [
         '  <div class="theme-card-head">',
         "    " + "\n    ".join(head_bits),
         "  </div>",

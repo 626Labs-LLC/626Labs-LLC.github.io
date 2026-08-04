@@ -528,3 +528,55 @@ carries each archetype's required classes is `theme-doctor.py`'s job
   its `lnt-*` half, and `archetypes/reading.css` joined the completeness
   gate. All four archetypes now get a real, theme-differentiating
   vocabulary check.
+
+## Screenshots and the self-dressing gallery (A8)
+
+Every theme gets one deterministic PNG at `assets/themes/<slug>.png`
+(1440x900) — `capture_theme_screenshot(slug, out_path)` in
+`scripts/freeze-theme.py`, alongside `freeze()` since the rotation workflow
+already invokes this file and the two capabilities are otherwise unrelated.
+Deterministic means fixed viewport, `document.fonts.ready` awaited, and
+`reduced_motion="reduce"` (Playwright emulates the media query
+`index.html`'s own CSS already collapses every animation/transition under —
+no page code changes needed). Proven by capturing the same theme twice and
+sha256-comparing the PNGs: identical. Reuses theme-doctor.py's own
+harness shape (a local static server serving the repo root, `render-hub.py
+--theme <slug> --out <tmp>` for the preview) rather than inventing a second
+one, without a runtime import dependency between the two files.
+
+**Path convention:** `/assets/themes/<slug>.png`, keyed by slug alone — a
+theme's screenshot is captured once (retiring OR going live, whichever
+happens first) and never recaptured; an archived theme's card keeps
+pointing at the same file forever. `themes.html`'s cards
+(`render-hub.py`'s `_theme_thumbnail_href`/`_render_theme_card`) show the
+`<img>` when that file exists and render cleanly without one otherwise —
+Phosphor Blueprint had none until this task's manual first capture.
+
+**CLI:** `python scripts/freeze-theme.py --screenshot <slug> <out_path>`,
+alongside the existing `<YYYY-MM>` freeze form.
+
+**Rotation wiring:** `rotate-theme.yml`'s freeze step captures the retiring
+theme (the slug read fresh off the registry before rotation touches it);
+a new step after "Render the new active theme" captures the incoming one.
+Playwright installs earlier in the job now (both captures need it, not
+just the theme-doctor browser gate).
+
+**Carried requirement closed (flagged by A5):** `rotate-theme.yml` never
+called `render-plugin-pages.py` — a live rotation would rotate the registry
+and re-render `index.html`/`themes.html`/etc. but leave the 15 per-plugin
+pages dressed in whichever theme was active the last time someone ran that
+script by hand (they inline CSS from the active theme's
+`archetypes/product.css`, per A5). Now wired into the same "Render the new
+active theme" step, with its own `--check` drift gate alongside
+`render-hub.py --check`.
+
+**A second, related gap found and fixed the same way:** auditing what a
+rotation actually writes vs. what the workflow committed turned up that
+`press.html`/`privacy.html` (their `theme-css` link, A4) and `about.html`
+(its easter-egg theme registry, A7) are ALSO rewritten by `render-hub.py`
+on every rotation, but were never in the `git add` list — so a live
+rotation would update them on the runner's disk and never persist it. Both
+gaps closed in the same commit: the plugin pages (via a self-maintaining
+`vibe-*`/`thesis-engine`/`plugins` glob, so a future plugin doesn't need a
+hand-edit here) and `press.html`/`privacy.html`/`about.html` join the
+commit list, alongside `assets/themes` for the new screenshots.
