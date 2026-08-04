@@ -1613,12 +1613,19 @@ def _ed_next_card(story: dict, label: str, pos: str) -> str:
     )
 
 
-def render_story_page(story: dict, body_html: str,
+def render_story_page(story: dict, body_html: str, shell: str,
                       newer: dict | None = None, older: dict | None = None) -> str:
-    """Full standalone HTML reading page for one local Field Note, on the
-    editorial layer (Design/editorial.css). Frontmatter drives the header;
-    `body_html` is the already-rendered markdown body; `newer`/`older` are the
-    adjacent local notes for the prev/next pager (None at the ends)."""
+    """Full standalone HTML reading page for one local Field Note, filled into
+    the theme's `reading` archetype shell (themes/<slug>/archetypes/reading.html
+    — see docs/theme-archetypes.md). Frontmatter drives the header; `body_html`
+    is the already-rendered markdown body; `newer`/`older` are the adjacent
+    local notes for the prev/next pager (None at the ends).
+
+    Field Note pages are fully regenerated every render (STORY_PAGE_MARKER
+    forbids hand-editing them), so unlike index.html's SITE_JSON zones — which
+    must survive in the output for the *next* render to find them again — the
+    `{{READING:...}}` tokens below are consumed whole and never appear in the
+    rendered output."""
     raw_title = str(story.get("title", ""))
     title = esc(raw_title)
     subtitle = str(story.get("subtitle") or story.get("tagline") or "")
@@ -1680,7 +1687,6 @@ def render_story_page(story: dict, body_html: str,
         meta.append(f"<span>{product}</span>")
     meta.append('<span class="sep">·</span>')
     meta.append(f'<span>{read_min} min read</span>')
-    dek = f'\n      <p class="ed-dek">{esc(subtitle)}</p>' if subtitle else ""
 
     pager_cards = []
     if older:
@@ -1692,73 +1698,77 @@ def render_story_page(story: dict, body_html: str,
         + "\n".join(pager_cards) + "\n    </nav>\n"
     ) if pager_cards else ""
 
-    return f"""<!doctype html>
-<html lang="en">
-<head>
-{STORY_PAGE_MARKER}
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>{title} — Field Notes — 626 Labs</title>
-<meta name="description" content="{attr(desc)}" />
-<link rel="canonical" href="{canonical}" />
-<meta property="og:title" content="{attr(raw_title)}" />
-<meta property="og:description" content="{attr(desc)}" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="{canonical}" />
-<meta property="og:image" content="{attr(og_image)}" />
-<meta name="twitter:card" content="summary_large_image" />
-<script type="application/ld+json">
-{ld_json}
-</script>
-<link rel="icon" type="image/png" href="/favicon-626.png" />
-<link rel="stylesheet" href="/Design/colors_and_type.css" />
-<link rel="stylesheet" href="/Design/editorial.css" />
-</head>
-<body class="ed-page">
-<nav class="ed-nav">
-  <a class="ed-lockup" href="/"><span>626 Labs</span><span class="slash">/</span><span class="label">Field Notes</span></a>
-  <div class="ed-nav-links">
-    <a href="/#field-notes">Field Notes</a>
-    <a href="/editorial/">Editorial</a>
-    <a href="/">Home</a>
-  </div>
-</nav>
-<div class="ed-shell">
-  <article class="ed-article">
-    <header>
-      <div class="ed-eyebrow">Field Note<span class="dot"></span><span class="num">{published}</span></div>
-      <h1 class="ed-title">{title}</h1>{dek}
-      <div class="ed-meta">{''.join(meta)}</div>
-    </header>
-    <div class="ed-body">
-{body_html}
-    </div>
-    <div class="ed-end-rule"></div>
-{pager}    <a class="ed-all-notes" href="/#field-notes"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> All Field Notes</a>
-  </article>
-</div>
-</body>
-</html>
-"""
+    head_block = "\n".join([
+        f'<title>{title} — Field Notes — 626 Labs</title>',
+        f'<meta name="description" content="{attr(desc)}" />',
+        f'<link rel="canonical" href="{canonical}" />',
+        f'<meta property="og:title" content="{attr(raw_title)}" />',
+        f'<meta property="og:description" content="{attr(desc)}" />',
+        '<meta property="og:type" content="article" />',
+        f'<meta property="og:url" content="{canonical}" />',
+        f'<meta property="og:image" content="{attr(og_image)}" />',
+        '<meta name="twitter:card" content="summary_large_image" />',
+        '<script type="application/ld+json">',
+        ld_json,
+        '</script>',
+    ])
+
+    h1_line = f'      <h1 class="ed-title">{title}</h1>'
+    if subtitle:
+        h1_line += f'\n      <p class="ed-dek">{esc(subtitle)}</p>'
+    article_header_block = "\n".join([
+        f'      <div class="ed-eyebrow">Field Note<span class="dot"></span><span class="num">{published}</span></div>',
+        h1_line,
+        f'      <div class="ed-meta">{"".join(meta)}</div>',
+    ])
+
+    out = shell
+    for token, value in (
+        ("READING:HEAD", head_block),
+        ("READING:ARTICLE_HEADER", article_header_block),
+        ("READING:BODY", body_html),
+        ("READING:PAGER", pager),
+    ):
+        marker = "{{" + token + "}}"
+        if marker not in out:
+            raise RuntimeError(f"reading archetype missing token: {marker!r}")
+        out = out.replace(marker, value, 1)
+    return out
 
 
-def render_story_pages(stories: list[dict]) -> list[tuple[Path, str]]:
-    """(output_path, html) for each LOCAL published story. Off-site (external_url)
-    posts keep linking out and get no on-site page. Prev/next neighbors come from
-    the newest-first local order (so the pager never points at a Medium post that
-    has no on-site page); the returned list is sorted by path so the write order —
-    and thus `--check` — is deterministic."""
+def render_story_pages(stories: list[dict], slug: str) -> list[tuple[Path, str]]:
+    """(output_path, html) for each LOCAL published story, filled into `slug`'s
+    `reading` archetype shell (themes/<slug>/archetypes/reading.html). Every
+    Field Note page IS `reading` archetype by construction — there's no other
+    archetype a generated editorial/<slug>/index.html page could be — so this
+    resolves the shell path directly rather than round-tripping through
+    archetypes.archetype_for() per page (that mapping is a drift *gate* for
+    pages already on disk, via content/page-archetypes.json + validate(); it
+    would be the wrong layer to also gate whether a brand-new local Field Note
+    can render at all). Off-site (external_url) posts keep linking out and get
+    no on-site page. Prev/next neighbors come from the newest-first local
+    order (so the pager never points at a Medium post that has no on-site
+    page); the returned list is sorted by path so the write order — and thus
+    `--check` — is deterministic."""
+    shell_path = theme_registry.theme_dir(slug) / "archetypes" / "reading.html"
+    if not shell_path.exists():
+        raise RuntimeError(
+            f"reading archetype missing: {shell_path.relative_to(ROOT).as_posix()} "
+            f"(theme {slug!r} has no reading dress yet)"
+        )
+    shell = shell_path.read_text(encoding="utf-8")
+
     local = [s for s in stories if not s.get("external_url")]  # newest-first
     pages: list[tuple[Path, str]] = []
     for i, s in enumerate(local):
-        slug = story_slug(s)
-        if not slug:
+        page_slug = story_slug(s)
+        if not page_slug:
             continue
         newer = local[i - 1] if i > 0 else None
         older = local[i + 1] if i + 1 < len(local) else None
         body_html = _story_body_html(str(s.get("_body", "")))
-        html_doc = render_story_page(s, body_html, newer=newer, older=older)
-        pages.append((STORY_PAGES_DIR / slug / "index.html", html_doc))
+        html_doc = render_story_page(s, body_html, shell, newer=newer, older=older)
+        pages.append((STORY_PAGES_DIR / page_slug / "index.html", html_doc))
     pages.sort(key=lambda pc: pc[0].as_posix())
     return pages
 
@@ -2082,7 +2092,7 @@ def main(argv: list[str]) -> int:
 
     # On-site Field Note pages — (path, new_html, changed) per local story.
     story_pages = []
-    for path, new_html in render_story_pages(stories):
+    for path, new_html in render_story_pages(stories, slug):
         old = path.read_text(encoding="utf-8") if path.exists() else None
         story_pages.append((path, new_html, new_html != old))
     orphans = orphan_story_pages(stories)
