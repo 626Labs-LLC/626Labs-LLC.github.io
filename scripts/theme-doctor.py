@@ -13,7 +13,7 @@ in the loop) — it has to fail honestly. A check that always passes is worse
 than no check: it turns a real gate into a rubber stamp.
 
 Usage:
-  python scripts/theme-doctor.py <slug> [--browser]
+  python scripts/theme-doctor.py <slug> [--browser] [--require-browser]
 
 Exit 0 and "PASS <slug>" when every check clears. Exit 1 and a bulleted
 failure list under "FAIL <slug>" otherwise.
@@ -22,7 +22,16 @@ failure list under "FAIL <slug>" otherwise.
 importable — it is never a hard dependency of this repo) to assert no
 horizontal scroll at 1440/768/390px and zero browser console errors. Without
 it, or without playwright installed, those two checks are skipped with a
-one-line note and never fail the gate on their own.
+one-line note and never fail the gate on their own — that's the local
+convenience path, for a machine that hasn't run `playwright install`.
+
+--require-browser (implies --browser) is the opposite contract: the browser
+path becoming unavailable — playwright not importable, the local preview
+server failing to bind, or chromium failing to launch — is itself a gate
+FAILURE, not a skip. Use this anywhere the gate result gets trusted
+unattended (the scheduled rotation workflow passes it) — a silent skip there
+means the horizontal-scroll and console-error checks never actually run and
+the gate rubber-stamps every rotation forever.
 """
 from __future__ import annotations
 
@@ -216,13 +225,32 @@ def check_contrast(
     return failures, []
 
 
-# ─── browser checks (optional, --browser) ──────────────────────────────
-def _run_browser_checks(html_text: str) -> list[str]:
+# ─── browser checks (optional, --browser / --require-browser) ─────────
+def _import_sync_playwright():
+    """Import hook, split out so tests can force "unavailable" deterministically
+    (monkeypatch this instead of fighting sys.modules/import machinery)."""
     try:
-        from playwright.sync_api import sync_playwright  # noqa: F401
+        from playwright.sync_api import sync_playwright
+        return sync_playwright
     except ImportError:
-        print("browser checks skipped: playwright not installed")
-        return []
+        return None
+
+
+def _degrade(msg: str, require: bool) -> list[str]:
+    """One unavailability event, routed by --require-browser: a hard FAILURE
+    when the caller demanded the browser path actually run (the scheduled
+    rotation, unattended), or a printed skip-and-continue otherwise (the local
+    convenience path, for a machine without `playwright install`)."""
+    if require:
+        return [f"browser: {msg} (--require-browser was set)"]
+    print(f"browser checks skipped: {msg}")
+    return []
+
+
+def _run_browser_checks(html_text: str, require: bool = False) -> list[str]:
+    sync_playwright = _import_sync_playwright()
+    if sync_playwright is None:
+        return _degrade("playwright not installed", require)
 
     import http.server
     import socketserver
@@ -250,9 +278,9 @@ def _run_browser_checks(html_text: str) -> list[str]:
     try:
         httpd = socketserver.TCPServer(("127.0.0.1", 0), _Handler)
     except OSError as e:
-        # Environment degradation — says nothing about the theme. Skip, don't fail.
-        print(f"browser checks skipped: could not start local server ({e})")
-        return []
+        # Environment degradation — says nothing about the theme, UNLESS the
+        # caller required the browser path to run (then it's a gate failure).
+        return _degrade(f"could not start local server ({e})", require)
     port = httpd.server_address[1]
     thread = threading.Thread(target=httpd.serve_forever, daemon=True)
     thread.start()
@@ -262,9 +290,8 @@ def _run_browser_checks(html_text: str) -> list[str]:
             try:
                 browser = p.chromium.launch()
             except Exception as e:  # pragma: no cover — environment-dependent
-                # Environment degradation — skip, don't fail.
-                print(f"browser checks skipped: could not launch chromium ({e})")
-                return []
+                # Environment degradation — same require-gated routing as above.
+                return _degrade(f"could not launch chromium ({e})", require)
             try:
                 for width in (1440, 768, 390):
                     page = browser.new_page(viewport={"width": width, "height": 900})
@@ -322,10 +349,11 @@ def _check_viewport(page, url: str, width: int) -> list[str]:
 
 # ─── main ───────────────────────────────────────────────────────────────
 def main(argv: list[str]) -> int:
-    browser = "--browser" in argv
-    positional = [a for a in argv if a != "--browser"]
+    require_browser = "--require-browser" in argv
+    browser = "--browser" in argv or require_browser
+    positional = [a for a in argv if a not in ("--browser", "--require-browser")]
     if not positional:
-        print("usage: theme-doctor.py <slug> [--browser]", file=sys.stderr)
+        print("usage: theme-doctor.py <slug> [--browser] [--require-browser]", file=sys.stderr)
         return 2
     slug = positional[0]
 
@@ -385,7 +413,7 @@ def main(argv: list[str]) -> int:
         print(line)
 
     if browser:
-        errors += _run_browser_checks(html_text)
+        errors += _run_browser_checks(html_text, require=require_browser)
 
     if errors:
         print(f"FAIL {slug}")

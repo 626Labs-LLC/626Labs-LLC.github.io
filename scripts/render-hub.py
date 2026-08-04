@@ -1968,10 +1968,35 @@ def main(argv: list[str]) -> int:
     if "--out" in argv:
         out_dir = Path(argv[argv.index("--out") + 1])
 
+    # --theme without --out would render an arbitrary theme straight over the
+    # LIVE index.html and every other site surface (feed, sitemap, story
+    # pages, themes.html) — preview mode requires both flags together, always.
+    if theme_slug and not out_dir:
+        print(
+            "error: --theme requires --out — a bare --theme would render that "
+            "theme over the live index.html and every other site surface. "
+            "Use: render-hub.py --theme <slug> --out <dir>",
+            file=sys.stderr,
+        )
+        return 2
+
     reg = theme_registry.load()
     slug = theme_slug or theme_registry.active_slug(reg)
     shell = theme_registry.theme_dir(slug) / "shell.html"
-    src = shell.read_text(encoding="utf-8") if shell.exists() else INDEX_HTML.read_text(encoding="utf-8")
+    if not shell.exists():
+        # A missing shell used to fall back to reading the live index.html as
+        # source, which makes `--check` trivially green forever (comparing
+        # the live file against itself) and silently renders nothing when a
+        # theme is incomplete. Fail loudly instead — an incomplete theme is
+        # a bug to fix, not a state to render around.
+        print(
+            f"error: theme shell missing: {shell.relative_to(ROOT).as_posix()} "
+            f"(theme '{slug}' is incomplete — expected shell.html, tokens.css, "
+            "and theme.json under themes/<slug>/)",
+            file=sys.stderr,
+        )
+        return 2
+    src = shell.read_text(encoding="utf-8")
     dest = (out_dir / "index.html") if out_dir else INDEX_HTML
 
     content = json.loads(SITE_JSON.read_text(encoding="utf-8"))
