@@ -43,6 +43,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+import archetypes  # sibling module in scripts/ — page -> archetype mapping
 import markdown  # the one external dep — markdown -> HTML for Field Note pages
 import site_facts  # sibling module in scripts/ (added to sys.path when run as a script)
 import theme_registry  # sibling module in scripts/ — active theme + shell resolution
@@ -1982,7 +1983,17 @@ def main(argv: list[str]) -> int:
 
     reg = theme_registry.load()
     slug = theme_slug or theme_registry.active_slug(reg)
-    shell = theme_registry.theme_dir(slug) / "shell.html"
+    # index.html is the "home" archetype (content/page-archetypes.json). A
+    # theme dresses it from themes/<slug>/archetypes/home.html; a theme that
+    # hasn't extracted that archetype yet falls back to its legacy single
+    # shell.html so the branch stays green mid-migration (A2-A3 of the
+    # archetype rollout). A4 removes this fallback once every archetype is
+    # extracted for every theme.
+    page_archetype = archetypes.archetype_for("index.html", archetypes.load())
+    shell = theme_registry.theme_dir(slug) / "archetypes" / f"{page_archetype}.html"
+    legacy_shell = theme_registry.theme_dir(slug) / "shell.html"
+    if not shell.exists() and legacy_shell.exists():
+        shell = legacy_shell
     if not shell.exists():
         # A missing shell used to fall back to reading the live index.html as
         # source, which makes `--check` trivially green forever (comparing
@@ -1991,8 +2002,9 @@ def main(argv: list[str]) -> int:
         # a bug to fix, not a state to render around.
         print(
             f"error: theme shell missing: {shell.relative_to(ROOT).as_posix()} "
-            f"(theme '{slug}' is incomplete — expected shell.html, tokens.css, "
-            "and theme.json under themes/<slug>/)",
+            f"(theme '{slug}' is incomplete — expected archetypes/{page_archetype}.html "
+            "or a legacy shell.html, plus tokens.css and theme.json, under "
+            "themes/<slug>/)",
             file=sys.stderr,
         )
         return 2

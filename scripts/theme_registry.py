@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 REGISTRY = ROOT / "content" / "themes.json"
-REQUIRED_FILES = ("shell.html", "tokens.css", "theme.json")
+REQUIRED_FILES = ("tokens.css", "theme.json")
 MONTH_RE = re.compile(r"^\d{4}-\d{2}$")
 
 
@@ -30,7 +30,16 @@ def _theme_complete(slug: str, root: Path) -> list[str]:
     d = theme_dir(slug, root)
     if not d.is_dir():
         return [f"theme dir missing: {d}"]
-    return [f"theme {slug} missing {f}" for f in REQUIRED_FILES if not (d / f).exists()]
+    errs = [f"theme {slug} missing {f}" for f in REQUIRED_FILES if not (d / f).exists()]
+    # The shell is now archetype-aware: a theme either carries the legacy
+    # single shell.html or has extracted archetypes/home.html (the "home"
+    # archetype — index.html, the only archetype render-hub.py resolves
+    # today). Requiring shell.html unconditionally would flag a theme that
+    # has already migrated as incomplete. See scripts/archetypes.py and
+    # docs/theme-archetypes.md.
+    if not (d / "shell.html").exists() and not (d / "archetypes" / "home.html").exists():
+        errs.append(f"theme {slug} missing shell.html or archetypes/home.html")
+    return errs
 
 
 def validate(reg: dict, root: Path = ROOT) -> list[str]:
