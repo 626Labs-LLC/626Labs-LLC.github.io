@@ -107,19 +107,20 @@ ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
 # already covered by REQUIRED_ARCHETYPES.
 REQUIRED_ARCHETYPE_CSS = {"product": "product.css", "utility": "utility.css", "reading": "reading.css"}
 
-# The token half of the product archetype, split out of product.css so
-# conundrum.html and rororo-plugins.html can link the VOCABULARY without
+# The token half of the product archetype, split out of product.css so the
+# four bespoke product pages — conundrum.html, rororo-plugins.html,
+# rororo.html, mod-launcher-games.html — can link the VOCABULARY without
 # inheriting the DRESS (bare `body`/`a:hover`/`section.hero`/`.card`/`.btn`
 # rules written for render-plugin-pages.py's templates, not for their
 # hand-authored markup). Required as its own file, and not folded into
 # REQUIRED_ARCHETYPE_CSS, because that dict is one-CSS-per-archetype and is
 # also what _archetype_source reads as "the archetype's dress."
 #
-# It has to be REQUIRED rather than optional-with-a-fallback: both pages
-# resolve it through an unguarded <link>, and render-plugin-pages.py reads
-# it with no existence guard, so a theme rotating in without it 404s two
-# live pages and raises FileNotFoundError across the other 15 — unattended,
-# on the 1st.
+# It has to be REQUIRED rather than optional-with-a-fallback: all four
+# pages resolve it through an unguarded <link>, and render-plugin-pages.py
+# reads it with no existence guard, so a theme rotating in without it 404s
+# four live pages and raises FileNotFoundError across the other 15 —
+# unattended, on the 1st.
 PRODUCT_TOKENS_CSS = "product-tokens.css"
 
 # The same split, applied to the reading archetype BEFORE it cost anything.
@@ -138,7 +139,9 @@ READING_TOKENS_CSS = "reading-tokens.css"
 # the theme dir. All four must define archetypes.REQUIRED_TOKENS in full.
 REQUIRED_TOKEN_CSS = (
     "tokens.css",                        # themes.html, index.html
-    f"archetypes/{PRODUCT_TOKENS_CSS}",  # conundrum.html, rororo-plugins.html, +15 inlined
+    # conundrum.html, rororo-plugins.html, rororo.html,
+    # mod-launcher-games.html, +15 inlined
+    f"archetypes/{PRODUCT_TOKENS_CSS}",
     f"archetypes/{READING_TOKENS_CSS}",  # thesis.html, workflow.html
     "archetypes/utility.css",            # press.html, privacy.html
 )
@@ -167,6 +170,15 @@ TOKEN_ONLY_CSS = (
 # (conundrum.html is the commercial Etsy surface). Each is read from
 # render-hub.py's preview output, so its stylesheet <link> points at the
 # theme being doctored rather than the active one.
+#
+# rororo.html and mod-launcher-games.html joined THEME_CSS_HREFS later and
+# are deliberately NOT here. mod-launcher-games.html fetches its game
+# manifest from raw.githubusercontent.com at runtime; a failed fetch logs a
+# console error, so adding it would make the one unattended gate standing
+# between a queued theme and the live site depend on a third-party host
+# being up on the 1st. That is a worse failure mode than the coverage is
+# worth. rororo.html is held out with it rather than split from its pair —
+# its own fetch is same-origin, so it could be added on its own merits.
 BROWSER_CHECK_LIVE_PAGES = ("conundrum.html", "rororo-plugins.html")
 
 # Real, live chrome varies by archetype today — verified by grep against the

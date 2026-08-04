@@ -13,51 +13,31 @@
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" type="image/png" href="favicon-626.png" />
 
+<!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/product-tokens.css">
+<!-- SITE_JSON:theme-css:end -->
+
 <style>
   /* ---------- Web fonts ---------- */
   @import url('/fonts/fonts.css');
 
-  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
-  :root {
-    --brand-navy:        #192e44;
-    --brand-navy-deep:   #0f1f31;
-    --brand-cyan:        #17d4fa;
-    --brand-cyan-bright: #5ce6ff;
-    --brand-magenta:     #f22f89;
+  /* ---------- Theme tokens ----------
+     Brand tokens come from the ACTIVE theme's
+     archetypes/product-tokens.css, linked above and repointed by
+     scripts/render-hub.py on every render. This page used to carry a
+     private :root copy of them; a copy is something the monthly rotation
+     cannot reach.
 
-    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
-
-    --ink-0:   #ffffff;
-    --ink-200: #c4cdda;
-    --ink-300: #a4aebd;
-    --ink-400: #99a4b4;
-
-    --fg-1: var(--ink-0);
-    --fg-2: var(--ink-200);
-    --fg-3: var(--ink-300);
-    --fg-muted: var(--ink-400);
-
-    --bg-0: var(--brand-navy-deep);
-
-    --border-1: rgba(255,255,255,.08);
-    --border-2: rgba(255,255,255,.14);
-    --border-accent: rgba(23,212,250,.45);
-
-    --r-md: 10px;
-    --r-lg: 14px;
-    --r-xl: 20px;
-
-    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-
-    --shadow-2: 0 4px 16px rgba(0,0,0,.45);
-    --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
-
-    --ease-out: cubic-bezier(.2,.7,.2,1);
-    --dur-fast: 120ms;
-    --dur-med: 220ms;
-  }
+     What it links is the token file, NOT archetypes/product.css. That one
+     is the element dress for the pages render-plugin-pages.py generates.
+     Measured against this page's real DOM, 30 of its 180 rules match here
+     — `body`, `a`, `a:hover`, `h1, h2, h3`, `.btn`, `.btn-primary`,
+     `.btn-ghost`, `.install-grid`, `.install-card`, `.install-card h3` —
+     all of them landing on markup shaped nothing like the archetype's
+     (this page's `.btn` is a 13.5px icon pill, its `.install-card` a
+     three-up platform card). This page is hand-authored and keeps its own
+     layout: it recolors monthly, it does not re-layout. Every rule below
+     this comment is this page's own and stays this page's own. */
 
   html, body { margin:0; padding:0; min-height:100vh; }
   body{
@@ -72,7 +52,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
   *{ box-sizing:border-box; }
-  a{ color:var(--brand-cyan); }
+  a{ color:var(--cyan); }
 
   /* ---------- Subtle circuit grid backdrop ---------- */
   .grid-bg{
@@ -114,8 +94,8 @@
     transition: color var(--dur-fast);
     display:inline-flex; align-items:center; gap:8px;
   }
-  .topnav .links a:hover{ color: var(--brand-cyan); }
-  .topnav .links a.cta{ color: var(--brand-cyan); }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
   .topnav .links a svg{ flex-shrink: 0; }
 
   .shell{ position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:48px 56px 96px; }
@@ -125,10 +105,10 @@
   .hd-l{ max-width:680px; }
   .eyebrow{
     font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
-    color:var(--brand-cyan); display:inline-flex; align-items:center; gap:10px; margin-bottom:18px;
+    color:var(--cyan); display:inline-flex; align-items:center; gap:10px; margin-bottom:18px;
   }
   .eyebrow::before{
-    content:""; width:24px; height:1px; background:linear-gradient(90deg, var(--brand-cyan), transparent);
+    content:""; width:24px; height:1px; background:linear-gradient(90deg, var(--cyan), transparent);
   }
   h1.title{
     font-family:var(--font-display); font-weight:700; font-size:clamp(40px,5vw,60px);
@@ -160,7 +140,7 @@
     color:var(--fg-1); background: rgba(255,255,255,.03);
     border:1px solid var(--border-2);
   }
-  .btn-ghost:hover{ border-color: var(--border-accent); color:var(--brand-cyan); }
+  .btn-ghost:hover{ border-color: var(--border-accent); color:var(--cyan); }
 
   /* meta on right */
   .hd-r{
@@ -194,7 +174,7 @@
   }
   .section-hd .l p{ font-size:14.5px; color:var(--fg-3); margin:0; max-width:62ch; }
   .section-hd .r{
-    font-family:var(--font-mono); font-size:11px; color:var(--brand-cyan); letter-spacing:.12em;
+    font-family:var(--font-mono); font-size:11px; color:var(--cyan); letter-spacing:.12em;
     text-transform:uppercase; white-space:nowrap;
   }
 
@@ -221,24 +201,24 @@
   }
   .install-card .plat{
     font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--brand-cyan);
+    color:var(--cyan);
   }
   .install-card h3{
     font-family:var(--font-display); font-size:19px; font-weight:600; margin:0; letter-spacing:-0.01em;
   }
   .install-card p{ font-size:13px; line-height:1.5; color:var(--fg-2); margin:0; flex:1; }
   .install-card code{
-    font-family:var(--font-mono); font-size:11px; color:var(--brand-cyan-bright);
+    font-family:var(--font-mono); font-size:11px; color:var(--cyan-pale);
     background: rgba(23,212,250,.06); border:1px solid var(--border-1);
     border-radius:6px; padding:8px 10px; display:block; line-height:1.5;
     overflow-x:auto; white-space:pre;
   }
   .install-card .go{
     font-family:var(--font-mono); font-size:11.5px; letter-spacing:.04em;
-    color:var(--brand-cyan); text-decoration:none;
+    color:var(--cyan); text-decoration:none;
     display:inline-flex; align-items:center; gap:6px; margin-top:2px;
   }
-  .install-card .go:hover{ color:var(--brand-cyan-bright); }
+  .install-card .go:hover{ color:var(--cyan-pale); }
 
   /* ---------- Feature grid ---------- */
   .feature-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
@@ -251,7 +231,7 @@
   }
   .feature:hover{ border-color: var(--border-accent); background: rgba(23,212,250,.035); }
   .feature .key{
-    font-family:var(--font-mono); font-size:10px; color:var(--brand-cyan);
+    font-family:var(--font-mono); font-size:10px; color:var(--cyan);
     letter-spacing:.1em; margin-bottom:8px;
   }
   .feature h4{ font-family:var(--font-display); font-size:15px; margin:0 0 5px; font-weight:600; }
@@ -293,9 +273,9 @@
   }
   .platform .key{
     font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
-    color:var(--brand-cyan); margin-bottom:8px;
+    color:var(--cyan); margin-bottom:8px;
   }
-  .platform.mac .key{ color:var(--brand-magenta); }
+  .platform.mac .key{ color:var(--magenta); }
   .platform h3{ font-family:var(--font-display); font-size:22px; font-weight:600; margin:0 0 4px; }
   .platform .stack{
     font-family:var(--font-mono); font-size:11px; color:var(--fg-3); margin-bottom:14px;
@@ -305,8 +285,8 @@
     display:flex; gap:9px; align-items:flex-start;
     font-size:13px; color:var(--fg-2); line-height:1.45;
   }
-  .platform li .tick{ color:var(--brand-cyan); flex-shrink:0; padding-top:2px; }
-  .platform.mac li .tick{ color:var(--brand-magenta); }
+  .platform li .tick{ color:var(--cyan); flex-shrink:0; padding-top:2px; }
+  .platform.mac li .tick{ color:var(--magenta); }
   .platform li b{ color:var(--fg-1); font-weight:500; }
 
   /* ---------- Plugins ---------- */
@@ -339,15 +319,17 @@
     font-family:var(--font-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
     padding:2px 8px; border-radius:999px;
   }
-  .plugin .status.live{ color:#2bd99a; background:rgba(43,217,154,.1); border:1px solid rgba(43,217,154,.3); }
+  /* The success green is a theme token (--ok, #2bd99a) exactly; its two
+     alpha variants below are not, so they stay literals. */
+  .plugin .status.live{ color:var(--ok); background:rgba(43,217,154,.1); border:1px solid rgba(43,217,154,.3); }
   .plugin .status.bench{ color:var(--fg-3); background:rgba(255,255,255,.03); border:1px solid var(--border-2); }
   .plugin p{ font-size:12.5px; color:var(--fg-3); line-height:1.5; margin:0; }
   .plugin .pl-link{
     font-family:var(--font-mono); font-size:11px; letter-spacing:.04em;
-    color:var(--brand-cyan); text-decoration:none; white-space:nowrap;
+    color:var(--cyan); text-decoration:none; white-space:nowrap;
     display:inline-flex; align-items:center; gap:6px;
   }
-  .plugin .pl-link:hover{ color:var(--brand-cyan-bright); }
+  .plugin .pl-link:hover{ color:var(--cyan-pale); }
   .plugin .pl-link.muted{ color:var(--fg-muted); }
 
   .plugin-howto{
@@ -368,9 +350,9 @@
   }
   .howto-key{
     font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--brand-cyan); margin-bottom:16px;
+    color:var(--cyan); margin-bottom:16px;
   }
-  .howto-col.publish .howto-key{ color:var(--brand-magenta); }
+  .howto-col.publish .howto-key{ color:var(--magenta); }
   ol.steps{
     list-style:none; counter-reset: step; margin:0; padding:0;
     display:flex; flex-direction:column; gap:13px;
@@ -386,12 +368,12 @@
     width:22px; height:22px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
     font-family:var(--font-mono); font-size:11px; font-weight:600;
-    color:var(--brand-cyan); background:rgba(23,212,250,.08);
+    color:var(--cyan); background:rgba(23,212,250,.08);
     border:1px solid var(--border-accent);
   }
   ol.steps li b{ color:var(--fg-1); font-weight:500; }
   ol.steps li code, .howto-col.publish p code{
-    font-family:var(--font-mono); font-size:11.5px; color:var(--brand-cyan-bright);
+    font-family:var(--font-mono); font-size:11.5px; color:var(--cyan-pale);
     background:rgba(23,212,250,.06); border-radius:4px; padding:1px 5px;
   }
   .howto-col.publish p{
@@ -402,11 +384,11 @@
   .publish-links a{
     display:flex; align-items:center; justify-content:space-between; gap:12px;
     font-family:var(--font-mono); font-size:11.5px; letter-spacing:.02em;
-    text-decoration:none; color:var(--brand-cyan);
+    text-decoration:none; color:var(--cyan);
     border:1px solid var(--border-1); border-radius:var(--r-md);
     padding:11px 13px; transition: border-color var(--dur-med), color var(--dur-fast);
   }
-  .publish-links a:hover{ border-color:var(--border-accent); color:var(--brand-cyan-bright); }
+  .publish-links a:hover{ border-color:var(--border-accent); color:var(--cyan-pale); }
   .publish-links a span{ color:var(--fg-3); text-align:right; }
   .publish-links a:hover span{ color:var(--fg-2); }
 
@@ -423,7 +405,7 @@
   .trust-box .trust-item:last-child{ margin-bottom:0; }
   .trust-box .key{
     font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--brand-magenta); margin-bottom:6px;
+    color:var(--magenta); margin-bottom:6px;
   }
   .trust-box h4{ font-family:var(--font-display); font-size:16px; font-weight:600; margin:0 0 5px; }
   .trust-box p{ font-size:13.5px; line-height:1.6; color:var(--fg-2); margin:0; max-width:78ch; }
@@ -438,8 +420,8 @@
     letter-spacing:.05em;
   }
   .footnote .axiom{ color:var(--fg-2); }
-  .footnote .axiom em{ color:var(--brand-cyan); font-style:normal; }
-  .footnote a{ color:var(--brand-cyan); text-decoration:none; }
+  .footnote .axiom em{ color:var(--cyan); font-style:normal; }
+  .footnote a{ color:var(--cyan); text-decoration:none; }
 
   /* ---------- Responsive ---------- */
   @media (max-width: 1000px){
@@ -468,28 +450,23 @@
        Phosphor Blueprint — treatment layer (adopted 2026-07-07)
        Append-only override + in-place navy-glass swaps; matches the
        homepage treatment (626labs.dev PR #73).
+
+       The --pb-* names spent below are DEFINED in the active theme's
+       archetypes/product-tokens.css, linked in <head>. This page used to
+       define them itself, which froze the treatment at July's values.
        ============================================================ */
-    :root {
-      --pb-field: rgb(0,0,0);
-      --pb-grid-fine: rgba(23,212,250,.05);
-      --pb-grid-coarse: rgba(23,212,250,.11);
-      --pb-scanline: rgba(0,0,0,.42);
-      --pb-panel: rgba(0,0,0,.72);
-      --pb-panel-border: rgba(23,212,250,.25);
-      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
-    }
     .pb-scanlines {
       position: fixed; inset: 0; pointer-events: none; z-index: 60;
       background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
     }
 
+    /* The treatment REPOINTING base tokens — this page's own styling
+       decision, not a copy of the theme's palette. Every value resolves
+       through a theme-owned name, so the rotation reaches all of it. */
     :root {
       --bg-0: var(--pb-field);
-      --bg-1: rgba(0,0,0,.6);
-      --bg-2: rgba(0,0,0,.72);
-      --border-1: rgba(23,212,250,.14);
-      --border-2: rgba(23,212,250,.25);
+      --border-1: var(--pb-hairline);
+      --border-2: var(--pb-panel-border);
     }
 
     body {

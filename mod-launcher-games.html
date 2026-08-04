@@ -13,51 +13,31 @@
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" type="image/png" href="favicon-626.png" />
 
+<!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/product-tokens.css">
+<!-- SITE_JSON:theme-css:end -->
+
 <style>
   /* ---------- Web fonts ---------- */
   @import url('/fonts/fonts.css');
 
-  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
-  :root {
-    --brand-navy:        #192e44;
-    --brand-navy-deep:   #0f1f31;
-    --brand-cyan:        #17d4fa;
-    --brand-cyan-bright: #5ce6ff;
-    --brand-magenta:     #f22f89;
+  /* ---------- Theme tokens ----------
+     Brand tokens come from the ACTIVE theme's
+     archetypes/product-tokens.css, linked above and repointed by
+     scripts/render-hub.py on every render. This page used to carry a
+     private :root copy of them; a copy is something the monthly rotation
+     cannot reach.
 
-    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
-
-    --ink-0:   #ffffff;
-    --ink-200: #c4cdda;
-    --ink-300: #a4aebd;
-    --ink-400: #99a4b4;
-
-    --fg-1: var(--ink-0);
-    --fg-2: var(--ink-200);
-    --fg-3: var(--ink-300);
-    --fg-muted: var(--ink-400);
-
-    --bg-0: var(--brand-navy-deep);
-
-    --border-1: rgba(255,255,255,.08);
-    --border-2: rgba(255,255,255,.14);
-    --border-accent: rgba(23,212,250,.45);
-
-    --r-md: 10px;
-    --r-lg: 14px;
-    --r-xl: 20px;
-
-    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-
-    --shadow-2: 0 4px 16px rgba(0,0,0,.45);
-    --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
-
-    --ease-out: cubic-bezier(.2,.7,.2,1);
-    --dur-fast: 120ms;
-    --dur-med: 220ms;
-  }
+     What it links is the token file, NOT archetypes/product.css. That one
+     is the element dress for the pages render-plugin-pages.py generates.
+     Measured against this page's real DOM — feed loaded, all 150 game rows
+     present — 19 of its 180 rules match here: `body`, `a`, `a:hover`,
+     `h1`, `h2`, `.btn`, `.brand img`. This page's `.btn` is a 12px mono
+     chip and its `.brand img` a solid app-icon tile, neither of which the
+     archetype's rules were written for. This page is hand-authored and
+     keeps its own layout: it recolors monthly, it does not re-layout.
+     Every rule below this comment is this page's own and stays this
+     page's own. */
 
   html, body { margin:0; padding:0; min-height:100vh; }
   body{
@@ -72,7 +52,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
   *{ box-sizing:border-box; }
-  a{ color:var(--brand-cyan); }
+  a{ color:var(--cyan); }
 
   /* ---------- Subtle circuit grid backdrop ---------- */
   .grid-bg{
@@ -110,8 +90,8 @@
   }
   .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; align-items:center; }
   .topnav .links a{ color:var(--fg-3); text-decoration:none; transition: color var(--dur-fast); }
-  .topnav .links a:hover{ color: var(--brand-cyan); }
-  .topnav .links a.cta{ color: var(--brand-cyan); }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
 
   /* ---------- Layout ---------- */
   .wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding: 56px 32px 72px; }
@@ -123,7 +103,7 @@
   .hero h1 em{ font-style:normal; background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent; }
   .hero p.dek{ max-width:720px; color:var(--fg-2); font-size:16px; line-height:1.65; margin:0 0 10px; }
   .hero .fine{ font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--fg-muted); }
-  .hero .fine b{ color:var(--brand-cyan); font-weight:500; }
+  .hero .fine b{ color:var(--cyan); font-weight:500; }
 
   /* ---------- Get-the-launcher strip ---------- */
   .host-strip{
@@ -166,7 +146,7 @@
     position:relative; aspect-ratio: 2 / 3; border-radius: var(--r-md); overflow:hidden;
     border:1px solid var(--border-1);
     box-shadow: var(--shadow-2), var(--inner-stroke);
-    background: linear-gradient(160deg, var(--brand-navy) 0%, var(--brand-navy-deep) 100%);
+    background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy-deep) 100%);
     transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
   }
   .cover-card:hover .cover-frame{ border-color: var(--border-accent); transform: translateY(-2px); }
@@ -177,7 +157,7 @@
     background:
       radial-gradient(120% 90% at 15% 0%, rgba(23,212,250,.22), transparent 55%),
       radial-gradient(120% 90% at 90% 100%, rgba(242,47,137,.20), transparent 55%),
-      linear-gradient(160deg, var(--brand-navy) 0%, var(--brand-navy-deep) 100%);
+      linear-gradient(160deg, var(--navy-mid) 0%, var(--navy-deep) 100%);
     color: var(--fg-1); text-shadow: 0 0 24px rgba(23,212,250,.35);
   }
   .cover-rank{
@@ -208,17 +188,17 @@
   .row .name{ font-family:var(--font-display); font-size:14.5px; font-weight:600; }
   .row .chip{
     font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
-    color:var(--brand-cyan); background:rgba(23,212,250,.08);
+    color:var(--cyan); background:rgba(23,212,250,.08);
     border:1px solid rgba(23,212,250,.3); border-radius: 6px; padding:2px 7px;
     white-space:nowrap;
   }
   .row .chip.magenta{
-    color:var(--brand-magenta); background:rgba(242,47,137,.08); border-color:rgba(242,47,137,.35);
+    color:var(--magenta); background:rgba(242,47,137,.08); border-color:rgba(242,47,137,.35);
   }
   .row .spacer{ flex:1; }
   .row .rlinks{ display:flex; gap:14px; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; }
   .row .rlinks a{ text-decoration:none; color:var(--fg-3); }
-  .row .rlinks a:hover{ color:var(--brand-cyan); }
+  .row .rlinks a:hover{ color:var(--cyan); }
 
   /* ---------- States ---------- */
   .loading{
@@ -249,7 +229,7 @@
     font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--fg-muted);
   }
   .footnote a{ color:var(--fg-3); text-decoration:none; }
-  .footnote a:hover{ color:var(--brand-cyan); }
+  .footnote a:hover{ color:var(--cyan); }
 
   @media (max-width: 760px){
     .wrap{ padding: 40px 20px 56px; }
@@ -263,26 +243,23 @@
      Phosphor Blueprint — treatment layer (adopted 2026-07-07)
      Append-only override + in-place navy-glass swaps; matches the
      homepage treatment (626labs.dev PR #73).
+
+     The --pb-* names spent below are DEFINED in the active theme's
+     archetypes/product-tokens.css, linked in <head>. This page used to
+     define them itself, which froze the treatment at July's values.
      ============================================================ */
-  :root {
-    --pb-field: rgb(0,0,0);
-    --pb-grid-fine: rgba(23,212,250,.05);
-    --pb-grid-coarse: rgba(23,212,250,.11);
-    --pb-scanline: rgba(0,0,0,.42);
-    --pb-panel: rgba(0,0,0,.72);
-    --pb-panel-border: rgba(23,212,250,.25);
-    --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-    --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
-  }
   .pb-scanlines {
     position: fixed; inset: 0; pointer-events: none; z-index: 60; /* above nav (50), below nothing else here */
     background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
   }
 
+  /* The treatment REPOINTING base tokens — this page's own styling
+     decision, not a copy of the theme's palette. Every value resolves
+     through a theme-owned name, so the rotation reaches all of it. */
   :root {
     --bg-0: var(--pb-field);
-    --border-1: rgba(23,212,250,.14);
-    --border-2: rgba(23,212,250,.25);
+    --border-1: var(--pb-hairline);
+    --border-2: var(--pb-panel-border);
   }
 
   body {

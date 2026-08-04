@@ -197,7 +197,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # press.html/privacy.html/thesis.html/workflow.html/
-          # rororo-plugins.html (theme-css link), conundrum.html (theme-css
+          # rororo-plugins.html/rororo.html/mod-launcher-games.html
+          # (theme-css link), conundrum.html (theme-css
           # link plus its gallery zones) and about.html (the easter-egg
           # theme registry) are ALSO rewritten by render-hub.py on every
           # rotation (their active-theme-derived zones — see
@@ -213,7 +214,7 @@ jobs:
           git add content/themes.json index.html feed.xml sitemap.xml \
             conundrum.html themes.html about.html \
             press.html privacy.html thesis.html workflow.html \
-            rororo-plugins.html \
+            rororo-plugins.html rororo.html mod-launcher-games.html \
             editorial themes/archive assets/themes \
             vibe-* thesis-engine plugins
           git commit -m "chore(themes): rotate to ${{ steps.rotate.outputs.new_active }} for ${{ steps.month.outputs.month_name }}

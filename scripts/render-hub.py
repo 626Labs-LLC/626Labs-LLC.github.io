@@ -60,6 +60,8 @@ ABOUT_HTML = ROOT / "about.html"
 THESIS_HTML = ROOT / "thesis.html"
 WORKFLOW_HTML = ROOT / "workflow.html"
 ROROROPLUGINS_HTML = ROOT / "rororo-plugins.html"
+RORORO_HTML = ROOT / "rororo.html"
+MODLAUNCHERGAMES_HTML = ROOT / "mod-launcher-games.html"
 STORIES_DIR = ROOT / "content" / "stories"
 # Local Field Notes render to on-site reading pages under here:
 # editorial/<slug>/index.html, served at /editorial/<slug>/.
@@ -858,14 +860,18 @@ def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
 # tokens.css's `header.hero h1` never matched `.page-hero` either, so
 # themes.html's h1 currently has no bloom at all; and press.html's
 # `.page-lead` is `max-width: 60ch` where themes.html's own copy is
-# `62ch`). conundrum.html/rororo-plugins.html link
-# archetypes/product-tokens.css — the TOKEN half of the product
+# `62ch`). All four bespoke product pages — conundrum.html,
+# rororo-plugins.html, rororo.html, mod-launcher-games.html — link
+# archetypes/product-tokens.css, the TOKEN half of the product
 # archetype, where THEIR private :root copies went. Deliberately not
 # archetypes/product.css: that file is the element dress
 # render-plugin-pages.py inlines into its 15 generated pages, written on
 # bare element selectors (`body`, `a:hover`, `section.hero`, `.card`,
-# `.btn`) that land on bespoke markup they were never written for. See
-# that theme file's header for the measurement behind the split. Each
+# `.btn`) that land on bespoke markup they were never written for. Its
+# reach was measured against each page's live DOM rather than assumed —
+# 30 of its 180 rules match rororo.html, 19 match
+# mod-launcher-games.html. See that theme file's header for the
+# measurement behind the split. Each
 # theme is free to make different choices for these pages the next time
 # they're touched for their own reasons — this only guarantees the *link*
 # rotates, not that every page of one archetype ends up on the exact same
@@ -878,6 +884,8 @@ THEME_CSS_HREFS = {
     WORKFLOW_HTML: "archetypes/reading-tokens.css",
     CONUNDRUM_HTML: "archetypes/product-tokens.css",
     ROROROPLUGINS_HTML: "archetypes/product-tokens.css",
+    RORORO_HTML: "archetypes/product-tokens.css",
+    MODLAUNCHERGAMES_HTML: "archetypes/product-tokens.css",
 }
 
 # Pages in THEME_CSS_HREFS that ALSO carry other renderer-owned zones, so
@@ -895,6 +903,7 @@ THEME_CSS_MULTI_ZONE_PAGES = (THEMES_HTML, CONUNDRUM_HTML)
 #     == set(THEME_CSS_ONLY_PAGES)
 THEME_CSS_ONLY_PAGES = (
     PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML, ROROROPLUGINS_HTML,
+    RORORO_HTML, MODLAUNCHERGAMES_HTML,
 )
 
 # What `--theme <slug> --out <dir>` writes beside index.html, so a QUEUED
@@ -2219,8 +2228,9 @@ def main(argv: list[str]) -> int:
     # The theme-css pages are here because a queued theme's effect on them
     # was otherwise un-previewable and un-gateable: index.html is rendered
     # from the theme's own shell, but press.html/privacy.html/thesis.html/
-    # workflow.html/conundrum.html/rororo-plugins.html are hand-authored
-    # pages whose only theme-derived seam is that one <link>. Without this,
+    # workflow.html/conundrum.html/rororo-plugins.html/rororo.html/
+    # mod-launcher-games.html are hand-authored pages whose only
+    # theme-derived seam is that one <link>. Without this,
     # the ONLY way to see a queued theme's reading or product dress on a
     # real page of that archetype was to make it active and look at
     # production. Each is copied with its zone repointed at `slug`, never at
@@ -2281,9 +2291,10 @@ def main(argv: list[str]) -> int:
     themes_changed = themes_new != themes_old
 
     # press.html / privacy.html / thesis.html / workflow.html /
-    # rororo-plugins.html — no other zones, just the "theme-css" link (see
-    # THEME_CSS_HREFS above). conundrum.html has the same link but is
-    # rendered in its own block above, beside its gallery zones.
+    # rororo-plugins.html / rororo.html / mod-launcher-games.html — no
+    # other zones, just the "theme-css" link (see THEME_CSS_HREFS above).
+    # conundrum.html has the same link but is rendered in its own block
+    # above, beside its gallery zones.
     theme_css_pages = []
     for page_path in THEME_CSS_ONLY_PAGES:
         page_old = page_path.read_text(encoding="utf-8")
