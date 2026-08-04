@@ -212,12 +212,20 @@ def _make_complete_theme_dir(tdir):
     # of the checks below ever ran, so both get _required_tokens_css()
     # instead of "". archetypes/reading.css is the third file under that
     # same gate now — see _compliant_reading_css.
+    #
+    # archetypes/product.css is the FOURTH, added the same commit
+    # conundrum.html and rororo-plugins.html started linking it with no
+    # local fallback. Until then this fixture wrote product.css as the
+    # empty string — ZERO custom properties — and a stub theme cleared the
+    # doctor anyway. That is the hole, demonstrated: the file that dresses
+    # the most pages of any archetype (2 linked + 15 inlined) was the one
+    # file the token contract never graded.
     (tdir / "archetypes").mkdir(parents=True)
     (tdir / "tokens.css").write_text(_required_tokens_css(), encoding="utf-8")
     (tdir / "theme.json").write_text("{}", encoding="utf-8")
     for a in td.theme_registry.REQUIRED_ARCHETYPES:
         (tdir / "archetypes" / f"{a}.html").write_text(_compliant_archetype_html(a), encoding="utf-8")
-    (tdir / "archetypes" / "product.css").write_text("", encoding="utf-8")
+    (tdir / "archetypes" / "product.css").write_text(_required_tokens_css(), encoding="utf-8")
     (tdir / "archetypes" / "utility.css").write_text(_required_tokens_css(), encoding="utf-8")
     (tdir / "archetypes" / "reading.css").write_text(_compliant_reading_css(), encoding="utf-8")
 
@@ -470,10 +478,13 @@ def test_main_theme_with_all_archetype_css_files_clears_completeness(monkeypatch
 # themes.html's own <style>, plus the residual <style> of press.html,
 # privacy.html (the page-specific rules left after utility.css's A4
 # extraction), thesis.html and workflow.html (same shape, after their private
-# :root blocks moved into reading.css) read the REQUIRED_TOKENS set via
+# :root blocks moved into reading.css), and conundrum.html and
+# rororo-plugins.html (same shape again, into product.css) read the
+# REQUIRED_TOKENS set via
 # var(--x) and never define them — nothing before this required a theme's
-# tokens.css / archetypes/utility.css / archetypes/reading.css to supply
-# them. The last four carry no fallback of their own at all, so for them a
+# tokens.css / archetypes/product.css / archetypes/utility.css /
+# archetypes/reading.css to supply
+# them. The last six carry no fallback of their own at all, so for them a
 # missing name is an unresolved var(), not a stale value. See
 # archetypes.REQUIRED_TOKENS's docstring and docs/theme-archetypes.md, "The
 # token-variable contract."
@@ -524,6 +535,50 @@ def test_live_reading_css_satisfies_required_tokens():
         encoding="utf-8"
     )
     assert td.check_required_tokens(css) == []
+
+
+def test_live_product_css_satisfies_required_tokens():
+    # product.css is the fourth file under this gate, as of conundrum.html
+    # and rororo-plugins.html giving up their private :root blocks. It is
+    # also the widest-blast-radius member: two pages LINK it with no local
+    # fallback, and render-plugin-pages.py INLINES it into fifteen more.
+    css = (ROOT / "themes" / "phosphor-blueprint" / "archetypes" / "product.css").read_text(
+        encoding="utf-8"
+    )
+    assert td.check_required_tokens(css) == []
+
+
+def test_main_fails_a_theme_whose_product_css_drops_the_required_tokens(
+    monkeypatch, tmp_path, capsys
+):
+    # Same regression as the reading case below, one archetype over and with
+    # a bigger blast radius. An author writes a genuinely NEW product dress
+    # instead of copying phosphor-blueprint's, defines none of the base
+    # vocabulary, and the theme rotates in unattended on the 1st.
+    #
+    # This test FAILS against the pre-fix theme-doctor.py, whose
+    # required-token loop ran over ("utility", "reading") only. Verified by
+    # running it against that implementation before the tuple grew, where it
+    # reported rc == 0.
+    tdir = tmp_path / "themes" / "stub-theme"
+    _make_complete_theme_dir(tdir)
+    (tdir / "archetypes" / "product.css").write_text(
+        "".join(f".{c} {{ }}\n" for c in td.archetypes.VOCABULARY["product"]),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(
+        td.tempfile, "TemporaryDirectory",
+        lambda *a, **kw: __import__("contextlib").nullcontext(str(tmp_path)),
+    )
+
+    rc = td.main(["stub-theme"])
+    assert rc == 1
+    out = capsys.readouterr().out
+    assert "archetypes/product.css" in out
+    assert "--fg-1" in out
 
 
 def test_main_fails_a_theme_whose_reading_css_drops_the_required_tokens(

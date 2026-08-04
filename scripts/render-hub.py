@@ -59,6 +59,7 @@ PRIVACY_HTML = ROOT / "privacy.html"
 ABOUT_HTML = ROOT / "about.html"
 THESIS_HTML = ROOT / "thesis.html"
 WORKFLOW_HTML = ROOT / "workflow.html"
+ROROROPLUGINS_HTML = ROOT / "rororo-plugins.html"
 STORIES_DIR = ROOT / "content" / "stories"
 # Local Field Notes render to on-site reading pages under here:
 # editorial/<slug>/index.html, served at /editorial/<slug>/.
@@ -836,10 +837,10 @@ def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
 # changes.
 #
 # NAME: this was UTILITY_CSS_HREFS when press/privacy/themes were its
-# only members. It now carries reading pages too (and product pages
-# next), so it is named for what it does — map a hand-authored page to
-# the theme-relative stylesheet its "theme-css" zone should point at —
-# rather than for the one archetype it started with.
+# only members. It now carries reading AND product pages, so it is named
+# for what it does — map a hand-authored page to the theme-relative
+# stylesheet its "theme-css" zone should point at — rather than for the
+# one archetype it started with.
 #
 # press.html/privacy.html link archetypes/utility.css (their shared chrome,
 # extracted verbatim from press.html — see themes/phosphor-blueprint/
@@ -853,22 +854,47 @@ def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
 # tokens.css's `header.hero h1` never matched `.page-hero` either, so
 # themes.html's h1 currently has no bloom at all; and press.html's
 # `.page-lead` is `max-width: 60ch` where themes.html's own copy is
-# `62ch`). Each theme is free to make different choices for these pages
-# the next time they're touched for their own reasons — this only
-# guarantees the *link* rotates, not that every page of one archetype
-# ends up on the exact same stylesheet.
+# `62ch`). conundrum.html/rororo-plugins.html link
+# archetypes/product.css, whose "Product archetype — base token
+# vocabulary" section is where THEIR private :root copies went. Each
+# theme is free to make different choices for these pages the next time
+# they're touched for their own reasons — this only guarantees the *link*
+# rotates, not that every page of one archetype ends up on the exact same
+# stylesheet.
 THEME_CSS_HREFS = {
     PRESS_HTML: "archetypes/utility.css",
     PRIVACY_HTML: "archetypes/utility.css",
     THEMES_HTML: "tokens.css",
     THESIS_HTML: "archetypes/reading.css",
     WORKFLOW_HTML: "archetypes/reading.css",
+    CONUNDRUM_HTML: "archetypes/product.css",
+    ROROROPLUGINS_HTML: "archetypes/product.css",
 }
 
+# Pages in THEME_CSS_HREFS that ALSO carry other renderer-owned zones, so
+# main() renders them in their own block instead of the theme-css loop
+# below. Enumerated rather than implied: putting one of these in
+# THEME_CSS_ONLY_PAGES too would make main() read it from disk, apply only
+# the theme-css substitution, and write it back AFTER its own block wrote
+# the other zones — silently reverting them.
+THEME_CSS_MULTI_ZONE_PAGES = (THEMES_HTML, CONUNDRUM_HTML)
+
 # Every page in THEME_CSS_HREFS whose ONLY renderer-owned zone is
-# "theme-css". themes.html is excluded because main() already handles it
-# alongside its gallery zone.
-THEME_CSS_ONLY_PAGES = (PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML)
+# "theme-css" — the tuple main() loops over. The two constants are held to
+# exact set equality by tests/test_render_hub.py, in both directions:
+#   set(THEME_CSS_HREFS) - set(THEME_CSS_MULTI_ZONE_PAGES)
+#     == set(THEME_CSS_ONLY_PAGES)
+THEME_CSS_ONLY_PAGES = (
+    PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML, ROROROPLUGINS_HTML,
+)
+
+# What `--theme <slug> --out <dir>` writes beside index.html, so a QUEUED
+# theme's effect on every hand-authored page can be looked at before the
+# 1st. Derived from the href map, not enumerated, so a page added there is
+# previewable the same commit. themes.html is the one exclusion: its
+# theme-css zone travels with a gallery zone rendered from the registry,
+# which a preview of a not-yet-active theme cannot honestly produce.
+PREVIEWABLE_THEME_CSS_PAGES = tuple(p for p in THEME_CSS_HREFS if p is not THEMES_HTML)
 
 
 def render_theme_css_link(slug: str, css_rel_path: str) -> str:
@@ -2180,10 +2206,11 @@ def main(argv: list[str]) -> int:
     #
     # The theme-css pages are here because a queued theme's effect on them
     # was otherwise un-previewable and un-gateable: index.html is rendered
-    # from the theme's own shell, but thesis.html/workflow.html/press.html/
-    # privacy.html are hand-authored pages whose only theme-derived seam is
-    # that one <link>. Without this, the ONLY way to see a queued theme's
-    # reading dress on a real reading page was to make it active and look at
+    # from the theme's own shell, but press.html/privacy.html/thesis.html/
+    # workflow.html/conundrum.html/rororo-plugins.html are hand-authored
+    # pages whose only theme-derived seam is that one <link>. Without this,
+    # the ONLY way to see a queued theme's reading or product dress on a
+    # real page of that archetype was to make it active and look at
     # production. Each is copied with its zone repointed at `slug`, never at
     # whatever content/themes.json currently says.
     #
@@ -2195,7 +2222,7 @@ def main(argv: list[str]) -> int:
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(out, encoding="utf-8")
         print(f"preview written: {dest}")
-        for page_path in THEME_CSS_ONLY_PAGES:
+        for page_path in PREVIEWABLE_THEME_CSS_PAGES:
             preview = substitute_zone(
                 page_path.read_text(encoding="utf-8"),
                 "theme-css",
@@ -2206,20 +2233,29 @@ def main(argv: list[str]) -> int:
             print(f"preview written: {page_dest}")
         return 0
 
-    # conundrum.html — shop page zones (gallery + repo CTA). Only when the
-    # conundrum key exists; the page and key ship together.
-    conundrum_new = conundrum_old = None
+    # conundrum.html — shop page zones (gallery + repo CTA) PLUS its
+    # "theme-css" link (see THEME_CSS_HREFS / THEME_CSS_MULTI_ZONE_PAGES
+    # above). Rendered here rather than in the theme-css loop below
+    # precisely because it has other zones: two blocks each reading the
+    # page off disk and writing it back would have the later write revert
+    # the earlier one. The theme-css substitution is unconditional — the
+    # gallery zones depend on the "conundrum" key existing, the stylesheet
+    # link does not.
+    conundrum_old = CONUNDRUM_HTML.read_text(encoding="utf-8")
+    conundrum_new = substitute_zone(
+        conundrum_old, "theme-css",
+        render_theme_css_link(slug, THEME_CSS_HREFS[CONUNDRUM_HTML]),
+    )
     if "conundrum" in content:
-        conundrum_old = CONUNDRUM_HTML.read_text(encoding="utf-8")
         conundrum_new = substitute_zone(
-            conundrum_old, "conundrum-products",
+            conundrum_new, "conundrum-products",
             render_conundrum_products(content["conundrum"]),
         )
         conundrum_new = substitute_zone(
             conundrum_new, "conundrum-repo",
             render_conundrum_repo(content["conundrum"]),
         )
-    conundrum_changed = conundrum_new is not None and conundrum_new != conundrum_old
+    conundrum_changed = conundrum_new != conundrum_old
 
     # themes.html — the rotation gallery, plus its "theme-css" stylesheet
     # link (see THEME_CSS_HREFS above). Always rendered — content/
@@ -2232,8 +2268,10 @@ def main(argv: list[str]) -> int:
     )
     themes_changed = themes_new != themes_old
 
-    # press.html / privacy.html / thesis.html / workflow.html — no other
-    # zones, just the "theme-css" link (see THEME_CSS_HREFS above).
+    # press.html / privacy.html / thesis.html / workflow.html /
+    # rororo-plugins.html — no other zones, just the "theme-css" link (see
+    # THEME_CSS_HREFS above). conundrum.html has the same link but is
+    # rendered in its own block above, beside its gallery zones.
     theme_css_pages = []
     for page_path in THEME_CSS_ONLY_PAGES:
         page_old = page_path.read_text(encoding="utf-8")

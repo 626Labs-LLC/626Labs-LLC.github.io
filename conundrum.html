@@ -13,46 +13,45 @@
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" type="image/png" href="favicon-626.png" />
 
+<!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/product.css">
+<!-- SITE_JSON:theme-css:end -->
+
 <style>
   /* ---------- Web fonts ---------- */
   @import url('/fonts/fonts.css');
 
-  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
-  :root {
-    --brand-navy:        #192e44;
-    --brand-navy-deep:   #0f1f31;
-    --brand-cyan:        #17d4fa;
-    --brand-cyan-bright: #5ce6ff;
-    --brand-magenta:     #f22f89;
+  /* ---------- Theme dress ----------
+     Brand tokens come from the ACTIVE theme's archetypes/product.css,
+     linked above and repointed by scripts/render-hub.py on every render.
+     This page used to carry a private :root copy of them; a copy is
+     something the monthly rotation cannot reach.
 
-    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
-
-    --ink-0:   #ffffff;
-    --ink-200: #c4cdda;
-    --ink-300: #a4aebd;
-    --ink-400: #99a4b4;
-
-    --fg-1: var(--ink-0);
-    --fg-2: var(--ink-200);
-    --fg-3: var(--ink-300);
-    --fg-muted: var(--ink-400);
-
-    --bg-0: var(--brand-navy-deep);
-
-    --border-1: rgba(255,255,255,.08);
-    --border-2: rgba(255,255,255,.14);
-
-    --r-md: 10px;
-    --r-lg: 14px;
-
-    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-
-    --ease-out: cubic-bezier(.2,.7,.2,1);
-    --dur-fast: 120ms;
-    --dur-med: 220ms;
-  }
+     That stylesheet also carries the generated plugin pages' full dress
+     on bare element and generic class selectors. This page is bespoke —
+     it keeps its own layout, per the milestone's "uniform dress, not
+     uniform layout" rule — so the rules below restate what this page has
+     always rendered wherever that dress reaches markup it was never
+     written for:
+       body            line-height (product sets 1.55; this page has
+                       always run the initial value)
+       section.hero    the archetype's hero is full-bleed padding plus a
+                       radial-glow ::before; this page's .hero is a flex
+                       row of logo and copy, and has never had either
+       h1, h2          the archetype's display tracking and h2 leading
+       .brand .mark    the icon stabilizer targets `.brand img`; this
+                       page's mark is a flat logo raster, not line art
+     Every value below is this page's CURRENT rendering restated, never a
+     new value — the pixel gate outranks tidiness. One thing this page
+     DOES newly take from the dress: its `prefers-reduced-motion` block,
+     which zeroes transitions for readers who ask for that. It moves no
+     pixel in the resting state and it is the whole point of linking. */
+  body { line-height: normal; }
+  section.hero { position: static; padding: 0; overflow: visible; }
+  section.hero::before { content: none; }
+  h1, h2 { letter-spacing: normal; }
+  h2 { line-height: normal; }
+  .brand .mark { filter: none; }
 
   html, body { margin:0; padding:0; min-height:100vh; }
   body{
@@ -63,7 +62,7 @@
     -webkit-font-smoothing: antialiased;
   }
   *{ box-sizing:border-box; }
-  a{ color:var(--brand-cyan); }
+  a{ color:var(--cyan); }
 
   .grid-bg{
     position:fixed; inset:0; pointer-events:none; z-index:0;
@@ -89,8 +88,8 @@
   .brand .mark{ width:20px; height:20px; display:block; }
   .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; align-items:center; }
   .topnav .links a{ color:var(--fg-3); text-decoration:none; transition: color var(--dur-fast); }
-  .topnav .links a:hover{ color: var(--brand-cyan); }
-  .topnav .links a.cta{ color: var(--brand-cyan); }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
 
   /* ---------- Layout ---------- */
   .wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding: 56px 32px 72px; }
@@ -108,7 +107,7 @@
   .shop-cta{
     display:inline-flex; align-items:center; gap:10px;
     font-family:var(--font-mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase;
-    color:#04121b; background:var(--brand-cyan); text-decoration:none;
+    color:#04121b; background:var(--cyan); text-decoration:none;
     padding:12px 22px; border-radius:var(--r-md); font-weight:600;
     transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-fast);
   }
@@ -117,7 +116,7 @@
   /* ---------- Gallery ---------- */
   .section-eyebrow{
     font-family:var(--font-mono); font-size:11px; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--brand-cyan); margin:0 0 8px;
+    text-transform:uppercase; color:var(--cyan); margin:0 0 8px;
   }
   h2{ font-family:var(--font-display); font-weight:700; font-size:clamp(22px,3vw,30px); margin:0 0 10px; }
   .merch-grid{
@@ -130,17 +129,17 @@
     overflow:hidden; background:#0b1622;
     transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-med);
   }
-  .merch-card:hover{ transform:translateY(-3px); border-color:var(--brand-cyan); }
+  .merch-card:hover{ transform:translateY(-3px); border-color:var(--cyan); }
   .merch-img{ width:100%; aspect-ratio:1/1; object-fit:cover; display:block; }
   .merch-chip{
     position:absolute; top:12px; left:12px;
     font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
-    color:#04121b; background:var(--brand-cyan);
+    color:#04121b; background:var(--cyan);
     padding:4px 9px; border-radius:999px; font-weight:600;
   }
   .merch-meta{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:14px 16px; }
   .merch-title{ color:var(--fg-1); font-size:14px; font-weight:600; line-height:1.35; }
-  .merch-price{ font-family:var(--font-mono); color:var(--brand-magenta); font-size:13px; white-space:nowrap; }
+  .merch-price{ font-family:var(--font-mono); color:var(--magenta); font-size:13px; white-space:nowrap; }
 
   /* ---------- The machine ---------- */
   .machine{ border-top:1px solid var(--border-1); padding-top:48px; }
@@ -152,17 +151,17 @@
     color:var(--fg-2); border:1px solid var(--border-2); border-radius:999px;
     padding:7px 14px; background:rgba(25,46,68,.5);
   }
-  .stages li b{ color:var(--brand-cyan); font-weight:500; margin-right:6px; }
+  .stages li b{ color:var(--cyan); font-weight:500; margin-right:6px; }
   .pull{
-    border-left:2px solid var(--brand-magenta); margin:26px 0; padding:6px 0 6px 18px;
+    border-left:2px solid var(--magenta); margin:26px 0; padding:6px 0 6px 18px;
     font-family:var(--font-display); font-size:18px; color:var(--fg-1); max-width:560px; line-height:1.5;
   }
   .machine p{ color:var(--fg-2); max-width:680px; line-height:1.7; }
   .repo-cta{
     display:inline-flex; align-items:center; gap:10px; margin-top:18px;
     font-family:var(--font-mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase;
-    color:var(--brand-cyan); text-decoration:none;
-    border:1px solid var(--brand-cyan); padding:11px 20px; border-radius:var(--r-md);
+    color:var(--cyan); text-decoration:none;
+    border:1px solid var(--cyan); padding:11px 20px; border-radius:var(--r-md);
     transition: box-shadow var(--dur-med) var(--ease-out);
   }
   .repo-cta .ic{ width:16px; height:16px; stroke:currentColor; stroke-width:2; fill:none; }
@@ -175,7 +174,7 @@
     max-width:1180px; margin-left:auto; margin-right:auto;
   }
   footer a{ color:var(--fg-3); text-decoration:none; }
-  footer a:hover{ color:var(--brand-cyan); }
+  footer a:hover{ color:var(--cyan); }
 
   @media (max-width:640px){
     .topnav-inner{ padding:12px 18px; }
@@ -186,20 +185,17 @@
   /* ==================================================================
      Phosphor Blueprint treatment — the drawing is the monitor.
      Same override-block pattern as mod-launcher-games.html.
+
+     The --pb-* names themselves are the THEME's, defined in the linked
+     archetypes/product.css. What stays here is only what this page
+     derives from them: the three base tokens the treatment repoints.
+     Every value below resolves through a theme token, so the rotation
+     reaches all of it.
      ================================================================== */
   :root {
-    --pb-field: rgb(0,0,0);
-    --pb-grid-fine: rgba(23,212,250,.05);
-    --pb-grid-coarse: rgba(23,212,250,.11);
-    --pb-scanline: rgba(0,0,0,.42);
-    --pb-panel: rgba(0,0,0,.72);
-    --pb-panel-border: rgba(23,212,250,.25);
-    --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-    --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
-
     --bg-0: var(--pb-field);
-    --border-1: rgba(23,212,250,.14);
-    --border-2: rgba(23,212,250,.25);
+    --border-1: var(--pb-hairline);
+    --border-2: var(--pb-panel-border);
   }
 
   .pb-scanlines {

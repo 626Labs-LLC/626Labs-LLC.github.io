@@ -155,17 +155,28 @@ VOCABULARY: dict[str, set[str]] = {
 # contract already commits to is the contract doing its job; every theme in
 # the repo already defined all three, so nothing was asked of anyone.
 #
+# A fourth joined on the same test when conundrum.html/rororo-plugins.html
+# did the same: `--fg-muted`. Its siblings `--fg-1`, `--fg-2` and `--fg-3`
+# were ALL already required — three quarters of a four-member alias family,
+# with the fourth left out for no reason anyone recorded. Its underlying
+# value (`--text-mute`) was required too, so the contract already obliged
+# every theme to HAVE the color and merely declined to name the alias the
+# pages actually read. tokens.css, product.css, utility.css and reading.css
+# each already defined it, so admission cost this theme nothing; it binds
+# the next one.
+#
 # `--shadow-2` failed that test and is deliberately NOT here, though
-# workflow.html reads it: no shadow-scale name (`--shadow-1`, `--shadow-3`,
-# `--glow-cyan`, `--glow-duo`) is in this set, so admitting it would start a
-# new group on the strength of one page's usage — which is how a contract
-# becomes a junk drawer. It stays a documented page-to-theme coupling
-# instead. See the task-1 report's coupling section.
+# workflow.html and rororo-plugins.html both read it: no shadow-scale name
+# (`--shadow-1`, `--shadow-3`, `--glow-cyan`, `--glow-duo`) is in this set,
+# so admitting it would start a new group on the strength of two pages'
+# usage — which is how a contract becomes a junk drawer. It stays a
+# documented page-to-theme coupling instead. See the task-1 and task-2
+# reports' coupling sections.
 REQUIRED_TOKENS: frozenset[str] = frozenset({
     # backgrounds
     "--bg-0", "--bg-1", "--bg-2",
     # foreground / text
-    "--fg-1", "--fg-2", "--fg-3",
+    "--fg-1", "--fg-2", "--fg-3", "--fg-muted",
     "--text", "--text-sec", "--text-dim", "--text-mute",
     # brand color + accent
     "--cyan", "--cyan-pale", "--magenta", "--magenta-pale",
