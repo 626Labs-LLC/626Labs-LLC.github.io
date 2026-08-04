@@ -529,6 +529,90 @@ carries each archetype's required classes is `theme-doctor.py`'s job
   gate. All four archetypes now get a real, theme-differentiating
   vocabulary check.
 
+## The token-variable contract — closed (final review Fix 1)
+
+The vocabulary above is the markup-side contract: a theme can't rename a
+required *class*. Nothing equivalent existed for CSS *custom properties*
+until this fix wave — the final whole-branch review flagged it as a real,
+undocumented, ungated gap. `themes.html`'s gallery CSS and `press.html`'s/
+`privacy.html`'s own page-specific residual CSS (the rules left after
+`utility.css`'s extraction — `.copy-block`/`.asset-grid`/`.tldr` and
+friends) read roughly forty custom properties via `var(--x)` and never
+define any of them. Nothing required a theme's `tokens.css` or
+`archetypes/utility.css` to supply them — a September theme could rename or
+drop one, pass every existing gate (vocabulary only checks class names;
+chrome/links don't look at custom properties at all), and silently break
+three pages: `themes.html`/`index.html` (which each carry a hardcoded LOCAL
+`:root` fallback, cascade-earlier than the theme's own `<link>`, so a
+missing token doesn't error — it just keeps showing the OUTGOING theme's
+stale value forever) and `press.html`/`privacy.html` (which carry no
+fallback at all, so a missing token is a straight unresolved `var()`).
+
+`archetypes.REQUIRED_TOKENS` (`scripts/archetypes.py`) closes it: the exact
+set of custom-property names, derived the same way `VOCABULARY` was — by
+reading the real, shipped CSS, not designing in the abstract — union of
+every `var(--x)` in `themes.html`'s inline `<style>` plus `press.html`'s and
+`privacy.html`'s own residual `<style>` blocks. `scripts/theme-doctor.py`'s
+`check_required_tokens()` fails a theme whose `tokens.css` **or**
+`archetypes/utility.css` doesn't define every one of them — both files,
+because both are real, unguarded consumers today: `tokens.css` for
+`themes.html`/`index.html`, `utility.css` for `press.html`/`privacy.html`
+(their only source of these properties, with no local fallback of their
+own). A theme missing even one fails before the archetype loop runs, named
+by property (`tokens.css: missing required custom property '--cyan'`).
+
+One theme-bespoke name is deliberately **excluded**: `press.html`'s
+`.asset-preview` background reads `var(--pb-field)`, Phosphor Blueprint's
+own treatment-layer token (defined in both `tokens.css`'s and
+`utility.css`'s "Phosphor Blueprint — treatment layer" section, never in
+the shared base). It's a real, live coupling — a pre-existing leak of
+theme-specific naming into a "page-specific" residual rule that arguably
+shouldn't be there at all — but it isn't a base-vocabulary name any future
+theme is obligated to define under that exact prefix, so it's out of
+`REQUIRED_TOKENS`. Flagged here as a known finding, not fixed: retrofitting
+`press.html`'s `.asset-preview` onto a theme-neutral name is unrelated scope
+this fix wave didn't touch.
+
+### The 43 required tokens, grouped, and why each group matters
+
+| Group | Tokens | Why required |
+|---|---|---|
+| Backgrounds | `--bg-0`, `--bg-1` | Page and card-surface fields. Undefined = transparent surfaces over whatever's behind them. |
+| Foreground / text | `--fg-1`, `--fg-2`, `--fg-3`, `--text`, `--text-sec`, `--text-dim`, `--text-mute` | Body/heading/secondary/meta text colors. `--fg-*` is what markup actually uses; `--text*` is what `--fg-*` resolves through (see `--fg-1: var(--text)` in `tokens.css`) — both layers are read directly somewhere in the three pages, so both are required. Undefined = unreadable (browser default, usually black-on-black here). |
+| Brand color + accent | `--cyan`, `--cyan-pale`, `--magenta`, `--magenta-pale`, `--navy-deep`, `--navy-mid`, `--navy-hi`, `--ink-950`, `--ok`, `--brand-gradient`, `--brand-gradient-soft` | The nav CTA, links, status pills, the two-tone gradient underline — the site's actual brand identity. Undefined = the pages stop looking like 626 Labs at all, not just "wrong theme." |
+| Borders + panel effects | `--border-1`, `--border-2`, `--border-accent`, `--inner-stroke` | Card/nav/footer hairlines and the inset highlight every panel uses. Undefined = flat, seamless panels with no separation. |
+| Typography | `--font-display`, `--font-body`, `--font-mono` | The three-typeface stack (Space Grotesk / Inter / JetBrains Mono) every heading, body line, and meta label is set in. Undefined = browser default serif/sans, breaking the brand's whole type identity. |
+| Motion | `--dur-fast`, `--ease-out` | Every hover/transition's duration and easing curve. Undefined = instant, jarring state changes (CSS transition properties silently no-op without a valid duration). |
+| Spacing scale | `--s-2` … `--s-16` (9 steps) | Every padding/gap/margin value in the gallery cards, nav, footer, and page-hero. Undefined = collapsed layout (padding/gap resolve to nothing). |
+| Radius scale | `--r-xs`, `--r-sm`, `--r-md`, `--r-lg`, `--r-pill` | Every rounded corner — cards, pills, buttons. Undefined = square corners everywhere, a small but immediately-visible "something's broken" tell. |
+
+Phosphor Blueprint's own `tokens.css` was, until this fix, an "append-only
+override" that only ever redefined `--bg-0`/`--bg-1`/`--bg-2`/`--border-1`/
+`--border-2` — the other 38 required properties were silently covered by
+`index.html`'s and `themes.html`'s own hardcoded local `:root` fallback, not
+by the theme file at all. **This is exactly the gap the review flagged**,
+and PB itself was the proof: run the new gate against PB's tokens.css as it
+shipped, and it fails 38 of 43. The fix extended `tokens.css` to be
+self-contained — the same full base block `archetypes/utility.css` already
+carried (verified value-for-value identical against both `index.html`'s and
+`themes.html`'s hardcoded copies before the edit, so this is additive only,
+confirmed zero pixel change) — with the existing treatment-layer `:root`
+kept exactly as-is, still winning the cascade for the five properties it
+overrides. `archetypes/utility.css` needed no changes: it was already
+self-contained (0 of 43 missing), because it was extracted, in full, from
+`press.html` back in A4 — the pattern `tokens.css` is only now catching up
+to.
+
+**The finding, stated plainly:** `tokens.css`'s "append-only, base system
+stays intact" framing was only ever true because something else — page-
+local hardcoded CSS, never itself a theme-owned artifact — was silently
+doing the "intact base" work. A September theme designed against
+`tokens.css`'s old docstring alone (redefine what you want to change, ignore
+the rest) would have shipped broken, not by a mistake in its own file, but
+by trusting a contract that was never actually enforced. `REQUIRED_TOKENS`
+makes `tokens.css` (and `utility.css`) the real, self-sufficient source of
+truth the docstring always claimed them to be.
+
 ## Screenshots and the self-dressing gallery (A8)
 
 Every theme gets one deterministic PNG at `assets/themes/<slug>.png`

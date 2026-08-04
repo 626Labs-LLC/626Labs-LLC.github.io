@@ -39,3 +39,22 @@ def test_validate_flags_missing_file(tmp_path):
 
 def test_real_mapping_is_valid():
     assert az.validate(az.load()) == []
+
+
+# ─── final review Fix 1: REQUIRED_TOKENS ────────────────────────────────
+
+
+def test_required_tokens_nonempty():
+    assert az.REQUIRED_TOKENS
+
+
+def test_required_tokens_are_all_custom_property_names():
+    assert all(t.startswith("--") for t in az.REQUIRED_TOKENS)
+
+
+def test_required_tokens_excludes_theme_bespoke_pb_prefixed_names():
+    # --pb-field (press.html's .asset-preview) is a real, live var() use but
+    # Phosphor-Blueprint-specific naming, not a base-vocabulary name every
+    # future theme is obligated to define — see REQUIRED_TOKENS's docstring
+    # and docs/theme-archetypes.md's "excluded" note.
+    assert not any(t.startswith("--pb-") for t in az.REQUIRED_TOKENS)

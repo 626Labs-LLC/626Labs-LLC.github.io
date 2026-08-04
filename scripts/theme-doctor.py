@@ -5,7 +5,11 @@ Checks all four archetypes (scripts/archetypes.py: home, product, reading,
 utility) a theme has to dress. First, completeness: tokens.css/theme.json,
 all four archetypes/*.html, AND archetypes/product.css + archetypes/
 utility.css + archetypes/reading.css (the three CSS artifacts real,
-unguarded consumers read at render time — see REQUIRED_ARCHETYPE_CSS). Then,
+unguarded consumers read at render time — see REQUIRED_ARCHETYPE_CSS), AND
+that tokens.css and archetypes/utility.css actually DEFINE every custom
+property in archetypes.REQUIRED_TOKENS — themes.html/press.html/privacy.html
+read these via var(--x) but carry no theme-owned fallback of their own (see
+check_required_tokens and REQUIRED_TOKENS's docstring). Then,
 per archetype: page chrome (skip-link/nav/footer/analytics, per
 ARCHETYPE_CHROME's real per-archetype profile), every internal href resolves
 to a real file, the archetype's required vocabulary class set
@@ -230,6 +234,30 @@ def check_vocabulary(html: str, css: str, archetype: str) -> list[str]:
         f"(not found as an HTML class or a CSS selector)"
         for cls in sorted(required)
         if cls not in found
+    ]
+
+
+# ─── required tokens (final review Fix 1) ──────────────────────────────
+def check_required_tokens(css: str) -> list[str]:
+    """Enforces archetypes.REQUIRED_TOKENS: every base custom property
+    themes.html's own <style> and press.html's/privacy.html's own residual
+    <style> read via var(--x) but never define themselves has to actually
+    be DEFINED somewhere in `css` — not merely referenced. A theme that
+    renames or drops one passes every other gate today (vocabulary only
+    checks class names; chrome/links don't look at custom properties at
+    all) and silently ships stale colors (themes.html/index.html, which
+    fall back to their own hardcoded pre-rotation values) or unresolved
+    var()s (press.html/privacy.html, which have no fallback of their own).
+
+    Reuses `_parse_custom_properties` — the same last-declaration-wins
+    parse `check_contrast` already trusts to resolve `:root` values — so a
+    token counts as "defined" the same way contrast resolution already
+    treats it as defined, no new parsing rule to keep in sync."""
+    declared = _parse_custom_properties(css)
+    return [
+        f"missing required custom property {tok!r}"
+        for tok in sorted(archetypes.REQUIRED_TOKENS)
+        if tok not in declared
     ]
 
 
@@ -677,6 +705,18 @@ def main(argv: list[str]) -> int:
     pairs = theme_meta.get("contrastPairs")
 
     errors: list[str] = []
+    # The token-variable contract (final review Fix 1 / archetypes.
+    # REQUIRED_TOKENS): themes.html reads tokens.css directly; press.html/
+    # privacy.html read archetypes/utility.css and carry no local fallback
+    # at all. Both files have to actually DEFINE the required set, or those
+    # three pages break on the next rotation (see REQUIRED_TOKENS's
+    # docstring) — checked here, before the archetype loop, same
+    # completeness spirit as REQUIRED_ARCHETYPE_CSS above, just for file
+    # CONTENT instead of file existence.
+    errors += [f"tokens.css: {e}" for e in check_required_tokens(tokens_css)]
+    utility_css_text = (tdir / "archetypes" / REQUIRED_ARCHETYPE_CSS["utility"]).read_text(encoding="utf-8")
+    errors += [f"archetypes/utility.css: {e}" for e in check_required_tokens(utility_css_text)]
+
     archetype_html: dict[str, str] = {}
     for archetype in archetypes.ARCHETYPES:
         html, css, zones_flag = _archetype_source(archetype, tdir, home_html, tokens_css)
