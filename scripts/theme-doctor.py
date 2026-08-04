@@ -47,7 +47,11 @@ failure list under "FAIL <slug>" otherwise.
 
 --browser additionally drives Playwright (if the `playwright` package is
 importable — it is never a hard dependency of this repo) to assert no
-horizontal scroll at 1440/768/390px and zero browser console errors. Without
+horizontal scroll at 1440/768/390px and zero browser console errors, and on
+the two pages that own none of their own chrome (DRESS_OUTCOME_PAGES) to
+assert the theme's dress actually ARRIVED — see check_page_renders_dressed,
+which grades computed outcome and never a list of rules the theme must
+carry. Without
 it, or without playwright installed, those two checks are skipped with a
 one-line note and never fail the gate on their own — that's the local
 convenience path, for a machine that hasn't run `playwright install`.
@@ -150,14 +154,18 @@ REQUIRED_TOKEN_CSS = (
 # Of those, the ones that must contain NOTHING BUT token definitions: the
 # files a hand-authored page links for its palette and nothing else.
 #
-# archetypes/utility.css is deliberately absent, and that absence is a
-# DESCRIPTION of where press.html/privacy.html are today, not a settled
-# position. Those two wear a foreign element dress already — `a { color:
-# inherit; text-decoration: none }`, `body`, `h1..h4`, `footer` — with no
-# page-side statement of their own. Splitting utility.css would mean those
-# pages taking ownership of a dress they currently borrow, which is real
-# design work with real pixel risk, not a fix-round addendum. Recorded as a
-# known exposure of the same class the product and reading splits closed.
+# archetypes/utility.css is deliberately absent, and as of 2026-08-04 that is
+# a SETTLED position rather than a description of open work. press.html and
+# privacy.html wear a foreign element dress with no page-side statement of
+# their own — `a { color: inherit }`, `body`, `h1..h4`, `nav.nav`,
+# `header.page-hero`, `footer` — and Este's ruling is that they KEEP wearing
+# it, so a new month actually restyles them. Splitting utility.css would close
+# the exposure by removing the dependency, and would also make them the two
+# pages a September theme cannot reach.
+#
+# So the exposure closes by VERIFICATION instead: check_page_renders_dressed
+# opens both pages under the theme being doctored and asserts the dress
+# arrived, on computed outcome rather than on a required-rules manifest.
 TOKEN_ONLY_CSS = (
     f"archetypes/{PRODUCT_TOKENS_CSS}",
     f"archetypes/{READING_TOKENS_CSS}",
@@ -190,10 +198,28 @@ TOKEN_ONLY_CSS = (
 # browser context aborts off-origin requests and drops console errors
 # attributed to off-origin URLs. See that function's docstring for what that
 # does and does not still cover.
+# press.html and privacy.html join on a STRONGER argument than the other six.
+# The six link a theme file for its token vocabulary and keep their own dress.
+# These two keep no chrome of their own at all: measured against the live DOM,
+# 49 of archetypes/utility.css's 50 selectors reach press.html and 48 reach
+# privacy.html, and the two pages' own <style> blocks (52 and 21 selectors)
+# redeclare NOT ONE of them — zero overlap. Their entire nav, hero, type,
+# link and footer treatment arrives from the theme. So they are the two pages
+# a second theme's utility.css can silently change or break, and they were the
+# two pages nothing ever opened. See check_page_renders_dressed for the
+# outcome gate that rides along with opening them.
 BROWSER_CHECK_LIVE_PAGES = (
     "conundrum.html", "rororo-plugins.html", "rororo.html",
     "mod-launcher-games.html", "thesis.html", "workflow.html",
+    "press.html", "privacy.html",
 )
+
+# The pages `check_page_renders_dressed` additionally grades — the ones that
+# borrow their whole chrome from the theme and state nothing of their own
+# about it. Exactly the utility archetype's two live pages; every other page
+# the browser gate opens owns enough of its own dress that a theme dropping a
+# rule degrades it rather than stripping it.
+DRESS_OUTCOME_PAGES = ("press.html", "privacy.html")
 
 # Real, live chrome varies by archetype today — verified by grep against the
 # actual shipped pages (vibe-cartographer/index.html, press.html,
@@ -402,9 +428,11 @@ def check_token_css_declares_only_tokens(css: str) -> list[str]:
 
     utility.css was extracted FROM press.html, so its element rules are
     those pages' own dress coming home — they have no page-side dress to
-    fall back on, which is exactly why splitting it is real design work
-    rather than a mechanical move. That exemption is a description of where
-    those two pages are, not a position that they should stay there.
+    fall back on. That exemption is now a settled position (2026-08-04):
+    those two pages keep wearing the theme's dress so the rotation can
+    restyle them, and what a token-only split would have bought is bought
+    instead by check_page_renders_dressed, which grades the RESULT in the
+    browser rather than the rules in the file.
 
     reading.css is exempt for the opposite reason: it is ABOUT.HTML's dress
     now. The part that was extracted from thesis.html/workflow.html lives in
@@ -658,7 +686,9 @@ def _degrade(msg: str, require: bool) -> list[str]:
     return []
 
 
-def _run_browser_checks(html_text: str, require: bool = False) -> list[str]:
+def _run_browser_checks(
+    html_text: str, require: bool = False, dress_outcome: bool = False
+) -> list[str]:
     sync_playwright = _import_sync_playwright()
     if sync_playwright is None:
         return _degrade("playwright not installed", require)
@@ -707,7 +737,10 @@ def _run_browser_checks(html_text: str, require: bool = False) -> list[str]:
                 for width in (1440, 768, 390):
                     page = browser.new_page(viewport={"width": width, "height": 900})
                     try:
-                        errors += _check_viewport(page, f"http://127.0.0.1:{port}/", width)
+                        errors += _check_viewport(
+                            page, f"http://127.0.0.1:{port}/", width,
+                            dress_outcome=dress_outcome,
+                        )
                     finally:
                         page.close()
             finally:
@@ -749,8 +782,229 @@ _OFF_ORIGIN_FIXTURES = {
 }
 
 
-def _check_viewport(page, url: str, width: int) -> list[str]:
+# ─── the borrowed dress, gated on OUTCOME ────────────────────────────────
+#
+# What the page is measured against is the BROWSER'S OWN undressed baseline,
+# read at runtime from a blank same-document iframe (a document with zero
+# author CSS). Nothing below names a selector that has to exist in the
+# theme's CSS, and nothing pins a value. That distinction is the whole design:
+# a required-rules manifest mirroring REQUIRED_TOKENS was the obvious move and
+# was rejected, because a theme setting the field on `html` instead of `body`,
+# or renaming its selectors entirely, would fail it while rendering perfectly.
+# The selectors this DOES name — `nav.nav`, `h1.page-title`, `footer`,
+# `a.inline-link` — are press.html's and privacy.html's OWN markup, which is
+# theme-invariant and is what a theme is supposed to be able to find.
+_DRESS_PROBE_JS = r"""
+() => {
+  const rd = (el) => {
+    if (!el) return null;
+    const cs = getComputedStyle(el);
+    return {
+      backgroundColor: cs.backgroundColor, backgroundImage: cs.backgroundImage,
+      color: cs.color, fontFamily: cs.fontFamily, fontSize: cs.fontSize,
+      zIndex: cs.zIndex,
+    };
+  };
+  // The undressed baseline. An about:blank iframe's contentDocument is
+  // available synchronously and carries no author CSS, so what it computes
+  // is the browser's own default for this exact build — portable across
+  // platforms in a way a hardcoded "Times New Roman" would not be. It makes
+  // no network request, so the off-origin abort route never sees it.
+  let ua = null;
+  const probe = document.createElement('iframe');
+  probe.setAttribute('aria-hidden', 'true');
+  probe.style.cssText = 'position:absolute;width:0;height:0;border:0;visibility:hidden';
+  document.body.appendChild(probe);
+  const doc = probe.contentDocument;
+  if (doc && doc.body) {
+    doc.body.innerHTML = '<h1>H</h1><a href="#">a</a>';
+    const b = getComputedStyle(doc.body);
+    const h = getComputedStyle(doc.body.querySelector('h1'));
+    const a = getComputedStyle(doc.body.querySelector('a'));
+    ua = {
+      fontFamily: b.fontFamily,
+      headingRatio: parseFloat(h.fontSize) / parseFloat(b.fontSize),
+      linkColor: a.color,
+    };
+  }
+  probe.remove();
+  return {
+    ua: ua,
+    html: rd(document.documentElement),
+    body: rd(document.body),
+    nav: rd(document.querySelector('nav.nav')),
+    title: rd(document.querySelector('h1.page-title')),
+    footer: rd(document.querySelector('footer')),
+    link: rd(document.querySelector('a.inline-link')),
+  };
+}
+"""
+
+_COLOR_FUNC_RE = re.compile(r"^rgba?\(([^)]*)\)$")
+
+# The two generic keywords that mean "whatever the browser would have used
+# anyway". Not a value pin: any concrete family, and any other generic
+# (`system-ui`, `ui-monospace`, …), is a deliberate choice and passes.
+_DEFAULT_TYPE_KEYWORDS = {"serif", "sans-serif"}
+
+
+def _css_alpha(color: str) -> float:
+    """Alpha channel of a computed color. Chromium always serializes a
+    computed color as `rgb(...)` or `rgba(...)`, so anything else — including
+    the empty string — is treated as painting nothing."""
+    m = _COLOR_FUNC_RE.match((color or "").strip())
+    if not m:
+        return 0.0
+    parts = [p.strip() for p in m.group(1).split(",")]
+    if len(parts) < 4:
+        return 1.0
+    try:
+        return float(parts[3])
+    except ValueError:
+        return 0.0
+
+
+def _paints(style: dict | None) -> bool:
+    """True when this element puts SOMETHING on the canvas — a background
+    color with any opacity at all, or any background image. Deliberately
+    indifferent to which of the two, and to what color: the outcome is "there
+    is a surface here", not "the surface is #000"."""
+    if style is None:
+        return False
+    if (style.get("backgroundImage") or "none") != "none":
+        return True
+    return _css_alpha(style.get("backgroundColor", "")) > 0
+
+
+def _first_family(font_family: str) -> str:
+    """The first family in a computed font-family list, unquoted and
+    casefolded."""
+    first = (font_family or "").split(",")[0].strip()
+    return first.strip("\"'").strip().casefold()
+
+
+def check_page_renders_dressed(page, width: int) -> list[str]:
+    """Assert that a page which owns none of its own chrome still RENDERS
+    dressed under the theme being doctored. Returns a list of failure strings,
+    each naming the outcome that went missing.
+
+    press.html and privacy.html take their entire nav/hero/type/link/footer
+    treatment from `archetypes/utility.css` and restate none of it — measured,
+    not assumed: 49 of that file's 50 selectors reach press.html and 48 reach
+    privacy.html, and neither page's own <style> redeclares a single one. So a
+    second theme whose utility.css drops a load-bearing rule changes or breaks
+    both pages, and every other gate in this repo stays green: the token
+    contract counts NAMES, and a name can be present in a file that no longer
+    carries the rule that spends it.
+
+    Este's ruling (2026-08-04) is that these two keep wearing the theme's
+    dress, so a new month actually restyles them. The exposure therefore has
+    to close by verification rather than by removal, which is what this is.
+
+    Six assertions, each phrased as something that must be TRUE and never as a
+    value it must equal:
+
+    1. The page paints a field — `html` OR `body` resolves a background that
+       puts something on the canvas. Which element carries it is the theme's
+       business; a theme setting it on `html` passes.
+    2. Body type is not the browser's own default — the first family in
+       `body`'s computed font-family is neither the family an undressed
+       document computes nor a bare `serif`/`sans-serif`.
+    3. The nav is a painted surface with a declared stacking order — it paints,
+       and its `z-index` is not `auto`. Any number passes; 50 is not required.
+    4. The page title outscales a bare heading — its font-size relative to body
+       text exceeds what an UNDRESSED `<h1>` computes in the same browser
+       (2.0x). A title at exactly browser proportions is not dressed.
+    5. The footer is a painted surface.
+    6. Inline links are distinguishable — `a.inline-link` resolves a color that
+       is neither body text's color nor the browser's own default link color.
+       Both halves are needed: a theme dropping only `a.inline-link` leaves the
+       links inheriting body color, and a theme dropping the bare `a` rule too
+       drops them to UA blue.
+
+    What is deliberately NOT asserted, having been considered and rejected:
+    `h1.page-title`'s font-weight. The brief asked for "a non-default weight",
+    but the UA's own `h1` default is already 700, so the assertion is
+    satisfied by a completely undressed page and constrains only a theme that
+    deliberately wants a light hero. An assertion that cannot fail on the
+    defect it is aimed at is worse than no assertion, because it reads as
+    coverage.
+    """
+    m = page.evaluate(_DRESS_PROBE_JS)
+    errors: list[str] = []
+
+    def fail(msg: str) -> None:
+        errors.append(f"browser: dress at {width}px: {msg}")
+
+    ua = m.get("ua")
+    if not ua:
+        # Never a soft skip. Without the baseline every assertion below
+        # silently covers less than it claims, which is the failure mode this
+        # whole gate exists to prevent.
+        fail("could not read the browser's undressed baseline, so nothing was graded")
+        return errors
+
+    if not (_paints(m.get("html")) or _paints(m.get("body"))):
+        fail("neither html nor body paints a field, so the page renders on the "
+             "browser's blank default")
+
+    body = m.get("body") or {}
+    body_family = _first_family(body.get("fontFamily", ""))
+    if not body_family or body_family == _first_family(ua["fontFamily"]) \
+            or body_family in _DEFAULT_TYPE_KEYWORDS:
+        fail(f"body resolves the browser's default type ({body.get('fontFamily')!r}), "
+             f"so the theme supplies no type stack")
+
+    for key, selector in (("nav", "nav.nav"), ("title", "h1.page-title"),
+                          ("footer", "footer"), ("link", "a.inline-link")):
+        if m.get(key) is None:
+            fail(f"{selector} is not present on the page, so its dress could not be graded")
+
+    nav = m.get("nav")
+    if nav is not None:
+        if not _paints(nav):
+            fail("nav.nav paints no background, so page content shows through the "
+                 "sticky bar")
+        if (nav.get("zIndex") or "auto") == "auto":
+            fail("nav.nav declares no stacking order (z-index resolves to auto), so "
+                 "content can paint over it")
+
+    title = m.get("title")
+    if title is not None and body:
+        try:
+            ratio = float(title["fontSize"].rstrip("px")) / float(body["fontSize"].rstrip("px"))
+        except (KeyError, ValueError, ZeroDivisionError):
+            # A gate that raises is worse than a gate that fails: an
+            # unhandled exception here would abort the whole doctor run and
+            # take the other archetypes' results with it.
+            ratio = None
+        if ratio is None:
+            fail("h1.page-title's size could not be read")
+        elif ratio <= ua["headingRatio"]:
+            fail(f"h1.page-title is no larger, relative to body text, than an "
+                 f"undressed browser heading ({ratio:.2f}x vs {ua['headingRatio']:.2f}x)")
+
+    footer = m.get("footer")
+    if footer is not None and not _paints(footer):
+        fail("footer paints no background, so it is not a surface")
+
+    link = m.get("link")
+    if link is not None and body:
+        if link.get("color") == body.get("color"):
+            fail("a.inline-link resolves the same color as body text, so links are "
+                 "indistinguishable from prose")
+        elif link.get("color") == ua["linkColor"]:
+            fail("a.inline-link resolves the browser's own default link color, so the "
+                 "theme dresses links not at all")
+
+    return errors
+
+
+def _check_viewport(page, url: str, width: int, dress_outcome: bool = False) -> list[str]:
     """Load `url` in an already-created page-like object at `width` and check it.
+
+    `dress_outcome=True` additionally runs `check_page_renders_dressed` — see
+    DRESS_OUTCOME_PAGES for which pages get it and why only those.
 
     Split out from `_run_browser_checks` so it's unit-testable with a stub page
     (no real browser/server needed) — see test_theme_doctor.py.
@@ -763,11 +1017,12 @@ def _check_viewport(page, url: str, width: int) -> list[str]:
     not get silently skipped and waved through.
 
     ── Third-party isolation, and why it is not optional ──────────────────
-    This gate opens ten documents: four archetype shells plus the six live
-    pages in BROWSER_CHECK_LIVE_PAGES. NINE of the ten carry
+    This gate opens twelve documents: four archetype shells plus the eight
+    live pages in BROWSER_CHECK_LIVE_PAGES. ELEVEN of the twelve carry
     `<script async src="//gc.zgo.at/count.js">`, which over `http://127.0.0.1`
-    resolves to a real third-party host. (The tenth is the `product`
+    resolves to a real third-party host. (The twelfth is the `product`
     archetype's own shell, which ARCHETYPE_CHROME marks `analytics=False`.)
+    Counted by grep against the shipped files, not incremented.
     So this gate ALREADY depended on gc.zgo.at being up at 09:00 UTC on the
     1st, through two channels: a failed load logs a console error (reported
     as the theme's fault), and an `async` script still delays the `load`
@@ -864,6 +1119,10 @@ def _check_viewport(page, url: str, width: int) -> list[str]:
         errors.append(f"browser: console error at {width}px: {msg}")
     for msg in page_errors:
         errors.append(f"browser: uncaught page error at {width}px: {msg}")
+    # Last, so the probe's throwaway iframe cannot be in the DOM while
+    # scrollWidth is measured above.
+    if dress_outcome:
+        errors += check_page_renders_dressed(page, width)
     return errors
 
 
@@ -1058,7 +1317,13 @@ def _run_browser_checks_all(archetype_html: dict[str, str], require: bool = Fals
         return _degrade("playwright not installed", require)
     errors: list[str] = []
     for archetype, html_text in archetype_html.items():
-        errors += [f"{archetype}: {e}" for e in _run_browser_checks(html_text, require=require)]
+        errors += [
+            f"{archetype}: {e}"
+            for e in _run_browser_checks(
+                html_text, require=require,
+                dress_outcome=archetype in DRESS_OUTCOME_PAGES,
+            )
+        ]
     return errors
 
 
@@ -1202,8 +1467,9 @@ def main(argv: list[str]) -> int:
     # reasons: archetypes/reading.css is about.html's dress and no page
     # links it for tokens any more, while archetypes/utility.css is
     # press.html's own dress coming home — those two pages carry no
-    # page-side dress at all, so splitting it means them taking ownership of
-    # one. See TOKEN_ONLY_CSS's comment for why that is open work.
+    # page-side dress at all, and the ruling is that they keep it that way.
+    # See TOKEN_ONLY_CSS's comment, and check_page_renders_dressed for what
+    # covers them instead.
     for label in TOKEN_ONLY_CSS:
         text = (tdir / label).read_text(encoding="utf-8")
         errors += [f"{label}: {e}" for e in check_token_css_declares_only_tokens(text)]

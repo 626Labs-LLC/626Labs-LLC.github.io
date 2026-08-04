@@ -17,7 +17,7 @@ a flake there is permanent rather than retried.
 
 Every page either tool opens is served from a local ephemeral port and its
 own assets are root-relative, so "off-origin" is exactly "not ours": the
-analytics beacon (`//gc.zgo.at/count.js`, on 9 of the 10 documents the gate
+analytics beacon (`//gc.zgo.at/count.js`, on 11 of the 12 documents the gate
 opens), and on index.html the Bacon Trail widget's TMDB calls and its
 fonts.googleapis.com @import.
 
