@@ -267,6 +267,100 @@ actually re-skinning Field Notes/About the way it already re-skins
 `index.html` — is future work, not something this task's 0-pixel gate
 permits it to do as a side effect.
 
+### A7 — `archetypes/reading.css`, the About easter egg, and a gate that actually differentiates
+
+A3 flagged a real gap for A7 to close: the toggle it was asked to build
+needs a CSS *artifact* to point a `<link>` at, but a theme's reading dress
+was an HTML shell (`reading.html`, Field Notes only) plus a theme-agnostic
+base (`editorial.css`) — no per-theme stylesheet existed. A7 adds
+`themes/<slug>/archetypes/reading.css`: a real, standalone stylesheet
+dressing vocabulary-conformant reading markup, extracted **verbatim** from
+`about.html`'s own inline `<style>` block (the Long Now Terminal
+treatment) — the one artifact in the repo that actually dresses the full
+`reading` vocabulary today. About's own inline `<style>` stays the live,
+authoritative source for its unconditional default; `reading.css` is a
+point-in-time snapshot of it, kept in sync by hand the next time About's
+dress changes (same accepted-drift posture A4 used extracting
+`utility.css` from `press.html`). It is **not** linked from `reading.html`
+— Field Notes stay theme-agnostic on purpose, per A3's finding above.
+
+**A real, pre-existing gap this extraction surfaced:** `lnt-main` (a
+required `reading` vocabulary class) had no CSS selector anywhere in the
+repo — not in About's own `<style>`, not in `editorial.css`. It had always
+been silently satisfied by the old, theme-invariant vocabulary check
+(About's markup carries the class; the old check credited markup alone).
+Fixed at the source with a single, zero-visual-effect rule added to
+About's own `<style>` (`.lnt-main { display: block; }`, exactly matching
+`<main>`'s UA default) before extracting `reading.css`, so both files stay
+honest and in sync — not silently patched around in the theme's copy alone.
+
+**Selecting "Phosphor Blueprint" in the toggle looks identical to About's
+own default today, and that's correct, not a bug.** Phosphor Blueprint is
+626labs.dev's only live theme right now, and the Long Now Terminal dress
+was designed and shipped during its era — there is no second, differently
+designed reading dress yet for the pixels to diverge against. The swap is
+still real (a genuine `<link>` replaces the inline `<style>`'s effective
+rules, verifiable in the DOM/network panel); the pixels only diverge once
+a later theme ships its own, different `reading.css`.
+
+**The gate, fixed to actually differentiate (the carried A6 finding).** A6
+shipped `reading`'s vocabulary check against `about.html` because no
+theme-owned artifact existed yet to check instead — and flagged, explicitly,
+that this made the check theme-**invariant**: any theme's (nonexistent)
+reading dress passed, forever, because About's markup never varies. Now
+that `reading.css` is real, `_check_archetype` (`scripts/theme-doctor.py`)
+splits the vocabulary in two, matching the split this doc already draws
+between "shared" and "theme-owned" classes:
+
+- The 3 shared `ed-*` leaves (`ed-page`/`ed-title`/`ed-dek`) are credited
+  from a **synthetic** anchor string, not from About's real markup — they're
+  styled by the theme-agnostic `editorial.css`, so no theme is expected to
+  redeclare them, but crediting About's actual markup for them (theme-
+  invariant, same as the pre-A7 approach) would have blurred the line with
+  the check below.
+- The 7 `lnt-*` structural classes (About's own shape, with **no** base
+  stylesheet backing them at all) are checked **CSS-selector-only** against
+  the THEME's own `archetypes/reading.css` — About's markup is no longer
+  credited for these. A theme whose `reading.css` is empty, or drops a
+  selector, now fails the gate by name (`reading: vocabulary missing
+  required class 'lnt-record' ...`), proven live against a scratch theme
+  during A7 (7/10 classes failed with an empty `reading.css`; only the
+  shared `ed-*` leaves still passed).
+
+Completeness also extended: `REQUIRED_ARCHETYPE_CSS` now includes
+`"reading": "reading.css"`, joining `product.css`/`utility.css` (A6) — a
+theme rotating in without it fails before it's ever queued, matching the
+carried-requirement posture A5/A6 established for the other two.
+
+**The easter egg itself.** Discovery is a keyboard sequence — typing "626"
+anywhere on the page (no input focus needed) — chosen because it's an
+unlabeled, on-brand mark (626 is the lab's own exchange-code numbering,
+already all over this page's own archive stamps) rather than a visible
+control, honoring "easter egg, not a menu." It opens a small, lazily-built
+picker (not present in the DOM until found) listing every dress
+`content/themes.json` currently offers: About's own default (`css: null`,
+always item 0, marked with a leading `>` when active) plus the live theme plus every
+archived theme newest-first — **not** the queue, which isn't meant for
+public preview ahead of its own rotation. Picking a dress swaps (or
+removes) a `<link id="about-dress-override">`, persists the choice to
+`localStorage['about-dress']`, and a second small script re-applies a
+stored non-default choice before first paint on later visits (no flash).
+Escape, or picking "Long Now Terminal" from the open panel, always returns
+to the default — a fresh visitor (nothing stored) sees zero difference
+from the page as authored.
+
+The list itself is renderer-owned, not hand-maintained: `scripts/
+render-hub.py`'s `render_about_theme_dresses()` fills a single narrow
+`SITE_JSON:about-theme-toggle` zone in `about.html` (a JSON `<script>` tag)
+from `theme_registry.load()` fresh every run — the same governance
+`UTILITY_CSS_HREFS`/`render_theme_css_link()` (A4) already established for
+`press.html`/`privacy.html`/`themes.html`: one small renderer-owned seam in
+an otherwise hand-authored page, not a full render-pipeline page. Since a
+`<script type="application/json">` tag has zero visual footprint, this
+doesn't touch the 0-pixel gate — confirmed screenshot-identical against
+`origin/main` at 1440/768/390 with the zone, the registry, and the toggle
+scripts all present.
+
 ---
 
 ## `utility` — single-purpose pages (6 pages)
@@ -413,13 +507,24 @@ theme-archetype task.
 SDD scratch, announcement drafts, and theme infrastructure are never
 "public pages" in the first place).
 
-## A6 — still open
+## Vocabulary enforcement — closed (A6, A7)
 
-Vocabulary *enforcement* (theme-doctor checking a theme's rendered output
-actually carries each archetype's required classes) is intentionally not
-built yet — `scripts/archetypes.py`'s `validate()` checks the page->
-archetype mapping only (every mapped page exists, every archetype value
-is known, every on-disk public page is mapped), not class presence. That
-split is deliberate, confirmed by this doc's own framing throughout: A6
-is where a theme's dress gets checked against the vocabulary tables
-above.
+`scripts/archetypes.py`'s `validate()` only ever checked the page->
+archetype *mapping* (every mapped page exists, every archetype value is
+known, every on-disk public page is mapped) — never class presence. That
+split was deliberate from A1: enforcing that a theme's actual dress
+carries each archetype's required classes is `theme-doctor.py`'s job
+(`check_vocabulary`, `scripts/theme-doctor.py`), not `archetypes.py`'s.
+
+- **A6** built that enforcement for `home`/`product`/`utility` — a
+  required class must appear as a literal HTML class or a CSS selector in
+  the theme's own dress — plus the `archetypes/product.css` +
+  `archetypes/utility.css` completeness gate. `reading` was checked too,
+  but against `about.html` (the only artifact that carried the full
+  vocabulary at the time), which made that one archetype's result
+  theme-**invariant** — flagged explicitly as A7's job to fix.
+- **A7** closed it: `reading.css` now exists per theme (see the A7
+  subsection above), `reading`'s vocabulary check is CSS-selector-only for
+  its `lnt-*` half, and `archetypes/reading.css` joined the completeness
+  gate. All four archetypes now get a real, theme-differentiating
+  vocabulary check.

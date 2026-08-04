@@ -1,0 +1,473 @@
+/* ============================================================
+   Theme: phosphor-blueprint — reading archetype stylesheet.
+
+   Extracted VERBATIM from about.html's own inline <style> block (the
+   Long Now Terminal treatment, 2026-07-12 bake-off winner) — the one
+   artifact in the repo that actually dresses the reading archetype's
+   full vocabulary today (3 shared ed-* leaf classes + 7 lnt-* structural
+   classes; see scripts/archetypes.py VOCABULARY["reading"] and
+   docs/theme-archetypes.md). A3 found reading pages carry no per-theme
+   CSS artifact at all (Design/editorial.css is theme-agnostic, reading.html
+   is an HTML shell with no standalone stylesheet); A7 closes that gap so
+   the reading archetype has a real, swappable dress like product/utility
+   already do.
+
+   Two live consumers, both A7:
+   1. scripts/theme-doctor.py's reading-archetype gate reads this file
+      (not about.html's inline style) as the CSS half of the vocabulary
+      check, so a future theme's OWN reading.css is what gets graded —
+      about.html's markup no longer trivially satisfies the check by
+      itself (see _archetype_source's docstring for the mechanics).
+   2. about.html's client-side easter-egg toggle swaps a <link> to this
+      file's URL (/themes/phosphor-blueprint/archetypes/reading.css) when
+      a visitor picks "Phosphor Blueprint" from the picker.
+
+   NOT linked from about.html itself — About's own inline <style> stays
+   the live, authoritative source for its default (unconditional) look;
+   this file is a point-in-time snapshot of it, kept in sync by hand the
+   next time About's dress changes (same accepted-drift posture A4 used
+   for utility.css's extraction from press.html — see that file's own
+   header comment). NOT linked from reading.html either — Field Notes
+   stay theme-agnostic on purpose (A3's finding: linking a theme's tokens
+   there would silently repaint every Field Note along with About, which
+   nothing has asked for yet).
+
+   Selecting "Phosphor Blueprint" in the toggle looks IDENTICAL to
+   About's own default today, and that is correct, not a bug: Phosphor
+   Blueprint is 626labs.dev's only live theme right now, and this dress
+   was designed and shipped during its era. Toggling to it swaps a real
+   <link> in for the inline <style> (verifiable in the DOM / network
+   panel); the pixels only diverge from the default once a later theme
+   ships its own, different reading.css.
+   ============================================================ */
+:root {
+  /* ---------- Light tokens (default) — from preview-about-lnt.html ---------- */
+  --at-lnt-cyan-ink:    #097088;              /* AA-safe cyan text — eyebrow, rail values, tags, status stamp, nav/footer accents */
+  --at-lnt-cyan-bright: #0C8AA6;               /* large-display-only cyan — retrieval-year numeral */
+  --at-lnt-cyan-line:   rgba(15,168,201,.30);  /* hairlines, corner reticle ticks, chip/nav borders — not text */
+  --at-lnt-cyan-wash:   rgba(15,168,201,.05);  /* chip + frontispiece + nav backdrop tint — not text */
+
+  /* ---------- Dark tokens (reserve) — from preview-about-lnt-dark.html ---------- */
+  --at-lntd-paper:       #0F1F31;               /* page bg — brand-navy-deep, the records room after hours */
+  --at-lntd-paper-soft:  #223A54;               /* raised card bg — brand-navy-soft, one step off the wall */
+  --at-lntd-ink:         #E4D6B8;               /* primary body ink — warm archive-lamp tone */
+  --at-lntd-ink-2:       #B9A67D;               /* secondary ink (dek) */
+  --at-lntd-ink-3:       #B4A47F;               /* captions / metadata */
+  --at-lntd-ink-muted:   #8F8676;               /* rail separator glyph (decorative) */
+  --at-lntd-rule:        rgba(228,214,184,.12); /* hairlines, card borders — not text */
+  --at-lntd-link-hover:  #FF5AA3;               /* back-link / footer-link hover — brand-magenta-bright */
+  --at-lntd-cyan-ink:    #3FC3E0;               /* restrained cyan text — eyebrow, rail values, tags, pull-id, artifact-meta, nav/footer accents */
+  --at-lntd-cyan-bright: #17D4FA;               /* large-display-only cyan — retrieval-year numeral */
+  --at-lntd-cyan-line:   rgba(23,212,250,.22);  /* hairlines, corner reticle ticks, chip/nav borders — not text */
+  --at-lntd-cyan-wash:   rgba(23,212,250,.07);  /* chip + nav backdrop tint — not text */
+}
+
+/* Dark activation #1 — OS preference, only when no explicit choice is stamped */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ed-paper:      var(--at-lntd-paper);
+    --ed-paper-soft: var(--at-lntd-paper-soft);
+    --ed-ink:        var(--at-lntd-ink);
+    --ed-ink-2:      var(--at-lntd-ink-2);
+    --ed-ink-3:      var(--at-lntd-ink-3);
+    --ed-ink-muted:  var(--at-lntd-ink-muted);
+    --ed-rule:       var(--at-lntd-rule);
+    --ed-link-hover: var(--at-lntd-link-hover);
+    --at-lnt-cyan-ink:    var(--at-lntd-cyan-ink);
+    --at-lnt-cyan-bright: var(--at-lntd-cyan-bright);
+    --at-lnt-cyan-line:   var(--at-lntd-cyan-line);
+    --at-lnt-cyan-wash:   var(--at-lntd-cyan-wash);
+  }
+}
+/* Dark activation #2 — explicit toggle, wins over OS pref either direction */
+:root[data-theme="dark"] {
+  --ed-paper:      var(--at-lntd-paper);
+  --ed-paper-soft: var(--at-lntd-paper-soft);
+  --ed-ink:        var(--at-lntd-ink);
+  --ed-ink-2:      var(--at-lntd-ink-2);
+  --ed-ink-3:      var(--at-lntd-ink-3);
+  --ed-ink-muted:  var(--at-lntd-ink-muted);
+  --ed-rule:       var(--at-lntd-rule);
+  --ed-link-hover: var(--at-lntd-link-hover);
+  --at-lnt-cyan-ink:    var(--at-lntd-cyan-ink);
+  --at-lnt-cyan-bright: var(--at-lntd-cyan-bright);
+  --at-lnt-cyan-line:   var(--at-lntd-cyan-line);
+  --at-lnt-cyan-wash:   var(--at-lntd-cyan-wash);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+
+/* ---------- Top nav ---------- */
+.lnt-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--ed-paper);
+  border-bottom: 1px solid var(--at-lnt-cyan-line);
+}
+.lnt-nav-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.lnt-nav-brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--ed-ink);
+  text-decoration: none;
+}
+.lnt-nav-brand .accent { color: var(--at-lnt-cyan-ink); }
+.lnt-nav-links {
+  display: flex;
+  gap: 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+.lnt-nav-links a {
+  color: var(--ed-ink-2);
+  text-decoration: none;
+  transition: color 120ms;
+}
+.lnt-nav-links a:hover { color: var(--ed-link-hover); }
+.lnt-nav-right { display: flex; align-items: center; gap: 20px; }
+.lnt-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid var(--at-lnt-cyan-line);
+  background: var(--at-lnt-cyan-wash);
+  color: var(--at-lnt-cyan-ink);
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms;
+}
+.lnt-theme-toggle:hover { background: var(--at-lnt-cyan-line); }
+.lnt-theme-toggle svg { width: 16px; height: 16px; display: block; }
+.lnt-theme-toggle .ti-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .lnt-theme-toggle .ti-sun { display: none; }
+  :root:not([data-theme="light"]) .lnt-theme-toggle .ti-moon { display: block; }
+}
+:root[data-theme="dark"] .lnt-theme-toggle .ti-sun { display: none; }
+:root[data-theme="dark"] .lnt-theme-toggle .ti-moon { display: block; }
+:root[data-theme="light"] .lnt-theme-toggle .ti-sun { display: block; }
+:root[data-theme="light"] .lnt-theme-toggle .ti-moon { display: none; }
+@media (max-width: 640px) {
+  .lnt-nav-links { display: none; }
+}
+
+/* ---------- Header / frontispiece ---------- */
+.lnt-header {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 20px 24px 0;
+}
+.lnt-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--at-lnt-cyan-ink);
+  margin: 24px 0 20px;
+}
+.lnt-title { margin-top: 0; }
+
+.lnt-frontispiece {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 28px;
+  border-top: 1px solid var(--at-lnt-cyan-line);
+  border-bottom: 1px solid var(--at-lnt-cyan-line);
+  padding: 24px 0;
+  margin: 44px 0 0;
+}
+.lnt-fr-meta { display: flex; flex-direction: column; gap: 7px; }
+.lnt-fr-row {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .06em;
+  color: var(--at-lnt-cyan-ink);
+  margin: 0;
+}
+.lnt-fr-row .k {
+  color: var(--ed-ink-3);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-right: 10px;
+}
+.lnt-fr-year { text-align: right; }
+.lnt-fr-year-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: clamp(40px, 6vw, 64px);
+  letter-spacing: .01em;
+  line-height: 1;
+  color: var(--at-lnt-cyan-bright);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.lnt-fr-year-cap {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ed-ink-3);
+  margin: 8px 0 0;
+}
+@media (max-width: 640px) {
+  .lnt-frontispiece { flex-direction: column; align-items: flex-start; }
+  .lnt-fr-year { text-align: left; }
+}
+
+/* ---------- Main content wrapper — the reading vocabulary's required
+   structural anchor (archetypes.py VOCABULARY["reading"]). Explicit
+   display:block matches <main>'s UA default exactly (zero visual
+   change) — this rule exists so the class has a real CSS selector a
+   theme's dress can hook into, not because the page needed styling. ---------- */
+.lnt-main { display: block; }
+
+/* ---------- Epigraph — sits between the frontispiece and the records ---------- */
+.lnt-epigraph-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 24px 0;
+}
+
+/* ---------- Record scaffold (one per section) ---------- */
+.lnt-record {
+  padding: 96px 24px;
+  border-bottom: 1px solid var(--ed-rule);
+}
+.lnt-record:first-of-type { padding-top: 72px; }
+.lnt-record:last-of-type { border-bottom: 0; padding-bottom: 120px; }
+.lnt-record-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.lnt-rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .07em;
+  margin: 0 0 28px;
+}
+.lnt-rail-item { color: var(--at-lnt-cyan-ink); text-transform: uppercase; }
+.lnt-rail-item .k { color: var(--ed-ink-3); margin-right: 6px; }
+.lnt-rail-sep { color: var(--ed-ink-muted); }
+
+.lnt-open {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ed-ink);
+  margin: 0 0 36px;
+}
+
+/* Shared corner-reticle frame — retrieved-record motif */
+.lnt-frame { position: relative; }
+.lnt-frame::before, .lnt-frame::after {
+  content: '';
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-style: solid;
+  border-color: var(--at-lnt-cyan-line);
+  border-width: 0;
+}
+.lnt-frame::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
+.lnt-frame::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+
+/* ---------- Plain running prose (the lab's own institutional prose) ---------- */
+.lnt-prose {
+  font-family: var(--font-serif);
+  font-size: var(--ed-t-body);
+  line-height: var(--ed-lh-body);
+  color: var(--ed-ink);
+  margin: 0 0 1.4em;
+  text-wrap: pretty;
+  hanging-punctuation: first last;
+}
+.lnt-prose:last-child { margin-bottom: 0; }
+
+/* ---------- Passages (retrieved-transcript quotation, e.g. the epigraph) ---------- */
+.lnt-passage {
+  margin: 0 0 4px;
+  padding: 28px 32px;
+  border: 1px solid var(--ed-rule);
+  background: var(--ed-paper-soft);
+}
+.lnt-passage p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--ed-t-body);
+  line-height: var(--ed-lh-body);
+  color: var(--ed-ink);
+  margin: 0 0 1em;
+  text-wrap: pretty;
+  hanging-punctuation: first last;
+}
+.lnt-passage p:last-child { margin-bottom: 0; }
+
+.lnt-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--at-lnt-cyan-ink);
+  background: var(--at-lnt-cyan-wash);
+  border: 1px solid var(--at-lnt-cyan-line);
+  border-radius: 999px;
+  padding: 5px 12px;
+  margin: 0 0 10px;
+}
+
+/* ---------- Keystone / pull-quote cards — the attributed quotes ---------- */
+.lnt-pull-card {
+  padding: 32px 32px 30px;
+  border: 1px solid var(--ed-rule);
+  background: var(--ed-paper-soft);
+  margin: 0 0 32px;
+}
+.lnt-pull-card:last-child { margin-bottom: 0; }
+.lnt-pull-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--at-lnt-cyan-ink);
+  margin: 0 0 18px;
+}
+.lnt-pull-quote { margin: 0; }
+.lnt-pull-quote p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--ed-t-pull);
+  line-height: var(--ed-lh-pull);
+  color: var(--ed-ink);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* ---------- Artifact card — a distinct record block ---------- */
+.lnt-artifact-card {
+  padding: 32px 32px 28px;
+  border: 1px solid var(--ed-rule);
+  background: var(--ed-paper-soft);
+  margin: 0 0 20px;
+}
+.lnt-artifact-card:last-child { margin-bottom: 0; }
+.lnt-artifact-file {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  color: var(--ed-ink);
+  margin: 0 0 14px;
+  word-break: break-word;
+}
+.lnt-artifact-body {
+  font-family: var(--font-serif);
+  font-size: var(--ed-t-body);
+  line-height: var(--ed-lh-body);
+  color: var(--ed-ink);
+  margin: 0 0 24px;
+  text-wrap: pretty;
+  hanging-punctuation: first last;
+}
+.lnt-status {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: .82em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--at-lnt-cyan-ink);
+}
+.lnt-artifact-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--at-lnt-cyan-ink);
+  padding-top: 18px;
+  border-top: 1px solid var(--ed-rule);
+  margin: 0;
+}
+.lnt-artifact-meta .k { color: var(--ed-ink-3); margin-right: 6px; }
+
+/* ---------- Footer colophon ---------- */
+.lnt-footer {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px 24px 96px;
+  text-align: center;
+}
+.lnt-footer-rule {
+  height: 1px;
+  background: var(--at-lnt-cyan-line);
+  margin-bottom: 32px;
+}
+.lnt-colophon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ed-ink-3);
+  margin: 0 0 28px;
+}
+.lnt-colophon .accent { color: var(--at-lnt-cyan-ink); }
+.lnt-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--ed-ink-3);
+  margin: 0 0 24px;
+}
+.lnt-footer-links a { color: var(--ed-ink-3); text-decoration: none; transition: color 120ms; }
+.lnt-footer-links a:hover { color: var(--ed-link-hover); }
+.lnt-footer-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .04em;
+  line-height: 1.7;
+  color: var(--ed-ink-3);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .lnt-header { padding: 20px 16px 0; }
+  .lnt-epigraph-wrap { padding: 40px 16px 0; }
+  .lnt-record { padding: 56px 16px; }
+  .lnt-record:first-of-type { padding-top: 40px; }
+  .lnt-record:last-of-type { padding-bottom: 72px; }
+  .lnt-open { font-size: 21px; }
+  .lnt-passage { padding: 22px 20px; }
+  .lnt-pull-card { padding: 24px 20px 22px; }
+  .lnt-artifact-card { padding: 24px 20px 22px; }
+  .lnt-footer { padding: 24px 16px 72px; }
+}

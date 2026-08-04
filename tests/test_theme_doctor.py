@@ -160,6 +160,16 @@ def test_browser_unavailable_is_a_gate_failure_with_require_browser(monkeypatch)
     assert any("playwright" in e.lower() for e in errs)
 
 
+def _compliant_reading_css():
+    # reading's vocabulary check is CSS-selector-only for its 7 lnt-*
+    # classes as of A7 (see READING_SHARED_LEAF_CLASSES / _check_archetype)
+    # — the shared ed-* leaves are credited from a synthetic anchor string,
+    # never from this file. A stub theme's reading.css only needs to cover
+    # the lnt-* set to clear the gate.
+    lnt_classes = [c for c in td.archetypes.VOCABULARY["reading"] if not c.startswith("ed-")]
+    return "".join(f".{c} {{ }}\n" for c in lnt_classes)
+
+
 def _make_complete_theme_dir(tdir):
     # All four archetype files + tokens.css/theme.json — the shell.html
     # fallback is gone (A4), so a theme needs the full archetypes/ set to
@@ -170,7 +180,9 @@ def _make_complete_theme_dir(tdir):
     # archetype markup has to be vocabulary-and-chrome-compliant now, not
     # just present, or the browser-focused tests below (which expect the
     # static checks to pass cleanly) would trip on the new checks instead of
-    # exercising what they're actually testing.
+    # exercising what they're actually testing. A7 adds archetypes/
+    # reading.css to that same completeness requirement, and reading's own
+    # dress (not about.html's) is now what the vocabulary check grades.
     (tdir / "archetypes").mkdir(parents=True)
     (tdir / "tokens.css").write_text("", encoding="utf-8")
     (tdir / "theme.json").write_text("{}", encoding="utf-8")
@@ -178,6 +190,7 @@ def _make_complete_theme_dir(tdir):
         (tdir / "archetypes" / f"{a}.html").write_text(_compliant_archetype_html(a), encoding="utf-8")
     (tdir / "archetypes" / "product.css").write_text("", encoding="utf-8")
     (tdir / "archetypes" / "utility.css").write_text("", encoding="utf-8")
+    (tdir / "archetypes" / "reading.css").write_text(_compliant_reading_css(), encoding="utf-8")
 
 
 def test_main_require_browser_implies_browser_and_fails_when_unavailable(monkeypatch, tmp_path):
@@ -300,12 +313,59 @@ def test_live_utility_shell_passes_vocabulary():
 
 
 def test_about_html_carries_the_full_reading_vocabulary():
-    # theme-doctor checks `reading` against about.html, not the theme's own
-    # reading.html shell — see _archetype_source's docstring in
-    # scripts/theme-doctor.py for why. This sanity-checks the one artifact
-    # the gate actually inspects for that archetype.
+    # check_vocabulary itself is archetype-agnostic and this remains true at
+    # that level: about.html's real markup carries all 10 required classes.
+    # A7 changed WHAT the gate (_check_archetype/main()) actually feeds
+    # check_vocabulary for "reading" — see the tests below — precisely
+    # because this fact alone made the gate theme-invariant (any theme's
+    # reading.css passed, since about.html's markup never varies).
     html = (ROOT / "about.html").read_text(encoding="utf-8")
     assert td.check_vocabulary(html, "", "reading") == []
+
+
+# ─── A7: reading's vocabulary check is CSS-selector-only for its lnt-* half ─
+# About's markup is theme-invariant (same page, every theme) — crediting it
+# wholesale would make ANY theme's reading.css pass, including an empty one.
+# _check_archetype closes that by feeding check_vocabulary a synthetic
+# anchor for the 3 shared ed-* leaves only; the 7 lnt-* classes must come
+# from a real CSS selector in the THEME's own archetypes/reading.css.
+
+
+def test_reading_shared_leaf_classes_are_exactly_the_ed_prefixed_ones():
+    assert td.READING_SHARED_LEAF_CLASSES == {"ed-page", "ed-title", "ed-dek"}
+
+
+def test_reading_gate_ignores_about_html_markup_for_lnt_classes():
+    # Feeding the REAL about.html (which carries every lnt-* class in its
+    # own markup) with an EMPTY css must still fail every lnt-* class — if
+    # this passed, about.html's markup alone would rubber-stamp any theme.
+    about_html = (ROOT / "about.html").read_text(encoding="utf-8")
+    errs = td._check_archetype("reading", about_html, "", False, None)
+    lnt_required = [c for c in td.archetypes.VOCABULARY["reading"] if c.startswith("lnt-")]
+    assert len(errs) == len(lnt_required)
+    for cls in lnt_required:
+        assert any(repr(cls) in e for e in errs)
+    # The 3 shared ed-* leaves are still satisfied (from the synthetic
+    # anchor, not from about.html) — no ed-* class should be reported missing.
+    assert not any("ed-page" in e or "ed-title" in e or "ed-dek" in e for e in errs)
+
+
+def test_reading_gate_passes_when_theme_css_covers_every_lnt_class():
+    about_html = (ROOT / "about.html").read_text(encoding="utf-8")
+    lnt_required = [c for c in td.archetypes.VOCABULARY["reading"] if c.startswith("lnt-")]
+    css = "".join(f".{c} {{ }}\n" for c in lnt_required)
+    assert td._check_archetype("reading", about_html, css, False, None) == []
+
+
+def test_live_reading_css_passes_vocabulary_for_the_lnt_half():
+    # The real, shipped extraction (themes/phosphor-blueprint/archetypes/
+    # reading.css) has to actually cover every lnt-* class as a CSS
+    # selector — not just in a synthetic test fixture.
+    about_html = (ROOT / "about.html").read_text(encoding="utf-8")
+    css = (ROOT / "themes" / "phosphor-blueprint" / "archetypes" / "reading.css").read_text(
+        encoding="utf-8"
+    )
+    assert td._check_archetype("reading", about_html, css, False, None) == []
 
 
 # ─── A6: the CSS-artifact completeness gate (carried requirement from A5) ──
@@ -343,11 +403,28 @@ def test_main_theme_missing_utility_css_fails_the_gate(monkeypatch, tmp_path, ca
     assert "archetypes/utility.css" in out
 
 
-def test_main_theme_with_both_archetype_css_files_clears_completeness(monkeypatch, tmp_path, capsys):
+def test_main_theme_missing_reading_css_fails_the_gate(monkeypatch, tmp_path, capsys):
+    # A7's carried requirement: about.html's client-side toggle and this
+    # module's own reading gate both read archetypes/reading.css with no
+    # existence guard — a theme rotating in without it must fail here,
+    # before it can be queued, not 404 the toggle or crash the gate later.
+    tdir = tmp_path / "themes" / "stub-theme"
+    _make_complete_theme_dir(tdir)
+    (tdir / "archetypes" / "reading.css").unlink()
+
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+
+    rc = td.main(["stub-theme"])
+    assert rc == 1
+    out = capsys.readouterr().out
+    assert "archetypes/reading.css" in out
+
+
+def test_main_theme_with_all_archetype_css_files_clears_completeness(monkeypatch, tmp_path, capsys):
     # A complete stub theme must get PAST the completeness gate (it may
     # still fail later, e.g. because render-hub.py --theme isn't mocked
-    # here) — proves the new required-files check doesn't over-fire on a
-    # theme that actually has both CSS artifacts.
+    # here) — proves the required-files check doesn't over-fire on a theme
+    # that actually has all three CSS artifacts.
     tdir = tmp_path / "themes" / "stub-theme"
     _make_complete_theme_dir(tdir)
 
@@ -357,3 +434,4 @@ def test_main_theme_with_both_archetype_css_files_clears_completeness(monkeypatc
     out = capsys.readouterr().out
     assert "product.css" not in out
     assert "utility.css" not in out
+    assert "reading.css" not in out

@@ -4,17 +4,24 @@
 Checks all four archetypes (scripts/archetypes.py: home, product, reading,
 utility) a theme has to dress. First, completeness: tokens.css/theme.json,
 all four archetypes/*.html, AND archetypes/product.css + archetypes/
-utility.css (the two CSS artifacts real, unguarded consumers read at render
-time — see REQUIRED_ARCHETYPE_CSS). Then, per archetype: page chrome
-(skip-link/nav/footer/analytics, per ARCHETYPE_CHROME's real per-archetype
-profile), every internal href resolves to a real file, the archetype's
-required vocabulary class set (archetypes.VOCABULARY) is present as either
-an HTML class or a CSS selector, and any WCAG contrast pairs the theme
-declares in theme.json meet AA (>= 4.5) wherever that pair's custom
-properties actually resolve in that archetype's own CSS. `home` additionally
-gets the twelve-SITE_JSON-zone check — the only archetype with a full
-end-to-end renderer today. See `_archetype_source`'s docstring for exactly
-which artifact stands in for each archetype's "dress" and why.
+utility.css + archetypes/reading.css (the three CSS artifacts real,
+unguarded consumers read at render time — see REQUIRED_ARCHETYPE_CSS). Then,
+per archetype: page chrome (skip-link/nav/footer/analytics, per
+ARCHETYPE_CHROME's real per-archetype profile), every internal href resolves
+to a real file, the archetype's required vocabulary class set
+(archetypes.VOCABULARY) is present as either an HTML class or a CSS
+selector, and any WCAG contrast pairs the theme declares in theme.json meet
+AA (>= 4.5) wherever that pair's custom properties actually resolve in that
+archetype's own CSS. `home` additionally gets the twelve-SITE_JSON-zone
+check — the only archetype with a full end-to-end renderer today. See
+`_archetype_source`'s docstring for exactly which artifact stands in for
+each archetype's "dress" and why — `reading` is the one archetype where
+vocabulary is split: its 3 shared `ed-*` leaves are credited from
+about.html's markup (theme-agnostic on purpose, styled by the shared
+Design/editorial.css), but its 7 `lnt-*` structural classes are checked
+CSS-selector-only against the THEME's own archetypes/reading.css (A7's
+easter-egg toggle target) — see `_check_archetype`'s docstring for why that
+split exists and what it closes.
 
 This is the ONLY thing standing between a theme and unattended monthly
 rotation (the scheduled workflow promotes queue[0] to active with no human
@@ -73,11 +80,15 @@ ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
 # a theme rotating in without it raises an uncaught FileNotFoundError and
 # crashes all 15 plugin pages. press.html/privacy.html resolve
 # archetypes/utility.css the same unguarded way (render-hub.py's
-# UTILITY_CSS_HREFS zone). `reading` isn't listed: no code resolves a
-# theme's reading.css yet (that's A7's job, per the milestone ledger) — home
-# needs no entry either, since its CSS is the inline <style> block in
-# archetypes/home.html itself, already covered by REQUIRED_ARCHETYPES.
-REQUIRED_ARCHETYPE_CSS = {"product": "product.css", "utility": "utility.css"}
+# UTILITY_CSS_HREFS zone). `reading` joins them as of A7: about.html's
+# client-side easter-egg toggle points a <link> at
+# `/themes/<slug>/archetypes/reading.css` for every theme it offers, and
+# this module's own reading-archetype gate reads the same file as the CSS
+# half of the vocabulary check (see `_archetype_source`/`_check_archetype`)
+# — a theme rotating in without it would break both. `home` needs no entry,
+# since its CSS is the inline <style> block in archetypes/home.html itself,
+# already covered by REQUIRED_ARCHETYPES.
+REQUIRED_ARCHETYPE_CSS = {"product": "product.css", "utility": "utility.css", "reading": "reading.css"}
 
 # Real, live chrome varies by archetype today — verified by grep against the
 # actual shipped pages (vibe-cartographer/index.html, press.html,
@@ -202,6 +213,12 @@ def check_vocabulary(html: str, css: str, archetype: str) -> list[str]:
     one rule (docs/theme-archetypes.md) is that a theme never renames the
     semantic anchor, so this check is exact-token-only by design.
 
+    This function itself stays archetype-agnostic — it just unions two
+    sets and diffs. `_check_archetype` is where per-archetype judgment
+    calls about WHAT to pass as `html`/`css` live; see it for why `reading`
+    feeds a synthetic, 3-class `html` string instead of about.html's real
+    (theme-invariant) markup.
+
     Failure strings name both the archetype and the missing class, per the
     brief ("per-archetype failures name the archetype in the message")."""
     required = archetypes.VOCABULARY.get(archetype)
@@ -311,9 +328,9 @@ def _applicable_contrast_pairs(css: str, pairs: list[list[str]]) -> list[list[st
     shared `--fg-*`/`--pb-*` names. `product`'s CSS uses a wholly separate
     `--ink-*` palette that was never retrofit onto those shared names (a
     later-task migration, not an A6 gap to invent a fix for — see
-    docs/theme-archetypes.md's "product" archetype section), and `about.html`
-    (the `reading` archetype's vocabulary source — see check_vocabulary's
-    caller in main()) uses its own `--at-lnt-*`/`--ed-*` tokens. A pair
+    docs/theme-archetypes.md's "product" archetype section), and `reading`'s
+    CSS (as of A7, the theme's own `archetypes/reading.css` — see
+    `_archetype_source`) uses its own `--at-lnt-*`/`--ed-*` tokens. A pair
     naming custom properties an archetype's own CSS never declares isn't a
     real per-archetype finding — it's a token-vocabulary mismatch outside
     this check's scope, so it's filtered out here rather than reported as
@@ -494,25 +511,42 @@ def _archetype_source(
     shell holds them as `{{READING:...}}` tokens). The other seven
     (`lnt-*`) are About's Long Now Terminal structure, which
     docs/theme-archetypes.md documents as a PERMANENT split, not a
-    migration gap: about.html "already IS the full reading vocabulary" and
-    is explicitly NOT a themes/<slug>/ consumer (A7's job is a swappable
-    `reading.css` dress over that SAME markup — the markup itself doesn't
-    move). No theme-owned artifact can satisfy the full `reading`
-    vocabulary until A7 ships, so this checks the one artifact in the repo
-    that actually does: `about.html` itself, read fresh off disk (not
-    per-theme — see the A6 report for what that limit means in practice)."""
+    migration gap: About's markup already IS the full reading vocabulary,
+    and about.html is explicitly NOT a themes/<slug>/ consumer — its
+    structure doesn't move. What DOES move, as of A7: the DRESS over that
+    structure. `html` here is still about.html, read fresh off disk (not
+    per-theme — its markup is genuinely identical for every theme, that's
+    the whole point of the override), but `css` is now the THEME's own
+    `archetypes/reading.css` (REQUIRED_ARCHETYPE_CSS), not about.html's own
+    inline `<style>`. See `_check_archetype` for the other half of this
+    fix: crediting about.html's real markup toward the CSS-anchored `lnt-*`
+    classes would make the check pass for literally any theme's
+    reading.css, including an empty one, so `_check_archetype` doesn't do
+    that — only the vocabulary's 3 shared `ed-*` leaves get credited from
+    markup there."""
     if archetype == "home":
         inline_css = "\n".join(STYLE_BLOCK_RE.findall(home_html))
         return home_html, f"{inline_css}\n{tokens_css}", True
     if archetype == "reading":
         about_html = (ROOT / "about.html").read_text(encoding="utf-8")
-        about_css = "\n".join(STYLE_BLOCK_RE.findall(about_html))
-        return about_html, about_css, False
+        reading_css = (tdir / "archetypes" / REQUIRED_ARCHETYPE_CSS["reading"]).read_text(encoding="utf-8")
+        return about_html, reading_css, False
     css_filename = REQUIRED_ARCHETYPE_CSS[archetype]
     shell_html = (tdir / "archetypes" / f"{archetype}.html").read_text(encoding="utf-8")
     own_css = (tdir / "archetypes" / css_filename).read_text(encoding="utf-8")
     inline_css = "\n".join(STYLE_BLOCK_RE.findall(shell_html))
     return shell_html, f"{inline_css}\n{own_css}\n{tokens_css}", False
+
+
+# The 3 "ed-*" leaves in archetypes.VOCABULARY["reading"] are styled by the
+# shared, theme-agnostic Design/editorial.css (see docs/theme-archetypes.md,
+# "reading" section) — no theme's own reading.css is expected to redeclare
+# them, any more than a theme redeclares editorial.css's other base rules.
+# Derived by prefix, not hardcoded, so it stays correct if the vocabulary
+# ever changes: every OTHER "reading" class ("lnt-*") is About's own
+# structure with no base stylesheet backing it at all, which is exactly
+# what a theme's reading.css exists to dress.
+READING_SHARED_LEAF_CLASSES = {c for c in archetypes.VOCABULARY["reading"] if c.startswith("ed-")}
 
 
 def _check_archetype(
@@ -521,13 +555,30 @@ def _check_archetype(
     """Runs zones (home only)/chrome/internal-links/vocabulary/contrast for
     one archetype's (html, css), every failure prefixed with the archetype
     name (check_vocabulary already embeds it; the rest are wrapped here so
-    their own unit tests — which call them unprefixed — stay unchanged)."""
+    their own unit tests — which call them unprefixed — stay unchanged).
+
+    `reading`'s vocabulary check is special-cased: `html` (about.html's real
+    markup) is IDENTICAL for every theme — About's structure doesn't move,
+    only its dress does (see `_archetype_source`). Crediting that markup
+    wholesale toward check_vocabulary would satisfy every required class
+    for any theme's reading.css, including an empty one — the exact
+    theme-invariance gap A6 flagged for A7 to close. So `reading` feeds
+    check_vocabulary a synthetic HTML string carrying only the 3 shared
+    `ed-*` leaves (READING_SHARED_LEAF_CLASSES — legitimately theme-agnostic,
+    styled by Design/editorial.css, not by any theme's dress) and leaves the
+    7 `lnt-*` structural classes to be satisfied ONLY by a CSS selector in
+    `css` — the theme's own archetypes/reading.css, which is what actually
+    differs from one theme to the next."""
     errors: list[str] = []
     if check_zones_flag:
         errors += [f"{archetype}: {e}" for e in check_zones(html, css)]
     errors += [f"{archetype}: {e}" for e in check_chrome(html, css, **ARCHETYPE_CHROME[archetype])]
     errors += [f"{archetype}: {e}" for e in check_internal_links(html, css)]
-    errors += check_vocabulary(html, css, archetype)
+    if archetype == "reading":
+        anchor_html = "".join(f'<div class="{c}"></div>' for c in sorted(READING_SHARED_LEAF_CLASSES))
+        errors += check_vocabulary(anchor_html, css, archetype)
+    else:
+        errors += check_vocabulary(html, css, archetype)
 
     if pairs:
         applicable = _applicable_contrast_pairs(css, pairs)

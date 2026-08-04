@@ -262,6 +262,13 @@
     .lnt-fr-year { text-align: left; }
   }
 
+  /* ---------- Main content wrapper — the reading vocabulary's required
+     structural anchor (archetypes.py VOCABULARY["reading"]). Explicit
+     display:block matches <main>'s UA default exactly (zero visual
+     change) — this rule exists so the class has a real CSS selector a
+     theme's dress can hook into, not because the page needed styling. ---------- */
+  .lnt-main { display: block; }
+
   /* ---------- Epigraph — sits between the frontispiece and the records ---------- */
   .lnt-epigraph-wrap {
     max-width: 720px;
@@ -503,6 +510,47 @@
         document.documentElement.setAttribute('data-theme', stored);
       }
     } catch (e) { /* localStorage unavailable — OS preference governs */ }
+  })();
+</script>
+
+<!--
+  The About easter egg (A7): type "626" anywhere on this page to open a
+  small picker that re-dresses THIS page in any theme the site registry
+  knows, entirely client-side. A fresh visitor (nothing in localStorage)
+  always gets this page's own default below, Long Now Terminal, unchanged.
+  See docs/theme-archetypes.md and the A7 task report for the full
+  mechanism. The registry below is renderer-owned (scripts/render-hub.py,
+  render_about_theme_dresses) — do not hand-edit; run render-hub.py to
+  refresh it after content/themes.json changes. Everything else on this
+  page stays hand-authored.
+-->
+<!-- SITE_JSON:about-theme-toggle:start -->
+<script type="application/json" id="about-theme-registry">[{"slug":"default","label":"Long Now Terminal","css":null},{"slug":"phosphor-blueprint","label":"Phosphor Blueprint","css":"/themes/phosphor-blueprint/archetypes/reading.css"}]</script>
+<!-- SITE_JSON:about-theme-toggle:end -->
+<script>
+  /* Restore a previously-chosen reading dress before first paint, so a
+     returning visitor never sees a flash of the default before their
+     stored choice re-applies. A fresh visitor (nothing stored) skips
+     this entirely — the page renders exactly as authored below. */
+  (function () {
+    try {
+      var slug = localStorage.getItem('about-dress');
+      if (!slug || slug === 'default') return;
+      var reg = document.getElementById('about-theme-registry');
+      if (!reg) return;
+      var dresses = JSON.parse(reg.textContent);
+      var dress = null;
+      for (var i = 0; i < dresses.length; i++) {
+        if (dresses[i].slug === slug) { dress = dresses[i]; break; }
+      }
+      if (dress && dress.css) {
+        var link = document.createElement('link');
+        link.id = 'about-dress-override';
+        link.rel = 'stylesheet';
+        link.href = dress.css;
+        document.head.appendChild(link);
+      }
+    } catch (e) { /* localStorage/JSON unavailable — default dress stands */ }
   })();
 </script>
 </head>
@@ -780,6 +828,121 @@
       root.setAttribute('data-theme', next);
       try { localStorage.setItem(KEY, next); } catch (e) { /* ignore */ }
       sync();
+    });
+  })();
+</script>
+
+<script>
+  /* The About easter egg (A7). Type "626" anywhere on this page (no input
+     focus needed) to open a small picker that swaps this page's reading
+     dress to any theme the site registry knows — see the JSON registry
+     and its comment near the top of <head>. Not a visible control: the
+     panel is built on demand and doesn't exist in the DOM until found.
+     Escape, or picking "Long Now Terminal" from the open panel, always
+     gets back to the default. */
+  (function () {
+    'use strict';
+    var KEY = 'about-dress';
+    var LINK_ID = 'about-dress-override';
+    var SEQUENCE = '626';
+    var buffer = '';
+    var panel = null;
+
+    function dresses() {
+      var el = document.getElementById('about-theme-registry');
+      if (!el) return [];
+      try {
+        var list = JSON.parse(el.textContent);
+        return Array.isArray(list) ? list : [];
+      } catch (e) { return []; }
+    }
+
+    function currentSlug() {
+      try { return localStorage.getItem(KEY) || 'default'; } catch (e) { return 'default'; }
+    }
+
+    function applyDress(dress) {
+      var link = document.getElementById(LINK_ID);
+      if (!dress || dress.slug === 'default' || !dress.css) {
+        if (link) link.parentNode.removeChild(link);
+        try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ }
+        return;
+      }
+      if (!link) {
+        link = document.createElement('link');
+        link.id = LINK_ID;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+      }
+      link.href = dress.css;
+      try { localStorage.setItem(KEY, dress.slug); } catch (e) { /* ignore */ }
+    }
+
+    function closePanel() {
+      if (panel && panel.parentNode) panel.parentNode.removeChild(panel);
+      panel = null;
+    }
+
+    function openPanel() {
+      if (panel) { closePanel(); return; }
+      var list = dresses();
+      if (!list.length) return;
+      var active = currentSlug();
+
+      panel = document.createElement('div');
+      panel.setAttribute('role', 'dialog');
+      panel.setAttribute('aria-label', '626-AR-002 reading dress picker');
+      panel.style.cssText = [
+        'position:fixed', 'bottom:20px', 'right:20px', 'z-index:999',
+        'font-family:"JetBrains Mono",monospace', 'font-size:12px',
+        'background:var(--ed-paper-soft,#223A54)', 'color:var(--ed-ink,#E4D6B8)',
+        'border:1px solid var(--at-lnt-cyan-line,rgba(23,212,250,.3))',
+        'border-radius:6px', 'padding:14px 16px', 'min-width:220px',
+        'box-shadow:0 12px 32px rgba(0,0,0,.55)'
+      ].join(';');
+
+      var head = document.createElement('div');
+      head.style.cssText = [
+        'display:flex', 'justify-content:space-between', 'align-items:center',
+        'text-transform:uppercase', 'letter-spacing:.08em', 'font-size:10px',
+        'color:var(--at-lnt-cyan-ink,#3FC3E0)', 'margin-bottom:10px'
+      ].join(';');
+      var title = document.createElement('span');
+      title.textContent = '626-AR-002 :: reading dress';
+      head.appendChild(title);
+      var close = document.createElement('button');
+      close.type = 'button';
+      close.textContent = 'x';
+      close.setAttribute('aria-label', 'Close');
+      close.style.cssText =
+        'background:none;border:0;color:inherit;cursor:pointer;font:inherit;padding:0 0 0 12px;';
+      close.addEventListener('click', closePanel);
+      head.appendChild(close);
+      panel.appendChild(head);
+
+      list.forEach(function (dress) {
+        var row = document.createElement('button');
+        row.type = 'button';
+        row.textContent = (dress.slug === active ? '> ' : '  ') + dress.label;
+        row.style.cssText =
+          'display:block;width:100%;text-align:left;background:none;' +
+          'border:0;color:inherit;cursor:pointer;font:inherit;padding:5px 0;';
+        row.addEventListener('click', function () {
+          applyDress(dress);
+          closePanel();
+        });
+        panel.appendChild(row);
+      });
+
+      document.body.appendChild(panel);
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { closePanel(); return; }
+      if (e.key && e.key.length === 1) {
+        buffer = (buffer + e.key).slice(-SEQUENCE.length);
+        if (buffer === SEQUENCE) { buffer = ''; openPanel(); }
+      }
     });
   })();
 </script>

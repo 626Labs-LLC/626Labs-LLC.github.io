@@ -286,6 +286,79 @@ def test_real_themes_registry_renders_at_least_one_card():
     assert '<span class="theme-status live">Live</span>' in html
 
 
+# ─── About easter-egg theme registry (about.html "about-theme-toggle" zone) ─
+#
+# render_about_theme_dresses is the render-time source of truth A7's
+# client-side toggle reads (about.html's own JSON <script id=
+# "about-theme-registry">) -- it has to stay in lockstep with
+# content/themes.json the same way render_themes_gallery already does for
+# themes.html's cards, so it gets the same kind of pure-function coverage.
+
+
+def _parse_about_dresses(payload: str) -> list[dict]:
+    inner = payload.split(">", 1)[1].rsplit("<", 1)[0]
+    return json.loads(inner)
+
+
+def test_about_theme_dresses_default_is_always_first_with_no_css(tmp_path):
+    _make_theme(tmp_path, "phosphor-blueprint")
+    reg = {"active": "phosphor-blueprint", "queue": [], "archive": []}
+    dresses = _parse_about_dresses(render_hub.render_about_theme_dresses(reg, root=tmp_path))
+    assert dresses[0] == {"slug": "default", "label": "Long Now Terminal", "css": None}
+
+
+def test_about_theme_dresses_includes_live_theme_with_reading_css_url(tmp_path):
+    _make_theme(tmp_path, "phosphor-blueprint", name="Phosphor Blueprint")
+    reg = {"active": "phosphor-blueprint", "queue": [], "archive": []}
+    dresses = _parse_about_dresses(render_hub.render_about_theme_dresses(reg, root=tmp_path))
+    assert dresses[1]["slug"] == "phosphor-blueprint"
+    assert dresses[1]["label"] == "Phosphor Blueprint"
+    assert dresses[1]["css"] == "/themes/phosphor-blueprint/archetypes/reading.css"
+
+
+def test_about_theme_dresses_archive_newest_first(tmp_path):
+    _make_theme(tmp_path, "phosphor-blueprint")
+    _make_theme(tmp_path, "first-out", name="First Out")
+    _make_theme(tmp_path, "second-out", name="Second Out")
+    reg = {
+        "active": "phosphor-blueprint",
+        "queue": [],
+        "archive": [
+            {"slug": "first-out", "month": "2026-06", "url": "/themes/archive/2026-06/"},
+            {"slug": "second-out", "month": "2026-07", "url": "/themes/archive/2026-07/"},
+        ],
+    }
+    dresses = _parse_about_dresses(render_hub.render_about_theme_dresses(reg, root=tmp_path))
+    assert [d["slug"] for d in dresses] == ["default", "phosphor-blueprint", "second-out", "first-out"]
+
+
+def test_about_theme_dresses_queue_is_not_offered(tmp_path):
+    # The brief is explicit: archived months, the live theme, and About's
+    # own default -- approved-but-not-yet-live themes aren't offered for
+    # public preview ahead of their own rotation.
+    _make_theme(tmp_path, "phosphor-blueprint")
+    _make_theme(tmp_path, "next-up", name="Next Up")
+    reg = {"active": "phosphor-blueprint", "queue": ["next-up"], "archive": []}
+    dresses = _parse_about_dresses(render_hub.render_about_theme_dresses(reg, root=tmp_path))
+    slugs = [d["slug"] for d in dresses]
+    assert slugs == ["default", "phosphor-blueprint"]
+    assert "next-up" not in slugs
+
+
+def test_about_theme_dresses_payload_is_a_self_contained_script_tag():
+    payload = render_hub.render_about_theme_dresses(render_hub.theme_registry.load())
+    assert payload.startswith('<script type="application/json" id="about-theme-registry">')
+    assert payload.endswith("</script>")
+    _parse_about_dresses(payload)  # raises if the embedded JSON is malformed
+
+
+def test_real_about_theme_registry_offers_default_and_the_live_theme():
+    reg = render_hub.theme_registry.load()
+    dresses = _parse_about_dresses(render_hub.render_about_theme_dresses(reg))
+    assert dresses[0]["slug"] == "default"
+    assert any(d["slug"] == render_hub.theme_registry.active_slug(reg) for d in dresses)
+
+
 # ─── main() guardrails (Fix 5) ─────────────────────────────────────────────
 #
 # Two failure-shaped bugs the whole-branch review caught: a missing theme
