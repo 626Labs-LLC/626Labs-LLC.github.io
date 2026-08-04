@@ -210,7 +210,8 @@ jobs:
           # pages.py outputs (14 per-plugin pages + the family index); the
           # glob keeps this self-maintaining as plugins are added.
           git add content/themes.json index.html feed.xml sitemap.xml \
-            conundrum.html themes.html press.html privacy.html about.html             thesis.html workflow.html \
+            conundrum.html themes.html about.html \
+            press.html privacy.html thesis.html workflow.html \
             editorial themes/archive assets/themes \
             vibe-* thesis-engine plugins
           git commit -m "chore(themes): rotate to ${{ steps.rotate.outputs.new_active }} for ${{ steps.month.outputs.month_name }}

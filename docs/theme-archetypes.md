@@ -551,15 +551,29 @@ fallback at all, so a missing token is a straight unresolved `var()`).
 `archetypes.REQUIRED_TOKENS` (`scripts/archetypes.py`) closes it: the exact
 set of custom-property names, derived the same way `VOCABULARY` was — by
 reading the real, shipped CSS, not designing in the abstract — union of
-every `var(--x)` in `themes.html`'s inline `<style>` plus `press.html`'s and
-`privacy.html`'s own residual `<style>` blocks. `scripts/theme-doctor.py`'s
-`check_required_tokens()` fails a theme whose `tokens.css` **or**
-`archetypes/utility.css` doesn't define every one of them — both files,
-because both are real, unguarded consumers today: `tokens.css` for
-`themes.html`/`index.html`, `utility.css` for `press.html`/`privacy.html`
-(their only source of these properties, with no local fallback of their
-own). A theme missing even one fails before the archetype loop runs, named
-by property (`tokens.css: missing required custom property '--cyan'`).
+every `var(--x)` in `themes.html`'s inline `<style>` plus the residual
+`<style>` blocks of `press.html`, `privacy.html`, `thesis.html` and
+`workflow.html`. `scripts/theme-doctor.py`'s `check_required_tokens()` fails
+a theme whose `tokens.css`, `archetypes/utility.css` **or**
+`archetypes/reading.css` doesn't define every one of them — all three,
+because all three are real, unguarded consumers today: `tokens.css` for
+`themes.html`/`index.html`, `utility.css` for `press.html`/`privacy.html`,
+`reading.css` for `thesis.html`/`workflow.html` (their only source of these
+properties, with no local fallback of their own). A theme missing even one
+fails before the archetype loop runs, named by property
+(`tokens.css: missing required custom property '--cyan'`).
+
+Three names — `--bg-2`, `--dur-med`, `--r-xl` — were admitted later, when
+`thesis.html`/`workflow.html` gave up their private token blocks. The test
+for admission was narrow on purpose: **is a sibling of that token's own
+scale already required?** `--bg-0`/`--bg-1` were, so a page reading `--bg-2`
+is reading a hole in a scale the contract already half-covers. Same for
+`--dur-med` next to `--dur-fast` and `--r-xl` next to the other five radius
+steps. Completing a scale the contract already commits to is the contract
+working; every theme in the repo already defined all three, so admission
+cost nobody anything. `--shadow-2` failed the same test — no shadow-scale
+name is in the set — and stays out, documented as a page-to-theme coupling
+rather than promoted on the strength of one page's usage.
 
 One theme-bespoke name is deliberately **excluded**: `press.html`'s
 `.asset-preview` background reads `var(--pb-field)`, Phosphor Blueprint's
@@ -573,18 +587,18 @@ theme is obligated to define under that exact prefix, so it's out of
 `press.html`'s `.asset-preview` onto a theme-neutral name is unrelated scope
 this fix wave didn't touch.
 
-### The 43 required tokens, grouped, and why each group matters
+### The 46 required tokens, grouped, and why each group matters
 
 | Group | Tokens | Why required |
 |---|---|---|
-| Backgrounds | `--bg-0`, `--bg-1` | Page and card-surface fields. Undefined = transparent surfaces over whatever's behind them. |
+| Backgrounds | `--bg-0`, `--bg-1`, `--bg-2` | Page and card-surface fields. Undefined = transparent surfaces over whatever's behind them. |
 | Foreground / text | `--fg-1`, `--fg-2`, `--fg-3`, `--text`, `--text-sec`, `--text-dim`, `--text-mute` | Body/heading/secondary/meta text colors. `--fg-*` is what markup actually uses; `--text*` is what `--fg-*` resolves through (see `--fg-1: var(--text)` in `tokens.css`) — both layers are read directly somewhere in the three pages, so both are required. Undefined = unreadable (browser default, usually black-on-black here). |
 | Brand color + accent | `--cyan`, `--cyan-pale`, `--magenta`, `--magenta-pale`, `--navy-deep`, `--navy-mid`, `--navy-hi`, `--ink-950`, `--ok`, `--brand-gradient`, `--brand-gradient-soft` | The nav CTA, links, status pills, the two-tone gradient underline — the site's actual brand identity. Undefined = the pages stop looking like 626 Labs at all, not just "wrong theme." |
 | Borders + panel effects | `--border-1`, `--border-2`, `--border-accent`, `--inner-stroke` | Card/nav/footer hairlines and the inset highlight every panel uses. Undefined = flat, seamless panels with no separation. |
 | Typography | `--font-display`, `--font-body`, `--font-mono` | The three-typeface stack (Space Grotesk / Inter / JetBrains Mono) every heading, body line, and meta label is set in. Undefined = browser default serif/sans, breaking the brand's whole type identity. |
-| Motion | `--dur-fast`, `--ease-out` | Every hover/transition's duration and easing curve. Undefined = instant, jarring state changes (CSS transition properties silently no-op without a valid duration). |
+| Motion | `--dur-fast`, `--dur-med`, `--ease-out` | Every hover/transition's duration and easing curve. Undefined = instant, jarring state changes (CSS transition properties silently no-op without a valid duration). |
 | Spacing scale | `--s-2` … `--s-16` (9 steps) | Every padding/gap/margin value in the gallery cards, nav, footer, and page-hero. Undefined = collapsed layout (padding/gap resolve to nothing). |
-| Radius scale | `--r-xs`, `--r-sm`, `--r-md`, `--r-lg`, `--r-pill` | Every rounded corner — cards, pills, buttons. Undefined = square corners everywhere, a small but immediately-visible "something's broken" tell. |
+| Radius scale | `--r-xs`, `--r-sm`, `--r-md`, `--r-lg`, `--r-xl`, `--r-pill` | Every rounded corner — cards, pills, buttons. Undefined = square corners everywhere, a small but immediately-visible "something's broken" tell. |
 
 Phosphor Blueprint's own `tokens.css` was, until this fix, an "append-only
 override" that only ever redefined `--bg-0`/`--bg-1`/`--bg-2`/`--border-1`/
@@ -592,14 +606,15 @@ override" that only ever redefined `--bg-0`/`--bg-1`/`--bg-2`/`--border-1`/
 `index.html`'s and `themes.html`'s own hardcoded local `:root` fallback, not
 by the theme file at all. **This is exactly the gap the review flagged**,
 and PB itself was the proof: run the new gate against PB's tokens.css as it
-shipped, and it fails 38 of 43. The fix extended `tokens.css` to be
+shipped, and it fails 38 of the 43 required at the time. The fix extended
+`tokens.css` to be
 self-contained — the same full base block `archetypes/utility.css` already
 carried (verified value-for-value identical against both `index.html`'s and
 `themes.html`'s hardcoded copies before the edit, so this is additive only,
 confirmed zero pixel change) — with the existing treatment-layer `:root`
 kept exactly as-is, still winning the cascade for the five properties it
 overrides. `archetypes/utility.css` needed no changes: it was already
-self-contained (0 of 43 missing), because it was extracted, in full, from
+self-contained (0 missing), because it was extracted, in full, from
 `press.html` back in A4 — the pattern `tokens.css` is only now catching up
 to.
 

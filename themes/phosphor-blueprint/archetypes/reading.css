@@ -510,17 +510,30 @@ body { margin: 0; }
    divergence is what Phosphor Blueprint's reading dress IS; a future
    theme is free to resolve it differently.
 
-   The spacing scale is deliberately absent. These pages recolor
-   monthly, they do not re-layout: every padding/gap/margin stays a
-   literal in the page's own <style>, where the page's layout belongs.
+   This block is COMPLETE against archetypes.REQUIRED_TOKENS, and
+   scripts/theme-doctor.py enforces that on every theme, not just this
+   one. It has to be: thesis.html and workflow.html have no local
+   fallback left, so a name missing here is an unresolved var() on a
+   live page, not a stale-but-valid color. A theme that writes a
+   genuinely new reading dress rather than copying this file has to
+   supply the whole set or fail the gate before it can rotate in.
+
+   That completeness is why the spacing scale appears here even though
+   neither reading page spends a single step of it. The theme OFFERS a
+   scale; the pages decline it. Every padding, gap, and margin on
+   thesis.html and workflow.html stays a literal in that page's own
+   <style>, because these pages recolor monthly, they do not re-layout.
    ============================================================ */
 :root {
   --navy-deep: #0f1f31;
   --navy-mid:  #192e44;
+  --navy-hi:   #223a54;
   --cyan:      #17d4fa;
   --cyan-pale: #5ce6ff;
   --magenta:   #f22f89;
-  --ink-0:     #ffffff;
+  --magenta-pale: #ff5aa3;
+  --ink-950:   #050c18;
+  --ok:        #2bd99a;
 
   --text:      #ffffff;
   --text-sec:  #c4cdda;
@@ -529,6 +542,7 @@ body { margin: 0; }
 
   --bg-0: var(--navy-deep);
   --bg-1: var(--navy-mid);
+  --bg-2: var(--navy-hi);
   --fg-1: var(--text);
   --fg-2: var(--text-sec);
   --fg-3: var(--text-dim);
@@ -539,13 +553,15 @@ body { margin: 0; }
   --border-accent: rgba(23,212,250,.45);
 
   --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+  --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
   --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
   --shadow-2: 0 4px 16px rgba(0,0,0,.45);
 
-  --r-xs: 4px;
-  --r-md: 10px;
-  --r-lg: 14px;
-  --r-xl: 20px;
+  --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+  --r-pill: 999px;
 
   --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   --font-body:    'Inter', system-ui, -apple-system, sans-serif;

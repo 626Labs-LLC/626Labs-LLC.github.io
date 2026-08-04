@@ -6,9 +6,10 @@ utility) a theme has to dress. First, completeness: tokens.css/theme.json,
 all four archetypes/*.html, AND archetypes/product.css + archetypes/
 utility.css + archetypes/reading.css (the three CSS artifacts real,
 unguarded consumers read at render time — see REQUIRED_ARCHETYPE_CSS), AND
-that tokens.css and archetypes/utility.css actually DEFINE every custom
-property in archetypes.REQUIRED_TOKENS — themes.html/press.html/privacy.html
-read these via var(--x) but carry no theme-owned fallback of their own (see
+that tokens.css, archetypes/utility.css AND archetypes/reading.css each
+actually DEFINE every custom property in archetypes.REQUIRED_TOKENS —
+themes.html/press.html/privacy.html/thesis.html/workflow.html read these via
+var(--x) but carry no theme-owned fallback of their own (see
 check_required_tokens and REQUIRED_TOKENS's docstring). Then,
 per archetype: page chrome (skip-link/nav/footer/analytics, per
 ARCHETYPE_CHROME's real per-archetype profile), every internal href resolves
@@ -243,14 +244,15 @@ def check_vocabulary(html: str, css: str, archetype: str) -> list[str]:
 # ─── required tokens (final review Fix 1) ──────────────────────────────
 def check_required_tokens(css: str) -> list[str]:
     """Enforces archetypes.REQUIRED_TOKENS: every base custom property
-    themes.html's own <style> and press.html's/privacy.html's own residual
-    <style> read via var(--x) but never define themselves has to actually
-    be DEFINED somewhere in `css` — not merely referenced. A theme that
-    renames or drops one passes every other gate today (vocabulary only
-    checks class names; chrome/links don't look at custom properties at
-    all) and silently ships stale colors (themes.html/index.html, which
-    fall back to their own hardcoded pre-rotation values) or unresolved
-    var()s (press.html/privacy.html, which have no fallback of their own).
+    themes.html's own <style> and the residual <style> of press.html,
+    privacy.html, thesis.html and workflow.html read via var(--x) but never
+    define themselves has to actually be DEFINED somewhere in `css` — not
+    merely referenced. A theme that renames or drops one passes every other
+    gate today (vocabulary only checks class names; chrome/links don't look
+    at custom properties at all) and silently ships stale colors
+    (themes.html/index.html, which fall back to their own hardcoded
+    pre-rotation values) or unresolved var()s (the other four, which have no
+    fallback of their own).
 
     Reuses `_parse_custom_properties` — the same last-declaration-wins
     parse `check_contrast` already trusts to resolve `:root` values — so a
@@ -710,15 +712,30 @@ def main(argv: list[str]) -> int:
     errors: list[str] = []
     # The token-variable contract (final review Fix 1 / archetypes.
     # REQUIRED_TOKENS): themes.html reads tokens.css directly; press.html/
-    # privacy.html read archetypes/utility.css and carry no local fallback
-    # at all. Both files have to actually DEFINE the required set, or those
-    # three pages break on the next rotation (see REQUIRED_TOKENS's
-    # docstring) — checked here, before the archetype loop, same
-    # completeness spirit as REQUIRED_ARCHETYPE_CSS above, just for file
-    # CONTENT instead of file existence.
-    errors += [f"tokens.css: {e}" for e in check_required_tokens(tokens_css)]
-    utility_css_text = (tdir / "archetypes" / REQUIRED_ARCHETYPE_CSS["utility"]).read_text(encoding="utf-8")
-    errors += [f"archetypes/utility.css: {e}" for e in check_required_tokens(utility_css_text)]
+    # privacy.html read archetypes/utility.css; thesis.html/workflow.html
+    # read archetypes/reading.css. The last four carry no local fallback at
+    # ALL — their private :root blocks are gone — so for them a missing name
+    # is not a stale value, it is an unresolved var() with nothing behind
+    # it. All three files have to actually DEFINE the required set or those
+    # pages break on the next rotation (see REQUIRED_TOKENS's docstring) —
+    # checked here, before the archetype loop, same completeness spirit as
+    # REQUIRED_ARCHETYPE_CSS above, just for file CONTENT instead of file
+    # existence.
+    #
+    # reading.css joined this list the moment thesis.html/workflow.html
+    # started depending on it and NOT one commit later: without it, an
+    # author writing a genuinely new reading dress (rather than copying
+    # phosphor-blueprint's) passes every gate, rotates in unattended on the
+    # 1st, and puts two live pages up with dozens of unresolved var()s.
+    for label, text in (
+        ("tokens.css", tokens_css),
+        *(
+            (f"archetypes/{REQUIRED_ARCHETYPE_CSS[a]}",
+             (tdir / "archetypes" / REQUIRED_ARCHETYPE_CSS[a]).read_text(encoding="utf-8"))
+            for a in ("utility", "reading")
+        ),
+    ):
+        errors += [f"{label}: {e}" for e in check_required_tokens(text)]
 
     archetype_html: dict[str, str] = {}
     for archetype in archetypes.ARCHETYPES:
