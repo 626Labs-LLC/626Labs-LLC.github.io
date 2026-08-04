@@ -165,10 +165,18 @@ def _compliant_reading_css():
     # reading's vocabulary check is CSS-selector-only for its 7 lnt-*
     # classes as of A7 (see READING_SHARED_LEAF_CLASSES / _check_archetype)
     # — the shared ed-* leaves are credited from a synthetic anchor string,
-    # never from this file. A stub theme's reading.css only needs to cover
-    # the lnt-* set to clear the gate.
+    # never from this file.
+    #
+    # The lnt-* set alone is no longer enough: reading.css joined tokens.css
+    # and utility.css under check_required_tokens once thesis.html and
+    # workflow.html started reading it with no local fallback of their own,
+    # so a stub theme's reading.css has to define the full REQUIRED_TOKENS
+    # set as well. Before that gate existed this fixture wrote a reading.css
+    # with ZERO custom properties and the stub theme still PASSED — which is
+    # exactly the hole the gate closes, and exactly why this fixture had to
+    # move with it.
     lnt_classes = [c for c in td.archetypes.VOCABULARY["reading"] if not c.startswith("ed-")]
-    return "".join(f".{c} {{ }}\n" for c in lnt_classes)
+    return _required_tokens_css() + "".join(f".{c} {{ }}\n" for c in lnt_classes)
 
 
 def _required_tokens_css() -> str:
@@ -202,7 +210,8 @@ def _make_complete_theme_dir(tdir):
     # archetypes.REQUIRED_TOKENS name — empty strings (the pre-Fix-1
     # fixture) would now fail every stub theme at the new gate before any
     # of the checks below ever ran, so both get _required_tokens_css()
-    # instead of "".
+    # instead of "". archetypes/reading.css is the third file under that
+    # same gate now — see _compliant_reading_css.
     (tdir / "archetypes").mkdir(parents=True)
     (tdir / "tokens.css").write_text(_required_tokens_css(), encoding="utf-8")
     (tdir / "theme.json").write_text("{}", encoding="utf-8")
@@ -500,6 +509,48 @@ def test_live_utility_css_satisfies_required_tokens():
         encoding="utf-8"
     )
     assert td.check_required_tokens(css) == []
+
+
+def test_live_reading_css_satisfies_required_tokens():
+    # reading.css is the third file under this gate, as of thesis.html and
+    # workflow.html giving up their private :root blocks. For those two the
+    # stakes are the harsher kind: no local fallback at all, so a missing
+    # name is an unresolved var() on a live page, not a stale color.
+    css = (ROOT / "themes" / "phosphor-blueprint" / "archetypes" / "reading.css").read_text(
+        encoding="utf-8"
+    )
+    assert td.check_required_tokens(css) == []
+
+
+def test_main_fails_a_theme_whose_reading_css_drops_the_required_tokens(
+    monkeypatch, tmp_path, capsys
+):
+    # The regression this gate exists for, driven through main() rather than
+    # the checker: an author writes a genuinely NEW reading dress instead of
+    # copying phosphor-blueprint's, defines none of the base vocabulary, and
+    # the theme rotates in unattended on the 1st. Before this gate the stub
+    # below PASSED — vocabulary only grades class names, and nothing else
+    # looks at custom properties — putting thesis.html and workflow.html
+    # live with dozens of unresolved var()s.
+    tdir = tmp_path / "themes" / "stub-theme"
+    _make_complete_theme_dir(tdir)
+    lnt = [c for c in td.archetypes.VOCABULARY["reading"] if not c.startswith("ed-")]
+    (tdir / "archetypes" / "reading.css").write_text(
+        "".join(f".{c} {{ }}\n" for c in lnt), encoding="utf-8"
+    )
+
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(
+        td.tempfile, "TemporaryDirectory",
+        lambda *a, **kw: __import__("contextlib").nullcontext(str(tmp_path)),
+    )
+
+    rc = td.main(["stub-theme"])
+    assert rc == 1
+    out = capsys.readouterr().out
+    assert "archetypes/reading.css" in out
+    assert "--fg-1" in out
 
 
 def _stub_main_kwargs(tmp_path):

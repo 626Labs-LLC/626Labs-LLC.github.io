@@ -2173,12 +2173,37 @@ def main(argv: list[str]) -> int:
         out = substitute_zone(out, "contact", render_contact(content["contact"]))
     out = apply_section_toggles(out, content.get("sections") or {})
 
-    # Preview mode (--theme/--out): render only the page, nothing else — no
-    # feed, no sitemap, no editorial/ story pages, no orphan pruning.
+    # Preview mode (--theme/--out): render the home page plus every
+    # theme-css page, into out_dir and nowhere else — no feed, no sitemap,
+    # no editorial/ story pages, no orphan pruning, and nothing written back
+    # into the repo tree.
+    #
+    # The theme-css pages are here because a queued theme's effect on them
+    # was otherwise un-previewable and un-gateable: index.html is rendered
+    # from the theme's own shell, but thesis.html/workflow.html/press.html/
+    # privacy.html are hand-authored pages whose only theme-derived seam is
+    # that one <link>. Without this, the ONLY way to see a queued theme's
+    # reading dress on a real reading page was to make it active and look at
+    # production. Each is copied with its zone repointed at `slug`, never at
+    # whatever content/themes.json currently says.
+    #
+    # The copies keep root-relative asset paths (/themes/..., /fonts/...,
+    # /assets/...), so serve them from the REPO ROOT with out_dir's copies
+    # laid over the top — the same shape theme-doctor's own preview server
+    # uses for index.html. Opening one straight off disk resolves nothing.
     if out_dir is not None:
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(out, encoding="utf-8")
         print(f"preview written: {dest}")
+        for page_path in THEME_CSS_ONLY_PAGES:
+            preview = substitute_zone(
+                page_path.read_text(encoding="utf-8"),
+                "theme-css",
+                render_theme_css_link(slug, THEME_CSS_HREFS[page_path]),
+            )
+            page_dest = out_dir / page_path.name
+            page_dest.write_text(preview, encoding="utf-8")
+            print(f"preview written: {page_dest}")
         return 0
 
     # conundrum.html — shop page zones (gallery + repo CTA). Only when the

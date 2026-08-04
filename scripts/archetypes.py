@@ -116,7 +116,9 @@ VOCABULARY: dict[str, set[str]] = {
 
 # The base CSS custom-property vocabulary a theme's tokens.css (and, since
 # press.html/privacy.html carry no local fallback of their own,
-# archetypes/utility.css) has to actually DEFINE. VOCABULARY (above) is the
+# archetypes/utility.css — and archetypes/reading.css, for the same reason,
+# once thesis.html/workflow.html gave up their private token blocks) has to
+# actually DEFINE. VOCABULARY (above) is the
 # markup-side anchor — class names a theme's dress can rely on finding.
 # REQUIRED_TOKENS is the CSS-side twin: the var(--x) names themes.html's own
 # <style> block and press.html's/privacy.html's own residual <style> (the
@@ -142,9 +144,26 @@ VOCABULARY: dict[str, set[str]] = {
 # a base-vocabulary name any future theme is obligated to define under that
 # exact, PB-specific name. See docs/theme-archetypes.md for the full
 # derivation, the pb-field exclusion, and why each group of tokens matters.
+#
+# Three names joined later, when thesis.html/workflow.html stopped carrying
+# private token blocks and started reading the theme (`--bg-2`, `--dur-med`,
+# `--r-xl`). Each was admitted on one test and one test only: is a SIBLING of
+# its own scale already required? `--bg-0`/`--bg-1` were, so a page reading
+# `--bg-2` is reading a hole in a scale the contract already half-covers, not
+# asking for a new concept. Same for `--dur-med` beside `--dur-fast`, and
+# `--r-xl` beside all five other radius steps. Completing a scale the
+# contract already commits to is the contract doing its job; every theme in
+# the repo already defined all three, so nothing was asked of anyone.
+#
+# `--shadow-2` failed that test and is deliberately NOT here, though
+# workflow.html reads it: no shadow-scale name (`--shadow-1`, `--shadow-3`,
+# `--glow-cyan`, `--glow-duo`) is in this set, so admitting it would start a
+# new group on the strength of one page's usage — which is how a contract
+# becomes a junk drawer. It stays a documented page-to-theme coupling
+# instead. See the task-1 report's coupling section.
 REQUIRED_TOKENS: frozenset[str] = frozenset({
     # backgrounds
-    "--bg-0", "--bg-1",
+    "--bg-0", "--bg-1", "--bg-2",
     # foreground / text
     "--fg-1", "--fg-2", "--fg-3",
     "--text", "--text-sec", "--text-dim", "--text-mute",
@@ -157,11 +176,11 @@ REQUIRED_TOKENS: frozenset[str] = frozenset({
     # typography
     "--font-display", "--font-body", "--font-mono",
     # motion
-    "--dur-fast", "--ease-out",
+    "--dur-fast", "--dur-med", "--ease-out",
     # spacing scale
     "--s-2", "--s-3", "--s-4", "--s-5", "--s-6", "--s-8", "--s-10", "--s-12", "--s-16",
     # radius scale
-    "--r-xs", "--r-sm", "--r-md", "--r-lg", "--r-pill",
+    "--r-xs", "--r-sm", "--r-md", "--r-lg", "--r-xl", "--r-pill",
 })
 
 

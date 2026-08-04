@@ -459,13 +459,25 @@ def test_theme_css_map_covers_the_converted_reading_pages():
     assert m[render_hub.THEMES_HTML] == "tokens.css"
 
 
-def test_theme_css_only_pages_are_all_in_the_href_map():
-    # main() indexes THEME_CSS_HREFS by every page in THEME_CSS_ONLY_PAGES;
-    # a page in one list and not the other is a KeyError at render time.
-    for page in render_hub.THEME_CSS_ONLY_PAGES:
-        assert page in render_hub.THEME_CSS_HREFS
-    # themes.html is handled next to its gallery zone, not in this loop.
+def test_theme_css_constants_agree_in_both_directions():
+    # Only one direction of this pairing fails loudly. A page in
+    # THEME_CSS_ONLY_PAGES but not in THEME_CSS_HREFS is a KeyError the
+    # first time main() runs. The other direction is SILENT and is the one
+    # that actually costs something: add a page to THEME_CSS_HREFS, forget
+    # THEME_CSS_ONLY_PAGES, and main() never touches the page, --check never
+    # reports it (the stale list is built from theme_css_pages, which is
+    # built from THEME_CSS_ONLY_PAGES), and the page keeps whatever slug was
+    # last hand-committed — the exact bug this whole zone exists to kill,
+    # reintroduced by an omission no test would catch. So: set equality,
+    # not membership.
+    assert (
+        set(render_hub.THEME_CSS_HREFS) - {render_hub.THEMES_HTML}
+        == set(render_hub.THEME_CSS_ONLY_PAGES)
+    )
+    # themes.html is the one deliberate exclusion — main() handles it next
+    # to its gallery zone, not in this loop.
     assert render_hub.THEMES_HTML not in render_hub.THEME_CSS_ONLY_PAGES
+    assert render_hub.THEMES_HTML in render_hub.THEME_CSS_HREFS
 
 
 def test_reading_pages_href_follows_the_active_slug_not_a_hardcoded_theme():
@@ -508,12 +520,47 @@ def test_reading_pages_define_no_tokens_of_their_own():
 def test_reading_pages_resolve_every_var_they_read():
     # Their tokens now live in the theme, with no page-local fallback — so
     # an unresolved var() is a straight rendering break, not a stale value.
+    #
+    # The theme graded is whatever content/themes.json says is ACTIVE, never
+    # a hardcoded slug. That is what makes this a rotation gate rather than
+    # a museum piece: pytest runs inside rotate-theme.yml's gate stack AFTER
+    # the registry flips to the incoming theme, so on the 1st this asserts
+    # against the dress about to go live. Hardcoding "phosphor-blueprint"
+    # would keep re-verifying the OUTGOING theme forever, passing happily
+    # while the incoming one breaks both pages.
     import re
 
+    slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
     css = (
-        render_hub.ROOT / "themes" / "phosphor-blueprint" / "archetypes" / "reading.css"
+        render_hub.ROOT / "themes" / slug / "archetypes" / "reading.css"
     ).read_text(encoding="utf-8")
     defined = set(re.findall(r"(--[\w-]+)\s*:", css))
     for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
         used = set(re.findall(r"var\(\s*(--[\w-]+)", page.read_text(encoding="utf-8")))
-        assert not used - defined, f"{page.name} reads undefined {sorted(used - defined)}"
+        assert not used - defined, (
+            f"{page.name} reads {sorted(used - defined)}, undefined in "
+            f"themes/{slug}/archetypes/reading.css"
+        )
+
+
+def test_preview_mode_emits_the_theme_css_pages_too(tmp_path):
+    # --theme/--out used to write index.html and nothing else, which left a
+    # queued theme's effect on the hand-authored pages impossible to see or
+    # gate before the 1st: their only theme-derived seam is the theme-css
+    # <link>, and preview mode skipped the loop that rewrites it. Now every
+    # THEME_CSS_ONLY_PAGES member lands in out_dir with its zone repointed.
+    slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
+    rc = render_hub.main(["--theme", slug, "--out", str(tmp_path)])
+    assert rc == 0
+    assert (tmp_path / "index.html").exists()
+    for page in render_hub.THEME_CSS_ONLY_PAGES:
+        written = tmp_path / page.name
+        assert written.exists(), f"preview did not emit {page.name}"
+        expected = render_hub.render_theme_css_link(
+            slug, render_hub.THEME_CSS_HREFS[page]
+        )
+        assert expected in written.read_text(encoding="utf-8")
+    # Preview writes to out_dir and NOWHERE else — no feed, no sitemap, and
+    # nothing written back over the live page in the repo tree.
+    assert not (tmp_path / "feed.xml").exists()
+    assert not (tmp_path / "sitemap.xml").exists()

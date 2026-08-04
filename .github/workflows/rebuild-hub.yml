@@ -56,12 +56,11 @@ jobs:
         # press.html/privacy.html/thesis.html/workflow.html (their theme-css
         # <link>) and about.html (its easter-egg theme registry, A7) are ALSO
         # rewritten by render-hub.py on every run, same as rotate-theme.yml's
-        # git-add list
-        # already accounts for — missing here meant a content-only change to
-        # any of the three would render on this runner's disk and never get
-        # detected as "changed", so the commit step below would never even
-        # run. Keep this list and the git-add list right below it, and
-        # rotate-theme.yml's own list, in agreement.
+        # git-add list already accounts for — missing here meant a
+        # content-only change to any of those five would render on this
+        # runner's disk and never get detected as "changed", so the commit
+        # step below would never even run. Keep this list and the git-add
+        # list right below it, and rotate-theme.yml's own list, in agreement.
         run: |
           if [ -n "$(git status --porcelain index.html feed.xml sitemap.xml conundrum.html themes.html press.html privacy.html thesis.html workflow.html about.html editorial assets/og)" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
