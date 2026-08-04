@@ -45,6 +45,7 @@ jobs:
             --exclude-path Design/uploads
             --exclude-path apps/widget-bacon-trail/docs/qa-item7
             --exclude-path scripts/notes
+            --exclude-path themes/archive
             --exclude '^https?://img\.shields\.io/'
             --exclude '^https?://img\.youtube\.com/'
             --exclude '^https?://apps\.microsoft\.com/'
