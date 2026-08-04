@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import sys
 from pathlib import Path
 
@@ -187,3 +188,97 @@ def test_founding_renders_section_with_door():
 
 def test_founding_paragraphs_render_raw_html():
     assert "<strong>First</strong>" in render_hub.render_founding(_founding())
+
+
+# ─── themes gallery (themes.html zone) ───────────────────────────────
+
+def _make_theme(tmp_path, slug, **meta):
+    d = tmp_path / "themes" / slug
+    d.mkdir(parents=True)
+    for name in ("shell.html", "tokens.css"):
+        (d / name).write_text("x", encoding="utf-8")
+    base = {"name": slug.title(), "slug": slug, "thesis": f"{slug} thesis.", "month": "2026-08"}
+    base.update(meta)
+    (d / "theme.json").write_text(json.dumps(base), encoding="utf-8")
+
+
+def test_themes_gallery_active_only_renders_one_live_card_linking_root(tmp_path):
+    _make_theme(tmp_path, "phosphor-blueprint", name="Phosphor Blueprint",
+                thesis="CRT phosphor kit.", month="2026-08")
+    reg = {"active": "phosphor-blueprint", "queue": [], "archive": []}
+    html = render_hub.render_themes_gallery(reg, root=tmp_path)
+    assert html.count('class="theme-card ') == 1
+    assert '<a class="theme-card live" href="/">' in html
+    assert '<span class="theme-status live">Live</span>' in html
+    assert "Phosphor Blueprint" in html and "CRT phosphor kit." in html
+    assert "August 2026" in html
+
+
+def test_themes_gallery_queued_theme_has_no_link_and_queued_chip(tmp_path):
+    _make_theme(tmp_path, "phosphor-blueprint")
+    _make_theme(tmp_path, "next-up", name="Next Up", thesis="Coming soon.")
+    reg = {"active": "phosphor-blueprint", "queue": ["next-up"], "archive": []}
+    html = render_hub.render_themes_gallery(reg, root=tmp_path)
+    assert '<div class="theme-card queued">' in html
+    assert '<span class="theme-status queued">Queued</span>' in html
+    assert "Next Up" in html
+    # No href anywhere pointing at a queued theme — it isn't live yet.
+    assert 'href="/next-up' not in html
+
+
+def test_themes_gallery_archived_theme_links_registry_url_and_month(tmp_path):
+    _make_theme(tmp_path, "phosphor-blueprint")
+    _make_theme(tmp_path, "old-look", name="Old Look", thesis="Retired now.", month="2026-07")
+    reg = {
+        "active": "phosphor-blueprint",
+        "queue": [],
+        "archive": [{"slug": "old-look", "month": "2026-08", "url": "/themes/archive/2026-08/"}],
+    }
+    html = render_hub.render_themes_gallery(reg, root=tmp_path)
+    assert '<a class="theme-card archived" href="/themes/archive/2026-08/">' in html
+    assert '<span class="theme-status archived">Archived</span>' in html
+    # Registry month (when it was actually retired) wins over theme.json's
+    # original month — the registry is the authoritative record.
+    assert "August 2026" in html
+
+
+def test_themes_gallery_archive_renders_newest_first(tmp_path):
+    _make_theme(tmp_path, "phosphor-blueprint")
+    _make_theme(tmp_path, "first-out", name="First Out")
+    _make_theme(tmp_path, "second-out", name="Second Out")
+    reg = {
+        "active": "phosphor-blueprint",
+        "queue": [],
+        "archive": [
+            {"slug": "first-out", "month": "2026-06", "url": "/themes/archive/2026-06/"},
+            {"slug": "second-out", "month": "2026-07", "url": "/themes/archive/2026-07/"},
+        ],
+    }
+    html = render_hub.render_themes_gallery(reg, root=tmp_path)
+    assert html.index("Second Out") < html.index("First Out")
+
+
+def test_themes_gallery_missing_theme_json_falls_back_to_slug_name(tmp_path):
+    # Active theme dir exists (with theme.json) so the registry stays valid,
+    # but an archived slug's source dir is gone entirely.
+    _make_theme(tmp_path, "phosphor-blueprint")
+    reg = {
+        "active": "phosphor-blueprint",
+        "queue": [],
+        "archive": [{"slug": "long-gone", "month": "2026-05", "url": "/themes/archive/2026-05/"}],
+    }
+    html = render_hub.render_themes_gallery(reg, root=tmp_path)
+    assert "Long Gone" in html
+
+
+def test_themes_gallery_always_has_at_least_the_active_card(tmp_path):
+    _make_theme(tmp_path, "phosphor-blueprint")
+    reg = {"active": "phosphor-blueprint", "queue": [], "archive": []}
+    html = render_hub.render_themes_gallery(reg, root=tmp_path)
+    assert html.count('class="theme-card ') == 1
+
+
+def test_real_themes_registry_renders_at_least_one_card():
+    html = render_hub.render_themes_gallery(render_hub.theme_registry.load())
+    assert html.count('class="theme-card ') >= 1
+    assert '<span class="theme-status live">Live</span>' in html

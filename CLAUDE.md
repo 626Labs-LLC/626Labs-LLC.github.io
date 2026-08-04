@@ -50,8 +50,9 @@ references and one-off design artifacts.
 | `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 8 bot workflows that push to main, 1 dashboard API bot, and 1 link checker. All push-to-main workflows have retry+rebase loops. |
+| `.github/workflows/` | 9 bot workflows that push to main, 1 dashboard API bot, and 1 link checker. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
+| `themes/`, `content/themes.json`, `themes.html` | The monthly theme rotation: theme source dirs, the active/queue/archive registry, and the gallery page rendered from it. See **Theme rotation** below. |
 
 ---
 
@@ -64,7 +65,7 @@ references and one-off design artifacts.
 
 ## CI workflows
 
-The 8 bot workflows that push to main:
+The 9 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
@@ -76,10 +77,11 @@ The 8 bot workflows that push to main:
 | `fetch-site-stats.yml` | Daily 06:30 UTC | Pulls GoatCounter visit stats for `626labs.dev` and writes `data/site-stats.json` (uses `GOATCOUNTER_TOKEN` secret). |
 | `refresh-rororo-plugins.yml` | Daily 06:45 UTC | Reads the same `plugins-catalog.json` the RoRoRo app reads (off ROROROblox's latest release), enriches each entry with live release version/date/installs → `data/rororo-plugins.json`. `rororo-plugins.html` and the plugins section of `rororo.html` render from it client-side; warns on catalog-vs-release drift. |
 | `refresh-plugin-versions.yml` | Daily 07:00 UTC | Reads each plugin repo's latest tag (`content/plugin-repos.json` → GitHub API), writes `data/plugin-versions.json`, re-renders plugin pages so version chips can't drift. Default `GITHUB_TOKEN` reads public tags — no extra secret. |
+| `rotate-theme.yml` | Monthly, 09:00 UTC on the 1st + `workflow_dispatch` | Promotes `content/themes.json`'s `queue[0]` to active, unattended. See **Theme rotation** below for the full contract — this row is just the CI-table entry. No extra secret beyond the implicit `GITHUB_TOKEN`. |
 
 **Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`, `MCP_VERSION_TRUTH_KEY`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
-All eight use a retry+rebase loop on `git push` to handle the race where two
+All nine use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
 Plus two that never commit to this repo:
@@ -87,7 +89,51 @@ Plus two that never commit to this repo:
 | Workflow | Trigger | Notes |
 |---|---|---|
 | `version-truth-reconcile.yml` | Daily 08:00 UTC (~3am Chicago) | Corrects drifted 626 dashboard project versions to the latest shipped (non-prerelease) GitHub release per linked repo, via the MCP REST API with the scoped `version-truth-bot` agent key (`MCP_VERSION_TRUTH_KEY`, manage_projects only). Refuses to write past 8 drifts in one run (systemic-change fuse). Dispatch with `dry_run` to preview. |
-| `link-check.yml` | Push to `**/*.html` or `**/*.md`, weekly Mon 13:00 UTC | Lychee link-check. Opens an issue on broken links during scheduled runs only. |
+| `link-check.yml` | Push to `**/*.html` or `**/*.md`, weekly Mon 13:00 UTC | Lychee link-check. Opens an issue on broken links during scheduled runs only. Excludes `themes/archive` — frozen months aren't maintained pages. |
+
+---
+
+## Theme rotation
+
+626labs.dev's design rotates monthly: a new theme queues, gets gated, and
+takes over on the 1st — unattended. Retired themes freeze at a permanent,
+dated URL instead of disappearing, so the rotation becomes its own
+portfolio piece. `/themes.html` is the indexed gallery (rendered straight
+from the registry, so it can never disagree with what's actually live);
+`content/themes.json` is the single switch that decides what's live.
+
+**What a theme is** — `themes/<slug>/` containing exactly three files:
+
+| File | What it is |
+|---|---|
+| `shell.html` | The page skeleton: nav, footer, skip link, section order/presence, and the twelve `SITE_JSON:<zone>:start/end` markers `render-hub.py` fills. One renderer serves every theme — layout variation lives in the shell (structure) and `tokens.css` (treatment), never in a forked emitter. |
+| `tokens.css` | The append-only treatment layer, linked from the shell's `<head>` right after its inline base-token `<style>` block (so it wins the cascade): palette, texture, motion, and any layout CSS the theme needs (grid density, card anatomy). |
+| `theme.json` | `{name, slug, thesis, month, status, contrastPairs}` — `contrastPairs` is a list of `[fg-var, bg-var]` pairs `theme-doctor` checks against WCAG AA. `status` is informational only; the gallery and rotation never read it — `content/themes.json` (the registry) is what actually decides. |
+
+**Building one:**
+
+1. Branch, create `themes/<slug>/{shell.html,tokens.css,theme.json}` — mirror `themes/phosphor-blueprint/` as the reference extraction.
+2. `python scripts/theme-doctor.py <slug>` must PASS before anything else. This is the ONLY gate standing between a theme and unattended monthly rotation, so it has to fail honestly: zone markers present, chrome intact (skip-link/nav/footer/analytics), every internal link resolves, and every declared `contrastPairs` clears AA (>= 4.5). Add `--browser` (needs `playwright` installed) for horizontal-scroll (1440/768/390px) and zero-console-error checks — the scheduled rotation always runs with `--browser`.
+3. Preview it against real content: `python scripts/render-hub.py --theme <slug> --out <dir>` renders that theme's shell to `<dir>/index.html` and touches nothing else — no feed, sitemap, story pages, or `themes.html`.
+4. PR the three files, `theme-doctor` output pasted in. **`theme-doctor` is not wired into a PR-triggered CI check** — run it locally before requesting review; the only automated run today is inside `rotate-theme.yml`, gating the theme that's about to go live.
+5. Merge. Merging changes NOTHING live — a theme only takes effect once its slug lands in `content/themes.json`'s `queue`.
+
+**Queueing:** append the slug to `"queue"` in `content/themes.json` (a normal PR to `main`). Queue order is FIFO — position in the list is rotation order, not a date. `scripts/theme_registry.validate()` enforces basic sanity (no dupes, the active theme never also sitting in the queue, every queued theme's three files present).
+
+**Rotation** (`.github/workflows/rotate-theme.yml`, cron `0 9 1 * *` UTC + `workflow_dispatch`):
+
+1. Empty queue → open a "Theme queue is empty" issue, change nothing, exit. (`dry_run: true` skips even the issue — just logs it.)
+2. Freeze the outgoing theme (`scripts/freeze-theme.py <month>`) — see **Archives** below.
+3. `active = queue.shift()`; append the outgoing theme to `archive[]`.
+4. Re-render the site (`render-hub.py`, no flags) — this also re-renders `themes.html`'s gallery against the new registry state.
+5. Gate stack, in order: `theme-doctor.py <new-active> --browser`, `render-hub.py --check`, `pytest tests/ -q`, `site-doctor.py --check`.
+6. Any gate failure → nothing committed. Every step downstream chains off the prior step's implicit success, so one failure stops the whole tail; an issue opens with the failed run's link. The site stays at its last verified state — **the site can only ever move from one verified state to another.**
+7. `dry_run: true` runs every gate and stages the diff (`git add -A && git diff --stat --cached`) but commits and pushes nothing — use it to sanity-check a queued theme before the 1st actually arrives.
+8. Success → one commit (`content/themes.json`, `index.html`, `feed.xml`, `sitemap.xml`, `conundrum.html`, `themes.html`, `editorial/`, `themes/archive/`), pushed with the same retry+rebase loop every other bot workflow in this repo uses.
+
+**Archives:** frozen at rotation time to `themes/archive/<YYYY-MM>/index.html` — a COPY of the already-rendered homepage, never re-rendered again. Two injections: `<meta name="robots" content="noindex">`, and a banner reading "the site as it looked in \<Month Year\>." It carries local copies of every linked stylesheet it needs, so a later retokenize of `tokens.css` or the base `/Design/*.css` layer can't silently repaint it — except fonts, the Bacon Trail widget CSS, and `/assets/*` images, an accepted and documented sharing boundary (see `scripts/freeze-theme.py`'s module docstring for the exact rationale on each). `freeze()` refuses to overwrite an existing archive month — write-once, never re-frozen. Archives are excluded from `sitemap.xml` and from `link-check.yml`'s lychee scan — they're history, not maintained pages.
+
+**Rollback:** `content/themes.json` is the ONLY switch. `git revert` the rotation commit and the previous `active`/`queue`/`archive` state comes right back — no script needed. The frozen archive written during that rotation already exists on disk either way (freeze is a one-way, additive action; reverting the registry commit doesn't and shouldn't delete it).
 
 ---
 
@@ -191,6 +237,10 @@ hand-edit the bundle output at `widget-bacon-trail/`.
 | Regenerate a brand banner / icon | `python3 scripts/export-brand.py` |
 | Check why the site looks stale | `python3 scripts/render-hub.py --check` |
 | See bot run status | Admin → Ops tab |
+| Preview a theme without touching the live site | `python3 scripts/render-hub.py --theme <slug> --out <dir>` |
+| Gate a theme before opening its PR | `python3 scripts/theme-doctor.py <slug> --browser` |
+| Queue a theme for the next rotation | Append its slug to `"queue"` in `content/themes.json` |
+| Roll back a bad rotation | `git revert` the `chore(themes): rotate to ...` commit |
 | Ship a new top-level page | Merge (the sitemap updates itself) → then GSC: URL Inspection → Request Indexing for the new URL at search.google.com/search-console. Agents: list the new public URL(s) in every ship report — this step is part of the workflow, not optional polish. Sitemap re-submission is never needed (same URL; Google re-reads it). |
 
 ---

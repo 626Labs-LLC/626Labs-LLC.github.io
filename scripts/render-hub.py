@@ -40,6 +40,7 @@ import json
 import re
 import shutil
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import markdown  # the one external dep — markdown -> HTML for Field Note pages
@@ -51,6 +52,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SITE_JSON = ROOT / "content" / "site.json"
 INDEX_HTML = ROOT / "index.html"
 CONUNDRUM_HTML = ROOT / "conundrum.html"
+THEMES_HTML = ROOT / "themes.html"
 STORIES_DIR = ROOT / "content" / "stories"
 # Local Field Notes render to on-site reading pages under here:
 # editorial/<slug>/index.html, served at /editorial/<slug>/.
@@ -705,6 +707,93 @@ def render_conundrum_repo(conundrum: dict) -> str:
         '<svg class="ic arrow" viewBox="0 0 24 24">'
         '<path d="M5 12h14M13 5l7 7-7 7"/></svg></a>'
     )
+
+
+# ─── themes gallery (themes.html zone) ───────────────────────────────
+THEME_STATUS_LABEL = {"live": "Live", "queued": "Queued", "archived": "Archived"}
+
+
+def _theme_month_label(month: str | None) -> str:
+    """'2026-08' -> 'August 2026'. Falls back to the raw string for anything
+    that doesn't parse as YYYY-MM (never crashes the render on a malformed
+    value), and to "" when there's no month at all."""
+    if not month:
+        return ""
+    try:
+        return datetime.strptime(month, "%Y-%m").strftime("%B %Y")
+    except ValueError:
+        return month
+
+
+def _theme_meta(slug: str, root: Path) -> dict:
+    """Best-effort name/thesis/month straight off the theme's own
+    theme.json. A card's STATUS and LINK come from the registry only (see
+    render_themes_gallery) — never from here — so the gallery can't
+    disagree with content/themes.json even if a theme.json goes stale.
+    Falls back to a slug-derived name when the file is missing or
+    unreadable (an archived theme's source dir isn't guaranteed to stick
+    around forever)."""
+    meta_path = theme_registry.theme_dir(slug, root) / "theme.json"
+    name = slug.replace("-", " ").title()
+    thesis = ""
+    month = None
+    if meta_path.exists():
+        try:
+            data = json.loads(meta_path.read_text(encoding="utf-8"))
+            name = data.get("name") or name
+            thesis = data.get("thesis") or ""
+            month = data.get("month")
+        except (json.JSONDecodeError, OSError):
+            pass
+    return {"name": name, "thesis": thesis, "month": month}
+
+
+def _render_theme_card(slug: str, status: str, month: str | None, link: str | None, root: Path) -> str:
+    meta = _theme_meta(slug, root)
+    head_bits = [f'<span class="theme-status {status}">{THEME_STATUS_LABEL[status]}</span>']
+    month_label = _theme_month_label(month)
+    if month_label:
+        head_bits.append(f'<span class="theme-month">{esc(month_label)}</span>')
+
+    lines = [
+        '  <div class="theme-card-head">',
+        "    " + "\n    ".join(head_bits),
+        "  </div>",
+        f'  <h3 class="theme-name">{esc(meta["name"])}</h3>',
+    ]
+    if meta["thesis"]:
+        lines.append(f'  <p class="theme-thesis">{esc(meta["thesis"])}</p>')
+    inner = "\n".join(lines)
+
+    tag = "a" if link else "div"
+    href_attr = f' href="{attr(link)}"' if link else ""
+    return f'<{tag} class="theme-card {status}"{href_attr}>\n{inner}\n</{tag}>'
+
+
+def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
+    """One card per theme in content/themes.json — active first (links "/"),
+    then the queue in rotation order (no link, a "queued" chip), then the
+    archive newest-first (links its registry `url`). Renders straight from
+    the registry so a card's status/link can never disagree with what's
+    actually live; only name/thesis/month get enriched from each theme's
+    own theme.json (see _theme_meta). Archived months come from the
+    registry entry itself — the authoritative record of when that theme
+    was actually live — not the theme.json's original (possibly
+    aspirational) month. An active theme is guaranteed by
+    theme_registry.validate(), so this never renders zero cards."""
+    cards = []
+    active = reg.get("active")
+    if active:
+        meta = _theme_meta(active, root)
+        cards.append(_render_theme_card(active, "live", meta["month"], "/", root))
+    for slug in reg.get("queue") or []:
+        meta = _theme_meta(slug, root)
+        cards.append(_render_theme_card(slug, "queued", meta["month"], None, root))
+    for entry in reversed(reg.get("archive") or []):
+        cards.append(_render_theme_card(
+            entry.get("slug", ""), "archived", entry.get("month"), entry.get("url"), root
+        ))
+    return "\n\n".join(cards)
 
 
 def render_product(p: dict) -> str:
@@ -1941,6 +2030,13 @@ def main(argv: list[str]) -> int:
         )
     conundrum_changed = conundrum_new is not None and conundrum_new != conundrum_old
 
+    # themes.html — the rotation gallery. Always rendered (content/themes.json
+    # always has an active theme, so there's always >=1 card); no site.json
+    # key gates it the way conundrum's does.
+    themes_old = THEMES_HTML.read_text(encoding="utf-8")
+    themes_new = substitute_zone(themes_old, "themes", render_themes_gallery(reg))
+    themes_changed = themes_new != themes_old
+
     feed_new = render_atom_feed(stories)
     feed_old = FEED_PATH.read_text(encoding="utf-8") if FEED_PATH.exists() else None
 
@@ -1969,7 +2065,8 @@ def main(argv: list[str]) -> int:
         stale = [name for name, drifted in
                  (("index.html", index_changed), ("feed.xml", feed_changed),
                   ("sitemap.xml", sitemap_changed),
-                  ("conundrum.html", conundrum_changed)) if drifted]
+                  ("conundrum.html", conundrum_changed),
+                  ("themes.html", themes_changed)) if drifted]
         stale += [p.relative_to(ROOT).as_posix() for p in stale_stories]
         stale += [f"{d.relative_to(ROOT).as_posix()}/ (orphaned — prune)" for d in orphans]
         if stale:
@@ -1995,6 +2092,10 @@ def main(argv: list[str]) -> int:
     if conundrum_changed:
         CONUNDRUM_HTML.write_text(conundrum_new, encoding="utf-8")
         print("conundrum.html zones rebuilt from content/site.json")
+
+    if themes_changed:
+        THEMES_HTML.write_text(themes_new, encoding="utf-8")
+        print("themes.html zone rebuilt from content/themes.json")
 
     if feed_changed:
         FEED_PATH.write_text(feed_new, encoding="utf-8")
