@@ -196,18 +196,15 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # press.html/privacy.html/thesis.html/workflow.html/
-          # rororo-plugins.html/rororo.html/mod-launcher-games.html
-          # (theme-css link), conundrum.html (theme-css
-          # link plus its gallery zones) and about.html (the easter-egg
-          # theme registry) are ALSO rewritten by render-hub.py on every
-          # rotation (their active-theme-derived zones — see
-          # THEME_CSS_HREFS/render_about_theme_dresses) but were missing
-          # from this list before A8 — found while auditing what a rotation
-          # actually writes vs. what got committed; without them, a live
-          # rotation would silently update those pages on the runner's disk
-          # and never persist it, so they'd stay dressed in whatever theme
-          # was active the last time someone hand-committed them.
+          # The hand-authored pages a rotation rewrites — every theme-css
+          # <link> page plus about.html's easter-egg registry — come from
+          # `render-hub.py --list-renderer-owned-pages`, not a list kept
+          # here. A8 found this exact list missing press/privacy/about
+          # AFTER a rotation had run: those pages were updated on the
+          # runner's disk, never persisted, and stayed dressed in whatever
+          # theme was active the last time someone hand-committed them.
+          # Deriving it means the next page added to THEME_CSS_HREFS cannot
+          # repeat that.
           # The 15 render-plugin-pages.py outputs (14 per-plugin pages +
           # the family index) come from the script itself. This used to be
           # the glob `vibe-* thesis-engine plugins`, which self-maintains
@@ -217,10 +214,8 @@ jobs:
           # OUTGOING theme's dress after a rotation with nothing to
           # indicate it.
           git add -- content/themes.json index.html feed.xml sitemap.xml \
-            conundrum.html themes.html about.html \
-            press.html privacy.html thesis.html workflow.html \
-            rororo-plugins.html rororo.html mod-launcher-games.html \
             editorial themes/archive assets/themes \
+            $(python3 scripts/render-hub.py --list-renderer-owned-pages) \
             $(python3 scripts/render-plugin-pages.py --list-outputs)
           git commit -m "chore(themes): rotate to ${{ steps.rotate.outputs.new_active }} for ${{ steps.month.outputs.month_name }}
 

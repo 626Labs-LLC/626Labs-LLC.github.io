@@ -61,6 +61,7 @@ if str(SCRIPTS_DIR) not in sys.path:
     # explicit file path from tests/ (it does NOT). Insert explicitly so
     # `import theme_registry` below works either way.
     sys.path.insert(0, str(SCRIPTS_DIR))
+import browser_origin  # noqa: E402 — sibling module in scripts/ — third-party isolation
 import theme_registry  # noqa: E402 — sibling module in scripts/
 
 HEAD_OPEN_RE = re.compile(r"<head(\s[^>]*)?>", re.I)
@@ -388,7 +389,19 @@ def capture_theme_screenshot(slug: str, out_path: Path, full_page: bool = False)
                     # runs before any of the page's own scripts, every time
                     # this page navigates.
                     page.add_init_script(_DETERMINISTIC_CAPTURE_INIT_SCRIPT)
-                    page.goto(f"http://127.0.0.1:{port}/", wait_until="load", timeout=15000)
+                    # Third-party isolation, same rule theme-doctor's browser
+                    # gate uses — and needed MORE here, because this runs
+                    # earlier in the rotation than that gate and its output is
+                    # capture-once (freeze() refuses to overwrite an existing
+                    # archive month, so a flake is permanent, not retried).
+                    # An async //gc.zgo.at/count.js still delays the `load`
+                    # event this waits for; a slow host eats the 15s timeout
+                    # and fails the rotation before it ever reaches the gate.
+                    # Blocking it also makes the capture deterministic, which
+                    # a screenshot compared across months has to be.
+                    url = f"http://127.0.0.1:{port}/"
+                    browser_origin.block_off_origin(page, url)
+                    page.goto(url, wait_until="load", timeout=15000)
                     page.evaluate("document.fonts.ready")
                     page.wait_for_timeout(300)  # let deferred/async scripts settle
                     # After the settle, not before: the init script's own

@@ -142,6 +142,9 @@ def test_capture_freezes_svg_animations_immediately_before_the_shutter(tmp_path,
         def add_init_script(self, script):
             order.append("init:" + ("smil" if "pauseAnimations" in script else "other"))
 
+        def route(self, pattern, handler):
+            order.append("isolate")
+
         def goto(self, *a, **kw):
             order.append("goto")
 
@@ -188,6 +191,12 @@ def test_capture_freezes_svg_animations_immediately_before_the_shutter(tmp_path,
 
     assert "init:smil" in order, "init script registered without the SMIL freeze"
     assert "freeze" in order, "capture never invoked window.__freezeSvgAnimations"
+    # Isolation has to be installed BEFORE navigation or the requests it
+    # exists to stop are already in flight. Capture-once output makes a flake
+    # here permanent — freeze() refuses to overwrite an existing archive
+    # month — which is why this ordering is pinned rather than assumed.
+    assert "isolate" in order, "capture no longer blocks off-origin requests"
+    assert order.index("isolate") < order.index("goto")
     assert order.index("freeze") > order.index("settle"),         "freeze must run AFTER the settle — page JS injects SVG"
     assert order.index("freeze") < order.index("screenshot"),         "freeze must run BEFORE the shutter"
 

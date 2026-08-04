@@ -67,7 +67,6 @@ import re
 import subprocess
 import sys
 import tempfile
-import urllib.parse
 from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -79,6 +78,7 @@ if str(SCRIPTS_DIR) not in sys.path:
     # `import theme_registry` below works either way.
     sys.path.insert(0, str(SCRIPTS_DIR))
 import archetypes      # noqa: E402 — sibling module in scripts/ — VOCABULARY, ARCHETYPES
+import browser_origin  # noqa: E402 — sibling module in scripts/ — third-party isolation
 import theme_registry  # noqa: E402 — sibling module in scripts/
 
 ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
@@ -170,9 +170,12 @@ TOKEN_ONLY_CSS = (
 # stylesheet <link> points at the theme being doctored rather than the
 # active one.
 #
-# All four bespoke product pages, because all four are pages the unattended
-# rotation could otherwise promote a theme onto without anything ever
-# opening them. `rororo.html` in particular is the expensive omission: its
+# All six hand-authored pages that link a theme stylesheet, because each is
+# a page the unattended rotation could otherwise promote a theme onto with
+# nothing ever opening it. The reading pair (thesis.html, workflow.html) is
+# here for the identical reason as the product four; it was held out for no
+# reason beyond the order the conversions landed in, and both are among the
+# pages that used to render on a white field under a treatment-less theme. `rororo.html` in particular is the expensive omission: its
 # `.install-grid` is `repeat(3, 1fr)` holding `code` blocks at
 # `white-space: pre`, so a queued theme shipping a `--font-body` stack with
 # wider metrics overflows it at 390px — exactly what the horizontal-scroll
@@ -189,7 +192,7 @@ TOKEN_ONLY_CSS = (
 # does and does not still cover.
 BROWSER_CHECK_LIVE_PAGES = (
     "conundrum.html", "rororo-plugins.html", "rororo.html",
-    "mod-launcher-games.html",
+    "mod-launcher-games.html", "thesis.html", "workflow.html",
 )
 
 # Real, live chrome varies by archetype today — verified by grep against the
@@ -548,6 +551,71 @@ def _applicable_contrast_pairs(css: str, pairs: list[list[str]]) -> list[list[st
     return [pair for pair in pairs if pair[0] in declared and pair[1] in declared]
 
 
+# Stylesheets that are NOT part of any theme but that a page dressed by a
+# theme also links, so a theme's CSS may legitimately spend names they
+# define. One entry: about.html links /Design/editorial.css directly, and
+# archetypes/reading.css (the Long Now Terminal dress about.html's easter-egg
+# picker wears) reads five of its names — --font-serif, --ed-t-body,
+# --ed-t-pull, --ed-lh-body, --ed-lh-pull. reading.css's own header already
+# documents editorial.css as theme-agnostic; this is that fact, made
+# machine-readable so the self-consistency check below does not report a
+# resolution it cannot see.
+EXTERNAL_STYLESHEETS = ("Design/editorial.css",)
+
+
+def check_theme_reads_only_what_it_defines(
+    theme_css: dict[str, str], external_css: dict[str, str] | None = None
+) -> list[str]:
+    """Every var(--x) in a theme's OWN stylesheets must resolve somewhere in
+    that theme, or carry a fallback.
+
+    The theme-side twin of the rule the converted pages now follow. Those
+    pages were fixed by giving every theme-bespoke read a fallback; this
+    catches the same defect one level up, where a token-completeness check
+    structurally cannot see it — check_required_tokens grades the CONTRACT
+    names, and --pb-* is deliberately not among them.
+
+    Concretely: archetypes/utility.css both defines the --pb-* treatment
+    tokens and spends them on `body`. Delete the definitions and keep the
+    rules — a plausible edit when retokenizing a copied theme — and
+    press.html/privacy.html render on a transparent body with every existing
+    gate green. Found by building a contract-only theme and looking at what
+    the browser computed, not by reading.
+
+    Checked theme-WIDE, not per file: archetypes/product.css legitimately
+    spends names archetypes/product-tokens.css defines, and
+    render-plugin-pages.py concatenates the pair before either is served.
+    """
+    defined: set[str] = set()
+    for text in theme_css.values():
+        defined |= set(_parse_custom_properties(text))
+    for text in (external_css or {}).values():
+        defined |= set(_parse_custom_properties(text))
+
+    errors: list[str] = []
+    for label, text in sorted(theme_css.items()):
+        body = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
+        unguarded = set()
+        for m in re.finditer(r"var\(\s*(--[\w-]+)", body):
+            depth, i, has_fallback = 1, m.end(), False
+            while i < len(body) and depth:
+                if body[i] == "(":
+                    depth += 1
+                elif body[i] == ")":
+                    depth -= 1
+                elif body[i] == "," and depth == 1:
+                    has_fallback = True
+                i += 1
+            if not has_fallback and m.group(1) not in defined:
+                unguarded.add(m.group(1))
+        for name in sorted(unguarded):
+            errors.append(
+                f"{label}: reads {name}, which no stylesheet in this theme "
+                f"defines and which carries no fallback"
+            )
+    return errors
+
+
 def check_contrast(
     css: str, pairs: list[list[str]] | None
 ) -> tuple[list[str], list[str]]:
@@ -650,37 +718,35 @@ def _run_browser_checks(html_text: str, require: bool = False) -> list[str]:
     return errors
 
 
-def _page_origin(url: str) -> str:
-    """`scheme://host:port` of `url` — what "the page's own origin" means to
-    the two off-origin filters below."""
-    parts = urllib.parse.urlsplit(url)
-    return f"{parts.scheme}://{parts.netloc}"
+# Third-party isolation lives in browser_origin.py because scripts/
+# freeze-theme.py needs the identical rule and runs EARLIER in the same
+# rotation — see that module's docstring. Re-exported under the private
+# names this file already used so nothing here reads as indirection.
+_page_origin = browser_origin.page_origin
+_is_off_origin = browser_origin.is_off_origin
+_console_message_url = browser_origin.console_message_url
 
 
-def _is_off_origin(url: str, origin: str) -> bool:
-    """True when `url` leaves the page's own origin.
-
-    `data:` / `blob:` / `about:` are the page's own content under another
-    scheme and are never off-origin. An EMPTY url is treated as the page's
-    own — a console error the browser could not attribute is reported, never
-    filtered away, because the failure mode this whole gate exists to prevent
-    is silently covering less than it claims.
-    """
-    if not url:
-        return False
-    if url.startswith(("data:", "blob:", "about:")):
-        return False
-    return url != origin and not url.startswith(origin + "/")
-
-
-def _console_message_url(msg) -> str:
-    """The URL a console message is attributed to, or "" when the browser
-    attributed it to nothing."""
-    loc = getattr(msg, "location", None) or {}
-    try:
-        return loc.get("url", "") or ""
-    except AttributeError:  # a location object rather than a dict
-        return getattr(loc, "url", "") or ""
+# Off-origin URLs answered from a committed fixture instead of aborted.
+#
+# Exactly one entry, and it buys back real coverage: mod-launcher-games.html
+# renders its ENTIRE body from a manifest on raw.githubusercontent.com, so
+# under the isolation below the gate would only ever see its fetch-failed
+# fallback panel — chrome, and nothing else. The page whose layout is the
+# most complex of the six (a cover rail plus two long game-row lists) would
+# be the one page checked in its emptiest state.
+#
+# Substitution, not exemption: the body is on disk, nothing leaves the
+# machine, and the render is identical run to run. See the fixture's own
+# $comment for what it has to contain and why (long and unbreakable names —
+# a name that cannot wrap is what overflows a narrow viewport).
+_GAME_FEED_FIXTURE = ROOT / "scripts" / "fixtures" / "mod-launcher-supported-games.json"
+_OFF_ORIGIN_FIXTURES = {
+    "626-game-manifest": (
+        "application/json",
+        _GAME_FEED_FIXTURE.read_text(encoding="utf-8"),
+    ),
+}
 
 
 def _check_viewport(page, url: str, width: int) -> list[str]:
@@ -697,14 +763,16 @@ def _check_viewport(page, url: str, width: int) -> list[str]:
     not get silently skipped and waved through.
 
     ── Third-party isolation, and why it is not optional ──────────────────
-    Every page this gate opens — the theme's own archetype shells AND the
-    live pages in BROWSER_CHECK_LIVE_PAGES — carries
+    This gate opens ten documents: four archetype shells plus the six live
+    pages in BROWSER_CHECK_LIVE_PAGES. NINE of the ten carry
     `<script async src="//gc.zgo.at/count.js">`, which over `http://127.0.0.1`
-    resolves to a real third-party host. So this gate ALREADY depended on
-    gc.zgo.at being up at 09:00 UTC on the 1st, through two channels: a
-    failed load logs a console error (reported as the theme's fault), and an
-    `async` script still delays the `load` event `page.goto` waits for, so a
-    slow host eats the 15s timeout and fails the gate outright.
+    resolves to a real third-party host. (The tenth is the `product`
+    archetype's own shell, which ARCHETYPE_CHROME marks `analytics=False`.)
+    So this gate ALREADY depended on gc.zgo.at being up at 09:00 UTC on the
+    1st, through two channels: a failed load logs a console error (reported
+    as the theme's fault), and an `async` script still delays the `load`
+    event `page.goto` waits for, so a slow host eats the 15s timeout and
+    fails the gate outright.
 
     Both channels are closed here rather than worked around: off-origin
     requests are aborted before they leave, and console errors attributed to
@@ -722,24 +790,40 @@ def _check_viewport(page, url: str, width: int) -> list[str]:
     document-wide, widget included. So blocking it moves no metric — which is
     the claim the full gate passing with the block in place actually tests.
 
-    The cost, stated rather than hidden: a page whose content arrives over an
-    off-origin fetch renders its fetch-failed state here.
-    `mod-launcher-games.html` is the one such page — its game manifest lives
-    on raw.githubusercontent.com — so this gate grades its chrome and its
-    fallback panel, not its 150-row populated layout. That was already true
-    and merely racy before: `_check_viewport` waits 300ms after `load`, which
-    a cross-country fetch does not reliably beat. Deterministically grading a
-    known state beats sometimes grading either. `rororo.html`'s feed is
-    same-origin (`data/rororo-plugins.json`, served by the local server), so
-    it populates fully and IS graded populated.
+    ── What this asks of every page the gate opens ───────────────────────
+    A NEW constraint, undocumented before and worth stating because nothing
+    else enforces it: every page here must tolerate TOTAL off-origin failure
+    without logging a console error or throwing. That is not free. The
+    `home` archetype's shell embeds the Bacon Trail widget, a React bundle
+    built from a different directory (apps/widget-bacon-trail), and its
+    off-origin dependencies are not one host but three — api.themoviedb.org,
+    image.tmdb.org, and the fonts.googleapis.com @import in widget.css.
+    React logs on an uncaught render error, so a future widget build that
+    stops handling its own fetch failure turns this gate red for reasons
+    that have nothing to do with the theme under test. Whoever hits that:
+    the fix belongs in the widget's error handling, not in loosening this.
+
+    So `mod-launcher-games.html` is NOT the only page whose off-origin
+    content is absent here — an earlier version of this comment said it was,
+    and index.html was already the counterexample. The cost, stated rather
+    than hidden: any page whose content arrives over an off-origin fetch
+    renders its fetch-failed state. mod-launcher-games.html's game manifest
+    lives on raw.githubusercontent.com, so this gate grades its chrome and
+    its fallback panel, not its 150-row populated layout. That was already
+    true and merely racy before: `_check_viewport` waits 300ms after `load`,
+    which a cross-country fetch does not reliably beat. Deterministically
+    grading a known state beats sometimes grading either. `rororo.html`'s
+    feed is same-origin (`data/rororo-plugins.json`, served by the local
+    server), so it populates fully and IS graded populated.
+
+    ── What `page.route` does NOT cover ──────────────────────────────────
+    WebSocket handshakes, Service Worker requests, and requests from popup
+    pages all bypass a page-level route handler. No page here opens any of
+    the three today; a page that starts to would reopen the exposure quietly,
+    so this is written down rather than assumed away.
     """
     origin = _page_origin(url)
-    page.route(
-        "**/*",
-        lambda route: route.abort()
-        if _is_off_origin(route.request.url, origin)
-        else route.continue_(),
-    )
+    browser_origin.block_off_origin(page, url, fulfill=_OFF_ORIGIN_FIXTURES)
     console_errors: list[str] = []
     page.on(
         "console",
@@ -844,7 +928,25 @@ def _archetype_source(
     )
 
 
-ARCHETYPE_TOKEN_CSS = {"product": PRODUCT_TOKENS_CSS, "reading": READING_TOKENS_CSS}
+# The file each archetype's LINKING pages resolve their tokens from, appended
+# last by _archetype_token_css so it wins the cascade the same way it wins in
+# the browser.
+#
+# "utility" maps to utility.css, which _archetype_source ALSO passes as the
+# archetype's own dress — so that file is appended twice. Deliberate, and the
+# duplication is the point: press.html and privacy.html link
+# archetypes/utility.css and NOTHING else, so tokens.css must not be the last
+# word on their token values. Without this entry the gate graded utility's
+# contrast against tokens.css's ramp, which is the exact bug
+# _archetype_token_css was written to fix for product and reading, left
+# unclosed for the third archetype. Safe to have shipped only because the two
+# files happen to agree on every value today; a theme where they diverge would
+# have had utility graded on a page nobody serves.
+ARCHETYPE_TOKEN_CSS = {
+    "product": PRODUCT_TOKENS_CSS,
+    "reading": READING_TOKENS_CSS,
+    "utility": REQUIRED_ARCHETYPE_CSS["utility"],
+}
 
 
 def _archetype_token_css(archetype: str, tdir: Path) -> str:
@@ -907,23 +1009,40 @@ def _check_archetype(
     else:
         errors += check_vocabulary(html, css, archetype)
 
-    if pairs:
-        applicable = _applicable_contrast_pairs(css, pairs)
-        if not applicable:
-            print(f"contrast [{archetype}]: no declared pair's custom properties "
-                  f"resolve in this archetype's own CSS — unverified for {archetype}")
+    # Contrast. Two holes were closed here, and both were the same shape:
+    # the gate printing something reassuring and returning no error.
+    #
+    # 1. `if pairs:` guarded the whole block, so a theme that declares NO
+    #    contrastPairs got no contrast checking at all — and check_contrast's
+    #    own "no contrastPairs declared" advisory, written for exactly that
+    #    case, was unreachable from main(). It is called unconditionally now.
+    # 2. When every declared pair filtered out (a theme mirroring this one's
+    #    contrastPairs but naming tokens its own CSS never declares), this
+    #    printed "unverified" and appended ZERO errors. Four archetypes could
+    #    print "unverified" and the theme still rotated, unattended, with its
+    #    contrast never graded once. An ungraded check is a failed check.
+    applicable = _applicable_contrast_pairs(css, pairs) if pairs else []
+    if pairs and not applicable:
+        errors.append(
+            f"{archetype}: none of the {len(pairs)} declared contrastPairs name "
+            f"custom properties this archetype's own CSS declares, so its "
+            f"contrast was never graded"
+        )
+    for fg_name, bg_name, ratio in evaluate_contrast_pairs(css, applicable):
+        if ratio is None:
+            print(f"contrast [{archetype}]: {fg_name} on {bg_name} = unresolved")
         else:
-            for fg_name, bg_name, ratio in evaluate_contrast_pairs(css, applicable):
-                if ratio is None:
-                    print(f"contrast [{archetype}]: {fg_name} on {bg_name} = unresolved")
-                else:
-                    verdict = "pass" if ratio >= AA_MIN_RATIO else "FAIL"
-                    print(f"contrast [{archetype}]: {fg_name} on {bg_name} = {ratio:.2f} "
-                          f"({verdict}, AA >= {AA_MIN_RATIO})")
-            contrast_failures, contrast_advisories = check_contrast(css, applicable)
-            errors += [f"{archetype}: {e}" for e in contrast_failures]
-            for line in contrast_advisories:
-                print(f"[{archetype}] {line}")
+            verdict = "pass" if ratio >= AA_MIN_RATIO else "FAIL"
+            print(f"contrast [{archetype}]: {fg_name} on {bg_name} = {ratio:.2f} "
+                  f"({verdict}, AA >= {AA_MIN_RATIO})")
+    contrast_failures, contrast_advisories = check_contrast(css, applicable)
+    errors += [f"{archetype}: {e}" for e in contrast_failures]
+    # The "no contrastPairs declared" advisory is for a theme that declared
+    # NOTHING. A theme that declared pairs which all filtered out already has
+    # the error above; printing both reads as two separate problems.
+    if not pairs:
+        for line in contrast_advisories:
+            print(f"[{archetype}] {line}")
     return errors
 
 
@@ -1040,10 +1159,15 @@ def main(argv: list[str]) -> int:
     # REQUIRED_TOKENS): themes.html reads tokens.css directly; press.html/
     # privacy.html read archetypes/utility.css; thesis.html/workflow.html
     # read archetypes/reading-tokens.css; the four bespoke product pages read
-    # archetypes/product-tokens.css. The last six carry no local fallback at
-    # ALL — their private :root blocks are gone — so for them a missing name
-    # is not a stale value, it is an unresolved var() with nothing behind
-    # it. All four files have to actually DEFINE the required set or those
+    # archetypes/product-tokens.css. None of those six carries a local
+    # fallback for a name in this set, so for them a missing name is not a
+    # stale value, it is an unresolved var() with nothing behind it.
+    #
+    # Three of them (conundrum/rororo/mod-launcher-games) DO declare a
+    # handful of `--page-*` aliases shaped `var(--pb-X, var(--contracted))`.
+    # Those guard the THEME-BESPOKE --pb-* names, which are deliberately not
+    # in REQUIRED_TOKENS; the contracted name each falls through to has no
+    # fallback behind IT, which is the whole reason those aliases end in one. All four files have to actually DEFINE the required set or those
     # pages break on the next rotation (see REQUIRED_TOKENS's docstring) —
     # checked here, before the archetype loop, same completeness spirit as
     # REQUIRED_ARCHETYPE_CSS above, just for file CONTENT instead of file
@@ -1083,6 +1207,26 @@ def main(argv: list[str]) -> int:
     for label in TOKEN_ONLY_CSS:
         text = (tdir / label).read_text(encoding="utf-8")
         errors += [f"{label}: {e}" for e in check_token_css_declares_only_tokens(text)]
+
+    # ...and a theme must not read a custom property it never defines. See
+    # check_theme_reads_only_what_it_defines for the failure this catches
+    # (press.html/privacy.html on a transparent body, every other gate
+    # green). Theme-WIDE: product.css legitimately spends what
+    # product-tokens.css defines.
+    theme_css = {
+        label: (tdir / label).read_text(encoding="utf-8")
+        for label in (
+            "tokens.css",
+            *(f"archetypes/{f}" for f in REQUIRED_ARCHETYPE_CSS.values()),
+            f"archetypes/{PRODUCT_TOKENS_CSS}",
+            f"archetypes/{READING_TOKENS_CSS}",
+        )
+    }
+    external_css = {
+        label: (ROOT / label).read_text(encoding="utf-8")
+        for label in EXTERNAL_STYLESHEETS
+    }
+    errors += check_theme_reads_only_what_it_defines(theme_css, external_css)
 
     archetype_html: dict[str, str] = {}
     for archetype in archetypes.ARCHETYPES:

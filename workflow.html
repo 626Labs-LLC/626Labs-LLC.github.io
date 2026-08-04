@@ -30,7 +30,7 @@
      always had. The --pb-scanline value it reads is the theme's. */
   .pb-scanlines {
     position: fixed; inset: 0; pointer-events: none; z-index: 60;
-    background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+    background: repeating-linear-gradient(0deg, var(--pb-scanline, transparent) 0 1px, transparent 1px 3px);
   }
 
   body{
@@ -247,7 +247,7 @@
     border:1px solid var(--border-2);
     border-radius: var(--r-lg);
     padding: 16px 16px 14px;
-    box-shadow: var(--shadow-2), var(--inner-stroke);
+    box-shadow: var(--shadow-2, 0 0 0 0 transparent), var(--inner-stroke);
     transition: border-color var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
   }
   .node h3{
@@ -470,23 +470,23 @@
        ============================================================ */
     body {
       background:
-        linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
-        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-        var(--pb-field);
+        linear-gradient(90deg, var(--pb-grid-fine, transparent) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-fine, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, var(--pb-grid-coarse, transparent) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-coarse, transparent) 1px, transparent 1px),
+        var(--pb-field, var(--bg-0));
       background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
     }
     @media (max-width: 720px) {
       body {
         background:
-          linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-          linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-          var(--pb-field);
+          linear-gradient(90deg, var(--pb-grid-coarse, transparent) 1px, transparent 1px),
+          linear-gradient(0deg,  var(--pb-grid-coarse, transparent) 1px, transparent 1px),
+          var(--pb-field, var(--bg-0));
         background-size: 120px 120px, 120px 120px;
       }
     }
-    h1 { text-shadow: var(--pb-bloom-cyan); }
+    h1 { text-shadow: var(--pb-bloom-cyan, none); }
   </style>
 </head>
 <body>

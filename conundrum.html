@@ -57,7 +57,7 @@
     position:sticky; top:0; z-index:50;
     backdrop-filter: blur(16px) saturate(140%);
     -webkit-backdrop-filter: blur(16px) saturate(140%);
-    border-bottom: 1px solid var(--border-1);
+    border-bottom: 1px solid var(--page-hairline);
   }
   .topnav-inner{
     max-width: 1180px; margin: 0 auto; padding: 14px 32px;
@@ -109,7 +109,7 @@
   }
   .merch-card{
     position:relative; display:block; text-decoration:none;
-    border:1px solid var(--border-1); border-radius:var(--r-lg);
+    border:1px solid var(--page-hairline); border-radius:var(--r-lg);
     overflow:hidden; background:#0b1622;
     transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-med);
   }
@@ -126,13 +126,13 @@
   .merch-price{ font-family:var(--font-mono); color:var(--magenta); font-size:13px; white-space:nowrap; }
 
   /* ---------- The machine ---------- */
-  .machine{ border-top:1px solid var(--border-1); padding-top:48px; }
+  .machine{ border-top:1px solid var(--page-hairline); padding-top:48px; }
   .stages{
     display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 26px; padding:0; list-style:none;
     font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
   }
   .stages li{
-    color:var(--fg-2); border:1px solid var(--border-2); border-radius:999px;
+    color:var(--fg-2); border:1px solid var(--page-panel-border); border-radius:999px;
     padding:7px 14px; background:rgba(25,46,68,.5);
   }
   .stages li b{ color:var(--cyan); font-weight:500; margin-right:6px; }
@@ -152,7 +152,7 @@
 
   /* ---------- Footer ---------- */
   footer{
-    border-top:1px solid var(--border-1); margin-top:72px; padding:26px 32px;
+    border-top:1px solid var(--page-hairline); margin-top:72px; padding:26px 32px;
     font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
     color:var(--fg-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
     max-width:1180px; margin-left:auto; margin-right:auto;
@@ -176,32 +176,51 @@
      Every value below resolves through a theme token, so the rotation
      reaches all of it.
      ================================================================== */
+  /* ── The treatment, expressed so it cannot strand this page ──────────
+     Each alias reads THIS theme's treatment name and falls back to the
+     contracted token behind it. Under phosphor-blueprint every one
+     resolves to the --pb-* value, exactly as before. Under a theme that
+     satisfies archetypes.REQUIRED_TOKENS and ships no treatment, the
+     structural aliases fall through to --bg-0/--border-1/--border-2 and
+     the decorative ones disappear, so the page rotates instead of
+     rendering on a white field with unresolved var()s.
+
+     Note what is NOT here: this block no longer redefines --bg-0,
+     --border-1 or --border-2. A page that overrides a contracted token is
+     a page the rotation cannot reach, which is the same defect as the
+     private :root it replaced, one indirection deeper. */
   :root {
-    --bg-0: var(--pb-field);
-    --border-1: var(--pb-hairline);
-    --border-2: var(--pb-panel-border);
+    --page-field: var(--pb-field, var(--bg-0));
+    --page-hairline: var(--pb-hairline, var(--border-1));
+    --page-panel-border: var(--pb-panel-border, var(--border-2));
+    --page-panel: var(--pb-panel, var(--bg-2));
+    --page-grid-fine: var(--pb-grid-fine, transparent);
+    --page-grid-coarse: var(--pb-grid-coarse, transparent);
+    --page-scanline: var(--pb-scanline, transparent);
+    --page-bloom: var(--pb-bloom-cyan, none);
+    --page-trail: var(--pb-trail, none);
   }
 
   .pb-scanlines {
     position: fixed; inset: 0; pointer-events: none; z-index: 60;
-    background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+    background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
   }
 
   body {
     background:
-      linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
-      linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
-      linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-      linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-      var(--pb-field);
+      linear-gradient(90deg, var(--page-grid-fine) 1px, transparent 1px),
+      linear-gradient(0deg,  var(--page-grid-fine) 1px, transparent 1px),
+      linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+      linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+      var(--page-field);
     background-size: 56px 56px, 56px 56px, 280px 280px, 280px 280px, auto;
   }
 
   .grid-bg { display: none; } /* body's drafting grid owns the field — two grids moiré */
-  .topnav { background: rgba(0,0,0,.72); border-bottom-color: var(--pb-panel-border); }
-  .stages li, .merch-card { background: var(--pb-panel); }
-  h1 { text-shadow: var(--pb-bloom-cyan); }
-  .shop-cta:hover, .repo-cta:hover { box-shadow: var(--pb-trail); }
+  .topnav { background: rgba(0,0,0,.72); border-bottom-color: var(--page-panel-border); }
+  .stages li, .merch-card { background: var(--page-panel); }
+  h1 { text-shadow: var(--page-bloom); }
+  .shop-cta:hover, .repo-cta:hover { box-shadow: var(--page-trail); }
 
   /* Crisp-lift: product photography plays scanline-free (overlay is 60);
      the nav rides at 70 and carries its own scanlines so it still reads
@@ -211,7 +230,7 @@
   .topnav { z-index: 70; }
   .topnav::after {
     content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+    background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
   }
 </style>
 </head>

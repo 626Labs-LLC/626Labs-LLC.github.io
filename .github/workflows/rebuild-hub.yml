@@ -77,22 +77,39 @@ jobs:
       # committed), and a glob matching nothing reaches git as a literal
       # pathspec, which errors, which makes `[ -n "$(…)" ]` false — the
       # workflow would report "no changes" rather than failing.
+      # ── Gates, before anything is committed ──────────────────────────
+      # This job commits ~23 files to main on any push touching site.json,
+      # stories, or themes/** — and until now it ran ZERO gates, while
+      # rotate-theme.yml (which commits a comparable set) runs four. That
+      # asymmetry was invisible while this workflow only touched index.html;
+      # the theme-css conversions grew its blast radius to every
+      # hand-authored page on the site.
+      #
+      # pytest and site-doctor, not the full rotation stack: theme-doctor
+      # grades a THEME, and this workflow does not change which theme is
+      # active. render-hub/render-plugin-pages --check would be circular
+      # here — this job just ran both renderers, so of course they are
+      # up to date.
+      - name: 'Gate: tests'
+        run: python3 -m pytest tests/ -q
+
+      - name: 'Gate: site doctor'
+        run: python3 scripts/site-doctor.py --check
+
       - name: Check for changes
         id: changes
-        # press.html/privacy.html/thesis.html/workflow.html/
-        # rororo-plugins.html/rororo.html/mod-launcher-games.html (their
-        # theme-css <link>) and about.html (its easter-egg theme registry,
-        # A7) are ALSO rewritten by render-hub.py on every run, same as
-        # rotate-theme.yml's git-add list already accounts for — missing
-        # here meant a content-only change to any of those eight would
-        # render on this runner's disk and never get detected as "changed",
-        # so the commit step below would never even run. conundrum.html was
-        # already listed for its gallery zones and now carries the
-        # theme-css link too. The generated plugin pages come from
-        # render-plugin-pages.py --list-outputs rather than a glob (see the
-        # note above the step). Keep this list and the git-add
-        # list right below it, and rotate-theme.yml's own list, in
-        # agreement.
+        # The hand-authored pages render-hub.py rewrites on every run —
+        # the theme-css <link> pages plus about.html's easter-egg theme
+        # registry — come from `render-hub.py
+        # --list-renderer-owned-pages`, not from a list repeated here. They
+        # were hand-enumerated in three places across two workflows with
+        # nothing comparing them to THEME_CSS_HREFS; a tenth page joining
+        # that map would render on the runner, pass --check because it WAS
+        # rendered, and be left out of the commit — nine pages on the new
+        # theme and one on the old. A8 already found exactly that for
+        # press/privacy/about, after a rotation had run. The generated
+        # plugin pages come from render-plugin-pages.py --list-outputs for
+        # the same reason (see the note above the step).
         #
         # set -euo pipefail so a failing `git status` FAILS the run. Without
         # it the command substitution goes empty and the step cheerfully
@@ -101,10 +118,8 @@ jobs:
         run: |
           set -euo pipefail
           CHANGED="$(git status --porcelain -- \
-            index.html feed.xml sitemap.xml conundrum.html themes.html \
-            press.html privacy.html thesis.html workflow.html \
-            rororo-plugins.html rororo.html mod-launcher-games.html \
-            about.html editorial assets/og \
+            index.html feed.xml sitemap.xml editorial assets/og \
+            $(python3 scripts/render-hub.py --list-renderer-owned-pages) \
             $(python3 scripts/render-plugin-pages.py --list-outputs))"
           if [ -n "$CHANGED" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -119,10 +134,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A -- \
-            index.html feed.xml sitemap.xml conundrum.html themes.html \
-            press.html privacy.html thesis.html workflow.html \
-            rororo-plugins.html rororo.html mod-launcher-games.html \
-            about.html editorial assets/og \
+            index.html feed.xml sitemap.xml editorial assets/og \
+            $(python3 scripts/render-hub.py --list-renderer-owned-pages) \
             $(python3 scripts/render-plugin-pages.py --list-outputs)
           git commit -m "hub: rebuild from site.json + stories
 

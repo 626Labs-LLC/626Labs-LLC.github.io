@@ -30,7 +30,7 @@
      always had. The --pb-scanline value it reads is the theme's. */
   .pb-scanlines {
     position: fixed; inset: 0; pointer-events: none; z-index: 60;
-    background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+    background: repeating-linear-gradient(0deg, var(--pb-scanline, transparent) 0 1px, transparent 1px 3px);
   }
 
   body{
@@ -411,7 +411,13 @@
   }
   @media (max-width: 640px){
     .topnav-inner{ padding: 12px 20px; }
-    .topnav .links{ gap: 14px; font-size: 10px; }
+    /* Six nav links plus the brand do not fit 390px even at this gap and
+       size — measured at scrollWidth 439 vs clientWidth 390, i.e. the page
+       scrolled sideways on a phone. Found the first time theme-doctor's
+       browser gate opened this page; wrapping is the fix that hides no link
+       (an internal overflow-x region would, since it carries no affordance).
+       Above 640px nothing here applies and nothing moves. */
+    .topnav .links{ gap: 14px; font-size: 10px; flex-wrap: wrap; row-gap: 8px; }
     .hero-l h1{ font-size: 44px; }
     .body{ font-size: 16.5px; }
     .body h2{ font-size: 28px; }
@@ -430,23 +436,23 @@
        ============================================================ */
     body {
       background:
-        linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
-        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-        var(--pb-field);
+        linear-gradient(90deg, var(--pb-grid-fine, transparent) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-fine, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, var(--pb-grid-coarse, transparent) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--pb-grid-coarse, transparent) 1px, transparent 1px),
+        var(--pb-field, var(--bg-0));
       background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
     }
     @media (max-width: 720px) {
       body {
         background:
-          linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-          linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-          var(--pb-field);
+          linear-gradient(90deg, var(--pb-grid-coarse, transparent) 1px, transparent 1px),
+          linear-gradient(0deg,  var(--pb-grid-coarse, transparent) 1px, transparent 1px),
+          var(--pb-field, var(--bg-0));
         background-size: 120px 120px, 120px 120px;
       }
     }
-    h1 { text-shadow: var(--pb-bloom-cyan); }
+    h1 { text-shadow: var(--pb-bloom-cyan, none); }
   </style>
 </head>
 <body>

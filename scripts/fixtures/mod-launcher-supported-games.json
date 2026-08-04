@@ -1,0 +1,53 @@
+{
+  "$comment": "GATE FIXTURE, not site content. scripts/theme-doctor.py's --browser check serves this in place of the real game feed (raw.githubusercontent.com/estevanhernandez-stack-ed/626-game-manifest) when it opens mod-launcher-games.html. Without it that page renders its fetch-failed fallback under the gate's third-party isolation, and its populated layout — the featured cover rail and the two long game-row lists — is never checked for horizontal scroll. It does NOT need to track the real feed's contents; it needs to exercise the same SHAPES. Deliberately includes the longest real game name in the feed, an unbroken-token name, and one entry per tier, because a name that cannot wrap is what overflows a narrow viewport. schemaVersion must stay in step with what the page validates.",
+  "schemaVersion": 1,
+  "generatedUtc": "2026-08-04T00:00:00Z",
+  "counts": { "total": 6, "engineCurated": 4, "nexusOnly": 2 },
+  "games": [
+    {
+      "name": "The Elder Scrolls V: Skyrim Special Edition",
+      "tier": "engine-curated",
+      "engine": "Creation Engine",
+      "featured": 1,
+      "steamAppId": 489830,
+      "steamUrl": "https://store.steampowered.com/app/489830/",
+      "nexusUrl": "https://www.nexusmods.com/skyrimspecialedition"
+    },
+    {
+      "name": "STAR WARS Jedi: Fallen Order - Deluxe Edition",
+      "tier": "engine-curated",
+      "engine": "Unreal Engine 4",
+      "featured": 2,
+      "steamAppId": 1172380,
+      "steamUrl": "https://store.steampowered.com/app/1172380/"
+    },
+    {
+      "name": "Pathfinder-Wrath-of-the-Righteous-Enhanced-Edition",
+      "tier": "engine-curated",
+      "engine": "Unity",
+      "featured": 3,
+      "steamAppId": 1184370,
+      "steamUrl": "https://store.steampowered.com/app/1184370/",
+      "nexusUrl": "https://www.nexusmods.com/pathfinderwrathoftherighteous"
+    },
+    {
+      "name": "Fallout 4",
+      "tier": "engine-curated",
+      "engine": "Creation Engine",
+      "steamAppId": 377160,
+      "steamUrl": "https://store.steampowered.com/app/377160/",
+      "nexusUrl": "https://www.nexusmods.com/fallout4"
+    },
+    {
+      "name": "Baldur's Gate 3",
+      "tier": "nexus-only",
+      "nexusUrl": "https://www.nexusmods.com/baldursgate3"
+    },
+    {
+      "name": "Kingdom Come: Deliverance II",
+      "tier": "nexus-only",
+      "steamUrl": "https://store.steampowered.com/app/1771300/",
+      "nexusUrl": "https://www.nexusmods.com/kingdomcomedeliverance2"
+    }
+  ]
+}
