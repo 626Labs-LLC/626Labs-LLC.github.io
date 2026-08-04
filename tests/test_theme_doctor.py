@@ -19,6 +19,22 @@ def _good_html():
     </body></html>"""
 
 
+def test_main_shell_html_alone_no_longer_satisfies_completeness(monkeypatch, tmp_path):
+    # The legacy shell.html fallback is gone (A4): a theme carrying only
+    # shell.html (no archetypes/ dir) must FAIL, naming every missing
+    # archetype file — not get waved through to the render step.
+    tdir = tmp_path / "themes" / "legacy-only"
+    tdir.mkdir(parents=True)
+    (tdir / "shell.html").write_text("<html></html>", encoding="utf-8")
+    (tdir / "tokens.css").write_text("", encoding="utf-8")
+    (tdir / "theme.json").write_text("{}", encoding="utf-8")
+
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+
+    rc = td.main(["legacy-only"])
+    assert rc == 1
+
+
 def test_zones_pass_when_all_present():
     assert td.check_zones(_good_html(), "") == []
 
@@ -118,13 +134,21 @@ def test_browser_unavailable_is_a_gate_failure_with_require_browser(monkeypatch)
     assert any("playwright" in e.lower() for e in errs)
 
 
+def _make_complete_theme_dir(tdir):
+    # All four archetype files + tokens.css/theme.json — the shell.html
+    # fallback is gone (A4), so a theme needs the full archetypes/ set to
+    # clear theme-doctor's completeness check.
+    (tdir / "archetypes").mkdir(parents=True)
+    (tdir / "tokens.css").write_text("", encoding="utf-8")
+    (tdir / "theme.json").write_text("{}", encoding="utf-8")
+    for a in td.theme_registry.REQUIRED_ARCHETYPES:
+        (tdir / "archetypes" / f"{a}.html").write_text("<html></html>", encoding="utf-8")
+
+
 def test_main_require_browser_implies_browser_and_fails_when_unavailable(monkeypatch, tmp_path):
     # A minimally-complete theme so we get all the way to the browser check.
     tdir = tmp_path / "themes" / "stub-theme"
-    tdir.mkdir(parents=True)
-    (tdir / "shell.html").write_text("<html></html>", encoding="utf-8")
-    (tdir / "tokens.css").write_text("", encoding="utf-8")
-    (tdir / "theme.json").write_text("{}", encoding="utf-8")
+    _make_complete_theme_dir(tdir)
 
     monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
     monkeypatch.setattr(td, "_import_sync_playwright", lambda: None)
@@ -152,10 +176,7 @@ def test_main_browser_alone_is_still_ergonomic_when_playwright_missing(monkeypat
     # The local convenience path: --browser without playwright installed must
     # still PASS (skip, don't fail) — --require-browser is opt-in, not implied.
     tdir = tmp_path / "themes" / "stub-theme"
-    tdir.mkdir(parents=True)
-    (tdir / "shell.html").write_text("<html></html>", encoding="utf-8")
-    (tdir / "tokens.css").write_text("", encoding="utf-8")
-    (tdir / "theme.json").write_text("{}", encoding="utf-8")
+    _make_complete_theme_dir(tdir)
 
     monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
     monkeypatch.setattr(td, "_import_sync_playwright", lambda: None)

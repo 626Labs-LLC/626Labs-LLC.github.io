@@ -11,6 +11,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REGISTRY = ROOT / "content" / "themes.json"
 REQUIRED_FILES = ("tokens.css", "theme.json")
+# The four archetype dresses every theme must carry (scripts/archetypes.py
+# ARCHETYPES) — kept as a local tuple, not an import, so theme_registry stays
+# the lower-level module in the pair (archetypes.py doesn't import this one
+# either; no reason to introduce a cycle for four literals both files agree
+# on). A2/A3 accepted a legacy shell.html OR archetypes/home.html while the
+# other three archetypes didn't exist yet; A4 extracted the last two
+# (product, utility) and removed that fallback — every theme now needs all
+# four files under archetypes/, full stop.
+REQUIRED_ARCHETYPES = ("home", "product", "reading", "utility")
 MONTH_RE = re.compile(r"^\d{4}-\d{2}$")
 
 
@@ -31,14 +40,15 @@ def _theme_complete(slug: str, root: Path) -> list[str]:
     if not d.is_dir():
         return [f"theme dir missing: {d}"]
     errs = [f"theme {slug} missing {f}" for f in REQUIRED_FILES if not (d / f).exists()]
-    # The shell is now archetype-aware: a theme either carries the legacy
-    # single shell.html or has extracted archetypes/home.html (the "home"
-    # archetype — index.html, the only archetype render-hub.py resolves
-    # today). Requiring shell.html unconditionally would flag a theme that
-    # has already migrated as incomplete. See scripts/archetypes.py and
-    # docs/theme-archetypes.md.
-    if not (d / "shell.html").exists() and not (d / "archetypes" / "home.html").exists():
-        errs.append(f"theme {slug} missing shell.html or archetypes/home.html")
+    # Every theme must carry all four archetype dresses under archetypes/ —
+    # see REQUIRED_ARCHETYPES above and docs/theme-archetypes.md. No
+    # shell.html fallback: a theme missing even one archetype file is
+    # incomplete, named explicitly so it's obvious which one to add.
+    errs += [
+        f"theme {slug} missing archetypes/{a}.html"
+        for a in REQUIRED_ARCHETYPES
+        if not (d / "archetypes" / f"{a}.html").exists()
+    ]
     return errs
 
 

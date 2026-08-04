@@ -39,9 +39,9 @@ ARCHETYPES = ("home", "product", "reading", "utility")
 # Directories that legitimately contain *.html but are never public site
 # pages: design references/exploration previews, SDD scratch, announcement
 # drafts, the widget's Vite dev entry, and theme *infrastructure* (a theme's
-# own shell.html/tokens.css/theme.json — the dress itself, not a page being
-# dressed). Kept as directory *names*, matched against any path component,
-# so it doesn't matter how deep the offending file sits.
+# own archetypes/*.html, tokens.css, theme.json — the dress itself, not a
+# page being dressed). Kept as directory *names*, matched against any path
+# component, so it doesn't matter how deep the offending file sits.
 EXCLUDED_DIRS = {
     "node_modules",
     ".git",
@@ -50,7 +50,7 @@ EXCLUDED_DIRS = {
     "Design",        # brand reference + one-off exploration/preview HTML
     "docs",          # announcement drafts (x-article.html) — social copy
     "apps",          # apps/widget-bacon-trail is Vite SOURCE, never served
-    "themes",        # a theme's own shell.html/tokens.css/theme.json
+    "themes",        # a theme's own archetypes/*.html, tokens.css, theme.json
 }
 
 # Specific files, excluded by exact repo-relative (posix) path.
