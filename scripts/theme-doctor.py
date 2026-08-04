@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 """theme-doctor.py — the contract gate for 626labs.dev theme rotation.
 
-Renders a theme via `render-hub.py --theme <slug> --out <tmp>` and runs a
-fixed set of checks against the output: the twelve SITE_JSON zones are all
-present, the page chrome (skip-link, nav, footer, analytics) is intact,
-every internal href resolves to a real file, and any WCAG contrast pairs
-the theme declares in its own theme.json meet AA (>= 4.5).
+Checks all four archetypes (scripts/archetypes.py: home, product, reading,
+utility) a theme has to dress. First, completeness: tokens.css/theme.json,
+all four archetypes/*.html, AND archetypes/product.css + archetypes/
+utility.css (the two CSS artifacts real, unguarded consumers read at render
+time — see REQUIRED_ARCHETYPE_CSS). Then, per archetype: page chrome
+(skip-link/nav/footer/analytics, per ARCHETYPE_CHROME's real per-archetype
+profile), every internal href resolves to a real file, the archetype's
+required vocabulary class set (archetypes.VOCABULARY) is present as either
+an HTML class or a CSS selector, and any WCAG contrast pairs the theme
+declares in theme.json meet AA (>= 4.5) wherever that pair's custom
+properties actually resolve in that archetype's own CSS. `home` additionally
+gets the twelve-SITE_JSON-zone check — the only archetype with a full
+end-to-end renderer today. See `_archetype_source`'s docstring for exactly
+which artifact stands in for each archetype's "dress" and why.
 
 This is the ONLY thing standing between a theme and unattended monthly
 rotation (the scheduled workflow promotes queue[0] to active with no human
@@ -50,13 +59,47 @@ if str(SCRIPTS_DIR) not in sys.path:
     # explicit file path from tests/ (it does NOT). Insert explicitly so
     # `import theme_registry` below works either way.
     sys.path.insert(0, str(SCRIPTS_DIR))
+import archetypes      # noqa: E402 — sibling module in scripts/ — VOCABULARY, ARCHETYPES
 import theme_registry  # noqa: E402 — sibling module in scripts/
 
 ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
          "stories", "lab-runs", "play", "about", "support", "contact")
 
+# CSS artifacts a theme's real consumers read with no existence guard, beyond
+# the tokens.css/theme.json REQUIRED_FILES and archetypes/*.html
+# REQUIRED_ARCHETYPES theme_registry already enforces (A5's review flagged
+# this as a carried requirement, not a nice-to-have): render-plugin-pages.py
+# does `theme_dir(active)/archetypes/product.css` and reads it unguarded —
+# a theme rotating in without it raises an uncaught FileNotFoundError and
+# crashes all 15 plugin pages. press.html/privacy.html resolve
+# archetypes/utility.css the same unguarded way (render-hub.py's
+# UTILITY_CSS_HREFS zone). `reading` isn't listed: no code resolves a
+# theme's reading.css yet (that's A7's job, per the milestone ledger) — home
+# needs no entry either, since its CSS is the inline <style> block in
+# archetypes/home.html itself, already covered by REQUIRED_ARCHETYPES.
+REQUIRED_ARCHETYPE_CSS = {"product": "product.css", "utility": "utility.css"}
+
+# Real, live chrome varies by archetype today — verified by grep against the
+# actual shipped pages (vibe-cartographer/index.html, press.html,
+# privacy.html, about.html), not assumed. Loosening a requirement to match
+# reality isn't the same as skipping it: nav/footer/links/vocabulary still
+# have to hold for every archetype; this table only says which of
+# skip-link/analytics are real, universal facts of that archetype's pages
+# today, so the gate doesn't invent a failure this task didn't cause and
+# isn't scoped to fix. See docs/theme-archetypes.md and the A6 report for
+# the evidence trail (`grep -n "skip-link\|<nav\|<footer\|data-goatcounter"`
+# against vibe-cartographer/index.html, press.html/privacy.html, about.html).
+ARCHETYPE_CHROME = {
+    "home":    dict(skip_link=True,  nav=True, footer=True, analytics=True),
+    "product": dict(skip_link=True,  nav=True, footer=True, analytics=False),
+    "reading": dict(skip_link=False, nav=True, footer=True, analytics=True),
+    "utility": dict(skip_link=False, nav=True, footer=True, analytics=True),
+}
+
 HREF_RE = re.compile(r'href="([^"]*)"')
 STYLE_BLOCK_RE = re.compile(r"<style[^>]*>(.*?)</style>", re.S)
+CLASS_ATTR_RE = re.compile(r'class="([^"]*)"')
+CSS_CLASS_SELECTOR_RE = re.compile(r"\.([A-Za-z][\w-]*)")
 
 CUSTOM_PROP_RE = re.compile(r"(--[\w-]+)\s*:\s*([^;]+);")
 HEX_RE = re.compile(r"^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
@@ -80,16 +123,27 @@ def check_zones(html: str, css: str) -> list[str]:
     return errors
 
 
-def check_chrome(html: str, css: str) -> list[str]:
-    """Baseline page chrome a theme is never allowed to drop."""
+def check_chrome(
+    html: str, css: str, *,
+    skip_link: bool = True, nav: bool = True, footer: bool = True, analytics: bool = True,
+) -> list[str]:
+    """Baseline page chrome a theme is never allowed to drop.
+
+    The four elements default to required (unchanged 2-arg behavior for
+    every existing caller/test — this is still the `home` archetype's
+    contract). The archetype loop in `main()` passes ARCHETYPE_CHROME's
+    per-archetype profile instead: `product` and `reading` pages carry no
+    GoatCounter script today, and `utility` pages carry no skip-link —
+    real, verified facts about the live site, not a relaxed requirement
+    invented to make the gate pass."""
     errors = []
-    if 'class="skip-link"' not in html:
+    if skip_link and 'class="skip-link"' not in html:
         errors.append('chrome: missing skip-link (class="skip-link")')
-    if "<nav" not in html:
+    if nav and "<nav" not in html:
         errors.append("chrome: missing <nav>")
-    if "<footer" not in html:
+    if footer and "<footer" not in html:
         errors.append("chrome: missing <footer>")
-    if "data-goatcounter" not in html:
+    if analytics and "data-goatcounter" not in html:
         errors.append("chrome: missing analytics (data-goatcounter)")
     return errors
 
@@ -116,6 +170,50 @@ def check_internal_links(html: str, css: str) -> list[str]:
         if not ok:
             errors.append(f"internal link target missing: {href}")
     return errors
+
+
+# ─── vocabulary ─────────────────────────────────────────────────────────
+def _html_classes(html: str) -> set[str]:
+    """Every literal `class="..."` token in `html`, space-split."""
+    classes: set[str] = set()
+    for value in CLASS_ATTR_RE.findall(html):
+        classes.update(value.split())
+    return classes
+
+
+def _css_classes(css: str) -> set[str]:
+    """Every `.classname` CSS selector token in `css`. Requires a leading
+    letter so a bare decimal (`opacity: .5`, `rgba(0,0,0,.42)`) never reads
+    as a class named "5" or "42" — CSS_CLASS_SELECTOR_RE encodes that."""
+    return set(CSS_CLASS_SELECTOR_RE.findall(css))
+
+
+def check_vocabulary(html: str, css: str, archetype: str) -> list[str]:
+    """Enforces archetypes.VOCABULARY[archetype]: every required class has
+    to appear as a literal HTML class attribute OR as a CSS selector —
+    the theme's dress can supply the semantic anchor through markup (a
+    section wrapper the theme's own shell owns, e.g. `<section class="hero">`)
+    or through styling alone (a class a Python renderer supplies at
+    render time — e.g. `product`'s `.card`/`.family-card`/`.section-head`,
+    which render-plugin-pages.py stamps onto the DOM and the theme merely
+    has to style — see docs/theme-archetypes.md, "product" archetype file).
+    A class present only as an unrelated CSS selector never satisfies a
+    DIFFERENT required name — no substring matching, no fuzzy match: the
+    one rule (docs/theme-archetypes.md) is that a theme never renames the
+    semantic anchor, so this check is exact-token-only by design.
+
+    Failure strings name both the archetype and the missing class, per the
+    brief ("per-archetype failures name the archetype in the message")."""
+    required = archetypes.VOCABULARY.get(archetype)
+    if required is None:
+        return [f"{archetype}: vocabulary: unknown archetype"]
+    found = _html_classes(html) | _css_classes(css)
+    return [
+        f"{archetype}: vocabulary missing required class {cls!r} "
+        f"(not found as an HTML class or a CSS selector)"
+        for cls in sorted(required)
+        if cls not in found
+    ]
 
 
 # ─── contrast ───────────────────────────────────────────────────────────
@@ -203,6 +301,25 @@ def evaluate_contrast_pairs(
         ratio = _contrast_ratio(fg, bg) if fg is not None and bg is not None else None
         results.append((fg_name, bg_name, ratio))
     return results
+
+
+def _applicable_contrast_pairs(css: str, pairs: list[list[str]]) -> list[list[str]]:
+    """Pairs where BOTH custom properties are actually declared in `css`.
+
+    theme.json's contrastPairs is one flat list per theme, written against
+    whatever token vocabulary its author had in mind — today that's home's
+    shared `--fg-*`/`--pb-*` names. `product`'s CSS uses a wholly separate
+    `--ink-*` palette that was never retrofit onto those shared names (a
+    later-task migration, not an A6 gap to invent a fix for — see
+    docs/theme-archetypes.md's "product" archetype section), and `about.html`
+    (the `reading` archetype's vocabulary source — see check_vocabulary's
+    caller in main()) uses its own `--at-lnt-*`/`--ed-*` tokens. A pair
+    naming custom properties an archetype's own CSS never declares isn't a
+    real per-archetype finding — it's a token-vocabulary mismatch outside
+    this check's scope, so it's filtered out here rather than reported as
+    "unresolved" (which check_contrast would otherwise flag as a failure)."""
+    declared = _parse_custom_properties(css)
+    return [pair for pair in pairs if pair[0] in declared and pair[1] in declared]
 
 
 def check_contrast(
@@ -347,6 +464,107 @@ def _check_viewport(page, url: str, width: int) -> list[str]:
     return errors
 
 
+# ─── per-archetype loop ───────────────────────────────────────────────
+def _archetype_source(
+    archetype: str, tdir: Path, home_html: str, tokens_css: str,
+) -> tuple[str, str, bool]:
+    """(html, css, check_zones) — what "this theme's dress" means for one
+    archetype, and why it differs per archetype:
+
+    `home`: the theme's real, live output — render-hub.py's `--theme`
+    preview (already rendered into `home_html` by the caller), merged with
+    tokens.css. The only archetype with a full end-to-end renderer today,
+    so it's the only one checked for SITE_JSON zone markers too.
+
+    `product` / `utility`: `archetypes/product.html` and
+    `archetypes/utility.html` have NO live render-hub.py or
+    render-plugin-pages.py consumer (documented in
+    docs/theme-archetypes.md: product's real markup comes from
+    render-plugin-pages.py's Python templates, not this shell; utility's
+    real pages — press.html/privacy.html — are hand-authored, only their
+    stylesheet <link> is renderer-owned). So the theme's own archetype file
+    plus its own CSS artifact (REQUIRED_ARCHETYPE_CSS) together ARE the
+    theme's dress for that archetype — checked as raw text, unresolved
+    `{{PRODUCT:...}}`/`{{UTILITY:...}}` tokens included, since the required
+    chrome/vocabulary/link markup lives outside those tokens.
+
+    `reading`: NOT `archetypes/reading.html` (the Field Note shell) —  that
+    file only ever carries 3 of the 10 required `reading` classes
+    (`ed-page`/`ed-title`/`ed-dek`, and only once rendered, since the raw
+    shell holds them as `{{READING:...}}` tokens). The other seven
+    (`lnt-*`) are About's Long Now Terminal structure, which
+    docs/theme-archetypes.md documents as a PERMANENT split, not a
+    migration gap: about.html "already IS the full reading vocabulary" and
+    is explicitly NOT a themes/<slug>/ consumer (A7's job is a swappable
+    `reading.css` dress over that SAME markup — the markup itself doesn't
+    move). No theme-owned artifact can satisfy the full `reading`
+    vocabulary until A7 ships, so this checks the one artifact in the repo
+    that actually does: `about.html` itself, read fresh off disk (not
+    per-theme — see the A6 report for what that limit means in practice)."""
+    if archetype == "home":
+        inline_css = "\n".join(STYLE_BLOCK_RE.findall(home_html))
+        return home_html, f"{inline_css}\n{tokens_css}", True
+    if archetype == "reading":
+        about_html = (ROOT / "about.html").read_text(encoding="utf-8")
+        about_css = "\n".join(STYLE_BLOCK_RE.findall(about_html))
+        return about_html, about_css, False
+    css_filename = REQUIRED_ARCHETYPE_CSS[archetype]
+    shell_html = (tdir / "archetypes" / f"{archetype}.html").read_text(encoding="utf-8")
+    own_css = (tdir / "archetypes" / css_filename).read_text(encoding="utf-8")
+    inline_css = "\n".join(STYLE_BLOCK_RE.findall(shell_html))
+    return shell_html, f"{inline_css}\n{own_css}\n{tokens_css}", False
+
+
+def _check_archetype(
+    archetype: str, html: str, css: str, check_zones_flag: bool, pairs: list[list[str]] | None,
+) -> list[str]:
+    """Runs zones (home only)/chrome/internal-links/vocabulary/contrast for
+    one archetype's (html, css), every failure prefixed with the archetype
+    name (check_vocabulary already embeds it; the rest are wrapped here so
+    their own unit tests — which call them unprefixed — stay unchanged)."""
+    errors: list[str] = []
+    if check_zones_flag:
+        errors += [f"{archetype}: {e}" for e in check_zones(html, css)]
+    errors += [f"{archetype}: {e}" for e in check_chrome(html, css, **ARCHETYPE_CHROME[archetype])]
+    errors += [f"{archetype}: {e}" for e in check_internal_links(html, css)]
+    errors += check_vocabulary(html, css, archetype)
+
+    if pairs:
+        applicable = _applicable_contrast_pairs(css, pairs)
+        if not applicable:
+            print(f"contrast [{archetype}]: no declared pair's custom properties "
+                  f"resolve in this archetype's own CSS — unverified for {archetype}")
+        else:
+            for fg_name, bg_name, ratio in evaluate_contrast_pairs(css, applicable):
+                if ratio is None:
+                    print(f"contrast [{archetype}]: {fg_name} on {bg_name} = unresolved")
+                else:
+                    verdict = "pass" if ratio >= AA_MIN_RATIO else "FAIL"
+                    print(f"contrast [{archetype}]: {fg_name} on {bg_name} = {ratio:.2f} "
+                          f"({verdict}, AA >= {AA_MIN_RATIO})")
+            contrast_failures, contrast_advisories = check_contrast(css, applicable)
+            errors += [f"{archetype}: {e}" for e in contrast_failures]
+            for line in contrast_advisories:
+                print(f"[{archetype}] {line}")
+    return errors
+
+
+def _run_browser_checks_all(archetype_html: dict[str, str], require: bool = False) -> list[str]:
+    """_run_browser_checks per archetype's checked content, but the
+    playwright-availability probe happens ONCE — the environment either has
+    it or doesn't, independent of which archetype is under test, so a
+    missing install degrades to a single line instead of four identical
+    ones. A genuine per-page failure (horizontal scroll, console error,
+    navigation failure) still fails per archetype, named in the message."""
+    sync_playwright = _import_sync_playwright()
+    if sync_playwright is None:
+        return _degrade("playwright not installed", require)
+    errors: list[str] = []
+    for archetype, html_text in archetype_html.items():
+        errors += [f"{archetype}: {e}" for e in _run_browser_checks(html_text, require=require)]
+    return errors
+
+
 # ─── main ───────────────────────────────────────────────────────────────
 def main(argv: list[str]) -> int:
     require_browser = "--require-browser" in argv
@@ -366,6 +584,17 @@ def main(argv: list[str]) -> int:
         f"archetypes/{a}.html"
         for a in theme_registry.REQUIRED_ARCHETYPES
         if not (tdir / "archetypes" / f"{a}.html").exists()
+    ]
+    # CARRIED REQUIREMENT (A5's review, routed to A6): render-plugin-pages.py
+    # and press.html/privacy.html resolve archetypes/product.css and
+    # archetypes/utility.css with NO existence guard — a theme rotating in
+    # without one raises an uncaught FileNotFoundError and crashes every
+    # page that reads it. Fail here, before the theme can be queued, not at
+    # unattended rotation time.
+    missing += [
+        f"archetypes/{filename}"
+        for filename in REQUIRED_ARCHETYPE_CSS.values()
+        if not (tdir / "archetypes" / filename).exists()
     ]
     if missing:
         print(f"FAIL {slug}")
@@ -390,38 +619,21 @@ def main(argv: list[str]) -> int:
             for line in (result.stdout + result.stderr).splitlines():
                 print(f"    {line}")
             return 1
-        html_text = (Path(tmp) / "index.html").read_text(encoding="utf-8")
+        home_html = (Path(tmp) / "index.html").read_text(encoding="utf-8")
 
     tokens_css = (tdir / "tokens.css").read_text(encoding="utf-8")
-    # Base tokens (--fg-1, --text, etc.) live inline in the shell's <style>;
-    # tokens.css is the theme's append-only override layer on top. Merge in
-    # cascade order so a resolved --fg-1 / --pb-field pair reflects what the
-    # browser actually paints, not just what tokens.css alone declares.
-    inline_css = "\n".join(STYLE_BLOCK_RE.findall(html_text))
-    merged_css = f"{inline_css}\n{tokens_css}"
-
     theme_meta = json.loads((tdir / "theme.json").read_text(encoding="utf-8"))
     pairs = theme_meta.get("contrastPairs")
 
     errors: list[str] = []
-    errors += check_zones(html_text, tokens_css)
-    errors += check_chrome(html_text, tokens_css)
-    errors += check_internal_links(html_text, tokens_css)
-
-    if pairs:
-        for fg_name, bg_name, ratio in evaluate_contrast_pairs(merged_css, pairs):
-            if ratio is None:
-                print(f"contrast: {fg_name} on {bg_name} = unresolved")
-            else:
-                verdict = "pass" if ratio >= AA_MIN_RATIO else "FAIL"
-                print(f"contrast: {fg_name} on {bg_name} = {ratio:.2f} ({verdict}, AA >= {AA_MIN_RATIO})")
-    contrast_failures, contrast_advisories = check_contrast(merged_css, pairs)
-    errors += contrast_failures
-    for line in contrast_advisories:
-        print(line)
+    archetype_html: dict[str, str] = {}
+    for archetype in archetypes.ARCHETYPES:
+        html, css, zones_flag = _archetype_source(archetype, tdir, home_html, tokens_css)
+        archetype_html[archetype] = html
+        errors += _check_archetype(archetype, html, css, zones_flag, pairs)
 
     if browser:
-        errors += _run_browser_checks(html_text, require=require_browser)
+        errors += _run_browser_checks_all(archetype_html, require=require_browser)
 
     if errors:
         print(f"FAIL {slug}")
