@@ -160,6 +160,70 @@ archetype — the retrofit onto this vocabulary is later-task work (the
 reading renderer / migration task), not something this contract pretends
 has already happened.
 
+**SCOPE RULING (Este, M2a):** `thesis.html` and `workflow.html` stay fully
+bespoke through this milestone — hand-built layouts, unrewritten, migrated
+to this vocabulary the next time either is touched for its own reasons.
+The `reading` migration task (A3) covered `about.html`,
+`editorial/index.html`, and the six generated Field Note pages only.
+
+### The `reading` archetype file, and About's per-page dress override
+
+`themes/phosphor-blueprint/archetypes/reading.html` is the theme's reading
+shell, and it exists for exactly one live consumer today:
+`scripts/render-hub.py`'s `render_story_pages()` resolves it (via
+`theme_registry.theme_dir(slug) / "archetypes" / "reading.html"`) and fills
+it per Field Note with `{{READING:HEAD}}` / `{{READING:ARTICLE_HEADER}}` /
+`{{READING:BODY}}` / `{{READING:PAGER}}` tokens. Extracted verbatim from the
+Field Note template that used to be hardcoded as an f-string in
+`render_story_page()` — a straight relocation, not a redesign (matching
+A2's precedent for `home.html`): rendering the six existing local Field
+Notes through it reproduces every one of them **byte-for-byte**
+(`render-hub.py` reports "6 Field Note page(s) already current" on a clean
+run). Because Field Note pages are always fully regenerated
+(`STORY_PAGE_MARKER` forbids hand-editing them), the `{{READING:...}}`
+tokens are consumed whole and never appear in the shipped HTML — unlike
+`home.html`'s `SITE_JSON:` comment markers, which have to survive in
+`index.html` because that file is diffed against itself and partially
+hand-edited outside its zones. Two different substitution mechanisms for
+two genuinely different lifecycles, not an inconsistency.
+
+`editorial/index.html` is **not** wired through this shell — it's a
+hand-curated catalog page (Theses list, Field Notes list, deliverable
+cards), the same category of genuinely bespoke per-page content as
+`thesis.html`/`workflow.html`, just not called out as such before now.
+It stays hand-authored, unchanged, in this milestone.
+
+**About's per-page dress override — the honest resolution the task brief
+asked for.** `about.html` is not, and does not become, a consumer of
+`themes/<slug>/archetypes/reading.html` at render time. It is a static,
+hand-authored file with no render-hub.py involvement at all — the same as
+it was before this task. That absence *is* the override: About's Long Now
+Terminal treatment (its own inline `<style>` block, `lnt-*` classes over
+the shared `ed-page`/`ed-title`/`ed-dek` leaf classes) is what ships by
+default, unconditionally, and A3 changes none of it — confirmed
+0-pixel-identical against `origin/main` at 1440/768/390. The contract this
+override has to honor is markup-shape, not render-pipeline participation:
+About's `lnt-*` structure already **is** the full `reading` vocabulary
+(see the class table above), which is what lets a later task (A7) swap a
+different theme's reading dress onto that exact markup via a client-side
+stylesheet swap — About doesn't need to run through `reading.html`'s
+Python substitution for that swap to work; it needs its markup to carry
+the vocabulary's hooks, which it already did before this task and still
+does after it.
+
+`editorial.css` (the shared `ed-*` token/component base every reading page
+links) is, today, **theme-agnostic** — one stylesheet, unchanged by which
+theme is active in `content/themes.json`. `themes/phosphor-blueprint/
+archetypes/reading.html` does not link `themes/phosphor-blueprint/
+tokens.css` for exactly this reason: `tokens.css` sets a bare `body`
+background (the drafting-grid/scanline field) that would have overridden
+`editorial.css`'s bare `body` background (the warm paper field) on every
+reading page, breaking the 0-pixel gate for no requested change. Reading
+pages entering the monthly theme rotation for real — i.e. `tokens.css`
+actually re-skinning Field Notes/About the way it already re-skins
+`index.html` — is future work, not something this task's 0-pixel gate
+permits it to do as a side effect.
+
 ---
 
 ## `utility` — single-purpose pages (6 pages)
