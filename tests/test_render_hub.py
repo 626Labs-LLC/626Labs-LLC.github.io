@@ -550,6 +550,17 @@ def test_preview_mode_emits_the_theme_css_pages_too(tmp_path):
     # <link>, and preview mode skipped the loop that rewrites it. Now every
     # THEME_CSS_ONLY_PAGES member lands in out_dir with its zone repointed.
     slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
+
+    # Snapshot the LIVE pages before the run. Preview writes copies into
+    # out_dir; if it ever also writes through to the repo tree, a preview of
+    # a QUEUED theme would stamp that theme's slug into the live thesis.html
+    # — shipping an unrotated dress from a command whose whole contract is
+    # "touches nothing." Comparing bytes is the only assertion that catches
+    # it; checking out_dir's contents cannot, and neither can the absence of
+    # feed.xml/sitemap.xml below.
+    before = {p: p.read_bytes() for p in render_hub.THEME_CSS_ONLY_PAGES}
+    before[render_hub.INDEX_HTML] = render_hub.INDEX_HTML.read_bytes()
+
     rc = render_hub.main(["--theme", slug, "--out", str(tmp_path)])
     assert rc == 0
     assert (tmp_path / "index.html").exists()
@@ -560,7 +571,11 @@ def test_preview_mode_emits_the_theme_css_pages_too(tmp_path):
             slug, render_hub.THEME_CSS_HREFS[page]
         )
         assert expected in written.read_text(encoding="utf-8")
-    # Preview writes to out_dir and NOWHERE else — no feed, no sitemap, and
-    # nothing written back over the live page in the repo tree.
+
+    for page, original in before.items():
+        assert page.read_bytes() == original, (
+            f"preview mode wrote back over the live {page.name} in the repo tree"
+        )
+    # And it renders only the page set, not the rest of the pipeline.
     assert not (tmp_path / "feed.xml").exists()
     assert not (tmp_path / "sitemap.xml").exists()

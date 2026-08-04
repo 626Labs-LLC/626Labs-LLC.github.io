@@ -1,4 +1,4 @@
-import importlib.util, sys
+import importlib.util, pathlib, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -104,6 +104,92 @@ def test_capture_theme_screenshot_raises_when_playwright_missing(tmp_path, monke
         assert False, "expected RuntimeError"
     except RuntimeError as e:
         assert "playwright" in str(e).lower()
+
+
+# ─── SMIL freeze ───────────────────────────────────────────────────────
+#
+# SVG SMIL runs on the SVG document timeline: prefers-reduced-motion does not
+# gate it and the init script's rAF override does not reach it. That was
+# found by misreading a pulsing <circle> on workflow.html as raster noise for
+# most of a task. These two tests exist so the fix cannot quietly fall back
+# out of the shipped harness, which is exactly where it spent its first
+# round — in a scratch file, while this module still promised "animations
+# off."
+
+
+def test_deterministic_init_script_freezes_svg_animations():
+    s = fz._DETERMINISTIC_CAPTURE_INIT_SCRIPT
+    assert "pauseAnimations()" in s
+    assert "setCurrentTime(0)" in s
+    # Published on window, because add_init_script runs at document-start
+    # when no <svg> exists yet — the capture re-invokes it later.
+    assert "window.__freezeSvgAnimations" in s
+    # And wired to both document-ready milestones, so a capture that never
+    # re-invokes it still freezes everything present by load.
+    assert "DOMContentLoaded" in s
+    assert "'load'" in s
+
+
+def test_capture_freezes_svg_animations_immediately_before_the_shutter(tmp_path, monkeypatch):
+    """The call ORDER is the whole point: freeze after the settle (so SVG
+    built by page JS is caught) and before screenshot() (so the frame that
+    lands on disk is the frozen one). A refactor that keeps the call but
+    moves it above the settle, or drops it entirely, passes every other test
+    in this file."""
+    order = []
+
+    class _Page:
+        def add_init_script(self, script):
+            order.append("init:" + ("smil" if "pauseAnimations" in script else "other"))
+
+        def goto(self, *a, **kw):
+            order.append("goto")
+
+        def evaluate(self, expr):
+            order.append(
+                "freeze" if "__freezeSvgAnimations" in expr else f"evaluate:{expr}"
+            )
+
+        def wait_for_timeout(self, ms):
+            order.append("settle")
+
+        def screenshot(self, path, full_page=False):
+            order.append("screenshot")
+            pathlib.Path(path).write_bytes(b"png")
+
+        def close(self):
+            pass
+
+    class _Browser:
+        def new_page(self, **kw):
+            return _Page()
+
+        def close(self):
+            pass
+
+    class _Chromium:
+        def launch(self):
+            return _Browser()
+
+    class _PW:
+        chromium = _Chromium()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    monkeypatch.setattr(fz, "_import_sync_playwright", lambda: (lambda: _PW()))
+    monkeypatch.setattr(fz, "_render_theme_home", lambda slug: "<html></html>")
+
+    out = tmp_path / "shot.png"
+    fz.capture_theme_screenshot("phosphor-blueprint", out)
+
+    assert "init:smil" in order, "init script registered without the SMIL freeze"
+    assert "freeze" in order, "capture never invoked window.__freezeSvgAnimations"
+    assert order.index("freeze") > order.index("settle"),         "freeze must run AFTER the settle — page JS injects SVG"
+    assert order.index("freeze") < order.index("screenshot"),         "freeze must run BEFORE the shutter"
 
 
 def test_screenshot_cli_requires_slug_and_out_path():
