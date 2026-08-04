@@ -73,13 +73,70 @@ def test_style_is_exactly_the_dress_then_the_tokens():
     unchanged if the join becomes `dress + "\\n\\n" + tokens`, or if the
     `.rstrip("\\n")` is dropped, or if either half is concatenated twice —
     every one of which changes the bytes committed to 15 pages. Pinning the
-    whole expression removes the guesswork, and it subsumes the import-order
-    test above as a side effect (the dress leads, so its @import leads).
+    whole expression removes the guesswork.
+
+    It does NOT subsume the import-order test above, which stays load-
+    bearing: this pins the order of the two FILES, not that the dress's
+    @import is the first rule INSIDE it. Move that @import into the middle
+    of product.css and composition equality still passes while every
+    generated page falls back to system fonts.
     """
     d = _archetype_dir()
     dress = (d / "product.css").read_text(encoding="utf-8")
     tokens = (d / "product-tokens.css").read_text(encoding="utf-8")
     assert _load_renderer().STYLE == dress.rstrip("\n") + "\n" + tokens
+
+
+def test_list_outputs_names_every_generated_page_and_nothing_else():
+    """`--list-outputs` is now the pathspec source for BOTH CI workflows'
+    change-detection and `git add` lists, replacing the glob
+    `vibe-* thesis-engine plugins`.
+
+    The glob was wrong twice. It self-maintains only for ids starting
+    `vibe-` — `thesis-engine` was already the counterexample and had to be
+    hand-listed, so the next non-`vibe-` plugin id renders on the runner and
+    is never committed. And a glob matching nothing reaches git as a literal
+    pathspec, which errors, which makes `[ -n "$(…)" ]` evaluate FALSE: the
+    workflow reports "no changes" instead of failing.
+
+    So this asserts the contract those workflows rely on: exactly the pages
+    build() writes, repo-relative posix paths, LF-terminated, no spaces, and
+    every one of them actually on disk (git errors on a pathspec that
+    matches nothing, which is the right direction but only if the list is
+    honest).
+    """
+    import subprocess
+
+    # BYTES, not text=True: universal-newline decoding would translate the
+    # CRLF this test exists to catch straight back into LF.
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "render-plugin-pages.py"), "--list-outputs"],
+        capture_output=True, cwd=str(ROOT),
+    )
+    assert result.returncode == 0, result.stderr.decode("utf-8", "replace")
+    raw = result.stdout.decode("utf-8")
+    assert "\r" not in raw, (
+        "CRLF in --list-outputs: a path with a trailing \\r reaches git as a "
+        "different pathspec and `git add` dies on it"
+    )
+
+    listed = raw.splitlines()
+    expected = sorted(
+        p.relative_to(ROOT).as_posix() for p in _load_renderer().build()
+    )
+    assert sorted(listed) == expected
+    assert len(listed) == len(set(listed))
+    for rel in listed:
+        assert " " not in rel, f"{rel!r} has a space; the workflows word-split this"
+        assert not rel.startswith("/") and ".." not in rel
+        assert (ROOT / rel).exists(), f"{rel} is listed but not on disk"
+
+    # The glob's blind spot, pinned: ids that do not start "vibe-" must be
+    # in here. If this ever drops to zero the regression is invisible again.
+    assert [r for r in listed if not r.startswith("vibe-")], (
+        "no non-vibe- page in the list — the glob this replaced would look "
+        "correct again and the next such plugin would silently go missing"
+    )
 
 
 def test_product_css_and_tokens_agree_on_every_shared_name():

@@ -5,7 +5,7 @@ Checks all four archetypes (scripts/archetypes.py: home, product, reading,
 utility) a theme has to dress. First, completeness: tokens.css/theme.json,
 all four archetypes/*.html, AND archetypes/product.css + archetypes/
 product-tokens.css + archetypes/utility.css + archetypes/reading.css (the
-four CSS artifacts real, unguarded consumers read at render time — see
+five CSS artifacts real, unguarded consumers read at render time — see
 REQUIRED_ARCHETYPE_CSS and PRODUCT_TOKENS_CSS), AND that every member of
 REQUIRED_TOKEN_CSS actually
 DEFINES every custom property in archetypes.REQUIRED_TOKENS —
@@ -383,9 +383,19 @@ def check_token_css_declares_only_tokens(css: str) -> list[str]:
     - every declaration inside must be a custom property (`--x: …`)
     - no at-rules that can carry style (`@media`, `@supports`, `@import`)
 
-    utility.css and reading.css are deliberately NOT held to this — they
-    were extracted FROM press.html and thesis.html, so their element rules
-    are those pages' own dress coming home. See TOKEN_ONLY_CSS.
+    utility.css and reading.css are deliberately NOT held to this, for
+    two DIFFERENT reasons, and the difference matters.
+
+    utility.css was extracted FROM press.html, so its element rules are
+    those pages' own dress coming home — they have no page-side dress to
+    fall back on, which is exactly why splitting it is real design work
+    rather than a mechanical move. That exemption is a description of where
+    those two pages are, not a position that they should stay there.
+
+    reading.css is exempt for the opposite reason: it is ABOUT.HTML's dress
+    now. The part that was extracted from thesis.html/workflow.html lives in
+    archetypes/reading-tokens.css, which IS held to this gate. Same for
+    product.css and product-tokens.css. See TOKEN_ONLY_CSS.
     """
     errors: list[str] = []
     stripped = _COMMENT_RE.sub("", css)
@@ -925,7 +935,7 @@ def main(argv: list[str]) -> int:
     # The token-variable contract (final review Fix 1 / archetypes.
     # REQUIRED_TOKENS): themes.html reads tokens.css directly; press.html/
     # privacy.html read archetypes/utility.css; thesis.html/workflow.html
-    # read archetypes/reading.css; conundrum.html/rororo-plugins.html read
+    # read archetypes/reading-tokens.css; the four bespoke product pages read
     # archetypes/product-tokens.css. The last six carry no local fallback at
     # ALL — their private :root blocks are gone — so for them a missing name
     # is not a stale value, it is an unresolved var() with nothing behind
@@ -956,11 +966,16 @@ def main(argv: list[str]) -> int:
         errors += [f"{label}: {e}" for e in check_required_tokens(text)]
 
     # The token files that exist ONLY to hold tokens have to stay that way.
-    # archetypes/utility.css and archetypes/reading.css are excluded on
-    # purpose: they were EXTRACTED from press.html and thesis.html, so their
-    # element rules are those pages' own dress coming home. product-tokens.
-    # css is the opposite case — a file split OUT of a dress precisely so
-    # two bespoke pages could take the vocabulary without the dress.
+    # product-tokens.css and reading-tokens.css are both files split OUT of
+    # a dress precisely so bespoke pages could take the vocabulary without
+    # the dress, and each is linked by pages that have their own layout.
+    #
+    # The two dresses they were split from are excluded, for different
+    # reasons: archetypes/reading.css is about.html's dress and no page
+    # links it for tokens any more, while archetypes/utility.css is
+    # press.html's own dress coming home — those two pages carry no
+    # page-side dress at all, so splitting it means them taking ownership of
+    # one. See TOKEN_ONLY_CSS's comment for why that is open work.
     for label in TOKEN_ONLY_CSS:
         text = (tdir / label).read_text(encoding="utf-8")
         errors += [f"{label}: {e}" for e in check_token_css_declares_only_tokens(text)]
