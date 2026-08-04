@@ -1,0 +1,127 @@
+/* ============================================================
+   Theme: phosphor-blueprint — reading archetype, TOKEN VOCABULARY.
+
+   This file is custom-property definitions and nothing else. No element
+   selectors, no class selectors, no media queries, no @import. That is a
+   contract, enforced by scripts/theme-doctor.py's
+   check_token_css_declares_only_tokens() — see below for why.
+
+   ── Who reads it ──────────────────────────────────────────────────────
+   thesis.html and workflow.html LINK it, via the renderer-owned
+   "theme-css" zone scripts/render-hub.py repoints at the active theme on
+   every run. Both used to carry a private :root copy of these values,
+   which no monthly rotation could reach.
+
+   ── Why it is separate from reading.css ───────────────────────────────
+   Same reason product-tokens.css is separate from product.css, and the
+   split was made for the same reason BEFORE it cost anything rather than
+   after. archetypes/reading.css is a DRESS — the Long Now Terminal
+   treatment about.html wears, seventy-odd `.lnt-*` selectors plus
+   `* { box-sizing }` and `body { margin: 0 }`.
+
+   Those two element rules are provable no-ops on thesis.html and
+   workflow.html today: each page declares both itself, with identical
+   values, in an inline <style> after the <link>. But nothing STOPPED
+   reading.css from growing `a:hover { text-decoration: underline }` or
+   `h1 { letter-spacing: -.02em }`, and three things invited it — the
+   build instructions say to mirror this theme, theme-doctor REQUIRES the
+   seven `lnt-*` vocabulary classes to appear as selectors in reading.css,
+   and no gate covered it. That exact shape shipped a real regression on
+   the product archetype: `a:hover { text-decoration: underline;
+   text-decoration-color: var(--magenta) }` at specificity (0,1,1)
+   outranked four page-side selectors and put a magenta hover underline on
+   11 links across two pages. Pixel and computed-style gates sample the
+   RESTING state; hover is out of frame for both.
+
+   So the two reading pages link the vocabulary and nothing else, and
+   about.html's easter-egg theme picker keeps linking the full reading.css
+   for its `.lnt-*` dress. Two consumers, two files, neither borrowing the
+   other's element rules.
+
+   ── What the values are ───────────────────────────────────────────────
+   Moved verbatim from reading.css, which took them verbatim from the two
+   pages. The text ramp is NOT utility.css's: reading runs `--text`
+   #ffffff with cooler secondaries, which is what long-form body copy on
+   this site has always been set in.
+
+   COMPLETE against archetypes.REQUIRED_TOKENS, enforced on every theme.
+   Neither page keeps a local fallback, so a name missing here is an
+   unresolved var() on a live page, not a stale-but-valid color. The
+   spacing scale is present and unspent for that reason: the theme OFFERS
+   a scale, the pages decline it, and every padding/gap/margin stays a
+   literal in the page that owns its layout.
+
+   `.pb-scanlines` is NOT here. It is a class rule, not a token, and it
+   belongs to the pages that carry the element — thesis.html and
+   workflow.html declare it themselves, the way conundrum.html always has.
+   ============================================================ */
+:root {
+  --navy-deep: #0f1f31;
+  --navy-mid:  #192e44;
+  --navy-hi:   #223a54;
+  --cyan:      #17d4fa;
+  --cyan-pale: #5ce6ff;
+  --magenta:   #f22f89;
+  --magenta-pale: #ff5aa3;
+  --ink-950:   #050c18;
+  --ok:        #2bd99a;
+
+  --text:      #ffffff;
+  --text-sec:  #c4cdda;
+  --text-dim:  #a4aebd;
+  --text-mute: #99a4b4;
+
+  --bg-0: var(--navy-deep);
+  --bg-1: var(--navy-mid);
+  --bg-2: var(--navy-hi);
+  --fg-1: var(--text);
+  --fg-2: var(--text-sec);
+  --fg-3: var(--text-dim);
+  --fg-muted: var(--text-mute);
+
+  --border-1: rgba(255,255,255,.08);
+  --border-2: rgba(255,255,255,.14);
+  --border-accent: rgba(23,212,250,.45);
+
+  --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+  --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
+  --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
+  --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+
+  --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+  --r-pill: 999px;
+
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  --dur-fast: 120ms;
+  --dur-med: 220ms;
+}
+
+/* ============================================================
+   Phosphor Blueprint — treatment layer (adopted 2026-07-07)
+   Append-only override + in-place navy-glass swaps; matches the
+   homepage treatment (626labs.dev PR #73).
+   ============================================================ */
+:root {
+  --pb-field: rgb(0,0,0);
+  --pb-grid-fine: rgba(23,212,250,.05);
+  --pb-grid-coarse: rgba(23,212,250,.11);
+  --pb-scanline: rgba(0,0,0,.42);
+  --pb-panel: rgba(0,0,0,.72);
+  --pb-panel-border: rgba(23,212,250,.25);
+  --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
+  --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+}
+:root {
+  --bg-0: var(--pb-field);
+  --bg-1: rgba(0,0,0,.6);
+  --bg-2: rgba(0,0,0,.72);
+  --border-1: rgba(23,212,250,.14);
+  --border-2: rgba(23,212,250,.25);
+}

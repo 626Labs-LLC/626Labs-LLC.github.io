@@ -51,6 +51,19 @@ jobs:
       - name: Render hub from content (index, feed, sitemap, Field Note pages)
         run: python3 scripts/render-hub.py
 
+      # The 15 generated product pages INLINE the active theme's
+      # archetypes/product.css + product-tokens.css, so a themes/** edit
+      # reaches them only when this runs. 'themes/**' was already a trigger
+      # above, but this step was missing, so a hand-edit to a product
+      # stylesheet landed on the two pages that LINK it instantly and on
+      # these 15 not until refresh-plugin-versions.yml's next 07:00 cron —
+      # a sub-24h window where two halves of one archetype rendered
+      # different dresses. The split doubled the number of files with that
+      # property, so the step is here now rather than the window being
+      # documented.
+      - name: Render plugin pages from the active theme's product dress
+        run: python3 scripts/render-plugin-pages.py
+
       - name: Check for changes
         id: changes
         # press.html/privacy.html/thesis.html/workflow.html/
@@ -61,10 +74,14 @@ jobs:
         # those six would render on this runner's disk and never get
         # detected as "changed", so the commit step below would never even
         # run. conundrum.html was already listed for its gallery zones and
-        # now carries the theme-css link too. Keep this list and the git-add
-        # list right below it, and rotate-theme.yml's own list, in agreement.
+        # now carries the theme-css link too. vibe-* / thesis-engine /
+        # plugins are render-plugin-pages.py's 15 outputs, added with the
+        # step above; the glob keeps them self-maintaining as plugins are
+        # added, same shape rotate-theme.yml uses. Keep this list and the
+        # git-add list right below it, and rotate-theme.yml's own list, in
+        # agreement.
         run: |
-          if [ -n "$(git status --porcelain index.html feed.xml sitemap.xml conundrum.html themes.html press.html privacy.html thesis.html workflow.html rororo-plugins.html about.html editorial assets/og)" ]; then
+          if [ -n "$(git status --porcelain index.html feed.xml sitemap.xml conundrum.html themes.html press.html privacy.html thesis.html workflow.html rororo-plugins.html about.html editorial assets/og vibe-* thesis-engine plugins)" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -75,7 +92,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A index.html feed.xml sitemap.xml conundrum.html themes.html press.html privacy.html thesis.html workflow.html rororo-plugins.html about.html editorial assets/og
+          git add -A index.html feed.xml sitemap.xml conundrum.html themes.html press.html privacy.html thesis.html workflow.html rororo-plugins.html about.html editorial assets/og vibe-* thesis-engine plugins
           git commit -m "hub: rebuild from site.json + stories
 
           Triggered by commit ${{ github.sha }}"

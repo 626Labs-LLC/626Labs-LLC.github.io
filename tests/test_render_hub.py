@@ -451,8 +451,16 @@ def test_missing_archetype_fails_loudly_instead_of_falling_back_to_live_index(tm
 
 def test_theme_css_map_covers_the_converted_reading_pages():
     m = render_hub.THEME_CSS_HREFS
-    assert m[render_hub.THESIS_HTML] == "archetypes/reading.css"
-    assert m[render_hub.WORKFLOW_HTML] == "archetypes/reading.css"
+    # The TOKEN half, never archetypes/reading.css. That file is the Long
+    # Now Terminal dress about.html's theme picker wears; a page that links
+    # a dress for its palette alone inherits every element rule the dress
+    # ever grows. Split before it cost anything, unlike the product pair.
+    assert m[render_hub.THESIS_HTML] == "archetypes/reading-tokens.css"
+    assert m[render_hub.WORKFLOW_HTML] == "archetypes/reading-tokens.css"
+    assert "archetypes/reading.css" not in m.values(), (
+        "no page may link the reading DRESS; about.html reaches it through "
+        "its own theme picker, which is not this map"
+    )
     # the pre-existing three are unchanged by the rename
     assert m[render_hub.PRESS_HTML] == "archetypes/utility.css"
     assert m[render_hub.PRIVACY_HTML] == "archetypes/utility.css"
@@ -535,13 +543,14 @@ def test_reading_pages_href_follows_the_active_slug_not_a_hardcoded_theme():
                 slug, render_hub.THEME_CSS_HREFS[page]
             )
             assert link == (
-                f'<link rel="stylesheet" href="/themes/{slug}/archetypes/reading.css">'
+                f'<link rel="stylesheet" '
+                f'href="/themes/{slug}/archetypes/reading-tokens.css">'
             )
 
 
 def test_reading_pages_carry_the_zone_and_track_the_registry_on_disk():
     slug = render_hub.theme_registry.load()["active"]
-    expected = render_hub.render_theme_css_link(slug, "archetypes/reading.css")
+    expected = render_hub.render_theme_css_link(slug, "archetypes/reading-tokens.css")
     for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
         html = page.read_text(encoding="utf-8")
         assert "<!-- SITE_JSON:theme-css:start -->" in html
@@ -565,6 +574,22 @@ def test_reading_pages_define_no_tokens_of_their_own():
         assert not re.search(r":root\s*\{", style), f"{page.name} re-grew a :root block"
 
 
+def test_reading_pages_own_their_scanline_overlay_rule():
+    # The one rule the reading split handed back to the pages. Both carry a
+    # .pb-scanlines element; the rule used to live in reading.css, which
+    # they no longer link. A page with the element and no rule renders no
+    # overlay at all — invisible to a token-completeness gate, and a real
+    # pixel change. conundrum.html has always had it this way.
+    for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
+        html = page.read_text(encoding="utf-8")
+        assert 'class="pb-scanlines"' in html, f"{page.name} lost the element"
+        style = html.split("</style>")[0]
+        assert ".pb-scanlines" in style, (
+            f"{page.name} carries a .pb-scanlines element but declares no rule "
+            "for it — the theme no longer supplies one"
+        )
+
+
 def test_reading_pages_resolve_every_var_they_read():
     # Their tokens now live in the theme, with no page-local fallback — so
     # an unresolved var() is a straight rendering break, not a stale value.
@@ -580,14 +605,14 @@ def test_reading_pages_resolve_every_var_they_read():
 
     slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
     css = (
-        render_hub.ROOT / "themes" / slug / "archetypes" / "reading.css"
+        render_hub.ROOT / "themes" / slug / "archetypes" / "reading-tokens.css"
     ).read_text(encoding="utf-8")
     defined = set(re.findall(r"(--[\w-]+)\s*:", css))
     for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
         used = set(re.findall(r"var\(\s*(--[\w-]+)", page.read_text(encoding="utf-8")))
         assert not used - defined, (
             f"{page.name} reads {sorted(used - defined)}, undefined in "
-            f"themes/{slug}/archetypes/reading.css"
+            f"themes/{slug}/archetypes/reading-tokens.css"
         )
 
 

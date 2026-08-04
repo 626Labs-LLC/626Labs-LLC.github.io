@@ -845,10 +845,14 @@ def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
 # press.html/privacy.html link archetypes/utility.css (their shared chrome,
 # extracted verbatim from press.html — see themes/phosphor-blueprint/
 # archetypes/utility.css's header comment). thesis.html/workflow.html link
-# archetypes/reading.css, which is where their base token vocabulary and
-# the Phosphor Blueprint treatment tokens now live (each page used to
-# carry a private copy of both, which no rotation could reach — see that
-# file's "Reading archetype" section). themes.html keeps tokens.css:
+# archetypes/reading-tokens.css, which is where their base token
+# vocabulary and the Phosphor Blueprint treatment tokens now live (each
+# page used to carry a private copy of both, which no rotation could
+# reach). Deliberately NOT archetypes/reading.css: that file is the Long
+# Now Terminal DRESS about.html's theme picker wears, and a dress a page
+# links for its palette alone is free to grow an element rule that lands
+# on it uninvited — which is exactly what happened on the product
+# archetype before it was split. themes.html keeps tokens.css:
 # switching it to utility.css would have changed its pixels (utility.css's
 # unconditional `h1 { text-shadow }` doesn't apply to themes.html today —
 # tokens.css's `header.hero h1` never matched `.page-hero` either, so
@@ -870,8 +874,8 @@ THEME_CSS_HREFS = {
     PRESS_HTML: "archetypes/utility.css",
     PRIVACY_HTML: "archetypes/utility.css",
     THEMES_HTML: "tokens.css",
-    THESIS_HTML: "archetypes/reading.css",
-    WORKFLOW_HTML: "archetypes/reading.css",
+    THESIS_HTML: "archetypes/reading-tokens.css",
+    WORKFLOW_HTML: "archetypes/reading-tokens.css",
     CONUNDRUM_HTML: "archetypes/product-tokens.css",
     ROROROPLUGINS_HTML: "archetypes/product-tokens.css",
 }

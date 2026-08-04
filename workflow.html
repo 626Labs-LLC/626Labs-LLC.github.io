@@ -14,7 +14,7 @@
 <link rel="icon" type="image/png" href="favicon-626.png" />
 
   <!-- SITE_JSON:theme-css:start -->
-<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/reading.css">
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/reading-tokens.css">
 <!-- SITE_JSON:theme-css:end -->
 <style>
   /* ---------- Web fonts ---------- */
@@ -24,6 +24,15 @@
      above. This page keeps its own layout; the theme owns the dress. */
 
   html, body { margin:0; padding:0; min-height:100vh; }
+
+  /* The scanline overlay's own rule. It lives here, not in the theme,
+     because this page owns the element — same shape conundrum.html has
+     always had. The --pb-scanline value it reads is the theme's. */
+  .pb-scanlines {
+    position: fixed; inset: 0; pointer-events: none; z-index: 60;
+    background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+  }
+
   body{
     background:
       radial-gradient(1200px 700px at 18% -10%, rgba(23,212,250,.10), transparent 60%),
