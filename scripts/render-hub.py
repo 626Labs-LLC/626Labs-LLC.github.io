@@ -54,6 +54,8 @@ SITE_JSON = ROOT / "content" / "site.json"
 INDEX_HTML = ROOT / "index.html"
 CONUNDRUM_HTML = ROOT / "conundrum.html"
 THEMES_HTML = ROOT / "themes.html"
+PRESS_HTML = ROOT / "press.html"
+PRIVACY_HTML = ROOT / "privacy.html"
 STORIES_DIR = ROOT / "content" / "stories"
 # Local Field Notes render to on-site reading pages under here:
 # editorial/<slug>/index.html, served at /editorial/<slug>/.
@@ -795,6 +797,42 @@ def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
             entry.get("slug", ""), "archived", entry.get("month"), entry.get("url"), root
         ))
     return "\n\n".join(cards)
+
+
+# ─── utility archetype stylesheet (press/privacy/themes "theme-css" zone) ──
+#
+# press.html, privacy.html, and themes.html carry no site.json-driven
+# content — unlike index.html's SITE_JSON zones or the Field Notes'
+# markdown, nothing regenerates them from data. But their <head>
+# stylesheet <link> was hardcoded to "phosphor-blueprint" specifically,
+# which meant they'd stay frozen in that dress forever even after the
+# site rotates to a different theme (found in A4 review — utility.html
+# had zero live consumers, so "the whole site rotates" had a real gap).
+# This zone is the fix: the link stays renderer-owned, computed from
+# the ACTIVE theme every run, same governance as the "themes" zone above
+# even though no page content changes.
+#
+# press.html/privacy.html link archetypes/utility.css (their shared chrome,
+# extracted verbatim from press.html — see themes/phosphor-blueprint/
+# archetypes/utility.css's header comment). themes.html keeps tokens.css:
+# switching it to utility.css would have changed its pixels (utility.css's
+# unconditional `h1 { text-shadow }` doesn't apply to themes.html today —
+# tokens.css's `header.hero h1` never matched `.page-hero` either, so
+# themes.html's h1 currently has no bloom at all; and press.html's
+# `.page-lead` is `max-width: 60ch` where themes.html's own copy is
+# `62ch`). Each theme is free to make different choices for this page
+# the next time it's touched for its own reasons — this fix only
+# guarantees the *link* rotates, not that every utility page ends up on
+# the exact same stylesheet.
+UTILITY_CSS_HREFS = {
+    PRESS_HTML: "archetypes/utility.css",
+    PRIVACY_HTML: "archetypes/utility.css",
+    THEMES_HTML: "tokens.css",
+}
+
+
+def render_theme_css_link(slug: str, css_rel_path: str) -> str:
+    return f'<link rel="stylesheet" href="/themes/{slug}/{css_rel_path}">'
 
 
 def render_product(p: dict) -> str:
@@ -2074,12 +2112,26 @@ def main(argv: list[str]) -> int:
         )
     conundrum_changed = conundrum_new is not None and conundrum_new != conundrum_old
 
-    # themes.html — the rotation gallery. Always rendered (content/themes.json
-    # always has an active theme, so there's always >=1 card); no site.json
-    # key gates it the way conundrum's does.
+    # themes.html — the rotation gallery, plus its "theme-css" stylesheet
+    # link (see UTILITY_CSS_HREFS above). Always rendered — content/
+    # themes.json always has an active theme, so there's always >=1 card
+    # and always a slug to point the stylesheet at.
     themes_old = THEMES_HTML.read_text(encoding="utf-8")
     themes_new = substitute_zone(themes_old, "themes", render_themes_gallery(reg))
+    themes_new = substitute_zone(
+        themes_new, "theme-css", render_theme_css_link(slug, UTILITY_CSS_HREFS[THEMES_HTML])
+    )
     themes_changed = themes_new != themes_old
+
+    # press.html / privacy.html — no other zones, just the "theme-css" link
+    # (see UTILITY_CSS_HREFS above).
+    utility_css_pages = []
+    for page_path in (PRESS_HTML, PRIVACY_HTML):
+        page_old = page_path.read_text(encoding="utf-8")
+        page_new = substitute_zone(
+            page_old, "theme-css", render_theme_css_link(slug, UTILITY_CSS_HREFS[page_path])
+        )
+        utility_css_pages.append((page_path, page_new, page_new != page_old))
 
     feed_new = render_atom_feed(stories)
     feed_old = FEED_PATH.read_text(encoding="utf-8") if FEED_PATH.exists() else None
@@ -2111,6 +2163,10 @@ def main(argv: list[str]) -> int:
                   ("sitemap.xml", sitemap_changed),
                   ("conundrum.html", conundrum_changed),
                   ("themes.html", themes_changed)) if drifted]
+        stale += [
+            page_path.relative_to(ROOT).as_posix()
+            for page_path, _, changed in utility_css_pages if changed
+        ]
         stale += [p.relative_to(ROOT).as_posix() for p in stale_stories]
         stale += [f"{d.relative_to(ROOT).as_posix()}/ (orphaned — prune)" for d in orphans]
         if stale:
@@ -2140,6 +2196,11 @@ def main(argv: list[str]) -> int:
     if themes_changed:
         THEMES_HTML.write_text(themes_new, encoding="utf-8")
         print("themes.html zone rebuilt from content/themes.json")
+
+    for page_path, page_new, page_changed in utility_css_pages:
+        if page_changed:
+            page_path.write_text(page_new, encoding="utf-8")
+            print(f"{page_path.relative_to(ROOT)} theme-css zone rebuilt for active theme {slug!r}")
 
     if feed_changed:
         FEED_PATH.write_text(feed_new, encoding="utf-8")
