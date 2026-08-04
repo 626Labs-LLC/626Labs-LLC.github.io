@@ -23,24 +23,24 @@
 
 | File | Task | What changes |
 |---|---|---|
-| `thesis.html`, `workflow.html` | C1 | Token block out, theme-css zone in, literals → tokens |
-| `conundrum.html`, `rororo-plugins.html` | C2 | Same |
-| `rororo.html`, `mod-launcher-games.html` | C3 | Same, plus live-feed behavior verified |
-| `scripts/render-hub.py` | C1-C3 | Each page added to the theme-css zone map |
-| `scripts/archetypes.py` | C1-C3 | `REQUIRED_TOKENS` grows only if a page genuinely needs a token the set lacks |
-| `tests/test_render_hub.py` | C1 | Coverage that the new pages resolve their href from the active theme |
-| — | C4 | Scratch-theme proof, whole-site verification, held PR |
+| `thesis.html`, `workflow.html` | Task 1 | Token block out, theme-css zone in, literals → tokens |
+| `conundrum.html`, `rororo-plugins.html` | Task 2 | Same |
+| `rororo.html`, `mod-launcher-games.html` | Task 3 | Same, plus live-feed behavior verified |
+| `scripts/render-hub.py` | Tasks 1-3 | Each page added to the theme-css zone map |
+| `scripts/archetypes.py` | Tasks 1-3 | `REQUIRED_TOKENS` grows only if a page genuinely needs a token the set lacks |
+| `tests/test_render_hub.py` | Task 1 | Coverage that the new pages resolve their href from the active theme |
+| — | Task 4 | Scratch-theme proof, whole-site verification, held PR |
 
 ---
 
-### Task C1: The reading pair — thesis.html and workflow.html
+### Task 1: The reading pair — thesis.html and workflow.html
 
 **Files:**
 - Modify: `thesis.html` (476 lines CSS, 115 rules, 34 own tokens), `workflow.html` (522 lines, 145 rules, 39 own tokens), `scripts/render-hub.py`, `tests/test_render_hub.py`
 
 **Interfaces:**
 - Consumes: `render_theme_css_link(slug, css_rel_path) -> str` and the `UTILITY_CSS_HREFS` pattern in render-hub.py (~lines 823-870); `theme_registry.active_slug`.
-- Produces: both pages carry a `theme-css` zone resolved from the active theme, linking `archetypes/reading.css`. The map that C2 and C3 extend is whatever you name it — if `UTILITY_CSS_HREFS` is now a misnomer because it serves reading and product pages too, rename it to something accurate (e.g. `THEME_CSS_HREFS`) in this task and update its existing three entries; say so in your report so C2/C3 use the right name.
+- Produces: both pages carry a `theme-css` zone resolved from the active theme, linking `archetypes/reading.css`. The map that Task 2 and Task 3 extend is whatever you name it — if `UTILITY_CSS_HREFS` is now a misnomer because it serves reading and product pages too, rename it to something accurate (e.g. `THEME_CSS_HREFS`) in this task and update its existing three entries; say so in your report so Task 2/Task 3 use the right name.
 
 - [ ] **Step 1: Read the reference** — `press.html` lines 15-25 (the zone), `scripts/render-hub.py` 823-870 (the map and the renderer), and how main() substitutes it (~line 2191). Also read `themes/phosphor-blueprint/archetypes/reading.css` so you know which tokens and rules the theme already provides.
 - [ ] **Step 2: Capture the baseline** — with an `origin/main` worktree served on one port and the working tree on another, capture thesis.html and workflow.html at 1440/768/390 using the deterministic init script. Keep these images; Step 6 compares against them.
@@ -60,13 +60,13 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 
 ---
 
-### Task C2: The small product pair — conundrum.html and rororo-plugins.html
+### Task 2: The small product pair — conundrum.html and rororo-plugins.html
 
 **Files:**
 - Modify: `conundrum.html` (220 lines CSS, 59 rules, 33 own tokens), `rororo-plugins.html` (235 lines, 65 rules, 29 own tokens), `scripts/render-hub.py`
 
 **Interfaces:**
-- Consumes: the href map and `render_theme_css_link` (C1 may have renamed the map — check the current name in render-hub.py rather than assuming).
+- Consumes: the href map and `render_theme_css_link` (Task 1 may have renamed the map — check the current name in render-hub.py rather than assuming).
 - Produces: both pages linking `archetypes/product.css` from the active theme.
 
 - [ ] **Step 1: Capture the baseline** for both pages at 1440/768/390 with the deterministic init script, against an `origin/main` worktree.
@@ -86,7 +86,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 
 ---
 
-### Task C3: The live-data pair — rororo.html and mod-launcher-games.html
+### Task 3: The live-data pair — rororo.html and mod-launcher-games.html
 
 **Files:**
 - Modify: `rororo.html` (502 lines CSS, 146 rules, 39 own tokens), `mod-launcher-games.html` (300 lines, 77 rules, 37 own tokens), `scripts/render-hub.py`
@@ -112,12 +112,12 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 
 ---
 
-### Task C4: Prove the wiring is real, verify the site, ship held
+### Task 4: Prove the wiring is real, verify the site, ship held
 
 **Files:** none permanent — a scratch theme is created and deleted.
 
 **Interfaces:**
-- Consumes: everything C1-C3 wired.
+- Consumes: everything Tasks 1-3 wired.
 
 - [ ] **Step 1: The scratch-theme proof** — this is the test that the wiring is real rather than nominal. Create `themes/scratch-proof/` as a copy of `themes/phosphor-blueprint/` with LOUD, unmistakable token values (e.g. `--bg-0: #ff00ff`), point `content/themes.json`'s `active` at it, render, and confirm with Playwright that ALL SIX converted pages visibly change (sample a computed background or text color per page and assert it matches the scratch value). Then restore `content/themes.json` to `phosphor-blueprint`, re-render, delete `themes/scratch-proof/`, and confirm `git status` is clean of it. Record the per-page evidence in your report.
 - [ ] **Step 2: Whole-site verification** — every page in `content/page-archetypes.json` at 1440 and 390 versus `origin/main`, deterministic init script, 0-pixel required. Known-acceptable exceptions from the prior milestone, which you must confirm rather than assume: `themes.html` differs by its gallery thumbnail; `workflow.html` had sub-0.05% capture noise near its doctrine-diagram glow that reproduced on same-tree self-comparison (if workflow.html now shows a diff, prove which kind it is before calling it acceptable — you converted that page this time).
@@ -128,6 +128,6 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 
 ## Self-review notes
 
-- **Spec coverage:** all six pages converted (C1-C3), mechanism reused rather than reinvented (C1 Step 1 + 5), literals-stay-literal recorded per task, pixel gate everywhere, the scratch-theme "is the wiring real" success criterion (C4 Step 1), live-feed and GoatCounter risks each given their own verification step (C2 Step 6, C3 Step 6), held PR (C4 Step 4). Redesign, vocabulary conformance, September, 404/legal, and about.html are all correctly absent.
-- **Naming resolved up front:** `UTILITY_CSS_HREFS` becomes a misnomer once reading and product pages use it; C1 renames it and tells C2/C3 to check the current name rather than hardcoding either.
-- **Type consistency:** `render_theme_css_link(slug, css_rel_path) -> str` used identically in C1-C3; archetype CSS paths `archetypes/reading.css` and `archetypes/product.css` match `content/page-archetypes.json`'s assignments.
+- **Spec coverage:** all six pages converted (Tasks 1-3), mechanism reused rather than reinvented (Task 1 Step 1 + 5), literals-stay-literal recorded per task, pixel gate everywhere, the scratch-theme "is the wiring real" success criterion (Task 4 Step 1), live-feed and GoatCounter risks each given their own verification step (Task 2 Step 6, Task 3 Step 6), held PR (Task 4 Step 4). Redesign, vocabulary conformance, September, 404/legal, and about.html are all correctly absent.
+- **Naming resolved up front:** `UTILITY_CSS_HREFS` becomes a misnomer once reading and product pages use it; Task 1 renames it and tells Tasks 2 and 3 to check the current name rather than hardcoding either.
+- **Type consistency:** `render_theme_css_link(slug, css_rel_path) -> str` used identically in Tasks 1-3; archetype CSS paths `archetypes/reading.css` and `archetypes/product.css` match `content/page-archetypes.json`'s assignments.
