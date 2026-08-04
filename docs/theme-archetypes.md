@@ -543,7 +543,7 @@ define any of them. Nothing required a theme's `tokens.css`,
 `archetypes/reading.css` to supply them — a
 September theme could rename or drop one, pass every existing gate
 (vocabulary only checks class names; chrome/links don't look at custom
-properties at all), and silently break nine pages:
+properties at all), and silently break ten pages:
 `themes.html`/`index.html` (which each carry a hardcoded LOCAL `:root`
 fallback, cascade-earlier than the theme's own `<link>`, so a missing token
 doesn't error — it just keeps showing the OUTGOING theme's stale value
@@ -592,16 +592,18 @@ and the spec for this milestone is that these pages **recolor monthly,
 they do not re-layout**. A token file is a recolor; a dress is a
 re-layout. They link the token half only.
 
-The dress's reach onto each page was measured, not assumed — every one of
-its 180 rules queried against the page's live DOM. It matches 30 rules on
-`rororo.html` (`body`, `a`, `a:hover`, `h1, h2, h3`, `.btn`,
-`.btn-primary`, `.btn-ghost`, `.install-grid`, `.install-card`,
-`.install-card h3`, `.eyebrow`, `.pb-scanlines`, `.brand img`'s
-stabilizer group) and 19 on `mod-launcher-games.html` with its feed
-loaded. Each page already declares its own rule for the one **class**
-selector in that list it depends on, `.pb-scanlines` — the rule whose
-silent disappearance a token-completeness gate cannot see, and which the
-reading split nearly deleted.
+The dress's reach onto each page was measured, not assumed. It is **158
+style rules carrying 180 selectors**, and every one of those selectors was
+queried against the page's live DOM. 31 match `rororo.html` and 20 match
+`mod-launcher-games.html` with its feed loaded. One of each is `:root` —
+vocabulary, which is precisely what these pages link the token file for.
+The remaining **30 and 19 are dress**: `body`, `a`, `a:hover`,
+`h1, h2, h3`, `.btn`, `.btn-primary`, `.btn-ghost`, `.install-grid`,
+`.install-card`, `.install-card h3`, `.eyebrow`, `.pb-scanlines`, and the
+`.brand img` stabilizer group. Each page already declares its own rule for
+the one **class** selector in that list it depends on, `.pb-scanlines` —
+the rule whose silent disappearance a token-completeness gate cannot see,
+and which the reading split nearly deleted.
 
 This was measured before it was decided. Linking the dress into both pages
 and neutralising it property-by-property was tried: it needed eleven

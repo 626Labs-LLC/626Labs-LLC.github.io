@@ -487,8 +487,10 @@ def test_theme_css_map_covers_the_converted_product_pages():
     # on bespoke markup they were never written for. Pointing either page at
     # it once shipped a magenta hover underline onto 11 links across the two
     # pages that no resting-state gate could see. Measured again for the
-    # second pair against their live DOM: 30 of the dress's 180 rules match
-    # rororo.html, 19 match mod-launcher-games.html.
+    # second pair against their live DOM: the dress is 158 style rules
+    # carrying 180 selectors, of which 31 match rororo.html and 20 match
+    # mod-launcher-games.html — one `:root` (the vocabulary they want) plus
+    # 30 and 19 dress selectors they do not.
     for page in PRODUCT_TOKEN_PAGES:
         assert m[page] == "archetypes/product-tokens.css"
     assert "archetypes/product.css" not in m.values(), (
@@ -701,12 +703,23 @@ def test_product_pages_own_their_scanline_overlay_rule():
     # so the rule has to be the page's own — a page with the element and no
     # rule renders no overlay at all, and no token is missing to say so.
     # Same check the reading pair got after the split nearly deleted theirs.
+    #
+    # Scanned as a RULE, not as a substring of raw markup. A substring check
+    # over un-stripped text passes on `/* .pb-scanlines lives in the theme
+    # now */` — the exact comment someone would leave behind while deleting
+    # the rule, which is the mutation this test exists to fail. It also has
+    # to read every <style> block, not just the first: three of these four
+    # pages declare the rule in a treatment section, and nothing guarantees
+    # that section shares a block with the base styles forever.
+    import re
+
     for page in PRODUCT_TOKEN_PAGES:
         html = page.read_text(encoding="utf-8")
         if 'class="pb-scanlines"' not in html:
             continue  # rororo-plugins.html is still on the pre-treatment dress
-        style = html.split("</style>")[0]
-        assert ".pb-scanlines" in style, (
+        style = "\n".join(re.findall(r"<style[^>]*>(.*?)</style>", html, re.S))
+        style = re.sub(r"/\*.*?\*/", "", style, flags=re.S)
+        assert re.search(r"(^|[\s,}])\.pb-scanlines\s*[,{]", style), (
             f"{page.name} carries a .pb-scanlines element but declares no rule "
             "for it — the theme supplies tokens to these pages, not rules"
         )
