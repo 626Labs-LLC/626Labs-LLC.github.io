@@ -1750,9 +1750,12 @@ def render_atom_feed(stories: list[dict]) -> str:
 # ─── sitemap (XML sitemap for search crawlers) ──────────────────────
 SITEMAP_PATH = ROOT / "sitemap.xml"
 # Directories that have an index.html but should NOT be advertised to
-# crawlers. Empty today — every public page is fair game. Add a dir name
-# here to keep a future preview/private surface out of the sitemap.
-SITEMAP_EXCLUDE: frozenset[str] = frozenset()
+# crawlers. "archive" is themes/archive/<YYYY-MM>/ — frozen, noindex'd theme
+# snapshots (see scripts/freeze-theme.py); they carry their own <meta
+# name="robots" content="noindex"> so a crawler that finds one anyway won't
+# rank it, but they have no business being *advertised* via the sitemap
+# either. Add a dir name here to keep a future preview/private surface out.
+SITEMAP_EXCLUDE: frozenset[str] = frozenset({"archive"})
 # Root-level *.html files that should NOT appear in the sitemap. index.html
 # maps to "/" on its own; 404.html is an error page; admin-dashboard.html is
 # the PAT-gated admin surface and must stay out of crawler view. Every other
