@@ -14,7 +14,9 @@ Two loose ends from M2a.5, both raised by review and both deliberately left open
 
 ## What the two pages actually borrow
 
-Measured at `dc999df`, not guessed. Both pages carry their own `<style>` (52 and 19 rules), so the borrowing is narrower than "everything" — but it is the load-bearing part, and it is **identical across both pages**: 15 selectors, roughly 45 declarations.
+Measured, not guessed. An earlier static pass concluded the borrowing was "narrower than everything" because both pages carry their own `<style>` (52 and 21 selectors). Measured against the live DOM during implementation, that was wrong: **49 of `utility.css`'s 50 selectors reach `press.html` and 48 reach `privacy.html`, and the pages' own styles redeclare ZERO of them.** The overlap is nil. The pages dress their own content; the theme dresses everything else. The chrome is 100 percent borrowed.
+
+The load-bearing subset, identical across both pages:
 
 | Selector | Properties taken from the theme |
 |---|---|
