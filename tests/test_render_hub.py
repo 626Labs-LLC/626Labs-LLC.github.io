@@ -461,8 +461,18 @@ def test_theme_css_map_covers_the_converted_reading_pages():
 
 def test_theme_css_map_covers_the_converted_product_pages():
     m = render_hub.THEME_CSS_HREFS
-    assert m[render_hub.CONUNDRUM_HTML] == "archetypes/product.css"
-    assert m[render_hub.ROROROPLUGINS_HTML] == "archetypes/product.css"
+    # The TOKEN half, never archetypes/product.css. That file is the element
+    # dress render-plugin-pages.py inlines into its own 15 generated pages;
+    # its bare `body`/`a:hover`/`section.hero`/`.card`/`.btn` selectors land
+    # on bespoke markup they were never written for. Pointing either page at
+    # it once shipped a magenta hover underline onto 11 links across the two
+    # pages that no resting-state gate could see.
+    assert m[render_hub.CONUNDRUM_HTML] == "archetypes/product-tokens.css"
+    assert m[render_hub.ROROROPLUGINS_HTML] == "archetypes/product-tokens.css"
+    assert "archetypes/product.css" not in m.values(), (
+        "no page may link the product DRESS; the dress is inlined by "
+        "render-plugin-pages.py into markup it was written for"
+    )
 
 
 def test_theme_css_constants_agree_in_both_directions():
@@ -500,7 +510,9 @@ def test_conundrum_keeps_its_gallery_zones_when_the_theme_css_zone_renders():
     # one overwriting the other.
     slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
     html = render_hub.CONUNDRUM_HTML.read_text(encoding="utf-8")
-    assert render_hub.render_theme_css_link(slug, "archetypes/product.css") in html
+    assert (
+        render_hub.render_theme_css_link(slug, "archetypes/product-tokens.css") in html
+    )
     assert "<!-- SITE_JSON:conundrum-products:start -->" in html
     assert "<!-- SITE_JSON:conundrum-repo:start -->" in html
     assert 'class="merch-card"' in html
@@ -586,13 +598,14 @@ def test_product_pages_href_follows_the_active_slug_not_a_hardcoded_theme():
                 slug, render_hub.THEME_CSS_HREFS[page]
             )
             assert link == (
-                f'<link rel="stylesheet" href="/themes/{slug}/archetypes/product.css">'
+                f'<link rel="stylesheet" '
+                f'href="/themes/{slug}/archetypes/product-tokens.css">'
             )
 
 
 def test_product_pages_carry_the_zone_and_track_the_registry_on_disk():
     slug = render_hub.theme_registry.load()["active"]
-    expected = render_hub.render_theme_css_link(slug, "archetypes/product.css")
+    expected = render_hub.render_theme_css_link(slug, "archetypes/product-tokens.css")
     for page in (render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML):
         html = page.read_text(encoding="utf-8")
         assert "<!-- SITE_JSON:theme-css:start -->" in html
@@ -603,28 +616,37 @@ def test_product_pages_carry_the_zone_and_track_the_registry_on_disk():
 
 def test_product_pages_define_no_token_of_their_own():
     # Same point as the reading pair, one shade weaker by necessity.
-    # rororo-plugins.html keeps no :root at all. conundrum.html keeps one,
-    # holding the three base tokens the Phosphor Blueprint treatment
-    # REPOINTS — but every value in it has to resolve through a theme-owned
-    # name, never a literal. A literal there is a photocopy re-growing, and
-    # a photocopy is what no rotation can reach.
+    # rororo-plugins.html defines no token at all. conundrum.html defines
+    # three — the base tokens the Phosphor Blueprint treatment REPOINTS —
+    # but every value has to resolve through a theme-owned name, never a
+    # literal. A literal is a photocopy re-growing, and a photocopy is what
+    # no rotation can reach.
+    #
+    # Scanned by DECLARATION, not by `:root {`. An earlier cut of this test
+    # matched `:root\s*\{` alone, so a page re-growing its tokens under
+    # `html {`, `body {`, or `[data-theme] {` passed clean while being just
+    # as unreachable — a token is unreachable because it is page-local, not
+    # because of which selector happens to hold it.
     import re
 
-    style_of = lambda page: "\n".join(  # noqa: E731
-        re.findall(r"<style[^>]*>(.*?)</style>", page.read_text(encoding="utf-8"), re.S)
+    def declarations(page):
+        style = "\n".join(
+            re.findall(r"<style[^>]*>(.*?)</style>", page.read_text(encoding="utf-8"), re.S)
+        )
+        style = re.sub(r"/\*.*?\*/", "", style, flags=re.S)
+        return re.findall(r"(--[\w-]+)\s*:\s*([^;{}]+)", style)
+
+    regrown = declarations(render_hub.ROROROPLUGINS_HTML)
+    assert not regrown, (
+        f"rororo-plugins.html re-grew page-local tokens: "
+        f"{sorted(n for n, _ in regrown)}"
     )
 
-    assert not re.search(r":root\s*\{", style_of(render_hub.ROROROPLUGINS_HTML)), (
-        "rororo-plugins.html re-grew a :root block"
-    )
-
-    for block in re.findall(r":root\s*\{(.*?)\}", style_of(render_hub.CONUNDRUM_HTML), re.S):
-        for decl in re.findall(r"(--[\w-]+)\s*:\s*([^;]+);", block):
-            name, value = decl[0], decl[1].strip()
-            assert value.startswith("var(--"), (
-                f"conundrum.html defines {name} as the literal {value!r} — "
-                "a private copy the rotation cannot reach"
-            )
+    for name, value in declarations(render_hub.CONUNDRUM_HTML):
+        assert value.strip().startswith("var(--"), (
+            f"conundrum.html defines {name} as the literal {value.strip()!r} — "
+            "a private copy the rotation cannot reach"
+        )
 
 
 def test_product_pages_resolve_every_var_they_read():
@@ -637,14 +659,14 @@ def test_product_pages_resolve_every_var_they_read():
 
     slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
     css = (
-        render_hub.ROOT / "themes" / slug / "archetypes" / "product.css"
+        render_hub.ROOT / "themes" / slug / "archetypes" / "product-tokens.css"
     ).read_text(encoding="utf-8")
     defined = set(re.findall(r"(--[\w-]+)\s*:", css))
     for page in (render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML):
         used = set(re.findall(r"var\(\s*(--[\w-]+)", page.read_text(encoding="utf-8")))
         assert not used - defined, (
             f"{page.name} reads {sorted(used - defined)}, undefined in "
-            f"themes/{slug}/archetypes/product.css"
+            f"themes/{slug}/archetypes/product-tokens.css"
         )
 
 

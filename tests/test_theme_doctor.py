@@ -213,19 +213,30 @@ def _make_complete_theme_dir(tdir):
     # instead of "". archetypes/reading.css is the third file under that
     # same gate now — see _compliant_reading_css.
     #
-    # archetypes/product.css is the FOURTH, added the same commit
+    # archetypes/product-tokens.css is the FOURTH, added the same commit
     # conundrum.html and rororo-plugins.html started linking it with no
-    # local fallback. Until then this fixture wrote product.css as the
-    # empty string — ZERO custom properties — and a stub theme cleared the
-    # doctor anyway. That is the hole, demonstrated: the file that dresses
-    # the most pages of any archetype (2 linked + 15 inlined) was the one
-    # file the token contract never graded.
+    # local fallback. Until then this fixture wrote archetypes/product.css
+    # as the empty string — ZERO custom properties — and a stub theme
+    # cleared the doctor anyway. That is the hole, demonstrated: the CSS
+    # dressing the most pages of any archetype (2 linked + 15 inlined) was
+    # the one the token contract never graded.
+    #
+    # Note the shape: product.css is a DRESS (element rules, no tokens) and
+    # product-tokens.css is the vocabulary. That is the real split, so the
+    # fixture models it — a stub whose product.css carried the tokens would
+    # pass a gate the live theme could not.
     (tdir / "archetypes").mkdir(parents=True)
     (tdir / "tokens.css").write_text(_required_tokens_css(), encoding="utf-8")
     (tdir / "theme.json").write_text("{}", encoding="utf-8")
     for a in td.theme_registry.REQUIRED_ARCHETYPES:
         (tdir / "archetypes" / f"{a}.html").write_text(_compliant_archetype_html(a), encoding="utf-8")
-    (tdir / "archetypes" / "product.css").write_text(_required_tokens_css(), encoding="utf-8")
+    (tdir / "archetypes" / "product.css").write_text(
+        "".join(f".{c} {{ }}\n" for c in td.archetypes.VOCABULARY["product"]),
+        encoding="utf-8",
+    )
+    (tdir / "archetypes" / td.PRODUCT_TOKENS_CSS).write_text(
+        _required_tokens_css(), encoding="utf-8"
+    )
     (tdir / "archetypes" / "utility.css").write_text(_required_tokens_css(), encoding="utf-8")
     (tdir / "archetypes" / "reading.css").write_text(_compliant_reading_css(), encoding="utf-8")
 
@@ -245,6 +256,8 @@ def test_main_require_browser_implies_browser_and_fails_when_unavailable(monkeyp
 
     def _fake_run(*a, **kw):
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
+        for name in td.BROWSER_CHECK_LIVE_PAGES:
+            (tmp_path / name).write_text(_good_html(), encoding="utf-8")
         return _Result()
 
     monkeypatch.setattr(td.subprocess, "run", _fake_run)
@@ -273,6 +286,8 @@ def test_main_browser_alone_is_still_ergonomic_when_playwright_missing(monkeypat
 
     def _fake_run(*a, **kw):
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
+        for name in td.BROWSER_CHECK_LIVE_PAGES:
+            (tmp_path / name).write_text(_good_html(), encoding="utf-8")
         return _Result()
 
     monkeypatch.setattr(td.subprocess, "run", _fake_run)
@@ -537,33 +552,94 @@ def test_live_reading_css_satisfies_required_tokens():
     assert td.check_required_tokens(css) == []
 
 
-def test_live_product_css_satisfies_required_tokens():
-    # product.css is the fourth file under this gate, as of conundrum.html
-    # and rororo-plugins.html giving up their private :root blocks. It is
-    # also the widest-blast-radius member: two pages LINK it with no local
-    # fallback, and render-plugin-pages.py INLINES it into fifteen more.
-    css = (ROOT / "themes" / "phosphor-blueprint" / "archetypes" / "product.css").read_text(
-        encoding="utf-8"
-    )
+def test_live_product_tokens_css_satisfies_required_tokens():
+    # product-tokens.css is the fourth file under this gate, as of
+    # conundrum.html and rororo-plugins.html giving up their private :root
+    # blocks. It is also the widest-blast-radius member: two pages LINK it
+    # with no local fallback, and render-plugin-pages.py concatenates it
+    # into fifteen more.
+    css = (
+        ROOT / "themes" / "phosphor-blueprint" / "archetypes" / td.PRODUCT_TOKENS_CSS
+    ).read_text(encoding="utf-8")
     assert td.check_required_tokens(css) == []
 
 
-def test_main_fails_a_theme_whose_product_css_drops_the_required_tokens(
+def test_live_product_tokens_css_declares_only_tokens():
+    css = (
+        ROOT / "themes" / "phosphor-blueprint" / "archetypes" / td.PRODUCT_TOKENS_CSS
+    ).read_text(encoding="utf-8")
+    assert td.check_token_css_declares_only_tokens(css) == []
+
+
+def test_main_fails_a_theme_whose_product_tokens_css_drops_the_required_tokens(
     monkeypatch, tmp_path, capsys
 ):
     # Same regression as the reading case below, one archetype over and with
-    # a bigger blast radius. An author writes a genuinely NEW product dress
-    # instead of copying phosphor-blueprint's, defines none of the base
-    # vocabulary, and the theme rotates in unattended on the 1st.
+    # a bigger blast radius. An author writes a genuinely NEW product
+    # vocabulary instead of copying phosphor-blueprint's, defines none of
+    # the base names, and the theme rotates in unattended on the 1st.
     #
     # This test FAILS against the pre-fix theme-doctor.py, whose
-    # required-token loop ran over ("utility", "reading") only. Verified by
-    # running it against that implementation before the tuple grew, where it
-    # reported rc == 0.
+    # required-token loop ran over ("utility", "reading") only — verified
+    # against that implementation, where it reported rc == 0 and printed
+    # "PASS stub-theme".
     tdir = tmp_path / "themes" / "stub-theme"
     _make_complete_theme_dir(tdir)
-    (tdir / "archetypes" / "product.css").write_text(
-        "".join(f".{c} {{ }}\n" for c in td.archetypes.VOCABULARY["product"]),
+    (tdir / "archetypes" / td.PRODUCT_TOKENS_CSS).write_text(":root { }\n", encoding="utf-8")
+
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(
+        td.tempfile, "TemporaryDirectory",
+        lambda *a, **kw: __import__("contextlib").nullcontext(str(tmp_path)),
+    )
+
+    rc = td.main(["stub-theme"])
+    assert rc == 1
+    out = capsys.readouterr().out
+    assert f"archetypes/{td.PRODUCT_TOKENS_CSS}" in out
+    assert "--fg-1" in out
+
+
+def test_main_fails_a_theme_missing_product_tokens_css_entirely(
+    monkeypatch, tmp_path, capsys
+):
+    # Resolved through an unguarded <link> on two live pages and read with
+    # no existence guard by render-plugin-pages.py, so "absent" is a 404 on
+    # the commercial page plus a FileNotFoundError across 15 others,
+    # unattended on the 1st. Absent has to fail before the queue, not there.
+    tdir = tmp_path / "themes" / "stub-theme"
+    _make_complete_theme_dir(tdir)
+    (tdir / "archetypes" / td.PRODUCT_TOKENS_CSS).unlink()
+
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    rc = td.main(["stub-theme"])
+    assert rc == 1
+    assert f"missing archetypes/{td.PRODUCT_TOKENS_CSS}" in capsys.readouterr().out
+
+
+def test_main_fails_a_theme_whose_token_css_grows_an_element_rule(
+    monkeypatch, tmp_path, capsys
+):
+    """The finding this whole split exists for, kept closed as a gate.
+
+    conundrum.html and rororo-plugins.html link a theme file for its
+    PALETTE. When they linked the DRESS instead, `a:hover { text-decoration:
+    underline; text-decoration-color: var(--magenta) }` at specificity
+    (0,1,1) beat `.merch-card`/`.shop-cta`/`.repo-cta`/`footer a` and put a
+    magenta hover underline on 11 links across the two pages. Measured in
+    Chromium; invisible to the pixel gate and the computed-style gate alike,
+    because both sample the RESTING state.
+
+    Splitting the files fixed that instance. This keeps it fixed: a future
+    theme's product-tokens.css that grows `p { margin: 0 0 24px }` lands on
+    both pages unattended, and check_required_tokens — which only counts
+    NAMES — waves it straight through.
+    """
+    tdir = tmp_path / "themes" / "stub-theme"
+    _make_complete_theme_dir(tdir)
+    (tdir / "archetypes" / td.PRODUCT_TOKENS_CSS).write_text(
+        _required_tokens_css() + "a:hover { text-decoration: underline; }\n",
         encoding="utf-8",
     )
 
@@ -577,8 +653,50 @@ def test_main_fails_a_theme_whose_product_css_drops_the_required_tokens(
     rc = td.main(["stub-theme"])
     assert rc == 1
     out = capsys.readouterr().out
-    assert "archetypes/product.css" in out
-    assert "--fg-1" in out
+    assert f"archetypes/{td.PRODUCT_TOKENS_CSS}" in out
+    assert "a:hover" in out
+
+
+def test_token_only_check_accepts_tokens_and_rejects_everything_else():
+    ok = ":root { --a: 1; --b: var(--a); }\n/* a comment { with braces } */\n"
+    assert td.check_token_css_declares_only_tokens(ok) == []
+
+    cases = [
+        ("body { color: red; }", "body"),
+        (":root { --a: 1; } .card { padding: 4px; }", ".card"),
+        (":root { color: red; }", "color"),
+        ("@media (max-width: 600px) { :root { --a: 2; } }", "@media"),
+        ("@import url(x.css);\n:root { --a: 1; }", "@import"),
+    ]
+    for bad, needle in cases:
+        errs = td.check_token_css_declares_only_tokens(bad)
+        assert errs, f"{bad!r} should have been rejected"
+        assert any(needle in e for e in errs), (needle, errs)
+
+
+def _render_hub_previewable_pages():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "render_hub_for_doctor_test", ROOT / "scripts" / "render-hub.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return set(mod.PREVIEWABLE_THEME_CSS_PAGES)
+
+
+def test_browser_checks_open_the_two_hand_authored_product_pages():
+    # Not a shell the theme ships — pages the SITE ships. Before this,
+    # nothing in the unattended gate stack ever rendered a real
+    # hand-authored page, so the commercial Etsy surface was one the
+    # rotation could never see.
+    assert td.BROWSER_CHECK_LIVE_PAGES == ("conundrum.html", "rororo-plugins.html")
+    previewable = _render_hub_previewable_pages()
+    for name in td.BROWSER_CHECK_LIVE_PAGES:
+        assert (ROOT / name).exists()
+        # Each must be one render-hub.py's preview mode actually emits, or
+        # main() bails with "did not emit" instead of checking it.
+        assert (ROOT / name) in previewable, name
 
 
 def test_main_fails_a_theme_whose_reading_css_drops_the_required_tokens(
@@ -615,7 +733,12 @@ def test_main_fails_a_theme_whose_reading_css_drops_the_required_tokens(
 def _stub_main_kwargs(tmp_path):
     """The subprocess.run/TemporaryDirectory monkeypatch shape every
     required-tokens main()-level test below shares: fake a successful
-    render-hub.py --theme run producing _good_html() as index.html."""
+    render-hub.py --theme run producing what preview mode really produces —
+    index.html PLUS a copy of every BROWSER_CHECK_LIVE_PAGES member. main()
+    treats a missing preview copy as a hard failure (it means preview mode
+    stopped emitting a page the browser gate is supposed to open), so a stub
+    that writes only index.html would make every test below fail on that
+    instead of on what it is actually testing."""
     class _Result:
         returncode = 0
         stdout = ""
@@ -623,6 +746,8 @@ def _stub_main_kwargs(tmp_path):
 
     def _fake_run(*a, **kw):
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
+        for name in td.BROWSER_CHECK_LIVE_PAGES:
+            (tmp_path / name).write_text(_good_html(), encoding="utf-8")
         return _Result()
 
     return _fake_run

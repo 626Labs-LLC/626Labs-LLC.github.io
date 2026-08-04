@@ -855,8 +855,13 @@ def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
 # themes.html's h1 currently has no bloom at all; and press.html's
 # `.page-lead` is `max-width: 60ch` where themes.html's own copy is
 # `62ch`). conundrum.html/rororo-plugins.html link
-# archetypes/product.css, whose "Product archetype — base token
-# vocabulary" section is where THEIR private :root copies went. Each
+# archetypes/product-tokens.css — the TOKEN half of the product
+# archetype, where THEIR private :root copies went. Deliberately not
+# archetypes/product.css: that file is the element dress
+# render-plugin-pages.py inlines into its 15 generated pages, written on
+# bare element selectors (`body`, `a:hover`, `section.hero`, `.card`,
+# `.btn`) that land on bespoke markup they were never written for. See
+# that theme file's header for the measurement behind the split. Each
 # theme is free to make different choices for these pages the next time
 # they're touched for their own reasons — this only guarantees the *link*
 # rotates, not that every page of one archetype ends up on the exact same
@@ -867,8 +872,8 @@ THEME_CSS_HREFS = {
     THEMES_HTML: "tokens.css",
     THESIS_HTML: "archetypes/reading.css",
     WORKFLOW_HTML: "archetypes/reading.css",
-    CONUNDRUM_HTML: "archetypes/product.css",
-    ROROROPLUGINS_HTML: "archetypes/product.css",
+    CONUNDRUM_HTML: "archetypes/product-tokens.css",
+    ROROROPLUGINS_HTML: "archetypes/product-tokens.css",
 }
 
 # Pages in THEME_CSS_HREFS that ALSO carry other renderer-owned zones, so
@@ -894,7 +899,10 @@ THEME_CSS_ONLY_PAGES = (
 # previewable the same commit. themes.html is the one exclusion: its
 # theme-css zone travels with a gallery zone rendered from the registry,
 # which a preview of a not-yet-active theme cannot honestly produce.
-PREVIEWABLE_THEME_CSS_PAGES = tuple(p for p in THEME_CSS_HREFS if p is not THEMES_HTML)
+# `!=`, not `is not`: these are Path values, and a caller rebuilding the
+# map with freshly constructed Paths would silently stop excluding
+# themes.html under identity comparison while every test still passed.
+PREVIEWABLE_THEME_CSS_PAGES = tuple(p for p in THEME_CSS_HREFS if p != THEMES_HTML)
 
 
 def render_theme_css_link(slug: str, css_rel_path: str) -> str:
@@ -2347,7 +2355,9 @@ def main(argv: list[str]) -> int:
 
     if conundrum_changed:
         CONUNDRUM_HTML.write_text(conundrum_new, encoding="utf-8")
-        print("conundrum.html zones rebuilt from content/site.json")
+        # Both sources, because both zones live on this page — and on a
+        # rotation the themes.json half is the ONLY reason it changes.
+        print("conundrum.html zones rebuilt from content/site.json + content/themes.json")
 
     if themes_changed:
         THEMES_HTML.write_text(themes_new, encoding="utf-8")

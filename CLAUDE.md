@@ -112,6 +112,20 @@ from the registry, so it can never disagree with what's actually live);
 | `tokens.css` | The append-only treatment layer, linked from the shell's `<head>` right after its inline base-token `<style>` block (so it wins the cascade): palette, texture, motion, and any layout CSS the theme needs (grid density, card anatomy). |
 | `theme.json` | `{name, slug, thesis, month, status, contrastPairs}` — `contrastPairs` is a list of `[fg-var, bg-var]` pairs `theme-doctor` checks against WCAG AA. `status` is informational only; the gallery and rotation never read it — `content/themes.json` (the registry) is what actually decides. |
 
+…plus the per-archetype set under `themes/<slug>/archetypes/`, which
+`theme-doctor` requires and will name if absent: `home.html`,
+`product.html`, `reading.html`, `utility.html`, and the stylesheets
+`product.css`, `product-tokens.css`, `utility.css`, `reading.css`. Two of
+those pair up: **`product.css` is the element dress** (`body`, `a:hover`,
+`section.hero`, `.card`, `.btn`) that `render-plugin-pages.py` inlines into
+its 15 generated pages, while **`product-tokens.css` is custom-property
+definitions and nothing else** — that is a gate, not a convention. The
+hand-authored product pages (`conundrum.html`, `rororo-plugins.html`) link
+the token half so they take the palette without inheriting a dress written
+for someone else's markup. `tokens.css`, `product-tokens.css`,
+`utility.css` and `reading.css` must each define every
+`archetypes.REQUIRED_TOKENS` name.
+
 **Building one:**
 
 1. Branch, create `themes/<slug>/{shell.html,tokens.css,theme.json}` — mirror `themes/phosphor-blueprint/` as the reference extraction.

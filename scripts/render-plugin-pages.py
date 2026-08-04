@@ -4,8 +4,8 @@ Reads content/plugin-pages.json (one entry per plugin + a shared family
 list) and emits <plugin-id>/index.html for each, plus plugins/index.html
 (the family index). Same no-build, inline-CSS idiom as render-hub.py —
 the page CSS is embedded verbatim in each page's <style> block, sourced
-from the active theme's archetypes/product.css (see STYLE below) rather
-than hardcoded in this file.
+from the active theme's archetypes/product.css + archetypes/
+product-tokens.css (see STYLE below) rather than hardcoded in this file.
 
 The design (hero + section cards + install + family + footer) is shared
 across every page; only the per-plugin content differs. Change the look
@@ -38,16 +38,53 @@ DATA = ROOT / "content" / "plugin-pages.json"
 # hero/work/brain/install/family shape below is the product archetype's
 # vocabulary in practice — see docs/theme-archetypes.md) but the CSS that
 # dresses that markup now lives with the theme, not here: STYLE is read
-# from the ACTIVE theme's archetypes/product.css every run, same
-# governance render-hub.py uses for its home/reading archetypes and the
-# utility pages' "theme-css" zone. A theme rotation's product.css reaches
-# these 15 pages on the next render, no code change required. Still
-# inlined (not linked) — this file's "no-build, inline-CSS idiom" per the
-# module docstring; only the CSS's *source* moved, not its delivery.
+# from the ACTIVE theme every run, same governance render-hub.py uses for
+# its home/reading archetypes and the utility pages' "theme-css" zone. A
+# theme rotation's product dress reaches these 15 pages on the next
+# render, no code change required. Still inlined (not linked) — this
+# file's "no-build, inline-CSS idiom" per the module docstring; only the
+# CSS's *source* moved, not its delivery.
+#
+# TWO files, concatenated:
+#   archetypes/product.css         — the element dress
+#   archetypes/product-tokens.css  — custom-property definitions only
+#
+# They are separate on disk because conundrum.html and rororo-plugins.html
+# LINK the token half and must not receive the dress half: they are
+# hand-authored, keep their own layout, and the dress's bare element
+# selectors (`body`, `a:hover`, `section.hero`, `.card`, `.btn`) land on
+# markup written for THIS renderer's templates, not theirs. See
+# product-tokens.css's header for the measurement behind that split.
+# Concatenating here is what keeps the split invisible to these 15 pages:
+# they still receive exactly one <style> block holding both halves.
+#
+# ORDER IS DRESS-FIRST, AND THAT IS NOT A STYLE CHOICE.
+#
+# product.css opens with `@import url('/fonts/fonts.css')`. CSS requires
+# @import to precede every rule but @charset/@layer — put ANY rule in front
+# of it and the browser silently drops the import. Concatenating tokens
+# first does exactly that: the whole brand type stack (Space Grotesk /
+# Inter / JetBrains Mono) stops loading and all 15 pages reflow to fallback
+# fonts. Measured, not theorised — tokens-first was tried and moved
+# 1,321,489 pixels on plugins/index.html alone and changed every page's
+# height. tests/test_render_plugin_pages.py pins the @import to the first
+# rule position in STYLE so this cannot regress silently.
+#
+# Order is otherwise inert: the two files share 11 custom-property names
+# and every one carries an identical value (asserted by
+# test_product_css_and_tokens_agree_on_every_shared_name), and custom
+# properties resolve at computed-value time, so product.css's treatment
+# rules read --pb-* fine from a block that appears after them.
 _theme_reg = theme_registry.load()
 _active_theme = theme_registry.active_slug(_theme_reg)
-_PRODUCT_CSS = theme_registry.theme_dir(_active_theme) / "archetypes" / "product.css"
-STYLE = _PRODUCT_CSS.read_text(encoding="utf-8")
+_ARCHETYPE_DIR = theme_registry.theme_dir(_active_theme) / "archetypes"
+_PRODUCT_TOKENS_CSS = _ARCHETYPE_DIR / "product-tokens.css"
+_PRODUCT_CSS = _ARCHETYPE_DIR / "product.css"
+STYLE = (
+    _PRODUCT_CSS.read_text(encoding="utf-8").rstrip("\n")
+    + "\n"
+    + _PRODUCT_TOKENS_CSS.read_text(encoding="utf-8")
+)
 
 COPY_SCRIPT = """
   <script>
