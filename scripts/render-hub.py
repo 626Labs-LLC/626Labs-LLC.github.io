@@ -57,6 +57,8 @@ THEMES_HTML = ROOT / "themes.html"
 PRESS_HTML = ROOT / "press.html"
 PRIVACY_HTML = ROOT / "privacy.html"
 ABOUT_HTML = ROOT / "about.html"
+THESIS_HTML = ROOT / "thesis.html"
+WORKFLOW_HTML = ROOT / "workflow.html"
 STORIES_DIR = ROOT / "content" / "stories"
 # Local Field Notes render to on-site reading pages under here:
 # editorial/<slug>/index.html, served at /editorial/<slug>/.
@@ -820,36 +822,53 @@ def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
     return "\n\n".join(cards)
 
 
-# ─── utility archetype stylesheet (press/privacy/themes "theme-css" zone) ──
+# ─── hand-authored pages' theme stylesheet ("theme-css" zone) ──────────────
 #
-# press.html, privacy.html, and themes.html carry no site.json-driven
-# content — unlike index.html's SITE_JSON zones or the Field Notes'
-# markdown, nothing regenerates them from data. But their <head>
-# stylesheet <link> was hardcoded to "phosphor-blueprint" specifically,
-# which meant they'd stay frozen in that dress forever even after the
-# site rotates to a different theme (found in A4 review — utility.html
-# had zero live consumers, so "the whole site rotates" had a real gap).
-# This zone is the fix: the link stays renderer-owned, computed from
-# the ACTIVE theme every run, same governance as the "themes" zone above
-# even though no page content changes.
+# These pages carry no site.json-driven content — unlike index.html's
+# SITE_JSON zones or the Field Notes' markdown, nothing regenerates them
+# from data. But their <head> stylesheet <link> was hardcoded to
+# "phosphor-blueprint" specifically, which meant they'd stay frozen in
+# that dress forever even after the site rotates to a different theme
+# (found in A4 review — utility.html had zero live consumers, so "the
+# whole site rotates" had a real gap). This zone is the fix: the link
+# stays renderer-owned, computed from the ACTIVE theme every run, same
+# governance as the "themes" zone above even though no page content
+# changes.
+#
+# NAME: this was UTILITY_CSS_HREFS when press/privacy/themes were its
+# only members. It now carries reading pages too (and product pages
+# next), so it is named for what it does — map a hand-authored page to
+# the theme-relative stylesheet its "theme-css" zone should point at —
+# rather than for the one archetype it started with.
 #
 # press.html/privacy.html link archetypes/utility.css (their shared chrome,
 # extracted verbatim from press.html — see themes/phosphor-blueprint/
-# archetypes/utility.css's header comment). themes.html keeps tokens.css:
+# archetypes/utility.css's header comment). thesis.html/workflow.html link
+# archetypes/reading.css, which is where their base token vocabulary and
+# the Phosphor Blueprint treatment tokens now live (each page used to
+# carry a private copy of both, which no rotation could reach — see that
+# file's "Reading archetype" section). themes.html keeps tokens.css:
 # switching it to utility.css would have changed its pixels (utility.css's
 # unconditional `h1 { text-shadow }` doesn't apply to themes.html today —
 # tokens.css's `header.hero h1` never matched `.page-hero` either, so
 # themes.html's h1 currently has no bloom at all; and press.html's
 # `.page-lead` is `max-width: 60ch` where themes.html's own copy is
-# `62ch`). Each theme is free to make different choices for this page
-# the next time it's touched for its own reasons — this fix only
-# guarantees the *link* rotates, not that every utility page ends up on
-# the exact same stylesheet.
-UTILITY_CSS_HREFS = {
+# `62ch`). Each theme is free to make different choices for these pages
+# the next time they're touched for their own reasons — this only
+# guarantees the *link* rotates, not that every page of one archetype
+# ends up on the exact same stylesheet.
+THEME_CSS_HREFS = {
     PRESS_HTML: "archetypes/utility.css",
     PRIVACY_HTML: "archetypes/utility.css",
     THEMES_HTML: "tokens.css",
+    THESIS_HTML: "archetypes/reading.css",
+    WORKFLOW_HTML: "archetypes/reading.css",
 }
+
+# Every page in THEME_CSS_HREFS whose ONLY renderer-owned zone is
+# "theme-css". themes.html is excluded because main() already handles it
+# alongside its gallery zone.
+THEME_CSS_ONLY_PAGES = (PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML)
 
 
 def render_theme_css_link(slug: str, css_rel_path: str) -> str:
@@ -866,7 +885,7 @@ def render_theme_css_link(slug: str, css_rel_path: str) -> str:
 # content/themes.json — hand-maintaining it inside about.html's own script
 # would drift the moment a theme is added, archived, or renamed. So this
 # is ONE narrow, renderer-owned zone in about.html, same governance as
-# UTILITY_CSS_HREFS/render_theme_css_link above (press.html/privacy.html/
+# THEME_CSS_HREFS/render_theme_css_link above (press.html/privacy.html/
 # themes.html already accepted this exact trade: a hand-authored page with
 # one small renderer-owned seam, not a full render-pipeline page).
 #
@@ -2178,30 +2197,30 @@ def main(argv: list[str]) -> int:
     conundrum_changed = conundrum_new is not None and conundrum_new != conundrum_old
 
     # themes.html — the rotation gallery, plus its "theme-css" stylesheet
-    # link (see UTILITY_CSS_HREFS above). Always rendered — content/
+    # link (see THEME_CSS_HREFS above). Always rendered — content/
     # themes.json always has an active theme, so there's always >=1 card
     # and always a slug to point the stylesheet at.
     themes_old = THEMES_HTML.read_text(encoding="utf-8")
     themes_new = substitute_zone(themes_old, "themes", render_themes_gallery(reg))
     themes_new = substitute_zone(
-        themes_new, "theme-css", render_theme_css_link(slug, UTILITY_CSS_HREFS[THEMES_HTML])
+        themes_new, "theme-css", render_theme_css_link(slug, THEME_CSS_HREFS[THEMES_HTML])
     )
     themes_changed = themes_new != themes_old
 
-    # press.html / privacy.html — no other zones, just the "theme-css" link
-    # (see UTILITY_CSS_HREFS above).
-    utility_css_pages = []
-    for page_path in (PRESS_HTML, PRIVACY_HTML):
+    # press.html / privacy.html / thesis.html / workflow.html — no other
+    # zones, just the "theme-css" link (see THEME_CSS_HREFS above).
+    theme_css_pages = []
+    for page_path in THEME_CSS_ONLY_PAGES:
         page_old = page_path.read_text(encoding="utf-8")
         page_new = substitute_zone(
-            page_old, "theme-css", render_theme_css_link(slug, UTILITY_CSS_HREFS[page_path])
+            page_old, "theme-css", render_theme_css_link(slug, THEME_CSS_HREFS[page_path])
         )
-        utility_css_pages.append((page_path, page_new, page_new != page_old))
+        theme_css_pages.append((page_path, page_new, page_new != page_old))
 
     # about.html — one renderer-owned zone, the easter-egg theme registry
     # (see render_about_theme_dresses above). Everything else on this page
     # stays hand-authored; this is the same narrow-seam trade
-    # UTILITY_CSS_HREFS already made for press.html/privacy.html/themes.html.
+    # THEME_CSS_HREFS already made for press.html/privacy.html/themes.html.
     about_old = ABOUT_HTML.read_text(encoding="utf-8")
     about_new = substitute_zone(about_old, "about-theme-toggle", render_about_theme_dresses(reg))
     about_changed = about_new != about_old
@@ -2239,7 +2258,7 @@ def main(argv: list[str]) -> int:
                   ("about.html", about_changed)) if drifted]
         stale += [
             page_path.relative_to(ROOT).as_posix()
-            for page_path, _, changed in utility_css_pages if changed
+            for page_path, _, changed in theme_css_pages if changed
         ]
         stale += [p.relative_to(ROOT).as_posix() for p in stale_stories]
         stale += [f"{d.relative_to(ROOT).as_posix()}/ (orphaned — prune)" for d in orphans]
@@ -2271,7 +2290,7 @@ def main(argv: list[str]) -> int:
         THEMES_HTML.write_text(themes_new, encoding="utf-8")
         print("themes.html zone rebuilt from content/themes.json")
 
-    for page_path, page_new, page_changed in utility_css_pages:
+    for page_path, page_new, page_changed in theme_css_pages:
         if page_changed:
             page_path.write_text(page_new, encoding="utf-8")
             print(f"{page_path.relative_to(ROOT)} theme-css zone rebuilt for active theme {slug!r}")

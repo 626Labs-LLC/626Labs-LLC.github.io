@@ -436,3 +436,84 @@ def test_missing_archetype_fails_loudly_instead_of_falling_back_to_live_index(tm
     assert "archetypes/home.html" in err
     assert "definitely-not-a-real-theme-slug" in err
     assert not (tmp_path / "index.html").exists()
+
+
+# ─── theme-css zone: the hand-authored pages' stylesheet <link> ───────────
+#
+# thesis.html and workflow.html used to carry a private :root token block
+# and a private copy of the theme's treatment layer, so a rotation could
+# not reach them — they'd have kept July's colors into September while
+# every other reading page moved on. They now resolve their stylesheet the
+# same renderer-owned way press.html/privacy.html/themes.html do. These
+# tests pin the wiring itself: the href has to be DERIVED from whatever
+# content/themes.json currently says is active, never a literal slug.
+
+
+def test_theme_css_map_covers_the_converted_reading_pages():
+    m = render_hub.THEME_CSS_HREFS
+    assert m[render_hub.THESIS_HTML] == "archetypes/reading.css"
+    assert m[render_hub.WORKFLOW_HTML] == "archetypes/reading.css"
+    # the pre-existing three are unchanged by the rename
+    assert m[render_hub.PRESS_HTML] == "archetypes/utility.css"
+    assert m[render_hub.PRIVACY_HTML] == "archetypes/utility.css"
+    assert m[render_hub.THEMES_HTML] == "tokens.css"
+
+
+def test_theme_css_only_pages_are_all_in_the_href_map():
+    # main() indexes THEME_CSS_HREFS by every page in THEME_CSS_ONLY_PAGES;
+    # a page in one list and not the other is a KeyError at render time.
+    for page in render_hub.THEME_CSS_ONLY_PAGES:
+        assert page in render_hub.THEME_CSS_HREFS
+    # themes.html is handled next to its gallery zone, not in this loop.
+    assert render_hub.THEMES_HTML not in render_hub.THEME_CSS_ONLY_PAGES
+
+
+def test_reading_pages_href_follows_the_active_slug_not_a_hardcoded_theme():
+    for slug in ("phosphor-blueprint", "some-future-theme"):
+        for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
+            link = render_hub.render_theme_css_link(
+                slug, render_hub.THEME_CSS_HREFS[page]
+            )
+            assert link == (
+                f'<link rel="stylesheet" href="/themes/{slug}/archetypes/reading.css">'
+            )
+
+
+def test_reading_pages_carry_the_zone_and_track_the_registry_on_disk():
+    slug = render_hub.theme_registry.load()["active"]
+    expected = render_hub.render_theme_css_link(slug, "archetypes/reading.css")
+    for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
+        html = page.read_text(encoding="utf-8")
+        assert "<!-- SITE_JSON:theme-css:start -->" in html
+        assert "<!-- SITE_JSON:theme-css:end -->" in html
+        assert expected in html
+        # substitute_zone is what main() runs; on a rendered tree it is a
+        # no-op, which is exactly what render-hub.py --check asserts.
+        assert render_hub.substitute_zone(html, "theme-css", expected) == html
+
+
+def test_reading_pages_define_no_tokens_of_their_own():
+    # The point of the conversion: the dress comes from the theme file, so
+    # a page re-growing a private :root would silently opt back out of the
+    # rotation while still passing every other check.
+    import re
+
+    for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
+        style = "\n".join(
+            re.findall(r"<style[^>]*>(.*?)</style>", page.read_text(encoding="utf-8"), re.S)
+        )
+        assert not re.search(r":root\s*\{", style), f"{page.name} re-grew a :root block"
+
+
+def test_reading_pages_resolve_every_var_they_read():
+    # Their tokens now live in the theme, with no page-local fallback — so
+    # an unresolved var() is a straight rendering break, not a stale value.
+    import re
+
+    css = (
+        render_hub.ROOT / "themes" / "phosphor-blueprint" / "archetypes" / "reading.css"
+    ).read_text(encoding="utf-8")
+    defined = set(re.findall(r"(--[\w-]+)\s*:", css))
+    for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
+        used = set(re.findall(r"var\(\s*(--[\w-]+)", page.read_text(encoding="utf-8")))
+        assert not used - defined, f"{page.name} reads undefined {sorted(used - defined)}"

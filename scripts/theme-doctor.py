@@ -84,12 +84,15 @@ ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
 # a theme rotating in without it raises an uncaught FileNotFoundError and
 # crashes all 15 plugin pages. press.html/privacy.html resolve
 # archetypes/utility.css the same unguarded way (render-hub.py's
-# UTILITY_CSS_HREFS zone). `reading` joins them as of A7: about.html's
+# THEME_CSS_HREFS zone). `reading` joins them as of A7: about.html's
 # client-side easter-egg toggle points a <link> at
 # `/themes/<slug>/archetypes/reading.css` for every theme it offers, and
 # this module's own reading-archetype gate reads the same file as the CSS
 # half of the vocabulary check (see `_archetype_source`/`_check_archetype`)
-# — a theme rotating in without it would break both. `home` needs no entry,
+# — a theme rotating in without it would break both. thesis.html and
+# workflow.html then made it load-bearing a third way: they link it
+# directly for their base token vocabulary, so a theme without it leaves
+# both pages with unresolved var()s and no fallback. `home` needs no entry,
 # since its CSS is the inline <style> block in archetypes/home.html itself,
 # already covered by REQUIRED_ARCHETYPES.
 REQUIRED_ARCHETYPE_CSS = {"product": "product.css", "utility": "utility.css", "reading": "reading.css"}
