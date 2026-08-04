@@ -535,14 +535,35 @@ Every theme gets one deterministic PNG at `assets/themes/<slug>.png`
 (1440x900) — `capture_theme_screenshot(slug, out_path)` in
 `scripts/freeze-theme.py`, alongside `freeze()` since the rotation workflow
 already invokes this file and the two capabilities are otherwise unrelated.
-Deterministic means fixed viewport, `document.fonts.ready` awaited, and
+Deterministic means fixed viewport, `document.fonts.ready` awaited,
 `reduced_motion="reduce"` (Playwright emulates the media query
-`index.html`'s own CSS already collapses every animation/transition under —
-no page code changes needed). Proven by capturing the same theme twice and
-sha256-comparing the PNGs: identical. Reuses theme-doctor.py's own
-harness shape (a local static server serving the repo root, `render-hub.py
---theme <slug> --out <tmp>` for the preview) rather than inventing a second
-one, without a runtime import dependency between the two files.
+`index.html`'s own CSS already collapses every animation/transition under),
+AND a Playwright `add_init_script` that runs before any page script:
+`Math.random` is replaced with a fixed-seed generator and the animation
+clock is frozen (`performance.now()` returns a constant, and every
+`requestAnimationFrame` callback is handed that same constant). Reuses
+theme-doctor.py's own harness shape (a local static server serving the
+repo root, `render-hub.py --theme <slug> --out <tmp>` for the preview)
+rather than inventing a second one, without a runtime import dependency
+between the two files.
+
+**The contract, for whoever adds a theme with dynamic content next:** a
+capture's determinism must never depend on what happens to be visible in
+the 1440x900 viewport, or on a page's own JS correctly gating its
+randomness/timing behind `prefers-reduced-motion`. It's enforced at the
+capture layer instead — `_DETERMINISTIC_CAPTURE_INIT_SCRIPT` neutralizes
+`Math.random`/`performance.now`/`requestAnimationFrame` for every page this
+function loads, unconditionally. Proven honestly: capturing the same theme
+twice with `full_page=True` (which pulls in sections a viewport-only
+thumbnail never renders — Phosphor Blueprint's own home archetype has two
+real, unconditional sources of frame-to-frame variance below the fold, an
+unseeded `Math.random()` shuffle in the Lab section and a
+`performance.now()`-driven canvas reveal in the About star map) and
+sha256-comparing: identical. A viewport-only capture (what the gallery
+thumbnail actually uses) was already identical before this fix too, purely
+because those two sections happened to sit below the fold — the
+`full_page=True` proof is what makes determinism a property of the capture
+mechanism rather than of today's layout.
 
 **Path convention:** `/assets/themes/<slug>.png`, keyed by slug alone — a
 theme's screenshot is captured once (retiring OR going live, whichever

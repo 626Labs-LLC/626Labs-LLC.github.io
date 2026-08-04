@@ -185,6 +185,52 @@ def _import_sync_playwright():
         return None
 
 
+# Determinism has to be a property of the CAPTURE, not of whatever happens
+# to be on-screen or gated behind reduced-motion in today's markup. Two real
+# sources of frame-to-frame variance live in index.html today — an
+# unconditional `Math.random()` shuffle picking 8 of the Lab pool
+# (renderLabShelf) and a `performance.now()`/`requestAnimationFrame`-driven
+# canvas reveal (the About star map). Both happen to be invisible in a
+# 1440x900 VIEWPORT screenshot purely because they sit below the fold today
+# — that's a coincidence of current layout, not a guarantee: a taller hero,
+# a reflowed Lab section, or a future theme's own home archetype could lift
+# either into frame with no code change here to catch it. So this init
+# script runs BEFORE any page script (Playwright's add_init_script hook),
+# replacing Math.random with a fixed-seed generator and freezing the
+# animation clock so performance.now() and every requestAnimationFrame
+# callback observe the same instant on every capture. Verified with a
+# full-page (not just viewport) byte-compare — see the task report — so the
+# proof exercises exactly the code paths this comment describes.
+_DETERMINISTIC_CAPTURE_INIT_SCRIPT = """
+(() => {
+  // Fixed-seed PRNG (mulberry32) replaces Math.random — same sequence
+  // every capture, whatever a page's shuffle/jitter/dust code draws from it.
+  var a = 0x626c0de;
+  function mulberry32() {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+  Math.random = mulberry32;
+
+  // Frozen animation clock: performance.now() always returns the same
+  // instant, and requestAnimationFrame callbacks are always handed that
+  // same instant too (the native rAF's timestamp argument is NOT derived
+  // from performance.now(), so both need overriding independently).
+  // setTimeout(..., 16) (not 0) keeps any self-perpetuating rAF loop
+  // throttled to ~60/s instead of a synchronous busy-loop, in case a
+  // future page's animation isn't gated behind prefers-reduced-motion.
+  var FROZEN_NOW = 0;
+  window.performance.now = function () { return FROZEN_NOW; };
+  window.requestAnimationFrame = function (cb) {
+    return window.setTimeout(function () { cb(FROZEN_NOW); }, 16);
+  };
+  window.cancelAnimationFrame = function (id) { window.clearTimeout(id); };
+})();
+"""
+
+
 def _render_theme_home(slug: str) -> str:
     """`slug`'s home archetype, rendered fresh via render-hub.py's own
     preview mode — the exact subprocess call theme-doctor.py already makes
@@ -204,9 +250,17 @@ def _render_theme_home(slug: str) -> str:
         return (Path(tmp) / "index.html").read_text(encoding="utf-8")
 
 
-def capture_theme_screenshot(slug: str, out_path: Path) -> Path:
-    """Deterministic 1440x900 PNG of `slug`'s home archetype, written to
-    `out_path`. Deterministic means:
+def capture_theme_screenshot(slug: str, out_path: Path, full_page: bool = False) -> Path:
+    """Deterministic PNG of `slug`'s home archetype at a fixed 1440x900
+    viewport, written to `out_path`. `full_page=False` (the default, and
+    what the rotation workflow always uses for the gallery thumbnail) crops
+    to that viewport; `full_page=True` captures the entire scrollable page
+    instead — used by this function's own determinism proof, so the proof
+    exercises sections a viewport-only thumbnail would never render at all
+    (see the module-level comment above `_DETERMINISTIC_CAPTURE_INIT_SCRIPT`
+    for why that distinction matters).
+
+    Deterministic means:
 
     - Fixed viewport (1440x900, no responsive breakpoint or scrollbar to
       shift the capture).
@@ -215,6 +269,11 @@ def capture_theme_screenshot(slug: str, out_path: Path) -> Path:
       `prefers-reduced-motion: reduce` media feature; index.html's own CSS
       already collapses every `animation`/`transition` under that query to
       near-zero duration, so no page code changes for this).
+    - `Math.random()` reseeded and the animation clock frozen BEFORE any
+      page script runs (`_DETERMINISTIC_CAPTURE_INIT_SCRIPT`, injected via
+      `page.add_init_script`) — a capture-level guarantee, not a bet that
+      every current and future bit of page JS gates its own randomness or
+      timing behind `prefers-reduced-motion`.
 
     Uses the same local-static-server + Playwright harness theme-doctor.py
     already runs for its own browser checks: serve the repo root on an
@@ -278,11 +337,15 @@ def capture_theme_screenshot(slug: str, out_path: Path) -> Path:
                     reduced_motion="reduce",
                 )
                 try:
+                    # Must be registered before navigation — add_init_script
+                    # runs before any of the page's own scripts, every time
+                    # this page navigates.
+                    page.add_init_script(_DETERMINISTIC_CAPTURE_INIT_SCRIPT)
                     page.goto(f"http://127.0.0.1:{port}/", wait_until="load", timeout=15000)
                     page.evaluate("document.fonts.ready")
                     page.wait_for_timeout(300)  # let deferred/async scripts settle
                     out_path.parent.mkdir(parents=True, exist_ok=True)
-                    page.screenshot(path=str(out_path))
+                    page.screenshot(path=str(out_path), full_page=full_page)
                 finally:
                     page.close()
             finally:
