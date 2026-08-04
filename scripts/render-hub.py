@@ -56,6 +56,7 @@ CONUNDRUM_HTML = ROOT / "conundrum.html"
 THEMES_HTML = ROOT / "themes.html"
 PRESS_HTML = ROOT / "press.html"
 PRIVACY_HTML = ROOT / "privacy.html"
+ABOUT_HTML = ROOT / "about.html"
 STORIES_DIR = ROOT / "content" / "stories"
 # Local Field Notes render to on-site reading pages under here:
 # editorial/<slug>/index.html, served at /editorial/<slug>/.
@@ -833,6 +834,50 @@ UTILITY_CSS_HREFS = {
 
 def render_theme_css_link(slug: str, css_rel_path: str) -> str:
     return f'<link rel="stylesheet" href="/themes/{slug}/{css_rel_path}">'
+
+
+# ─── About easter-egg theme registry ("about-theme-toggle" zone) ───────────
+#
+# about.html carries its own permanent default dress (Long Now Terminal,
+# the 2026-07-12 bake-off winner) and stays hand-authored otherwise — A3
+# found zero render-hub.py involvement there and A7 doesn't change that.
+# But the client-side theme-picker easter egg (A7) needs to know every
+# dress it may offer, and that list must never disagree with
+# content/themes.json — hand-maintaining it inside about.html's own script
+# would drift the moment a theme is added, archived, or renamed. So this
+# is ONE narrow, renderer-owned zone in about.html, same governance as
+# UTILITY_CSS_HREFS/render_theme_css_link above (press.html/privacy.html/
+# themes.html already accepted this exact trade: a hand-authored page with
+# one small renderer-owned seam, not a full render-pipeline page).
+#
+# The queue is deliberately NOT offered — approved-but-not-yet-live themes
+# aren't meant for public preview ahead of their own rotation. Item 0 is
+# always About's own default (css: null means "no override link, use the
+# page's own inline <style>"); then the live theme; then every archived
+# theme newest-first (same order render_themes_gallery uses).
+ABOUT_DEFAULT_DRESS = {"slug": "default", "label": "Long Now Terminal", "css": None}
+
+
+def render_about_theme_dresses(reg: dict, root: Path = ROOT) -> str:
+    dresses = [dict(ABOUT_DEFAULT_DRESS)]
+    active = reg.get("active")
+    if active:
+        meta = _theme_meta(active, root)
+        dresses.append({
+            "slug": active,
+            "label": meta["name"],
+            "css": f"/themes/{active}/archetypes/reading.css",
+        })
+    for entry in reversed(reg.get("archive") or []):
+        slug = entry.get("slug", "")
+        meta = _theme_meta(slug, root)
+        dresses.append({
+            "slug": slug,
+            "label": meta["name"],
+            "css": f"/themes/{slug}/archetypes/reading.css",
+        })
+    payload = json.dumps(dresses, separators=(",", ":"))
+    return f'<script type="application/json" id="about-theme-registry">{payload}</script>'
 
 
 def render_product(p: dict) -> str:
@@ -2133,6 +2178,14 @@ def main(argv: list[str]) -> int:
         )
         utility_css_pages.append((page_path, page_new, page_new != page_old))
 
+    # about.html — one renderer-owned zone, the easter-egg theme registry
+    # (see render_about_theme_dresses above). Everything else on this page
+    # stays hand-authored; this is the same narrow-seam trade
+    # UTILITY_CSS_HREFS already made for press.html/privacy.html/themes.html.
+    about_old = ABOUT_HTML.read_text(encoding="utf-8")
+    about_new = substitute_zone(about_old, "about-theme-toggle", render_about_theme_dresses(reg))
+    about_changed = about_new != about_old
+
     feed_new = render_atom_feed(stories)
     feed_old = FEED_PATH.read_text(encoding="utf-8") if FEED_PATH.exists() else None
 
@@ -2162,7 +2215,8 @@ def main(argv: list[str]) -> int:
                  (("index.html", index_changed), ("feed.xml", feed_changed),
                   ("sitemap.xml", sitemap_changed),
                   ("conundrum.html", conundrum_changed),
-                  ("themes.html", themes_changed)) if drifted]
+                  ("themes.html", themes_changed),
+                  ("about.html", about_changed)) if drifted]
         stale += [
             page_path.relative_to(ROOT).as_posix()
             for page_path, _, changed in utility_css_pages if changed
@@ -2201,6 +2255,10 @@ def main(argv: list[str]) -> int:
         if page_changed:
             page_path.write_text(page_new, encoding="utf-8")
             print(f"{page_path.relative_to(ROOT)} theme-css zone rebuilt for active theme {slug!r}")
+
+    if about_changed:
+        ABOUT_HTML.write_text(about_new, encoding="utf-8")
+        print("about.html theme-toggle registry rebuilt from content/themes.json")
 
     if feed_changed:
         FEED_PATH.write_text(feed_new, encoding="utf-8")
