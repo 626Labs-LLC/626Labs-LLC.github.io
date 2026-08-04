@@ -94,6 +94,11 @@ def test_live_theme_passes_static_checks():
     assert td.check_chrome(html, "") == []
 
 
+def _active_slug():
+    """Whatever content/themes.json says is live right now."""
+    return td.theme_registry.active_slug(td.theme_registry.load())
+
+
 class _StubConsoleMessage:
     """A console message as _check_viewport reads one: `.type`, `.text`, and
     a `.location` dict the off-origin filter attributes it by."""
@@ -117,6 +122,10 @@ class _StubRoute:
 
     def continue_(self):
         self.verdict = "continue"
+
+    def fulfill(self, status, content_type, body):
+        self.verdict = "fulfill"
+        self.body = body
 
 
 class _StubPage:
@@ -519,20 +528,24 @@ def test_main_theme_missing_reading_css_fails_the_gate(monkeypatch, tmp_path, ca
 
 
 def test_main_theme_with_all_archetype_css_files_clears_completeness(monkeypatch, tmp_path, capsys):
-    # A complete stub theme must get PAST the completeness gate (it may
-    # still fail later, e.g. because render-hub.py --theme isn't mocked
-    # here) — proves the required-files check doesn't over-fire on a theme
-    # that actually has all three CSS artifacts.
+    # A complete stub theme must get PAST the completeness gate — the
+    # required-files check must not over-fire on a theme that has every CSS
+    # artifact.
+    #
+    # The earlier cut of this asserted on main()'s STDOUT with subprocess.run
+    # unstubbed, so main() died at the render step long before the archetype
+    # loop and the three "not in out" assertions were vacuously true. It
+    # passed identically with the completeness gate deleted. It now calls the
+    # checker directly, which is the thing under test, and asserts the empty
+    # result rather than the absence of a string.
     tdir = tmp_path / "themes" / "stub-theme"
     _make_complete_theme_dir(tdir)
-
-    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
-
-    td.main(["stub-theme"])
-    out = capsys.readouterr().out
-    assert "product.css" not in out
-    assert "utility.css" not in out
-    assert "reading.css" not in out
+    missing = [f for f in td.REQUIRED_ARCHETYPE_CSS.values()
+               if not (tdir / "archetypes" / f).exists()]
+    assert missing == []
+    for label in td.REQUIRED_TOKEN_CSS:
+        text = (tdir / label).read_text(encoding="utf-8")
+        assert td.check_required_tokens(text) == [], label
 
 
 # ─── final review Fix 1: the required-tokens contract ──────────────────────
@@ -772,12 +785,24 @@ def test_archetype_token_css_returns_the_right_file_or_nothing():
 
 
 def test_archetype_token_css_keys_name_files_that_exist():
-    tdir = ROOT / "themes" / "phosphor-blueprint"
-    assert set(td.ARCHETYPE_TOKEN_CSS) == {"product", "reading"}
+    # Three archetypes, not two. `utility` maps to utility.css — the same
+    # file _archetype_source already passes as utility's dress — so it is
+    # appended twice and therefore WINS over tokens.css. That is the point:
+    # press.html and privacy.html link archetypes/utility.css and nothing
+    # else, so grading them against tokens.css's ramp graded a page nobody
+    # serves. Same bug this dict was created to fix for product and reading.
+    tdir = ROOT / "themes" / _active_slug()
+    assert set(td.ARCHETYPE_TOKEN_CSS) == {"product", "reading", "utility"}
     for archetype, filename in td.ARCHETYPE_TOKEN_CSS.items():
         assert archetype in td.archetypes.ARCHETYPES
         assert (tdir / "archetypes" / filename).exists(), filename
-        assert f"archetypes/{filename}" in td.TOKEN_ONLY_CSS
+        # TOKEN_ONLY_CSS covers only the archetypes that were SPLIT into a
+        # dress and a token file. utility.css is press.html's own dress
+        # coming home and is deliberately not token-only.
+        if archetype in ("product", "reading"):
+            assert f"archetypes/{filename}" in td.TOKEN_ONLY_CSS
+        else:
+            assert f"archetypes/{filename}" not in td.TOKEN_ONLY_CSS
 
 
 def test_reading_contrast_is_actually_GRADED_not_merely_unverified():
@@ -790,7 +815,12 @@ def test_reading_contrast_is_actually_GRADED_not_merely_unverified():
     """
     import json
 
-    tdir = ROOT / "themes" / "phosphor-blueprint"
+    # The ACTIVE theme, never a hardcoded slug. rotate-theme.yml runs pytest
+    # AFTER it flips content/themes.json, so a slug pinned here re-verifies
+    # the theme that just RETIRED while the one going live is never graded —
+    # and the doctor passes either way, which is the whole reason this test
+    # exists. Same discipline test_render_hub.py's token tests already use.
+    tdir = ROOT / "themes" / _active_slug()
     pairs = json.loads((tdir / "theme.json").read_text(encoding="utf-8"))["contrastPairs"]
     assert pairs, "the live theme declares no contrastPairs"
 
@@ -873,9 +903,13 @@ def test_browser_checks_open_every_hand_authored_product_page():
     # mod-launcher-games.html fetches off-origin — but every page here
     # already loads //gc.zgo.at/count.js, so that dependency existed either
     # way and is now closed in _check_viewport instead of routed around.
+    # All six hand-authored pages that link a theme stylesheet. The reading
+    # pair joined last and for the same reason as the product four; the
+    # first time this gate opened thesis.html it found a live horizontal
+    # scroll at 390px, which is the argument for the tuple in one line.
     assert td.BROWSER_CHECK_LIVE_PAGES == (
         "conundrum.html", "rororo-plugins.html", "rororo.html",
-        "mod-launcher-games.html",
+        "mod-launcher-games.html", "thesis.html", "workflow.html",
     )
     previewable = _render_hub_previewable_pages()
     for name in td.BROWSER_CHECK_LIVE_PAGES:
@@ -926,10 +960,20 @@ def test_off_origin_requests_are_aborted_before_they_leave():
     page.route_handler(analytics)
     assert analytics.verdict == "abort"
 
+    # The game feed is the one off-origin URL answered from a committed
+    # fixture rather than aborted — otherwise the gate only ever sees
+    # mod-launcher-games.html's fetch-failed fallback. Still no network:
+    # the body comes off disk.
     feed = _StubRoute(
         "https://raw.githubusercontent.com/e/626-game-manifest/main/supported-games.json")
     page.route_handler(feed)
-    assert feed.verdict == "abort"
+    assert feed.verdict == "fulfill"
+    assert '"schemaVersion": 1' in feed.body
+
+    # ...and nothing else off-origin gets that treatment.
+    other = _StubRoute("https://raw.githubusercontent.com/e/other-repo/main/x.json")
+    page.route_handler(other)
+    assert other.verdict == "abort"
 
 
 def test_console_errors_are_the_pages_own_not_a_third_party_hosts():

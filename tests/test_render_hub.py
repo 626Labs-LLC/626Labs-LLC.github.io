@@ -467,6 +467,216 @@ def test_theme_css_map_covers_the_converted_reading_pages():
     assert m[render_hub.THEMES_HTML] == "tokens.css"
 
 
+def _page_style(page):
+    """Every <style> block on `page`, joined. Reading only the first one is a
+    silent hole: three of these pages declare their treatment in a later
+    block than their base rules."""
+    import re
+
+    return "\n".join(
+        re.findall(r"<style[^>]*>(.*?)</style>", page.read_text(encoding="utf-8"), re.S)
+    )
+
+
+def _var_reads(css):
+    """(name, has_fallback) for every var() in `css`, parens balanced so
+    `var(--a, var(--b))` reports --a with a fallback AND --b without one."""
+    import re
+
+    out = []
+    for m in re.finditer(r"var\(\s*(--[\w-]+)", css):
+        depth, i, comma = 1, m.end(), False
+        while i < len(css) and depth:
+            if css[i] == "(":
+                depth += 1
+            elif css[i] == ")":
+                depth -= 1
+            elif css[i] == "," and depth == 1:
+                comma = True
+            i += 1
+        out.append((m.group(1), comma))
+    return out
+
+
+# Every hand-authored page that resolves its palette from a theme file. Not
+# just the product four: the C1 rule below is about the whole conversion.
+CONVERTED_PAGES = (
+    render_hub.PRESS_HTML, render_hub.PRIVACY_HTML,
+    render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML,
+    render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML,
+    render_hub.RORORO_HTML, render_hub.MODLAUNCHERGAMES_HTML,
+)
+
+
+def test_no_converted_page_renders_broken_under_a_contract_satisfying_theme():
+    """THE rule the whole conversion rests on: a theme that defines
+    archetypes.REQUIRED_TOKENS exactly, and nothing else, must not break any
+    page that gave up its private tokens.
+
+    It could, and did. Every one of these pages had its --pb-* treatment
+    tokens moved into the theme, where they are deliberately NOT part of the
+    contract. A from-scratch theme satisfying all 47 required names passed
+    theme-doctor --browser --require-browser — an unresolved var() logs no
+    console error and causes no horizontal scroll — and would have rotated in
+    unattended. Then `body { background: <gradients>, var(--pb-field) }` goes
+    invalid-at-computed-value-time and resolves to TRANSPARENT, and five
+    pages render light-grey text on browser-default white.
+
+    So: every name a page reads must either be in the contract, be declared
+    by the page itself, or carry a fallback. Checked by parsing rather than
+    by rendering, so it is exhaustive rather than a spot check.
+    """
+    required = frozenset(render_hub.archetypes.REQUIRED_TOKENS)
+    for page in CONVERTED_PAGES:
+        style = _page_style(page)
+        declared = {n for n, _ in
+                    __import__("re").findall(r"(--[\w-]+)\s*:\s*([^;{}]+)", style)}
+        unguarded = sorted({
+            name for name, has_fallback in _var_reads(style)
+            if not has_fallback and name not in required and name not in declared
+        })
+        assert not unguarded, (
+            f"{page.name} reads {unguarded} with no fallback. None is in "
+            f"REQUIRED_TOKENS, so a theme that satisfies the contract exactly "
+            f"leaves the declaration invalid — transparent backgrounds, no "
+            f"borders, unstyled text."
+        )
+
+
+def test_no_converted_page_overrides_a_contracted_token():
+    """The other half of the same finding. A page that redefines --bg-0 or
+    --border-1 after the theme's <link> is a page the rotation cannot reach:
+    a new theme can define those names perfectly and still not touch it.
+    That is the same "a copy no rotation can reach" defect the private :root
+    blocks had, one indirection deeper.
+
+    Page-local aliases are fine and are how the treatment survives — they
+    just have to be page-local NAMES, not contracted ones.
+    """
+    import re
+
+    required = frozenset(render_hub.archetypes.REQUIRED_TOKENS)
+    for page in CONVERTED_PAGES:
+        style = re.sub(r"/\*.*?\*/", "", _page_style(page), flags=re.S)
+        shadowed = sorted({n for n, _ in re.findall(r"(--[\w-]+)\s*:\s*([^;{}]+)", style)
+                           if n in required})
+        assert not shadowed, (
+            f"{page.name} redefines contracted token(s) {shadowed} after the "
+            f"theme's stylesheet link — the rotation cannot reach them"
+        )
+
+
+def test_no_workflow_hand_enumerates_a_renderer_owned_page():
+    """I1. render-hub.py rewrites ten hand-authored pages on every run, and
+    both CI workflows have to name them to commit them. Those names were
+    repeated in three places across two YAML files with nothing comparing
+    them to THEME_CSS_HREFS — so adding an eleventh page meant the renderer
+    rewrote it, --check passed because it WAS rendered, the commit step left
+    it out, and the site moved to ten pages on the new theme and one on the
+    old. A8 already found exactly that for press/privacy/about, after a
+    rotation had run.
+
+    Both lists come from `--list-renderer-owned-pages` now. This asserts the
+    lists are DERIVED rather than merely correct-today: a page name appearing
+    literally in either workflow's commands is the drift starting again.
+    """
+    import re
+
+    owned = {p.name for p in render_hub.THEME_CSS_HREFS} | {render_hub.ABOUT_HTML.name}
+    for wf in ("rebuild-hub.yml", "rotate-theme.yml"):
+        text = (render_hub.ROOT / ".github" / "workflows" / wf).read_text(encoding="utf-8")
+        # Comments explain; command lines act. Only the latter matter.
+        commands = "\n".join(
+            line for line in text.splitlines() if not line.lstrip().startswith("#")
+        )
+        assert "--list-renderer-owned-pages" in commands, (
+            f"{wf} does not ask render-hub.py which pages it owns"
+        )
+        named = sorted(
+            n for n in owned
+            if re.search(r"(?<![\w/-])" + re.escape(n) + r"\b", commands)
+        )
+        assert not named, (
+            f"{wf} hand-enumerates renderer-owned page(s) {named} — derive them "
+            f"from `render-hub.py --list-renderer-owned-pages` instead"
+        )
+
+
+def test_list_renderer_owned_pages_is_every_page_the_renderer_rewrites(capsys):
+    """...and the command has to actually emit them, or the workflows commit
+    nothing. Posix paths, LF-terminated: a trailing CR reaches git as a
+    different pathspec and `git add` dies with "did not match any files"."""
+    rc = render_hub.main(["--list-renderer-owned-pages"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    listed = [line for line in out.split("\n") if line]
+    expected = sorted(
+        {p.relative_to(render_hub.ROOT).as_posix() for p in render_hub.THEME_CSS_HREFS}
+        | {render_hub.ABOUT_HTML.relative_to(render_hub.ROOT).as_posix()}
+    )
+    assert listed == expected
+    assert "\r" not in out
+
+
+def test_browser_gate_serves_the_game_feed_from_a_committed_fixture():
+    """mod-launcher-games.html renders its whole body from an off-origin
+    manifest, so under third-party isolation the browser gate would grade
+    only its fetch-failed fallback — the page with the most complex layout of
+    the six, checked in its emptiest state. One fixture buys the populated
+    layout back without reopening the network dependency.
+
+    Pins that the fixture exists, parses, and is shaped like what the page
+    validates (`schemaVersion === 1` and an array of games), because a
+    fixture that silently stops matching leaves the gate quietly back where
+    it started.
+    """
+    import importlib.util
+    import json
+
+    spec = importlib.util.spec_from_file_location(
+        "theme_doctor_for_fixture_test", render_hub.ROOT / "scripts" / "theme-doctor.py"
+    )
+    td = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(td)
+
+    assert "626-game-manifest" in td._OFF_ORIGIN_FIXTURES
+    content_type, body = td._OFF_ORIGIN_FIXTURES["626-game-manifest"]
+    assert content_type == "application/json"
+    data = json.loads(body)
+    assert data["schemaVersion"] == 1
+    assert isinstance(data["games"], list) and data["games"]
+    tiers = {g["tier"] for g in data["games"]}
+    assert {"engine-curated", "nexus-only"} <= tiers, (
+        "the fixture must exercise both game-row lists, not just one"
+    )
+    assert any(isinstance(g.get("featured"), int) for g in data["games"]), (
+        "the fixture must populate the featured cover rail too"
+    )
+
+
+def test_every_stylesheet_a_page_links_is_one_the_doctor_token_checks():
+    """The load-bearing invariant of the whole branch, and nothing asserted
+    it. render-hub.py decides which stylesheet each bespoke page LINKS;
+    theme-doctor.py decides which stylesheets get checked for token
+    completeness. If those two sets ever drift apart, a page links a file
+    the gate never grades and ships with unresolved var()s — green suite,
+    broken page. Point one page at archetypes/reading.css by mistake and
+    that is exactly what happens.
+    """
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "theme_doctor_for_render_hub_test", render_hub.ROOT / "scripts" / "theme-doctor.py"
+    )
+    td = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(td)
+
+    assert set(render_hub.THEME_CSS_HREFS.values()) == set(td.REQUIRED_TOKEN_CSS), (
+        "the stylesheets bespoke pages link and the stylesheets the doctor "
+        "checks for token completeness have drifted apart"
+    )
+
+
 # The bespoke product pages: hand-authored, each keeping its own layout,
 # each linking the theme's product TOKEN file for its palette and nothing
 # else. Kept as one list so a fifth page joins every test below at once
@@ -525,6 +735,15 @@ def test_theme_css_constants_agree_in_both_directions():
     )
     for page in render_hub.THEME_CSS_MULTI_ZONE_PAGES:
         assert page in render_hub.THEME_CSS_HREFS
+    # Membership, not just consistency. Every assertion above stays true if
+    # THESIS_HTML is moved into THEME_CSS_MULTI_ZONE_PAGES — and main()
+    # then stops rendering its theme-css zone entirely, because that tuple
+    # is the EXCLUSION list and thesis.html has no block of its own. The
+    # exclusions are exactly the two pages main() renders in their own
+    # block, and that is a fact worth stating rather than deriving.
+    assert render_hub.THEME_CSS_MULTI_ZONE_PAGES == (
+        render_hub.THEMES_HTML, render_hub.CONUNDRUM_HTML,
+    )
 
 
 def test_conundrum_keeps_its_gallery_zones_when_the_theme_css_zone_renders():
@@ -596,11 +815,19 @@ def test_reading_pages_own_their_scanline_overlay_rule():
     # they no longer link. A page with the element and no rule renders no
     # overlay at all — invisible to a token-completeness gate, and a real
     # pixel change. conundrum.html has always had it this way.
+    #
+    # Scanned as a RULE, not as a substring of raw markup — the same two
+    # holes its product twin had: a plain substring check passes on
+    # `/* .pb-scanlines lives in the theme now */`, which is exactly the
+    # comment someone leaves while deleting the rule, and reading only the
+    # first <style> block misses a rule declared in a later one.
+    import re
+
     for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
         html = page.read_text(encoding="utf-8")
         assert 'class="pb-scanlines"' in html, f"{page.name} lost the element"
-        style = html.split("</style>")[0]
-        assert ".pb-scanlines" in style, (
+        style = re.sub(r"/\*.*?\*/", "", _page_style(page), flags=re.S)
+        assert re.search(r"(^|[\s,}])\.pb-scanlines\s*[,{]", style), (
             f"{page.name} carries a .pb-scanlines element but declares no rule "
             "for it — the theme no longer supplies one"
         )
@@ -717,8 +944,7 @@ def test_product_pages_own_their_scanline_overlay_rule():
         html = page.read_text(encoding="utf-8")
         if 'class="pb-scanlines"' not in html:
             continue  # rororo-plugins.html is still on the pre-treatment dress
-        style = "\n".join(re.findall(r"<style[^>]*>(.*?)</style>", html, re.S))
-        style = re.sub(r"/\*.*?\*/", "", style, flags=re.S)
+        style = re.sub(r"/\*.*?\*/", "", _page_style(page), flags=re.S)
         assert re.search(r"(^|[\s,}])\.pb-scanlines\s*[,{]", style), (
             f"{page.name} carries a .pb-scanlines element but declares no rule "
             "for it — the theme supplies tokens to these pages, not rules"
@@ -739,10 +965,15 @@ def test_product_pages_resolve_every_var_they_read():
     ).read_text(encoding="utf-8")
     defined = set(re.findall(r"(--[\w-]+)\s*:", css))
     for page in PRODUCT_TOKEN_PAGES:
-        used = set(re.findall(r"var\(\s*(--[\w-]+)", page.read_text(encoding="utf-8")))
-        assert not used - defined, (
-            f"{page.name} reads {sorted(used - defined)}, undefined in "
-            f"themes/{slug}/archetypes/product-tokens.css"
+        html = page.read_text(encoding="utf-8")
+        used = set(re.findall(r"var\(\s*(--[\w-]+)", html))
+        # A page may declare its own --page-* aliases (see the C1 fix); those
+        # resolve locally by definition. Everything else has to come from the
+        # theme.
+        local = set(re.findall(r"(--[\w-]+)\s*:", _page_style(page)))
+        assert not used - defined - local, (
+            f"{page.name} reads {sorted(used - defined - local)}, undefined in "
+            f"themes/{slug}/archetypes/product-tokens.css and not declared locally"
         )
 
 

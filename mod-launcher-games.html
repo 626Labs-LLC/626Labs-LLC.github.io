@@ -73,7 +73,7 @@
     backdrop-filter: blur(16px) saturate(140%);
     -webkit-backdrop-filter: blur(16px) saturate(140%);
     background: rgba(15,31,49,.65);
-    border-bottom: 1px solid var(--border-1);
+    border-bottom: 1px solid var(--page-hairline);
   }
   .topnav-inner{
     max-width: 1180px; margin: 0 auto; padding: 14px 32px;
@@ -112,7 +112,7 @@
     margin: 34px 0 40px;
     display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px;
     background: rgba(25,46,68,.5);
-    border:1px solid var(--border-1); border-radius: var(--r-lg);
+    border:1px solid var(--page-hairline); border-radius: var(--r-lg);
     box-shadow: var(--inner-stroke);
     padding: 16px 20px;
   }
@@ -125,7 +125,7 @@
     display:inline-flex; align-items:center; gap:8px;
     font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
     padding: 9px 16px; border-radius: 9px; text-decoration:none; cursor:pointer;
-    border:1px solid var(--border-2); color:var(--fg-2); background: rgba(255,255,255,.03);
+    border:1px solid var(--page-panel-border); color:var(--fg-2); background: rgba(255,255,255,.03);
     transition: border-color var(--dur-fast), color var(--dur-fast), background var(--dur-fast);
   }
   .btn:hover{ border-color: var(--border-accent); color: var(--fg-1); }
@@ -146,8 +146,8 @@
   .cover-card{ display:flex; flex-direction:column; gap:8px; }
   .cover-frame{
     position:relative; aspect-ratio: 2 / 3; border-radius: var(--r-md); overflow:hidden;
-    border:1px solid var(--border-1);
-    box-shadow: var(--shadow-2), var(--inner-stroke);
+    border:1px solid var(--page-hairline);
+    box-shadow: var(--shadow-2, 0 0 0 0 transparent), var(--inner-stroke);
     background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy-deep) 100%);
     transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
   }
@@ -181,7 +181,7 @@
   .row{
     display:flex; align-items:center; gap:14px; flex-wrap:wrap;
     background: rgba(25,46,68,.5);
-    border:1px solid var(--border-1); border-radius: var(--r-md);
+    border:1px solid var(--page-hairline); border-radius: var(--r-md);
     box-shadow: var(--inner-stroke);
     padding: 11px 16px;
     transition: border-color var(--dur-fast);
@@ -208,7 +208,7 @@
     color:var(--fg-muted); padding: 28px 0;
   }
   .fallback{
-    background: rgba(25,46,68,.5); border:1px solid var(--border-1); border-radius: var(--r-lg);
+    background: rgba(25,46,68,.5); border:1px solid var(--page-hairline); border-radius: var(--r-lg);
     padding: 22px; color:var(--fg-3); font-size:14px; line-height:1.6;
   }
 
@@ -217,7 +217,7 @@
     margin-top: 52px;
     display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px;
     background: rgba(25,46,68,.5);
-    border:1px solid var(--border-1); border-radius: var(--r-lg);
+    border:1px solid var(--page-hairline); border-radius: var(--r-lg);
     box-shadow: var(--inner-stroke);
     padding: 18px 20px;
   }
@@ -226,7 +226,7 @@
   .request-strip .spacer{ flex:1; }
 
   .footnote{
-    margin-top: 56px; padding-top: 22px; border-top:1px solid var(--border-1);
+    margin-top: 56px; padding-top: 22px; border-top:1px solid var(--page-hairline);
     display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px 24px;
     font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--fg-muted);
   }
@@ -252,41 +252,60 @@
      ============================================================ */
   .pb-scanlines {
     position: fixed; inset: 0; pointer-events: none; z-index: 60; /* above nav (50), below nothing else here */
-    background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+    background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
   }
 
   /* The treatment REPOINTING base tokens — this page's own styling
      decision, not a copy of the theme's palette. Every value resolves
      through a theme-owned name, so the rotation reaches all of it. */
+  /* ── The treatment, expressed so it cannot strand this page ──────────
+     Each alias reads THIS theme's treatment name and falls back to the
+     contracted token behind it. Under phosphor-blueprint every one
+     resolves to the --pb-* value, exactly as before. Under a theme that
+     satisfies archetypes.REQUIRED_TOKENS and ships no treatment, the
+     structural aliases fall through to --bg-0/--border-1/--border-2 and
+     the decorative ones disappear, so the page rotates instead of
+     rendering on a white field with unresolved var()s.
+
+     Note what is NOT here: this block no longer redefines --bg-0,
+     --border-1 or --border-2. A page that overrides a contracted token is
+     a page the rotation cannot reach, which is the same defect as the
+     private :root it replaced, one indirection deeper. */
   :root {
-    --bg-0: var(--pb-field);
-    --border-1: var(--pb-hairline);
-    --border-2: var(--pb-panel-border);
+    --page-field: var(--pb-field, var(--bg-0));
+    --page-hairline: var(--pb-hairline, var(--border-1));
+    --page-panel-border: var(--pb-panel-border, var(--border-2));
+    --page-panel: var(--pb-panel, var(--bg-2));
+    --page-grid-fine: var(--pb-grid-fine, transparent);
+    --page-grid-coarse: var(--pb-grid-coarse, transparent);
+    --page-scanline: var(--pb-scanline, transparent);
+    --page-bloom: var(--pb-bloom-cyan, none);
+    --page-trail: var(--pb-trail, none);
   }
 
   body {
     background:
-      linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
-      linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
-      linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-      linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-      var(--pb-field);
+      linear-gradient(90deg, var(--page-grid-fine) 1px, transparent 1px),
+      linear-gradient(0deg,  var(--page-grid-fine) 1px, transparent 1px),
+      linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+      linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+      var(--page-field);
     background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
   }
   @media (max-width: 720px) {
     body {
       background:
-        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-        var(--pb-field);
+        linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+        var(--page-field);
       background-size: 120px 120px, 120px 120px;
     }
   }
   .grid-bg { display: none; } /* body's drafting grid owns the field — two grids moiré */
-  .topnav { background: rgba(0,0,0,.72); border-bottom-color: var(--pb-panel-border); }
-  .host-strip, .row, .request-strip, .fallback { background: var(--pb-panel); }
-  h1 { text-shadow: var(--pb-bloom-cyan); }
-  .btn.primary:hover { box-shadow: var(--pb-trail); }
+  .topnav { background: rgba(0,0,0,.72); border-bottom-color: var(--page-panel-border); }
+  .host-strip, .row, .request-strip, .fallback { background: var(--page-panel); }
+  h1 { text-shadow: var(--page-bloom); }
+  .btn.primary:hover { box-shadow: var(--page-trail); }
   /* Cover placeholders keep the launcher's own navy placeholder language —
      they're product tiles (mirror the app), not page chrome. */
   /* PB icon stabilizer — the brand mark is the launcher's solid app-icon

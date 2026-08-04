@@ -2144,6 +2144,38 @@ def apply_section_toggles(html: str, sections: dict) -> str:
 
 # ─── main ───────────────────────────────────────────────────────────
 def main(argv: list[str]) -> int:
+    # --list-renderer-owned-pages: one repo-relative, posix-style path per
+    # line, and nothing else on stdout. Every hand-authored page this script
+    # rewrites on a run — the theme-css pages plus about.html's easter-egg
+    # registry — so the CI workflows stop hand-enumerating them.
+    #
+    # Same mechanism, and the same reason, as
+    # render-plugin-pages.py --list-outputs. Those nine names were repeated
+    # in three places across two workflows with nothing comparing them to
+    # THEME_CSS_HREFS. Add a tenth page to that map, and: the renderer
+    # rewrites it, --check passes because it WAS rendered, the commit step's
+    # list does not name it, and main() ships nine pages wearing the new
+    # theme and one wearing the old. This repo has already had that exact
+    # bug once — A8 found press.html/privacy.html/about.html missing from
+    # rotate-theme.yml's git-add list, after a rotation had run.
+    #
+    # index.html/feed.xml/sitemap.xml/editorial/ are deliberately NOT here:
+    # they are pipeline outputs the workflows name for their own reasons,
+    # not the hand-authored-page seam this exists to keep honest.
+    if "--list-renderer-owned-pages" in argv:
+        # LF explicitly — on Windows print() emits CRLF and a trailing \r
+        # reaches git as a different pathspec. Same discipline
+        # render-plugin-pages.py --list-outputs documents.
+        pages = sorted(
+            {*THEME_CSS_HREFS, ABOUT_HTML},
+            key=lambda p: p.relative_to(ROOT).as_posix(),
+        )
+        sys.stdout.reconfigure(newline="\n")
+        sys.stdout.write(
+            "".join(f"{p.relative_to(ROOT).as_posix()}\n" for p in pages)
+        )
+        return 0
+
     theme_slug = None
     if "--theme" in argv:
         theme_slug = argv[argv.index("--theme") + 1]

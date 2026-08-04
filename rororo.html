@@ -73,7 +73,7 @@
     backdrop-filter: blur(16px) saturate(140%);
     -webkit-backdrop-filter: blur(16px) saturate(140%);
     background: rgba(0,0,0,.65);
-    border-bottom: 1px solid var(--border-1);
+    border-bottom: 1px solid var(--page-hairline);
   }
   .topnav-inner{
     max-width: 1440px; margin: 0 auto; padding: 14px 32px;
@@ -140,7 +140,7 @@
   .btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 8px 28px rgba(23,212,250,.4); }
   .btn-ghost{
     color:var(--fg-1); background: rgba(255,255,255,.03);
-    border:1px solid var(--border-2);
+    border:1px solid var(--page-panel-border);
   }
   .btn-ghost:hover{ border-color: var(--border-accent); color:var(--cyan); }
 
@@ -150,16 +150,16 @@
     font-family:var(--font-mono); font-size:11px; color:var(--fg-3);
     text-align:right; min-width:240px;
   }
-  .hd-r .row{ display:flex; justify-content:space-between; gap:12px; border-top:1px solid var(--border-1); padding-top:8px; }
+  .hd-r .row{ display:flex; justify-content:space-between; gap:12px; border-top:1px solid var(--page-hairline); padding-top:8px; }
   .hd-r .row:first-child{ border-top:0; padding-top:0; }
   .hd-r .row b{ color:var(--fg-1); font-weight:500; }
 
   /* ---------- Product banner ---------- */
   .hero-visual{
-    border:1px solid var(--border-2);
+    border:1px solid var(--page-panel-border);
     border-radius: var(--r-xl);
     overflow:hidden;
-    box-shadow: var(--shadow-2), var(--inner-stroke);
+    box-shadow: var(--shadow-2, 0 0 0 0 transparent), var(--inner-stroke);
     margin-bottom: 16px;
     background: rgba(0,0,0,.5);
   }
@@ -184,7 +184,7 @@
   .install-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
   .install-card{
     position:relative;
-    border:1px solid var(--border-1);
+    border:1px solid var(--page-hairline);
     border-radius: var(--r-lg);
     background:
       linear-gradient(180deg, rgba(255,255,255,.014), transparent 60%),
@@ -211,7 +211,7 @@
   .install-card p{ font-size:13px; line-height:1.5; color:var(--fg-2); margin:0; flex:1; }
   .install-card code{
     font-family:var(--font-mono); font-size:11px; color:var(--cyan-pale);
-    background: rgba(23,212,250,.06); border:1px solid var(--border-1);
+    background: rgba(23,212,250,.06); border:1px solid var(--page-hairline);
     border-radius:6px; padding:8px 10px; display:block; line-height:1.5;
     overflow-x:auto; white-space:pre;
   }
@@ -225,7 +225,7 @@
   /* ---------- Feature grid ---------- */
   .feature-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
   .feature{
-    border:1px solid var(--border-1);
+    border:1px solid var(--page-hairline);
     border-radius: var(--r-md);
     padding: 18px 16px;
     background: rgba(255,255,255,.02);
@@ -243,7 +243,7 @@
   .gallery{ display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; }
   .gallery figure{
     margin:0;
-    border:1px solid var(--border-1);
+    border:1px solid var(--page-hairline);
     border-radius: var(--r-lg);
     background: rgba(0,0,0,.5);
     overflow:hidden;
@@ -255,13 +255,13 @@
     font-family:var(--font-mono); font-size:10.5px; letter-spacing:.1em;
     text-transform:uppercase; color:var(--fg-3);
     padding: 10px 14px;
-    border-top:1px solid var(--border-1);
+    border-top:1px solid var(--page-hairline);
   }
 
   /* ---------- Platform split ---------- */
   .platform-split{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
   .platform{
-    border:1px solid var(--border-2);
+    border:1px solid var(--page-panel-border);
     border-radius: var(--r-lg);
     padding: 24px 22px;
     background:
@@ -293,7 +293,7 @@
 
   /* ---------- Plugins ---------- */
   .plugin-intro{
-    border:1px solid var(--border-1);
+    border:1px solid var(--page-hairline);
     border-radius: var(--r-lg);
     background: rgba(0,0,0,.5);
     padding: 22px 24px;
@@ -304,7 +304,7 @@
   .plugin-list{ display:flex; flex-direction:column; gap:10px; }
   .plugin{
     display:grid; grid-template-columns: 1fr auto; gap:18px; align-items:center;
-    border:1px solid var(--border-1);
+    border:1px solid var(--page-hairline);
     border-radius: var(--r-md);
     padding: 16px 20px;
     background: rgba(255,255,255,.02);
@@ -324,7 +324,7 @@
   /* The success green is a theme token (--ok, #2bd99a) exactly; its two
      alpha variants below are not, so they stay literals. */
   .plugin .status.live{ color:var(--ok); background:rgba(43,217,154,.1); border:1px solid rgba(43,217,154,.3); }
-  .plugin .status.bench{ color:var(--fg-3); background:rgba(255,255,255,.03); border:1px solid var(--border-2); }
+  .plugin .status.bench{ color:var(--fg-3); background:rgba(255,255,255,.03); border:1px solid var(--page-panel-border); }
   .plugin p{ font-size:12.5px; color:var(--fg-3); line-height:1.5; margin:0; }
   .plugin .pl-link{
     font-family:var(--font-mono); font-size:11px; letter-spacing:.04em;
@@ -339,13 +339,13 @@
     display:grid; grid-template-columns: 1.25fr 1fr; gap:14px;
   }
   .howto-col{
-    border:1px solid var(--border-1);
+    border:1px solid var(--page-hairline);
     border-radius: var(--r-lg);
     background: rgba(0,0,0,.5);
     padding: 22px 24px;
   }
   .howto-col.publish{
-    border-style:dashed; border-color:var(--border-2);
+    border-style:dashed; border-color:var(--page-panel-border);
     background:
       radial-gradient(70% 120% at 100% 0%, rgba(242,47,137,.05), transparent 60%),
       rgba(0,0,0,.5);
@@ -387,7 +387,7 @@
     display:flex; align-items:center; justify-content:space-between; gap:12px;
     font-family:var(--font-mono); font-size:11.5px; letter-spacing:.02em;
     text-decoration:none; color:var(--cyan);
-    border:1px solid var(--border-1); border-radius:var(--r-md);
+    border:1px solid var(--page-hairline); border-radius:var(--r-md);
     padding:11px 13px; transition: border-color var(--dur-med), color var(--dur-fast);
   }
   .publish-links a:hover{ border-color:var(--border-accent); color:var(--cyan-pale); }
@@ -396,7 +396,7 @@
 
   /* ---------- Trust ---------- */
   .trust-box{
-    border:1px solid var(--border-1);
+    border:1px solid var(--page-hairline);
     border-radius: var(--r-xl);
     background:
       radial-gradient(70% 120% at 100% 0%, rgba(242,47,137,.06), transparent 60%),
@@ -416,7 +416,7 @@
   /* ---------- Footer ---------- */
   .footnote{
     margin-top: 72px; padding-top: 24px;
-    border-top:1px solid var(--border-1);
+    border-top:1px solid var(--page-hairline);
     display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap;
     font-family:var(--font-mono); font-size:11px; color:var(--fg-3);
     letter-spacing:.05em;
@@ -459,37 +459,54 @@
        ============================================================ */
     .pb-scanlines {
       position: fixed; inset: 0; pointer-events: none; z-index: 60;
-      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+      background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
     }
 
     /* The treatment REPOINTING base tokens — this page's own styling
        decision, not a copy of the theme's palette. Every value resolves
        through a theme-owned name, so the rotation reaches all of it. */
+    /* ── The treatment, expressed so it cannot strand this page ──────────
+       Each alias reads THIS theme's treatment name and falls back to the
+       contracted token behind it. Under phosphor-blueprint every one
+       resolves to the --pb-* value, exactly as before. Under a theme that
+       satisfies archetypes.REQUIRED_TOKENS and ships no treatment, the
+       structural aliases fall through to --bg-0/--border-1/--border-2 and
+       the decorative ones disappear, so the page rotates instead of
+       rendering on a white field with unresolved var()s.
+
+       Note what is NOT here: this block no longer redefines --bg-0,
+       --border-1 or --border-2. A page that overrides a contracted token is
+       a page the rotation cannot reach, which is the same defect as the
+       private :root it replaced, one indirection deeper. */
     :root {
-      --bg-0: var(--pb-field);
-      --border-1: var(--pb-hairline);
-      --border-2: var(--pb-panel-border);
+      --page-field: var(--pb-field, var(--bg-0));
+      --page-hairline: var(--pb-hairline, var(--border-1));
+      --page-panel-border: var(--pb-panel-border, var(--border-2));
+      --page-grid-fine: var(--pb-grid-fine, transparent);
+      --page-grid-coarse: var(--pb-grid-coarse, transparent);
+      --page-scanline: var(--pb-scanline, transparent);
+      --page-bloom: var(--pb-bloom-cyan, none);
     }
 
     body {
       background:
-        linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
-        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-        var(--pb-field);
+        linear-gradient(90deg, var(--page-grid-fine) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--page-grid-fine) 1px, transparent 1px),
+        linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+        var(--page-field);
       background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
     }
     @media (max-width: 720px) {
       body {
         background:
-          linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-          linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-          var(--pb-field);
+          linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+          linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+          var(--page-field);
         background-size: 120px 120px, 120px 120px;
       }
     }
-    h1 { text-shadow: var(--pb-bloom-cyan); }
+    h1 { text-shadow: var(--page-bloom); }
     /* PB icon stabilizer — solid app/family icon tiles: compensate the
        scanline dimming so the marks read bright and stable. */
     img[src*="rororo-family"] { filter: brightness(1.3) saturate(1.08); }

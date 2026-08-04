@@ -104,18 +104,30 @@ portfolio piece. `/themes.html` is the indexed gallery (rendered straight
 from the registry, so it can never disagree with what's actually live);
 `content/themes.json` is the single switch that decides what's live.
 
-**What a theme is** — `themes/<slug>/` containing exactly three files:
+**What a theme is** — `themes/<slug>/` containing **eleven** files, all
+of which `theme-doctor` requires and will name if absent. Two at the root:
 
 | File | What it is |
 |---|---|
-| `shell.html` | The page skeleton: nav, footer, skip link, section order/presence, and the twelve `SITE_JSON:<zone>:start/end` markers `render-hub.py` fills. One renderer serves every theme — layout variation lives in the shell (structure) and `tokens.css` (treatment), never in a forked emitter. |
-| `tokens.css` | The append-only treatment layer, linked from the shell's `<head>` right after its inline base-token `<style>` block (so it wins the cascade): palette, texture, motion, and any layout CSS the theme needs (grid density, card anatomy). |
+| `tokens.css` | The base token layer `themes.html` and `index.html` link: palette, texture, motion, and any layout CSS the theme needs (grid density, card anatomy). Must define every `archetypes.REQUIRED_TOKENS` name. |
 | `theme.json` | `{name, slug, thesis, month, status, contrastPairs}` — `contrastPairs` is a list of `[fg-var, bg-var]` pairs `theme-doctor` checks against WCAG AA. `status` is informational only; the gallery and rotation never read it — `content/themes.json` (the registry) is what actually decides. |
 
-…plus the per-archetype set under `themes/<slug>/archetypes/`, which
-`theme-doctor` requires and will name if absent: `home.html`,
-`product.html`, `reading.html`, `utility.html`, and the stylesheets
-`product.css`, `product-tokens.css`, `utility.css`, `reading.css`. Two of
+…and nine under `themes/<slug>/archetypes/`: the four archetype shells
+`home.html`, `product.html`, `reading.html`, `utility.html` (each one the
+page skeleton for its archetype — nav, footer, skip link, section
+order/presence, and for `home.html` the twelve `SITE_JSON:<zone>:start/end`
+markers `render-hub.py` fills), and the five stylesheets `product.css`,
+`product-tokens.css`, `utility.css`, `reading.css`, `reading-tokens.css`.
+
+> **There is no `shell.html`.** This section used to name one as the first
+> of "exactly three files", and steps 1, 4 and the queueing note repeated
+> it. No theme in the repo has ever had that file — A2/A3 accepted a legacy
+> `shell.html` OR `archetypes/home.html`, and A4 removed the fallback when
+> it extracted the last two archetypes. An author following the old step 1
+> literally built a theme missing nine of its eleven required files and
+> found out from `theme-doctor`.
+
+Two of
 those pair up: **`product.css` is the element dress** (`body`, `a:hover`,
 `section.hero`, `.card`, `.btn`) that `render-plugin-pages.py` inlines into
 its 15 generated pages, while **`product-tokens.css` is custom-property
@@ -129,13 +141,13 @@ for someone else's markup. `tokens.css`, `product-tokens.css`,
 
 **Building one:**
 
-1. Branch, create `themes/<slug>/{shell.html,tokens.css,theme.json}` — mirror `themes/phosphor-blueprint/` as the reference extraction.
+1. Branch, create `themes/<slug>/` with all eleven files above — `tokens.css` and `theme.json` at the root, the nine archetype shells and stylesheets under `archetypes/`. Mirror `themes/phosphor-blueprint/` as the reference extraction; copying its directory and re-tokenizing is the intended path, and is also how a theme inherits the `--pb-*` treatment names the hand-authored pages fall back from.
 2. `python scripts/theme-doctor.py <slug>` must PASS before anything else. This is the ONLY gate standing between a theme and unattended monthly rotation, so it has to fail honestly: zone markers present, chrome intact (skip-link/nav/footer/analytics), every internal link resolves, and every declared `contrastPairs` clears AA (>= 4.5). Add `--browser` (needs `playwright` installed) for horizontal-scroll (1440/768/390px) and zero-console-error checks — without playwright installed those two checks skip with a one-line note, the local convenience path. The scheduled rotation installs playwright and runs `--browser --require-browser`, which turns that same skip into a gate FAILURE — the one unattended run of this gate can't be allowed to rubber-stamp a rotation because the browser path silently didn't run.
 3. Preview it against real content: `python scripts/render-hub.py --theme <slug> --out <dir>` renders that theme's shell to `<dir>/index.html`, plus copies of the eight hand-authored `theme-css` pages (`press.html`, `privacy.html`, `thesis.html`, `workflow.html`, `conundrum.html`, `rororo-plugins.html`, `rororo.html`, `mod-launcher-games.html`) with their stylesheet `<link>` repointed at `<slug>`. Everything lands in `<dir>` and nothing else is touched — no feed, sitemap, story pages, or `themes.html`, no `conundrum.html` gallery zones, and nothing is written back into the repo tree. Those eight keep root-relative asset paths, so serve them from the **repo root** with `<dir>`'s copies laid over the top; opening one straight off disk resolves no CSS.
-4. PR the three files, `theme-doctor` output pasted in. **`theme-doctor` is not wired into a PR-triggered CI check** — run it locally before requesting review; the only automated run today is inside `rotate-theme.yml`, gating the theme that's about to go live.
+4. PR the eleven files, `theme-doctor` output pasted in. **`theme-doctor` is not wired into a PR-triggered CI check** — run it locally before requesting review; the only automated run today is inside `rotate-theme.yml`, gating the theme that's about to go live.
 5. Merge. Merging changes NOTHING live — a theme only takes effect once its slug lands in `content/themes.json`'s `queue`.
 
-**Queueing:** append the slug to `"queue"` in `content/themes.json` (a normal PR to `main`). Queue order is FIFO — position in the list is rotation order, not a date. `scripts/theme_registry.validate()` enforces basic sanity (no dupes, the active theme never also sitting in the queue, every queued theme's three files present).
+**Queueing:** append the slug to `"queue"` in `content/themes.json` (a normal PR to `main`). Queue order is FIFO — position in the list is rotation order, not a date. `scripts/theme_registry.validate()` enforces basic sanity (no dupes, the active theme never also sitting in the queue, every queued theme's required files present).
 
 **Rotation** (`.github/workflows/rotate-theme.yml`, cron `0 9 1 * *` UTC + `workflow_dispatch`):
 

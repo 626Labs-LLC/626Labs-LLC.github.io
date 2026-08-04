@@ -650,7 +650,11 @@ name is in the set — and stays out, documented as a page-to-theme coupling
 rather than promoted on the strength of two pages' usage.
 
 The `--pb-*` family is deliberately **excluded**, and it is now read by
-four pages rather than one. The original case: `press.html`'s
+**six** pages rather than one — every hand-authored page that links a theme
+stylesheet except `privacy.html` and `rororo-plugins.html`. That count is
+the paragraph a from-scratch theme author most needs, because excluded from
+the contract means a theme can satisfy all 47 required names and define not
+one `--pb-*`. The original case: `press.html`'s
 `.asset-preview` background reads `var(--pb-field)`, Phosphor Blueprint's
 own treatment-layer token (defined in both `tokens.css`'s and
 `utility.css`'s "Phosphor Blueprint — treatment layer" section, never in
@@ -662,17 +666,49 @@ theme is obligated to define under that exact prefix, so it's out of
 `press.html`'s `.asset-preview` onto a theme-neutral name is unrelated scope
 this fix wave didn't touch.
 
-`thesis.html`, `workflow.html` and `conundrum.html` extend that same
-coupling, and knowingly. Each reads a handful of `--pb-*` names in its own
-treatment rules (`--pb-field`, `--pb-grid-fine`, `--pb-grid-coarse`,
-`--pb-bloom-cyan`, and for `conundrum.html` also `--pb-scanline`,
-`--pb-panel`, `--pb-panel-border`, `--pb-hairline`, `--pb-trail`). Those
+`thesis.html`, `workflow.html`, `conundrum.html`, `rororo.html` and
+`mod-launcher-games.html` extend that same coupling, and knowingly. Each
+reads between five and nine `--pb-*` names in its own treatment rules
+(`--pb-field`, `--pb-grid-fine`, `--pb-grid-coarse`, `--pb-scanline`,
+`--pb-bloom-cyan`, and on the three product pages also `--pb-hairline`,
+`--pb-panel-border`, plus `--pb-panel`/`--pb-trail` on two of them). Those
 names now resolve from the theme rather than a private copy — the coupling
 moved from "unreachable" to "theme-owned" — but they remain
 Phosphor-Blueprint-specific and out of `REQUIRED_TOKENS`. A theme built by
 mirroring `themes/phosphor-blueprint/`, which is what the build
-instructions say to do, inherits them; one written from scratch has to
-define them or restyle those rules.
+instructions say to do, inherits them.
+
+**And a theme written from scratch no longer breaks those pages, which it
+used to.** Excluding a name from the contract while pages read it bare is a
+gate that grades a strict subset of what the pages need: a from-scratch
+theme defining all 47 required tokens passed `theme-doctor --browser
+--require-browser` (an unresolved `var()` logs no console error and causes
+no horizontal scroll), rotated in unattended, and then
+`body { background: <gradients>, var(--pb-field) }` went
+invalid-at-computed-value-time and resolved to **transparent** — five pages
+rendering light-grey text on browser-default white, every gate green.
+
+Every `--pb-*` read now carries a fallback. Structural ones fall through to
+the contracted token behind them (`var(--pb-field, var(--bg-0))`,
+`var(--pb-hairline, var(--border-1))`); decorative ones fall through to
+`transparent` or `none`, so the treatment simply does not appear rather
+than painting Phosphor Blueprint's cyan over a theme that never asked for
+it. The three product pages express this as page-local `--page-*` aliases
+declared once and read many times; the reading pair and `press.html` inline
+the fallback at their two or three read sites. Pinned by
+`test_no_converted_page_renders_broken_under_a_contract_satisfying_theme`,
+which parses every `var()` on every converted page and requires each name
+to be contracted, page-declared, or fallback-guarded.
+
+The same round removed the other half of that defect: no converted page
+redefines a contracted token any more. `conundrum.html`, `rororo.html` and
+`mod-launcher-games.html` each carried
+`:root { --bg-0: var(--pb-field); --border-1: var(--pb-hairline); … }`
+*after* the theme's `<link>`, so a new theme could define those three
+perfectly and still not reach the page —
+"a copy the rotation cannot reach", one indirection deeper than the private
+`:root` blocks it replaced. Pinned by
+`test_no_converted_page_overrides_a_contracted_token`.
 
 ### The 47 required tokens, grouped, and why each group matters
 
