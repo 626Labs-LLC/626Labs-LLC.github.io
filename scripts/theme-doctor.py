@@ -122,17 +122,42 @@ REQUIRED_ARCHETYPE_CSS = {"product": "product.css", "utility": "utility.css", "r
 # on the 1st.
 PRODUCT_TOKENS_CSS = "product-tokens.css"
 
+# The same split, applied to the reading archetype BEFORE it cost anything.
+# archetypes/reading.css is the Long Now Terminal dress about.html's
+# easter-egg theme picker wears; thesis.html and workflow.html only ever
+# wanted its palette. Its two unscoped element rules (`* { box-sizing }`,
+# `body { margin: 0 }`) are provable no-ops on both pages — each declares
+# them itself, identically, after the <link> — but "no-op today" is not a
+# property a gate can rely on, and three things invited a future reading.css
+# to grow a real one: the build instructions say to mirror this theme,
+# check_vocabulary REQUIRES the seven lnt-* classes to appear as selectors
+# in that file, and nothing covered element rules at all.
+READING_TOKENS_CSS = "reading-tokens.css"
+
 # Every stylesheet some page reads BASE VOCABULARY out of, repo-relative to
 # the theme dir. All four must define archetypes.REQUIRED_TOKENS in full.
 REQUIRED_TOKEN_CSS = (
-    "tokens.css",                      # themes.html, index.html
+    "tokens.css",                        # themes.html, index.html
     f"archetypes/{PRODUCT_TOKENS_CSS}",  # conundrum.html, rororo-plugins.html, +15 inlined
-    "archetypes/utility.css",          # press.html, privacy.html
-    "archetypes/reading.css",          # thesis.html, workflow.html
+    f"archetypes/{READING_TOKENS_CSS}",  # thesis.html, workflow.html
+    "archetypes/utility.css",            # press.html, privacy.html
 )
 
-# Of those, the ones that must contain NOTHING BUT token definitions.
-TOKEN_ONLY_CSS = (f"archetypes/{PRODUCT_TOKENS_CSS}",)
+# Of those, the ones that must contain NOTHING BUT token definitions: the
+# files a hand-authored page links for its palette and nothing else.
+#
+# archetypes/utility.css is deliberately absent, and that absence is a
+# DESCRIPTION of where press.html/privacy.html are today, not a settled
+# position. Those two wear a foreign element dress already — `a { color:
+# inherit; text-decoration: none }`, `body`, `h1..h4`, `footer` — with no
+# page-side statement of their own. Splitting utility.css would mean those
+# pages taking ownership of a dress they currently borrow, which is real
+# design work with real pixel risk, not a fix-round addendum. Recorded as a
+# known exposure of the same class the product and reading splits closed.
+TOKEN_ONLY_CSS = (
+    f"archetypes/{PRODUCT_TOKENS_CSS}",
+    f"archetypes/{READING_TOKENS_CSS}",
+)
 
 # Real, hand-authored pages --browser opens in addition to the theme's own
 # archetype shells. Everything else in the browser check grades a shell the
@@ -314,6 +339,8 @@ def check_required_tokens(css: str) -> list[str]:
 
 _COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
 _TOKEN_ONLY_BLOCK_RE = re.compile(r"(?P<sel>[^{}]*)\{(?P<body>[^{}]*)\}", re.S)
+# Every {…} block, so the at-rule scan can look at what is left.
+_BLOCK_RE = re.compile(r"\{[^{}]*\}", re.S)
 
 
 def check_token_css_declares_only_tokens(css: str) -> list[str]:
@@ -351,7 +378,13 @@ def check_token_css_declares_only_tokens(css: str) -> list[str]:
     errors: list[str] = []
     stripped = _COMMENT_RE.sub("", css)
 
-    for at_rule in re.findall(r"@[\w-]+", stripped):
+    # Scan for at-rules OUTSIDE any {…} block. Scanning the whole text
+    # matches inside token VALUES too, so a legitimate
+    # `--contact: url("mailto:a@b")` failed the gate with a baffling "found
+    # at-rule '@b'" — a false positive that blocks a valid theme, which is
+    # worse than the hole it was guarding.
+    outside = _BLOCK_RE.sub(" ", stripped)
+    for at_rule in re.findall(r"@[\w-]+", outside):
         if at_rule.lower() not in ("@charset",):
             errors.append(
                 f"token stylesheet must declare tokens only, found at-rule "
@@ -673,12 +706,37 @@ def _archetype_source(
     if archetype == "reading":
         about_html = (ROOT / "about.html").read_text(encoding="utf-8")
         reading_css = (tdir / "archetypes" / REQUIRED_ARCHETYPE_CSS["reading"]).read_text(encoding="utf-8")
-        return about_html, reading_css, False
+        return about_html, f"{reading_css}\n{_archetype_token_css(archetype, tdir)}", False
     css_filename = REQUIRED_ARCHETYPE_CSS[archetype]
     shell_html = (tdir / "archetypes" / f"{archetype}.html").read_text(encoding="utf-8")
     own_css = (tdir / "archetypes" / css_filename).read_text(encoding="utf-8")
     inline_css = "\n".join(STYLE_BLOCK_RE.findall(shell_html))
-    return shell_html, f"{inline_css}\n{own_css}\n{tokens_css}", False
+    return (
+        shell_html,
+        f"{inline_css}\n{own_css}\n{tokens_css}\n{_archetype_token_css(archetype, tdir)}",
+        False,
+    )
+
+
+ARCHETYPE_TOKEN_CSS = {"product": PRODUCT_TOKENS_CSS, "reading": READING_TOKENS_CSS}
+
+
+def _archetype_token_css(archetype: str, tdir: Path) -> str:
+    """The token file an archetype's LINKING pages actually resolve from,
+    appended last so it wins the same way it wins in the browser.
+
+    Without it the contrast numbers printed for `product` and `reading`
+    were not the numbers those pages render. `_archetype_source` built
+    product's CSS as shell-inline + product.css + tokens.css, so the
+    --fg-* ramp came from tokens.css — but conundrum.html and
+    rororo-plugins.html link product-tokens.css, which deliberately carries
+    a DIFFERENT ramp (#ffffff/#c4cdda/#a4aebd/#99a4b4 against tokens.css's
+    #e8f2ff/#a8c2d9/#9fafc0/#92a5bd). The gate was grading a page nobody
+    serves. Same for reading after its split."""
+    filename = ARCHETYPE_TOKEN_CSS.get(archetype)
+    if filename is None:
+        return ""
+    return (tdir / "archetypes" / filename).read_text(encoding="utf-8")
 
 
 # The 3 "ed-*" leaves in archetypes.VOCABULARY["reading"] are styled by the
@@ -787,7 +845,9 @@ def main(argv: list[str]) -> int:
     # unattended rotation time.
     missing += [
         f"archetypes/{filename}"
-        for filename in (*REQUIRED_ARCHETYPE_CSS.values(), PRODUCT_TOKENS_CSS)
+        for filename in (
+            *REQUIRED_ARCHETYPE_CSS.values(), PRODUCT_TOKENS_CSS, READING_TOKENS_CSS,
+        )
         if not (tdir / "archetypes" / filename).exists()
     ]
     if missing:

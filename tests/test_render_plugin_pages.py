@@ -66,17 +66,20 @@ def test_style_keeps_the_font_import_as_the_very_first_rule():
     )
 
 
-def test_style_contains_both_halves():
-    style = _load_renderer().STYLE
+def test_style_is_exactly_the_dress_then_the_tokens():
+    """Composition equality, not spot-checks.
+
+    An earlier cut asserted two needles and two length bounds. That passes
+    unchanged if the join becomes `dress + "\\n\\n" + tokens`, or if the
+    `.rstrip("\\n")` is dropped, or if either half is concatenated twice —
+    every one of which changes the bytes committed to 15 pages. Pinning the
+    whole expression removes the guesswork, and it subsumes the import-order
+    test above as a side effect (the dress leads, so its @import leads).
+    """
     d = _archetype_dir()
-    dress = d / "product.css"
-    tokens = d / "product-tokens.css"
-    # A distinctive line from each, so a renderer that silently dropped one
-    # half fails here rather than at pixel-diff time.
-    assert "a:hover { text-decoration: underline" in style, "dress half missing"
-    assert "--fg-muted:" in style, "token half missing"
-    assert len(style) >= len(dress.read_text(encoding="utf-8"))
-    assert len(style) >= len(tokens.read_text(encoding="utf-8"))
+    dress = (d / "product.css").read_text(encoding="utf-8")
+    tokens = (d / "product-tokens.css").read_text(encoding="utf-8")
+    assert _load_renderer().STYLE == dress.rstrip("\n") + "\n" + tokens
 
 
 def test_product_css_and_tokens_agree_on_every_shared_name():

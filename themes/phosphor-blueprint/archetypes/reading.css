@@ -473,129 +473,13 @@ body { margin: 0; }
 }
 
 /* ============================================================
-   Reading archetype — base token vocabulary + treatment layer.
+   The base token vocabulary these pages used to find here now lives in
+   archetypes/reading-tokens.css, which thesis.html and workflow.html
+   link instead of this file. This file is the DRESS: about.html's Long
+   Now Terminal treatment, reached by its easter-egg theme picker.
 
-   Everything above this line is the Long Now Terminal dress, which
-   about.html wears. Everything below is what thesis.html and
-   workflow.html read: the base custom properties those two pages used
-   to define for themselves, in a private `:root` block copied out of
-   Design/colors_and_type.css, plus the Phosphor Blueprint treatment
-   layer they each carried a verbatim copy of. A private copy is a copy
-   the rotation can't reach — those pages would have stayed in this
-   theme's colors forever while the rest of the site moved on. Moving
-   the definitions here is what makes the next theme's palette actually
-   land on them.
-
-   The two dresses coexist in one file because they share no property
-   names: the LNT section defines only `--ed-*` / `--at-lnt-*`, this
-   section defines only the base/`--pb-*` vocabulary, and neither page
-   reads the other's names (verified against both, plus about.html,
-   before the move).
-
-   THIS SECTION IS TOKEN DEFINITIONS ONLY, and that is load-bearing, not
-   stylistic. about.html's easter-egg theme picker appends a <link> to
-   THIS FILE after its own inline <style>, so any element selector here
-   (`body`, `h1`) would win the cascade and repaint About's toggled
-   state — a page this milestone is explicitly not scoped to touch. Only
-   `.pb-scanlines` comes along: it is class-scoped to an element About
-   doesn't have, so it can't reach anything. thesis.html and
-   workflow.html keep their own `body`/`h1` treatment rules in their own
-   <style>, reading the tokens below.
-
-   Values are the reading pages' CURRENT rendering, drift and all — same
-   posture archetypes/utility.css documents for press.html. The text
-   ramp in particular is NOT utility.css's: reading runs a brighter
-   `--text` (#ffffff vs #e8f2ff) with cooler secondaries, which is what
-   long-form body copy on this site has always been set in. That
-   divergence is what Phosphor Blueprint's reading dress IS; a future
-   theme is free to resolve it differently.
-
-   This block is COMPLETE against archetypes.REQUIRED_TOKENS, and
-   scripts/theme-doctor.py enforces that on every theme, not just this
-   one. It has to be: thesis.html and workflow.html have no local
-   fallback left, so a name missing here is an unresolved var() on a
-   live page, not a stale-but-valid color. A theme that writes a
-   genuinely new reading dress rather than copying this file has to
-   supply the whole set or fail the gate before it can rotate in.
-
-   That completeness is why the spacing scale appears here even though
-   neither reading page spends a single step of it. The theme OFFERS a
-   scale; the pages decline it. Every padding, gap, and margin on
-   thesis.html and workflow.html stays a literal in that page's own
-   <style>, because these pages recolor monthly, they do not re-layout.
+   Keeping them apart is what stops a future element rule added here from
+   landing uninvited on two hand-authored pages that only ever wanted the
+   palette. See reading-tokens.css's header for the regression that shape
+   caused on the product archetype before it was split.
    ============================================================ */
-:root {
-  --navy-deep: #0f1f31;
-  --navy-mid:  #192e44;
-  --navy-hi:   #223a54;
-  --cyan:      #17d4fa;
-  --cyan-pale: #5ce6ff;
-  --magenta:   #f22f89;
-  --magenta-pale: #ff5aa3;
-  --ink-950:   #050c18;
-  --ok:        #2bd99a;
-
-  --text:      #ffffff;
-  --text-sec:  #c4cdda;
-  --text-dim:  #a4aebd;
-  --text-mute: #99a4b4;
-
-  --bg-0: var(--navy-deep);
-  --bg-1: var(--navy-mid);
-  --bg-2: var(--navy-hi);
-  --fg-1: var(--text);
-  --fg-2: var(--text-sec);
-  --fg-3: var(--text-dim);
-  --fg-muted: var(--text-mute);
-
-  --border-1: rgba(255,255,255,.08);
-  --border-2: rgba(255,255,255,.14);
-  --border-accent: rgba(23,212,250,.45);
-
-  --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
-  --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
-  --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
-  --shadow-2: 0 4px 16px rgba(0,0,0,.45);
-
-  --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
-  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
-
-  --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
-  --r-pill: 999px;
-
-  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-
-  --ease-out: cubic-bezier(.2,.7,.2,1);
-  --dur-fast: 120ms;
-  --dur-med: 220ms;
-}
-
-/* ============================================================
-   Phosphor Blueprint — treatment layer (adopted 2026-07-07)
-   Append-only override + in-place navy-glass swaps; matches the
-   homepage treatment (626labs.dev PR #73).
-   ============================================================ */
-:root {
-  --pb-field: rgb(0,0,0);
-  --pb-grid-fine: rgba(23,212,250,.05);
-  --pb-grid-coarse: rgba(23,212,250,.11);
-  --pb-scanline: rgba(0,0,0,.42);
-  --pb-panel: rgba(0,0,0,.72);
-  --pb-panel-border: rgba(23,212,250,.25);
-  --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-  --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
-}
-.pb-scanlines {
-  position: fixed; inset: 0; pointer-events: none; z-index: 60;
-  background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
-}
-
-:root {
-  --bg-0: var(--pb-field);
-  --bg-1: rgba(0,0,0,.6);
-  --bg-2: rgba(0,0,0,.72);
-  --border-1: rgba(23,212,250,.14);
-  --border-2: rgba(23,212,250,.25);
-}

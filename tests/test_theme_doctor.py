@@ -175,8 +175,14 @@ def _compliant_reading_css():
     # with ZERO custom properties and the stub theme still PASSED — which is
     # exactly the hole the gate closes, and exactly why this fixture had to
     # move with it.
+    #
+    # It stopped needing _required_tokens_css() when the reading archetype
+    # split: thesis.html and workflow.html link archetypes/reading-tokens.css
+    # now, so reading.css is purely about.html's dress and carries no base
+    # vocabulary. Leaving the tokens here would have this fixture assert a
+    # contract the live file no longer has to meet.
     lnt_classes = [c for c in td.archetypes.VOCABULARY["reading"] if not c.startswith("ed-")]
-    return _required_tokens_css() + "".join(f".{c} {{ }}\n" for c in lnt_classes)
+    return "".join(f".{c} {{ }}\n" for c in lnt_classes)
 
 
 def _required_tokens_css() -> str:
@@ -235,6 +241,9 @@ def _make_complete_theme_dir(tdir):
         encoding="utf-8",
     )
     (tdir / "archetypes" / td.PRODUCT_TOKENS_CSS).write_text(
+        _required_tokens_css(), encoding="utf-8"
+    )
+    (tdir / "archetypes" / td.READING_TOKENS_CSS).write_text(
         _required_tokens_css(), encoding="utf-8"
     )
     (tdir / "archetypes" / "utility.css").write_text(_required_tokens_css(), encoding="utf-8")
@@ -541,15 +550,52 @@ def test_live_utility_css_satisfies_required_tokens():
     assert td.check_required_tokens(css) == []
 
 
-def test_live_reading_css_satisfies_required_tokens():
-    # reading.css is the third file under this gate, as of thesis.html and
-    # workflow.html giving up their private :root blocks. For those two the
-    # stakes are the harsher kind: no local fallback at all, so a missing
+def test_live_reading_tokens_css_satisfies_required_tokens():
+    # reading-tokens.css is the third file under this gate, as of thesis.html
+    # and workflow.html giving up their private :root blocks. For those two
+    # the stakes are the harsher kind: no local fallback at all, so a missing
     # name is an unresolved var() on a live page, not a stale color.
-    css = (ROOT / "themes" / "phosphor-blueprint" / "archetypes" / "reading.css").read_text(
-        encoding="utf-8"
-    )
+    css = (
+        ROOT / "themes" / "phosphor-blueprint" / "archetypes" / td.READING_TOKENS_CSS
+    ).read_text(encoding="utf-8")
     assert td.check_required_tokens(css) == []
+
+
+def test_live_reading_tokens_css_declares_only_tokens():
+    css = (
+        ROOT / "themes" / "phosphor-blueprint" / "archetypes" / td.READING_TOKENS_CSS
+    ).read_text(encoding="utf-8")
+    assert td.check_token_css_declares_only_tokens(css) == []
+
+
+def test_token_only_gate_covers_both_split_archetypes_and_not_utility():
+    # The membership itself is the finding. product and reading are split
+    # because two hand-authored pages each link them for a palette alone.
+    # utility.css is NOT, and that is a description of where press.html and
+    # privacy.html are today — they already wear a foreign element dress
+    # with no page-side statement of their own — not a position that they
+    # should. Splitting it means those pages taking ownership of a dress
+    # they currently borrow: real work, real pixel risk, not a fix-round
+    # addendum. Pinned so the absence stays deliberate and legible.
+    assert set(td.TOKEN_ONLY_CSS) == {
+        f"archetypes/{td.PRODUCT_TOKENS_CSS}",
+        f"archetypes/{td.READING_TOKENS_CSS}",
+    }
+    assert "archetypes/utility.css" in td.REQUIRED_TOKEN_CSS
+    assert "archetypes/utility.css" not in td.TOKEN_ONLY_CSS
+
+
+def test_main_fails_a_theme_missing_reading_tokens_css_entirely(
+    monkeypatch, tmp_path, capsys
+):
+    tdir = tmp_path / "themes" / "stub-theme"
+    _make_complete_theme_dir(tdir)
+    (tdir / "archetypes" / td.READING_TOKENS_CSS).unlink()
+
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    rc = td.main(["stub-theme"])
+    assert rc == 1
+    assert f"missing archetypes/{td.READING_TOKENS_CSS}" in capsys.readouterr().out
 
 
 def test_live_product_tokens_css_satisfies_required_tokens():
@@ -657,6 +703,15 @@ def test_main_fails_a_theme_whose_token_css_grows_an_element_rule(
     assert "a:hover" in out
 
 
+def test_token_only_check_does_not_trip_on_an_at_sign_inside_a_token_value():
+    # The scan used to run over the whole file, so a legitimate
+    # `--x: url("mailto:a@b")` was reported as "found at-rule '@b'" — a
+    # false positive that blocks a valid theme, which is worse than the
+    # hole it guards. At-rules are only meaningful outside a {…} block.
+    css = ':root { --contact: url("mailto:este@626labs.dev"); --at: "a@b"; }\n'
+    assert td.check_token_css_declares_only_tokens(css) == []
+
+
 def test_token_only_check_accepts_tokens_and_rejects_everything_else():
     ok = ":root { --a: 1; --b: var(--a); }\n/* a comment { with braces } */\n"
     assert td.check_token_css_declares_only_tokens(ok) == []
@@ -699,7 +754,7 @@ def test_browser_checks_open_the_two_hand_authored_product_pages():
         assert (ROOT / name) in previewable, name
 
 
-def test_main_fails_a_theme_whose_reading_css_drops_the_required_tokens(
+def test_main_fails_a_theme_whose_reading_tokens_css_drops_the_required_tokens(
     monkeypatch, tmp_path, capsys
 ):
     # The regression this gate exists for, driven through main() rather than
@@ -711,10 +766,7 @@ def test_main_fails_a_theme_whose_reading_css_drops_the_required_tokens(
     # live with dozens of unresolved var()s.
     tdir = tmp_path / "themes" / "stub-theme"
     _make_complete_theme_dir(tdir)
-    lnt = [c for c in td.archetypes.VOCABULARY["reading"] if not c.startswith("ed-")]
-    (tdir / "archetypes" / "reading.css").write_text(
-        "".join(f".{c} {{ }}\n" for c in lnt), encoding="utf-8"
-    )
+    (tdir / "archetypes" / td.READING_TOKENS_CSS).write_text(":root { }\n", encoding="utf-8")
 
     monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
     monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
@@ -726,7 +778,7 @@ def test_main_fails_a_theme_whose_reading_css_drops_the_required_tokens(
     rc = td.main(["stub-theme"])
     assert rc == 1
     out = capsys.readouterr().out
-    assert "archetypes/reading.css" in out
+    assert f"archetypes/{td.READING_TOKENS_CSS}" in out
     assert "--fg-1" in out
 
 
