@@ -12,8 +12,10 @@ around it.
 ## Tech Stack & Voice
 
 - **Site shell:** Hand-written HTML + vanilla JS + inline CSS. No framework
-  on the marketing surface, no build step. Edit `index.html` only inside
-  zones the renderer doesn't touch.
+  on the marketing surface, no build step. `index.html` is a generated
+  artifact of the active theme — chrome/layout edits belong in
+  `themes/<active-slug>/shell.html` (see **Theme rotation** below); a direct
+  `index.html` edit gets silently reverted by the next render.
 - **Widget app:** `apps/widget-bacon-trail/` — Vite + TypeScript. The only
   build pipeline in the repo. Output committed to `widget-bacon-trail/`
   (root) so GitHub Pages serves it directly at `/widget-bacon-trail/`.
@@ -113,7 +115,7 @@ from the registry, so it can never disagree with what's actually live);
 **Building one:**
 
 1. Branch, create `themes/<slug>/{shell.html,tokens.css,theme.json}` — mirror `themes/phosphor-blueprint/` as the reference extraction.
-2. `python scripts/theme-doctor.py <slug>` must PASS before anything else. This is the ONLY gate standing between a theme and unattended monthly rotation, so it has to fail honestly: zone markers present, chrome intact (skip-link/nav/footer/analytics), every internal link resolves, and every declared `contrastPairs` clears AA (>= 4.5). Add `--browser` (needs `playwright` installed) for horizontal-scroll (1440/768/390px) and zero-console-error checks — the scheduled rotation always runs with `--browser`.
+2. `python scripts/theme-doctor.py <slug>` must PASS before anything else. This is the ONLY gate standing between a theme and unattended monthly rotation, so it has to fail honestly: zone markers present, chrome intact (skip-link/nav/footer/analytics), every internal link resolves, and every declared `contrastPairs` clears AA (>= 4.5). Add `--browser` (needs `playwright` installed) for horizontal-scroll (1440/768/390px) and zero-console-error checks — without playwright installed those two checks skip with a one-line note, the local convenience path. The scheduled rotation installs playwright and runs `--browser --require-browser`, which turns that same skip into a gate FAILURE — the one unattended run of this gate can't be allowed to rubber-stamp a rotation because the browser path silently didn't run.
 3. Preview it against real content: `python scripts/render-hub.py --theme <slug> --out <dir>` renders that theme's shell to `<dir>/index.html` and touches nothing else — no feed, sitemap, story pages, or `themes.html`.
 4. PR the three files, `theme-doctor` output pasted in. **`theme-doctor` is not wired into a PR-triggered CI check** — run it locally before requesting review; the only automated run today is inside `rotate-theme.yml`, gating the theme that's about to go live.
 5. Merge. Merging changes NOTHING live — a theme only takes effect once its slug lands in `content/themes.json`'s `queue`.
@@ -275,8 +277,11 @@ remote.origin.url`. The Architect handles this without ceremony.
 
 ## What NOT to do
 
-- Don't hand-edit `index.html` inside the `SITE_JSON:` zones — render-hub.py
-  rewrites them. Edit `content/site.json` instead.
+- Don't hand-edit `index.html` — it's a generated artifact of the active
+  theme's `shell.html`. Content edits (SITE_JSON zones) go in
+  `content/site.json`; chrome/layout edits go in
+  `themes/<active-slug>/shell.html`. Either way, render-hub.py rewrites
+  `index.html` and silently reverts a direct edit.
 - Don't put secrets in the system prompt or any committed file. Tools use
   `os.environ` (`ANTHROPIC_API_KEY` for the bgremove agent, repo PATs for
   bot workflows via `secrets.*`).

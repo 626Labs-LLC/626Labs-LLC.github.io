@@ -51,6 +51,13 @@ jobs:
           set -euo pipefail
           echo "month=$(date -u +%Y-%m)" >> "$GITHUB_OUTPUT"
           echo "month_name=$(date -u +'%B %Y')" >> "$GITHUB_OUTPUT"
+          # archive_month is the month being ARCHIVED — the one that just
+          # ENDED, not the one rotation is moving the site into. Rotation
+          # always runs on the 1st (09:00 UTC), so "yesterday" is always the
+          # last day of that ended month. This is the value the freeze dir,
+          # the archive[] entry's URL, and the archive banner must all share
+          # — do not use `month` (above) for any of those three.
+          echo "archive_month=$(date -u -d yesterday +%Y-%m)" >> "$GITHUB_OUTPUT"
 
       - name: Read the registry
         id: queue
@@ -83,7 +90,7 @@ jobs:
 
       - name: Freeze the outgoing theme
         if: steps.queue.outputs.empty == 'false'
-        run: python scripts/freeze-theme.py "${{ steps.month.outputs.month }}"
+        run: python scripts/freeze-theme.py "${{ steps.month.outputs.archive_month }}"
 
       - name: Rotate the registry
         if: steps.queue.outputs.empty == 'false'
@@ -98,7 +105,7 @@ jobs:
           import theme_registry as tr
 
           reg = tr.load()
-          new_reg = tr.rotate(reg, "${{ steps.month.outputs.month }}")
+          new_reg = tr.rotate(reg, "${{ steps.month.outputs.archive_month }}")
           with open("content/themes.json", "w", encoding="utf-8", newline="\n") as f:
               json.dump(new_reg, f, indent=2)
               f.write("\n")
@@ -109,9 +116,21 @@ jobs:
         if: steps.queue.outputs.empty == 'false'
         run: python scripts/render-hub.py
 
+      - name: Install Playwright (browser gate)
+        if: steps.queue.outputs.empty == 'false'
+        run: |
+          set -euo pipefail
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
       - name: 'Gate: theme doctor (new active theme, browser checks)'
         if: steps.queue.outputs.empty == 'false'
-        run: python scripts/theme-doctor.py "${{ steps.rotate.outputs.new_active }}" --browser
+        # --require-browser: this is the only unattended run of this gate, so
+        # the horizontal-scroll/console-error checks failing to run at all
+        # (playwright missing, chromium failing to launch) must fail the gate,
+        # never silently skip it — a skip here would rubber-stamp every
+        # monthly rotation with dead code, undetected.
+        run: python scripts/theme-doctor.py "${{ steps.rotate.outputs.new_active }}" --browser --require-browser
 
       - name: 'Gate: render drift'
         if: steps.queue.outputs.empty == 'false'
@@ -162,7 +181,12 @@ jobs:
           exit 1
 
       - name: Open issue — rotation failed
-        if: failure()
+        # Not dry_run-gated on the individual gate steps above (dry runs
+        # skip commit/push, not the gates), so a dry run that trips a real
+        # guard — e.g. freeze-theme.py's write-once archive check — must
+        # NOT file a "rotation failed" issue against a run nobody asked to
+        # actually ship. Only a real (non-dry) run gets to open one.
+        if: failure() && inputs.dry_run != true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

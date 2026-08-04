@@ -282,3 +282,39 @@ def test_real_themes_registry_renders_at_least_one_card():
     html = render_hub.render_themes_gallery(render_hub.theme_registry.load())
     assert html.count('class="theme-card ') >= 1
     assert '<span class="theme-status live">Live</span>' in html
+
+
+# ─── main() guardrails (Fix 5) ─────────────────────────────────────────────
+#
+# Two failure-shaped bugs the whole-branch review caught: a missing theme
+# shell used to fall back to reading the LIVE index.html as its own source
+# (so `--check` would compare that file against itself and stay green
+# forever, and a genuinely broken theme would render as a silent no-op
+# instead of an error); and `--theme` without `--out` had no guard at all,
+# so a typo'd invocation would render an arbitrary theme straight over the
+# live site and every other surface it touches (feed, sitemap, story pages,
+# themes.html).
+
+
+def test_theme_without_out_is_a_usage_error(capsys):
+    # This guard fires before anything touches the registry or the
+    # filesystem, so it's safe to exercise against the real repo state.
+    rc = render_hub.main(["--theme", "phosphor-blueprint"])
+    assert rc != 0
+    err = capsys.readouterr().err
+    assert "--out" in err
+
+
+def test_missing_shell_fails_loudly_instead_of_falling_back_to_live_index(tmp_path, capsys):
+    # A slug with no themes/<slug>/ directory at all under the real ROOT.
+    # theme+out are paired (clears the first guard above) so this isolates
+    # the missing-shell guard; nothing is written since it errors first.
+    rc = render_hub.main([
+        "--theme", "definitely-not-a-real-theme-slug",
+        "--out", str(tmp_path),
+    ])
+    assert rc != 0
+    err = capsys.readouterr().err
+    assert "shell" in err.lower()
+    assert "definitely-not-a-real-theme-slug" in err
+    assert not (tmp_path / "index.html").exists()
