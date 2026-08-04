@@ -1994,16 +1994,14 @@ def main(argv: list[str]) -> int:
     reg = theme_registry.load()
     slug = theme_slug or theme_registry.active_slug(reg)
     # index.html is the "home" archetype (content/page-archetypes.json). A
-    # theme dresses it from themes/<slug>/archetypes/home.html; a theme that
-    # hasn't extracted that archetype yet falls back to its legacy single
-    # shell.html so the branch stays green mid-migration (A2-A3 of the
-    # archetype rollout). A4 removes this fallback once every archetype is
-    # extracted for every theme.
+    # theme dresses it from themes/<slug>/archetypes/home.html — every theme
+    # is required to carry all four archetype files (home, product, reading,
+    # utility; see theme_registry.REQUIRED_ARCHETYPES). The legacy single
+    # shell.html fallback that covered A2-A3 of the archetype rollout is
+    # gone as of A4: a missing archetype file is a loud error, not a silent
+    # render-around.
     page_archetype = archetypes.archetype_for("index.html", archetypes.load())
     shell = theme_registry.theme_dir(slug) / "archetypes" / f"{page_archetype}.html"
-    legacy_shell = theme_registry.theme_dir(slug) / "shell.html"
-    if not shell.exists() and legacy_shell.exists():
-        shell = legacy_shell
     if not shell.exists():
         # A missing shell used to fall back to reading the live index.html as
         # source, which makes `--check` trivially green forever (comparing
@@ -2011,10 +2009,9 @@ def main(argv: list[str]) -> int:
         # theme is incomplete. Fail loudly instead — an incomplete theme is
         # a bug to fix, not a state to render around.
         print(
-            f"error: theme shell missing: {shell.relative_to(ROOT).as_posix()} "
-            f"(theme '{slug}' is incomplete — expected archetypes/{page_archetype}.html "
-            "or a legacy shell.html, plus tokens.css and theme.json, under "
-            "themes/<slug>/)",
+            f"error: theme archetype missing: {shell.relative_to(ROOT).as_posix()} "
+            f"(theme '{slug}' is incomplete — expected archetypes/{page_archetype}.html, "
+            "plus tokens.css and theme.json, under themes/<slug>/)",
             file=sys.stderr,
         )
         return 2

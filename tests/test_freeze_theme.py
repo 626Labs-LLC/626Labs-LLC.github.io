@@ -13,8 +13,10 @@ def _site(tmp_path):
         '{"active":"t","queue":[],"archive":[]}', encoding="utf-8")
     d = tmp_path / "themes" / "t"
     d.mkdir(parents=True)
+    # freeze() only ever reads root/index.html + the local stylesheets it
+    # links — it never checks theme-dir completeness, so no archetypes/
+    # files are needed here (that's theme_registry/theme-doctor's job).
     (d / "tokens.css").write_text(":root{--x:#fff}", encoding="utf-8")
-    (d / "shell.html").write_text("<html></html>", encoding="utf-8")
     (d / "theme.json").write_text('{"name":"T","slug":"t"}', encoding="utf-8")
     (tmp_path / "index.html").write_text(
         '<html><head><link rel="stylesheet" href="/themes/t/tokens.css"></head>'

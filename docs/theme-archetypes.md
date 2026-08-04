@@ -95,6 +95,38 @@ Evidence: `vibe-cartographer/index.html`, cross-checked against
 `vibe-doc/index.html` (near-identical class list — confirms the shared
 template, not a coincidence).
 
+### The product archetype file — structural completeness, zero consumers
+
+`themes/phosphor-blueprint/archetypes/product.html` exists as of A4,
+extracted verbatim from `vibe-cartographer/index.html`'s `<style>` block,
+`nav.top`, hero/work/brain/install/family scaffolding, and footer —
+tokenized (`{{PRODUCT:HEAD}}`, `{{PRODUCT:NAV_CURRENT}}`,
+`{{PRODUCT:HERO}}`, `{{PRODUCT:WORK}}`, `{{PRODUCT:BRAIN}}`,
+`{{PRODUCT:INSTALL}}`, `{{PRODUCT:FAMILY}}`, `{{PRODUCT:FOOTER}}`) the same
+way A3 tokenized `reading.html`. Unlike `home.html`/`reading.html`, **no
+code resolves this file today** — `scripts/render-plugin-pages.py` (which
+generates the 14 plugin pages + `plugins/index.html`) has zero
+theme-awareness of any kind: it doesn't import `theme_registry`, doesn't
+link `tokens.css`, and duplicates the Phosphor Blueprint override block
+inline exactly like every plugin page ships today. Wiring
+`render-plugin-pages.py` to resolve `product.html` and replace that
+duplication with a real `tokens.css` link is **A5's job** ("plugin
+renderer" per the milestone ledger) — A4 only needed the file to exist so
+theme completeness (`theme_registry.REQUIRED_ARCHETYPES`,
+`theme-doctor.py`) can require all four archetypes with the `shell.html`
+fallback gone.
+
+**The bespoke standalone pages do not participate, this milestone or
+any future one this doc can promise.** `conundrum.html`, `rororo.html`,
+`rororo-plugins.html`, `mod-launcher-games.html` (plus `thesis.html` /
+`workflow.html` in the `reading` bucket) are the controller's explicit
+M2a scope cut — see "Known gap" above and the SCOPE RULING under
+`reading`. A4 did not extract from them, did not retrofit their markup
+onto the `product`/`reading` vocabulary, and did not change a single byte
+in any of the six files. They stay hand-authored, bespoke, and out of
+this contract's live enforcement until each is touched for its own
+reasons.
+
 ---
 
 ## `reading` — long-form and editorial pages (10 pages)
@@ -248,14 +280,90 @@ Evidence: `press.html`, cross-checked against `privacy.html` and
 `nav-cta`, `page-hero`/`page-hero-bg`/`page-hero-inner`/`page-title`/
 `page-meta`, and `footer-inner`/`footer-links`/`footer-meta`).
 
-**Known gap — the biggest one in this contract:** three of the six
-utility pages carry **none** of the required vocabulary today.
+**Known gap, now resolved — see "Chrome-optional pages" below:** three of
+the six utility pages carry **none** of the required vocabulary today.
 `404.html` is intentionally chromeless (no nav, no footer, no
 page-hero — a lost user isn't shown site structure they've already
 failed to find). `legal/privacy.html` and `legal/terms.html` are
 minimal, hand-rolled documents with no nav/footer/page-hero at all,
-visually unrelated to `privacy.html` despite the similar name. See the
-open question below.
+visually unrelated to `privacy.html` despite the similar name.
+
+### The utility archetype file, and why press/privacy/themes stay hand-authored
+
+`themes/phosphor-blueprint/archetypes/utility.html` exists as of A4,
+extracted from `press.html` (the brief's designated reference) —
+nav/page-hero/footer are byte-identical across `press.html`,
+`privacy.html`, and `themes.html` (verified with `diff`, not assumed),
+tokenized as `{{UTILITY:HEAD}}`, `{{UTILITY:EYEBROW}}`,
+`{{UTILITY:PAGE_TITLE}}`, `{{UTILITY:PAGE_LEAD}}` (optional —
+`privacy.html` has none), `{{UTILITY:PAGE_META}}`, `{{UTILITY:BODY}}`,
+`{{UTILITY:FOOTER_LINKS}}`. This is the same "extract, never redesign"
+posture A2/A3 used for `home.html`/`reading.html`.
+
+`press.html`, `privacy.html`, and `themes.html` were the task's real
+migration set — the three utility pages that actually carry chrome
+today, as opposed to `404.html`/`legal/*` which don't (below). All three
+were considered, all three were the extraction source, and **all three
+stay hand-authored, zero bytes changed** — the same non-participation
+call A3 made for `about.html`/`editorial/index.html`, for a related but
+distinct reason:
+
+- **No data source drives regeneration.** `press.html` and `privacy.html`
+  carry zero `SITE_JSON:`-style zones — nothing in `content/site.json`
+  feeds their content, so there's no legitimate trigger for Python to
+  regenerate them (unlike `index.html`'s zones or the Field Notes'
+  markdown source).
+- **No shared component CSS layer exists to build a real shell on top
+  of.** Reading pages share `Design/editorial.css`; utility pages don't
+  have an equivalent — each of the three carries its own large,
+  page-specific `<style>` block (`press.html`'s `.copy-block`/
+  `.asset-grid`, `privacy.html`'s `.tldr`, `themes.html`'s
+  `.theme-card` gallery) that would have to travel wholesale with any
+  render step, which is architecturally close to "the file already is
+  its own shell."
+- **A concrete regression risk, found and not routed around:**
+  `press.html` and `privacy.html` currently duplicate the Phosphor
+  Blueprint override CSS *inline* (not linked to `tokens.css`), and that
+  duplicated copy has **diverged** from `tokens.css` — `press.html`'s
+  copy applies `text-shadow` to every `h1` unconditionally, `tokens.css`
+  scopes it to `header.hero h1` (a selector that wouldn't match
+  `h1.page-title`); `tokens.css` additionally sets `nav.nav { z-index:
+  70 }` and a `nav.nav::after` scanline overlay that `press.html`'s
+  inline copy never picked up. Swapping the inline block for a
+  `tokens.css` `<link>` — the obvious "de-duplicate" move — would have
+  **changed rendered pixels** (losing the H1 bloom on the page title,
+  gaining a scanline strip on the nav) and failed the 0-pixel gate. Not
+  attempted here; flagged for whoever eventually wires a live utility
+  renderer, since it's real, pre-existing CSS drift independent of this
+  task. `themes.html` already links `tokens.css` correctly and has no
+  such drift — it's the one utility page today that's already correctly
+  wired to theme rotation.
+
+`utility.html` is therefore a **structural/vocabulary reference with
+zero live consumers**, same posture as `product.html` above — it exists
+so theme completeness can require all four archetype files, and models
+the target shape (including linking `tokens.css` instead of duplicating
+it) for whichever later task builds a real content-extraction mechanism
+for these three pages.
+
+### Chrome-optional pages — the open question, resolved
+
+**Controller ruling (M2a):** `404.html`, `legal/privacy.html`, and
+`legal/terms.html` get **no chrome retrofit**. They carry no nav,
+page-hero, or footer today, and adding any of it would change how they
+look — a 404 page showing full site navigation undercuts the "you've
+already failed to find it" design intent, and the legal documents were
+deliberately built to stand outside the site's normal chrome. The
+`utility` archetype's required vocabulary (`nav`/`page-hero`/
+`page-title`/`page-meta`/`footer-inner`) applies only to the three
+pages that already carry chrome — `press.html`, `privacy.html`,
+`themes.html`. `404.html` and `legal/*` are a permanent, explicit
+"chrome-optional" carve-out in this contract, not a deferred migration
+item the way `thesis.html`/`workflow.html` are in `reading` — nobody is
+expected to retrofit them later for conformance's own sake. A future
+change to how 404 or legal pages *should* look is a deliberate design
+decision to make on its own terms, not a drive-by side effect of a
+theme-archetype task.
 
 ---
 
@@ -273,13 +381,13 @@ open question below.
 SDD scratch, announcement drafts, and theme infrastructure are never
 "public pages" in the first place).
 
-## Open question for A4 / A6
+## A6 — still open
 
-Should `404.html`, `legal/privacy.html`, and `legal/terms.html` be
-migrated to carry the full `utility` chrome (nav + page-hero + footer),
-or should the `utility` contract carve out an explicit
-"chrome-optional" exception for pages that are deliberately standalone
-(an error screen, a document meant to stand outside the site's normal
-navigation)? Left for whoever picks up A4/A6 — flagging it here rather
-than silently forcing 100% conformance or silently excluding them from
-validation.
+Vocabulary *enforcement* (theme-doctor checking a theme's rendered output
+actually carries each archetype's required classes) is intentionally not
+built yet — `scripts/archetypes.py`'s `validate()` checks the page->
+archetype mapping only (every mapped page exists, every archetype value
+is known, every on-disk public page is mapped), not class presence. That
+split is deliberate, confirmed by this doc's own framing throughout: A6
+is where a theme's dress gets checked against the vocabulary tables
+above.

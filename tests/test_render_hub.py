@@ -195,8 +195,10 @@ def test_founding_paragraphs_render_raw_html():
 def _make_theme(tmp_path, slug, **meta):
     d = tmp_path / "themes" / slug
     d.mkdir(parents=True)
-    for name in ("shell.html", "tokens.css"):
-        (d / name).write_text("x", encoding="utf-8")
+    # render_themes_gallery only reads theme.json — tokens.css/archetypes/
+    # completeness is theme_registry/theme-doctor's job, exercised in their
+    # own test modules, not here.
+    (d / "tokens.css").write_text("x", encoding="utf-8")
     base = {"name": slug.title(), "slug": slug, "thesis": f"{slug} thesis.", "month": "2026-08"}
     base.update(meta)
     (d / "theme.json").write_text(json.dumps(base), encoding="utf-8")
@@ -305,16 +307,19 @@ def test_theme_without_out_is_a_usage_error(capsys):
     assert "--out" in err
 
 
-def test_missing_shell_fails_loudly_instead_of_falling_back_to_live_index(tmp_path, capsys):
+def test_missing_archetype_fails_loudly_instead_of_falling_back_to_live_index(tmp_path, capsys):
     # A slug with no themes/<slug>/ directory at all under the real ROOT.
     # theme+out are paired (clears the first guard above) so this isolates
-    # the missing-shell guard; nothing is written since it errors first.
+    # the missing-archetype guard; nothing is written since it errors first.
+    # No shell.html fallback either (A4) — a missing archetype file is
+    # always a loud error, never a silent render-around.
     rc = render_hub.main([
         "--theme", "definitely-not-a-real-theme-slug",
         "--out", str(tmp_path),
     ])
     assert rc != 0
     err = capsys.readouterr().err
-    assert "shell" in err.lower()
+    assert "archetype" in err.lower()
+    assert "archetypes/home.html" in err
     assert "definitely-not-a-real-theme-slug" in err
     assert not (tmp_path / "index.html").exists()

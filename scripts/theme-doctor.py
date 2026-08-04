@@ -358,12 +358,15 @@ def main(argv: list[str]) -> int:
     slug = positional[0]
 
     tdir = theme_registry.theme_dir(slug)
-    missing = [f for f in ("tokens.css", "theme.json") if not (tdir / f).exists()]
-    # Archetype-aware: a theme carries either the legacy single shell.html or
-    # its extracted archetypes/home.html (the only archetype render-hub.py
-    # resolves today — see scripts/archetypes.py).
-    if not (tdir / "shell.html").exists() and not (tdir / "archetypes" / "home.html").exists():
-        missing.append("shell.html or archetypes/home.html")
+    missing = [f for f in theme_registry.REQUIRED_FILES if not (tdir / f).exists()]
+    # Every theme must carry all four archetype dresses — no shell.html
+    # fallback (removed in A4; see scripts/theme_registry.py and
+    # docs/theme-archetypes.md).
+    missing += [
+        f"archetypes/{a}.html"
+        for a in theme_registry.REQUIRED_ARCHETYPES
+        if not (tdir / "archetypes" / f"{a}.html").exists()
+    ]
     if missing:
         print(f"FAIL {slug}")
         for f in missing:
