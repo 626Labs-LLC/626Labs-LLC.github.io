@@ -40,7 +40,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Install deps
         run: pip install -r requirements.txt pytest
@@ -62,8 +62,15 @@ jobs:
           print("empty=true" if not reg.get("queue") else "empty=false")
           PY
 
+      - name: 'Dry run: report empty queue (no issue filed)'
+        if: steps.queue.outputs.empty == 'true' && inputs.dry_run == true
+        run: |
+          set -euo pipefail
+          echo "Queue is empty as of $(date -u +%F). A real run would file a"
+          echo "\"Theme queue is empty\" issue here and stop; dry run just logs it."
+
       - name: Open issue — queue is empty
-        if: steps.queue.outputs.empty == 'true'
+        if: steps.queue.outputs.empty == 'true' && inputs.dry_run != true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
