@@ -3,5 +3,10 @@
   "slug": "phosphor-blueprint",
   "thesis": "The drawing is the monitor. A CRT phosphor kit over a two-scale drafting grid on absolute black.",
   "month": "2026-08",
-  "status": "live"
+  "status": "live",
+  "contrastPairs": [
+    ["--fg-1", "--pb-field"],
+    ["--fg-2", "--pb-field"],
+    ["--fg-3", "--pb-panel"]
+  ]
 }
