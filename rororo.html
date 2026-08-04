@@ -30,8 +30,10 @@
 
      What it links is the token file, NOT archetypes/product.css. That one
      is the element dress for the pages render-plugin-pages.py generates.
-     Measured against this page's real DOM, 30 of its 180 rules match here
-     — `body`, `a`, `a:hover`, `h1, h2, h3`, `.btn`, `.btn-primary`,
+     It holds 158 style rules carrying 180 selectors; measured against this
+     page's real DOM, 31 of those selectors match here. One is `:root`,
+     which is the vocabulary this page wants. The other 30 are dress —
+     `body`, `a`, `a:hover`, `h1, h2, h3`, `.btn`, `.btn-primary`,
      `.btn-ghost`, `.install-grid`, `.install-card`, `.install-card h3` —
      all of them landing on markup shaped nothing like the archetype's
      (this page's `.btn` is a 13.5px icon pill, its `.install-card` a

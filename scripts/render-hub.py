@@ -868,10 +868,13 @@ def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
 # render-plugin-pages.py inlines into its 15 generated pages, written on
 # bare element selectors (`body`, `a:hover`, `section.hero`, `.card`,
 # `.btn`) that land on bespoke markup they were never written for. Its
-# reach was measured against each page's live DOM rather than assumed —
-# 30 of its 180 rules match rororo.html, 19 match
-# mod-launcher-games.html. See that theme file's header for the
-# measurement behind the split. Each
+# reach was measured against each page's live DOM rather than assumed.
+# The file is 158 style rules carrying 180 selectors; 31 of those
+# selectors match rororo.html and 20 match mod-launcher-games.html. One
+# of each is `:root`, which is vocabulary and is exactly what these pages
+# DO want from the theme — so 30 and 19 dress selectors would land
+# uninvited. See that theme file's header for the measurement behind the
+# split. Each
 # theme is free to make different choices for these pages the next time
 # they're touched for their own reasons — this only guarantees the *link*
 # rotates, not that every page of one archetype ends up on the exact same

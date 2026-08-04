@@ -67,6 +67,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import urllib.parse
 from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -165,21 +166,31 @@ TOKEN_ONLY_CSS = (
 # Real, hand-authored pages --browser opens in addition to the theme's own
 # archetype shells. Everything else in the browser check grades a shell the
 # theme ships; these grade a page the SITE ships, dressed by the theme
-# under test. Kept to the two product pages because they are the two whose
-# theme coupling is newest and whose failure is most expensive
-# (conundrum.html is the commercial Etsy surface). Each is read from
-# render-hub.py's preview output, so its stylesheet <link> points at the
-# theme being doctored rather than the active one.
+# under test. Each is read from render-hub.py's preview output, so its
+# stylesheet <link> points at the theme being doctored rather than the
+# active one.
 #
-# rororo.html and mod-launcher-games.html joined THEME_CSS_HREFS later and
-# are deliberately NOT here. mod-launcher-games.html fetches its game
-# manifest from raw.githubusercontent.com at runtime; a failed fetch logs a
-# console error, so adding it would make the one unattended gate standing
-# between a queued theme and the live site depend on a third-party host
-# being up on the 1st. That is a worse failure mode than the coverage is
-# worth. rororo.html is held out with it rather than split from its pair —
-# its own fetch is same-origin, so it could be added on its own merits.
-BROWSER_CHECK_LIVE_PAGES = ("conundrum.html", "rororo-plugins.html")
+# All four bespoke product pages, because all four are pages the unattended
+# rotation could otherwise promote a theme onto without anything ever
+# opening them. `rororo.html` in particular is the expensive omission: its
+# `.install-grid` is `repeat(3, 1fr)` holding `code` blocks at
+# `white-space: pre`, so a queued theme shipping a `--font-body` stack with
+# wider metrics overflows it at 390px — exactly what the horizontal-scroll
+# check is for.
+#
+# An earlier cut held the two live-data pages out on the grounds that
+# `mod-launcher-games.html` fetches from raw.githubusercontent.com and would
+# make this gate depend on a third-party host. The premise was true; the
+# conclusion was not. Every page here already loads
+# `//gc.zgo.at/count.js`, so the dependency already existed and merely
+# changed count. It is closed properly instead, in `_check_viewport`: the
+# browser context aborts off-origin requests and drops console errors
+# attributed to off-origin URLs. See that function's docstring for what that
+# does and does not still cover.
+BROWSER_CHECK_LIVE_PAGES = (
+    "conundrum.html", "rororo-plugins.html", "rororo.html",
+    "mod-launcher-games.html",
+)
 
 # Real, live chrome varies by archetype today — verified by grep against the
 # actual shipped pages (vibe-cartographer/index.html, press.html,
@@ -639,6 +650,39 @@ def _run_browser_checks(html_text: str, require: bool = False) -> list[str]:
     return errors
 
 
+def _page_origin(url: str) -> str:
+    """`scheme://host:port` of `url` — what "the page's own origin" means to
+    the two off-origin filters below."""
+    parts = urllib.parse.urlsplit(url)
+    return f"{parts.scheme}://{parts.netloc}"
+
+
+def _is_off_origin(url: str, origin: str) -> bool:
+    """True when `url` leaves the page's own origin.
+
+    `data:` / `blob:` / `about:` are the page's own content under another
+    scheme and are never off-origin. An EMPTY url is treated as the page's
+    own — a console error the browser could not attribute is reported, never
+    filtered away, because the failure mode this whole gate exists to prevent
+    is silently covering less than it claims.
+    """
+    if not url:
+        return False
+    if url.startswith(("data:", "blob:", "about:")):
+        return False
+    return url != origin and not url.startswith(origin + "/")
+
+
+def _console_message_url(msg) -> str:
+    """The URL a console message is attributed to, or "" when the browser
+    attributed it to nothing."""
+    loc = getattr(msg, "location", None) or {}
+    try:
+        return loc.get("url", "") or ""
+    except AttributeError:  # a location object rather than a dict
+        return getattr(loc, "url", "") or ""
+
+
 def _check_viewport(page, url: str, width: int) -> list[str]:
     """Load `url` in an already-created page-like object at `width` and check it.
 
@@ -651,12 +695,70 @@ def _check_viewport(page, url: str, width: int) -> list[str]:
     monthly promotion to live (T5's scheduled rotation calls `--browser` as its
     gate). A theme whose rendered page throws or hangs on load must fail the gate,
     not get silently skipped and waved through.
+
+    ── Third-party isolation, and why it is not optional ──────────────────
+    Every page this gate opens — the theme's own archetype shells AND the
+    live pages in BROWSER_CHECK_LIVE_PAGES — carries
+    `<script async src="//gc.zgo.at/count.js">`, which over `http://127.0.0.1`
+    resolves to a real third-party host. So this gate ALREADY depended on
+    gc.zgo.at being up at 09:00 UTC on the 1st, through two channels: a
+    failed load logs a console error (reported as the theme's fault), and an
+    `async` script still delays the `load` event `page.goto` waits for, so a
+    slow host eats the 15s timeout and fails the gate outright.
+
+    Both channels are closed here rather than worked around: off-origin
+    requests are aborted before they leave, and console errors attributed to
+    an off-origin URL — including the `net::ERR_FAILED` those aborts produce
+    — are dropped. What remains is the page's OWN errors, which is what this
+    gate was always claiming to grade.
+
+    One page's third-party load is a WEBFONT rather than analytics, and it was
+    checked rather than waved past: index.html embeds the Bacon Trail widget,
+    whose own widget-bacon-trail/widget.css opens with a fonts.googleapis.com
+    @import (deliberate — that widget also renders on third-party domains,
+    where /fonts/ would resolve to the host; see fonts/fonts.css's header).
+    On THIS page it is redundant: index.html already loads the same families
+    from the same-origin /fonts/fonts.css, whose @font-face rules apply
+    document-wide, widget included. So blocking it moves no metric — which is
+    the claim the full gate passing with the block in place actually tests.
+
+    The cost, stated rather than hidden: a page whose content arrives over an
+    off-origin fetch renders its fetch-failed state here.
+    `mod-launcher-games.html` is the one such page — its game manifest lives
+    on raw.githubusercontent.com — so this gate grades its chrome and its
+    fallback panel, not its 150-row populated layout. That was already true
+    and merely racy before: `_check_viewport` waits 300ms after `load`, which
+    a cross-country fetch does not reliably beat. Deterministically grading a
+    known state beats sometimes grading either. `rororo.html`'s feed is
+    same-origin (`data/rororo-plugins.json`, served by the local server), so
+    it populates fully and IS graded populated.
     """
+    origin = _page_origin(url)
+    page.route(
+        "**/*",
+        lambda route: route.abort()
+        if _is_off_origin(route.request.url, origin)
+        else route.continue_(),
+    )
     console_errors: list[str] = []
     page.on(
         "console",
-        lambda msg: console_errors.append(msg.text) if msg.type == "error" else None,
+        lambda msg: console_errors.append(msg.text)
+        if msg.type == "error" and not _is_off_origin(_console_message_url(msg), origin)
+        else None,
     )
+    # An UNCAUGHT exception is not a console message. Measured, not assumed:
+    # a page whose inline script calls an undefined function delivers
+    # "x is not defined" on `pageerror` and NOTHING on `console`. So the
+    # docstring above — and the comment on BROWSER_CHECK_LIVE_PAGES — claimed
+    # this gate catches a page "throwing" when it never had. It does now.
+    #
+    # No origin filter is needed on this channel, and that is a consequence
+    # of the abort above rather than an oversight: with every off-origin
+    # request aborted, no third-party script executes, so any exception
+    # reaching here is the page's own by construction.
+    page_errors: list[str] = []
+    page.on("pageerror", lambda exc: page_errors.append(str(exc)))
     try:
         response = page.goto(url, wait_until="load", timeout=15000)
     except Exception as e:
@@ -676,6 +778,8 @@ def _check_viewport(page, url: str, width: int) -> list[str]:
         )
     for msg in console_errors:
         errors.append(f"browser: console error at {width}px: {msg}")
+    for msg in page_errors:
+        errors.append(f"browser: uncaught page error at {width}px: {msg}")
     return errors
 
 

@@ -30,9 +30,11 @@
 
      What it links is the token file, NOT archetypes/product.css. That one
      is the element dress for the pages render-plugin-pages.py generates.
-     Measured against this page's real DOM — feed loaded, all 150 game rows
-     present — 19 of its 180 rules match here: `body`, `a`, `a:hover`,
-     `h1`, `h2`, `.btn`, `.brand img`. This page's `.btn` is a 12px mono
+     It holds 158 style rules carrying 180 selectors; measured against this
+     page's real DOM — feed loaded, all 150 game rows present — 20 of those
+     selectors match here. One is `:root`, the vocabulary this page wants.
+     The other 19 are dress: `body`, `a`, `a:hover`, `h1`, `h2`, `.btn`,
+     `.brand img`. This page's `.btn` is a 12px mono
      chip and its `.brand img` a solid app-icon tile, neither of which the
      archetype's rules were written for. This page is hand-authored and
      keeps its own layout: it recolors monthly, it does not re-layout.

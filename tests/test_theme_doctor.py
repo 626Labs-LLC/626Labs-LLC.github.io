@@ -94,22 +94,59 @@ def test_live_theme_passes_static_checks():
     assert td.check_chrome(html, "") == []
 
 
+class _StubConsoleMessage:
+    """A console message as _check_viewport reads one: `.type`, `.text`, and
+    a `.location` dict the off-origin filter attributes it by."""
+
+    def __init__(self, text, url, type_="error"):
+        self.text = text
+        self.type = type_
+        self.location = {"url": url, "lineNumber": 0, "columnNumber": 0}
+
+
+class _StubRoute:
+    """A playwright Route as _check_viewport drives one. Records the verdict
+    so a test can assert which requests were let through."""
+
+    def __init__(self, url):
+        self.request = type("R", (), {"url": url})()
+        self.verdict = None
+
+    def abort(self):
+        self.verdict = "abort"
+
+    def continue_(self):
+        self.verdict = "continue"
+
+
 class _StubPage:
     """Minimal page-like stub for _check_viewport — no real browser needed.
 
     goto_side_effect: exception instance to raise (navigation failure), or a
     response-like value to return (e.g. a fake with .status).
+    console: messages to hand the "console" handler after goto.
     """
 
-    def __init__(self, goto_side_effect):
+    def __init__(self, goto_side_effect, console=(), pageerrors=()):
         self._goto_side_effect = goto_side_effect
+        self._console = list(console)
+        self._pageerrors = list(pageerrors)
+        self._handlers = {}
+        self.route_handler = None
 
     def on(self, event, handler):
-        pass
+        self._handlers[event] = handler
+
+    def route(self, pattern, handler):
+        self.route_handler = handler
 
     def goto(self, url, wait_until="load", timeout=15000):
         if isinstance(self._goto_side_effect, Exception):
             raise self._goto_side_effect
+        for msg in self._console:
+            self._handlers["console"](msg)
+        for exc in self._pageerrors:
+            self._handlers["pageerror"](exc)
         return self._goto_side_effect
 
     def wait_for_timeout(self, ms):
@@ -826,18 +863,125 @@ def _render_hub_previewable_pages():
     return set(mod.PREVIEWABLE_THEME_CSS_PAGES)
 
 
-def test_browser_checks_open_the_two_hand_authored_product_pages():
+def test_browser_checks_open_every_hand_authored_product_page():
     # Not a shell the theme ships — pages the SITE ships. Before this,
     # nothing in the unattended gate stack ever rendered a real
     # hand-authored page, so the commercial Etsy surface was one the
     # rotation could never see.
-    assert td.BROWSER_CHECK_LIVE_PAGES == ("conundrum.html", "rororo-plugins.html")
+    #
+    # All four, not two. The live-data pair was briefly held out because
+    # mod-launcher-games.html fetches off-origin — but every page here
+    # already loads //gc.zgo.at/count.js, so that dependency existed either
+    # way and is now closed in _check_viewport instead of routed around.
+    assert td.BROWSER_CHECK_LIVE_PAGES == (
+        "conundrum.html", "rororo-plugins.html", "rororo.html",
+        "mod-launcher-games.html",
+    )
     previewable = _render_hub_previewable_pages()
     for name in td.BROWSER_CHECK_LIVE_PAGES:
         assert (ROOT / name).exists()
         # Each must be one render-hub.py's preview mode actually emits, or
         # main() bails with "did not emit" instead of checking it.
         assert (ROOT / name) in previewable, name
+
+
+# ─── third-party isolation in the browser gate ───────────────────────────
+#
+# The gate opens pages that all carry `<script async src="//gc.zgo.at/
+# count.js">`. Unisolated, that made an unattended rotation on the 1st
+# depend on a third-party host: a failed load logs a console error blamed on
+# the theme, and an async script still delays the `load` event page.goto
+# waits for, so a slow host eats the timeout. Both are closed by origin
+# filtering, and these pin it.
+
+
+def test_off_origin_classification():
+    origin = "http://127.0.0.1:8000"
+    assert not td._is_off_origin("http://127.0.0.1:8000/", origin)
+    assert not td._is_off_origin("http://127.0.0.1:8000/assets/x.png", origin)
+    assert not td._is_off_origin("http://127.0.0.1:8000", origin)
+    assert td._is_off_origin("https://gc.zgo.at/count.js", origin)
+    assert td._is_off_origin(
+        "https://raw.githubusercontent.com/x/y/main/supported-games.json", origin)
+    # A prefix that is not a path boundary is a DIFFERENT origin. Naive
+    # startswith() would wave this through.
+    assert td._is_off_origin("http://127.0.0.1:80001/evil.js", origin)
+    # The page's own content under another scheme is never third-party.
+    for u in ("data:image/png;base64,AAAA", "blob:http://x/y", "about:blank"):
+        assert not td._is_off_origin(u, origin)
+    # An error the browser attributed to nothing is REPORTED, never filtered.
+    assert not td._is_off_origin("", origin)
+
+
+def test_off_origin_requests_are_aborted_before_they_leave():
+    page = _StubPage(None)
+    td._check_viewport(page, "http://127.0.0.1:8000/", 1440)
+    assert page.route_handler is not None, "no route installed — nothing is blocked"
+
+    own = _StubRoute("http://127.0.0.1:8000/data/rororo-plugins.json")
+    page.route_handler(own)
+    assert own.verdict == "continue"
+
+    analytics = _StubRoute("https://gc.zgo.at/count.js")
+    page.route_handler(analytics)
+    assert analytics.verdict == "abort"
+
+    feed = _StubRoute(
+        "https://raw.githubusercontent.com/e/626-game-manifest/main/supported-games.json")
+    page.route_handler(feed)
+    assert feed.verdict == "abort"
+
+
+def test_console_errors_are_the_pages_own_not_a_third_party_hosts():
+    page = _StubPage(
+        None,
+        console=[
+            # what an unreachable/aborted gc.zgo.at produces
+            _StubConsoleMessage(
+                "Failed to load resource: net::ERR_NAME_NOT_RESOLVED",
+                "https://gc.zgo.at/count.js"),
+            _StubConsoleMessage(
+                "Failed to load resource: net::ERR_FAILED",
+                "https://raw.githubusercontent.com/x/y.json"),
+            # the theme's own fault — must survive the filter
+            _StubConsoleMessage(
+                "Uncaught TypeError: x is not a function",
+                "http://127.0.0.1:8000/"),
+            # unattributed — reported, because a gate must never cover less
+            # than it claims
+            _StubConsoleMessage("something went wrong", ""),
+            # not an error at all
+            _StubConsoleMessage("a warning", "http://127.0.0.1:8000/", type_="warning"),
+        ],
+    )
+    errs = td._check_viewport(page, "http://127.0.0.1:8000/", 1440)
+    reported = [e for e in errs if "console error" in e]
+    assert len(reported) == 2, reported
+    assert any("Uncaught TypeError" in e for e in reported)
+    assert any("something went wrong" in e for e in reported)
+    assert not any("gc.zgo.at" in e or "ERR_" in e for e in reported)
+
+
+def test_an_uncaught_page_exception_is_a_gate_failure():
+    # Measured, not assumed: Chromium delivers an uncaught exception on
+    # `pageerror` and NOTHING on `console`. A page whose inline script calls
+    # an undefined function produced zero console messages and one pageerror
+    # — so before this handler existed, _check_viewport's own docstring and
+    # BROWSER_CHECK_LIVE_PAGES' comment both claimed this gate catches a page
+    # "throwing" while it demonstrably did not.
+    #
+    # No origin filter on this channel, and that is load-bearing rather than
+    # sloppy: off-origin requests are aborted, so no third-party script runs,
+    # so any exception here is the page's own by construction.
+    page = _StubPage(None, pageerrors=[ReferenceError_stub("x is not defined")])
+    errs = td._check_viewport(page, "http://127.0.0.1:8000/", 390)
+    assert any("uncaught page error at 390px" in e and "x is not defined" in e
+               for e in errs), errs
+
+
+class ReferenceError_stub(Exception):  # noqa: N801 — reads as the thing it stands for
+    """What playwright hands a `pageerror` handler: an exception whose str()
+    is the browser-side message."""
 
 
 def test_main_fails_a_theme_whose_reading_tokens_css_drops_the_required_tokens(
