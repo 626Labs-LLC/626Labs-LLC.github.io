@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - 'content/**'
+      - 'content/themes.json'
       - 'index.html'
       - 'plugins/**'
       - 'scripts/**'
       - 'assets/**'
       - 'tests/**'
+      - 'themes/**'
       - '.github/workflows/content-health.yml'
   schedule:
     - cron: '0 13 * * 1'   # Mondays 13:00 UTC, alongside link-check

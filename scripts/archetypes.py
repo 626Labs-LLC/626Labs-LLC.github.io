@@ -114,6 +114,57 @@ VOCABULARY: dict[str, set[str]] = {
 }
 
 
+# The base CSS custom-property vocabulary a theme's tokens.css (and, since
+# press.html/privacy.html carry no local fallback of their own,
+# archetypes/utility.css) has to actually DEFINE. VOCABULARY (above) is the
+# markup-side anchor — class names a theme's dress can rely on finding.
+# REQUIRED_TOKENS is the CSS-side twin: the var(--x) names themes.html's own
+# <style> block and press.html's/privacy.html's own residual <style> (the
+# page-specific rules left after utility.css's A4 extraction — .copy-block/
+# .asset-grid/.tldr and friends) read but never define themselves. Nothing
+# before this required a theme to actually supply them: themes.html and
+# index.html each carry a hardcoded LOCAL fallback :root (today's Phosphor
+# Blueprint values, cascade-earlier than the theme's own <link>), so a theme
+# that drops or renames one of these doesn't error, it just silently leaves
+# themes.html showing the OUTGOING theme's stale color/spacing/type forever.
+# press.html/privacy.html have no such fallback at all (their <style> was
+# trimmed to page-specific rules only, A4) — for them, a missing/renamed
+# token is a straight unresolved var(), not a stale-but-valid one.
+#
+# Derived by reading, not designed in the abstract (same discipline
+# VOCABULARY documents): union of every var(--x) actually referenced in
+# themes.html's inline <style>, plus press.html's and privacy.html's own
+# residual <style> blocks. One theme-bespoke name found there is
+# deliberately excluded: press.html's `.asset-preview` background reads
+# `var(--pb-field)`, Phosphor Blueprint's OWN treatment-layer token (defined
+# in both tokens.css and utility.css's "Phosphor Blueprint — treatment
+# layer" section, never in the shared base) — a real, live coupling, but not
+# a base-vocabulary name any future theme is obligated to define under that
+# exact, PB-specific name. See docs/theme-archetypes.md for the full
+# derivation, the pb-field exclusion, and why each group of tokens matters.
+REQUIRED_TOKENS: frozenset[str] = frozenset({
+    # backgrounds
+    "--bg-0", "--bg-1",
+    # foreground / text
+    "--fg-1", "--fg-2", "--fg-3",
+    "--text", "--text-sec", "--text-dim", "--text-mute",
+    # brand color + accent
+    "--cyan", "--cyan-pale", "--magenta", "--magenta-pale",
+    "--navy-deep", "--navy-mid", "--navy-hi", "--ink-950", "--ok",
+    "--brand-gradient", "--brand-gradient-soft",
+    # borders + panel effects
+    "--border-1", "--border-2", "--border-accent", "--inner-stroke",
+    # typography
+    "--font-display", "--font-body", "--font-mono",
+    # motion
+    "--dur-fast", "--ease-out",
+    # spacing scale
+    "--s-2", "--s-3", "--s-4", "--s-5", "--s-6", "--s-8", "--s-10", "--s-12", "--s-16",
+    # radius scale
+    "--r-xs", "--r-sm", "--r-md", "--r-lg", "--r-pill",
+})
+
+
 def _public_pages(root: Path = ROOT) -> set[str]:
     """Every *.html file under `root` that is a real public page: not
     excluded by directory or filename. Returns repo-relative, posix-style

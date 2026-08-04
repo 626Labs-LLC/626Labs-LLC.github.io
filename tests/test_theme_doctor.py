@@ -1,5 +1,6 @@
 import importlib.util, sys
 from pathlib import Path
+import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
 _spec = importlib.util.spec_from_file_location("theme_doctor", ROOT / "scripts" / "theme-doctor.py")
@@ -170,6 +171,19 @@ def _compliant_reading_css():
     return "".join(f".{c} {{ }}\n" for c in lnt_classes)
 
 
+def _required_tokens_css() -> str:
+    """A minimal, syntactically-valid `:root` block declaring every
+    archetypes.REQUIRED_TOKENS name with a throwaway value — the
+    token-completeness half of a "complete" stub theme (final review
+    Fix 1), alongside _make_complete_theme_dir's vocabulary/chrome-
+    satisfying archetype markup below. check_required_tokens only cares
+    that the name is DEFINED, not what it resolves to, so `0` is fine for
+    every group (colors, fonts, durations included) — this fixture is
+    exercising completeness, not contrast or rendering."""
+    decls = "".join(f"{tok}: 0;\n" for tok in sorted(td.archetypes.REQUIRED_TOKENS))
+    return f":root {{\n{decls}}}\n"
+
+
 def _make_complete_theme_dir(tdir):
     # All four archetype files + tokens.css/theme.json — the shell.html
     # fallback is gone (A4), so a theme needs the full archetypes/ set to
@@ -183,13 +197,19 @@ def _make_complete_theme_dir(tdir):
     # exercising what they're actually testing. A7 adds archetypes/
     # reading.css to that same completeness requirement, and reading's own
     # dress (not about.html's) is now what the vocabulary check grades.
+    # The final review's Fix 1 adds one more: tokens.css AND
+    # archetypes/utility.css now both have to define every
+    # archetypes.REQUIRED_TOKENS name — empty strings (the pre-Fix-1
+    # fixture) would now fail every stub theme at the new gate before any
+    # of the checks below ever ran, so both get _required_tokens_css()
+    # instead of "".
     (tdir / "archetypes").mkdir(parents=True)
-    (tdir / "tokens.css").write_text("", encoding="utf-8")
+    (tdir / "tokens.css").write_text(_required_tokens_css(), encoding="utf-8")
     (tdir / "theme.json").write_text("{}", encoding="utf-8")
     for a in td.theme_registry.REQUIRED_ARCHETYPES:
         (tdir / "archetypes" / f"{a}.html").write_text(_compliant_archetype_html(a), encoding="utf-8")
     (tdir / "archetypes" / "product.css").write_text("", encoding="utf-8")
-    (tdir / "archetypes" / "utility.css").write_text("", encoding="utf-8")
+    (tdir / "archetypes" / "utility.css").write_text(_required_tokens_css(), encoding="utf-8")
     (tdir / "archetypes" / "reading.css").write_text(_compliant_reading_css(), encoding="utf-8")
 
 
@@ -435,3 +455,132 @@ def test_main_theme_with_all_archetype_css_files_clears_completeness(monkeypatch
     assert "product.css" not in out
     assert "utility.css" not in out
     assert "reading.css" not in out
+
+
+# ─── final review Fix 1: the required-tokens contract ──────────────────────
+# themes.html's own <style> and press.html's/privacy.html's own residual
+# <style> (the page-specific rules left after utility.css's A4 extraction)
+# read ~43 custom properties via var(--x) and never define them — nothing
+# before this required a theme's tokens.css / archetypes/utility.css to
+# supply them. See archetypes.REQUIRED_TOKENS's docstring and
+# docs/theme-archetypes.md, "The token-variable contract."
+
+
+def test_required_tokens_flags_a_missing_token():
+    css = ":root { --bg-0: #000; }"
+    errs = td.check_required_tokens(css)
+    assert any("'--fg-1'" in e for e in errs)
+    assert not any("'--bg-0'" in e for e in errs)
+
+
+def test_required_tokens_pass_when_all_declared():
+    assert td.check_required_tokens(_required_tokens_css()) == []
+
+
+def test_required_tokens_error_names_every_missing_property():
+    errs = td.check_required_tokens("")
+    assert len(errs) == len(td.archetypes.REQUIRED_TOKENS)
+    assert all("missing required custom property" in e for e in errs)
+
+
+def test_live_tokens_css_satisfies_required_tokens():
+    # Proves the fix wave's own extension of Phosphor Blueprint's
+    # tokens.css (previously an "append-only override" that only ever
+    # redefined 5 of the 43 required properties, relying on a hardcoded
+    # LOCAL fallback in index.html/themes.html for the rest) actually
+    # clears the new gate — not just in a synthetic fixture.
+    css = (ROOT / "themes" / "phosphor-blueprint" / "tokens.css").read_text(encoding="utf-8")
+    assert td.check_required_tokens(css) == []
+
+
+def test_live_utility_css_satisfies_required_tokens():
+    # utility.css needed no change for this fix — it was already
+    # self-contained, extracted whole from press.html back in A4.
+    css = (ROOT / "themes" / "phosphor-blueprint" / "archetypes" / "utility.css").read_text(
+        encoding="utf-8"
+    )
+    assert td.check_required_tokens(css) == []
+
+
+def _stub_main_kwargs(tmp_path):
+    """The subprocess.run/TemporaryDirectory monkeypatch shape every
+    required-tokens main()-level test below shares: fake a successful
+    render-hub.py --theme run producing _good_html() as index.html."""
+    class _Result:
+        returncode = 0
+        stdout = ""
+        stderr = ""
+
+    def _fake_run(*a, **kw):
+        (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
+        return _Result()
+
+    return _fake_run
+
+
+def test_main_theme_missing_a_required_token_in_tokens_css_fails_the_gate(monkeypatch, tmp_path, capsys):
+    # The literal case the review named: a theme whose tokens.css doesn't
+    # define every required token must fail — before it's ever queued.
+    tdir = tmp_path / "themes" / "stub-theme"
+    _make_complete_theme_dir(tdir)
+    css = (tdir / "tokens.css").read_text(encoding="utf-8")
+    (tdir / "tokens.css").write_text(css.replace("--cyan: 0;\n", ""), encoding="utf-8")
+
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(
+        td.tempfile, "TemporaryDirectory",
+        lambda *a, **kw: __import__("contextlib").nullcontext(str(tmp_path)),
+    )
+
+    rc = td.main(["stub-theme"])
+    assert rc == 1
+    out = capsys.readouterr().out
+    assert "tokens.css" in out
+    assert "--cyan" in out
+
+
+def test_main_theme_missing_a_required_token_in_utility_css_fails_the_gate(monkeypatch, tmp_path, capsys):
+    # Same contract, the other real consumer: press.html/privacy.html read
+    # archetypes/utility.css with no fallback of their own at all.
+    tdir = tmp_path / "themes" / "stub-theme"
+    _make_complete_theme_dir(tdir)
+    css = (tdir / "archetypes" / "utility.css").read_text(encoding="utf-8")
+    (tdir / "archetypes" / "utility.css").write_text(css.replace("--font-mono: 0;\n", ""), encoding="utf-8")
+
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(
+        td.tempfile, "TemporaryDirectory",
+        lambda *a, **kw: __import__("contextlib").nullcontext(str(tmp_path)),
+    )
+
+    rc = td.main(["stub-theme"])
+    assert rc == 1
+    out = capsys.readouterr().out
+    assert "archetypes/utility.css" in out
+    assert "--font-mono" in out
+
+
+# ─── final review Fix 2: queue-time gating ──────────────────────────────────
+# theme-doctor's only CI invocation used to live inside rotate-theme.yml — a
+# broken theme could merge into the queue green and only get caught on
+# rotation morning (09:00 UTC on the 1st), when rotation aborts. Fail-safe,
+# but late: the whole point of a queue is that its contents are known-good
+# ahead of their own turn. Running theme-doctor's STATIC checks (no
+# --browser — offline, no local server or chromium needed) against every
+# theme actually in the registry, active AND queued, here in the test suite
+# means a broken theme fails the PR that queues it. Parametrized over a
+# fresh read of content/themes.json at collection time, so a theme added to
+# the queue is automatically under test with zero code change here.
+
+
+def _registered_theme_slugs() -> list[str]:
+    reg = td.theme_registry.load()
+    return [reg["active"], *reg.get("queue", [])]
+
+
+@pytest.mark.parametrize("slug", _registered_theme_slugs())
+def test_registered_theme_passes_static_theme_doctor_checks(slug, capsys):
+    rc = td.main([slug])
+    assert rc == 0, capsys.readouterr().out

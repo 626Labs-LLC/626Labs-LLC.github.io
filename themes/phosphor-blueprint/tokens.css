@@ -1,4 +1,83 @@
 /* ============================================================
+   Phosphor Blueprint — base tokens (final review Fix 1)
+
+   Added by the token-variable-contract fix wave: index.html and
+   themes.html each carried a hardcoded LOCAL copy of this exact block in
+   their own <style> (cascade-earlier than this file's <link>), which is
+   what let this file stay a pure "append-only override" for two years —
+   nothing ever required IT to define the base, some earlier, page-local
+   fallback always quietly covered for it. archetypes.REQUIRED_TOKENS
+   (scripts/archetypes.py) now requires tokens.css to define this set
+   itself: a September theme that only overrides a few properties (the
+   pattern below) but never gets asked to supply the rest would otherwise
+   pass every gate and leave themes.html showing THIS theme's stale colors
+   forever, past its own rotation.
+
+   Copied verbatim from archetypes/utility.css's own base block (the one
+   other place this exact 626 Labs Design System base already lived,
+   self-contained, for press.html/privacy.html) — same values themes.html's
+   and index.html's local <style> already hardcode, so this is additive
+   only: zero pixel change, confirmed value-for-value against both files
+   before this edit. See docs/theme-archetypes.md, "The token-variable
+   contract."
+   ============================================================ */
+:root {
+  --navy-deep: #0f1f31;
+  --navy-mid:  #192e44;
+  --navy-hi:   #223a54;
+  --navy-line: #2a3a5c;
+  --cyan:      #17d4fa;
+  --cyan-pale: #5ce6ff;
+  --cyan-dim:  #0fa8c9;
+  --magenta:   #f22f89;
+  --magenta-pale: #ff5aa3;
+  --ink-0:     #ffffff;
+  --ink-950:   #050c18;
+  --text:      #e8f2ff;
+  --text-sec:  #a8c2d9;
+  --text-dim:  #9fafc0;
+  --text-mute: #92a5bd;
+  --ok:        #2bd99a;
+  --warn:      #ffb454;
+
+  --bg-0: var(--navy-deep);
+  --bg-1: var(--navy-mid);
+  --bg-2: var(--navy-hi);
+  --fg-1: var(--text);
+  --fg-2: var(--text-sec);
+  --fg-3: var(--text-dim);
+  --fg-muted: var(--text-mute);
+
+  --border-1: rgba(255,255,255,.08);
+  --border-2: rgba(255,255,255,.14);
+  --border-strong: rgba(255,255,255,.24);
+  --border-accent: rgba(23,212,250,.45);
+
+  --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+  --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
+  --glow-cyan: 0 0 0 1px rgba(23,212,250,.35), 0 0 24px rgba(23,212,250,.35);
+  --glow-duo: 0 0 24px rgba(23,212,250,.22), 0 0 48px rgba(242,47,137,.16);
+  --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
+
+  --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+  --shadow-3: 0 12px 32px rgba(0,0,0,.55);
+
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  --dur-fast: 120ms;
+  --dur-med: 220ms;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+  --r-pill: 999px;
+
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* ============================================================
    Phosphor Blueprint — treatment layer (adopted 2026-07-07)
    Append-only override; base system above stays intact.
    Spec: docs/superpowers/specs/2026-07-07-site-phosphor-blueprint-design.md
