@@ -250,6 +250,7 @@ def _run_browser_checks(html_text: str) -> list[str]:
     try:
         httpd = socketserver.TCPServer(("127.0.0.1", 0), _Handler)
     except OSError as e:
+        # Environment degradation — says nothing about the theme. Skip, don't fail.
         print(f"browser checks skipped: could not start local server ({e})")
         return []
     port = httpd.server_address[1]
@@ -261,40 +262,61 @@ def _run_browser_checks(html_text: str) -> list[str]:
             try:
                 browser = p.chromium.launch()
             except Exception as e:  # pragma: no cover — environment-dependent
+                # Environment degradation — skip, don't fail.
                 print(f"browser checks skipped: could not launch chromium ({e})")
                 return []
             try:
                 for width in (1440, 768, 390):
                     page = browser.new_page(viewport={"width": width, "height": 900})
-                    console_errors: list[str] = []
-                    page.on(
-                        "console",
-                        lambda msg: console_errors.append(msg.text)
-                        if msg.type == "error"
-                        else None,
-                    )
                     try:
-                        page.goto(f"http://127.0.0.1:{port}/", wait_until="load", timeout=15000)
-                        page.wait_for_timeout(300)  # let deferred scripts settle
-                    except Exception as e:
-                        print(f"browser checks skipped at {width}px: navigation failed ({e})")
+                        errors += _check_viewport(page, f"http://127.0.0.1:{port}/", width)
+                    finally:
                         page.close()
-                        continue
-                    scroll_width = page.evaluate("document.documentElement.scrollWidth")
-                    client_width = page.evaluate("document.documentElement.clientWidth")
-                    if scroll_width > client_width + 1:
-                        errors.append(
-                            f"browser: horizontal scroll at {width}px "
-                            f"(scrollWidth {scroll_width} > clientWidth {client_width})"
-                        )
-                    for msg in console_errors:
-                        errors.append(f"browser: console error at {width}px: {msg}")
-                    page.close()
             finally:
                 browser.close()
     finally:
         httpd.shutdown()
         httpd.server_close()
+    return errors
+
+
+def _check_viewport(page, url: str, width: int) -> list[str]:
+    """Load `url` in an already-created page-like object at `width` and check it.
+
+    Split out from `_run_browser_checks` so it's unit-testable with a stub page
+    (no real browser/server needed) — see test_theme_doctor.py.
+
+    The page under test failing — `page.goto` raising (navigation error, timeout)
+    or a non-2xx response for the page itself — is a GATE FAILURE, not a graceful
+    skip: this is the one thing standing between a broken theme and an unattended
+    monthly promotion to live (T5's scheduled rotation calls `--browser` as its
+    gate). A theme whose rendered page throws or hangs on load must fail the gate,
+    not get silently skipped and waved through.
+    """
+    console_errors: list[str] = []
+    page.on(
+        "console",
+        lambda msg: console_errors.append(msg.text) if msg.type == "error" else None,
+    )
+    try:
+        response = page.goto(url, wait_until="load", timeout=15000)
+    except Exception as e:
+        return [f"browser: page failed to load at {width}px: {e}"]
+
+    if response is not None and response.status >= 400:
+        return [f"browser: page returned HTTP {response.status} at {width}px"]
+
+    errors: list[str] = []
+    page.wait_for_timeout(300)  # let deferred scripts settle
+    scroll_width = page.evaluate("document.documentElement.scrollWidth")
+    client_width = page.evaluate("document.documentElement.clientWidth")
+    if scroll_width > client_width + 1:
+        errors.append(
+            f"browser: horizontal scroll at {width}px "
+            f"(scrollWidth {scroll_width} > clientWidth {client_width})"
+        )
+    for msg in console_errors:
+        errors.append(f"browser: console error at {width}px: {msg}")
     return errors
 
 
