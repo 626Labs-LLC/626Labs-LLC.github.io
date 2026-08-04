@@ -120,7 +120,8 @@ those pair up: **`product.css` is the element dress** (`body`, `a:hover`,
 `section.hero`, `.card`, `.btn`) that `render-plugin-pages.py` inlines into
 its 15 generated pages, while **`product-tokens.css` is custom-property
 definitions and nothing else** — that is a gate, not a convention. The
-hand-authored product pages (`conundrum.html`, `rororo-plugins.html`) link
+hand-authored product pages (`conundrum.html`, `rororo-plugins.html`,
+`rororo.html`, `mod-launcher-games.html`) link
 the token half so they take the palette without inheriting a dress written
 for someone else's markup. `tokens.css`, `product-tokens.css`,
 `utility.css` and `reading.css` must each define every
@@ -130,7 +131,7 @@ for someone else's markup. `tokens.css`, `product-tokens.css`,
 
 1. Branch, create `themes/<slug>/{shell.html,tokens.css,theme.json}` — mirror `themes/phosphor-blueprint/` as the reference extraction.
 2. `python scripts/theme-doctor.py <slug>` must PASS before anything else. This is the ONLY gate standing between a theme and unattended monthly rotation, so it has to fail honestly: zone markers present, chrome intact (skip-link/nav/footer/analytics), every internal link resolves, and every declared `contrastPairs` clears AA (>= 4.5). Add `--browser` (needs `playwright` installed) for horizontal-scroll (1440/768/390px) and zero-console-error checks — without playwright installed those two checks skip with a one-line note, the local convenience path. The scheduled rotation installs playwright and runs `--browser --require-browser`, which turns that same skip into a gate FAILURE — the one unattended run of this gate can't be allowed to rubber-stamp a rotation because the browser path silently didn't run.
-3. Preview it against real content: `python scripts/render-hub.py --theme <slug> --out <dir>` renders that theme's shell to `<dir>/index.html`, plus copies of the six hand-authored `theme-css` pages (`press.html`, `privacy.html`, `thesis.html`, `workflow.html`, `conundrum.html`, `rororo-plugins.html`) with their stylesheet `<link>` repointed at `<slug>`. Everything lands in `<dir>` and nothing else is touched — no feed, sitemap, story pages, or `themes.html`, no `conundrum.html` gallery zones, and nothing is written back into the repo tree. Those six keep root-relative asset paths, so serve them from the **repo root** with `<dir>`'s copies laid over the top; opening one straight off disk resolves no CSS.
+3. Preview it against real content: `python scripts/render-hub.py --theme <slug> --out <dir>` renders that theme's shell to `<dir>/index.html`, plus copies of the eight hand-authored `theme-css` pages (`press.html`, `privacy.html`, `thesis.html`, `workflow.html`, `conundrum.html`, `rororo-plugins.html`, `rororo.html`, `mod-launcher-games.html`) with their stylesheet `<link>` repointed at `<slug>`. Everything lands in `<dir>` and nothing else is touched — no feed, sitemap, story pages, or `themes.html`, no `conundrum.html` gallery zones, and nothing is written back into the repo tree. Those eight keep root-relative asset paths, so serve them from the **repo root** with `<dir>`'s copies laid over the top; opening one straight off disk resolves no CSS.
 4. PR the three files, `theme-doctor` output pasted in. **`theme-doctor` is not wired into a PR-triggered CI check** — run it locally before requesting review; the only automated run today is inside `rotate-theme.yml`, gating the theme that's about to go live.
 5. Merge. Merging changes NOTHING live — a theme only takes effect once its slug lands in `content/themes.json`'s `queue`.
 

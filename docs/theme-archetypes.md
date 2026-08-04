@@ -543,15 +543,16 @@ define any of them. Nothing required a theme's `tokens.css`,
 `archetypes/reading.css` to supply them — a
 September theme could rename or drop one, pass every existing gate
 (vocabulary only checks class names; chrome/links don't look at custom
-properties at all), and silently break seven pages:
+properties at all), and silently break nine pages:
 `themes.html`/`index.html` (which each carry a hardcoded LOCAL `:root`
 fallback, cascade-earlier than the theme's own `<link>`, so a missing token
 doesn't error — it just keeps showing the OUTGOING theme's stale value
 forever) and `press.html`/`privacy.html`/`thesis.html`/`workflow.html`/
-`conundrum.html`/`rororo-plugins.html`
+`conundrum.html`/`rororo-plugins.html`/`rororo.html`/
+`mod-launcher-games.html`
 (which carry no fallback at all, so a missing token is a straight unresolved
 `var()`). `product-tokens.css` carries the widest blast radius of the
-four: two pages LINK it, and `render-plugin-pages.py` concatenates it into
+four: four pages LINK it, and `render-plugin-pages.py` concatenates it into
 fifteen more.
 
 `archetypes.REQUIRED_TOKENS` (`scripts/archetypes.py`) closes it: the exact
@@ -559,7 +560,8 @@ set of custom-property names, derived the same way `VOCABULARY` was — by
 reading the real, shipped CSS, not designing in the abstract — union of
 every `var(--x)` in `themes.html`'s inline `<style>` plus the residual
 `<style>` blocks of `press.html`, `privacy.html`, `thesis.html`,
-`workflow.html`, `conundrum.html` and `rororo-plugins.html`.
+`workflow.html`, `conundrum.html`, `rororo-plugins.html`, `rororo.html`
+and `mod-launcher-games.html`.
 `scripts/theme-doctor.py`'s `check_required_tokens()` fails
 a theme whose `tokens.css`, `archetypes/product-tokens.css`,
 `archetypes/utility.css` **or**
@@ -568,7 +570,8 @@ a theme whose `tokens.css`, `archetypes/product-tokens.css`,
 today: `tokens.css` for
 `themes.html`/`index.html`, `utility.css` for `press.html`/`privacy.html`,
 `reading.css` for `thesis.html`/`workflow.html`, `product-tokens.css` for
-`conundrum.html`/`rororo-plugins.html` plus the fifteen pages concatenated
+`conundrum.html`/`rororo-plugins.html`/`rororo.html`/
+`mod-launcher-games.html` plus the fifteen pages concatenated
 from it (their only source of these
 properties, with no local fallback of their own). A theme missing even one
 fails before the archetype loop runs, named by property
@@ -582,10 +585,23 @@ fails before the archetype loop runs, named by property
 `render-plugin-pages.py` generates. `archetypes/product-tokens.css` is the
 **vocabulary** — custom-property definitions and nothing else.
 
-The split exists because `conundrum.html` and `rororo-plugins.html` are
-hand-authored: they keep their own layout, and the spec for this milestone
-is that these pages **recolor monthly, they do not re-layout**. A token
-file is a recolor; a dress is a re-layout. They link the token half only.
+The split exists because all four bespoke product pages —
+`conundrum.html`, `rororo-plugins.html`, `rororo.html`,
+`mod-launcher-games.html` — are hand-authored: they keep their own layout,
+and the spec for this milestone is that these pages **recolor monthly,
+they do not re-layout**. A token file is a recolor; a dress is a
+re-layout. They link the token half only.
+
+The dress's reach onto each page was measured, not assumed — every one of
+its 180 rules queried against the page's live DOM. It matches 30 rules on
+`rororo.html` (`body`, `a`, `a:hover`, `h1, h2, h3`, `.btn`,
+`.btn-primary`, `.btn-ghost`, `.install-grid`, `.install-card`,
+`.install-card h3`, `.eyebrow`, `.pb-scanlines`, `.brand img`'s
+stabilizer group) and 19 on `mod-launcher-games.html` with its feed
+loaded. Each page already declares its own rule for the one **class**
+selector in that list it depends on, `.pb-scanlines` — the rule whose
+silent disappearance a token-completeness gate cannot see, and which the
+reading split nearly deleted.
 
 This was measured before it was decided. Linking the dress into both pages
 and neutralising it property-by-property was tried: it needed eleven

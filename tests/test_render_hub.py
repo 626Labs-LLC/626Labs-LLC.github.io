@@ -467,6 +467,18 @@ def test_theme_css_map_covers_the_converted_reading_pages():
     assert m[render_hub.THEMES_HTML] == "tokens.css"
 
 
+# The bespoke product pages: hand-authored, each keeping its own layout,
+# each linking the theme's product TOKEN file for its palette and nothing
+# else. Kept as one list so a fifth page joins every test below at once
+# instead of joining whichever ones someone remembered.
+PRODUCT_TOKEN_PAGES = (
+    render_hub.CONUNDRUM_HTML,
+    render_hub.ROROROPLUGINS_HTML,
+    render_hub.RORORO_HTML,
+    render_hub.MODLAUNCHERGAMES_HTML,
+)
+
+
 def test_theme_css_map_covers_the_converted_product_pages():
     m = render_hub.THEME_CSS_HREFS
     # The TOKEN half, never archetypes/product.css. That file is the element
@@ -474,9 +486,11 @@ def test_theme_css_map_covers_the_converted_product_pages():
     # its bare `body`/`a:hover`/`section.hero`/`.card`/`.btn` selectors land
     # on bespoke markup they were never written for. Pointing either page at
     # it once shipped a magenta hover underline onto 11 links across the two
-    # pages that no resting-state gate could see.
-    assert m[render_hub.CONUNDRUM_HTML] == "archetypes/product-tokens.css"
-    assert m[render_hub.ROROROPLUGINS_HTML] == "archetypes/product-tokens.css"
+    # pages that no resting-state gate could see. Measured again for the
+    # second pair against their live DOM: 30 of the dress's 180 rules match
+    # rororo.html, 19 match mod-launcher-games.html.
+    for page in PRODUCT_TOKEN_PAGES:
+        assert m[page] == "archetypes/product-tokens.css"
     assert "archetypes/product.css" not in m.values(), (
         "no page may link the product DRESS; the dress is inlined by "
         "render-plugin-pages.py into markup it was written for"
@@ -618,7 +632,7 @@ def test_reading_pages_resolve_every_var_they_read():
 
 def test_product_pages_href_follows_the_active_slug_not_a_hardcoded_theme():
     for slug in ("phosphor-blueprint", "some-future-theme"):
-        for page in (render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML):
+        for page in PRODUCT_TOKEN_PAGES:
             link = render_hub.render_theme_css_link(
                 slug, render_hub.THEME_CSS_HREFS[page]
             )
@@ -631,7 +645,7 @@ def test_product_pages_href_follows_the_active_slug_not_a_hardcoded_theme():
 def test_product_pages_carry_the_zone_and_track_the_registry_on_disk():
     slug = render_hub.theme_registry.load()["active"]
     expected = render_hub.render_theme_css_link(slug, "archetypes/product-tokens.css")
-    for page in (render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML):
+    for page in PRODUCT_TOKEN_PAGES:
         html = page.read_text(encoding="utf-8")
         assert "<!-- SITE_JSON:theme-css:start -->" in html
         assert "<!-- SITE_JSON:theme-css:end -->" in html
@@ -667,10 +681,34 @@ def test_product_pages_define_no_token_of_their_own():
         f"{sorted(n for n, _ in regrown)}"
     )
 
-    for name, value in declarations(render_hub.CONUNDRUM_HTML):
-        assert value.strip().startswith("var(--"), (
-            f"conundrum.html defines {name} as the literal {value.strip()!r} — "
-            "a private copy the rotation cannot reach"
+    # The other three wear the Phosphor Blueprint treatment, so each keeps a
+    # :root that REPOINTS --bg-0/--border-1/--border-2 at treatment names.
+    # That is the page's own styling decision; a literal there would be the
+    # photocopy growing back.
+    for page in (render_hub.CONUNDRUM_HTML, render_hub.RORORO_HTML,
+                 render_hub.MODLAUNCHERGAMES_HTML):
+        for name, value in declarations(page):
+            assert value.strip().startswith("var(--"), (
+                f"{page.name} defines {name} as the literal {value.strip()!r} — "
+                "a private copy the rotation cannot reach"
+            )
+
+
+def test_product_pages_own_their_scanline_overlay_rule():
+    # The trap a token-completeness gate cannot see. archetypes/product.css
+    # carries a `.pb-scanlines` rule, and every page here that shows the
+    # overlay has an element with that class. None of them links the dress,
+    # so the rule has to be the page's own — a page with the element and no
+    # rule renders no overlay at all, and no token is missing to say so.
+    # Same check the reading pair got after the split nearly deleted theirs.
+    for page in PRODUCT_TOKEN_PAGES:
+        html = page.read_text(encoding="utf-8")
+        if 'class="pb-scanlines"' not in html:
+            continue  # rororo-plugins.html is still on the pre-treatment dress
+        style = html.split("</style>")[0]
+        assert ".pb-scanlines" in style, (
+            f"{page.name} carries a .pb-scanlines element but declares no rule "
+            "for it — the theme supplies tokens to these pages, not rules"
         )
 
 
@@ -687,7 +725,7 @@ def test_product_pages_resolve_every_var_they_read():
         render_hub.ROOT / "themes" / slug / "archetypes" / "product-tokens.css"
     ).read_text(encoding="utf-8")
     defined = set(re.findall(r"(--[\w-]+)\s*:", css))
-    for page in (render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML):
+    for page in PRODUCT_TOKEN_PAGES:
         used = set(re.findall(r"var\(\s*(--[\w-]+)", page.read_text(encoding="utf-8")))
         assert not used - defined, (
             f"{page.name} reads {sorted(used - defined)}, undefined in "
