@@ -13,51 +13,15 @@
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" type="image/png" href="favicon-626.png" />
 
+  <!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/reading.css">
+<!-- SITE_JSON:theme-css:end -->
 <style>
   /* ---------- Web fonts ---------- */
   @import url('/fonts/fonts.css');
 
-  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
-  :root {
-    --brand-navy:        #192e44;
-    --brand-navy-deep:   #0f1f31;
-    --brand-cyan:        #17d4fa;
-    --brand-cyan-bright: #5ce6ff;
-    --brand-magenta:     #f22f89;
-
-    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
-
-    --ink-0:   #ffffff;
-    --ink-200: #c4cdda;
-    --ink-300: #a4aebd;
-    --ink-400: #99a4b4;
-
-    --fg-1: var(--ink-0);
-    --fg-2: var(--ink-200);
-    --fg-3: var(--ink-300);
-    --fg-muted: var(--ink-400);
-
-    --bg-0: var(--brand-navy-deep);
-
-    --border-1: rgba(255,255,255,.08);
-    --border-2: rgba(255,255,255,.14);
-    --border-accent: rgba(23,212,250,.45);
-
-    --r-md: 10px;
-    --r-lg: 14px;
-    --r-xl: 20px;
-
-    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-
-    --shadow-2: 0 4px 16px rgba(0,0,0,.45);
-    --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
-
-    --ease-out: cubic-bezier(.2,.7,.2,1);
-    --dur-fast: 120ms;
-    --dur-med: 220ms;
-  }
+  /* Brand tokens come from the active theme's reading archetype, linked
+     above. This page keeps its own layout; the theme owns the dress. */
 
   html, body { margin:0; padding:0; min-height:100vh; }
   body{
@@ -113,8 +77,8 @@
     transition: color var(--dur-fast);
     display:inline-flex; align-items:center; gap:8px;
   }
-  .topnav .links a:hover{ color: var(--brand-cyan); }
-  .topnav .links a.cta{ color: var(--brand-cyan); }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
   .topnav .links a svg{ flex-shrink: 0; }
 
   .shell{ position:relative; z-index:1; max-width:1440px; margin:0 auto; padding:48px 56px 96px; }
@@ -124,10 +88,10 @@
   .hd-l{ max-width:760px; }
   .eyebrow{
     font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
-    color:var(--brand-cyan); display:inline-flex; align-items:center; gap:10px; margin-bottom:18px;
+    color:var(--cyan); display:inline-flex; align-items:center; gap:10px; margin-bottom:18px;
   }
   .eyebrow::before{
-    content:""; width:24px; height:1px; background:linear-gradient(90deg, var(--brand-cyan), transparent);
+    content:""; width:24px; height:1px; background:linear-gradient(90deg, var(--cyan), transparent);
   }
   h1.title{
     font-family:var(--font-display); font-weight:700; font-size:clamp(40px,5vw,64px);
@@ -158,16 +122,16 @@
     letter-spacing:.04em;
   }
   .legend .item{ display:inline-flex; align-items:center; gap:8px; }
-  .lg-line{ width:28px; height:0; border-top:2px solid var(--brand-cyan); }
-  .lg-line.dash{ border-top:1.5px dashed var(--brand-magenta); }
-  .lg-dot{ width:8px; height:8px; border-radius:50%; background:var(--brand-cyan); box-shadow:0 0 10px var(--brand-cyan); }
-  .lg-ring{ width:10px; height:10px; border-radius:50%; border:1.5px solid var(--brand-magenta); }
+  .lg-line{ width:28px; height:0; border-top:2px solid var(--cyan); }
+  .lg-line.dash{ border-top:1.5px dashed var(--magenta); }
+  .lg-dot{ width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 10px var(--cyan); }
+  .lg-ring{ width:10px; height:10px; border-radius:50%; border:1.5px solid var(--magenta); }
 
   /* ---------- Vertical timeline (narrow viewports) ---------- */
   .vchain{ position:relative; padding: 8px 0 8px 0; }
   .vchain::before{
     content:""; position:absolute; left: 28px; top: 16px; bottom: 16px; width: 2px;
-    background: linear-gradient(180deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
+    background: linear-gradient(180deg, var(--cyan) 0%, var(--magenta) 100%);
     box-shadow: 0 0 12px rgba(23,212,250,.4);
     border-radius: 2px;
   }
@@ -182,20 +146,20 @@
   }
   .vdot::before{
     content:""; position:absolute; inset:0; margin:auto;
-    width: 14px; height: 14px; border-radius:50%; background: var(--brand-cyan);
-    box-shadow: 0 0 12px var(--brand-cyan);
+    width: 14px; height: 14px; border-radius:50%; background: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan);
     transition: background var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
   }
   .vdot::after{
     content:""; position:absolute; inset:0; margin:auto;
-    width: 32px; height: 32px; border-radius:50%; border: 1px solid rgba(23,212,250,.45);
+    width: 32px; height: 32px; border-radius:50%; border: 1px solid var(--border-accent);
     transition: all var(--dur-med) var(--ease-out);
   }
-  .vrow.is-active .vdot::before{ background: var(--brand-magenta); box-shadow: 0 0 16px var(--brand-magenta); }
-  .vrow.is-active .vdot::after{ border-color: var(--brand-magenta); width: 40px; height: 40px; }
+  .vrow.is-active .vdot::before{ background: var(--magenta); box-shadow: 0 0 16px var(--magenta); }
+  .vrow.is-active .vdot::after{ border-color: var(--magenta); width: 40px; height: 40px; }
   .vbody{
     flex: 1; min-width: 0; cursor: pointer;
-    background: rgba(0,0,0,.72);
+    background: var(--bg-2);
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     border:1px solid var(--border-2);
     border-radius: var(--r-md);
@@ -203,18 +167,18 @@
     transition: border-color var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
   }
   .vrow.is-active .vbody{
-    border-color: var(--brand-magenta);
-    box-shadow: 0 0 0 1px var(--brand-magenta), 0 0 28px rgba(242,47,137,.22);
+    border-color: var(--magenta);
+    box-shadow: 0 0 0 1px var(--magenta), 0 0 28px rgba(242,47,137,.22);
   }
-  .vrow:hover .vbody{ border-color: var(--brand-cyan); }
+  .vrow:hover .vbody{ border-color: var(--cyan); }
   .vbody .badge{
     font-family:var(--font-mono); font-size:10px; letter-spacing:.14em;
     text-transform:uppercase; color:var(--fg-3);
     display:inline-flex; align-items:center; gap:6px; margin-bottom:6px;
   }
-  .vbody .badge .num{ color:var(--brand-cyan); font-weight:600; }
+  .vbody .badge .num{ color:var(--cyan); font-weight:600; }
   .vbody h3{ font-family:var(--font-display); font-size:18px; font-weight:600; margin:0 0 4px; letter-spacing:-0.01em; }
-  .vbody .slogan{ font-family:var(--font-mono); font-size:11px; color:var(--brand-cyan); margin-bottom:8px; }
+  .vbody .slogan{ font-family:var(--font-mono); font-size:11px; color:var(--cyan); margin-bottom:8px; }
   .vbody p.summary{ font-size:13px; line-height:1.5; color:var(--fg-2); margin:0; }
 
   /* ---------- Chain stage (horizontal, wide viewports) ---------- */
@@ -236,7 +200,7 @@
     text-transform:uppercase; color:var(--fg-3); margin-bottom:12px;
   }
   .stage-hd .l{ color:var(--fg-2); }
-  .stage-hd .r{ color:var(--brand-cyan); }
+  .stage-hd .r{ color:var(--cyan); }
 
   /* sphere watermark */
   .sphere{
@@ -266,7 +230,7 @@
     text-transform:uppercase; color:var(--fg-3); margin-bottom:8px;
   }
   .node .num{
-    color: var(--brand-cyan); font-weight:600;
+    color: var(--cyan); font-weight:600;
   }
   .node .card{
     background: rgba(0,0,0,.85);
@@ -282,7 +246,7 @@
     margin:0 0 4px; letter-spacing:-0.01em; color:var(--fg-1);
   }
   .node .slogan{
-    font-family:var(--font-mono); font-size:11px; color:var(--brand-cyan);
+    font-family:var(--font-mono); font-size:11px; color:var(--cyan);
     letter-spacing:.02em; margin-bottom:10px;
   }
   .node p.summary{
@@ -291,22 +255,22 @@
 
   .node:hover .card,
   .node.is-active .card{
-    border-color: var(--brand-cyan);
-    box-shadow: 0 0 0 1px var(--brand-cyan), 0 0 32px rgba(23,212,250,.28), var(--inner-stroke);
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 1px var(--cyan), 0 0 32px rgba(23,212,250,.28), var(--inner-stroke);
   }
   .node.is-active .card{
-    border-color: var(--brand-magenta);
-    box-shadow: 0 0 0 1px var(--brand-magenta), 0 0 36px rgba(242,47,137,.30), var(--inner-stroke);
+    border-color: var(--magenta);
+    box-shadow: 0 0 0 1px var(--magenta), 0 0 36px rgba(242,47,137,.30), var(--inner-stroke);
   }
   .node.is-dim{ opacity:.35; }
 
   /* svg styling */
   .fwd-path{
     fill:none; stroke: url(#fwdGrad); stroke-width:2;
-    filter: drop-shadow(0 0 6px rgba(23,212,250,.45));
+    filter: drop-shadow(0 0 6px var(--border-accent));
   }
   .rec-path{
-    fill:none; stroke: var(--brand-magenta); stroke-width:1.25;
+    fill:none; stroke: var(--magenta); stroke-width:1.25;
     stroke-dasharray: 4 5;
     opacity:.55;
     transition: opacity var(--dur-med) var(--ease-out), stroke-width var(--dur-med) var(--ease-out);
@@ -315,13 +279,13 @@
   .rec-path.hot{ opacity:1; stroke-width:1.75; filter: drop-shadow(0 0 4px rgba(242,47,137,.55)); }
 
   .node-dot{
-    fill: var(--brand-cyan); filter: drop-shadow(0 0 6px var(--brand-cyan));
+    fill: var(--cyan); filter: drop-shadow(0 0 6px var(--cyan));
   }
   .node-ring{
-    fill:none; stroke: rgba(23,212,250,.45); stroke-width:1;
+    fill:none; stroke: var(--border-accent); stroke-width:1;
     transition: stroke var(--dur-med) var(--ease-out), stroke-width var(--dur-med) var(--ease-out);
   }
-  .node-ring.active{ stroke: var(--brand-magenta); stroke-width:1.25; }
+  .node-ring.active{ stroke: var(--magenta); stroke-width:1.25; }
 
   /* ---------- Detail / focus panel ---------- */
   .detail{
@@ -345,7 +309,7 @@
   }
   .detail .l h2.idle{ color: var(--fg-2); }
   .detail .l .slogan{
-    font-family:var(--font-mono); font-size:12px; color:var(--brand-cyan);
+    font-family:var(--font-mono); font-size:12px; color:var(--cyan);
     margin-bottom:14px;
   }
   .detail .l p{ font-size:14.5px; line-height:1.55; color:var(--fg-2); margin:0; max-width:60ch; }
@@ -360,10 +324,10 @@
     font-size:13px; color:var(--fg-2); line-height:1.45;
   }
   .recovery-list .arrow{
-    color:var(--brand-magenta); flex-shrink:0; padding-top:2px;
+    color:var(--magenta); flex-shrink:0; padding-top:2px;
     display:inline-flex; align-items:center; justify-content:center;
   }
-  .recovery-list .arrow.cyan{ color: var(--brand-cyan); }
+  .recovery-list .arrow.cyan{ color: var(--cyan); }
   .recovery-list .arrow svg{ display:block; }
   .recovery-list b{ color:var(--fg-1); font-weight:500; }
 
@@ -378,7 +342,7 @@
   }
   .section-hd .l p{ font-size:14.5px; color:var(--fg-3); margin:0; max-width:60ch; }
   .section-hd .r{
-    font-family:var(--font-mono); font-size:11px; color:var(--brand-cyan); letter-spacing:.12em;
+    font-family:var(--font-mono); font-size:11px; color:var(--cyan); letter-spacing:.12em;
     text-transform:uppercase;
   }
 
@@ -399,9 +363,9 @@
     font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
     color:var(--fg-3);
   }
-  .marketplace b{ color:var(--brand-cyan); font-weight:500; letter-spacing:.12em; }
+  .marketplace b{ color:var(--cyan); font-weight:500; letter-spacing:.12em; }
   .marketplace .arrows{
-    display:inline-flex; align-items:center; gap:8px; color:var(--brand-magenta);
+    display:inline-flex; align-items:center; gap:8px; color:var(--magenta);
   }
   .marketplace .arrows svg{ display:block; }
 
@@ -415,7 +379,7 @@
   }
   .pillar:hover{ border-color: var(--border-accent); background: rgba(23,212,250,.04); }
   .pillar .key{
-    font-family:var(--font-mono); font-size:10px; color:var(--brand-cyan);
+    font-family:var(--font-mono); font-size:10px; color:var(--cyan);
     letter-spacing:.1em; margin-bottom:8px;
   }
   .pillar h4{
@@ -429,7 +393,7 @@
     margin-bottom: 18px; height: 24px;
   }
   .ducts .v{
-    width:1px; height:100%; background:linear-gradient(180deg, var(--brand-cyan), transparent);
+    width:1px; height:100%; background:linear-gradient(180deg, var(--cyan), transparent);
     margin: 0 auto;
   }
   .ducts .h{
@@ -447,7 +411,7 @@
       rgba(255,255,255,.02);
   }
   .foundation .key{
-    font-family:var(--font-mono); font-size:10px; color:var(--brand-magenta);
+    font-family:var(--font-mono); font-size:10px; color:var(--magenta);
     letter-spacing:.1em; margin-bottom:8px;
   }
   .foundation h4{ font-family:var(--font-display); font-size:18px; margin:0 0 4px; }
@@ -462,8 +426,8 @@
     letter-spacing:.05em;
   }
   .footnote .axiom{ color:var(--fg-2); }
-  .footnote .axiom em{ color:var(--brand-cyan); font-style:normal; }
-  .footnote a{ color:var(--brand-cyan); text-decoration:none; }
+  .footnote .axiom em{ color:var(--cyan); font-style:normal; }
+  .footnote a{ color:var(--cyan); text-decoration:none; }
 
   /* responsive — collapse to vertical */
   @media (max-width: 1100px){
@@ -488,33 +452,13 @@
   }
 
     /* ============================================================
-       Phosphor Blueprint — treatment layer (adopted 2026-07-07)
-       Append-only override + in-place navy-glass swaps; matches the
-       homepage treatment (626labs.dev PR #73).
+       Field treatment — the theme owns the tokens (--pb-*, defined in
+       its reading archetype); this page owns the rules that spend them.
+       `body` and `h1` stay here rather than moving into the theme file:
+       about.html's theme picker links that same file over its own
+       inline <style>, so an element selector there would repaint a page
+       this change has no business touching.
        ============================================================ */
-    :root {
-      --pb-field: rgb(0,0,0);
-      --pb-grid-fine: rgba(23,212,250,.05);
-      --pb-grid-coarse: rgba(23,212,250,.11);
-      --pb-scanline: rgba(0,0,0,.42);
-      --pb-panel: rgba(0,0,0,.72);
-      --pb-panel-border: rgba(23,212,250,.25);
-      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
-    }
-    .pb-scanlines {
-      position: fixed; inset: 0; pointer-events: none; z-index: 60;
-      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
-    }
-
-    :root {
-      --bg-0: var(--pb-field);
-      --bg-1: rgba(0,0,0,.6);
-      --bg-2: rgba(0,0,0,.72);
-      --border-1: rgba(23,212,250,.14);
-      --border-2: rgba(23,212,250,.25);
-    }
-
     body {
       background:
         linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
@@ -631,7 +575,7 @@
       <div class="vrow" data-tenet="legitimacy">
         <div class="vdot"></div>
         <div class="vbody">
-          <div class="badge"><span class="num">01</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4 L4 4 L4 20 L8 20"/><path d="M16 4 L20 4 L20 20 L16 20"/><line x1="9" y1="12" x2="15" y2="12"/></svg><span style="margin-left:4px">Tenet</span></div>
+          <div class="badge"><span class="num">01</span><span style="color:var(--cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4 L4 4 L4 20 L8 20"/><path d="M16 4 L20 4 L20 20 L16 20"/><line x1="9" y1="12" x2="15" y2="12"/></svg><span style="margin-left:4px">Tenet</span></div>
           <h3>Legitimacy</h3>
           <div class="slogan">Argument before code.</div>
           <p class="summary">We only grade what we can ground in objective signal. The boundary between what's measured and what's judged is documented in the work itself, not assumed.</p>
@@ -640,7 +584,7 @@
       <div class="vrow" data-tenet="discipline">
         <div class="vdot"></div>
         <div class="vbody">
-          <div class="badge"><span class="num">02</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17"/><line x1="9" y1="3.5" x2="9" y2="20.5"/><line x1="15" y1="3.5" x2="15" y2="20.5"/><line x1="3.5" y1="12" x2="20.5" y2="12"/></svg><span style="margin-left:4px">Tenet</span></div>
+          <div class="badge"><span class="num">02</span><span style="color:var(--cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17"/><line x1="9" y1="3.5" x2="9" y2="20.5"/><line x1="15" y1="3.5" x2="15" y2="20.5"/><line x1="3.5" y1="12" x2="20.5" y2="12"/></svg><span style="margin-left:4px">Tenet</span></div>
           <h3>Discipline</h3>
           <div class="slogan">Mapped territory before journey.</div>
           <p class="summary">The scaffold is the work. Every surface produces builder-visible structure &mdash; checklist, claims map, decisions log &mdash; that the builder can read while the build is happening.</p>
@@ -649,7 +593,7 @@
       <div class="vrow" data-tenet="quality">
         <div class="vdot"></div>
         <div class="vbody">
-          <div class="badge"><span class="num">03</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="20" y2="20"/><rect x="5.5" y="14" width="2.5" height="6"/><rect x="9.5" y="9" width="2.5" height="11"/><rect x="13.5" y="6" width="2.5" height="14"/><rect x="17.5" y="11" width="2.5" height="9"/></svg><span style="margin-left:4px">Tenet</span></div>
+          <div class="badge"><span class="num">03</span><span style="color:var(--cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="20" y2="20"/><rect x="5.5" y="14" width="2.5" height="6"/><rect x="9.5" y="9" width="2.5" height="11"/><rect x="13.5" y="6" width="2.5" height="14"/><rect x="17.5" y="11" width="2.5" height="9"/></svg><span style="margin-left:4px">Tenet</span></div>
           <h3>Quality</h3>
           <div class="slogan">Compute correctly. Prove it computed correctly.</div>
           <p class="summary">We measure honestly or we don't measure. Pass-rate as distribution, not headline. Coverage measured, not declared. Cost as part of the reliability number, not a footnote.</p>
@@ -658,7 +602,7 @@
       <div class="vrow" data-tenet="trust">
         <div class="vdot"></div>
         <div class="vbody">
-          <div class="badge"><span class="num">04</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12 C 6 6, 18 6, 21.5 12 C 18 18, 6 18, 2.5 12 Z"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none"/></svg><span style="margin-left:4px">Tenet</span></div>
+          <div class="badge"><span class="num">04</span><span style="color:var(--cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12 C 6 6, 18 6, 21.5 12 C 18 18, 6 18, 2.5 12 Z"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none"/></svg><span style="margin-left:4px">Tenet</span></div>
           <h3>Trust</h3>
           <div class="slogan">Watch the build, not just the artifact.</div>
           <p class="summary">The audit surface is built into the build, not bolted onto the result. Sandbagging has nowhere to hide by design.</p>
@@ -667,7 +611,7 @@
       <div class="vrow" data-tenet="coherence">
         <div class="vdot"></div>
         <div class="vbody">
-          <div class="badge"><span class="num">05</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9 L17 9"/><path d="M14 5 L18 9 L14 13"/><path d="M21 15 L7 15"/><path d="M10 11 L6 15 L10 19"/></svg><span style="margin-left:4px">Tenet</span></div>
+          <div class="badge"><span class="num">05</span><span style="color:var(--cyan)">&middot;</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9 L17 9"/><path d="M14 5 L18 9 L14 13"/><path d="M21 15 L7 15"/><path d="M10 11 L6 15 L10 19"/></svg><span style="margin-left:4px">Tenet</span></div>
           <h3>Coherence</h3>
           <div class="slogan">Engineered, not assumed.</div>
           <p class="summary">Coordination is engineered. Document the seams &mdash; ask-vs-act calibration, deferrals, handoffs, where the seams live. Emergent coherence isn't coherence; it's luck.</p>
@@ -733,7 +677,7 @@
       <!-- Node card overlays (positioned by % over the SVG) -->
       <div class="nodes">
         <div class="node" data-tenet="legitimacy" style="left:10.71%; top:14.27%">
-          <div class="badge"><span class="num">01</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4 L4 4 L4 20 L8 20"/><path d="M16 4 L20 4 L20 20 L16 20"/><line x1="9" y1="12" x2="15" y2="12"/></svg></div>
+          <div class="badge"><span class="num">01</span><span style="color:var(--cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4 L4 4 L4 20 L8 20"/><path d="M16 4 L20 4 L20 20 L16 20"/><line x1="9" y1="12" x2="15" y2="12"/></svg></div>
           <div class="card">
             <h3>Legitimacy</h3>
             <div class="slogan">Argument before code.</div>
@@ -741,7 +685,7 @@
           </div>
         </div>
         <div class="node" data-tenet="discipline" style="left:30.36%; top:76.35%">
-          <div class="badge"><span class="num">02</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17"/><line x1="9" y1="3.5" x2="9" y2="20.5"/><line x1="15" y1="3.5" x2="15" y2="20.5"/><line x1="3.5" y1="12" x2="20.5" y2="12"/></svg></div>
+          <div class="badge"><span class="num">02</span><span style="color:var(--cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17"/><line x1="9" y1="3.5" x2="9" y2="20.5"/><line x1="15" y1="3.5" x2="15" y2="20.5"/><line x1="3.5" y1="12" x2="20.5" y2="12"/></svg></div>
           <div class="card">
             <h3>Discipline</h3>
             <div class="slogan">Mapped territory before journey.</div>
@@ -749,7 +693,7 @@
           </div>
         </div>
         <div class="node" data-tenet="quality" style="left:50%; top:18.32%">
-          <div class="badge"><span class="num">03</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="20" y2="20"/><rect x="5.5" y="14" width="2.5" height="6"/><rect x="9.5" y="9" width="2.5" height="11"/><rect x="13.5" y="6" width="2.5" height="14"/><rect x="17.5" y="11" width="2.5" height="9"/></svg></div>
+          <div class="badge"><span class="num">03</span><span style="color:var(--cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="20" y2="20"/><rect x="5.5" y="14" width="2.5" height="6"/><rect x="9.5" y="9" width="2.5" height="11"/><rect x="13.5" y="6" width="2.5" height="14"/><rect x="17.5" y="11" width="2.5" height="9"/></svg></div>
           <div class="card">
             <h3>Quality</h3>
             <div class="slogan">Compute correctly. Prove it computed correctly.</div>
@@ -757,7 +701,7 @@
           </div>
         </div>
         <div class="node" data-tenet="trust" style="left:69.64%; top:76.35%">
-          <div class="badge"><span class="num">04</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12 C 6 6, 18 6, 21.5 12 C 18 18, 6 18, 2.5 12 Z"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none"/></svg></div>
+          <div class="badge"><span class="num">04</span><span style="color:var(--cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12 C 6 6, 18 6, 21.5 12 C 18 18, 6 18, 2.5 12 Z"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none"/></svg></div>
           <div class="card">
             <h3>Trust</h3>
             <div class="slogan">Watch the build, not just the artifact.</div>
@@ -765,7 +709,7 @@
           </div>
         </div>
         <div class="node" data-tenet="coherence" style="left:89.29%; top:14.27%">
-          <div class="badge"><span class="num">05</span><span style="color:var(--brand-cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9 L17 9"/><path d="M14 5 L18 9 L14 13"/><path d="M21 15 L7 15"/><path d="M10 11 L6 15 L10 19"/></svg></div>
+          <div class="badge"><span class="num">05</span><span style="color:var(--cyan)">&middot;</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9 L17 9"/><path d="M14 5 L18 9 L14 13"/><path d="M21 15 L7 15"/><path d="M10 11 L6 15 L10 19"/></svg></div>
           <div class="card">
             <h3>Coherence</h3>
             <div class="slogan">Engineered, not assumed.</div>

@@ -196,20 +196,21 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # press.html/privacy.html (theme-css link) and about.html (the
-          # easter-egg theme registry) are ALSO rewritten by render-hub.py
-          # on every rotation (their active-theme-derived zones — see
-          # UTILITY_CSS_HREFS/render_about_theme_dresses) but were missing
-          # from this list before A8 — found while auditing what a rotation
-          # actually writes vs. what got committed; without them, a live
-          # rotation would silently update those three pages on the runner's
-          # disk and never persist it, so they'd stay dressed in whatever
-          # theme was active the last time someone hand-committed them.
+          # press.html/privacy.html/thesis.html/workflow.html (theme-css
+          # link) and about.html (the easter-egg theme registry) are ALSO
+          # rewritten by render-hub.py on every rotation (their active-theme-
+          # derived zones — see THEME_CSS_HREFS/render_about_theme_dresses)
+          # but were missing from this list before A8 — found while auditing
+          # what a rotation actually writes vs. what got committed; without
+          # them, a live rotation would silently update those pages on the
+          # runner's disk and never persist it, so they'd stay dressed in
+          # whatever theme was active the last time someone hand-committed
+          # them.
           # vibe-* / thesis-engine / plugins are the 15 render-plugin-
           # pages.py outputs (14 per-plugin pages + the family index); the
           # glob keeps this self-maintaining as plugins are added.
           git add content/themes.json index.html feed.xml sitemap.xml \
-            conundrum.html themes.html press.html privacy.html about.html \
+            conundrum.html themes.html press.html privacy.html about.html             thesis.html workflow.html \
             editorial themes/archive assets/themes \
             vibe-* thesis-engine plugins
           git commit -m "chore(themes): rotate to ${{ steps.rotate.outputs.new_active }} for ${{ steps.month.outputs.month_name }}

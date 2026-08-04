@@ -13,45 +13,15 @@
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" type="image/png" href="favicon-626.png" />
 
+  <!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/reading.css">
+<!-- SITE_JSON:theme-css:end -->
 <style>
   /* ---------- Web fonts ---------- */
   @import url('/fonts/fonts.css');
 
-  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
-  :root {
-    --brand-navy:        #192e44;
-    --brand-navy-deep:   #0f1f31;
-    --brand-cyan:        #17d4fa;
-    --brand-cyan-bright: #5ce6ff;
-    --brand-magenta:     #f22f89;
-
-    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
-
-    --ink-0:   #ffffff;
-    --ink-200: #c4cdda;
-    --ink-300: #a4aebd;
-    --ink-400: #99a4b4;
-
-    --fg-1: var(--ink-0);
-    --fg-2: var(--ink-200);
-    --fg-3: var(--ink-300);
-    --fg-muted: var(--ink-400);
-
-    --bg-0: var(--brand-navy-deep);
-
-    --border-1: rgba(255,255,255,.08);
-    --border-2: rgba(255,255,255,.14);
-
-    --r-md: 10px;
-    --r-lg: 14px;
-    --r-xl: 20px;
-
-    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-
-    --dur-fast: 120ms;
-  }
+  /* Brand tokens come from the active theme's reading archetype, linked
+     above. This page keeps its own layout; the theme owns the dress. */
 
   html, body { margin:0; padding:0; }
   body{
@@ -104,8 +74,8 @@
   }
   .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; }
   .topnav .links a{ color:var(--fg-3); text-decoration:none; transition: color var(--dur-fast); }
-  .topnav .links a:hover{ color: var(--brand-cyan); }
-  .topnav .links a.cta{ color: var(--brand-cyan); }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
 
   /* ---------- Hero ---------- */
   .hero{
@@ -116,11 +86,11 @@
   .hero-l .meta{
     display:flex; gap:24px; align-items:center;
     font-family:var(--font-mono); font-size: 11px; letter-spacing:.16em; text-transform:uppercase;
-    color: var(--brand-cyan); margin-bottom:28px;
+    color: var(--cyan); margin-bottom:28px;
   }
   .hero-l .meta::before{
     content:""; width:48px; height:1px;
-    background: linear-gradient(90deg, var(--brand-cyan), transparent);
+    background: linear-gradient(90deg, var(--cyan), transparent);
   }
   .hero-l h1{
     font-family: var(--font-display); font-weight: 700;
@@ -147,7 +117,7 @@
   .filecard{
     border:1px solid var(--border-2);
     border-radius: var(--r-lg);
-    background: rgba(0,0,0,.6);
+    background: var(--bg-1);
     padding: 18px 18px;
     font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); letter-spacing:.04em;
   }
@@ -156,7 +126,7 @@
   .filecard .row b{ color: var(--fg-1); font-weight: 500; }
   .filecard .stamp{
     margin-top: 12px; padding-top: 12px; border-top:1px solid var(--border-1);
-    color: var(--brand-cyan); text-transform:uppercase; letter-spacing:.16em;
+    color: var(--cyan); text-transform:uppercase; letter-spacing:.16em;
   }
 
   /* ---------- Article shell ---------- */
@@ -182,7 +152,7 @@
     border-left: 2px solid transparent;
     transition: border-color var(--dur-fast), color var(--dur-fast);
   }
-  .toc li.active{ border-left-color: var(--brand-cyan); }
+  .toc li.active{ border-left-color: var(--cyan); }
   .toc li a{
     color: var(--fg-3); text-decoration: none;
     font-size: 12.5px; line-height: 1.35;
@@ -191,7 +161,7 @@
   .toc li.active a{ color: var(--fg-1); }
   .toc li a::before{
     content: counter(toc, decimal-leading-zero);
-    font-family: var(--font-mono); font-size: 10px; color: var(--brand-cyan);
+    font-family: var(--font-mono); font-size: 10px; color: var(--cyan);
     letter-spacing: .04em; min-width: 22px;
   }
   .toc li a:hover{ color: var(--fg-1); }
@@ -212,7 +182,7 @@
   .body h2 .sec-num{
     display:block;
     font-family: var(--font-mono); font-size: 11px;
-    color: var(--brand-cyan); letter-spacing: .18em; text-transform: uppercase;
+    color: var(--cyan); letter-spacing: .18em; text-transform: uppercase;
     font-weight: 500; margin-bottom: 10px;
   }
   .body h3{
@@ -224,16 +194,16 @@
     display: flex; align-items: baseline; gap: 14px;
   }
   .body h3 .num{
-    font-family: var(--font-mono); font-size: 13px; color: var(--brand-magenta);
+    font-family: var(--font-mono); font-size: 13px; color: var(--magenta);
     letter-spacing: .04em; font-weight: 600;
-    border: 1px solid var(--brand-magenta); border-radius: 100px;
+    border: 1px solid var(--magenta); border-radius: 100px;
     padding: 2px 10px;
     flex-shrink: 0;
   }
   .body h3 .slogan{
     margin-left: auto;
     font-family: var(--font-mono); font-size: 12px;
-    color: var(--brand-cyan); font-weight: 400;
+    color: var(--cyan); font-weight: 400;
     letter-spacing: .02em;
     font-style: normal;
   }
@@ -245,12 +215,12 @@
   }
   .body p em{ color: var(--fg-1); font-style: italic; }
   .body p strong{ color: var(--fg-1); font-weight: 600; }
-  .body a{ color: var(--brand-cyan); text-decoration: none; border-bottom: 1px solid rgba(23,212,250,.4); }
-  .body a:hover{ color: var(--brand-cyan-bright); border-bottom-color: var(--brand-cyan); }
+  .body a{ color: var(--cyan); text-decoration: none; border-bottom: 1px solid rgba(23,212,250,.4); }
+  .body a:hover{ color: var(--cyan-pale); border-bottom-color: var(--cyan); }
   .body code{
     font-family: var(--font-mono); font-size: 0.85em;
     background: rgba(255,255,255,.04); border: 1px solid var(--border-1);
-    border-radius: 4px; padding: 1px 6px; color: var(--fg-1);
+    border-radius: var(--r-xs); padding: 1px 6px; color: var(--fg-1);
   }
 
   .body ul, .body ol{ margin: 16px 0; padding-left: 0; list-style: none; }
@@ -261,21 +231,21 @@
   .body ul li::before{
     content: "";
     position: absolute; left: 0; top: 17px;
-    width: 8px; height: 1px; background: var(--brand-cyan);
+    width: 8px; height: 1px; background: var(--cyan);
   }
   .body ol{ counter-reset: list; }
   .body ol li{ counter-increment: list; }
   .body ol li::before{
     content: counter(list, decimal-leading-zero);
     position: absolute; left: 0; top: 6px;
-    font-family: var(--font-mono); font-size: 11px; color: var(--brand-cyan); letter-spacing: .04em;
+    font-family: var(--font-mono); font-size: 11px; color: var(--cyan); letter-spacing: .04em;
   }
 
   /* Pull-quote */
   .quote{
     margin: 32px 0;
     padding: 28px 32px;
-    border-left: 2px solid var(--brand-magenta);
+    border-left: 2px solid var(--magenta);
     background:
       linear-gradient(90deg, rgba(242,47,137,.06), transparent 60%);
     border-radius: 0 var(--r-md) var(--r-md) 0;
@@ -284,8 +254,8 @@
     color: var(--fg-1);
     letter-spacing: -0.005em;
   }
-  .quote::before{ content: "\201C"; color: var(--brand-magenta); font-size: 60px; line-height: 0; vertical-align: -20px; margin-right: 6px; }
-  .quote::after{  content: "\201D"; color: var(--brand-magenta); font-size: 60px; line-height: 0; vertical-align: -34px; margin-left: 4px; }
+  .quote::before{ content: "\201C"; color: var(--magenta); font-size: 60px; line-height: 0; vertical-align: -20px; margin-right: 6px; }
+  .quote::after{  content: "\201D"; color: var(--magenta); font-size: 60px; line-height: 0; vertical-align: -34px; margin-left: 4px; }
   .quote cite{
     display:block; margin-top: 16px;
     font-family: var(--font-mono); font-size: 12px;
@@ -306,14 +276,14 @@
   }
   .tenet-cta .l b{ color: var(--fg-1); font-weight: 500; letter-spacing: .04em; text-transform: uppercase; }
   .tenet-cta a{
-    color: var(--brand-cyan); text-decoration:none; border:1px solid var(--brand-cyan);
+    color: var(--cyan); text-decoration:none; border:1px solid var(--cyan);
     padding: 8px 14px; border-radius: 100px;
     text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 500;
     transition: background var(--dur-fast), color var(--dur-fast);
     flex-shrink: 0;
     display: inline-flex; align-items: center; gap: 8px;
   }
-  .tenet-cta a:hover{ background: var(--brand-cyan); color: var(--bg-0); }
+  .tenet-cta a:hover{ background: var(--cyan); color: var(--bg-0); }
   .tenet-cta a svg, .topnav .links a.cta svg{ flex-shrink: 0; }
 
   /* Tenet sticky-note style highlight */
@@ -323,7 +293,7 @@
     margin-top: 56px;
   }
   .tenet-section .axiom{
-    font-family: var(--font-mono); color: var(--brand-cyan);
+    font-family: var(--font-mono); color: var(--cyan);
     font-size: 13px; letter-spacing: .02em; font-style: italic;
     margin: 0 0 18px; padding: 8px 0; border-bottom: 1px dashed var(--border-1);
   }
@@ -337,7 +307,7 @@
     padding: 32px 36px;
   }
   .case .cap{
-    font-family: var(--font-mono); font-size: 11px; color: var(--brand-magenta);
+    font-family: var(--font-mono); font-size: 11px; color: var(--magenta);
     letter-spacing: .18em; text-transform: uppercase; margin-bottom: 8px;
   }
   .case h3{
@@ -361,7 +331,7 @@
   }
   .case .stat .n{
     font-family: var(--font-display); font-size: 28px; font-weight: 700;
-    color: var(--brand-cyan); letter-spacing: -0.02em; line-height: 1;
+    color: var(--cyan); letter-spacing: -0.02em; line-height: 1;
   }
   .case .stat .l{
     font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
@@ -382,12 +352,12 @@
   .src-group:first-of-type{ border-top: 0; }
   .src-group h4{
     font-family: var(--font-mono); font-size: 11px;
-    color: var(--brand-cyan); letter-spacing: .14em; text-transform: uppercase;
+    color: var(--cyan); letter-spacing: .14em; text-transform: uppercase;
     margin: 0 0 12px; font-weight: 500;
   }
   .src-group ul{ margin: 0 !important; }
   .src-group ul li{ font-size: 14.5px; line-height: 1.55; padding: 6px 0 6px 24px !important; color: var(--fg-2) !important; }
-  .src-group ul li::before{ top: 13px !important; background: var(--brand-magenta) !important; }
+  .src-group ul li::before{ top: 13px !important; background: var(--magenta) !important; }
   .src-group ul li b{ color: var(--fg-1); font-weight: 500; }
   .src-group ul li i{ color: var(--fg-1); font-style: italic; }
 
@@ -406,7 +376,7 @@
     width: 6px; height: 6px;
     margin: 0 auto 16px;
     border-radius: 50%;
-    background: var(--brand-magenta);
+    background: var(--magenta);
   }
   .end em{ color: var(--fg-1); font-style: normal; }
 
@@ -419,7 +389,7 @@
     font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em;
     color: var(--fg-3); text-transform: uppercase;
   }
-  footer.foot a{ color: var(--brand-cyan); text-decoration: none; }
+  footer.foot a{ color: var(--cyan); text-decoration: none; }
 
   /* responsive */
   @media (max-width: 1100px){
@@ -442,33 +412,13 @@
   }
 
     /* ============================================================
-       Phosphor Blueprint — treatment layer (adopted 2026-07-07)
-       Append-only override + in-place navy-glass swaps; matches the
-       homepage treatment (626labs.dev PR #73).
+       Field treatment — the theme owns the tokens (--pb-*, defined in
+       its reading archetype); this page owns the rules that spend them.
+       `body` and `h1` stay here rather than moving into the theme file:
+       about.html's theme picker links that same file over its own
+       inline <style>, so an element selector there would repaint a page
+       this change has no business touching.
        ============================================================ */
-    :root {
-      --pb-field: rgb(0,0,0);
-      --pb-grid-fine: rgba(23,212,250,.05);
-      --pb-grid-coarse: rgba(23,212,250,.11);
-      --pb-scanline: rgba(0,0,0,.42);
-      --pb-panel: rgba(0,0,0,.72);
-      --pb-panel-border: rgba(23,212,250,.25);
-      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
-    }
-    .pb-scanlines {
-      position: fixed; inset: 0; pointer-events: none; z-index: 60;
-      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
-    }
-
-    :root {
-      --bg-0: var(--pb-field);
-      --bg-1: rgba(0,0,0,.6);
-      --bg-2: rgba(0,0,0,.72);
-      --border-1: rgba(23,212,250,.14);
-      --border-2: rgba(23,212,250,.25);
-    }
-
     body {
       background:
         linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
