@@ -288,7 +288,7 @@ failed to find). `legal/privacy.html` and `legal/terms.html` are
 minimal, hand-rolled documents with no nav/footer/page-hero at all,
 visually unrelated to `privacy.html` despite the similar name.
 
-### The utility archetype file, and why press/privacy/themes stay hand-authored
+### The utility archetype file, and the CSS split that made it real
 
 `themes/phosphor-blueprint/archetypes/utility.html` exists as of A4,
 extracted from `press.html` (the brief's designated reference) —
@@ -302,49 +302,70 @@ posture A2/A3 used for `home.html`/`reading.html`.
 
 `press.html`, `privacy.html`, and `themes.html` were the task's real
 migration set — the three utility pages that actually carry chrome
-today, as opposed to `404.html`/`legal/*` which don't (below). All three
-were considered, all three were the extraction source, and **all three
-stay hand-authored, zero bytes changed** — the same non-participation
-call A3 made for `about.html`/`editorial/index.html`, for a related but
-distinct reason:
+today, as opposed to `404.html`/`legal/*` which don't (below).
 
-- **No data source drives regeneration.** `press.html` and `privacy.html`
-  carry zero `SITE_JSON:`-style zones — nothing in `content/site.json`
-  feeds their content, so there's no legitimate trigger for Python to
-  regenerate them (unlike `index.html`'s zones or the Field Notes'
-  markdown source).
-- **No shared component CSS layer exists to build a real shell on top
-  of.** Reading pages share `Design/editorial.css`; utility pages don't
-  have an equivalent — each of the three carries its own large,
-  page-specific `<style>` block (`press.html`'s `.copy-block`/
-  `.asset-grid`, `privacy.html`'s `.tldr`, `themes.html`'s
-  `.theme-card` gallery) that would have to travel wholesale with any
-  render step, which is architecturally close to "the file already is
-  its own shell."
-- **A concrete regression risk, found and not routed around:**
-  `press.html` and `privacy.html` currently duplicate the Phosphor
-  Blueprint override CSS *inline* (not linked to `tokens.css`), and that
-  duplicated copy has **diverged** from `tokens.css` — `press.html`'s
-  copy applies `text-shadow` to every `h1` unconditionally, `tokens.css`
-  scopes it to `header.hero h1` (a selector that wouldn't match
-  `h1.page-title`); `tokens.css` additionally sets `nav.nav { z-index:
-  70 }` and a `nav.nav::after` scanline overlay that `press.html`'s
-  inline copy never picked up. Swapping the inline block for a
-  `tokens.css` `<link>` — the obvious "de-duplicate" move — would have
-  **changed rendered pixels** (losing the H1 bloom on the page title,
-  gaining a scanline strip on the nav) and failed the 0-pixel gate. Not
-  attempted here; flagged for whoever eventually wires a live utility
-  renderer, since it's real, pre-existing CSS drift independent of this
-  task. `themes.html` already links `tokens.css` correctly and has no
-  such drift — it's the one utility page today that's already correctly
-  wired to theme rotation.
+**First pass (review-flagged as an inertness gap):** all three pages'
+HTML stayed hand-authored, and `utility.html`/a first cut of the CSS
+extraction had zero live consumers — meaning `press.html`/`privacy.html`
+would have stayed frozen in whatever the Phosphor Blueprint dress looked
+like today, forever, even after the site rotates to a different theme in
+September. That's a real gap in "the whole site rotates" and not one of
+the founder's sanctioned exclusions (those are the six bespoke pages,
+`404.html`, and `legal/*`).
 
-`utility.html` is therefore a **structural/vocabulary reference with
-zero live consumers**, same posture as `product.html` above — it exists
-so theme completeness can require all four archetype files, and models
-the target shape (including linking `tokens.css` instead of duplicating
-it) for whichever later task builds a real content-extraction mechanism
-for these three pages.
+**The fix — a real, load-bearing `archetypes/utility.css`:**
+`press.html`'s shared chrome CSS (base tokens, resets, nav, page-hero,
+footer, and the Phosphor Blueprint treatment layer — drift and all) is
+now extracted into a standalone stylesheet, diffed byte-for-byte against
+`privacy.html`'s copy before extraction to confirm it's genuinely
+shared. `press.html` and `privacy.html` each had their inline `<style>`
+block trimmed down to *only* their page-specific rules (`press.html`'s
+`.copy-block`/`.asset-grid`, `privacy.html`'s `.tldr`) and now link
+`archetypes/utility.css` instead. That link lives inside a
+`<!-- SITE_JSON:theme-css:start/end -->` zone that `scripts/render-hub.py`
+owns and recomputes from `content/themes.json`'s active slug on every
+run (`UTILITY_CSS_HREFS` / `render_theme_css_link()`) — the same
+governance the `themes` gallery zone already had, just for a stylesheet
+link instead of card markup. A theme rotation in September now actually
+reskins these two pages, because the href they carry is never hardcoded.
+
+**Why the "drift" is not a bug to fix:** the CSS moved verbatim, so the
+pixels don't change even though the bytes do (an inline `<style>`
+becoming a `<link>` is exactly the sanctioned kind of byte change — the
+gate is visual identity, not byte identity). `press.html`'s unconditional
+`h1 { text-shadow }` and its `nav.nav` without the z-index/scanline bump
+`tokens.css` gives `index.html` are now simply what Phosphor Blueprint's
+`utility` dress *is* — a different archetype is allowed to look different
+from the `home` dress. September designs its own `utility.css` and can
+make different choices.
+
+**Why `themes.html` keeps `tokens.css`, not `utility.css`:** it already
+linked `tokens.css` with no inline duplication (the one utility page that
+was correctly wired before this task), so it also gets a `theme-css` zone
+— but pointed at `tokens.css`, not `utility.css`. Switching it to
+`utility.css` would have **changed its pixels**: `utility.css`'s
+unconditional `h1 { text-shadow }` doesn't apply to `themes.html` today
+(`tokens.css`'s `header.hero h1` never matched `.page-hero` either, so
+`themes.html`'s `h1.page-title` currently has *no* bloom at all — a real,
+pre-existing difference from `press.html`/`privacy.html`, not something
+this task introduced), and `press.html`'s `.page-lead` is
+`max-width: 60ch` where `themes.html`'s own copy is `62ch`. Forcing
+`themes.html` onto `utility.css` would have fixed the inertness gap by
+introducing a visible regression — not an acceptable trade. It still
+rotates correctly; it just rotates its own way.
+
+`utility.html`, the HTML shell, still has **no live render-hub.py
+consumer** — the three pages' markup stays hand-authored, only their
+stylesheet `<link>` is renderer-owned. That split (dynamic CSS href,
+static HTML) is deliberate: there's still no `SITE_JSON:`-style data
+source for these pages' *content*, and utility pages still have no
+shared component CSS layer the way reading pages share
+`Design/editorial.css` (each page's body-specific CSS — `press.html`'s
+`.copy-block`/`.asset-grid`, `privacy.html`'s `.tldr`,
+`themes.html`'s `.theme-card` gallery — stays page-specific). Building a
+real HTML renderer for these pages is still future work; the CSS-link
+governance was the piece that was actually load-bearing for "the whole
+site rotates," and it's done.
 
 ### Chrome-optional pages — the open question, resolved
 
