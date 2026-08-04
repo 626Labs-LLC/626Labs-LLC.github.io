@@ -95,7 +95,7 @@ Evidence: `vibe-cartographer/index.html`, cross-checked against
 `vibe-doc/index.html` (near-identical class list — confirms the shared
 template, not a coincidence).
 
-### The product archetype file — structural completeness, zero consumers
+### The product archetype file — the CSS half is live, the HTML shell stays inert
 
 `themes/phosphor-blueprint/archetypes/product.html` exists as of A4,
 extracted verbatim from `vibe-cartographer/index.html`'s `<style>` block,
@@ -103,18 +103,29 @@ extracted verbatim from `vibe-cartographer/index.html`'s `<style>` block,
 tokenized (`{{PRODUCT:HEAD}}`, `{{PRODUCT:NAV_CURRENT}}`,
 `{{PRODUCT:HERO}}`, `{{PRODUCT:WORK}}`, `{{PRODUCT:BRAIN}}`,
 `{{PRODUCT:INSTALL}}`, `{{PRODUCT:FAMILY}}`, `{{PRODUCT:FOOTER}}`) the same
-way A3 tokenized `reading.html`. Unlike `home.html`/`reading.html`, **no
-code resolves this file today** — `scripts/render-plugin-pages.py` (which
-generates the 14 plugin pages + `plugins/index.html`) has zero
-theme-awareness of any kind: it doesn't import `theme_registry`, doesn't
-link `tokens.css`, and duplicates the Phosphor Blueprint override block
-inline exactly like every plugin page ships today. Wiring
-`render-plugin-pages.py` to resolve `product.html` and replace that
-duplication with a real `tokens.css` link is **A5's job** ("plugin
-renderer" per the milestone ledger) — A4 only needed the file to exist so
-theme completeness (`theme_registry.REQUIRED_ARCHETYPES`,
-`theme-doctor.py`) can require all four archetypes with the `shell.html`
-fallback gone.
+way A3 tokenized `reading.html`. **No code resolves this file** —
+`render-plugin-pages.py` owns the markup for its 15 pages directly (the
+hero/work/brain/install/family shape *is* the product archetype's
+vocabulary in practice, not a stand-in for it), and A5's scope was
+narrowed to CSS only: retrofitting `render-plugin-pages.py` onto the
+`product.html` shell's tokenized zones would mean rebuilding its
+Python-side rendering (per-plugin sections, the terminal block, capability
+chips, JSON-LD) as template substitution for no visual gain. `product.html`
+stays what A4 called it: structural completeness for
+`theme_registry.REQUIRED_ARCHETYPES`, not a live template.
+
+The CSS half is different. As of A5, `render-plugin-pages.py` imports
+`theme_registry` and reads its page CSS from
+`themes/<active-theme>/archetypes/product.css` at render time — no longer
+a literal Python string, no longer theme-blind. The 15 pages
+(`plugins/index.html` + the 14 plugin pages) still get that CSS **inlined**
+in a `<style>` block, same "no-build" idiom the file has always used —
+only the CSS's *source* moved from a hardcoded constant to the active
+theme's file, so a theme rotation's `product.css` reaches these pages on
+the very next render with no code change. `themes/phosphor-blueprint/
+archetypes/product.css` is that extraction: Phosphor Blueprint's current
+plugin-page CSS, byte-for-byte, moved out of the `.py` file and into the
+theme's own directory.
 
 **The bespoke standalone pages do not participate, this milestone or
 any future one this doc can promise.** `conundrum.html`, `rororo.html`,
