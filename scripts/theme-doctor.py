@@ -16,7 +16,11 @@ check_required_tokens and REQUIRED_TOKENS's docstring). Every member of
 TOKEN_ONLY_CSS additionally has to contain NOTHING BUT token definitions
 (check_token_css_declares_only_tokens) — a token file that grows an
 element rule reaches two hand-authored pages that link it for their
-palette alone. Then,
+palette alone. Then every var(--x) a theme spends has to resolve inside
+the RESOLUTION GROUP that reads it — the set of stylesheets one real
+consumer loads together, derived per run from render-hub.py and
+render-plugin-pages.py rather than listed here (see resolution_groups and
+check_theme_reads_only_what_it_defines). Then,
 per archetype: page chrome (skip-link/nav/footer/analytics, per
 ARCHETYPE_CHROME's real per-archetype profile), every internal href resolves
 to a real file, the archetype's required vocabulary class set
@@ -66,6 +70,7 @@ the gate rubber-stamps every rotation forever.
 """
 from __future__ import annotations
 
+import importlib.util
 import json
 import re
 import subprocess
@@ -588,23 +593,261 @@ def _applicable_contrast_pairs(css: str, pairs: list[list[str]]) -> list[list[st
     return [pair for pair in pairs if pair[0] in declared and pair[1] in declared]
 
 
-# Stylesheets that are NOT part of any theme but that a page dressed by a
-# theme also links, so a theme's CSS may legitimately spend names they
-# define. One entry: about.html links /Design/editorial.css directly, and
-# archetypes/reading.css (the Long Now Terminal dress about.html's easter-egg
-# picker wears) reads five of its names — --font-serif, --ed-t-body,
-# --ed-t-pull, --ed-lh-body, --ed-lh-pull. reading.css's own header already
-# documents editorial.css as theme-agnostic; this is that fact, made
-# machine-readable so the self-consistency check below does not report a
-# resolution it cannot see.
-EXTERNAL_STYLESHEETS = ("Design/editorial.css",)
+# ─── resolution groups ────────────────────────────────────────────────
+#
+# A custom property resolves against the stylesheets ONE DOCUMENT has
+# loaded, never against "every file in the theme directory." Grading a
+# theme as a single pool is therefore wrong in exactly the direction that
+# matters, and it shipped that way: tokens.css defines eight of
+# phosphor-blueprint's nine --pb-* names, so a definition THERE satisfied a
+# read in archetypes/utility.css — the one file press.html and privacy.html
+# link, with tokens.css nowhere in their <head>. Delete utility.css's own
+# --pb-* block (the plausible edit when retokenizing a copied theme, since
+# those eight names look redundant next to tokens.css) and both pages render
+# on rgba(0,0,0,0) with every gate, this one included, green.
+#
+# So the unit of grading is a RESOLUTION GROUP: the set of stylesheets one
+# real consumer loads TOGETHER. Six ship today, and none of them is the
+# whole theme:
+#
+#   press.html, privacy.html            {archetypes/utility.css}
+#   themes.html                         {tokens.css}
+#   thesis.html, workflow.html          {archetypes/reading-tokens.css}
+#   conundrum.html + 3 product pages    {archetypes/product-tokens.css}
+#   plugins/*/index.html (15 generated) {archetypes/product.css,
+#                                        archetypes/product-tokens.css}
+#   about.html                          {archetypes/reading.css}
+#                                       + Design/editorial.css
+#
+# That table is DOCUMENTATION. `resolution_groups` below derives the real
+# thing every run, from the code that actually serves those pages — a tuple
+# here would be the same class of bug this scoping exists to fix.
+
+# `<link rel=stylesheet href=...>`, attribute order and quote style
+# independent, because about.html is hand-authored and only render-hub.py's
+# emitted links are guaranteed to look alike.
+_LINK_TAG_RE = re.compile(r"<link\b[^>]*>", re.I)
+_REL_STYLESHEET_RE = re.compile(r"\brel\s*=\s*[\"']?stylesheet\b", re.I)
+_HREF_RE = re.compile(r"\bhref\s*=\s*[\"']([^\"']+)[\"']", re.I)
+# /themes/<slug>/<rest> — the shape render-hub.py's theme-css zone and
+# about.html's dress picker both emit. The slug is discarded on purpose:
+# a group is a set of stylesheet NAMES, graded against whichever theme is
+# under test, never against whichever theme happens to be live.
+_THEME_HREF_RE = re.compile(r"^/themes/[^/]+/(.+)$")
+
+# The floor under `resolution_groups`: every stylesheet a theme is REQUIRED
+# to ship has to end up inside some group, or the scoping above quietly
+# grades less than the theme-wide pool did. Hand-written, and safe to be —
+# it is a floor, not a pool, so a stale entry here can only ever produce an
+# extra error, never license an unresolved read. Built from the same
+# constants the completeness check uses so the two cannot disagree.
+GRADED_THEME_CSS = (
+    "tokens.css",
+    *(f"archetypes/{f}" for f in REQUIRED_ARCHETYPE_CSS.values()),
+    f"archetypes/{PRODUCT_TOKENS_CSS}",
+    f"archetypes/{READING_TOKENS_CSS}",
+)
+
+
+def _load_sibling_script(filename: str, module_name: str):
+    """Import a hyphenated sibling in scripts/ by path.
+
+    `render-hub.py` and `render-plugin-pages.py` are not importable by name.
+    Loaded lazily, inside `resolution_groups`, so importing THIS module (as
+    tests/ do, by explicit path) never drags in render-hub.py's `markdown`
+    dependency or render-plugin-pages.py's active-theme file reads.
+    """
+    spec = importlib.util.spec_from_file_location(module_name, SCRIPTS_DIR / filename)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _page_site_stylesheets(page: Path) -> tuple[str, ...]:
+    """Repo-relative paths of every SITE-owned stylesheet `page` links.
+
+    "Site-owned" means outside the theme and inside the repo: about.html
+    links /Design/editorial.css, and archetypes/reading.css legitimately
+    spends five names that file defines (--font-serif, --ed-t-body,
+    --ed-t-pull, --ed-lh-body, --ed-lh-pull). That fact used to live in a
+    theme-WIDE tuple, which meant archetypes/product.css could read an
+    --ed-* name and pass despite no product consumer linking editorial.css
+    at all. Read off each page instead, so the definition travels with the
+    document that actually loads it — and so a page picking up or dropping
+    a shared stylesheet moves this gate with it.
+
+    Theme links are excluded: those come from render-hub.py's own map,
+    which names the file without pinning it to whichever theme is live.
+    Off-origin links are excluded too — a gate cannot read them, and must
+    not pretend they define anything.
+    """
+    if not page.exists():
+        return ()
+    html = page.read_text(encoding="utf-8")
+    hrefs: list[str] = []
+    for tag in _LINK_TAG_RE.findall(html):
+        if not _REL_STYLESHEET_RE.search(tag):
+            continue
+        m = _HREF_RE.search(tag)
+        if not m:
+            continue
+        href = m.group(1)
+        # Protocol-relative (`//host/x.css`) counts as off-origin too — it is
+        # the form every analytics/CDN link in this repo uses.
+        if _THEME_HREF_RE.match(href) or "://" in href or href.startswith("//"):
+            continue
+        hrefs.append(href.lstrip("/"))
+    return tuple(dict.fromkeys(hrefs))
+
+
+def _inlined_theme_css(style: str, source_dir: Path) -> tuple[str, ...]:
+    """Which of `source_dir`'s stylesheets appear VERBATIM inside the <style>
+    block render-plugin-pages.py inlines into its 15 generated pages.
+
+    Read out of the concatenation rather than named here. Today it is
+    archetypes/product.css + archetypes/product-tokens.css; a renderer that
+    starts inlining a third file brings that file into this group the same
+    commit, which a list in this module would not.
+
+    `source_dir` is the theme render-plugin-pages.py itself resolved through
+    `theme_registry.theme_dir` — the same call, so the two always look at the
+    same directory even when a test monkeypatches it to a stub. That may be a
+    DIFFERENT theme from the one under test (the doctor grades queued themes
+    while the renderer reads the active one); only relative NAMES are
+    borrowed, never content.
+    """
+    found: list[str] = []
+    for path in sorted(source_dir.rglob("*.css")):
+        text = path.read_text(encoding="utf-8").strip()
+        if text and text in style:
+            found.append(path.relative_to(source_dir).as_posix())
+    if not found:
+        # Not a skip and not an empty group: an empty group grades nothing
+        # and reports nothing, which is the rubber stamp this whole module
+        # exists to refuse.
+        raise RuntimeError(
+            f"render-plugin-pages.py's inlined <style> matches no stylesheet in "
+            f"{source_dir}, so this gate can no longer see what its 15 generated "
+            f"pages are served"
+        )
+    return tuple(dict.fromkeys(found))
+
+
+def _about_dress_css(render_hub, root: Path) -> tuple[str, ...]:
+    """The theme stylesheets about.html's reading-dress picker can point at.
+
+    about.html is hand-authored except for one renderer-owned zone
+    (render_about_theme_dresses), and that zone is the only place a theme
+    stylesheet reaches the page. Derived in two hops so neither end can
+    drift alone: render-hub.py is asked for the zone's element id by
+    rendering an EMPTY registry (which touches no theme on disk and so
+    survives a monkeypatched theme_dir), then that element is read out of
+    the SHIPPED about.html for the hrefs actually served.
+    """
+    probe = render_hub.render_about_theme_dresses({}, root)
+    m = re.search(r"\bid\s*=\s*[\"']([^\"']+)[\"']", probe)
+    if not m:
+        raise RuntimeError(
+            "render_about_theme_dresses no longer emits an id, so about.html's "
+            "reading dress cannot be located and would go ungraded"
+        )
+    html = render_hub.ABOUT_HTML.read_text(encoding="utf-8")
+    block = re.search(
+        rf"<script\b[^>]*\bid\s*=\s*[\"']{re.escape(m.group(1))}[\"'][^>]*>(.*?)</script>",
+        html, re.S,
+    )
+    if not block:
+        raise RuntimeError(
+            f"{render_hub.ABOUT_HTML.name} carries no {m.group(1)} block, so its "
+            f"reading dress cannot be located and would go ungraded"
+        )
+    hrefs: list[str] = []
+    for entry in json.loads(block.group(1)):
+        theme_href = _THEME_HREF_RE.match(entry.get("css") or "")
+        if theme_href:
+            hrefs.append(theme_href.group(1))
+    return tuple(dict.fromkeys(hrefs))
+
+
+def resolution_groups(root: Path = ROOT) -> dict[str, tuple[tuple[str, ...], tuple[str, ...]]]:
+    """{consumer: (theme stylesheets, site stylesheets)} for every set of
+    stylesheets some real consumer loads together.
+
+    Three live sources, one per way a theme stylesheet reaches a document:
+
+      1. render-hub.py's THEME_CSS_HREFS — the renderer-owned "theme-css"
+         <link> on each hand-authored page. Exactly one theme stylesheet per
+         page by construction; the page's <head> owns any others.
+      2. render-plugin-pages.py's STYLE — the concatenation inlined into the
+         15 generated plugin pages. No <link> at all, and notably no
+         tokens.css.
+      3. render-hub.py's render_about_theme_dresses — about.html's
+         easter-egg dress picker.
+
+    Pages that load an IDENTICAL set collapse into one group keyed by all of
+    their names, so press.html and privacy.html are graded once and the
+    error names both.
+
+    index.html is deliberately absent, and this is the one judgment call in
+    here: the theme's home shell links tokens.css and /widget-bacon-trail/
+    widget.css, which makes it a strictly LOOSER group than themes.html's
+    {tokens.css}. Adding it could only widen tokens.css's pool, never
+    tighten it. A home shell that starts linking a SECOND theme stylesheet
+    would want an entry here — GRADED_THEME_CSS is the alarm for that,
+    since the new file would be graded by no group at all.
+    """
+    render_hub = _load_sibling_script("render-hub.py", "_theme_doctor_render_hub")
+    plugin_pages = _load_sibling_script(
+        "render-plugin-pages.py", "_theme_doctor_render_plugin_pages"
+    )
+
+    specs: dict[tuple[tuple[str, ...], tuple[str, ...]], list[str]] = {}
+
+    def add(consumer: str, theme_css, site_css) -> None:
+        key = (tuple(sorted(set(theme_css))), tuple(sorted(set(site_css))))
+        specs.setdefault(key, []).append(consumer)
+
+    for page, href in render_hub.THEME_CSS_HREFS.items():
+        add(page.name, (href,), _page_site_stylesheets(page))
+    inline_source = theme_registry.theme_dir(
+        theme_registry.active_slug(theme_registry.load(root)), root
+    )
+    add("plugins/*/index.html", _inlined_theme_css(plugin_pages.STYLE, inline_source), ())
+    add(
+        render_hub.ABOUT_HTML.name,
+        _about_dress_css(render_hub, root),
+        _page_site_stylesheets(render_hub.ABOUT_HTML),
+    )
+    return {", ".join(sorted(consumers)): key for key, consumers in specs.items()}
+
+
+def check_every_required_stylesheet_is_graded(
+    groups: dict[str, tuple[tuple[str, ...], tuple[str, ...]]]
+) -> list[str]:
+    """Every stylesheet a theme MUST ship has to land in some resolution
+    group.
+
+    The backstop that makes derived groups safe. Scoping the reads-check
+    per group trades a pool that was too WIDE for a set of pools that could
+    silently become too NARROW — repoint THEME_CSS_HREFS away from
+    archetypes/utility.css and that file's var() reads stop being graded by
+    anything, with no error anywhere. Grading less than you claim to is the
+    failure mode this module was written against; it gets an error, not a
+    shrug.
+    """
+    graded = {label for theme_css, _ in groups.values() for label in theme_css}
+    return [
+        f"{label} is loaded by no consumer this gate knows about, so nothing "
+        f"grades what it reads"
+        for label in sorted(set(GRADED_THEME_CSS) - graded)
+    ]
 
 
 def check_theme_reads_only_what_it_defines(
-    theme_css: dict[str, str], external_css: dict[str, str] | None = None
+    group: str, theme_css: dict[str, str], site_css: dict[str, str] | None = None
 ) -> list[str]:
-    """Every var(--x) in a theme's OWN stylesheets must resolve somewhere in
-    that theme, or carry a fallback.
+    """Every var(--x) in the theme stylesheets ONE consumer group loads must
+    resolve inside that same group, or carry a fallback.
 
     The theme-side twin of the rule the converted pages now follow. Those
     pages were fixed by giving every theme-bespoke read a fallback; this
@@ -612,21 +855,21 @@ def check_theme_reads_only_what_it_defines(
     structurally cannot see it — check_required_tokens grades the CONTRACT
     names, and --pb-* is deliberately not among them.
 
-    Concretely: archetypes/utility.css both defines the --pb-* treatment
-    tokens and spends them on `body`. Delete the definitions and keep the
-    rules — a plausible edit when retokenizing a copied theme — and
-    press.html/privacy.html render on a transparent body with every existing
-    gate green. Found by building a contract-only theme and looking at what
-    the browser computed, not by reading.
+    `theme_css` is the group's theme stylesheets (graded as readers AND
+    credited as definers); `site_css` is the repo-owned stylesheets that
+    same group links (credited as definers only — editorial.css reading a
+    name it does not define is not a theme's finding to report).
 
-    Checked theme-WIDE, not per file: archetypes/product.css legitimately
-    spends names archetypes/product-tokens.css defines, and
-    render-plugin-pages.py concatenates the pair before either is served.
+    Within a group, cross-file resolution is correct and expected:
+    archetypes/product.css spends names archetypes/product-tokens.css
+    defines, and render-plugin-pages.py concatenates the pair before either
+    is served. ACROSS groups it is a defect — see the resolution-group
+    header above for the transparent-body failure that pooling hid.
     """
     defined: set[str] = set()
     for text in theme_css.values():
         defined |= set(_parse_custom_properties(text))
-    for text in (external_css or {}).values():
+    for text in (site_css or {}).values():
         defined |= set(_parse_custom_properties(text))
 
     errors: list[str] = []
@@ -647,8 +890,8 @@ def check_theme_reads_only_what_it_defines(
                 unguarded.add(m.group(1))
         for name in sorted(unguarded):
             errors.append(
-                f"{label}: reads {name}, which no stylesheet in this theme "
-                f"defines and which carries no fallback"
+                f"{label}: reads {name}, which nothing loaded by {group} defines "
+                f"and which carries no fallback"
             )
     return errors
 
@@ -1688,25 +1931,32 @@ def main(argv: list[str]) -> int:
         text = (tdir / label).read_text(encoding="utf-8")
         errors += [f"{label}: {e}" for e in check_token_css_declares_only_tokens(text)]
 
-    # ...and a theme must not read a custom property it never defines. See
+    # ...and a theme must not read a custom property the DOCUMENT reading it
+    # never loads a definition for. See the resolution-group header and
     # check_theme_reads_only_what_it_defines for the failure this catches
     # (press.html/privacy.html on a transparent body, every other gate
-    # green). Theme-WIDE: product.css legitimately spends what
-    # product-tokens.css defines.
-    theme_css = {
-        label: (tdir / label).read_text(encoding="utf-8")
-        for label in (
-            "tokens.css",
-            *(f"archetypes/{f}" for f in REQUIRED_ARCHETYPE_CSS.values()),
-            f"archetypes/{PRODUCT_TOKENS_CSS}",
-            f"archetypes/{READING_TOKENS_CSS}",
-        )
-    }
-    external_css = {
-        label: (ROOT / label).read_text(encoding="utf-8")
-        for label in EXTERNAL_STYLESHEETS
-    }
-    errors += check_theme_reads_only_what_it_defines(theme_css, external_css)
+    # green). Graded once per resolution group — the set of stylesheets one
+    # real consumer loads together — never once per theme.
+    groups = resolution_groups()
+    errors += check_every_required_stylesheet_is_graded(groups)
+    for group, (theme_labels, site_labels) in groups.items():
+        group_css: dict[str, str] = {}
+        for label in theme_labels:
+            path = tdir / label
+            if not path.exists():
+                errors.append(f"{group} loads {label}, which this theme does not ship")
+                continue
+            group_css[label] = path.read_text(encoding="utf-8")
+        # A site stylesheet that has gone missing is skipped rather than
+        # crashed on, and skipping it can only NARROW the group's pool —
+        # every name it defined turns into a reported unresolved read
+        # instead of a silent pass.
+        site_css = {
+            label: (ROOT / label).read_text(encoding="utf-8")
+            for label in site_labels
+            if (ROOT / label).exists()
+        }
+        errors += check_theme_reads_only_what_it_defines(group, group_css, site_css)
 
     archetype_html: dict[str, str] = {}
     for archetype in archetypes.ARCHETYPES:
