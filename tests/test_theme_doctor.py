@@ -1563,22 +1563,23 @@ def test_the_two_utility_pages_self_import_the_repo_global_font_stack():
 
 # ─── resolution groups: a name resolves against ONE document's stylesheets ──
 # The reads-check used to pool every definition in the theme directory, but no
-# consumer loads every theme stylesheet. tokens.css defines eight of
-# phosphor-blueprint's nine --pb-* names, so a definition there satisfied a
-# read in archetypes/utility.css — the one file press.html and privacy.html
-# link. Both pages would render on rgba(0,0,0,0) with every gate green. These
-# tests pin the scoping that closes it, and each one was watched failing
-# against the pooled implementation before it was kept.
+# consumer loads every theme stylesheet. phosphor-blueprint defines ten --pb-*
+# names, archetypes/product.css reads nine of them, and tokens.css alone
+# defines eight of that nine — so a definition in tokens.css satisfied a read
+# in archetypes/utility.css, the one file press.html and privacy.html link.
+# Both pages would render on rgba(0,0,0,0) with every gate green. These tests
+# pin the scoping that closes it, and each one was watched failing against the
+# pooled implementation before it was kept.
 
 _PB_DEFINITION_RE = re.compile(r"[ \t]*--pb-[\w-]+\s*:[^;{}]*;\n?")
 
 
-def _live_group_css(group_theme_labels, tdir, overrides=None):
-    """The group's theme stylesheets as read off the live theme, with any
-    `overrides` (label -> text) swapped in."""
+def _group_css(group_theme_labels, tdir, overrides=None):
+    """The group's theme members as main() reads them — inline <style> for a
+    .html shell, whole text otherwise — with any `overrides` swapped in."""
     overrides = overrides or {}
     return {
-        label: overrides.get(label, (tdir / label).read_text(encoding="utf-8"))
+        label: overrides.get(label, td._group_stylesheet_text(tdir / label))
         for label in group_theme_labels
     }
 
@@ -1587,19 +1588,22 @@ def _live_site_css(group_site_labels):
     return {label: (ROOT / label).read_text(encoding="utf-8") for label in group_site_labels}
 
 
-def _reads_errors_for_live_theme(overrides=None):
-    """Run the reads-check over every derived group of the ACTIVE theme, with
-    `overrides` (label -> replacement text) applied wherever those labels
+def _reads_errors_for_theme(tdir, overrides=None):
+    """Run the reads-check over every derived group of the theme at `tdir`,
+    with `overrides` (label -> replacement text) applied wherever those labels
     appear. Mirrors main()'s own loop."""
-    tdir = td.theme_registry.theme_dir(_active_slug())
     errors = []
-    for group, (theme_labels, site_labels) in td.resolution_groups().items():
+    for group, (theme_labels, site_labels) in td.resolution_groups(tdir).items():
         errors += td.check_theme_reads_only_what_it_defines(
             group,
-            _live_group_css(theme_labels, tdir, overrides),
+            _group_css(theme_labels, tdir, overrides),
             _live_site_css(site_labels),
         )
     return errors
+
+
+def _reads_errors_for_live_theme(overrides=None):
+    return _reads_errors_for_theme(td.theme_registry.theme_dir(_active_slug()), overrides)
 
 
 def _load_renderer(filename, name):
@@ -1609,14 +1613,19 @@ def _load_renderer(filename, name):
     return mod
 
 
-def test_resolution_groups_are_derived_from_the_code_that_serves_the_pages():
-    # Not "the groups are these six" — that would be the hand-written tuple
-    # this derivation exists to avoid. The assertion is that every group's
-    # membership traces back to a live source: render-hub.py's THEME_CSS_HREFS,
-    # render-plugin-pages.py's inlined concatenation, about.html's dress zone.
+def test_resolution_groups_stay_in_lockstep_with_the_code_that_serves_the_pages():
+    # A TRACEABILITY PIN, not proof of derivation. Replace resolution_groups'
+    # THEME_CSS_HREFS loop with a hand-written dict matching today's values and
+    # this still passes — it compares two things that agree today, and cannot
+    # tell how the left-hand one was computed. What it DOES catch is the moment
+    # that matters: the day a source moves and a hardcoded copy does not.
+    # Assertions 2 and 3 carry independent weight (containment in the real
+    # concatenation; presence in the real about.html), and the parametrized
+    # deletion tests below are where the scoping itself is proven.
     render_hub = _load_renderer("render-hub.py", "_t_render_hub")
     plugin_pages = _load_renderer("render-plugin-pages.py", "_t_render_plugin_pages")
-    groups = td.resolution_groups()
+    tdir = td.theme_registry.theme_dir(_active_slug())
+    groups = td.resolution_groups(tdir)
 
     # 1. Every page render-hub.py gives a theme-css <link> is a consumer, and
     #    its group holds exactly the stylesheet that map names.
@@ -1628,7 +1637,6 @@ def test_resolution_groups_are_derived_from_the_code_that_serves_the_pages():
     # 2. The 15 generated plugin pages get exactly what the renderer inlines.
     plugin_group = groups["plugins/*/index.html"][0]
     assert plugin_group, "the plugin-page group must not be empty"
-    tdir = td.theme_registry.theme_dir(_active_slug())
     for label in plugin_group:
         assert (tdir / label).read_text(encoding="utf-8").strip() in plugin_pages.STYLE, label
     # ...and NOT tokens.css, which no plugin page is ever served.
@@ -1639,13 +1647,22 @@ def test_resolution_groups_are_derived_from_the_code_that_serves_the_pages():
     for label in groups["about.html"][0]:
         assert "/" + label in about_html, label
 
+    # 4. index.html's group comes off the THEME's own home shell, not the
+    #    site's — every theme link in that shell is in the group.
+    shell = f"archetypes/{td.archetypes.archetype_for('index.html', td.archetypes.load())}.html"
+    index_group = groups["index.html"][0]
+    assert shell in index_group
+    for label in td._page_stylesheets(tdir / shell)[0]:
+        assert label in index_group, label
+
 
 def test_every_required_stylesheet_lands_in_some_group():
     # The backstop that makes derived groups safe: scoping trades a pool that
     # was too wide for pools that could silently become too narrow. Repoint
     # THEME_CSS_HREFS off archetypes/utility.css and that file stops being
     # graded by anything, with no error anywhere.
-    assert td.check_every_required_stylesheet_is_graded(td.resolution_groups()) == []
+    tdir = td.theme_registry.theme_dir(_active_slug())
+    assert td.check_every_required_stylesheet_is_graded(td.resolution_groups(tdir)) == []
     starved = {"about.html": (("archetypes/reading.css",), ())}
     errs = td.check_every_required_stylesheet_is_graded(starved)
     assert any("archetypes/utility.css" in e for e in errs)
@@ -1691,21 +1708,29 @@ def test_dropping_a_treatment_prefix_from_one_group_fails_that_group(
     assert td.check_required_tokens(stripped) == []
 
 
-def test_only_repo_owned_stylesheets_are_credited_to_a_group(tmp_path):
-    # A gate cannot read an off-origin stylesheet, so it must not pretend one
-    # defines anything. Protocol-relative is the form every analytics/CDN link
+def test_only_stylesheets_the_browser_actually_applies_are_credited(tmp_path):
+    # Every exclusion here is in the NARROWING direction, which is the point:
+    # crediting a stylesheet the browser never applies is what licenses an
+    # unresolved read. Protocol-relative is the form every analytics/CDN link
     # in this repo uses, and it is the one an origin check reading `://` alone
-    # would wave through.
+    # would wave through; a commented-out <link> is how a page stops loading a
+    # stylesheet without deleting the line.
     page = tmp_path / "fixture.html"
     page.write_text(
         '<link rel="stylesheet" href="/Design/editorial.css">'
         "<link href='/themes/some-slug/archetypes/utility.css' rel=stylesheet>"
         '<link rel="stylesheet" href="//cdn.example.com/x.css">'
         '<link rel="stylesheet" href="https://cdn.example.com/y.css">'
+        '<!-- <link rel="stylesheet" href="/Design/retired.css"> -->'
+        '<link rel="stylesheet" href="/Design/paper.css" media="print">'
+        '<link rel="stylesheet" href="/Design/off.css" disabled>'
+        '<link rel="stylesheet" href="/Design/wide.css" media="screen and (min-width:60em)">'
         '<link rel="icon" href="/favicon-626.png">',
         encoding="utf-8",
     )
-    assert td._page_site_stylesheets(page) == ("Design/editorial.css",)
+    theme, site = td._page_stylesheets(page)
+    assert theme == ("archetypes/utility.css",)
+    assert site == ("Design/editorial.css", "Design/wide.css")
 
 
 def test_a_site_stylesheet_credits_only_the_group_that_links_it():
@@ -1713,10 +1738,13 @@ def test_a_site_stylesheet_credits_only_the_group_that_links_it():
     # could read an --ed-* name and pass on a definition in
     # Design/editorial.css that no product consumer ever loads. Site
     # stylesheets attach per group now, derived from each page's own <link>s.
-    groups = td.resolution_groups()
+    groups = td.resolution_groups(td.theme_registry.theme_dir(_active_slug()))
     assert groups["about.html"][1] == ("Design/editorial.css",)
+    # index.html links the widget stylesheet and nothing else site-owned; that
+    # is a real definer for its group, and for no other.
+    assert groups["index.html"][1] == ("widget-bacon-trail/widget.css",)
     for group, (_, site_labels) in groups.items():
-        if group != "about.html":
+        if group not in ("about.html", "index.html"):
             assert site_labels == (), (group, site_labels)
 
     # about.html's dress legitimately spends five names editorial.css defines,
@@ -1758,10 +1786,12 @@ def test_declared_contrast_pairs_that_all_filter_out_are_an_ERROR(capsys):
     lnt = [c for c in td.archetypes.VOCABULARY["reading"] if c.startswith("lnt-")]
     css = "".join(f".{c} {{ }}\n" for c in lnt)
     # Same fixture as test_reading_gate_passes_when_theme_css_covers_every_lnt_class,
-    # so contrast is the ONLY thing that can fail here. pairs=None is the
-    # branch the existing tests already cover; it prints the advisory, so
-    # drain that output before grading what the pairs=all-filtered-out branch
-    # prints.
+    # so contrast is the ONLY thing that can fail here. That setup call passes
+    # pairs=None, the branch that DOES print the advisory, so its output is
+    # drained before the real assertion runs. Without the drain this test
+    # fails with the implementation intact — a false FAILURE, not a false
+    # pass; the drain is scaffolding for the fixture, and the assertion below
+    # is what carries the weight.
     assert td._check_archetype("reading", about_html, css, False, None) == []
     capsys.readouterr()
 
@@ -1774,3 +1804,131 @@ def test_declared_contrast_pairs_that_all_filter_out_are_an_ERROR(capsys):
     # ...and it must not ALSO print the "nothing declared" advisory, which is
     # for a theme that declared nothing at all.
     assert "unverified" not in capsys.readouterr().out
+
+
+# ─── index.html: the theme-authored group ─────────────────────────────────
+# The home shell is the one consumer whose <link> tags belong to the THEME,
+# not to the site, so index.html's group has to be derived from the theme
+# under test. Both variants below were built by review, run against the real
+# gate, and PASSED at exit 0 before index.html had a group — the site's
+# highest-traffic page wearing the utility-dress bug.
+
+
+def _stub_theme_with_home_links(tmp_path, links, extra_files=()):
+    """A complete stub theme whose home shell carries `links` in its <head>."""
+    tdir = tmp_path / "themes" / "stub-theme"
+    _make_complete_theme_dir(tdir)
+    for name, text in extra_files:
+        (tdir / name).write_text(text, encoding="utf-8")
+    home = tdir / "archetypes" / "home.html"
+    home.write_text(
+        home.read_text(encoding="utf-8").replace("<html>", f"<html><head>{links}</head>", 1),
+        encoding="utf-8",
+    )
+    return tdir
+
+
+def _run_main_on(monkeypatch, tmp_path, tdir, argv=("stub-theme",)):
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(
+        td.tempfile, "TemporaryDirectory",
+        lambda *a, **kw: __import__("contextlib").nullcontext(str(tmp_path)),
+    )
+    return td.main(list(argv))
+
+
+def test_a_home_only_stylesheet_reading_undefined_names_fails_the_gate(
+    monkeypatch, tmp_path, capsys
+):
+    # Variant A: the theme adds an archetypes/home.css and links it from its
+    # own shell. No map names that file, no floor requires it, and before
+    # index.html had a group nothing graded it — the gate returned 0 and
+    # index.html shipped on rgba(0,0,0,0).
+    tdir = _stub_theme_with_home_links(
+        tmp_path,
+        '<link rel="stylesheet" href="/themes/stub-theme/archetypes/home.css">',
+        extra_files=[(
+            "archetypes/home.css",
+            "body { background: var(--sx-field); color: var(--sx-ink); }\n",
+        )],
+    )
+    assert _run_main_on(monkeypatch, tmp_path, tdir) == 1
+    out = capsys.readouterr().out
+    assert "archetypes/home.css: reads --sx-field" in out
+    assert "archetypes/home.css: reads --sx-ink" in out
+    assert "nothing loaded by index.html defines" in out
+
+
+def test_reusing_the_reading_dress_on_the_homepage_fails_the_gate(
+    monkeypatch, tmp_path, capsys
+):
+    # Variant B: a plausible reuse of the reading dress on a homepage strip.
+    # reading.css IS graded — by about.html's group, where
+    # Design/editorial.css resolves its five --ed-*/--font-serif reads. On
+    # index.html nothing links editorial.css, so those five reads have no
+    # definition and no fallback. The floor stays silent here by design (the
+    # file is graded, just not by this group), which is exactly why the group
+    # itself has to exist.
+    tdir = _stub_theme_with_home_links(
+        tmp_path,
+        '<link rel="stylesheet" href="/themes/stub-theme/archetypes/reading.css">',
+        extra_files=[(
+            "archetypes/reading.css",
+            _compliant_reading_css()
+            + ".ed-pull { font-size: var(--ed-t-pull); font-family: var(--font-serif); }\n",
+        )],
+    )
+    assert _run_main_on(monkeypatch, tmp_path, tdir) == 1
+    out = capsys.readouterr().out
+    assert "archetypes/reading.css: reads --ed-t-pull" in out
+    assert "archetypes/reading.css: reads --font-serif" in out
+    assert "nothing loaded by index.html defines" in out
+    # ...and about.html's group, which DOES link editorial.css, reports
+    # neither of them. Same file, two groups, two verdicts.
+    assert "nothing loaded by about.html defines" not in out
+
+
+def test_the_home_shell_contributes_its_STYLE_BLOCKS_and_nothing_else(
+    monkeypatch, tmp_path, capsys
+):
+    # There is no archetypes/home.css in any shipped theme: the home dress is
+    # the inline <style> block in archetypes/home.html. A var() spent there is
+    # exactly as unresolved as one spent in a linked file, so the shell enters
+    # its own group as a member and main() reads its <style> blocks.
+    #
+    # ...and ONLY its <style> blocks. The shell is a document, not a
+    # stylesheet: it carries inline scripts, and CSS-shaped text inside a
+    # <script> string is not a declaration the browser ever sees. Feeding the
+    # raw HTML would credit that string as a definition and wave the read
+    # through — which is why the same fixture asserts both halves. (Today's
+    # home.html has 48 var() reads and every one is inside a <style>, so this
+    # is pinned synthetically rather than observed.)
+    tdir = _stub_theme_with_home_links(tmp_path, "")
+    home = tdir / "archetypes" / "home.html"
+    home.write_text(
+        home.read_text(encoding="utf-8").replace(
+            "<body>",
+            "<style>body { background: var(--sx-nowhere); }</style>"
+            '<script>var fake = ":root { --sx-nowhere: red; }";</script>'
+            "<body>",
+            1,
+        ),
+        encoding="utf-8",
+    )
+    assert _run_main_on(monkeypatch, tmp_path, tdir) == 1
+    out = capsys.readouterr().out
+    assert "archetypes/home.html: reads --sx-nowhere" in out
+    assert "nothing loaded by index.html defines" in out
+
+
+def test_the_live_home_shell_resolves_everything_it_spends():
+    # The live theme's home dress is 45k of inline CSS reading 60 of its own
+    # names plus the widget stylesheet's. All of it resolves inside
+    # index.html's group, which is what makes grading the shell affordable.
+    tdir = td.theme_registry.theme_dir(_active_slug())
+    groups = td.resolution_groups(tdir)
+    theme_labels, site_labels = groups["index.html"]
+    assert td.check_theme_reads_only_what_it_defines(
+        "index.html", _group_css(theme_labels, tdir), _live_site_css(site_labels)
+    ) == []
