@@ -8,3 +8,11 @@
 markdown==3.10.2
 Pillow==10.4.0
 numpy==2.3.4
+# Read by tests/test_visual_diff.py, which PARSES .github/workflows/*.yml to
+# pin two wirings that must never exist (never on push, never inside
+# rotate-theme.yml). It was imported without being declared, and every
+# workflow installs exactly `-r requirements.txt pytest` — so PR CI went red
+# with ModuleNotFoundError while the same suite passed locally, and the
+# unattended rotation would have aborted on every theme from 2026-09 on.
+# A real YAML parse is the right test; the defect was not declaring it.
+PyYAML==6.0.2
