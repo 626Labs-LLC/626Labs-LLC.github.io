@@ -1061,8 +1061,12 @@ _OFF_ORIGIN_FIXTURES = {
 #      uses for `.pb-scanlines`. All four are legitimate designs the first cut
 #      would have failed, which is a manifest wearing an outcome's clothes.
 #
-# The differential closes both without a single color parse, and pseudo
-# elements are in the fingerprint precisely so the overlay technique counts.
+# The differential closes both without a single color parse. Two things make
+# the overlay technique count, and BOTH are needed — the first cut shipped only
+# the first and still failed a correct overlay theme: `::before` and `::after`
+# are in every region's fingerprint, AND the field region reaches `body > div`,
+# the page's own full-bleed overlay element. See _DRESS_REGIONS for the
+# measurement that forced the second.
 #
 # The selectors this names — `nav.nav`, `header.page-hero`, `main`, `footer`,
 # `h1.page-title`, `a.inline-link` — are press.html's and privacy.html's OWN
@@ -1124,7 +1128,24 @@ _FIELD_PROPS = (
 # content, so a rect there measures the page's length and not whether it has a
 # field.
 _DRESS_REGIONS = (
-    ("the page field", "html, body", "self", _FIELD_PROPS, False),
+    # `body > div` reaches the page's own full-bleed overlay, which is the
+    # only NON-PSEUDO surface a theme can put a field on here — a theme cannot
+    # add elements, so its choices on these two pages are `html`/`body`, their
+    # pseudos, and the one `<div>` each page ships as a direct child of body.
+    # Without it the region failed a theme that moved the entire field onto
+    # that div at `z-index: -1` with html and body painting nothing: a
+    # perfectly correct dark page, exit 1, rotation aborted. Measured, and the
+    # narrower `html, body` alternative measured alongside it:
+    #
+    #   selector                 live   (a) tokens  (b) resets  (c) ::before  (d) overlay div
+    #   html, body               1/2    0/2   OK    0/2   OK    1/2    OK     0/2  FALSE FAIL
+    #   html, body, body > div   2/3    0/3   OK    0/3   OK    1/3    OK     1/3  OK
+    #   html, body, body > *     4/9    0/9   OK    0/9   OK    1/9    OK     1/9  OK
+    #
+    # `body > *` also works and is deliberately NOT used: it would let a
+    # background on the nav alone satisfy "the page has a field", and nav,
+    # hero, main and footer each already have a region of their own.
+    ("the page field", "html, body, body > div", "self", _FIELD_PROPS, False),
     ("nav.nav", "nav.nav", "subtree", _DRESS_PROPS, True),
     ("header.page-hero", "header.page-hero", "subtree", _DRESS_PROPS, True),
     ("main", "main", "subtree", _DRESS_PROPS, True),
@@ -1334,6 +1355,17 @@ def check_page_renders_dressed(page, width: int) -> list[str]:
       box metrics alone (6/23, 9/14, 4/13). Only the field region catches it
       among the five. That is why `_FIELD_PROPS` is narrowed, and why the
       element-level assertions below are not decoration.
+    - The field region reaches `html`, `body`, their pseudos, and `body > div`.
+      A theme that painted the field on some OTHER element the page ships —
+      inside `main`, say — would not register there. That is a narrower gap
+      than it sounds, because a theme cannot add elements to these pages and
+      those are the surfaces that can go full-bleed; but it is a gap, and it
+      is the third different answer this region has had. The first cut asked
+      each element whether it painted and failed four legitimate techniques.
+      The second reached only `html`/`body` and their pseudos, and the fix
+      round's own disclosure called the overlay-div case a blind spot that
+      "would pass" — it was the opposite, a false FAIL on a correct page,
+      found by review and reproduced at exit 1 on both pages.
 
     ── The three element-level assertions that still earn their place ─────
     Each is something the differential structurally cannot see, because a
@@ -1345,6 +1377,16 @@ def check_page_renders_dressed(page, width: int) -> list[str]:
        leaves both pages in Times New Roman with every region still differing.
        No family is required and no generic is banned; the comparison target
        is measured at runtime.
+
+       THE ONE TYPE CHOICE THIS FORBIDS, stated rather than discovered on the
+       1st: a stack whose FIRST family is the browser's own standard font.
+       `Georgia, serif`, bare `serif`, `system-ui` and `"Iowan Old Style",
+       Times, serif` all pass; `"Times New Roman", serif` does not. A
+       newspaper-styled month that wants Times first has to name a specific
+       cut of it, or put it second. That is the honest cost of measuring
+       against the browser's default instead of hardcoding one: the assertion
+       cannot tell "chose Times" from "chose nothing", and "chose nothing" is
+       the defect it exists for.
     2. The page title outscales a bare heading — `h1.page-title`'s font-size
        relative to body text exceeds what an UNDRESSED `<h1>` computes in the
        same browser (2.00x). HEADROOM, measured on this theme so whoever hits
@@ -1354,6 +1396,13 @@ def check_page_renders_dressed(page, width: int) -> list[str]:
        tunable: a hero at exactly browser proportions is not dressed. This
        threshold is the minimum honest statement of the outcome, not a
        constant to relax when it becomes inconvenient.
+
+       IT IS A RATIO, so raising BODY type eats the headroom. Those 2.25x and
+       3.50x figures are against a 16px body, the only body size this theme
+       ships. With a 40px title: 14px, 16px and 18px bodies pass, 20px lands
+       at exactly 2.00x and FAILS. A theme that raises body type has to raise
+       the hero with it — which is what a type scale does anyway, but the
+       failure would read as being about the hero when the cause was the body.
     3. Inline links are distinguishable from the prose they sit in — EVERY
        `a.inline-link` resolves a color that is neither its own parent's color
        nor the browser's default link color. Both halves are load-bearing:
