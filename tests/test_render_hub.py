@@ -865,6 +865,23 @@ def _unguarded_reads(text: str) -> set:
     return out
 
 
+
+def test_a_guarded_var_read_is_not_required_to_resolve():
+    """The property the two `resolve_every_var_they_read` tests rest on, tested
+    directly — because against the LIVE theme those two pass either way. The
+    mutation that matters (requiring guarded reads to resolve) only bites a
+    theme whose private namespace is spelled differently, which is exactly the
+    theme they were false-rejecting.
+
+    `var(--a, var(--b))` guards `--a` and leaves `--b` unguarded in its own
+    right; that is `check_theme_reads_only_what_it_defines`'s rule, mirrored
+    here so the two cannot drift.
+    """
+    assert _unguarded_reads("x{color: var(--a, var(--b))}") == {"--b"}
+    assert _unguarded_reads("x{color: var(--c)}") == {"--c"}
+    assert _unguarded_reads("x{color: var(--d, #fff)}") == set()
+    assert _unguarded_reads("/* var(--commented) */ x{color: var(--e)}") == {"--e"}
+
 def test_reading_pages_resolve_every_var_they_read():
     # Their tokens now live in the theme, with no page-local fallback — so
     # an unresolved var() is a straight rendering break, not a stale value.
