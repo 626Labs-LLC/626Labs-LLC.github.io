@@ -52,7 +52,7 @@ references and one-off design artifacts.
 | `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 9 bot workflows that push to main, 1 dashboard API bot, and 1 link checker. All push-to-main workflows have retry+rebase loops. |
+| `.github/workflows/` | 9 bot workflows that push to main, 1 dashboard API bot, 1 link checker, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 | `themes/`, `content/themes.json`, `themes.html` | The monthly theme rotation: theme source dirs, the active/queue/archive registry, and the gallery page rendered from it. See **Theme rotation** below. |
 
@@ -86,12 +86,13 @@ The 9 bot workflows that push to main:
 All nine use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
-Plus two that never commit to this repo:
+Plus three that never commit to this repo:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
 | `version-truth-reconcile.yml` | Daily 08:00 UTC (~3am Chicago) | Corrects drifted 626 dashboard project versions to the latest shipped (non-prerelease) GitHub release per linked repo, via the MCP REST API with the scoped `version-truth-bot` agent key (`MCP_VERSION_TRUTH_KEY`, manage_projects only). Refuses to write past 8 drifts in one run (systemic-change fuse). Dispatch with `dry_run` to preview. |
 | `link-check.yml` | Push to `**/*.html` or `**/*.md`, weekly Mon 13:00 UTC | Lychee link-check. Opens an issue on broken links during scheduled runs only. Excludes `themes/archive` — frozen months aren't maintained pages. |
+| `visual-diff.yml` | `workflow_dispatch`, or the `visual-diff` label on a PR | Runs `scripts/visual-diff.py` against a base ref. **Never on push, never inside `rotate-theme.yml`** — see *Two-tree visual diff* under **Tools**. Routes the harness's three exit codes to three different outcomes: 0 posts a summary and passes, 1 lists every finding and fails, 2 fails saying nothing was compared. Artifacts (`report.json`, base/head PNGs, console log) upload on a PASS too. |
 
 ---
 
@@ -138,6 +139,44 @@ the token half so they take the palette without inheriting a dress written
 for someone else's markup. `tokens.css`, `product-tokens.css`,
 `utility.css` and `reading.css` must each define every
 `archetypes.REQUIRED_TOKENS` name.
+
+**The borrowed dress — `utility.css`, `press.html` and `privacy.html`.**
+Those two pages borrow **100% of their chrome** from the active theme.
+Measured against the live DOM, not inferred: 49 of `utility.css`'s 50
+selectors match `press.html`, 48 match `privacy.html`, and the overlap with
+each page's own `<style>` is **exactly zero**. Their own styles dress their
+CONTENT (the asset grid, the policy prose); nav, hero, footer, links, field
+and type all arrive from the theme, with nothing page-side to fall back on.
+So a theme that satisfies the token contract and skips the dress renders
+both pages on the browser's blank default, in Times New Roman, with blue
+underlined links — and before this gate existed, `theme-doctor` passed
+exactly that theme at exit 0, unattended, on the 1st.
+
+`theme-doctor --browser` now grades both pages by **outcome, never by
+selector manifest**. A manifest would fail a theme that puts the field on
+`html` instead of `body`, or on `body::before`, or on the page's own
+full-bleed overlay div — all correct designs. Instead each page is rendered
+twice in one load, with its theme stylesheet enabled and disabled, and every
+page-owned region (`html, body, body > div`, `nav.nav`, `header.page-hero`,
+`main`, `footer`) must render **differently** between the two. Nothing in
+`theme-doctor.py` parses a color; fingerprints are compared as opaque
+strings, so `oklch()`, `lab()` and `color-mix()` all pass. Three element
+assertions ride alongside, for the things a differential structurally cannot
+see: body type is not the browser's own, `h1.page-title` outscales a bare UA
+heading, and every `a.inline-link` is distinguishable from the prose it sits
+in. What each of those does NOT constrain is in
+`check_page_renders_dressed`'s docstring — read it before assuming a failure
+is your theme's fault.
+
+The custom-property reads-check is scoped the same way: a `var()` read is
+graded against what **that page's own resolution group** loads, not against
+every definition anywhere in the theme directory. `tokens.css` defining a
+`--pb-*` name no longer satisfies a read in `archetypes/utility.css`, which
+`press.html` and `privacy.html` are the only consumers of. Groups are
+derived from the code that serves the pages (`render-hub.py`'s
+`THEME_CSS_HREFS`, `render-plugin-pages.py`'s inlined concatenation,
+`about.html`'s dress picker, and the theme's own `archetypes/home.html`), so
+repointing a page's stylesheet moves its group in the same commit.
 
 **Building one:**
 
@@ -239,6 +278,50 @@ that can't be derived locally (Microsoft Store releases, a plugin's command
 count) live in `content/facts-supplement.json` — re-confirm those periodically.
 The `content-health.yml` workflow runs the doctor on PRs and weekly.
 
+### Two-tree visual diff — `scripts/visual-diff.py`
+
+Answers one question: **did this branch move anything a visitor can see?**
+Serves a base git ref and the working tree on two local ports, renders both
+in the same Chromium, and compares three channels — full-frame pixels,
+computed styles (78 properties per element plus `::before`/`::after`), and
+hover states. No golden images, no threshold, no masking: a single differing
+pixel is a finding. Golden PNGs were rejected for the reason
+`build-og-cards.py` already documents — FreeType rasterizes differently
+across platforms, so references committed from the ubuntu runner would diff
+against every Windows run forever.
+
+```
+python scripts/visual-diff.py origin/main
+python scripts/visual-diff.py origin/main --pages press.html privacy.html
+python scripts/visual-diff.py origin/main --widths 1440,390 --channels pixel,computed
+python scripts/visual-diff.py origin/main --self-check   # base vs base
+```
+
+- **The base ref is positional and must come FIRST.** `--pages` is
+  `nargs="+"`, so a trailing ref gets swallowed into the page list.
+- **Exit codes: 0** nothing moved, **1** at least one channel reported a
+  difference, **2** the run could not be made (bad ref, no playwright, a
+  browser that would not launch, a bug in the harness). Never conflate 1 and
+  2 — 2 means nothing was compared, which is not a pass.
+- **Run `--self-check` before believing a non-zero result.** It points both
+  servers at the base tree; anything it reports is capture noise, not a
+  regression. It is how five harness defects were found before this shipped.
+- The page list derives from `content/page-archetypes.json`, so a new page
+  joins the sweep the commit it is mapped to an archetype. 39 today.
+- **A full sweep is 17.5 minutes** (39 pages × 3 widths × 3 channels).
+  `--widths 1440,390` is the cheaper shape; `--channels pixel,computed`
+  cheaper still. That cost is why it is on-demand only.
+- **Read the module docstring's non-coverage list before trusting a green
+  run.** `:focus`, `:active`, print styles, later animation keyframes, the
+  4th element of a hover signature, and anything semantic are all unsampled.
+  A test pins that list so it cannot quietly erode.
+
+CI wiring is `.github/workflows/visual-diff.yml` — `workflow_dispatch` or
+the `visual-diff` PR label. It is deliberately **not** on push (the runtime)
+and deliberately **not** in `rotate-theme.yml` (on the 1st every pixel is
+supposed to move, so a pixel gate there is meaningless). Both prohibitions
+are pinned by a test against the module docstring.
+
 ### Admin favicon — `scripts/build-admin-favicon.py`
 
 Regenerates `assets/favicon-admin.png` — the gradient-square browser-tab
@@ -268,6 +351,7 @@ hand-edit the bundle output at `widget-bacon-trail/`.
 | See bot run status | Admin → Ops tab |
 | Preview a theme without touching the live site | `python3 scripts/render-hub.py --theme <slug> --out <dir>` |
 | Gate a theme before opening its PR | `python3 scripts/theme-doctor.py <slug> --browser` |
+| Check whether a branch moved any pixels | `python3 scripts/visual-diff.py origin/main` (base ref FIRST), or put the `visual-diff` label on the PR |
 | Queue a theme for the next rotation | Append its slug to `"queue"` in `content/themes.json` |
 | Roll back a bad rotation | `git revert` the `chore(themes): rotate to ...` commit |
 | Ship a new top-level page | Merge (the sitemap updates itself) → then GSC: URL Inspection → Request Indexing for the new URL at search.google.com/search-console. Agents: list the new public URL(s) in every ship report — this step is part of the workflow, not optional polish. Sitemap re-submission is never needed (same URL; Google re-reads it). |

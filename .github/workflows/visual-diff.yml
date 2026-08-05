@@ -1,0 +1,288 @@
+name: Visual diff
+
+# Two-tree visual regression sweep for 626labs.dev. `scripts/visual-diff.py`
+# serves a BASE git ref and this tree on two local ports, renders both in the
+# same Chromium, and compares three channels: full-frame pixels, computed
+# styles, and hover states. It answers one question — "did this branch move
+# anything a visitor can see?" — and it answers it by comparing two trees,
+# never against a stored image.
+#
+# ON DEMAND ONLY, and the two wirings that are NOT here are load-bearing:
+#
+#   - NOT on `push`. A full sweep of all 39 pages at three widths measures
+#     17.5 minutes (~13 at the two widths this workflow runs by default).
+#     Every commit is not worth that, and a job people wait on is a job
+#     people learn to route around.
+#   - NOT inside `rotate-theme.yml`. On the 1st, every pixel on the site is
+#     SUPPOSED to move — a new theme goes live. A pixel gate there is either
+#     meaningless or has to be neutered until it is. The rotation's gate is
+#     `theme-doctor.py --browser --require-browser`, which grades the
+#     INCOMING theme on its own terms instead of against the outgoing one.
+#     This harness also cannot run without a base ref, so it is structurally
+#     useless there even if someone wanted it.
+#
+# Both prohibitions are stated in `scripts/visual-diff.py`'s module docstring
+# and pinned by `test_the_docstring_forbids_the_two_wirings_that_would_be_wrong`.
+# Adding either trigger contradicts a shipped test.
+#
+# Two ways to run it:
+#   1. `workflow_dispatch` — pick the base ref, pages, widths, channels.
+#   2. Put the `visual-diff` label on a PR. Opt-in per PR; while the label is
+#      on, each push to that PR re-runs the sweep, because a result from
+#      three commits ago is worse than no result. Remove the label to stop.
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: 'Base ref to compare the checked-out tree against'
+        type: string
+        default: 'origin/main'
+      pages:
+        description: 'Space-separated page paths (blank = every page in content/page-archetypes.json)'
+        type: string
+        default: ''
+      widths:
+        description: 'Comma-separated viewport widths'
+        type: string
+        default: '1440,390'
+      channels:
+        description: 'Comma-separated channels: pixel, computed, hover'
+        type: string
+        default: 'pixel,computed,hover'
+      self_check:
+        description: 'Compare the base ref against ITSELF — anything reported is capture noise'
+        type: boolean
+        default: false
+  pull_request:
+    types: [labeled, synchronize, reopened]
+
+concurrency:
+  # Per-PR for label runs, per-run for dispatch (so a manual sweep is never
+  # cancelled by anything). A rapid series of pushes to a labeled PR should
+  # leave one 13-minute run standing, not five.
+  group: visual-diff-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  sweep:
+    # Dispatch always runs. A pull_request event runs only when the PR
+    # carries the `visual-diff` label — and a `labeled` event for some OTHER
+    # label does not re-trigger a sweep that is already opted in.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (contains(github.event.pull_request.labels.*.name, 'visual-diff') &&
+       (github.event.action != 'labeled' || github.event.label.name == 'visual-diff'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Full history: the harness checks the base ref out into a
+          # throwaway `git worktree`, so that commit has to be present
+          # locally. A shallow clone makes every run exit 2.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install deps
+        run: pip install -r requirements.txt pytest
+
+      - name: Install Playwright
+        # Same two lines rotate-theme.yml uses. `--with-deps` pulls the
+        # system libraries Chromium needs on a bare ubuntu runner; without
+        # it the browser fails to launch and the harness exits 2.
+        run: |
+          set -euo pipefail
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Resolve the base ref
+        id: base
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_BASE_REF: ${{ inputs.base_ref }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          # Read from env, never from a `${{ }}` expansion inside the script
+          # body — an interpolated input becomes shell source text.
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            ref="$PR_BASE_SHA"
+          else
+            ref="${DISPATCH_BASE_REF:-origin/main}"
+          fi
+          git fetch --prune --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
+          if ! git rev-parse --verify "$ref^{commit}" >/dev/null 2>&1; then
+            echo "::error::base ref '$ref' is not a commit in this checkout — nothing was compared."
+            exit 1
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "Base ref: $ref ($(git rev-parse --short "$ref^{commit}"))"
+
+      - name: Run the sweep
+        id: sweep
+        env:
+          BASE_REF: ${{ steps.base.outputs.ref }}
+          PAGES: ${{ inputs.pages }}
+          WIDTHS: ${{ inputs.widths || '1440,390' }}
+          CHANNELS: ${{ inputs.channels || 'pixel,computed,hover' }}
+          SELF_CHECK: ${{ inputs.self_check }}
+          OUT_DIR: ${{ runner.temp }}/visual-diff
+        run: |
+          set -uo pipefail
+          mkdir -p "$OUT_DIR"
+          # The positional base ref MUST come first: `--pages` is nargs="+",
+          # so argparse swallows a trailing ref into the page list.
+          args=("$BASE_REF" --widths "$WIDTHS" --channels "$CHANNELS" --out "$OUT_DIR")
+          if [ "${SELF_CHECK:-false}" = "true" ]; then
+            args+=(--self-check)
+          fi
+          if [ -n "${PAGES:-}" ]; then
+            # Deliberate word split — --pages takes one or more values.
+            # shellcheck disable=SC2206
+            args+=(--pages ${PAGES})
+          fi
+          echo "python scripts/visual-diff.py ${args[*]}"
+          set +e
+          python scripts/visual-diff.py "${args[@]}" 2>&1 | tee "$OUT_DIR/console.log"
+          code=${PIPESTATUS[0]}
+          set -e
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "visual-diff.py exited $code"
+          # This step never fails. The exit code is routed below, because 1
+          # and 2 mean different things and must not collapse into one red X
+          # with one story.
+          exit 0
+
+      - name: Upload artifacts
+        # Uploaded on a PASS too. A clean run still prints coverage notes —
+        # the places the sweep could not look — and `report.json` carries the
+        # per-page `sheets_read` evidence and the base SHA. Those are worth
+        # reading when the answer is "nothing moved".
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diff-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/visual-diff
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: 'Exit 2: the run could not be made'
+        # FAIL HARD, and say why it is not the same as a clean run: nothing
+        # was compared. Bad ref, no playwright, a browser that would not
+        # launch, a port that would not bind, or a bug in the harness. An
+        # ungraded check is a failed check.
+        if: steps.sweep.outputs.code == '2'
+        run: |
+          set -euo pipefail
+          echo "::error::visual-diff could not run (exit 2). NOTHING was compared — this is not a pass."
+          {
+            echo "## Visual diff: the run could not be made"
+            echo
+            echo "\`scripts/visual-diff.py\` exited **2** — infrastructure, not pixels."
+            echo "No page was compared, so this run says nothing about whether the branch moved anything."
+            echo
+            echo "See the run log and \`console.log\` in the uploaded artifact for the traceback."
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
+
+      - name: 'Exit 1: differences found'
+        # SURFACE THEM. A difference is not automatically a defect: no
+        # two-tree diff can tell an intended redesign from an accident, which
+        # is why the findings are named element-by-element in the summary and
+        # the base/head PNGs are attached. The check is red so a human has to
+        # look; what it is red ABOUT is a list, not a shrug.
+        if: steps.sweep.outputs.code == '1'
+        env:
+          REPORT: ${{ runner.temp }}/visual-diff/report.json
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          import os
+
+          report = json.loads(open(os.environ["REPORT"], encoding="utf-8").read())
+          findings = report.get("findings", [])
+          notes = report.get("coverage_notes", [])
+          print("## Visual diff: differences found")
+          print()
+          print(f"Base `{report.get('base_ref')}` (`{str(report.get('base_sha'))[:8]}`) "
+                f"vs this tree. {report.get('pages')} pages, widths "
+                f"{', '.join(str(w) for w in report.get('widths', []))}, channels "
+                f"{', '.join(report.get('channels', []))}. "
+                f"{report.get('elapsed_seconds')}s.")
+          print()
+          print(f"**{len(findings)} finding(s).** A difference is not automatically a "
+                "defect — confirm each one was intended, then remove the `visual-diff` "
+                "label or say so in review.")
+          print()
+          for f in findings:
+              print(f"- {f}")
+          if notes:
+              print()
+              print(f"<details><summary>{len(notes)} coverage note(s) — "
+                    "places the sweep could not look</summary>")
+              print()
+              for n in notes:
+                  print(f"- {n}")
+              print()
+              print("</details>")
+          PY
+          # Warning-level annotations, not errors: the step's own failure is
+          # the gate; the annotations are the detail.
+          python3 - <<'PY'
+          import json
+          import os
+
+          report = json.loads(open(os.environ["REPORT"], encoding="utf-8").read())
+          for f in report.get("findings", []):
+              print(f"::warning::visual-diff: {f}")
+          PY
+          echo "::error::visual-diff found differences (exit 1). Review the findings above and the PNGs in the artifact."
+          exit 1
+
+      - name: 'Exit 0: nothing moved'
+        if: steps.sweep.outputs.code == '0'
+        env:
+          REPORT: ${{ runner.temp }}/visual-diff/report.json
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          import os
+
+          report = json.loads(open(os.environ["REPORT"], encoding="utf-8").read())
+          notes = report.get("coverage_notes", [])
+          print("## Visual diff: no channel reported a difference")
+          print()
+          print(f"Base `{report.get('base_ref')}` (`{str(report.get('base_sha'))[:8]}`) "
+                f"vs this tree. {report.get('pages')} pages, widths "
+                f"{', '.join(str(w) for w in report.get('widths', []))}, channels "
+                f"{', '.join(report.get('channels', []))}. "
+                f"{report.get('elapsed_seconds')}s.")
+          print()
+          if notes:
+              print(f"**{len(notes)} coverage note(s)** — not differences, but not "
+                    "covered either. Read them before treating this as total.")
+              print()
+              for n in notes:
+                  print(f"- {n}")
+          else:
+              print("No coverage notes.")
+          PY
+
+      - name: 'Unroutable exit code'
+        # The contract is 0, 1 or 2. Anything else means the contract moved
+        # and this workflow did not — fail rather than pass silently.
+        if: steps.sweep.outputs.code != '0' && steps.sweep.outputs.code != '1' && steps.sweep.outputs.code != '2'
+        run: |
+          echo "::error::visual-diff exited ${{ steps.sweep.outputs.code }}, which this workflow has no route for. The exit-code contract is 0/1/2."
+          exit 1
