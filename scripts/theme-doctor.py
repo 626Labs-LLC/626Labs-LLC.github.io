@@ -977,22 +977,31 @@ def check_theme_reads_only_what_it_defines(
 # copied from another to start (CLAUDE.md says to mirror the reference
 # extraction), so a leftover foreign slug is the DEFAULT failure of that
 # workflow rather than an exotic one.
-_THEME_SELF_REF_RE = re.compile(r"/themes/([A-Za-z0-9._-]+)/")
+# `/themes/<slug>/...` — an absolute reference names its theme outright, so the
+# slug is READ rather than resolved and the answer does not depend on where the
+# theme directory happens to sit on disk.
+_THEME_SELF_REF_RE = re.compile(r"^/themes/([A-Za-z0-9._-]+)/")
 
-# ...and the same reference written RELATIVELY, which the pattern above cannot
-# see. `href="themes/phosphor-blueprint/tokens.css"` and
-# `@import url("../../phosphor-blueprint/archetypes/utility.css")` both reach
-# the retired theme and both passed the leading-slash form — proven end to end,
-# with `render-hub.py --theme` emitting an index.html carrying the href.
-#
-# So the check also looks for any SIBLING theme's directory name used as a path
-# segment. Sibling names come off disk rather than from a list, so a theme
-# added tomorrow is covered tomorrow.
-_PATH_SEGMENT_RE = r"(?:^|[\s\"\'(=/])%s/"
+# Every URL a document actually resolves: href/src attributes, url() in CSS,
+# and @import. Mentions in prose are deliberately NOT matched — a theme copied
+# from another keeps comments naming its source, which is normal and harmless,
+# and an earlier sibling-name scan flagged exactly those.
+_REFERENCE_RES = (
+    re.compile(r"""(?:href|src)\s*=\s*["']([^"']+)["']""", re.I),
+    re.compile(r"""url\(\s*["']?([^"')]+)["']?\s*\)""", re.I),
+    re.compile(r"""@import\s+["']([^"']+)["']"""),
+)
+
+
+def _referenced_paths(text: str) -> set[str]:
+    out: set[str] = set()
+    for pattern in _REFERENCE_RES:
+        out |= {m.strip() for m in pattern.findall(text)}
+    return {u for u in out if u and not u.startswith(("data:", "#", "mailto:"))}
 
 
 def check_theme_references_only_itself(tdir: Path) -> list[str]:
-    """A theme's own files must not hardcode another theme's slug.
+    """A theme's own files must not RESOLVE to another theme's directory.
 
     `archetypes/home.html` links `/themes/<slug>/tokens.css` directly, and
     render-hub copies theme shells VERBATIM. `_THEME_HREF_RE` deliberately
@@ -1000,44 +1009,80 @@ def check_theme_references_only_itself(tdir: Path) -> list[str]:
     `themes/aurora/archetypes/home.html` against aurora's tokens while the
     rendered page loaded the tokens of whatever slug the file actually named.
     Retired theme directories are never deleted, so `check_internal_links`
-    resolved the stale path happily and the browser gate rendered a clean
-    page — wearing last month's theme.
+    resolved the stale path happily and the browser gate rendered a clean page
+    — wearing last month's theme.
 
-    That is not a hypothetical: the documented way to build a theme is to copy
+    That is not hypothetical: the documented way to build a theme is to copy
     this one and retokenize, which leaves four hardcoded slugs behind.
 
-    One comparison against the directory's own name closes it.
+    Three reference forms reach a sibling theme and all three are caught,
+    because the check RESOLVES rather than pattern-matches:
+
+        /themes/other/tokens.css                     absolute
+        themes/other/tokens.css                      relative, no leading slash
+        ../../other/archetypes/utility.css           relative, escaping upward
+
+    A mention of another theme in a COMMENT is not a reference and is not
+    flagged; that distinction cost a round, because scanning for the name
+    rather than the URL failed a theme whose header comment said which theme
+    it was extracted from.
     """
+    themes_root = tdir.parent
     errors: list[str] = []
-    siblings = sorted(
-        d.name for d in tdir.parent.iterdir()
-        if d.is_dir() and d.name != tdir.name and d.name != "archive"
-    )
-    # Every text file, not a suffix allowlist: a reference is a reference
-    # wherever it is written, and an allowlist is a list of the places someone
-    # already thought of.
     for path in sorted(tdir.rglob("*")):
         if not path.is_file():
             continue
         try:
             text = path.read_text(encoding="utf-8")
         except (UnicodeDecodeError, OSError):
-            continue          # a binary asset cannot carry an href
-        found: dict[str, str] = {}
-        for slug in set(_THEME_SELF_REF_RE.findall(text)):
-            if slug != tdir.name:
-                found[slug] = f"/themes/{slug}/"
-        for slug in siblings:
-            if slug in found:
-                continue
-            if re.search(_PATH_SEGMENT_RE % re.escape(slug), text):
-                found[slug] = f"{slug}/"
-        for slug, how in sorted(found.items()):
-            errors.append(
-                f"{path.relative_to(tdir).as_posix()}: references {how}, which is a "
-                f"DIFFERENT theme — the rendered page would load {slug}'s stylesheet "
-                f"while this theme is graded on its own"
-            )
+            continue          # a binary asset carries no href
+        for url in sorted(_referenced_paths(text)):
+            clean = url.split("?", 1)[0].split("#", 1)[0]
+            if "://" in clean or clean.startswith("//"):
+                continue      # off-site; check_internal_links owns those
+            # A relative URL is resolved against BOTH plausible bases, and
+            # flagged if either lands in a sibling theme. `archetypes/home.html`
+            # is copied to the SITE ROOT by render-hub, so a bare
+            # `themes/other/tokens.css` in it resolves to `/themes/other/...`
+            # in the browser while resolving harmlessly against the file's own
+            # directory on disk — which is how the reviewer's relative-href
+            # evasion got through the first version of this. No theme file has
+            # a legitimate relative path that reaches a sibling under EITHER
+            # base, so the union costs nothing and closes the gap.
+            owner = ""
+            absolute = _THEME_SELF_REF_RE.match(clean)
+            if absolute:
+                # `/themes/<slug>/...` names a theme outright. Read the slug
+                # rather than resolving, so the answer does not depend on
+                # where the theme directory happens to live on disk.
+                owner = absolute.group(1)
+            elif not clean.startswith("/"):
+                # EVERY candidate owner, not the first one found. Breaking on
+                # the first match stopped at the file-relative landing — which
+                # resolves to this theme's own name and is therefore harmless —
+                # and never tried the site-root landing, which is the one that
+                # reaches the sibling.
+                candidates = set()
+                for landing in ((path.parent / clean).resolve(),
+                                (ROOT / clean).resolve()):
+                    for base in (ROOT / "themes", themes_root):
+                        try:
+                            inside = landing.relative_to(base.resolve())
+                        except ValueError:
+                            continue
+                        if inside.parts:
+                            candidates.add(inside.parts[0])
+                foreign = sorted(candidates - {tdir.name, "archive"})
+                owner = foreign[0] if foreign else ""
+            if owner in ("", tdir.name, "archive"):
+                owner = ""
+            if owner:
+                errors.append(
+                    f"{path.relative_to(tdir).as_posix()}: references {url!r}, which "
+                    f"resolves into themes/{owner}/ — a DIFFERENT theme. The rendered "
+                    f"page would load {owner}'s stylesheet while this theme is graded "
+                    f"on its own."
+                )
     return errors
 
 
