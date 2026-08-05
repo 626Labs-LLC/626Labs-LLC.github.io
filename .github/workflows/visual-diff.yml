@@ -22,8 +22,15 @@ name: Visual diff
 #     useless there even if someone wanted it.
 #
 # Both prohibitions are stated in `scripts/visual-diff.py`'s module docstring
-# and pinned by `test_the_docstring_forbids_the_two_wirings_that_would_be_wrong`.
-# Adding either trigger contradicts a shipped test.
+# and pinned by `test_the_workflow_itself_carries_neither_forbidden_trigger`,
+# which reads THIS FILE and rotate-theme.yml. Adding either trigger fails that
+# test.
+#
+# It did not used to. The only pin was
+# `test_the_docstring_forbids_the_two_wirings_that_would_be_wrong`, which
+# asserts two substrings of a docstring — a claim about prose. Adding `push:`
+# below, or a sweep step to the rotation, left every test green while this
+# comment said otherwise.
 #
 # Two ways to run it:
 #   1. `workflow_dispatch` — pick the base ref, pages, widths, channels.
@@ -55,7 +62,10 @@ on:
         type: boolean
         default: false
   pull_request:
-    types: [labeled, synchronize, reopened]
+    # `opened` is here because a PR CREATED with the label already applied is
+    # the ordinary case for a branch that knows it moves pixels, and without
+    # it that PR did not sweep until someone happened to push again.
+    types: [opened, labeled, synchronize, reopened]
 
 concurrency:
   # Per-PR for label runs, per-run for dispatch (so a manual sweep is never

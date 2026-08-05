@@ -14,7 +14,8 @@ around it.
 - **Site shell:** Hand-written HTML + vanilla JS + inline CSS. No framework
   on the marketing surface, no build step. `index.html` is a generated
   artifact of the active theme — chrome/layout edits belong in
-  `themes/<active-slug>/shell.html` (see **Theme rotation** below); a direct
+  `themes/<active-slug>/archetypes/home.html` (see **Theme rotation** below;
+  there is no `shell.html`, and no theme in this repo has ever had one); a direct
   `index.html` edit gets silently reverted by the next render.
 - **Widget app:** `apps/widget-bacon-trail/` — Vite + TypeScript. The only
   build pipeline in the repo. Output committed to `widget-bacon-trail/`
@@ -52,7 +53,7 @@ references and one-off design artifacts.
 | `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 9 bot workflows that push to main, 1 dashboard API bot, 1 link checker, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
+| `.github/workflows/` | 13 files: 9 bot workflows that push to main, plus 4 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 | `themes/`, `content/themes.json`, `themes.html` | The monthly theme rotation: theme source dirs, the active/queue/archive registry, and the gallery page rendered from it. See **Theme rotation** below. |
 
@@ -86,12 +87,13 @@ The 9 bot workflows that push to main:
 All nine use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
-Plus three that never commit to this repo:
+Plus four that never commit to this repo:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
 | `version-truth-reconcile.yml` | Daily 08:00 UTC (~3am Chicago) | Corrects drifted 626 dashboard project versions to the latest shipped (non-prerelease) GitHub release per linked repo, via the MCP REST API with the scoped `version-truth-bot` agent key (`MCP_VERSION_TRUTH_KEY`, manage_projects only). Refuses to write past 8 drifts in one run (systemic-change fuse). Dispatch with `dry_run` to preview. |
 | `link-check.yml` | Push to `**/*.html` or `**/*.md`, weekly Mon 13:00 UTC | Lychee link-check. Opens an issue on broken links during scheduled runs only. Excludes `themes/archive` — frozen months aren't maintained pages. |
+| `content-health.yml` | PRs touching content, weekly | Runs `site-doctor.py` over prose-vs-facts, dangling local assets and render drift. Reports; never commits. |
 | `visual-diff.yml` | `workflow_dispatch`, or the `visual-diff` label on a PR | Runs `scripts/visual-diff.py` against a base ref. **Never on push, never inside `rotate-theme.yml`** — see *Two-tree visual diff* under **Tools**. Routes the harness's three exit codes to three different outcomes: 0 posts a summary and passes, 1 lists every finding and fails, 2 fails saying nothing was compared. Artifacts (`report.json`, base/head PNGs, console log) upload on a PASS too. |
 
 ---
@@ -137,8 +139,10 @@ hand-authored product pages (`conundrum.html`, `rororo-plugins.html`,
 `rororo.html`, `mod-launcher-games.html`) link
 the token half so they take the palette without inheriting a dress written
 for someone else's markup. `tokens.css`, `product-tokens.css`,
-`utility.css` and `reading.css` must each define every
-`archetypes.REQUIRED_TOKENS` name.
+`utility.css` and `reading-tokens.css` must each define every
+`archetypes.REQUIRED_TOKENS` name — the TOKEN file, not `reading.css`, which
+is about.html's dress. `REQUIRED_TOKEN_CSS` in `scripts/theme-doctor.py` is
+the record.
 
 **The borrowed dress — `utility.css`, `press.html` and `privacy.html`.**
 Those two pages borrow **100% of their chrome** from the active theme.
@@ -158,9 +162,16 @@ selector manifest**. A manifest would fail a theme that puts the field on
 full-bleed overlay div — all correct designs. Instead each page is rendered
 twice in one load, with its theme stylesheet enabled and disabled, and every
 page-owned region (`html, body, body > div`, `nav.nav`, `header.page-hero`,
-`main`, `footer`) must render **differently** between the two. Nothing in
-`theme-doctor.py` parses a color; fingerprints are compared as opaque
-strings, so `oklch()`, `lab()` and `color-mix()` all pass. Three element
+`main`, `footer`) must render **differently** between the two. The DIFFERENTIAL parses no
+color at all: fingerprints are compared as opaque strings, so `oklch()`,
+`lab()` and `color-mix()` pass it whatever they contain. That is a statement
+about the differential and NOT about the module — an earlier version of this
+sentence said "nothing in `theme-doctor.py` parses a color", which was false
+and expensive: the CONTRAST gate resolves `contrastPairs` to channel values
+and understood hex and `rgb()` only, so a correct `oklch()` palette failed
+four archetypes and aborted the rotation. `scripts/css_color.py` now resolves
+the CSS Color 4 function set (verified against Chromium, 50 cases), and
+`tests/test_css_color.py` pins its numbers to the browser's. Three element
 assertions ride alongside, for the things a differential structurally cannot
 see: body type is not the browser's own, `h1.page-title` outscales a bare UA
 heading, and every `a.inline-link` is distinguishable from the prose it sits
@@ -181,7 +192,7 @@ repointing a page's stylesheet moves its group in the same commit.
 **Building one:**
 
 1. Branch, create `themes/<slug>/` with all eleven files above — `tokens.css` and `theme.json` at the root, the nine archetype shells and stylesheets under `archetypes/`. Mirror `themes/phosphor-blueprint/` as the reference extraction; copying its directory and re-tokenizing is the intended path, and is also how a theme inherits the `--pb-*` treatment names the hand-authored pages fall back from.
-2. `python scripts/theme-doctor.py <slug>` must PASS before anything else. This is the ONLY gate standing between a theme and unattended monthly rotation, so it has to fail honestly: zone markers present, chrome intact (skip-link/nav/footer/analytics), every internal link resolves, and every declared `contrastPairs` clears AA (>= 4.5). Add `--browser` (needs `playwright` installed) for horizontal-scroll (1440/768/390px) and zero-console-error checks — without playwright installed those two checks skip with a one-line note, the local convenience path. The scheduled rotation installs playwright and runs `--browser --require-browser`, which turns that same skip into a gate FAILURE — the one unattended run of this gate can't be allowed to rubber-stamp a rotation because the browser path silently didn't run.
+2. `python scripts/theme-doctor.py <slug>` must PASS before anything else. This is the ONLY gate standing between a theme and unattended monthly rotation, so it has to fail honestly: zone markers present, chrome intact (skip-link/nav/footer/analytics), every internal link resolves, and every declared `contrastPairs` clears AA (>= 4.5). Add `--browser` (needs `playwright` installed) for horizontal-scroll (1440/768/390px), zero-console-error/pageerror, and — on `press.html` and `privacy.html`, the two pages that own no chrome of their own — the dress differential (`check_page_renders_dressed`). Without playwright installed those checks skip with a one-line note, the local convenience path. The scheduled rotation installs playwright and runs `--browser --require-browser`, which turns that same skip into a gate FAILURE — the one unattended run of this gate can't be allowed to rubber-stamp a rotation because the browser path silently didn't run.
 3. Preview it against real content: `python scripts/render-hub.py --theme <slug> --out <dir>` renders that theme's shell to `<dir>/index.html`, plus copies of the eight hand-authored `theme-css` pages (`press.html`, `privacy.html`, `thesis.html`, `workflow.html`, `conundrum.html`, `rororo-plugins.html`, `rororo.html`, `mod-launcher-games.html`) with their stylesheet `<link>` repointed at `<slug>`. Everything lands in `<dir>` and nothing else is touched — no feed, sitemap, story pages, or `themes.html`, no `conundrum.html` gallery zones, and nothing is written back into the repo tree. Those eight keep root-relative asset paths, so serve them from the **repo root** with `<dir>`'s copies laid over the top; opening one straight off disk resolves no CSS.
 4. PR the eleven files, `theme-doctor` output pasted in. **`theme-doctor` is not wired into a PR-triggered CI check** — run it locally before requesting review; the only automated run today is inside `rotate-theme.yml`, gating the theme that's about to go live.
 5. Merge. Merging changes NOTHING live — a theme only takes effect once its slug lands in `content/themes.json`'s `queue`.
@@ -194,7 +205,7 @@ repointing a page's stylesheet moves its group in the same commit.
 2. Freeze the outgoing theme (`scripts/freeze-theme.py <month>`) — see **Archives** below.
 3. `active = queue.shift()`; append the outgoing theme to `archive[]`.
 4. Re-render the site (`render-hub.py`, no flags) — this also re-renders `themes.html`'s gallery against the new registry state.
-5. Gate stack, in order: `theme-doctor.py <new-active> --browser`, `render-hub.py --check`, `pytest tests/ -q`, `site-doctor.py --check`.
+5. Gate stack, in order: `theme-doctor.py <new-active> --browser --require-browser` (the `--require-browser` half is load-bearing: without it an environment that cannot launch chromium SKIPS the browser checks and the gate rubber-stamps the rotation), `render-hub.py --check`, `render-plugin-pages.py --check`, `pytest tests/ -q`, `site-doctor.py --check`.
 6. Any gate failure → nothing committed. Every step downstream chains off the prior step's implicit success, so one failure stops the whole tail; an issue opens with the failed run's link. The site stays at its last verified state — **the site can only ever move from one verified state to another.**
 7. `dry_run: true` runs every gate and stages the diff (`git add -A && git diff --stat --cached`) but commits and pushes nothing — use it to sanity-check a queued theme before the 1st actually arrives.
 8. Success → one commit (`content/themes.json`, `index.html`, `feed.xml`, `sitemap.xml`, `conundrum.html`, `themes.html`, `editorial/`, `themes/archive/`), pushed with the same retry+rebase loop every other bot workflow in this repo uses.
@@ -283,7 +294,7 @@ The `content-health.yml` workflow runs the doctor on PRs and weekly.
 Answers one question: **did this branch move anything a visitor can see?**
 Serves a base git ref and the working tree on two local ports, renders both
 in the same Chromium, and compares three channels — full-frame pixels,
-computed styles (78 properties per element plus `::before`/`::after`), and
+computed styles (80 properties per element plus `::before`/`::after`), and
 hover states. No golden images, no threshold, no masking: a single differing
 pixel is a finding. Golden PNGs were rejected for the reason
 `build-og-cards.py` already documents — FreeType rasterizes differently
@@ -389,9 +400,10 @@ remote.origin.url`. The Architect handles this without ceremony.
 ## What NOT to do
 
 - Don't hand-edit `index.html` — it's a generated artifact of the active
-  theme's `shell.html`. Content edits (SITE_JSON zones) go in
+  theme's `archetypes/home.html`. Content edits (SITE_JSON zones) go in
   `content/site.json`; chrome/layout edits go in
-  `themes/<active-slug>/shell.html`. Either way, render-hub.py rewrites
+  `themes/<active-slug>/archetypes/home.html`. (There is no `shell.html`; see
+  the note under **Theme rotation**.) Either way, render-hub.py rewrites
   `index.html` and silently reverts a direct edit.
 - Don't put secrets in the system prompt or any committed file. Tools use
   `os.environ` (`ANTHROPIC_API_KEY` for the bgremove agent, repo PATs for

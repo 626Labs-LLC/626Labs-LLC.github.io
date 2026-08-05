@@ -88,6 +88,7 @@ if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 import archetypes      # noqa: E402 — sibling module in scripts/ — VOCABULARY, ARCHETYPES
 import browser_origin  # noqa: E402 — sibling module in scripts/ — third-party isolation
+import css_color       # noqa: E402 — sibling module in scripts/ — CSS color -> sRGB
 import theme_registry  # noqa: E402 — sibling module in scripts/
 
 ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
@@ -258,10 +259,6 @@ CLASS_ATTR_RE = re.compile(r'class="([^"]*)"')
 CSS_CLASS_SELECTOR_RE = re.compile(r"\.([A-Za-z][\w-]*)")
 
 CUSTOM_PROP_RE = re.compile(r"(--[\w-]+)\s*:\s*([^;]+);")
-HEX_RE = re.compile(r"^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
-RGB_FUNC_RE = re.compile(
-    r"^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*[\d.]+\s*)?\)$"
-)
 VAR_RE = re.compile(r"^var\(\s*(--[\w-]+)\s*(?:,\s*(.+))?\)$")
 
 AA_MIN_RATIO = 4.5
@@ -496,27 +493,23 @@ def _parse_custom_properties(css: str) -> dict[str, str]:
     return props
 
 
-def _hex_to_rgb(value: str) -> tuple[int, int, int] | None:
-    m = HEX_RE.match(value)
-    if not m:
-        return None
-    h = m.group(1)
-    if len(h) == 3:
-        h = "".join(c * 2 for c in h)
-    return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+def _literal_to_rgb(value: str) -> tuple[int, int, int] | None:
+    """A literal CSS color to opaque 8-bit sRGB, via css_color.
 
+    This used to be two functions understanding hex and `rgb()`/`rgba()` and
+    nothing else, and an unresolvable pair is a gate FAILURE by design. So a
+    theme with an ordinary `oklch()` palette and declared contrastPairs failed
+    four archetypes and aborted the rotation, unattended, on a CORRECT theme —
+    the same defect class this file already fixed once in the dress
+    differential's `_css_alpha`, one function away and still open.
 
-def _rgb_func_to_rgb(value: str) -> tuple[int, int, int] | None:
-    m = RGB_FUNC_RE.match(value)
-    if not m:
-        return None
-    # Alpha is ignored: every alpha use in this codebase's tokens is a
-    # translucent panel over a same-or-near color field (e.g. rgba(0,0,0,.72)
-    # over rgb(0,0,0)) where compositing wouldn't move the channel values
-    # enough to change an AA verdict. Treating rgb(a) uniformly keeps the
-    # resolver simple and honest about what it does NOT model (true alpha
-    # compositing against an arbitrary backdrop).
-    return tuple(int(round(float(g))) for g in m.groups())  # type: ignore[return-value]
+    Alpha is still ignored, unchanged and for the unchanged reason: every alpha
+    use in this repo's tokens is a translucent panel over a same-or-near field,
+    and modelling real compositing needs a backdrop a static gate does not
+    have. See css_color's module docstring for the full supported set and how
+    each conversion was checked against Chromium.
+    """
+    return css_color.to_rgb(value)
 
 
 def _resolve_value(value: str, props: dict[str, str], seen: set[str]) -> tuple[int, int, int] | None:
@@ -530,7 +523,7 @@ def _resolve_value(value: str, props: dict[str, str], seen: set[str]) -> tuple[i
         if fallback:
             return _resolve_value(fallback, props, seen)
         return None
-    return _hex_to_rgb(value) or _rgb_func_to_rgb(value)
+    return _literal_to_rgb(value)
 
 
 def _resolve_color(
@@ -980,6 +973,48 @@ def check_theme_reads_only_what_it_defines(
     return errors
 
 
+# Every `/themes/<slug>/` path a theme's own files hardcode. A theme is
+# copied from another to start (CLAUDE.md says to mirror the reference
+# extraction), so a leftover foreign slug is the DEFAULT failure of that
+# workflow rather than an exotic one.
+_THEME_SELF_REF_RE = re.compile(r"/themes/([A-Za-z0-9._-]+)/")
+
+
+def check_theme_references_only_itself(tdir: Path) -> list[str]:
+    """A theme's own files must not hardcode another theme's slug.
+
+    `archetypes/home.html` links `/themes/<slug>/tokens.css` directly, and
+    render-hub copies theme shells VERBATIM. `_THEME_HREF_RE` deliberately
+    strips the slug before grading, so `resolution_groups` graded
+    `themes/aurora/archetypes/home.html` against aurora's tokens while the
+    rendered page loaded the tokens of whatever slug the file actually named.
+    Retired theme directories are never deleted, so `check_internal_links`
+    resolved the stale path happily and the browser gate rendered a clean
+    page — wearing last month's theme.
+
+    That is not a hypothetical: the documented way to build a theme is to copy
+    this one and retokenize, which leaves four hardcoded slugs behind.
+
+    One comparison against the directory's own name closes it.
+    """
+    errors: list[str] = []
+    for path in sorted(tdir.rglob("*")):
+        if not path.is_file() or path.suffix.lower() not in (".html", ".css", ".json", ".svg"):
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        for slug in sorted(set(_THEME_SELF_REF_RE.findall(text))):
+            if slug != tdir.name:
+                errors.append(
+                    f"{path.relative_to(tdir).as_posix()}: hardcodes /themes/{slug}/, "
+                    f"which is a DIFFERENT theme — the rendered page would load "
+                    f"{slug}'s stylesheet while this theme is graded on its own"
+                )
+    return errors
+
+
 def check_contrast(
     css: str, pairs: list[list[str]] | None
 ) -> tuple[list[str], list[str]]:
@@ -1296,9 +1331,32 @@ _DRESS_PROBE_JS = r"""
   // and both halves passed while every link on the page was identical to the
   // prose around it. "Distinguishable from prose" means distinguishable from
   // the text it actually sits in.
+  // Every signal that can mark a link apart from the prose around it, not
+  // only its color. The live theme happens to use color AND a border-bottom,
+  // which hid the constraint: a theme marking links by underline alone at
+  // prose color is legitimate, WCAG PREFERS it over color alone, and the
+  // color-only version of this failed it with "indistinguishable from body
+  // copy" while it was perfectly distinguishable.
+  const linkSignal = (el) => {
+    const cs = getComputedStyle(el);
+    return {
+      color: cs.color,
+      textDecorationLine: cs.textDecorationLine,
+      textDecorationColor: cs.textDecorationColor,
+      textDecorationStyle: cs.textDecorationStyle,
+      borderBottomWidth: cs.borderBottomWidth,
+      borderBottomStyle: cs.borderBottomStyle,
+      borderBottomColor: cs.borderBottomColor,
+      backgroundColor: cs.backgroundColor,
+      backgroundImage: cs.backgroundImage,
+      fontWeight: cs.fontWeight,
+      fontStyle: cs.fontStyle,
+      boxShadow: cs.boxShadow,
+    };
+  };
   const inlineLinks = Array.from(document.querySelectorAll('a.inline-link')).map((a) => ({
-    color: getComputedStyle(a).color,
-    parentColor: a.parentElement ? getComputedStyle(a.parentElement).color : null,
+    self: linkSignal(a),
+    parent: a.parentElement ? linkSignal(a.parentElement) : null,
   }));
 
   // ── the region differential ──────────────────────────────────────────
@@ -1395,6 +1453,28 @@ def _first_family(font_family: str) -> str:
     return first.strip("\"'").strip().casefold()
 
 
+def _link_is_distinct(link: dict) -> bool:
+    """True when an inline link differs from the prose around it on ANY signal
+    that a reader can see.
+
+    Deliberately a disjunction over signals rather than a color comparison.
+    The live theme dresses `a.inline-link` with a color AND a border-bottom,
+    which masked the constraint the color-only version imposed: a theme
+    marking links with an underline at prose color is legitimate, is what WCAG
+    prefers over color alone, and would have failed a gate that runs inside
+    --require-browser and aborts the rotation.
+
+    A link whose parent could not be read (a link that is somehow the root)
+    counts as distinct — the gate reports what it can see and never invents a
+    failure out of a missing measurement.
+    """
+    self_ = link.get("self") or {}
+    parent = link.get("parent")
+    if not self_ or parent is None:
+        return True
+    return any(self_.get(k) != parent.get(k) for k in self_)
+
+
 def check_page_renders_dressed(page, width: int) -> list[str]:
     """Assert that a page which owns none of its own chrome still RENDERS
     dressed under the theme being doctored. Returns a list of failure strings,
@@ -1488,11 +1568,23 @@ def check_page_renders_dressed(page, width: int) -> list[str]:
        the hero with it — which is what a type scale does anyway, but the
        failure would read as being about the hero when the cause was the body.
     3. Inline links are distinguishable from the prose they sit in — EVERY
-       `a.inline-link` resolves a color that is neither its own parent's color
-       nor the browser's default link color. Both halves are load-bearing:
-       dropping `a.inline-link { color }` leaves links inheriting their
-       parent, and dropping the bare `a { color: inherit }` too drops them to
-       UA blue, which the first half would wave through.
+       `a.inline-link` differs from its own parent on at least one visible
+       signal, and none resolves the browser's default link color. Both halves
+       are load-bearing: dropping `a.inline-link { color }` leaves links
+       inheriting their parent, and dropping the bare `a { color: inherit }`
+       too drops them to UA blue, which the first half would wave through.
+
+       THE SIGNAL SET IS A DISJUNCTION, and that is the fix for a constraint
+       this assertion used to carry silently. It compared COLOR only, and the
+       live theme dresses links with a color AND a border-bottom, so nothing
+       ever exercised the gap: a theme marking links by underline alone at
+       prose color — legitimate, and what WCAG prefers over color alone —
+       failed with "indistinguishable from body copy" while being perfectly
+       distinguishable. Color, text-decoration (line/color/style),
+       border-bottom (width/style/color), background, font-weight, font-style
+       and box-shadow all count now. Assertions 1 and 2 disclose their
+       over-constraints above; this one had none to disclose because it was
+       not known to have one.
 
     ── What is deliberately NOT asserted ─────────────────────────────────
     `h1.page-title`'s font-weight. The UA's own `h1` default is already 700,
@@ -1573,12 +1665,18 @@ def check_page_renders_dressed(page, width: int) -> list[str]:
     if not links:
         fail("a.inline-link is not present on the page, so its dress could not be graded")
     else:
-        same_as_prose = sum(1 for a in links if a["color"] == a["parentColor"])
-        if same_as_prose:
-            fail(f"{same_as_prose} of {len(links)} a.inline-link elements resolve the "
-                 f"same color as the prose they sit in, so links are indistinguishable "
-                 f"from body copy")
-        ua_blue = sum(1 for a in links if a["color"] == ua["linkColor"])
+        # ANY signal separating the link from the prose it sits in counts:
+        # color, underline, border, background, weight, style, shadow. Not
+        # color alone — a theme marking links by underline at prose color is
+        # legitimate and is what WCAG asks for, and the color-only form of
+        # this assertion failed it.
+        indistinct = sum(1 for a in links if not _link_is_distinct(a))
+        if indistinct:
+            fail(f"{indistinct} of {len(links)} a.inline-link elements are identical to "
+                 f"the prose they sit in on every signal that could mark them "
+                 f"(color, underline, border, background, weight, style, shadow), so "
+                 f"links are indistinguishable from body copy")
+        ua_blue = sum(1 for a in links if (a.get("self") or {}).get("color") == ua["linkColor"])
         if ua_blue:
             fail(f"{ua_blue} of {len(links)} a.inline-link elements resolve the "
                  f"browser's own default link color, so the theme dresses links not "
@@ -2003,6 +2101,17 @@ def main(argv: list[str]) -> int:
         print(f"FAIL {slug}")
         for name in missing_previews:
             print(f"  - render-hub.py --theme/--out did not emit {name} to preview")
+        return 1
+
+    # A theme copied from another and retokenized keeps the ORIGINAL slug in
+    # every hardcoded `/themes/<slug>/` path, and every existing gate stays
+    # green while the rendered page wears the retired theme. Checked before
+    # anything else reads the theme's contents.
+    self_ref = check_theme_references_only_itself(tdir)
+    if self_ref:
+        print(f"FAIL {slug}")
+        for e in self_ref:
+            print(f"  - {e}")
         return 1
 
     tokens_css = (tdir / "tokens.css").read_text(encoding="utf-8")

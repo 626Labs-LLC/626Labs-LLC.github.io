@@ -426,8 +426,21 @@ def test_hover_selectors_are_collected_from_document_styleSheets():
 def test_an_unreadable_stylesheet_is_recorded_rather_than_skipped():
     """A sheet whose rules cannot be read is a coverage hole. Silently
     skipping it is a false pass; it is accounted for and compared instead."""
-    assert "unreadable" in vd._HOVER_SELECTOR_JS
-    assert "catch" in vd._HOVER_SELECTOR_JS
+    # Read through _js_code, like its neighbours: without that, mutating the
+    # handler to the exact silent skip this test is named for —
+    # `catch (e) { continue; }` — left both words behind in a comment and the
+    # test passed.
+    code = _js_code(vd._HOVER_SELECTOR_JS)
+    # Every catch must RECORD before it moves on. A bare `catch (e) { continue; }`
+    # or `catch (e) {}` is the silent skip.
+    catches = re.findall(r"catch\s*\([^)]*\)\s*\{([^}]*)\}", code)
+    assert catches, "no catch handler found at all"
+    for body in catches:
+        assert "unreadable.push" in body, (
+            f"a catch handler swallows the error instead of recording it: {body.strip()!r}")
+    # ...and the null-rules path, which throws nothing and would otherwise be
+    # the one way through.
+    assert "cssRules is null" in code
 
 
 def test_the_imported_sheet_is_read_inside_the_try_not_in_a_guard():
@@ -1026,7 +1039,6 @@ def test_a_bad_ref_never_creates_a_worktree(monkeypatch):
     # the three holes the review found missing from this list
     "4th and later elements of any hover signature",
     "viewport the hover channel does not visit",
-    "53 of the 78 properties, under hover",
 ])
 def test_the_module_docstring_states_what_it_does_not_cover(phrase):
     """A committed harness that reads as more coverage than it has is worse
@@ -1036,9 +1048,66 @@ def test_the_module_docstring_states_what_it_does_not_cover(phrase):
     assert phrase.lower() in doc
 
 
+def test_the_hover_coverage_disclosure_is_DERIVED_not_a_literal():
+    """The disclosure said "53 of the 78" while the constants were 80 and 25,
+    so 55 were unsampled — wrong in both numbers, repeated in five places, and
+    PINNED by a substring test that made correcting it turn a test red.
+
+    Counted from the constants here, so the sentence cannot drift from them
+    again: adding a property to COMPUTED_PROPS without touching the prose
+    fails this.
+    """
+    computed, hover = set(vd.COMPUTED_PROPS), set(vd.HOVER_PROPS)
+    assert hover <= computed, sorted(hover - computed)
+    doc = " ".join(vd.__doc__.lower().split())
+    assert f"{len(computed - hover)} of the {len(computed)} properties, under hover" in doc, (
+        f"docstring must say {len(computed - hover)} of the {len(computed)}"
+    )
+    assert f"`hover_props` is {len(hover)}" in doc, f"docstring must say HOVER_PROPS is {len(hover)}"
+
+
+def test_no_property_is_listed_twice_in_either_channel():
+    # A duplicate would inflate the "80 properties" claim without adding
+    # coverage, which is how the wrong number survives review.
+    assert len(vd.COMPUTED_PROPS) == len(set(vd.COMPUTED_PROPS))
+    assert len(vd.HOVER_PROPS) == len(set(vd.HOVER_PROPS))
+
+
 def test_the_docstring_forbids_the_two_wirings_that_would_be_wrong():
     """Never on every push (a full sweep is 12+ minutes) and never inside
     rotate-theme.yml (where every pixel is supposed to move on the 1st)."""
     doc = " ".join(vd.__doc__.split())
     assert "NOT on every push" in doc
     assert "NOT inside `rotate-theme.yml`" in doc
+
+def test_the_workflow_itself_carries_neither_forbidden_trigger():
+    # The docstring test two functions up asserts two SUBSTRINGS of a
+    # docstring, which is a claim about prose. visual-diff.yml said "Adding
+    # either trigger contradicts a shipped test" and it did not: adding
+    # `push:` to `on:`, or a sweep step to rotate-theme.yml, left all tests
+    # green. This reads the workflows.
+    import yaml
+
+    wf = yaml.safe_load((ROOT / ".github" / "workflows" / "visual-diff.yml").read_text(
+        encoding="utf-8"))
+    # PyYAML resolves the bare key `on` to the boolean True (YAML 1.1).
+    triggers = wf.get("on", wf.get(True))
+    assert set(triggers) == {"workflow_dispatch", "pull_request"}, triggers
+    assert "push" not in triggers, "a full sweep is 17.5 minutes; not on every commit"
+
+    rotate = (ROOT / ".github" / "workflows" / "rotate-theme.yml").read_text(encoding="utf-8")
+    assert "visual-diff" not in rotate, (
+        "on the 1st every pixel is SUPPOSED to move, so a two-tree pixel gate "
+        "inside the rotation is either meaningless or neutered")
+
+
+def test_the_pr_label_trigger_fires_on_a_pr_opened_with_the_label_already_on():
+    # `opened` was missing, so a PR created with the label already applied did
+    # not sweep until someone pushed to it again.
+    import yaml
+
+    wf = yaml.safe_load((ROOT / ".github" / "workflows" / "visual-diff.yml").read_text(
+        encoding="utf-8"))
+    types = (wf.get("on", wf.get(True)))["pull_request"]["types"]
+    assert {"opened", "labeled", "synchronize"} <= set(types), types
+
