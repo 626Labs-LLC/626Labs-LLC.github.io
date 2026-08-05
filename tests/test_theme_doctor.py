@@ -1489,3 +1489,218 @@ def test_the_two_utility_pages_self_import_the_repo_global_font_stack():
         html = (ROOT / name).read_text(encoding="utf-8")
         style = "\n".join(td.STYLE_BLOCK_RE.findall(html))
         assert "@import url('/fonts/fonts.css');" in style, name
+
+
+# ─── resolution groups: a name resolves against ONE document's stylesheets ──
+# The reads-check used to pool every definition in the theme directory, but no
+# consumer loads every theme stylesheet. tokens.css defines eight of
+# phosphor-blueprint's nine --pb-* names, so a definition there satisfied a
+# read in archetypes/utility.css — the one file press.html and privacy.html
+# link. Both pages would render on rgba(0,0,0,0) with every gate green. These
+# tests pin the scoping that closes it, and each one was watched failing
+# against the pooled implementation before it was kept.
+
+_PB_DEFINITION_RE = re.compile(r"[ \t]*--pb-[\w-]+\s*:[^;{}]*;\n?")
+
+
+def _live_group_css(group_theme_labels, tdir, overrides=None):
+    """The group's theme stylesheets as read off the live theme, with any
+    `overrides` (label -> text) swapped in."""
+    overrides = overrides or {}
+    return {
+        label: overrides.get(label, (tdir / label).read_text(encoding="utf-8"))
+        for label in group_theme_labels
+    }
+
+
+def _live_site_css(group_site_labels):
+    return {label: (ROOT / label).read_text(encoding="utf-8") for label in group_site_labels}
+
+
+def _reads_errors_for_live_theme(overrides=None):
+    """Run the reads-check over every derived group of the ACTIVE theme, with
+    `overrides` (label -> replacement text) applied wherever those labels
+    appear. Mirrors main()'s own loop."""
+    tdir = td.theme_registry.theme_dir(_active_slug())
+    errors = []
+    for group, (theme_labels, site_labels) in td.resolution_groups().items():
+        errors += td.check_theme_reads_only_what_it_defines(
+            group,
+            _live_group_css(theme_labels, tdir, overrides),
+            _live_site_css(site_labels),
+        )
+    return errors
+
+
+def _load_renderer(filename, name):
+    spec = importlib.util.spec_from_file_location(name, ROOT / "scripts" / filename)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_resolution_groups_are_derived_from_the_code_that_serves_the_pages():
+    # Not "the groups are these six" — that would be the hand-written tuple
+    # this derivation exists to avoid. The assertion is that every group's
+    # membership traces back to a live source: render-hub.py's THEME_CSS_HREFS,
+    # render-plugin-pages.py's inlined concatenation, about.html's dress zone.
+    render_hub = _load_renderer("render-hub.py", "_t_render_hub")
+    plugin_pages = _load_renderer("render-plugin-pages.py", "_t_render_plugin_pages")
+    groups = td.resolution_groups()
+
+    # 1. Every page render-hub.py gives a theme-css <link> is a consumer, and
+    #    its group holds exactly the stylesheet that map names.
+    for page, href in render_hub.THEME_CSS_HREFS.items():
+        owning = [g for g in groups if page.name in g.split(", ")]
+        assert len(owning) == 1, (page.name, owning)
+        assert groups[owning[0]][0] == (href,), (page.name, groups[owning[0]])
+
+    # 2. The 15 generated plugin pages get exactly what the renderer inlines.
+    plugin_group = groups["plugins/*/index.html"][0]
+    assert plugin_group, "the plugin-page group must not be empty"
+    tdir = td.theme_registry.theme_dir(_active_slug())
+    for label in plugin_group:
+        assert (tdir / label).read_text(encoding="utf-8").strip() in plugin_pages.STYLE, label
+    # ...and NOT tokens.css, which no plugin page is ever served.
+    assert "tokens.css" not in plugin_group
+
+    # 3. about.html's group is whatever its own dress zone points at.
+    about_html = render_hub.ABOUT_HTML.read_text(encoding="utf-8")
+    for label in groups["about.html"][0]:
+        assert "/" + label in about_html, label
+
+
+def test_every_required_stylesheet_lands_in_some_group():
+    # The backstop that makes derived groups safe: scoping trades a pool that
+    # was too wide for pools that could silently become too narrow. Repoint
+    # THEME_CSS_HREFS off archetypes/utility.css and that file stops being
+    # graded by anything, with no error anywhere.
+    assert td.check_every_required_stylesheet_is_graded(td.resolution_groups()) == []
+    starved = {"about.html": (("archetypes/reading.css",), ())}
+    errs = td.check_every_required_stylesheet_is_graded(starved)
+    assert any("archetypes/utility.css" in e for e in errs)
+    assert all("grades what it reads" in e for e in errs)
+
+
+def test_the_live_theme_resolves_every_group_from_within_that_group():
+    assert _reads_errors_for_live_theme() == []
+
+
+@pytest.mark.parametrize(
+    "label,consumer,expected_reader",
+    [
+        ("archetypes/utility.css", "press.html, privacy.html", "archetypes/utility.css"),
+        ("archetypes/product-tokens.css", "plugins/*/index.html", "archetypes/product.css"),
+        ("archetypes/reading-tokens.css", "thesis.html, workflow.html",
+         "archetypes/reading-tokens.css"),
+    ],
+)
+def test_dropping_a_treatment_prefix_from_one_group_fails_that_group(
+    label, consumer, expected_reader
+):
+    # The three-way reproduction, pinned. Deleting a stylesheet's own --pb-*
+    # DEFINITIONS while keeping every read is the plausible edit when
+    # retokenizing a copied theme, and check_required_tokens cannot see it —
+    # --pb-* is deliberately not in the contract. Under the pooled
+    # implementation each of these reported nothing (utility, reading-tokens)
+    # or one name out of nine (product-tokens), because tokens.css defines
+    # eight of the nine and satisfied reads in documents that never load it.
+    tdir = td.theme_registry.theme_dir(_active_slug())
+    original = (tdir / label).read_text(encoding="utf-8")
+    stripped = _PB_DEFINITION_RE.sub("", original)
+    assert stripped != original, f"{label} declares no --pb-* names to delete"
+
+    errs = _reads_errors_for_live_theme({label: stripped})
+    assert errs, f"deleting {label}'s --pb-* definitions produced no error"
+    for e in errs:
+        assert e.startswith(f"{expected_reader}: reads --pb-"), e
+        assert f"nothing loaded by {consumer} defines" in e, e
+
+    # And the deletion stays invisible to the token contract, which is why
+    # this check has to exist at all.
+    assert td.check_required_tokens(stripped) == []
+
+
+def test_only_repo_owned_stylesheets_are_credited_to_a_group(tmp_path):
+    # A gate cannot read an off-origin stylesheet, so it must not pretend one
+    # defines anything. Protocol-relative is the form every analytics/CDN link
+    # in this repo uses, and it is the one an origin check reading `://` alone
+    # would wave through.
+    page = tmp_path / "fixture.html"
+    page.write_text(
+        '<link rel="stylesheet" href="/Design/editorial.css">'
+        "<link href='/themes/some-slug/archetypes/utility.css' rel=stylesheet>"
+        '<link rel="stylesheet" href="//cdn.example.com/x.css">'
+        '<link rel="stylesheet" href="https://cdn.example.com/y.css">'
+        '<link rel="icon" href="/favicon-626.png">',
+        encoding="utf-8",
+    )
+    assert td._page_site_stylesheets(page) == ("Design/editorial.css",)
+
+
+def test_a_site_stylesheet_credits_only_the_group_that_links_it():
+    # EXTERNAL_STYLESHEETS was one theme-wide tuple, so archetypes/product.css
+    # could read an --ed-* name and pass on a definition in
+    # Design/editorial.css that no product consumer ever loads. Site
+    # stylesheets attach per group now, derived from each page's own <link>s.
+    groups = td.resolution_groups()
+    assert groups["about.html"][1] == ("Design/editorial.css",)
+    for group, (_, site_labels) in groups.items():
+        if group != "about.html":
+            assert site_labels == (), (group, site_labels)
+
+    # about.html's dress legitimately spends five names editorial.css defines,
+    # and resolves them ONLY because about.html links that file.
+    tdir = td.theme_registry.theme_dir(_active_slug())
+    reading_css = (tdir / "archetypes" / "reading.css").read_text(encoding="utf-8")
+    editorial = {
+        "Design/editorial.css": (ROOT / "Design" / "editorial.css").read_text(encoding="utf-8")
+    }
+    assert td.check_theme_reads_only_what_it_defines(
+        "about.html", {"archetypes/reading.css": reading_css}, editorial
+    ) == []
+    unlinked = td.check_theme_reads_only_what_it_defines(
+        "about.html", {"archetypes/reading.css": reading_css}, {}
+    )
+    assert {e.split("reads ")[1].split(",")[0] for e in unlinked} == {
+        "--font-serif", "--ed-t-body", "--ed-t-pull", "--ed-lh-body", "--ed-lh-pull",
+    }
+
+    # The other half of the scoping: the same read, in a group that does not
+    # link editorial.css, is a failure no matter what editorial.css defines.
+    assert td.check_theme_reads_only_what_it_defines(
+        "plugins/*/index.html",
+        {"archetypes/product.css": "body { font-size: var(--ed-t-body); }"},
+        {},
+    ) == [
+        "archetypes/product.css: reads --ed-t-body, which nothing loaded by "
+        "plugins/*/index.html defines and which carries no fallback"
+    ]
+
+
+def test_declared_contrast_pairs_that_all_filter_out_are_an_ERROR(capsys):
+    # A theme mirroring another's contrastPairs but naming tokens its own CSS
+    # never declares used to print "unverified" and append zero errors — four
+    # archetypes could print it and the theme still rotated, unattended, with
+    # contrast never graded once. The three existing _check_archetype tests
+    # all pass pairs=None, so only the other branch was ever exercised.
+    about_html = (ROOT / "about.html").read_text(encoding="utf-8")
+    lnt = [c for c in td.archetypes.VOCABULARY["reading"] if c.startswith("lnt-")]
+    css = "".join(f".{c} {{ }}\n" for c in lnt)
+    # Same fixture as test_reading_gate_passes_when_theme_css_covers_every_lnt_class,
+    # so contrast is the ONLY thing that can fail here. pairs=None is the
+    # branch the existing tests already cover; it prints the advisory, so
+    # drain that output before grading what the pairs=all-filtered-out branch
+    # prints.
+    assert td._check_archetype("reading", about_html, css, False, None) == []
+    capsys.readouterr()
+
+    pairs = [["--not-declared-fg", "--not-declared-bg"], ["--also-absent", "--nor-this"]]
+    errs = td._check_archetype("reading", about_html, css, False, pairs)
+    assert errs == [
+        "reading: none of the 2 declared contrastPairs name custom properties "
+        "this archetype's own CSS declares, so its contrast was never graded"
+    ]
+    # ...and it must not ALSO print the "nothing declared" advisory, which is
+    # for a theme that declared nothing at all.
+    assert "unverified" not in capsys.readouterr().out
