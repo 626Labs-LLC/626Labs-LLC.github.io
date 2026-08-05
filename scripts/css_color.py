@@ -26,10 +26,24 @@ gate or downgrading its verdict.
 ── What is supported ────────────────────────────────────────────────────
 hex (3/4/6/8 digit), `rgb()`/`rgba()`, `hsl()`/`hsla()`, `hwb()`, `lab()`,
 `lch()`, `oklab()`, `oklch()`, `color()` in the CSS Color 4 predefined spaces,
-`color-mix()` over two colors in a rectangular or polar space, the 148 CSS
-named colors, and `transparent`. Both the legacy comma form and the modern
-space form, `none` components, percentage or number channels, and the
-`/ <alpha>` slash form.
+the 148 CSS named colors, and `transparent`. Both the legacy comma form and
+the modern space form, `none` components, percentage or number channels, and
+the `/ <alpha>` slash form.
+
+`color-mix()` over two colors in any of `srgb`, `srgb-linear`, `lab`, `lch`,
+`oklab`, `oklch`, `hsl`, `hwb`, `xyz`, `xyz-d50` and `xyz-d65`, with all four
+hue-interpolation methods (`shorter` — the default — `longer`, `increasing`,
+`decreasing`). That list is exhaustive and is meant to be read as such: an
+earlier version of this sentence said "a rectangular or polar space" while
+`_to_space` handled five of the eleven and returned `None` for the rest, and
+`None` reaches the contrast gate as "could not resolve", which aborts a
+rotation. If a space is added to CSS, it belongs in `_to_space` AND here.
+
+**NOT supported, stated because nothing else states it:** `light-dark()`,
+relative color syntax (`rgb(from … )`), and `color-mix()` with more than two
+colors. Each resolves to `None`, which the contrast gate reports as an
+unresolved pair rather than guessing — the right failure, but a theme author
+should learn it here rather than on the 1st.
 
 ── What is NOT modelled, and why that is unchanged ──────────────────────
 ALPHA. Every value resolves to opaque sRGB. That was already true of the
@@ -195,6 +209,39 @@ def _lab_to_linear_srgb(lightness: float, a: float, b: float) -> tuple[float, fl
     return _xyz_d50_to_linear_srgb(finv(fx) * _D50[0], y * _D50[1], finv(fz) * _D50[2])
 
 
+
+def _linear_srgb_to_xyz_d65(r: float, g: float, b: float) -> tuple[float, float, float]:
+    return (
+        0.4123907992659595 * r + 0.35758433938387796 * g + 0.1804807884018343 * b,
+        0.21263900587151036 * r + 0.7151686787677559 * g + 0.07219231536073371 * b,
+        0.019330818715591851 * r + 0.11919477979462599 * g + 0.9505321522496606 * b,
+    )
+
+
+def _xyz_d65_to_d50(x: float, y: float, z: float) -> tuple[float, float, float]:
+    """Bradford-adapted, the transform CSS Color 4 specifies for lab()/lch()."""
+    return (
+        1.0479298208405488 * x + 0.022946793341019088 * y - 0.05019222954313557 * z,
+        0.029627815688159344 * x + 0.990434484573249 * y - 0.01707382502938514 * z,
+        -0.009243058152591178 * x + 0.015055144896577895 * y + 0.7518742899580008 * z,
+    )
+
+
+def _xyz_d50_to_d65(x: float, y: float, z: float) -> tuple[float, float, float]:
+    return (
+        0.9554734527042182 * x - 0.023098536874261423 * y + 0.0632593086610217 * z,
+        -0.028369706963208136 * x + 1.0099954580058226 * y + 0.021041398966943008 * z,
+        0.012314001688319899 * x - 0.020507696433477912 * y + 1.3303659366080753 * z,
+    )
+
+
+def _xyz_d50_to_lab(x: float, y: float, z: float) -> tuple[float, float, float]:
+    def f(t: float) -> float:
+        return t ** (1 / 3) if t > _LAB_E else (_LAB_K * t + 16) / 116
+    fx, fy, fz = (f(v / w) for v, w in zip((x, y, z), _D50))
+    return (116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz))
+
+
 def _hue_to_rgb(p: float, q: float, t: float) -> float:
     t = t % 1.0
     if t < 1 / 6:
@@ -268,7 +315,14 @@ def _predefined_to_linear_srgb(space: str, c: tuple[float, float, float]):
 
 
 # ─── color-mix ───────────────────────────────────────────────────────────
+# Index of the HUE component in each polar space's tuple, so interpolation
+# knows which coordinate takes the arc rather than the average. `hwb` and
+# `lch` sat here unused while _to_space returned None for both, which is what
+# gave the dead entries away.
 _POLAR = {"hsl": 2, "hwb": 2, "lch": 2, "oklch": 2}
+
+# CSS Color 5's four hue-interpolation methods. `shorter` is the default.
+_HUE_METHODS = ("shorter", "longer", "increasing", "decreasing")
 
 
 def _to_space(rgb01: tuple[float, float, float], space: str):
@@ -298,20 +352,35 @@ def _to_space(rgb01: tuple[float, float, float], space: str):
             return lab
         return (lab[0], math.hypot(lab[1], lab[2]),
                 math.degrees(math.atan2(lab[2], lab[1])) % 360)
-    if space == "hsl":
+    if space in ("hsl", "hwb"):
         mx, mn = max(r, g, b), min(r, g, b)
-        light = (mx + mn) / 2
-        if mx == mn:
-            return (0.0, 0.0, light)
         d = mx - mn
-        sat = d / (2 - mx - mn) if light > 0.5 else d / (mx + mn)
-        if mx == r:
-            h = ((g - b) / d) % 6
+        if d == 0:
+            hue = 0.0
+        elif mx == r:
+            hue = (((g - b) / d) % 6) * 60
         elif mx == g:
-            h = (b - r) / d + 2
+            hue = ((b - r) / d + 2) * 60
         else:
-            h = (r - g) / d + 4
-        return (sat, light, (h * 60) % 360)
+            hue = ((r - g) / d + 4) * 60
+        hue %= 360
+        if space == "hwb":
+            return (mn, 1 - mx, hue)
+        light = (mx + mn) / 2
+        sat = 0.0 if d == 0 else (d / (2 - mx - mn) if light > 0.5 else d / (mx + mn))
+        return (sat, light, hue)
+    if space in ("lab", "lch", "xyz", "xyz-d65", "xyz-d50"):
+        xyz65 = _linear_srgb_to_xyz_d65(lr, lg, lb)
+        if space in ("xyz", "xyz-d65"):
+            return xyz65
+        xyz50 = _xyz_d65_to_d50(*xyz65)
+        if space == "xyz-d50":
+            return xyz50
+        lab = _xyz_d50_to_lab(*xyz50)
+        if space == "lab":
+            return lab
+        return (lab[0], math.hypot(lab[1], lab[2]),
+                math.degrees(math.atan2(lab[2], lab[1])) % 360)
     return None
 
 
@@ -330,12 +399,64 @@ def _from_space(c, space: str):
     if space == "hsl":
         sat, light, hue = c
         return _hsl_to_srgb(hue, sat, light)
+    if space == "hwb":
+        w, bl, hue = c
+        if w + bl >= 1:
+            grey = w / (w + bl) if (w + bl) else 0.0
+            return (grey, grey, grey)
+        base = _hsl_to_srgb(hue, 1.0, 0.5)
+        return tuple(v * (1 - w - bl) + w for v in base)
+    if space in ("lab", "lch", "xyz", "xyz-d65", "xyz-d50"):
+        if space in ("xyz", "xyz-d65"):
+            lin = _xyz_d65_to_linear_srgb(*c)
+        elif space == "xyz-d50":
+            lin = _xyz_d50_to_linear_srgb(*c)
+        else:
+            if space == "lch":
+                lightness, chroma, hue = c
+                a = chroma * math.cos(math.radians(hue))
+                b2 = chroma * math.sin(math.radians(hue))
+            else:
+                lightness, a, b2 = c
+            lin = _lab_to_linear_srgb(lightness, a, b2)
+        return tuple(_srgb_encode(v) for v in lin)
     return None
 
 
-def _mix_hue(h1: float, h2: float, t: float) -> float:
-    """Shorter arc, CSS Color 5's default."""
-    d = ((h2 - h1 + 180) % 360) - 180
+def _mix_hue(h1: float, h2: float, t: float, method: str = "shorter") -> float:
+    """CSS Color 5's four hue-interpolation methods. `shorter` is the default
+    and was the only one implemented; naming any other in a `color-mix()` made
+    the whole value unresolvable, which the contrast gate turns into a
+    rotation-aborting failure."""
+    h1 %= 360
+    h2 %= 360
+    d = h2 - h1
+    # Every method branches on d against 0 and +/-180, which are knife edges —
+    # and a complementary pair is EXACTLY 180 apart, so that edge is where
+    # designers actually live. Operands round-trip through sRGB to reach this
+    # function, and that costs about 2e-5 degrees of hue (measured:
+    # oklch(... 20) comes back as 20.0000096, oklch(... 200) as 199.9999909, so
+    # d lands at 179.99998 and `longer` took the wrong branch, giving a
+    # blue-violet where Chromium paints yellow-green). Snapping at 1e-3 is four
+    # orders above that noise and far below any distinction a theme could mean.
+    for edge in (-360.0, -180.0, 0.0, 180.0, 360.0):
+        if abs(d - edge) < 1e-3:
+            d = edge
+            break
+    if method == "shorter":
+        if d > 180:
+            d -= 360
+        elif d < -180:
+            d += 360
+    elif method == "longer":
+        if -180 < d < 180:
+            d += 360 if d >= 0 else -360
+    elif method == "increasing":
+        if d < 0:
+            d += 360
+    elif method == "decreasing":
+        if d > 0:
+            d -= 360
     return (h1 + d * t) % 360
 
 
@@ -344,6 +465,12 @@ def _color_mix(args: list[str]) -> tuple[float, float, float] | None:
         return None
     space = args[1].lower()
     rest = args[2:]
+    # `in <space> [<method> hue]` — consume the optional interpolation method.
+    method = "shorter"
+    if len(rest) >= 2 and rest[0].lower() in _HUE_METHODS and rest[1].lower() == "hue":
+        if space not in _POLAR:
+            return None       # a hue method on a rectangular space is invalid
+        method, rest = rest[0].lower(), rest[2:]
     parsed: list[tuple[tuple[float, float, float], float | None]] = []
     i = 0
     while i < len(rest) and len(parsed) < 2:
@@ -360,6 +487,12 @@ def _color_mix(args: list[str]) -> tuple[float, float, float] | None:
         parsed.append((rgb, pct))
         i += 1
     if len(parsed) != 2:
+        return None
+    # `color-mix()` takes exactly two colors. Taking the first two and
+    # ignoring the rest turned invalid CSS into a plausible-looking color that
+    # then fed a contrast ratio — `color-mix(in srgb, red, blue, green)` came
+    # back as purple. An unresolvable value is reported as unresolvable.
+    if i != len(rest):
         return None
     (c1, p1), (c2, p2) = parsed
     if p1 is None and p2 is None:
@@ -379,7 +512,7 @@ def _color_mix(args: list[str]) -> tuple[float, float, float] | None:
     mixed = []
     for k in range(3):
         if hue_index is not None and k == hue_index:
-            mixed.append(_mix_hue(a[k], b[k], t))
+            mixed.append(_mix_hue(a[k], b[k], t, method))
         else:
             mixed.append(a[k] * (1 - t) + b[k] * t)
     return _from_space(tuple(mixed), space)

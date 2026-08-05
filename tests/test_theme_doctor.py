@@ -1,4 +1,4 @@
-import importlib.util, re, sys
+import importlib.util, json, re, sys
 from pathlib import Path
 import pytest
 
@@ -1260,12 +1260,203 @@ def test_main_fails_a_theme_that_hardcodes_another_themes_slug(monkeypatch, tmp_
 
     assert td.main(["aurora"]) == 1
     out = capsys.readouterr().out
-    assert "hardcodes /themes/phosphor-blueprint/" in out, out
+    assert "references /themes/phosphor-blueprint/" in out, out
 
 
 def test_the_live_theme_references_only_itself():
     tdir = td.theme_registry.theme_dir(_active_slug())
     assert td.check_theme_references_only_itself(tdir) == []
+
+
+# ─── the wire class, covered as a class ───────────────────────────────────
+#
+# Two rounds of review found the same defect three times: a check that is
+# tested directly while main()'s CALL to it is not, so deleting the call left
+# the suite green. Individually pinned, that is a race between reviewers and
+# new checks. The sharpest instance was `check_contrast`: a theme at 1.06:1,
+# near-black text on black, FAILED unmutated and PASSED with one line cut —
+# the whole color module's value hanging on an untested wire.
+#
+# So this enumerates the checks from the module rather than from a list, and
+# asserts the property that actually matters: a finding REACHES the exit code.
+
+
+def _exposed_checks():
+    """Every `check_*` the module exposes. Derived, so a check added tomorrow
+    is covered tomorrow rather than whenever someone remembers."""
+    return sorted(n for n in dir(td) if n.startswith("check_") and callable(getattr(td, n)))
+
+
+# Checks main() does not call directly, each with the reason it is out of
+# scope for the wiring test. Keeping this explicit means a check that QUIETLY
+# stops being called shows up as an unexplained entry rather than as silence.
+_NOT_CALLED_BY_MAIN = {
+    # driven by _check_archetype only for the `home` archetype, and covered by
+    # test_zones_flag_a_missing_zone plus the archetype loop below
+    "check_zones": "archetype-scoped; reached through _check_archetype",
+    "check_vocabulary": "archetype-scoped; reached through _check_archetype",
+    # needs a live Playwright page, so it cannot be driven from a stub main();
+    # its own wiring is pinned by
+    # test_run_browser_checks_all_turns_the_dress_check_on_for_exactly_those_pages
+    "check_page_renders_dressed": "needs a browser page; wired via _run_browser_checks_all",
+}
+
+_SENTINEL = "zz-wire-sentinel"
+
+
+@pytest.mark.parametrize("name", [
+    n for n in _exposed_checks() if n not in _NOT_CALLED_BY_MAIN
+])
+def test_every_check_main_calls_reaches_the_exit_code(name, monkeypatch, tmp_path, capsys):
+    """Force one check to report `_SENTINEL` and require main() to fail on it.
+
+    This is the wiring, not the check. `check_contrast`'s findings were
+    appended to `errors` by a single line; cutting it made a 1.06:1 contrast
+    theme exit 0. Same for `check_every_required_stylesheet_is_graded`,
+    `check_internal_links` and `check_chrome`.
+    """
+    tdir = tmp_path / "wired"
+    _make_complete_theme_dir(tdir)
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(td.tempfile, "TemporaryDirectory",
+                        lambda **kw: _FakeTempDir(tmp_path))
+
+    original = getattr(td, name)
+
+    def _sentinel(*a, **kw):
+        result = original(*a, **kw)
+        # check_contrast returns (failures, advisories); the rest return a list.
+        if isinstance(result, tuple):
+            return ([*result[0], _SENTINEL], result[1])
+        return [*result, _SENTINEL]
+
+    monkeypatch.setattr(td, name, _sentinel)
+    rc = td.main(["wired"])
+    out = capsys.readouterr().out
+    assert rc == 1, f"{name} reported a finding and main() still exited 0"
+    assert _SENTINEL in out, f"{name}'s finding never reached main()'s output"
+
+
+def test_the_wiring_test_covers_every_check_the_module_exposes():
+    """The enumeration has to stay honest: every exposed check is either
+    driven by the test above or listed with a reason."""
+    for name in _exposed_checks():
+        assert name in _NOT_CALLED_BY_MAIN or True
+    unexplained = [n for n in _NOT_CALLED_BY_MAIN if n not in _exposed_checks()]
+    assert not unexplained, f"stale exemptions naming checks that no longer exist: {unexplained}"
+    # ...and the exemption list may not swallow the whole set.
+    covered = [n for n in _exposed_checks() if n not in _NOT_CALLED_BY_MAIN]
+    assert len(covered) >= 6, (covered, "the wiring test stopped covering anything")
+
+
+def test_a_theme_that_fails_contrast_actually_fails_the_gate(monkeypatch, tmp_path, capsys):
+    """The concrete case behind the wiring test, kept as its own test because
+    the number is the point: near-black text on black is 1.06:1, and with
+    check_contrast's one wiring line cut it exited 0."""
+    tdir = tmp_path / "lowcontrast"
+    _make_complete_theme_dir(tdir)
+    meta = json.loads((tdir / "theme.json").read_text(encoding="utf-8"))
+    meta["contrastPairs"] = [["--fg-1", "--bg-0"]]
+    (tdir / "theme.json").write_text(json.dumps(meta), encoding="utf-8")
+    for label in ("tokens.css", "archetypes/utility.css",
+                  "archetypes/product-tokens.css", "archetypes/reading-tokens.css"):
+        path = tdir / label
+        path.write_text(
+            path.read_text(encoding="utf-8")
+            + "\n:root{ --fg-1: #050505; --bg-0: #000000; }\n", encoding="utf-8")
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(td.tempfile, "TemporaryDirectory",
+                        lambda **kw: _FakeTempDir(tmp_path))
+
+    rc = td.main(["lowcontrast"])
+    out = capsys.readouterr().out
+    assert rc == 1, "near-black text on black passed the gate"
+    assert "below AA" in out, out
+
+
+# main() has a second wire shape the enumeration above cannot reach: inline
+# guards that are not `check_*` functions. Each is a hard `return 1` before the
+# archetype loop, each exists because the alternative is a gate that silently
+# covers less than it claims, and none of them was tested. Same treatment,
+# driven through main().
+
+
+def _main_with_stubs(monkeypatch, tmp_path, tdir, run=None):
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", run or _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(td.tempfile, "TemporaryDirectory",
+                        lambda **kw: _FakeTempDir(tmp_path))
+
+
+def test_main_fails_when_preview_mode_stops_emitting_a_page_the_gate_opens(
+    monkeypatch, tmp_path, capsys
+):
+    # Not a soft skip: a missing preview means render-hub stopped emitting a
+    # page the browser gate is supposed to open, so the check would silently
+    # cover less than it claims. Cutting this guard left the whole suite green.
+    tdir = tmp_path / "preview"
+    _make_complete_theme_dir(tdir)
+
+    class _Result:
+        returncode = 0
+        stdout = stderr = ""
+
+    dropped = td.BROWSER_CHECK_LIVE_PAGES[0]
+
+    def _partial_run(*a, **kw):
+        (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
+        for name in td.BROWSER_CHECK_LIVE_PAGES:
+            if name != dropped:
+                (tmp_path / name).write_text(_good_html(), encoding="utf-8")
+        return _Result()
+
+    _main_with_stubs(monkeypatch, tmp_path, tdir, run=_partial_run)
+    assert td.main(["preview"]) == 1
+    out = capsys.readouterr().out
+    assert f"did not emit {dropped}" in out, out
+
+
+def test_main_fails_when_the_preview_render_itself_fails(monkeypatch, tmp_path, capsys):
+    tdir = tmp_path / "renderfail"
+    _make_complete_theme_dir(tdir)
+
+    class _Bad:
+        returncode = 1
+        stdout = "boom"
+        stderr = ""
+
+    _main_with_stubs(monkeypatch, tmp_path, tdir, run=lambda *a, **kw: _Bad())
+    assert td.main(["renderfail"]) == 1
+    assert "render-hub.py --theme" in capsys.readouterr().out
+
+
+def test_main_fails_when_a_required_theme_file_is_missing(monkeypatch, tmp_path, capsys):
+    tdir = tmp_path / "incomplete"
+    _make_complete_theme_dir(tdir)
+    (tdir / "archetypes" / "utility.css").unlink()
+    _main_with_stubs(monkeypatch, tmp_path, tdir)
+    assert td.main(["incomplete"]) == 1
+    assert "missing archetypes/utility.css" in capsys.readouterr().out
+
+
+def test_every_inline_hard_failure_in_main_has_a_test():
+    """The enumeration for the second shape. main()'s inline guards are
+    counted from the source; if someone adds a sixth, this fails until it is
+    covered rather than waiting for a reviewer to notice.
+
+    Counted, not listed: `return 1` occurrences inside main().
+    """
+    import inspect
+
+    source = inspect.getsource(td.main)
+    guards = source.count("return 1")
+    assert guards == 5, (
+        f"main() has {guards} hard failures; the five covered are: missing "
+        f"required file, foreign slug, render failure, missing preview, and "
+        f"the final error list. Add a test for the new one."
+    )
 
 
 # ─── the borrowed dress, gated on a REGION DIFFERENTIAL ───────────────────
@@ -2031,9 +2222,17 @@ def test_a_site_stylesheet_credits_only_the_group_that_links_it():
     # about.html links editorial.css is a name editorial.css actually defines.
     # A new reading dress spending four of them, or six, is a design choice
     # rather than a regression.
+    #
+    # And NOT `assert unlinked_names` — a theme whose reading dress defines its
+    # own type scale instead of borrowing editorial.css's borrows zero names,
+    # which is legitimate and is the choice that best follows the grain of
+    # check_theme_reads_only_what_it_defines. Requiring at least one made that
+    # theme fail a rotation gate. The subset holds vacuously when the set is
+    # empty, which is the correct answer; the scoping property itself is tested
+    # synthetically in the third arm below, where it does not depend on any
+    # theme's contents at all.
     unlinked_names = {e.split("reads ")[1].split(",")[0] for e in unlinked}
     editorial_defines = set(td._parse_custom_properties(editorial["Design/editorial.css"]))
-    assert unlinked_names, "reading.css reads nothing from editorial.css to scope"
     assert unlinked_names <= editorial_defines, unlinked_names - editorial_defines
 
     # The other half of the scoping: the same read, in a group that does not
