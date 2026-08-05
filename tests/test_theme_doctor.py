@@ -1236,6 +1236,23 @@ def test_a_theme_may_not_hardcode_another_themes_slug(tmp_path):
     assert errs and "phosphor-blueprint" in errs[0], errs
     assert "archetypes/home.html" in errs[0], errs
 
+    # The two relative forms that evaded the leading-slash pattern. The bare
+    # one is the sharp case: archetypes/home.html is copied to the SITE ROOT,
+    # so it resolves to /themes/other/ in a browser while resolving harmlessly
+    # against the file's own directory on disk.
+    for evasion in ('<link rel="stylesheet" href="themes/phosphor-blueprint/tokens.css">',
+                    '<style>@import url("../../phosphor-blueprint/archetypes/utility.css");</style>'):
+        (tdir / "archetypes" / "home.html").write_text(evasion, encoding="utf-8")
+        assert td.check_theme_references_only_itself(tdir), evasion
+
+    # ...and a MENTION in prose is not a reference. Copy-and-retokenize is the
+    # documented path, so a comment naming the source theme is normal; an
+    # earlier version scanned for the name and failed exactly that.
+    (tdir / "archetypes" / "home.html").write_text(
+        "<!-- extracted from themes/phosphor-blueprint/ as the reference -->",
+        encoding="utf-8")
+    assert td.check_theme_references_only_itself(tdir) == []
+
     (tdir / "archetypes" / "home.html").write_text(
         '<link rel="stylesheet" href="/themes/aurora/tokens.css">', encoding="utf-8")
     assert td.check_theme_references_only_itself(tdir) == []
@@ -1260,7 +1277,7 @@ def test_main_fails_a_theme_that_hardcodes_another_themes_slug(monkeypatch, tmp_
 
     assert td.main(["aurora"]) == 1
     out = capsys.readouterr().out
-    assert "references /themes/phosphor-blueprint/" in out, out
+    assert "themes/phosphor-blueprint/" in out and "DIFFERENT theme" in out, out
 
 
 def test_the_live_theme_references_only_itself():
