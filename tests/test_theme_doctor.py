@@ -1074,6 +1074,20 @@ def test_main_fails_a_theme_whose_reading_tokens_css_drops_the_required_tokens(
     assert "--fg-1" in out
 
 
+
+class _FakeTempDir:
+    """TemporaryDirectory stand-in pointing at a path the test already owns."""
+
+    def __init__(self, path):
+        self._path = path
+
+    def __enter__(self):
+        return str(self._path)
+
+    def __exit__(self, *exc):
+        return False
+
+
 def _stub_main_kwargs(tmp_path):
     """The subprocess.run/TemporaryDirectory monkeypatch shape every
     required-tokens main()-level test below shares: fake a successful
@@ -1225,6 +1239,28 @@ def test_a_theme_may_not_hardcode_another_themes_slug(tmp_path):
     (tdir / "archetypes" / "home.html").write_text(
         '<link rel="stylesheet" href="/themes/aurora/tokens.css">', encoding="utf-8")
     assert td.check_theme_references_only_itself(tdir) == []
+
+
+def test_main_fails_a_theme_that_hardcodes_another_themes_slug(monkeypatch, tmp_path, capsys):
+    # THE WIRING, not the function. `test_the_live_theme_references_only_itself`
+    # calls check_theme_references_only_itself directly, so deleting main()'s
+    # call to it left the suite green — the same wire class the review found on
+    # _run_browser_checks_all, in a different function.
+    tdir = tmp_path / "aurora"
+    _make_complete_theme_dir(tdir)
+    home = tdir / "archetypes" / "home.html"
+    home.write_text(
+        home.read_text(encoding="utf-8")
+        + '\n<link rel="stylesheet" href="/themes/phosphor-blueprint/tokens.css">',
+        encoding="utf-8")
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(td.tempfile, "TemporaryDirectory",
+                        lambda **kw: _FakeTempDir(tmp_path))
+
+    assert td.main(["aurora"]) == 1
+    out = capsys.readouterr().out
+    assert "hardcodes /themes/phosphor-blueprint/" in out, out
 
 
 def test_the_live_theme_references_only_itself():
