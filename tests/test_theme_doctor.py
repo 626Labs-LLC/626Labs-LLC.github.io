@@ -1,4 +1,4 @@
-import importlib.util, sys
+import importlib.util, re, sys
 from pathlib import Path
 import pytest
 
@@ -1152,22 +1152,22 @@ def test_registered_theme_passes_static_theme_doctor_checks(slug, capsys):
     assert rc == 0, capsys.readouterr().out
 
 
-# ─── the borrowed dress, gated on computed OUTCOME ────────────────────────
+# ─── the borrowed dress, gated on a REGION DIFFERENTIAL ───────────────────
 #
-# press.html and privacy.html take their entire chrome from the active
-# theme's archetypes/utility.css and restate none of it. Measured against the
-# live DOM, 49 of that file's 50 selectors reach press.html and 48 reach
-# privacy.html, and the two pages' own <style> blocks redeclare ZERO of them.
-# So a second theme's utility.css that drops a load-bearing rule changes or
-# breaks both pages while every other gate stays green — proven by building
-# exactly such a theme, which the un-gated implementation passed with exit 0.
+# press.html and privacy.html take their entire chrome from the active theme's
+# archetypes/utility.css and restate none of it. Measured against the live DOM,
+# 49 of that file's 50 selectors reach press.html and 48 reach privacy.html,
+# and the overlap between each page's own <style> selectors and that file's is
+# EXACTLY ZERO. So a second theme's utility.css that drops a load-bearing rule
+# changes or breaks both pages while every other gate stays green.
 #
-# What is gated is the OUTCOME, never a manifest of rules the theme must
-# carry. Every assertion compares the rendered page against the BROWSER's own
-# undressed baseline, read at runtime from a blank iframe, so no assertion
-# names a theme selector or pins a value.
-# test_dress_passes_when_the_field_is_on_html_instead_of_body is the one that
-# proves the difference matters.
+# The core of the gate is a differential: each page is measured with its theme
+# stylesheet linked and again with it disabled, and each of the page's own
+# named regions has to render DIFFERENTLY. It parses no values — fingerprints
+# are compared as opaque strings — which is what makes it immune both to color
+# syntax it has never seen and to a theme choosing a technique it did not
+# anticipate. The three element-level assertions that remain are the ones the
+# differential structurally cannot see.
 
 
 class _StubDressPage:
@@ -1183,31 +1183,42 @@ class _StubDressPage:
         return self._measurement
 
 
+def _regions(**overrides):
+    """Every region reporting a real difference, unless a test says otherwise."""
+    out = []
+    for label, _sel, _scope, _props, _geom in td._DRESS_REGIONS:
+        if label in overrides and overrides[label] is None:
+            out.append({"label": label, "present": False, "differing": 0, "total": 0})
+        else:
+            out.append({"label": label, "present": True,
+                        "differing": overrides.get(label, 12), "total": 12})
+    return out
+
+
 def _dressed(**overrides):
     """A measurement dict shaped exactly like the live probe's return value,
-    carrying the values phosphor-blueprint actually computes on press.html at
+    carrying values phosphor-blueprint actually computes on press.html at
     1440px (read off the browser, not invented). Tests break one field at a
     time so each assertion is exercised on its own."""
     m = {
+        "regions": _regions(),
+        "linkedStylesheets": 1,
+        "toggledStylesheets": 1,
+        "toggleTookEffect": True,
+        "styleRules": 47,
         "ua": {
             "fontFamily": '"Times New Roman"',
             "headingRatio": 2.0,
             "linkColor": "rgb(0, 0, 238)",
         },
-        "html": {"backgroundColor": "rgba(0, 0, 0, 0)", "backgroundImage": "none"},
         "body": {
-            "backgroundColor": "rgb(0, 0, 0)",
-            "backgroundImage": "linear-gradient(90deg, rgba(23, 212, 250, 0.05) 1px, "
-                               "rgba(0, 0, 0, 0) 1px)",
             "color": "rgb(232, 242, 255)",
             "fontFamily": 'Inter, system-ui, -apple-system, "Segoe UI", sans-serif',
             "fontSize": "16px",
         },
-        "nav": {"backgroundColor": "rgba(0, 0, 0, 0.72)", "backgroundImage": "none",
-                "zIndex": "50"},
-        "title": {"fontSize": "56px"},
-        "footer": {"backgroundColor": "rgb(0, 0, 0)", "backgroundImage": "none"},
-        "link": {"color": "rgb(23, 212, 250)"},
+        "title": {"color": "rgb(232, 242, 255)", "fontFamily": '"Space Grotesk"',
+                  "fontSize": "56px"},
+        "links": [{"color": "rgb(23, 212, 250)", "parentColor": "rgb(232, 242, 255)"}] * 8,
     }
     m.update(overrides)
     return m
@@ -1221,144 +1232,201 @@ def test_a_fully_dressed_page_reports_nothing():
     assert _dress_errors(_dressed()) == []
 
 
-def test_dress_fails_when_the_page_paints_no_field():
-    # The exposure that started this: delete the treatment tokens' consumers
-    # from utility.css and both pages render on the browser's blank default
-    # with every token-completeness check still green.
-    errs = _dress_errors(_dressed(
-        body={**_dressed()["body"], "backgroundColor": "rgba(0, 0, 0, 0)",
-              "backgroundImage": "none"}))
-    assert any("neither html nor body paints a field" in e for e in errs), errs
+# ─── the region differential ──────────────────────────────────────────────
 
 
-def test_dress_passes_when_the_field_is_on_html_instead_of_body():
-    # THE anti-manifest test. A required-rules list keyed on `body` fails a
-    # theme that puts the field on `html` and renders identically. This gate
-    # must not, and this is what keeps it honest — verified end to end against
-    # a real scratch theme too (field moved body -> html, exit 0).
-    errs = _dress_errors(_dressed(
-        html={"backgroundColor": "rgb(0, 0, 0)", "backgroundImage": "none"},
-        body={**_dressed()["body"], "backgroundColor": "rgba(0, 0, 0, 0)",
-              "backgroundImage": "none"}))
-    assert not any("paints no field" in e for e in errs), errs
+def test_every_region_must_render_differently_undressed():
+    # One region at a time, so a single region silently dropping out of
+    # _DRESS_REGIONS cannot hide behind its four neighbours.
+    for label, _sel, _scope, _props, _geom in td._DRESS_REGIONS:
+        errs = _dress_errors(_dressed(regions=_regions(**{label: 0})))
+        assert any(f"region {label} renders identically" in e for e in errs), (label, errs)
 
 
-def test_a_translucent_background_still_counts_as_a_painted_surface():
-    # Any alpha at all paints. The gate says "there is a surface here", never
-    # "the surface is opaque" and never "the surface is this color".
-    assert td._paints({"backgroundColor": "rgba(0, 0, 0, 0.02)", "backgroundImage": "none"})
-    assert td._paints({"backgroundColor": "rgba(0, 0, 0, 0)",
-                       "backgroundImage": "linear-gradient(90deg, red, blue)"})
-    assert not td._paints({"backgroundColor": "rgba(0, 0, 0, 0)", "backgroundImage": "none"})
-    assert not td._paints(None)
+def test_a_region_missing_from_the_page_is_a_failure_not_a_skip():
+    for label, _sel, _scope, _props, _geom in td._DRESS_REGIONS:
+        errs = _dress_errors(_dressed(regions=_regions(**{label: None})))
+        assert any(f"region {label} is not present" in e for e in errs), (label, errs)
 
 
-def test_css_alpha_reads_both_color_serializations():
-    assert td._css_alpha("rgb(1, 2, 3)") == 1.0
-    assert td._css_alpha("rgba(1, 2, 3, 0.5)") == 0.5
-    assert td._css_alpha("rgba(0, 0, 0, 0)") == 0.0
-    # Chromium always serializes a computed color as rgb()/rgba(); anything
-    # else is treated as painting nothing rather than guessed at.
-    assert td._css_alpha("") == 0.0
-    assert td._css_alpha("transparent") == 0.0
+def test_a_page_with_no_linked_stylesheet_is_a_failure_not_a_skip():
+    # Nothing to take off means the differential compares the page to itself
+    # and every region reports "differs: 0" — five findings pointing at the
+    # theme for something that is the page's problem. Named, and short-circuited.
+    errs = _dress_errors(_dressed(linkedStylesheets=0, toggledStylesheets=0))
+    assert errs and all("no linked stylesheet" in e for e in errs), errs
+
+
+def test_a_browser_that_refuses_to_disable_the_sheet_is_a_failure_not_a_skip():
+    errs = _dress_errors(_dressed(toggleTookEffect=False))
+    assert errs and all("refused to disable" in e for e in errs), errs
+
+
+def test_an_empty_stylesheet_is_named_as_such_rather_than_blamed_on_the_regions():
+    # A 404 or a parse failure would otherwise be reported as five regions the
+    # theme forgot to dress, which sends the next person to the wrong file.
+    errs = _dress_errors(_dressed(styleRules=0))
+    assert errs and all("loaded no rules at all" in e for e in errs), errs
+
+
+def test_the_field_region_is_graded_on_backgrounds_and_carries_no_geometry():
+    # Both halves were measured, not reasoned about. A theme carrying tokens
+    # plus `* { box-sizing }` and `html, body { margin: 0 }` and NOTHING else:
+    #   field on the full prop set -> 1 of 2 differ  (false pass, all 5 green)
+    #   field on _FIELD_PROPS      -> 0 of 2 differ  (caught)
+    # and with x/y in the fingerprint the footer of a theme with no rule at all
+    # counted as dressed purely because content above it had resized.
+    label, _sel, scope, props, geometry = td._DRESS_REGIONS[0]
+    assert label == "the page field" and scope == "self"
+    assert geometry is False, "html/body resize with their content; a rect here measures length"
+    for banned in ("margin-top", "margin-left", "padding-top", "padding-left",
+                   "display", "max-width", "font-size"):
+        assert banned not in props, banned
+    assert "background-color" in props and "background-image" in props and "content" in props
+    # Every other region does carry its own box.
+    assert all(r[4] is True for r in td._DRESS_REGIONS[1:])
+
+
+def test_no_region_fingerprints_where_an_element_LANDS():
+    # Position is a consequence of whatever sits above an element. With x/y in
+    # the fingerprint, a footer whose every property was byte-identical still
+    # counted as "renders differently" — measured against a theme carrying no
+    # rule that paints at all.
+    assert "Math.round(b.width), Math.round(b.height)" in td._DRESS_PROBE_JS
+    assert "b.x" not in td._DRESS_PROBE_JS and "b.y" not in td._DRESS_PROBE_JS
+
+
+def test_every_region_selector_is_the_PAGES_own_markup():
+    # The design's one hard rule: a region may name a selector the PAGE ships,
+    # never one the THEME must carry. Checked against both shipped files.
+    needles = {
+        "html, body": "<body",
+        "nav.nav": '<nav class="nav"',
+        "header.page-hero": '<header class="page-hero"',
+        "main": "<main",
+        "footer": "<footer",
+    }
+    assert {r[1] for r in td._DRESS_REGIONS} == set(needles)
+    for name in td.DRESS_OUTCOME_PAGES:
+        html = (ROOT / name).read_text(encoding="utf-8")
+        for selector, needle in needles.items():
+            assert needle in html, (name, selector)
+
+
+# ─── the element-level assertions that survived ───────────────────────────
 
 
 def test_dress_fails_when_body_falls_back_to_the_browsers_own_type():
+    # A theme can dress all five regions and still forget font-family, which
+    # leaves both pages in Times New Roman with every region still differing.
     errs = _dress_errors(_dressed(
         body={**_dressed()["body"], "fontFamily": '"Times New Roman"'}))
     assert any("browser's default type" in e for e in errs), errs
 
 
-def test_dress_fails_on_a_bare_generic_type_keyword():
-    # `sans-serif` alone means "whatever the browser would have used anyway".
-    # Any concrete family, and any other generic (system-ui, ui-monospace),
-    # is a deliberate choice and passes — so this is not a value pin.
-    errs = _dress_errors(_dressed(
-        body={**_dressed()["body"], "fontFamily": "sans-serif"}))
-    assert any("browser's default type" in e for e in errs), errs
-    assert _dress_errors(_dressed(
-        body={**_dressed()["body"], "fontFamily": "system-ui, sans-serif"})) == []
-
-
-def test_dress_fails_when_the_nav_paints_nothing():
-    errs = _dress_errors(_dressed(
-        nav={"backgroundColor": "rgba(0, 0, 0, 0)", "backgroundImage": "none",
-             "zIndex": "50"}))
-    assert any("nav.nav paints no background" in e for e in errs), errs
-
-
-def test_dress_fails_when_the_nav_has_no_stacking_order():
-    errs = _dress_errors(_dressed(
-        nav={**_dressed()["nav"], "zIndex": "auto"}))
-    assert any("no stacking order" in e for e in errs), errs
-    # Any number passes — 50 is this theme's choice, not the contract's.
-    assert _dress_errors(_dressed(nav={**_dressed()["nav"], "zIndex": "3"})) == []
+def test_any_deliberate_type_choice_passes_including_a_generic_keyword():
+    # No family is required and no generic is banned. An earlier cut rejected a
+    # bare `serif`/`sans-serif`, which is a theme's choice to make.
+    for family in ("system-ui, sans-serif", "serif", "Georgia, serif",
+                   "ui-monospace, monospace"):
+        assert _dress_errors(_dressed(
+            body={**_dressed()["body"], "fontFamily": family})) == [], family
 
 
 def test_dress_fails_when_the_title_is_no_bigger_than_a_bare_heading():
-    # An undressed <h1> computes 2.0x body text in this browser, so a page
-    # title at 32px on 16px body is exactly what NO dress looks like. The
-    # comparison is against the measured UA ratio, never against 56px.
+    # An undressed <h1> computes 2.0x body text in this browser, so a title at
+    # 32px on 16px body is exactly what NO dress looks like. Compared against
+    # the measured UA ratio, never against 56px.
     errs = _dress_errors(_dressed(title={"fontSize": "32px"}))
     assert any("no larger, relative to body text" in e for e in errs), errs
-    # 36px (this theme's clamp floor at 390px) still clears it.
+    # 36px is this theme's clamp floor at 390px — 2.25x, the real headroom.
     assert _dress_errors(_dressed(title={"fontSize": "36px"})) == []
 
 
-def test_dress_fails_when_the_footer_paints_nothing():
+def test_dress_fails_when_a_link_matches_the_prose_it_sits_in():
+    # THE privacy.html blindness, pinned. Its first inline link sits in
+    # `main.policy p`, which the page colors --fg-2 while body is --fg-1. An
+    # earlier cut compared to BODY's color and sampled only the first link, so
+    # an undressed link inherited a color matching neither body's nor UA blue
+    # and both halves passed — while every link on the page was identical to
+    # the prose around it. This fixture is exactly that shape.
+    prose = "rgb(168, 194, 217)"          # --fg-2, the paragraph's own color
+    body_color = "rgb(232, 242, 255)"     # --fg-1, body's
+    assert prose != body_color
     errs = _dress_errors(_dressed(
-        footer={"backgroundColor": "rgba(0, 0, 0, 0)", "backgroundImage": "none"}))
-    assert any("footer paints no background" in e for e in errs), errs
-
-
-def test_dress_fails_when_links_match_body_text():
-    # utility.css's `a { color: inherit }` plus a dropped `a.inline-link`
-    # rule: links become prose. Reproduced live by deleting exactly that one
-    # declaration from a scratch theme.
-    errs = _dress_errors(_dressed(link={"color": _dressed()["body"]["color"]}))
-    assert any("same color as body text" in e for e in errs), errs
+        body={**_dressed()["body"], "color": body_color},
+        links=[{"color": prose, "parentColor": prose}] * 10))
+    assert any("same color as the prose they sit in" in e for e in errs), errs
 
 
 def test_dress_fails_when_links_fall_back_to_the_browsers_link_color():
     # The other half, and it needs its own branch: drop the bare `a` rule too
-    # and links go UA blue — different from body text, so the first half
-    # passes them while the page is plainly undressed.
-    errs = _dress_errors(_dressed(link={"color": "rgb(0, 0, 238)"}))
+    # and links go UA blue — different from their parent, so the first half
+    # waves them through.
+    errs = _dress_errors(_dressed(
+        links=[{"color": "rgb(0, 0, 238)", "parentColor": "rgb(232, 242, 255)"}] * 8))
     assert any("browser's own default link color" in e for e in errs), errs
 
 
-def test_dress_fails_when_a_required_element_is_missing():
-    for key, selector in (("nav", "nav.nav"), ("title", "h1.page-title"),
-                          ("footer", "footer"), ("link", "a.inline-link")):
-        errs = _dress_errors(_dressed(**{key: None}))
-        assert any(f"{selector} is not present" in e for e in errs), (selector, errs)
+def test_every_link_is_sampled_not_just_the_first():
+    errs = _dress_errors(_dressed(links=[
+        {"color": "rgb(23, 212, 250)", "parentColor": "rgb(232, 242, 255)"},
+        {"color": "rgb(23, 212, 250)", "parentColor": "rgb(232, 242, 255)"},
+        {"color": "rgb(168, 194, 217)", "parentColor": "rgb(168, 194, 217)"},
+    ]))
+    assert any("1 of 3 a.inline-link" in e for e in errs), errs
+
+
+def test_dress_fails_when_the_page_carries_no_inline_link_at_all():
+    errs = _dress_errors(_dressed(links=[]))
+    assert any("a.inline-link is not present" in e for e in errs), errs
+
+
+def test_dress_fails_when_the_title_is_missing():
+    errs = _dress_errors(_dressed(title=None))
+    assert any("h1.page-title is not present" in e for e in errs), errs
 
 
 def test_dress_fails_loudly_when_the_ua_baseline_could_not_be_read():
-    # Never a soft skip. Without the baseline nothing below it can be graded,
-    # and a gate that silently covers less than it claims is the exact failure
-    # mode this whole file exists to prevent.
+    # Never a soft skip. Without the baseline the element-level assertions
+    # silently cover less than they claim.
     errs = _dress_errors(_dressed(ua=None))
-    assert errs and all("undressed baseline" in e for e in errs), errs
+    assert any("undressed baseline" in e for e in errs), errs
+
+
+def test_no_color_is_ever_parsed_only_compared():
+    # THE CRITICAL this design exists to make impossible. The first cut read
+    # each element's computed background and asked whether it painted, with an
+    # rgb()/rgba() parser: `oklch(0.18 0.04 250)` is a fully opaque field that
+    # such a parser reads as alpha 0, so a correct September theme would have
+    # aborted the unattended rotation on the 1st. Every color here is in a
+    # syntax that parser could not read, and the gate is silent.
+    assert _dress_errors(_dressed(
+        body={"color": "oklch(0.92 0.03 250)", "fontFamily": "Inter, sans-serif",
+              "fontSize": "16px"},
+        title={"color": "oklab(0.9 0.1 0.1)", "fontFamily": "X", "fontSize": "56px"},
+        links=[{"color": "lab(62% 38 -58)",
+                "parentColor": "color-mix(in oklab, white 80%, blue)"}] * 4,
+    )) == []
 
 
 def test_dress_failures_name_the_viewport_and_read_as_browser_findings():
     errs = td.check_page_renders_dressed(
         _StubDressPage(_dressed(title={"fontSize": "32px"})), 390)
-    assert all(e.startswith("browser: dress at 390px: ") for e in errs), errs
+    assert errs and all(e.startswith("browser: dress at 390px: ") for e in errs), errs
+
+
+# ─── wiring ───────────────────────────────────────────────────────────────
 
 
 def test_dress_outcome_pages_are_the_two_that_borrow_their_whole_chrome():
     assert td.DRESS_OUTCOME_PAGES == ("press.html", "privacy.html")
+    assert set(td.DRESS_OUTCOME_PAGES) <= set(td.BROWSER_CHECK_LIVE_PAGES)
     previewable = _render_hub_previewable_pages()
     for name in td.DRESS_OUTCOME_PAGES:
-        # Each has to be opened by the browser gate at all, and has to be a
-        # page render-hub.py's preview mode emits — otherwise main() bails
-        # with "did not emit" before any of this runs.
-        assert name in td.BROWSER_CHECK_LIVE_PAGES, name
         assert (ROOT / name) in previewable, name
-    # ...and each must be a page that resolves the UTILITY archetype's
-    # stylesheet, which is what "borrows its whole chrome" means here.
+    # ...and each must resolve the UTILITY archetype's stylesheet, which is
+    # what "borrows its whole chrome" means here.
     spec = importlib.util.spec_from_file_location(
         "render_hub_for_dress_test", ROOT / "scripts" / "render-hub.py")
     mod = importlib.util.module_from_spec(spec)
@@ -1368,9 +1436,40 @@ def test_dress_outcome_pages_are_the_two_that_borrow_their_whole_chrome():
         assert mod.THEME_CSS_HREFS[ROOT / name] == want, name
 
 
+def test_a_dress_page_the_browser_gate_never_opens_is_an_IMPORT_error():
+    # A page in DRESS_OUTCOME_PAGES but not in BROWSER_CHECK_LIVE_PAGES is
+    # never in the dict _run_browser_checks_all iterates, so it is handed
+    # dress_outcome=False and skipped in total silence — the one failure class
+    # this module refuses everywhere else. theme-doctor.py asserts the subset
+    # at import; asserting the same fact here would pass with the guard
+    # deleted, so this reloads the module with the invariant BROKEN and
+    # requires the import itself to blow up.
+    src = (ROOT / "scripts" / "theme-doctor.py").read_text(encoding="utf-8")
+    broken = src.replace(
+        'DRESS_OUTCOME_PAGES = ("press.html", "privacy.html")',
+        'DRESS_OUTCOME_PAGES = ("press.html", "privacy.html", "not-in-the-gate.html")',
+        1)
+    assert broken != src, "DRESS_OUTCOME_PAGES literal moved; update this test"
+    ns = {"__file__": str(ROOT / "scripts" / "theme-doctor.py"), "__name__": "td_broken"}
+    with pytest.raises(AssertionError, match="BROWSER_CHECK_LIVE_PAGES"):
+        exec(compile(broken, "theme-doctor.py", "exec"), ns)
+
+
+def test_each_dress_page_links_exactly_one_stylesheet():
+    # The differential disables every `link[rel=stylesheet]` on the page, so
+    # "the page's linked stylesheets" and "the theme's dress" have to be the
+    # same set. That is true today because render-hub.py owns the single
+    # theme-css <link> and each page's own CSS is an inline <style>. A page
+    # growing a second linked stylesheet would quietly make the differential
+    # mean something else, so the premise is pinned rather than assumed.
+    for name in td.DRESS_OUTCOME_PAGES:
+        html = (ROOT / name).read_text(encoding="utf-8")
+        links = re.findall(r'<link[^>]*rel="stylesheet"[^>]*>', html)
+        assert len(links) == 1, (name, links)
+        assert "/themes/" in links[0], (name, links)
+
+
 def test_the_dress_check_runs_for_those_pages_and_no_others(monkeypatch):
-    # The routing, pinned separately from the assertions: a page that owns its
-    # own dress must not be graded as if it borrowed one.
     seen = []
     monkeypatch.setattr(td, "check_page_renders_dressed",
                         lambda page, width: seen.append(width) or [])
@@ -1383,9 +1482,9 @@ def test_the_dress_check_runs_for_those_pages_and_no_others(monkeypatch):
 def test_the_two_utility_pages_self_import_the_repo_global_font_stack():
     # /fonts/fonts.css is a REPO-GLOBAL asset, not a theme asset. Depending on
     # the theme's own @import for it was the single most fragile part of the
-    # borrow: a theme that dropped the line would strip the brand type stack
-    # off both pages, and no computed-style assertion can see it — the
-    # font-family string is unchanged, only the faces behind it vanish.
+    # borrow, and the one part no assertion could ever see: if a theme drops
+    # the line, body's computed font-family string is byte-identical and only
+    # the @font-face rules behind it vanish.
     for name in td.DRESS_OUTCOME_PAGES:
         html = (ROOT / name).read_text(encoding="utf-8")
         style = "\n".join(td.STYLE_BLOCK_RE.findall(html))

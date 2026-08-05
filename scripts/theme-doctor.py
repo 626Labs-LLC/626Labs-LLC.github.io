@@ -221,6 +221,15 @@ BROWSER_CHECK_LIVE_PAGES = (
 # rule degrades it rather than stripping it.
 DRESS_OUTCOME_PAGES = ("press.html", "privacy.html")
 
+# A page named here but absent from the tuple above would be handed
+# `dress_outcome=False` by _run_browser_checks_all's dict lookup and skipped
+# in total silence — the one failure class this module refuses everywhere
+# else. Asserted at import so it can never be a runtime surprise on the 1st.
+assert set(DRESS_OUTCOME_PAGES) <= set(BROWSER_CHECK_LIVE_PAGES), (
+    "every DRESS_OUTCOME_PAGES entry must also be in BROWSER_CHECK_LIVE_PAGES, "
+    "or the browser gate never opens it and the dress check silently no-ops"
+)
+
 # Real, live chrome varies by archetype today — verified by grep against the
 # actual shipped pages (vibe-cartographer/index.html, press.html,
 # privacy.html, about.html), not assumed. Loosening a requirement to match
@@ -784,32 +793,131 @@ _OFF_ORIGIN_FIXTURES = {
 
 # ─── the borrowed dress, gated on OUTCOME ────────────────────────────────
 #
-# What the page is measured against is the BROWSER'S OWN undressed baseline,
-# read at runtime from a blank same-document iframe (a document with zero
-# author CSS). Nothing below names a selector that has to exist in the
-# theme's CSS, and nothing pins a value. That distinction is the whole design:
-# a required-rules manifest mirroring REQUIRED_TOKENS was the obvious move and
-# was rejected, because a theme setting the field on `html` instead of `body`,
-# or renaming its selectors entirely, would fail it while rendering perfectly.
-# The selectors this DOES name — `nav.nav`, `h1.page-title`, `footer`,
-# `a.inline-link` — are press.html's and privacy.html's OWN markup, which is
-# theme-invariant and is what a theme is supposed to be able to find.
+# THE CORE IS A REGION DIFFERENTIAL, not an inspection of what any element
+# computes. Each page is measured twice in one load — once with its theme
+# stylesheet linked, once with that <link> disabled — and each of the page's
+# own named regions has to render DIFFERENTLY between the two. That is the
+# strongest available form of "the theme dresses this region": it makes no
+# claim about technique, about syntax, about values, or about which element
+# carries the paint. Values are only ever compared for INEQUALITY as opaque
+# strings, so a theme writing `oklch(...)`, `color-mix(...)`, `lab(...)` or a
+# color space invented next year is graded exactly as well as one writing hex.
+#
+# The first cut of this gate read each element's computed background and
+# asked whether it painted. That was wrong twice over, and both were the same
+# mistake arriving through values instead of through selectors:
+#
+#   1. It parsed colors. `oklch(0.18 0.04 250)` is a fully opaque field that
+#      an rgb()/rgba() parser reads as alpha 0. September writes one correct
+#      theme and the rotation aborts at 09:00 UTC on the 1st, unattended,
+#      because the GATE was wrong.
+#   2. It constrained technique. A nav in normal flow that never overlaps
+#      needs no z-index; a footer separated by a hairline `border-top` on the
+#      shared field paints no background of its own; a field can live on a
+#      full-bleed overlay or `body::before` — the technique phosphor already
+#      uses for `.pb-scanlines`. All four are legitimate designs the first cut
+#      would have failed, which is a manifest wearing an outcome's clothes.
+#
+# The differential closes both without a single color parse, and pseudo
+# elements are in the fingerprint precisely so the overlay technique counts.
+#
+# The selectors this names — `nav.nav`, `header.page-hero`, `main`, `footer`,
+# `h1.page-title`, `a.inline-link` — are press.html's and privacy.html's OWN
+# markup, which is theme-invariant and is what a theme is supposed to be able
+# to find. Nothing here names a selector that must exist in the THEME's CSS.
+
+# Every region's fingerprint is built from these, for the element and for its
+# ::before and ::after. Broad on purpose: the test is inequality, never a
+# threshold, so a property that no theme ever moves costs nothing and a
+# property left out is a way for a real difference to hide.
+_DRESS_PROPS = (
+    "color background-color background-image background-size background-position "
+    "border-top-color border-bottom-color border-left-color border-top-width "
+    "border-bottom-width border-top-style border-top-left-radius "
+    "box-shadow text-shadow filter backdrop-filter opacity mix-blend-mode "
+    "font-family font-size font-weight font-style line-height letter-spacing "
+    "text-transform text-decoration-line text-decoration-color fill stroke "
+    "padding-top padding-left margin-top margin-left display position z-index "
+    "overflow-x transform content mask-image max-width"
+).split()
+
+# The page field is graded on these instead of the full set, and the narrowing
+# is load-bearing rather than an optimisation. `html` and `body` are moved by
+# any bare reset — `* { box-sizing }`, `html, body { margin: 0 }` — which is
+# not a field.
+#
+# Measured both ways rather than argued. A theme carrying tokens plus those
+# two reset rules and nothing else was built and run through this gate:
+#
+#   field region on the FULL prop set  ->  1 of 2 differ, DIFFERS  (false pass:
+#                                          all five regions green)
+#   field region on _FIELD_PROPS       ->  0 of 2 differ, IDENTICAL (caught)
+#
+# Backgrounds, and the pseudo-element `content` that switches an overlay on,
+# are what "there is a field" actually means.
+_FIELD_PROPS = (
+    "background-color background-image background-size background-position "
+    "background-repeat background-attachment background-clip background-origin "
+    "opacity filter backdrop-filter mask-image mix-blend-mode content"
+).split()
+
+# `main` is `<main class="kit">` on press.html and `<main class="policy">` on
+# privacy.html — the bare tag is what both share.
+#
+# (label, selector, scope, props, geometry). Scope "self" fingerprints only
+# the matched elements; "subtree" fingerprints each match and all of its
+# descendants. `geometry` adds each element's own WIDTH and HEIGHT.
+#
+# Its own width and height, and deliberately NOT its x/y. Where an element
+# lands is a consequence of whatever sits above it, so with x/y in the
+# fingerprint a footer whose every property was byte-identical still counted
+# as "rendering differently" because content further up the page had resized.
+# Measured, against a theme carrying no rule that paints at all: the x/y
+# channel alone reported the footer AND the field as dressed. An element's own
+# box belongs to its own dress; where that box lands does not.
+#
+# The field region carries no geometry, which is the same rule applied
+# consistently rather than a special case: `html` and `body` resize with their
+# content, so a rect there measures the page's length and not whether it has a
+# field.
+_DRESS_REGIONS = (
+    ("the page field", "html, body", "self", _FIELD_PROPS, False),
+    ("nav.nav", "nav.nav", "subtree", _DRESS_PROPS, True),
+    ("header.page-hero", "header.page-hero", "subtree", _DRESS_PROPS, True),
+    ("main", "main", "subtree", _DRESS_PROPS, True),
+    ("footer", "footer", "subtree", _DRESS_PROPS, True),
+)
+
 _DRESS_PROBE_JS = r"""
-() => {
+(regions) => {
+  // ── ORDER IS LOAD-BEARING ────────────────────────────────────────────
+  // Every element-level reading happens FIRST, on a page nothing has
+  // touched. The differential's stylesheet toggle comes last, and NOTHING
+  // reads after it.
+  //
+  // Because the toggle does not fully reverse, and that was measured rather
+  // than feared. Disabling the sheet and re-enabling it restores
+  // `body`'s font-family and even the resolved value of a custom property,
+  // but leaves `a.inline-link`'s color at the UA's `rgb(0, 0, 238)`:
+  // Chromium does not invalidate its cached `:link` style when
+  // CSSStyleSheet.disabled goes back to false. The first version of this
+  // read the links after the toggle, and a restore self-check keyed on
+  // font-family reported "restored: true" while every link on the page was
+  // still undressed — so the gate failed the LIVE, correct theme with "the
+  // theme dresses links not at all". A convenient-looking self-check that
+  // was measuring the wrong property.
+
   const rd = (el) => {
     if (!el) return null;
     const cs = getComputedStyle(el);
-    return {
-      backgroundColor: cs.backgroundColor, backgroundImage: cs.backgroundImage,
-      color: cs.color, fontFamily: cs.fontFamily, fontSize: cs.fontSize,
-      zIndex: cs.zIndex,
-    };
+    return {color: cs.color, fontFamily: cs.fontFamily, fontSize: cs.fontSize};
   };
-  // The undressed baseline. An about:blank iframe's contentDocument is
-  // available synchronously and carries no author CSS, so what it computes
-  // is the browser's own default for this exact build — portable across
-  // platforms in a way a hardcoded "Times New Roman" would not be. It makes
-  // no network request, so the off-origin abort route never sees it.
+
+  // The undressed baseline, read from a blank same-document iframe: zero
+  // author CSS, so what it computes is this browser's own default. Measured
+  // at runtime rather than written down, which is what keeps a Windows dev
+  // box and the ubuntu runner grading the same thing. It makes no network
+  // request, so the off-origin abort route never sees it.
   let ua = null;
   const probe = document.createElement('iframe');
   probe.setAttribute('aria-hidden', 'true');
@@ -818,67 +926,123 @@ _DRESS_PROBE_JS = r"""
   const doc = probe.contentDocument;
   if (doc && doc.body) {
     doc.body.innerHTML = '<h1>H</h1><a href="#">a</a>';
-    const b = getComputedStyle(doc.body);
-    const h = getComputedStyle(doc.body.querySelector('h1'));
-    const a = getComputedStyle(doc.body.querySelector('a'));
+    const ub = getComputedStyle(doc.body);
+    const uh = getComputedStyle(doc.body.querySelector('h1'));
+    const ul = getComputedStyle(doc.body.querySelector('a'));
     ua = {
-      fontFamily: b.fontFamily,
-      headingRatio: parseFloat(h.fontSize) / parseFloat(b.fontSize),
-      linkColor: a.color,
+      fontFamily: ub.fontFamily,
+      headingRatio: parseFloat(uh.fontSize) / parseFloat(ub.fontSize),
+      linkColor: ul.color,
     };
   }
   probe.remove();
+
+  const body = rd(document.body);
+  const title = rd(document.querySelector('h1.page-title'));
+
+  // EVERY inline link, each against ITS OWN PARENT's color — not against
+  // body's. Sampling the first link and comparing to body was blind on
+  // privacy.html by construction: its first inline link sits in
+  // `main.policy p`, which the page colors --fg-2 while body is --fg-1, so an
+  // undressed link inherited a color that matched neither body's nor UA blue
+  // and both halves passed while every link on the page was identical to the
+  // prose around it. "Distinguishable from prose" means distinguishable from
+  // the text it actually sits in.
+  const inlineLinks = Array.from(document.querySelectorAll('a.inline-link')).map((a) => ({
+    color: getComputedStyle(a).color,
+    parentColor: a.parentElement ? getComputedStyle(a.parentElement).color : null,
+  }));
+
+  // ── the region differential ──────────────────────────────────────────
+  const fingerprint = (selector, scope, props, geometry) => {
+    const roots = Array.from(document.querySelectorAll(selector));
+    if (!roots.length) return null;
+    const els = [];
+    for (const r of roots) {
+      els.push(r);
+      if (scope === 'subtree') els.push(...r.querySelectorAll('*'));
+    }
+    return els.map((el) => {
+      const row = [el.tagName];
+      for (const pseudo of [null, '::before', '::after']) {
+        const cs = getComputedStyle(el, pseudo);
+        for (const p of props) row.push(cs.getPropertyValue(p));
+      }
+      if (geometry) {
+        const b = el.getBoundingClientRect();
+        row.push(Math.round(b.width), Math.round(b.height));
+      }
+      return row.join('\u0001');
+    });
+  };
+  const sweep = () =>
+    regions.map(([, sel, scope, props, geom]) => fingerprint(sel, scope, props, geom));
+
+  // The page's OWN linked stylesheets. render-hub.py owns the single
+  // `SITE_JSON:theme-css` <link> on both of these pages and their own CSS is
+  // an inline <style>, so "every link[rel=stylesheet]" IS "the theme's dress"
+  // here — a premise pinned by a test against the shipped files rather than
+  // assumed, and reported back so a page that grows a second linked
+  // stylesheet cannot make this silently mean something else.
+  //
+  // CSSStyleSheet.disabled, NOT HTMLLinkElement.disabled: toggling the
+  // ELEMENT's property off and back on does not restore the sheet
+  // synchronously in Chromium, which left the whole page undressed for every
+  // read that followed it.
+  const links = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
+  const sheets = links.map((l) => l.sheet).filter(Boolean);
+
+  // Rule count, so "the region did not change" can be told apart from "the
+  // stylesheet arrived empty" — a 404 or a parse failure would otherwise be
+  // reported as five regions the theme forgot to dress.
+  let styleRules = 0;
+  for (const s of sheets) { try { styleRules += s.cssRules.length; } catch (e) { } }
+
+  const dressed = sweep();
+  sheets.forEach((s) => { s.disabled = true; });
+  // Proof the toggle took, asked of the CSSOM itself rather than inferred
+  // from a property. The first version compared body's font-family before
+  // and after and called that "the toggle took effect" — which is false for
+  // any theme that sets no font-family, exactly the token-only theme this
+  // gate exists to reject. It short-circuited and hid the five region
+  // findings behind a diagnosis that was about the gate, not the theme.
+  const toggled = sheets.every((s) => s.disabled === true);
+  const undressed = sweep();   // getComputedStyle forces a synchronous recalc
+  sheets.forEach((s) => { s.disabled = false; });
+
+  const diffs = regions.map(([label], i) => {
+    const a = dressed[i], b = undressed[i];
+    if (a === null) return {label: label, present: false, differing: 0, total: 0};
+    let differing = 0;
+    const n = Math.min(a.length, b.length);
+    for (let k = 0; k < n; k++) if (a[k] !== b[k]) differing++;
+    // A theme that changes the ELEMENT COUNT of a region cannot have left it
+    // undressed, so a length mismatch counts as difference rather than being
+    // silently truncated away by the min() above.
+    differing += Math.abs(a.length - b.length);
+    return {label: label, present: true, differing: differing, total: a.length};
+  });
+
   return {
+    regions: diffs,
+    linkedStylesheets: links.length,
+    toggledStylesheets: sheets.length,
+    toggleTookEffect: toggled,
+    styleRules: styleRules,
     ua: ua,
-    html: rd(document.documentElement),
-    body: rd(document.body),
-    nav: rd(document.querySelector('nav.nav')),
-    title: rd(document.querySelector('h1.page-title')),
-    footer: rd(document.querySelector('footer')),
-    link: rd(document.querySelector('a.inline-link')),
+    body: body,
+    title: title,
+    links: inlineLinks,
   };
 }
 """
 
-_COLOR_FUNC_RE = re.compile(r"^rgba?\(([^)]*)\)$")
-
-# The two generic keywords that mean "whatever the browser would have used
-# anyway". Not a value pin: any concrete family, and any other generic
-# (`system-ui`, `ui-monospace`, …), is a deliberate choice and passes.
-_DEFAULT_TYPE_KEYWORDS = {"serif", "sans-serif"}
-
-
-def _css_alpha(color: str) -> float:
-    """Alpha channel of a computed color. Chromium always serializes a
-    computed color as `rgb(...)` or `rgba(...)`, so anything else — including
-    the empty string — is treated as painting nothing."""
-    m = _COLOR_FUNC_RE.match((color or "").strip())
-    if not m:
-        return 0.0
-    parts = [p.strip() for p in m.group(1).split(",")]
-    if len(parts) < 4:
-        return 1.0
-    try:
-        return float(parts[3])
-    except ValueError:
-        return 0.0
-
-
-def _paints(style: dict | None) -> bool:
-    """True when this element puts SOMETHING on the canvas — a background
-    color with any opacity at all, or any background image. Deliberately
-    indifferent to which of the two, and to what color: the outcome is "there
-    is a surface here", not "the surface is #000"."""
-    if style is None:
-        return False
-    if (style.get("backgroundImage") or "none") != "none":
-        return True
-    return _css_alpha(style.get("backgroundColor", "")) > 0
-
 
 def _first_family(font_family: str) -> str:
     """The first family in a computed font-family list, unquoted and
-    casefolded."""
+    casefolded. The only value this module parses at all, and it parses a
+    font NAME rather than a color — see the module comment above
+    `_DRESS_PROPS` for why nothing here reads a color any more."""
     first = (font_family or "").split(",")[0].strip()
     return first.strip("\"'").strip().casefold()
 
@@ -891,86 +1055,131 @@ def check_page_renders_dressed(page, width: int) -> list[str]:
     press.html and privacy.html take their entire nav/hero/type/link/footer
     treatment from `archetypes/utility.css` and restate none of it — measured,
     not assumed: 49 of that file's 50 selectors reach press.html and 48 reach
-    privacy.html, and neither page's own <style> redeclares a single one. So a
-    second theme whose utility.css drops a load-bearing rule changes or breaks
-    both pages, and every other gate in this repo stays green: the token
-    contract counts NAMES, and a name can be present in a file that no longer
-    carries the rule that spends it.
+    privacy.html, and the overlap between each page's own <style> selectors
+    and that file's is EXACTLY ZERO. The pages dress their content; the theme
+    dresses everything else. So a second theme whose utility.css drops a
+    load-bearing rule changes or breaks both pages while every other gate in
+    this repo stays green: the token contract counts NAMES, and a name can be
+    present in a file that no longer carries the rule that spends it.
 
     Este's ruling (2026-08-04) is that these two keep wearing the theme's
     dress, so a new month actually restyles them. The exposure therefore has
     to close by verification rather than by removal, which is what this is.
 
-    Six assertions, each phrased as something that must be TRUE and never as a
-    value it must equal:
+    ── The region differential (the core) ────────────────────────────────
+    Each of `_DRESS_REGIONS` must render DIFFERENTLY with the page's theme
+    stylesheet linked than with it disabled. Both measurements happen in one
+    page load; the stylesheet is re-enabled afterwards. No value is
+    interpreted — fingerprints are compared as opaque strings — so no color
+    syntax, present or future, can be misread as "paints nothing", and no
+    technique is required: a transparent nav in normal flow, a footer marked
+    only by a hairline, a field on `body::before`, and an `oklch` field all
+    differ from themselves undressed, which is the only thing being asked.
+    A theme doing all four of those at once was built and passes.
 
-    1. The page paints a field — `html` OR `body` resolves a background that
-       puts something on the canvas. Which element carries it is the theme's
-       business; a theme setting it on `html` passes.
-    2. Body type is not the browser's own default — the first family in
-       `body`'s computed font-family is neither the family an undressed
-       document computes nor a bare `serif`/`sans-serif`.
-    3. The nav is a painted surface with a declared stacking order — it paints,
-       and its `z-index` is not `auto`. Any number passes; 50 is not required.
-    4. The page title outscales a bare heading — its font-size relative to body
-       text exceeds what an UNDRESSED `<h1>` computes in the same browser
-       (2.0x). A title at exactly browser proportions is not dressed.
-    5. The footer is a painted surface.
-    6. Inline links are distinguishable — `a.inline-link` resolves a color that
-       is neither body text's color nor the browser's own default link color.
-       Both halves are needed: a theme dropping only `a.inline-link` leaves the
-       links inheriting body color, and a theme dropping the bare `a` rule too
-       drops them to UA blue.
+    WHAT THE DIFFERENTIAL DOES NOT CLAIM, stated because a gate that oversells
+    itself is the failure mode this file keeps relearning. Both are measured:
 
-    What is deliberately NOT asserted, having been considered and rejected:
-    `h1.page-title`'s font-weight. The brief asked for "a non-default weight",
-    but the UA's own `h1` default is already 700, so the assertion is
-    satisfied by a completely undressed page and constrains only a theme that
-    deliberately wants a light hero. An assertion that cannot fail on the
-    defect it is aimed at is worse than no assertion, because it reads as
-    coverage.
+    - `main` is the weakest region on these two pages, and legitimately so.
+      Their own content rules spend theme tokens (`var(--s-*)`, `var(--bg-1)`,
+      `var(--border-1)`), so a theme carrying tokens and NO rule at all still
+      moves 185 of press.html's 198 elements in that region. It reaches
+      `main`; it just does not dress anything. The other four regions catch
+      that theme (0 differing, all four), and so do all three element-level
+      assertions.
+    - A theme carrying tokens plus bare resets moves nav, hero and footer via
+      box metrics alone (6/23, 9/14, 4/13). Only the field region catches it
+      among the five. That is why `_FIELD_PROPS` is narrowed, and why the
+      element-level assertions below are not decoration.
+
+    ── The three element-level assertions that still earn their place ─────
+    Each is something the differential structurally cannot see, because a
+    region differs for a hundred reasons at once.
+
+    1. Body type is not the browser's own — the first family in `body`'s
+       computed font-family differs from the family an undressed document
+       computes. A theme that dresses every region and forgets `font-family`
+       leaves both pages in Times New Roman with every region still differing.
+       No family is required and no generic is banned; the comparison target
+       is measured at runtime.
+    2. The page title outscales a bare heading — `h1.page-title`'s font-size
+       relative to body text exceeds what an UNDRESSED `<h1>` computes in the
+       same browser (2.00x). HEADROOM, measured on this theme so whoever hits
+       this on the 1st is not guessing: 3.50x at 1440px and 2.25x at 390px,
+       where the `clamp()` floor of 36px meets a 16px body. A theme whose
+       floor lands at 32px fails, and that verdict is correct rather than
+       tunable: a hero at exactly browser proportions is not dressed. This
+       threshold is the minimum honest statement of the outcome, not a
+       constant to relax when it becomes inconvenient.
+    3. Inline links are distinguishable from the prose they sit in — EVERY
+       `a.inline-link` resolves a color that is neither its own parent's color
+       nor the browser's default link color. Both halves are load-bearing:
+       dropping `a.inline-link { color }` leaves links inheriting their
+       parent, and dropping the bare `a { color: inherit }` too drops them to
+       UA blue, which the first half would wave through.
+
+    ── What is deliberately NOT asserted ─────────────────────────────────
+    `h1.page-title`'s font-weight. The UA's own `h1` default is already 700,
+    so "a non-default weight" is satisfied by a completely undressed page —
+    zero detection, real over-constraint on a theme that wants a light hero.
+
+    Anything about `nav.nav`'s z-index. The only way to satisfy a
+    stacking-order requirement on a nav that never overlaps is to write a
+    declaration that does nothing, which is a manifest entry by another name.
+
+    Whether any particular element paints a background. See the module
+    comment above `_DRESS_PROPS` for the two independent reasons that was
+    wrong, and `the page field` region for what replaced it.
     """
-    m = page.evaluate(_DRESS_PROBE_JS)
+    m = page.evaluate(_DRESS_PROBE_JS, [list(r) for r in _DRESS_REGIONS])
     errors: list[str] = []
 
     def fail(msg: str) -> None:
         errors.append(f"browser: dress at {width}px: {msg}")
 
+    # Never a soft skip, on either premise this rests on. Without a linked
+    # stylesheet there is nothing to undress and the differential compares a
+    # page to itself; without the baseline the element-level assertions
+    # silently cover less than they claim. Both are the failure mode this
+    # whole gate exists to prevent.
+    if not m.get("toggledStylesheets"):
+        fail(f"the page has no linked stylesheet the differential could remove "
+             f"({m.get('linkedStylesheets', 0)} <link rel=stylesheet> found), so "
+             f"there was no dress to take off and nothing was graded")
+        return errors
+    if not m.get("toggleTookEffect"):
+        fail("the browser refused to disable the page's stylesheet, so the "
+             "differential compared the page to itself and graded nothing")
+        return errors
+    if not m.get("styleRules"):
+        fail("the page's theme stylesheet loaded no rules at all (404, or it failed "
+             "to parse), so there is no dress to grade")
+        return errors
+
+    for region in m.get("regions", ()):
+        if not region["present"]:
+            fail(f"region {region['label']} is not present on the page, so its dress "
+                 f"could not be graded")
+        elif not region["differing"]:
+            fail(f"region {region['label']} renders identically with the theme's "
+                 f"stylesheet and without it ({region['total']} elements compared), "
+                 f"so the theme does not dress it")
+
     ua = m.get("ua")
     if not ua:
-        # Never a soft skip. Without the baseline every assertion below
-        # silently covers less than it claims, which is the failure mode this
-        # whole gate exists to prevent.
         fail("could not read the browser's undressed baseline, so nothing was graded")
         return errors
 
-    if not (_paints(m.get("html")) or _paints(m.get("body"))):
-        fail("neither html nor body paints a field, so the page renders on the "
-             "browser's blank default")
-
     body = m.get("body") or {}
     body_family = _first_family(body.get("fontFamily", ""))
-    if not body_family or body_family == _first_family(ua["fontFamily"]) \
-            or body_family in _DEFAULT_TYPE_KEYWORDS:
+    if not body_family or body_family == _first_family(ua["fontFamily"]):
         fail(f"body resolves the browser's default type ({body.get('fontFamily')!r}), "
              f"so the theme supplies no type stack")
 
-    for key, selector in (("nav", "nav.nav"), ("title", "h1.page-title"),
-                          ("footer", "footer"), ("link", "a.inline-link")):
-        if m.get(key) is None:
-            fail(f"{selector} is not present on the page, so its dress could not be graded")
-
-    nav = m.get("nav")
-    if nav is not None:
-        if not _paints(nav):
-            fail("nav.nav paints no background, so page content shows through the "
-                 "sticky bar")
-        if (nav.get("zIndex") or "auto") == "auto":
-            fail("nav.nav declares no stacking order (z-index resolves to auto), so "
-                 "content can paint over it")
-
     title = m.get("title")
-    if title is not None and body:
+    if title is None:
+        fail("h1.page-title is not present on the page, so its dress could not be graded")
+    elif body:
         try:
             ratio = float(title["fontSize"].rstrip("px")) / float(body["fontSize"].rstrip("px"))
         except (KeyError, ValueError, ZeroDivisionError):
@@ -984,18 +1193,20 @@ def check_page_renders_dressed(page, width: int) -> list[str]:
             fail(f"h1.page-title is no larger, relative to body text, than an "
                  f"undressed browser heading ({ratio:.2f}x vs {ua['headingRatio']:.2f}x)")
 
-    footer = m.get("footer")
-    if footer is not None and not _paints(footer):
-        fail("footer paints no background, so it is not a surface")
-
-    link = m.get("link")
-    if link is not None and body:
-        if link.get("color") == body.get("color"):
-            fail("a.inline-link resolves the same color as body text, so links are "
-                 "indistinguishable from prose")
-        elif link.get("color") == ua["linkColor"]:
-            fail("a.inline-link resolves the browser's own default link color, so the "
-                 "theme dresses links not at all")
+    links = m.get("links")
+    if not links:
+        fail("a.inline-link is not present on the page, so its dress could not be graded")
+    else:
+        same_as_prose = sum(1 for a in links if a["color"] == a["parentColor"])
+        if same_as_prose:
+            fail(f"{same_as_prose} of {len(links)} a.inline-link elements resolve the "
+                 f"same color as the prose they sit in, so links are indistinguishable "
+                 f"from body copy")
+        ua_blue = sum(1 for a in links if a["color"] == ua["linkColor"])
+        if ua_blue:
+            fail(f"{ua_blue} of {len(links)} a.inline-link elements resolve the "
+                 f"browser's own default link color, so the theme dresses links not "
+                 f"at all")
 
     return errors
 
@@ -1017,8 +1228,11 @@ def _check_viewport(page, url: str, width: int, dress_outcome: bool = False) -> 
     not get silently skipped and waved through.
 
     ── Third-party isolation, and why it is not optional ──────────────────
-    This gate opens twelve documents: four archetype shells plus the eight
-    live pages in BROWSER_CHECK_LIVE_PAGES. ELEVEN of the twelve carry
+    This gate opens twelve documents: one per archetype plus the eight live
+    pages in BROWSER_CHECK_LIVE_PAGES. Three of the four archetype documents
+    are shells the theme ships; `reading`'s is `about.html`, which
+    `_archetype_source` swaps in because the Field Note shell carries only 3
+    of that archetype's 10 required classes. ELEVEN of the twelve carry
     `<script async src="//gc.zgo.at/count.js">`, which over `http://127.0.0.1`
     resolves to a real third-party host. (The twelfth is the `product`
     archetype's own shell, which ARCHETYPE_CHROME marks `analytics=False`.)
