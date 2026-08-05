@@ -112,8 +112,11 @@ jobs:
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -euo pipefail
-          # Read from env, never from a `${{ }}` expansion inside the script
-          # body — an interpolated input becomes shell source text.
+          # Read from env, never from an expression interpolated into the
+          # script body — an interpolated input becomes shell source text.
+          # (An empty expression written out literally here would itself be
+          # parsed by Actions and fail the whole file, which is how this
+          # comment got shortened.)
           if [ "$EVENT_NAME" = "pull_request" ]; then
             ref="$PR_BASE_SHA"
           else
