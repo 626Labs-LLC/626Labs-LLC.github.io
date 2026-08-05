@@ -1,5 +1,16 @@
 # Theme archetypes — the contract every theme signs
 
+> **Scope note (2026-08-05).** This document covers the four archetypes and
+> the token contract. It PREDATES several mechanisms that now gate a rotation
+> and does not describe them: `resolution_groups` and the per-group reads
+> check, `GRADED_THEME_CSS`, `check_page_renders_dressed` /
+> `DRESS_OUTCOME_PAGES` (the region differential over press.html and
+> privacy.html), `check_theme_references_only_itself`, and
+> `scripts/visual-diff.py`. For those the source is the record —
+> `scripts/theme-doctor.py`'s module docstring is the map — and `CLAUDE.md`
+> carries the short version.
+
+
 626labs.dev rotates its whole visual identity monthly, and the rotation is
 a **hard pivot**: a new theme owes nothing to the outgoing one, shares no
 tokens, no layout assumptions, nothing. Hand-authoring 39 page shells per
@@ -565,15 +576,25 @@ and `mod-launcher-games.html`.
 `scripts/theme-doctor.py`'s `check_required_tokens()` fails
 a theme whose `tokens.css`, `archetypes/product-tokens.css`,
 `archetypes/utility.css` **or**
-`archetypes/reading.css` doesn't define every one of them — all four
+`archetypes/reading-tokens.css` doesn't define every one of them — all four
 (`REQUIRED_TOKEN_CSS`), because all four are real, unguarded consumers
 today: `tokens.css` for
 `themes.html`/`index.html`, `utility.css` for `press.html`/`privacy.html`,
-`reading.css` for `thesis.html`/`workflow.html`, `product-tokens.css` for
+`reading-tokens.css` for `thesis.html`/`workflow.html`, `product-tokens.css` for
 `conundrum.html`/`rororo-plugins.html`/`rororo.html`/
 `mod-launcher-games.html` plus the fifteen pages concatenated
 from it (their only source of these
-properties, with no local fallback of their own). A theme missing even one
+properties, with no local fallback of their own).
+
+> **`reading-tokens.css`, not `reading.css`.** This paragraph named the dress
+> where the contract means the token file, and `CLAUDE.md` repeated it. They
+> are different files with different jobs: `archetypes/reading.css` is
+> about.html's Long Now Terminal dress, while `archetypes/reading-tokens.css`
+> is the palette `thesis.html` and `workflow.html` link. `REQUIRED_TOKEN_CSS`
+> is the record — read it from the source if prose and code ever disagree
+> again.
+
+A theme missing even one
 fails before the archetype loop runs, named by property
 (`tokens.css: missing required custom property '--cyan'`).
 

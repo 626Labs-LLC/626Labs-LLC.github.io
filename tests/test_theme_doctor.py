@@ -136,7 +136,8 @@ class _StubPage:
     console: messages to hand the "console" handler after goto.
     """
 
-    def __init__(self, goto_side_effect, console=(), pageerrors=()):
+    def __init__(self, goto_side_effect, console=(), pageerrors=(), metrics=None):
+        self.metrics = metrics or {}
         self._goto_side_effect = goto_side_effect
         self._console = list(console)
         self._pageerrors = list(pageerrors)
@@ -162,7 +163,12 @@ class _StubPage:
         pass
 
     def evaluate(self, expr):
-        return 0
+        # Per-expression answers, so the horizontal-scroll comparison can
+        # actually be driven. It returned a flat 0 for everything, which made
+        # `scrollWidth > clientWidth + 1` the expression `0 > 1` in every test
+        # this stub has ever backed — the check could be deleted outright and
+        # the suite stayed green.
+        return self.metrics.get(expr, 0)
 
 
 def test_browser_navigation_failure_is_a_gate_failure_not_a_skip():
@@ -828,9 +834,16 @@ def test_reading_contrast_is_actually_GRADED_not_merely_unverified():
     for archetype in ("reading", "product"):
         _html, css, _zones = td._archetype_source(archetype, tdir, _good_html(), tokens_css)
         applicable = td._applicable_contrast_pairs(css, pairs)
-        assert len(applicable) == len(pairs), (
-            f"{archetype}: only {len(applicable)} of {len(pairs)} declared pairs "
-            f"resolve — the rest are silently skipped and never graded"
+        # GRADED, not "every declared pair applies to every archetype". An
+        # earlier version asserted equality, which false-fails a theme
+        # declaring one pair meaningful only to `reading` — a normal thing to
+        # do, and pytest is a rotation gate. What must hold is that this
+        # archetype was graded at all; main() already fails a theme where
+        # NOTHING applies, and test_reading_contrast_is_actually_GRADED_not_
+        # merely_unverified covers that path.
+        assert applicable, (
+            f"{archetype}: none of the {len(pairs)} declared pairs name custom "
+            f"properties this archetype own CSS declares, so it was never graded"
         )
         for fg, bg, ratio in td.evaluate_contrast_pairs(css, applicable):
             assert ratio is not None, f"{archetype}: {fg} on {bg} did not resolve"
@@ -1152,6 +1165,73 @@ def test_registered_theme_passes_static_theme_doctor_checks(slug, capsys):
     assert rc == 0, capsys.readouterr().out
 
 
+def test_horizontal_scroll_is_a_gate_failure():
+    # The check `--require-browser` most exists to guarantee runs, and it had
+    # ZERO coverage: the stub page answered every `evaluate` with 0, so
+    # `scrollWidth > clientWidth + 1` was `0 > 1` in every test, and deleting
+    # the check outright left the suite green.
+    page = _StubPage(None, metrics={
+        "document.documentElement.scrollWidth": 1700,
+        "document.documentElement.clientWidth": 1440,
+    })
+    errs = td._check_viewport(page, "http://127.0.0.1:8000/", 1440)
+    assert any("horizontal scroll at 1440px" in e for e in errs), errs
+    assert any("1700" in e and "1440" in e for e in errs), errs
+
+
+def test_one_pixel_of_slack_is_allowed_before_horizontal_scroll_is_reported():
+    # `+ 1` in the comparison — a sub-pixel rounding difference is not a
+    # sideways-scrolling page, and reporting one would make the gate cry wolf
+    # on the 1st.
+    page = _StubPage(None, metrics={
+        "document.documentElement.scrollWidth": 1441,
+        "document.documentElement.clientWidth": 1440,
+    })
+    assert not any("horizontal scroll" in e
+                   for e in td._check_viewport(page, "http://127.0.0.1:8000/", 1440))
+
+
+def test_the_browser_gate_opens_every_previewable_theme_css_page():
+    # BOTH directions. The forward one (every gate page is previewable) was
+    # already pinned; this is the reverse, and it is the one that matters for
+    # drift: PREVIEWABLE_THEME_CSS_PAGES is DERIVED from THEME_CSS_HREFS while
+    # BROWSER_CHECK_LIVE_PAGES is a hand-written literal. Add a tenth page to
+    # the href map and it gets a resolution group automatically, render-hub
+    # previews it, and the browser gate never opens it. Green, and silent.
+    previewable = {p.name for p in _render_hub_previewable_pages()}
+    listed = set(td.BROWSER_CHECK_LIVE_PAGES)
+    assert previewable == listed, (
+        f"previewable but never opened by the browser gate: "
+        f"{sorted(previewable - listed)}; "
+        f"opened but not previewable: {sorted(listed - previewable)}"
+    )
+
+
+def test_a_theme_may_not_hardcode_another_themes_slug(tmp_path):
+    # Copy-and-retokenize is the DOCUMENTED way to build a theme, and it
+    # leaves `/themes/<original-slug>/` behind in every hardcoded link.
+    # render-hub copies theme shells verbatim, `_THEME_HREF_RE` strips the
+    # slug before grading, and retired theme dirs are never deleted — so the
+    # gate graded the new theme while the rendered page wore the old one.
+    tdir = tmp_path / "aurora"
+    (tdir / "archetypes").mkdir(parents=True)
+    (tdir / "archetypes" / "home.html").write_text(
+        '<link rel="stylesheet" href="/themes/phosphor-blueprint/tokens.css">',
+        encoding="utf-8")
+    errs = td.check_theme_references_only_itself(tdir)
+    assert errs and "phosphor-blueprint" in errs[0], errs
+    assert "archetypes/home.html" in errs[0], errs
+
+    (tdir / "archetypes" / "home.html").write_text(
+        '<link rel="stylesheet" href="/themes/aurora/tokens.css">', encoding="utf-8")
+    assert td.check_theme_references_only_itself(tdir) == []
+
+
+def test_the_live_theme_references_only_itself():
+    tdir = td.theme_registry.theme_dir(_active_slug())
+    assert td.check_theme_references_only_itself(tdir) == []
+
+
 # ─── the borrowed dress, gated on a REGION DIFFERENTIAL ───────────────────
 #
 # press.html and privacy.html take their entire chrome from the active theme's
@@ -1195,6 +1275,42 @@ def _regions(**overrides):
     return out
 
 
+def _link(color="rgb(23, 212, 250)", parent_color="rgb(232, 242, 255)", **overrides):
+    """One a.inline-link measurement in the shape the probe returns: the
+    link's own signals and its PARENT's, so "distinguishable from the prose it
+    sits in" is a comparison the judging code can actually make.
+
+    Defaults are what phosphor-blueprint computes on press.html — a cyan link
+    with a border-bottom inside --fg-1 prose. `overrides` patch the LINK's
+    signals only.
+    """
+    base = {
+        "color": None, "textDecorationLine": "none", "textDecorationColor": color,
+        "textDecorationStyle": "solid", "borderBottomWidth": "0px",
+        "borderBottomStyle": "none", "borderBottomColor": color,
+        "backgroundColor": "rgba(0, 0, 0, 0)", "backgroundImage": "none",
+        "fontWeight": "400", "fontStyle": "normal", "boxShadow": "none",
+    }
+    self_ = {**base, "color": color, "borderBottomWidth": "1px",
+             "borderBottomStyle": "solid"}
+    self_.update(overrides)
+    parent = {**base, "color": parent_color, "textDecorationColor": parent_color,
+              "borderBottomColor": parent_color}
+    return {"self": self_, "parent": parent}
+
+
+def _indistinct_link(color="rgb(168, 194, 217)"):
+    """A link identical to its parent on every signal — the actual defect."""
+    signals = {
+        "color": color, "textDecorationLine": "none", "textDecorationColor": color,
+        "textDecorationStyle": "solid", "borderBottomWidth": "0px",
+        "borderBottomStyle": "none", "borderBottomColor": color,
+        "backgroundColor": "rgba(0, 0, 0, 0)", "backgroundImage": "none",
+        "fontWeight": "400", "fontStyle": "normal", "boxShadow": "none",
+    }
+    return {"self": dict(signals), "parent": dict(signals)}
+
+
 def _dressed(**overrides):
     """A measurement dict shaped exactly like the live probe's return value,
     carrying values phosphor-blueprint actually computes on press.html at
@@ -1218,7 +1334,7 @@ def _dressed(**overrides):
         },
         "title": {"color": "rgb(232, 242, 255)", "fontFamily": '"Space Grotesk"',
                   "fontSize": "56px"},
-        "links": [{"color": "rgb(23, 212, 250)", "parentColor": "rgb(232, 242, 255)"}] * 8,
+        "links": [_link() for _ in range(8)],
     }
     m.update(overrides)
     return m
@@ -1293,7 +1409,19 @@ def test_no_region_fingerprints_where_an_element_LANDS():
     # counted as "renders differently" — measured against a theme carrying no
     # rule that paints at all.
     assert "Math.round(b.width), Math.round(b.height)" in td._DRESS_PROBE_JS
-    assert "b.x" not in td._DRESS_PROBE_JS and "b.y" not in td._DRESS_PROBE_JS
+    # Not `"b.x" not in ...`: reintroducing the defect under any other
+    # variable name — `const r = el.getBoundingClientRect(); row.push(r.x, r.y)`
+    # — sails past a check that spells out one identifier. What must be true
+    # is that NOTHING pushed into the fingerprint reads a position component
+    # off a rect, whatever the rect is called.
+    rect_vars = set(re.findall(r"const\s+(\w+)\s*=\s*\w+\.getBoundingClientRect\(\)",
+                               td._DRESS_PROBE_JS))
+    assert rect_vars, "no getBoundingClientRect call found; this test is measuring nothing"
+    for var in rect_vars:
+        for component in ("x", "y", "left", "top", "right", "bottom"):
+            assert not re.search(rf"\b{re.escape(var)}\.{component}\b", td._DRESS_PROBE_JS), (
+                f"the fingerprint reads {var}.{component} — position is a consequence of "
+                f"what sits above an element, not part of its own dress")
 
 
 def test_every_region_selector_is_the_PAGES_own_markup():
@@ -1420,13 +1548,13 @@ def test_dress_fails_when_a_link_matches_the_prose_it_sits_in():
     # an undressed link inherited a color matching neither body's nor UA blue
     # and both halves passed — while every link on the page was identical to
     # the prose around it. This fixture is exactly that shape.
-    prose = "rgb(168, 194, 217)"          # --fg-2, the paragraph's own color
-    body_color = "rgb(232, 242, 255)"     # --fg-1, body's
+    prose = "rgb(168, 194, 217)"          # --fg-2, the paragraph own color
+    body_color = "rgb(232, 242, 255)"     # --fg-1, body own
     assert prose != body_color
     errs = _dress_errors(_dressed(
         body={**_dressed()["body"], "color": body_color},
-        links=[{"color": prose, "parentColor": prose}] * 10))
-    assert any("same color as the prose they sit in" in e for e in errs), errs
+        links=[_indistinct_link(prose) for _ in range(10)]))
+    assert any("identical to the prose they sit in" in e for e in errs), errs
 
 
 def test_dress_fails_when_links_fall_back_to_the_browsers_link_color():
@@ -1434,17 +1562,54 @@ def test_dress_fails_when_links_fall_back_to_the_browsers_link_color():
     # and links go UA blue — different from their parent, so the first half
     # waves them through.
     errs = _dress_errors(_dressed(
-        links=[{"color": "rgb(0, 0, 238)", "parentColor": "rgb(232, 242, 255)"}] * 8))
+        links=[_link(color="rgb(0, 0, 238)") for _ in range(8)]))
     assert any("browser's own default link color" in e for e in errs), errs
 
 
 def test_every_link_is_sampled_not_just_the_first():
-    errs = _dress_errors(_dressed(links=[
-        {"color": "rgb(23, 212, 250)", "parentColor": "rgb(232, 242, 255)"},
-        {"color": "rgb(23, 212, 250)", "parentColor": "rgb(232, 242, 255)"},
-        {"color": "rgb(168, 194, 217)", "parentColor": "rgb(168, 194, 217)"},
-    ]))
+    errs = _dress_errors(_dressed(links=[_link(), _link(), _indistinct_link()]))
     assert any("1 of 3 a.inline-link" in e for e in errs), errs
+
+
+def test_a_link_marked_by_any_signal_other_than_color_is_distinguishable():
+    # THE OVER-CONSTRAINT this assertion used to carry silently. It compared
+    # COLOR only, and the live theme dresses links with a color AND a
+    # border-bottom, so nothing exercised the gap: a theme marking links by
+    # underline alone at prose color — legitimate, and what WCAG prefers over
+    # color alone — failed with "indistinguishable from body copy" while being
+    # perfectly distinguishable. It fires inside --require-browser, so it
+    # aborted the rotation.
+    prose = "rgb(168, 194, 217)"
+    signals = {
+        "textDecorationLine": "underline",
+        "borderBottomWidth": "1px",
+        "borderBottomStyle": "dotted",
+        "fontWeight": "600",
+        "fontStyle": "italic",
+        "backgroundColor": "rgba(23, 212, 250, 0.08)",
+        "backgroundImage": "linear-gradient(transparent 90%, currentColor 90%)",
+        "boxShadow": "inset 0 -1px currentColor",
+        "textDecorationStyle": "wavy",
+    }
+    for signal, value in signals.items():
+        link = _indistinct_link(prose)
+        link["self"][signal] = value
+        assert _dress_errors(_dressed(links=[link])) == [], (
+            f"a link marked by {signal}={value!r} at prose color was called "
+            f"indistinguishable")
+
+
+def test_a_link_identical_to_its_prose_on_every_signal_still_fails():
+    # The other side of the disjunction: widening the signal set must not
+    # turn the assertion into one that can never fire.
+    errs = _dress_errors(_dressed(links=[_indistinct_link()]))
+    assert any("identical to the prose they sit in" in e for e in errs), errs
+
+
+def test_a_link_whose_parent_could_not_be_read_is_not_invented_into_a_failure():
+    link = _indistinct_link()
+    link["parent"] = None
+    assert _dress_errors(_dressed(links=[link])) == []
 
 
 def test_dress_fails_when_the_page_carries_no_inline_link_at_all():
@@ -1571,7 +1736,29 @@ def test_the_two_utility_pages_self_import_the_repo_global_font_stack():
 # pin the scoping that closes it, and each one was watched failing against the
 # pooled implementation before it was kept.
 
-_PB_DEFINITION_RE = re.compile(r"[ \t]*--pb-[\w-]+\s*:[^;{}]*;\n?")
+def _private_read_and_defined(text: str, group_text: dict[str, str]) -> set[str]:
+    """Names this stylesheet both DEFINES and its group READS, minus the
+    contracted set — the theme's own private treatment namespace, whatever it
+    happens to be called.
+
+    Derived, never spelled. `--pb-` is Phosphor Blueprint's private prefix and
+    an earlier version of this file hardcoded it, so a theme naming its tokens
+    `--sx-*` failed three parametrized tests for having a different taste in
+    prefixes. The contract is that a theme MAY have a private namespace, not
+    that it must spell it the way this month's theme spells it.
+    """
+    defined = set(td._parse_custom_properties(text)) - set(td.archetypes.REQUIRED_TOKENS)
+    read = set()
+    for body in group_text.values():
+        stripped = re.sub(r"/\*.*?\*/", "", body, flags=re.S)
+        read |= set(re.findall(r"var\(\s*(--[\w-]+)", stripped))
+    return defined & read
+
+
+def _strip_definitions(text: str, names) -> str:
+    for name in names:
+        text = re.sub(r"[ \t]*" + re.escape(name) + r"\s*:[^;{}]*;\n?", "", text)
+    return text
 
 
 def _group_css(group_theme_labels, tdir, overrides=None):
@@ -1694,13 +1881,31 @@ def test_dropping_a_treatment_prefix_from_one_group_fails_that_group(
     # eight of the nine and satisfied reads in documents that never load it.
     tdir = td.theme_registry.theme_dir(_active_slug())
     original = (tdir / label).read_text(encoding="utf-8")
-    stripped = _PB_DEFINITION_RE.sub("", original)
-    assert stripped != original, f"{label} declares no --pb-* names to delete"
+
+    # The theme's OWN private namespace, derived from what this file defines
+    # and its group reads. A theme may call it --pb-*, --sx-*, or may have
+    # none at all; only the last case needs help, and it gets a synthesized
+    # probe rather than a skip, because a skipped gate is the failure mode
+    # this file refuses everywhere else.
+    group_text = {}
+    for _group, (theme_labels, _site) in td.resolution_groups(tdir).items():
+        if label in theme_labels:
+            group_text.update(_group_css(theme_labels, tdir))
+    private = _private_read_and_defined(original, group_text)
+    if not private:
+        probe = "--zz-private-probe"
+        original += (
+            "\n:root { " + probe + ": #123456; }\nbody { color: var(" + probe + "); }\n"
+        )
+        private = {probe}
+
+    stripped = _strip_definitions(original, private)
+    assert stripped != original, f"{label}: nothing was stripped"
 
     errs = _reads_errors_for_live_theme({label: stripped})
-    assert errs, f"deleting {label}'s --pb-* definitions produced no error"
+    assert errs, f"deleting {label}'s private token definitions produced no error"
     for e in errs:
-        assert e.startswith(f"{expected_reader}: reads --pb-"), e
+        assert e.startswith(f"{expected_reader}: reads --"), e
         assert f"nothing loaded by {consumer} defines" in e, e
 
     # And the deletion stays invisible to the token contract, which is why
@@ -1738,14 +1943,40 @@ def test_a_site_stylesheet_credits_only_the_group_that_links_it():
     # could read an --ed-* name and pass on a definition in
     # Design/editorial.css that no product consumer ever loads. Site
     # stylesheets attach per group now, derived from each page's own <link>s.
-    groups = td.resolution_groups(td.theme_registry.theme_dir(_active_slug()))
-    assert groups["about.html"][1] == ("Design/editorial.css",)
-    # index.html links the widget stylesheet and nothing else site-owned; that
-    # is a real definer for its group, and for no other.
-    assert groups["index.html"][1] == ("widget-bacon-trail/widget.css",)
-    for group, (_, site_labels) in groups.items():
-        if group not in ("about.html", "index.html"):
-            assert site_labels == (), (group, site_labels)
+    tdir = td.theme_registry.theme_dir(_active_slug())
+    groups = td.resolution_groups(tdir)
+
+    # THE PROPERTY, re-derived here with a plain regex rather than restated as
+    # this theme's answer: a group's site stylesheets are exactly the
+    # NON-theme stylesheets its own documents link. An earlier version pinned
+    # ("widget-bacon-trail/widget.css",) as a literal, so a home shell that
+    # also linked /Design/editorial.css or /fonts/fonts.css — both legitimate
+    # — failed a test about scoping for having different contents.
+    link_re = re.compile(r'<link[^>]+rel="stylesheet"[^>]*>')
+    href_re = re.compile(r'href="([^"]+)"')
+
+    def _site_links(html):
+        out = set()
+        for tag in link_re.findall(html):
+            m = href_re.search(tag)
+            if not m:
+                continue
+            href = m.group(1).split("?", 1)[0].lstrip("/")
+            if href.startswith("themes/"):
+                continue          # theme-owned; graded as a theme member
+            if (ROOT / href).exists():
+                out.add(href)
+        return out
+
+    for group, (_theme_labels, site_labels) in groups.items():
+        expected = set()
+        for page in group.split(", "):
+            if "*" in page:
+                continue          # a glob of generated pages, no single source
+            source = (tdir / "archetypes" / "home.html") if page == "index.html" else (ROOT / page)
+            if source.exists():
+                expected |= _site_links(source.read_text(encoding="utf-8"))
+        assert set(site_labels) == expected, (group, site_labels, expected)
 
     # about.html's dress legitimately spends five names editorial.css defines,
     # and resolves them ONLY because about.html links that file.
@@ -1760,9 +1991,14 @@ def test_a_site_stylesheet_credits_only_the_group_that_links_it():
     unlinked = td.check_theme_reads_only_what_it_defines(
         "about.html", {"archetypes/reading.css": reading_css}, {}
     )
-    assert {e.split("reads ")[1].split(",")[0] for e in unlinked} == {
-        "--font-serif", "--ed-t-body", "--ed-t-pull", "--ed-lh-body", "--ed-lh-pull",
-    }
+    # The property, not the five names: every read that resolves ONLY because
+    # about.html links editorial.css is a name editorial.css actually defines.
+    # A new reading dress spending four of them, or six, is a design choice
+    # rather than a regression.
+    unlinked_names = {e.split("reads ")[1].split(",")[0] for e in unlinked}
+    editorial_defines = set(td._parse_custom_properties(editorial["Design/editorial.css"]))
+    assert unlinked_names, "reading.css reads nothing from editorial.css to scope"
+    assert unlinked_names <= editorial_defines, unlinked_names - editorial_defines
 
     # The other half of the scoping: the same read, in a group that does not
     # link editorial.css, is a failure no matter what editorial.css defines.

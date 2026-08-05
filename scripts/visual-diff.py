@@ -71,7 +71,7 @@ back clean:
     `@media (max-width: 720px)` block is enumerated as a subject and then
     measured in a state where its rule does not apply. No live rule is in
     that position today; it is one `@media` block away from being true.
-  - 53 of the 78 properties, under hover. `HOVER_PROPS` is 25 - the paint and
+  - 55 of the 80 properties, under hover. `HOVER_PROPS` is 25 - the paint and
     type core - because the hover read runs over a whole subtree per subject.
     `border-radius`, the paddings and margins, `translate`/`scale`/`rotate`
     and the grid properties are sampled at rest and not on hover.
@@ -269,7 +269,7 @@ def _off_origin_fixtures() -> dict[str, tuple[str, str]]:
 # Broad on purpose. Every comparison in this file is an INEQUALITY between two
 # strings the browser produced - never a threshold, never a parse - so a
 # property no theme ever moves costs one string compare, while a property left
-# out is a place a real difference can hide. 78 properties.
+# out is a place a real difference can hide. 80 properties.
 COMPUTED_PROPS = (
     # paint
     "color background-color background-image background-size background-position "
@@ -599,8 +599,11 @@ _HOVER_SELECTOR_JS = r"""
   let linked = 0;
   for (const el of document.querySelectorAll('link[rel~="stylesheet" i]')) {
     if (el.disabled || !el.href) continue;
+    // Recorded, not swallowed. An href this cannot parse used to be skipped
+    // in silence, which LOWERS the floor the whole channel is graded against
+    // — the one direction a floor must never move on its own.
     try { if (new URL(el.href, location.href).origin === location.origin) linked += 1; }
-    catch (e) {}
+    catch (e) { unreadable.push((el.href || '<link>') + ': ' + e.name); }
   }
   return { selectors, read, unreadable, linked };
 }
