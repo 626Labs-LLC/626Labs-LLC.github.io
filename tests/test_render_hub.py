@@ -833,6 +833,38 @@ def test_reading_pages_own_their_scanline_overlay_rule():
         )
 
 
+def _unguarded_reads(text: str) -> set:
+    """Every `var(--x)` in `text` that carries NO fallback.
+
+    A read with a fallback cannot break a page: that is the whole point of the
+    page-scoped `--page-*` aliases, which are written `var(--pb-x,
+    var(--contracted))` so a theme without the private name still renders.
+    Requiring those to resolve made both callers fail any theme whose private
+    namespace was spelled differently — `--sx-*` instead of `--pb-*` — which
+    is a taste in prefixes, not a defect, and pytest is a rotation gate.
+
+    Balanced-paren scan, matching `check_theme_reads_only_what_it_defines`'s
+    semantics in scripts/theme-doctor.py so the two cannot drift apart.
+    """
+    import re as _re
+
+    body = _re.sub(r"/\*.*?\*/", "", text, flags=_re.S)
+    out = set()
+    for m in _re.finditer(r"var\(\s*(--[\w-]+)", body):
+        depth, i, has_fallback = 1, m.end(), False
+        while i < len(body) and depth:
+            if body[i] == "(":
+                depth += 1
+            elif body[i] == ")":
+                depth -= 1
+            elif body[i] == "," and depth == 1:
+                has_fallback = True
+            i += 1
+        if not has_fallback:
+            out.add(m.group(1))
+    return out
+
+
 def test_reading_pages_resolve_every_var_they_read():
     # Their tokens now live in the theme, with no page-local fallback — so
     # an unresolved var() is a straight rendering break, not a stale value.
@@ -852,7 +884,9 @@ def test_reading_pages_resolve_every_var_they_read():
     ).read_text(encoding="utf-8")
     defined = set(re.findall(r"(--[\w-]+)\s*:", css))
     for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
-        used = set(re.findall(r"var\(\s*(--[\w-]+)", page.read_text(encoding="utf-8")))
+        # UNGUARDED reads only — a read with a fallback resolves by
+        # construction. See _unguarded_reads.
+        used = _unguarded_reads(page.read_text(encoding="utf-8"))
         assert not used - defined, (
             f"{page.name} reads {sorted(used - defined)}, undefined in "
             f"themes/{slug}/archetypes/reading-tokens.css"
@@ -966,7 +1000,7 @@ def test_product_pages_resolve_every_var_they_read():
     defined = set(re.findall(r"(--[\w-]+)\s*:", css))
     for page in PRODUCT_TOKEN_PAGES:
         html = page.read_text(encoding="utf-8")
-        used = set(re.findall(r"var\(\s*(--[\w-]+)", html))
+        used = _unguarded_reads(html)
         # A page may declare its own --page-* aliases (see the C1 fix); those
         # resolve locally by definition. Everything else has to come from the
         # theme.
