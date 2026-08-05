@@ -1300,7 +1300,7 @@ def test_every_region_selector_is_the_PAGES_own_markup():
     # The design's one hard rule: a region may name a selector the PAGE ships,
     # never one the THEME must carry. Checked against both shipped files.
     needles = {
-        "html, body": "<body",
+        "html, body, body > div": "<body",
         "nav.nav": '<nav class="nav"',
         "header.page-hero": '<header class="page-hero"',
         "main": "<main",
@@ -1311,6 +1311,76 @@ def test_every_region_selector_is_the_PAGES_own_markup():
         html = (ROOT / name).read_text(encoding="utf-8")
         for selector, needle in needles.items():
             assert needle in html, (name, selector)
+
+
+def test_the_field_region_reaches_the_pages_own_full_bleed_overlay():
+    # A theme cannot add elements to these two pages, so the surfaces it can
+    # put a field on are exactly: html, body, their pseudos, and the one <div>
+    # each page ships as a direct child of body. Reaching only html/body FAILED
+    # a theme that moved the entire field onto that div at z-index:-1 with html
+    # and body painting nothing — a correct dark page, exit 1 on both pages.
+    #
+    # Measured across every scratch theme, field-region differing counts:
+    #   selector                 live  (a)tokens (b)resets (c)::before (d)overlay
+    #   html, body               1/2   0/2 OK    0/2 OK    1/2 OK      0/2 FALSE FAIL
+    #   html, body, body > div   2/3   0/3 OK    0/3 OK    1/3 OK      1/3 OK
+    #   html, body, body > *     4/9   0/9 OK    0/9 OK    1/9 OK      1/9 OK
+    selector = td._DRESS_REGIONS[0][1]
+    assert "body > div" in selector, (
+        "the field region must reach body's full-bleed overlay div, or a theme "
+        "putting its field there fails a gate it should pass")
+    # ...and NOT `body > *`, which also measured usable but would let a
+    # background on the nav alone satisfy "the page has a field" — nav, hero,
+    # main and footer each already have a region of their own.
+    assert "body > *" not in selector
+    for name in td.DRESS_OUTCOME_PAGES:
+        html = (ROOT / name).read_text(encoding="utf-8")
+        assert '<div class="pb-scanlines"' in html, name
+
+
+def test_every_element_level_reading_happens_BEFORE_the_stylesheet_toggle():
+    # Enforced by structure, not by the comment that used to be the only thing
+    # holding it. _DRESS_PROBE_JS is a string no test executes — the stub page
+    # ignores its `script` argument — so moving the element reads below the
+    # toggle passed the whole suite while the real --browser run failed the
+    # LIVE theme with "8 of 8 a.inline-link elements resolve the browser's own
+    # default link color". Fail-loud rather than false-pass, but it aborts a
+    # correct rotation with a wrong diagnosis, which costs the same.
+    #
+    # It cannot simply be re-ordered back: Chromium does not invalidate cached
+    # :link styles when CSSStyleSheet.disabled returns to false, so a read
+    # after the toggle sees an undressed link no matter what.
+    js = td._DRESS_PROBE_JS
+    toggle = js.index("s.disabled = true")
+    for reader in ("probe.contentDocument", "const body = rd(", "const title = rd(",
+                   "const inlineLinks ="):
+        assert js.index(reader) < toggle, (
+            f"{reader!r} reads the page AFTER the stylesheet toggle; Chromium does "
+            f"not fully restore the sheet, so it would grade an undressed page")
+
+
+def test_run_browser_checks_all_turns_the_dress_check_on_for_exactly_those_pages(monkeypatch):
+    # THE WIRE. Everything else in this gate is worthless if this expression
+    # can be cut without a test noticing: replacing
+    # `dress_outcome=archetype in DRESS_OUTCOME_PAGES` with `dress_outcome=False`
+    # makes the entire dress gate silently no-op for both pages, and the
+    # consumer-side test below (which drives _check_viewport directly) does not
+    # see it. This drives _run_browser_checks_all itself.
+    seen = {}
+
+    def fake(html_text, require=False, dress_outcome=False):
+        seen[html_text] = dress_outcome
+        return []
+
+    monkeypatch.setattr(td, "_import_sync_playwright", lambda: object())
+    monkeypatch.setattr(td, "_run_browser_checks", fake)
+    docs = {name: name for name in ("home", "product", "reading", "utility",
+                                    *td.BROWSER_CHECK_LIVE_PAGES)}
+    assert td._run_browser_checks_all(docs) == []
+    for name, on in seen.items():
+        assert on is (name in td.DRESS_OUTCOME_PAGES), (name, on)
+    # ...and it really did turn on for both, rather than for nothing at all.
+    assert sorted(n for n, on in seen.items() if on) == sorted(td.DRESS_OUTCOME_PAGES)
 
 
 # ─── the element-level assertions that survived ───────────────────────────
