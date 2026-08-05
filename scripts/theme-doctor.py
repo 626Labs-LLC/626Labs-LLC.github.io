@@ -979,6 +979,17 @@ def check_theme_reads_only_what_it_defines(
 # workflow rather than an exotic one.
 _THEME_SELF_REF_RE = re.compile(r"/themes/([A-Za-z0-9._-]+)/")
 
+# ...and the same reference written RELATIVELY, which the pattern above cannot
+# see. `href="themes/phosphor-blueprint/tokens.css"` and
+# `@import url("../../phosphor-blueprint/archetypes/utility.css")` both reach
+# the retired theme and both passed the leading-slash form — proven end to end,
+# with `render-hub.py --theme` emitting an index.html carrying the href.
+#
+# So the check also looks for any SIBLING theme's directory name used as a path
+# segment. Sibling names come off disk rather than from a list, so a theme
+# added tomorrow is covered tomorrow.
+_PATH_SEGMENT_RE = r"(?:^|[\s\"\'(=/])%s/"
+
 
 def check_theme_references_only_itself(tdir: Path) -> list[str]:
     """A theme's own files must not hardcode another theme's slug.
@@ -998,20 +1009,35 @@ def check_theme_references_only_itself(tdir: Path) -> list[str]:
     One comparison against the directory's own name closes it.
     """
     errors: list[str] = []
+    siblings = sorted(
+        d.name for d in tdir.parent.iterdir()
+        if d.is_dir() and d.name != tdir.name and d.name != "archive"
+    )
+    # Every text file, not a suffix allowlist: a reference is a reference
+    # wherever it is written, and an allowlist is a list of the places someone
+    # already thought of.
     for path in sorted(tdir.rglob("*")):
-        if not path.is_file() or path.suffix.lower() not in (".html", ".css", ".json", ".svg"):
+        if not path.is_file():
             continue
         try:
             text = path.read_text(encoding="utf-8")
         except (UnicodeDecodeError, OSError):
-            continue
-        for slug in sorted(set(_THEME_SELF_REF_RE.findall(text))):
+            continue          # a binary asset cannot carry an href
+        found: dict[str, str] = {}
+        for slug in set(_THEME_SELF_REF_RE.findall(text)):
             if slug != tdir.name:
-                errors.append(
-                    f"{path.relative_to(tdir).as_posix()}: hardcodes /themes/{slug}/, "
-                    f"which is a DIFFERENT theme — the rendered page would load "
-                    f"{slug}'s stylesheet while this theme is graded on its own"
-                )
+                found[slug] = f"/themes/{slug}/"
+        for slug in siblings:
+            if slug in found:
+                continue
+            if re.search(_PATH_SEGMENT_RE % re.escape(slug), text):
+                found[slug] = f"{slug}/"
+        for slug, how in sorted(found.items()):
+            errors.append(
+                f"{path.relative_to(tdir).as_posix()}: references {how}, which is a "
+                f"DIFFERENT theme — the rendered page would load {slug}'s stylesheet "
+                f"while this theme is graded on its own"
+            )
     return errors
 
 
@@ -2152,7 +2178,7 @@ def main(argv: list[str]) -> int:
     # REQUIRED_TOKEN_CSS is every stylesheet a page reads base vocabulary
     # out of. "home" contributes none: no page links or inlines an
     # archetypes/home.css — index.html is rendered from the theme's
-    # shell.html against tokens.css, which is the first entry.
+    # archetypes/home.html against tokens.css, which is the first entry.
     for label in REQUIRED_TOKEN_CSS:
         text = (tdir / label).read_text(encoding="utf-8")
         errors += [f"{label}: {e}" for e in check_required_tokens(text)]

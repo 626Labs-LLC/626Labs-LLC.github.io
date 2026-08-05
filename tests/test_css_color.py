@@ -75,6 +75,29 @@ BROWSER_VERIFIED = [
     ("oklch(0.5 0.1 none)", (144, 73, 97)),
     ("oklch(none 0.1 200)", (0, 0, 1)),
     ("lab(50% none 30)", (132, 118, 67)),
+    # color-mix over every interpolation space CSS Color 5 names. Five of the
+    # eleven used to resolve; the other six returned None, which the contrast
+    # gate reports as "could not resolve" and the rotation treats as a failure.
+    ("color-mix(in lab, red 40%, blue)", (176, 0, 159)),
+    ("color-mix(in lch, red 40%, blue)", (227, 0, 161)),
+    ("color-mix(in hwb, red 40%, blue)", (204, 0, 255)),
+    ("color-mix(in xyz, red 40%, blue)", (170, 0, 203)),
+    ("color-mix(in xyz-d50, red 40%, blue)", (170, 0, 203)),
+    ("color-mix(in xyz-d65, red 40%, blue)", (170, 0, 203)),
+    # ...and all four hue-interpolation methods. `longer` at exactly 180 is a
+    # knife edge: operands round-trip through sRGB, which costs ~2e-5 degrees
+    # of hue, and the unsnapped version took the wrong branch here.
+    ("color-mix(in oklch shorter hue, oklch(0.7 0.15 20) 50%, oklch(0.7 0.15 200))", (165, 165, 15)),
+    ("color-mix(in oklch longer hue, oklch(0.7 0.15 20) 50%, oklch(0.7 0.15 200))", (165, 165, 15)),
+    ("color-mix(in hsl increasing hue, red, blue)", (0, 255, 0)),
+    ("color-mix(in hsl decreasing hue, red, blue)", (255, 0, 255)),
+    ("color-mix(in lch, oklch(0.9 0.1 20) 30%, lab(30% 20 -40))", (150, 90, 156)),
+    ("color-mix(in oklab, color-mix(in srgb, red, blue) 50%, white)", (195, 140, 192)),
+    # out-of-gamut and boundary values
+    ("oklch(0.95 0.4 140)", (0, 255, 0)),
+    ("lab(50% -80 90)", (0, 146, 0)),
+    ("hwb(200 70% 60%)", (137, 137, 137)),
+    ("hsl(-90 50% 50%)", (128, 64, 191)),
 ]
 
 
@@ -129,3 +152,38 @@ def test_an_unresolvable_pair_is_still_a_failure_not_a_shrug():
     css = ":root{--fg: notacolor; --bg: #000;}"
     failures, _ = td.check_contrast(css, [["--fg", "--bg"]])
     assert failures and "could not resolve" in failures[0], failures
+
+
+def test_every_interpolation_space_color_mix_names_actually_resolves():
+    """The docstring said "a rectangular or polar space" while `_to_space`
+    handled five of eleven and returned None for the rest — the same defect
+    class as the oklch Critical, one space over. Exhaustive now, and this test
+    is what keeps the sentence honest."""
+    spaces = ("srgb", "srgb-linear", "lab", "lch", "oklab", "oklch", "hsl",
+              "hwb", "xyz", "xyz-d50", "xyz-d65")
+    for space in spaces:
+        value = f"color-mix(in {space}, red 40%, blue)"
+        assert cc.to_rgb(value) is not None, value
+    doc = " ".join(cc.__doc__.split())
+    for space in spaces:
+        assert f"`{space}`" in doc, f"{space} is supported but the docstring omits it"
+
+
+def test_every_hue_interpolation_method_resolves():
+    for method in ("shorter", "longer", "increasing", "decreasing"):
+        value = f"color-mix(in oklch {method} hue, oklch(0.7 0.15 20), oklch(0.7 0.15 200))"
+        assert cc.to_rgb(value) is not None, value
+    # A hue method on a rectangular space is invalid CSS and must not be
+    # silently averaged into an answer.
+    assert cc.to_rgb("color-mix(in oklab longer hue, red, blue)") is None
+
+
+def test_the_docstring_names_what_is_NOT_supported():
+    """`light-dark()` and relative color syntax resolve to None, which the
+    contrast gate reports as an unresolved pair. That is the right failure, but
+    a theme author should learn it from the docstring rather than on the 1st."""
+    doc = " ".join(cc.__doc__.split())
+    assert "light-dark()" in doc and "relative color syntax" in doc
+    assert cc.to_rgb("light-dark(white, black)") is None
+    assert cc.to_rgb("rgb(from red r g b)") is None
+    assert cc.to_rgb("color-mix(in srgb, red, blue, green)") is None
