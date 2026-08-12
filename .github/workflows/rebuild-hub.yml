@@ -45,8 +45,15 @@ jobs:
         with:
           python-version: '3.12'
 
+      # `pytest` is not in requirements.txt (it's test-only, never imported by
+      # the renderer), so the "Gate: tests" step below needs it named here —
+      # the same `-r requirements.txt pytest` the other three pytest-running
+      # workflows install. It was missing from 3fce707, which is the commit
+      # that ADDED that gate: every run since died on "No module named pytest"
+      # before rendering anything, so this workflow silently stopped
+      # re-rendering index.html on site.json pushes for eight days.
       - name: Install deps
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt pytest
 
       # Generate the per-story social cards FIRST so render-hub can point each
       # story page's og:image at a card that exists this run.
