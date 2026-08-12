@@ -810,6 +810,28 @@
       "banner": null,
       "meta": "Open source · Python · Gemini + Printify",
       "screenshots": []
+    },
+    {
+      "id": "etsy-mcp",
+      "title": "626Labs Etsy Agentic Connector",
+      "tagline": "Read-only eyes on your Etsy shop, for any AI assistant.",
+      "description": "A hosted MCP connector that connects Claude — and any MCP client — to an Etsy seller's shop data through Etsy's official Open API v3. Shop snapshots, listing performance, orders, reviews, and day-over-day movers computed from snapshot history. Sign-in happens only on etsy.com's own consent screen, on four read-only scopes; tokens are encrypted at rest with AES-256-GCM, your data exports to CSV anytime, and it purges automatically 30 days after you disconnect. No scraping — the official API plus optional seller-provided CSV imports, labeled by source. Zero tools modify your shop. In private testing with Conundrum by Este.",
+      "tags": [
+        {"label": "MCP", "tone": "cyan"},
+        {"label": "Etsy", "tone": "magenta"},
+        {"label": "read-only", "tone": "cyan"},
+        {"label": "In development", "tone": "wip"}
+      ],
+      "status": "wip",
+      "repo": null,
+      "npm": null,
+      "install": null,
+      "storeUrl": null,
+      "productPage": "etsy-mcp.html",
+      "productPageLabel": "How it works",
+      "banner": null,
+      "meta": "Private testing · read-only · Etsy Open API v3",
+      "screenshots": []
     }
   ],
   "pluginFamily": {

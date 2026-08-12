@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Etsy Agentic Connector · 626 Labs</title>
+<meta name="description" content="A hosted MCP connector that gives AI assistants read-only eyes on your Etsy shop — stats, listing performance, orders, and trends — without ever touching your credentials. In active development, private testing." />
+<meta property="og:title" content="626Labs Etsy Agentic Connector" />
+<meta property="og:description" content="Read-only Etsy shop data for AI assistants, over the official Open API. Sign-in happens on Etsy's own consent screen; no tool in the set can modify your shop." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://626labs.dev/etsy-mcp.html" />
+<meta property="og:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="favicon-626.png" />
+
+<!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/product-tokens.css">
+<!-- SITE_JSON:theme-css:end -->
+
+<style>
+  /* ---------- Web fonts ---------- */
+  @import url('/fonts/fonts.css');
+
+  /* ---------- Theme tokens ----------
+     Brand tokens come from the ACTIVE theme's
+     archetypes/product-tokens.css, linked above and repointed by
+     scripts/render-hub.py on every render. This page carries no private
+     :root copy of them: a copy is something the monthly rotation cannot
+     reach.
+
+     What it links is the token file, NOT archetypes/product.css. That one
+     is the element dress for the pages render-plugin-pages.py generates,
+     written on bare selectors (`body`, `a:hover`, `section.hero`, `.card`,
+     `.btn`) that would land on markup here they were never written for —
+     this page's `.card` is a trust row, not a product card. Hand-authored
+     pages recolor monthly; they do not re-layout. Every rule below this
+     comment is this page's own and stays this page's own. */
+
+  html, body { margin:0; padding:0; min-height:100vh; }
+  body{
+    background: var(--bg-0);
+    color:var(--fg-1);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *{ box-sizing:border-box; }
+  a{ color:var(--cyan); }
+
+  .grid-bg{ position:fixed; inset:0; pointer-events:none; z-index:0; }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-bottom: 1px solid var(--page-hairline);
+  }
+  .topnav-inner{
+    max-width: 1180px; margin: 0 auto; padding: 14px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em;
+  }
+  .brand{
+    display:inline-flex; align-items:center; gap:10px;
+    color: var(--fg-1); text-decoration:none;
+    text-transform: uppercase; font-weight:600; letter-spacing:.18em;
+  }
+  .brand .mark{
+    width:18px; height:18px; border-radius:50%;
+    background: var(--brand-gradient);
+  }
+  .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; align-items:center; }
+  .topnav .links a{ color:var(--fg-3); text-decoration:none; transition: color var(--dur-fast); }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
+
+  /* ---------- Layout ---------- */
+  .wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding: 56px 32px 72px; }
+
+  /* ---------- Hero ---------- */
+  .hero h1{
+    font-family:var(--font-display); font-weight:700;
+    font-size: clamp(30px, 4.5vw, 44px); line-height:1.08; margin:0 0 14px;
+  }
+  .hero h1 em{ font-style:normal; background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero p.dek{ max-width:760px; color:var(--fg-2); font-size:16px; line-height:1.65; margin:0 0 10px; }
+  .hero .fine{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--fg-muted);
+  }
+  .hero .fine b{ color:var(--cyan); font-weight:500; }
+
+  /* ---------- Status strip ---------- */
+  .strip{
+    margin: 34px 0 8px;
+    display:flex; flex-wrap:wrap; gap:14px 40px;
+    background: var(--page-panel-fill);
+    border:1px solid var(--page-hairline); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke);
+    padding: 16px 20px;
+  }
+  .strip div{ display:flex; flex-direction:column; gap:4px; }
+  .strip .k{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--fg-muted);
+  }
+  .strip .v{ font-family:var(--font-mono); font-size:13px; color:var(--fg-2); }
+
+  /* ---------- Sections ---------- */
+  .section-hd{ margin: 56px 0 18px; }
+  .section-hd .eyebrow{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--cyan); margin:0 0 8px;
+  }
+  .section-hd h2{ font-family:var(--font-display); font-size:clamp(22px,3vw,28px); font-weight:600; margin:0; }
+  p.lead{ color:var(--fg-2); font-size:15px; line-height:1.75; max-width:760px; margin:0 0 8px; }
+  p.lead + p.lead{ margin-top:14px; }
+  p.lead b{ color:var(--fg-1); font-weight:600; }
+
+  /* ---------- Capability cards ---------- */
+  .cards{
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap:16px; margin-top:24px;
+  }
+  .card{
+    background: var(--page-panel-fill);
+    border:1px solid var(--page-hairline); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke);
+    padding: 20px 22px;
+  }
+  .card h3{
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--cyan); font-weight:500; margin:0 0 10px;
+  }
+  .card p{ margin:0; color:var(--fg-3); font-size:13.5px; line-height:1.65; }
+
+  /* ---------- The read-only callout ---------- */
+  .callout{
+    margin: 30px 0 0;
+    border-left:2px solid var(--magenta);
+    padding: 10px 0 10px 20px;
+    max-width:700px;
+  }
+  .callout .k{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--magenta); display:block; margin-bottom:8px;
+  }
+  .callout p{
+    margin:0; font-family:var(--font-display); font-size:19px; line-height:1.5;
+    color:var(--fg-1);
+  }
+
+  /* ---------- Trust rows ---------- */
+  .trust{ display:flex; flex-direction:column; gap:2px; margin-top:24px; }
+  .trust-row{
+    display:grid; grid-template-columns: 210px 1fr; gap:6px 28px;
+    padding: 20px 0; border-top:1px solid var(--page-hairline);
+  }
+  .trust-row:last-child{ border-bottom:1px solid var(--page-hairline); }
+  .trust-row .k{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--cyan); padding-top:2px;
+  }
+  .trust-row .d{ color:var(--fg-2); font-size:14.5px; line-height:1.7; max-width:640px; }
+  .trust-row .d b{ color:var(--fg-1); font-weight:600; }
+
+  /* ---------- Scope table ---------- */
+  .scopes{ list-style:none; margin:16px 0 0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  .scopes li{ display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 14px; }
+  .scopes code{
+    font-family:var(--font-mono); font-size:12.5px; color:var(--cyan-pale);
+    background:var(--page-code-fill); border:1px solid var(--page-panel-border);
+    border-radius:6px; padding:3px 9px; white-space:nowrap;
+  }
+  .scopes span{ color:var(--fg-3); font-size:13.5px; line-height:1.6; }
+  .scopes-note{
+    margin:16px 0 0; font-family:var(--font-mono); font-size:11.5px;
+    letter-spacing:.04em; color:var(--fg-muted); line-height:1.7;
+  }
+  .scopes-note b{ color:var(--fg-2); font-weight:500; }
+
+  /* ---------- Status panel ---------- */
+  .status-panel{
+    margin-top:24px;
+    background: var(--page-panel-fill);
+    border:1px solid var(--page-panel-border); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke);
+    padding: 26px 28px;
+  }
+  .status-panel p{ margin:0; color:var(--fg-2); font-size:15px; line-height:1.75; max-width:720px; }
+  .status-panel p + p{ margin-top:14px; }
+  .status-panel .gates{
+    list-style:none; margin:20px 0 0; padding:0;
+    display:flex; flex-wrap:wrap; gap:10px;
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:.06em;
+  }
+  .status-panel .gates li{
+    color:var(--fg-3); border:1px solid var(--page-panel-border);
+    border-radius:var(--r-pill); padding:7px 15px;
+  }
+
+  /* ---------- Contact block ---------- */
+  .contact{
+    margin-top:56px; padding-top:28px; border-top:1px solid var(--page-hairline);
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:22px 40px;
+  }
+  .contact .k{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--fg-muted); display:block; margin-bottom:8px;
+  }
+  .contact a{ font-size:14.5px; text-decoration:none; }
+  .contact a:hover{ text-decoration:underline; }
+  .pending{
+    font-family:var(--font-mono); font-size:12px; color:var(--fg-3);
+    line-height:1.7; overflow-wrap:anywhere;
+  }
+  .pending em{
+    font-style:normal; display:block; margin-top:4px;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-muted);
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--page-hairline); margin-top:64px; padding:26px 32px;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--fg-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    max-width:1180px; margin-left:auto; margin-right:auto;
+  }
+  footer a{ color:var(--fg-3); text-decoration:none; }
+  footer a:hover{ color:var(--cyan); }
+
+  @media (max-width: 760px){
+    .wrap{ padding: 40px 20px 56px; }
+    .topnav-inner{ padding: 12px 20px; }
+    .topnav .links{ gap:14px; }
+    .trust-row{ grid-template-columns: 1fr; gap:8px; }
+    footer{ padding: 24px 20px; }
+  }
+
+  /* ==================================================================
+     Phosphor Blueprint treatment — the drawing is the monitor.
+     Same override-block pattern as conundrum.html and
+     mod-launcher-games.html.
+
+     Each alias reads THIS theme's treatment name and falls back to the
+     contracted token behind it. Under phosphor-blueprint every one
+     resolves to the --pb-* value. Under a theme that satisfies
+     archetypes.REQUIRED_TOKENS and ships no treatment, the structural
+     aliases fall through to --bg-0/--bg-2/--border-1/--border-2 and the
+     decorative ones disappear, so the page rotates instead of rendering
+     on a white field with unresolved var()s.
+
+     Note what is NOT here: no contracted token is redefined. A page that
+     overrides --bg-0 or --border-1 is a page the rotation cannot reach,
+     which is the same defect as the private :root this pattern replaced,
+     one indirection deeper.
+     ================================================================== */
+  :root {
+    --page-field: var(--pb-field, var(--bg-0));
+    --page-hairline: var(--pb-hairline, var(--border-1));
+    --page-panel-border: var(--pb-panel-border, var(--border-2));
+    --page-panel-fill: var(--pb-panel, var(--bg-1));
+    --page-code-fill: var(--pb-panel, var(--bg-2));
+    --page-grid-fine: var(--pb-grid-fine, transparent);
+    --page-grid-coarse: var(--pb-grid-coarse, transparent);
+    --page-scanline: var(--pb-scanline, transparent);
+    --page-bloom: var(--pb-bloom-cyan, none);
+  }
+
+  .pb-scanlines{
+    position: fixed; inset: 0; pointer-events: none; z-index: 60;
+    background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
+  }
+
+  body{
+    background:
+      linear-gradient(90deg, var(--page-grid-fine) 1px, transparent 1px),
+      linear-gradient(0deg,  var(--page-grid-fine) 1px, transparent 1px),
+      linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+      linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+      var(--page-field);
+    background-size: 56px 56px, 56px 56px, 280px 280px, 280px 280px, auto;
+  }
+
+  .grid-bg{ display: none; } /* body's drafting grid owns the field — two grids moiré */
+  .topnav{ background: var(--page-panel-fill); border-bottom-color: var(--page-panel-border); z-index: 70; }
+  .topnav::after{
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
+  }
+  h1{ text-shadow: var(--page-bloom); }
+</style>
+</head>
+<body>
+
+<div class="pb-scanlines" aria-hidden="true"></div>
+<div class="grid-bg" aria-hidden="true"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html"><span class="mark"></span>626 Labs</a>
+    <div class="links">
+      <a href="index.html#work">Products</a>
+      <a href="index.html#field-notes">Field Notes</a>
+      <a class="cta" href="#trust">Trust model</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section class="hero">
+    <h1>626Labs <em>Etsy Agentic Connector</em></h1>
+    <p class="dek">A trusted, hosted MCP connector that gives AI assistants read-only eyes
+      on your Etsy shop — stats, listing performance, orders, and trends — without ever
+      touching your credentials.</p>
+    <p class="fine">Status: <b>in active development</b> · private testing · not yet publicly available</p>
+
+    <div class="strip">
+      <div>
+        <span class="k">Access</span>
+        <span class="v">Read-only</span>
+      </div>
+      <div>
+        <span class="k">Protocol</span>
+        <span class="v">MCP</span>
+      </div>
+      <div>
+        <span class="k">Data source</span>
+        <span class="v">Etsy Open API v3</span>
+      </div>
+      <div>
+        <span class="k">Sign-in</span>
+        <span class="v">etsy.com OAuth</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-hd">
+      <p class="eyebrow">What it does</p>
+      <h2>Your shop data, where your assistant already is</h2>
+    </div>
+
+    <p class="lead">The connector links Claude — and any other MCP client — to an Etsy
+      seller's shop data through Etsy's official Open API v3. You ask the questions in
+      the assistant you already use; it reads the answers out of your shop.</p>
+    <p class="lead">Version 1 is read-only. The tools it exposes fetch and summarize,
+      and that is the whole surface area.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Shop snapshots</h3>
+        <p>The state of the shop at a point in time — the baseline everything else is
+          measured against.</p>
+      </div>
+      <div class="card">
+        <h3>Listing performance</h3>
+        <p>How individual listings are doing, so the question "which of these is actually
+          working" has an answer.</p>
+      </div>
+      <div class="card">
+        <h3>Orders</h3>
+        <p>Order records, read from the same API the seller dashboard reads.</p>
+      </div>
+      <div class="card">
+        <h3>Reviews</h3>
+        <p>Feedback left on the shop, available to read alongside the listings it
+          belongs to.</p>
+      </div>
+      <div class="card">
+        <h3>Day-over-day movers</h3>
+        <p>What changed since yesterday, computed from snapshot history rather than
+          fetched — the trend line the API does not hand you directly.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="k">Read-only, by construction</span>
+      <p>Zero tools modify your Etsy shop.</p>
+    </div>
+  </section>
+
+  <section id="trust">
+    <div class="section-hd">
+      <p class="eyebrow">Trust</p>
+      <h2>What it can reach, and what it can never do</h2>
+    </div>
+
+    <p class="lead">A connector asking for access to a live storefront should be able to
+      say precisely what it takes and where it puts it. This is that list.</p>
+
+    <div class="trust">
+
+      <div class="trust-row">
+        <span class="k">Credentials</span>
+        <div class="d">Sign-in happens only on <b>etsy.com's own consent screen</b>.
+          You are never asked to enter your Etsy credentials anywhere else — not in the
+          connector, not on this site, not in your assistant.</div>
+      </div>
+
+      <div class="trust-row">
+        <span class="k">Scopes</span>
+        <div class="d">
+          Minimal, read-only, and named in full:
+          <ul class="scopes">
+            <li><code>listings_r</code> <span>read your listings</span></li>
+            <li><code>shops_r</code> <span>read your shop profile and stats</span></li>
+            <li><code>transactions_r</code> <span>read your orders and receipts</span></li>
+            <li><code>feedback_r</code> <span>read reviews left on your shop</span></li>
+          </ul>
+          <p class="scopes-note">Every one ends in <b>_r</b>. There is no write scope in
+            the set, so the grant itself is what makes the read-only promise, not just
+            the code.</p>
+        </div>
+      </div>
+
+      <div class="trust-row">
+        <span class="k">Tokens at rest</span>
+        <div class="d">Encrypted with <b>AES-256-GCM</b>.</div>
+      </div>
+
+      <div class="trust-row">
+        <span class="k">Your data, portable</span>
+        <div class="d">Full <b>CSV export</b>, anytime. What the connector has collected
+          is yours to take out in a format that opens in anything.</div>
+      </div>
+
+      <div class="trust-row">
+        <span class="k">Your data, deletable</span>
+        <div class="d"><b>Immediate on request.</b> And automatic: 30 days after you
+          disconnect, what is left purges itself whether you ask or not.</div>
+      </div>
+
+      <div class="trust-row">
+        <span class="k">No scraping</span>
+        <div class="d">Data comes from the official API, plus optional CSV imports you
+          provide yourself. Every figure is <b>labeled by source</b>, so API-derived and
+          seller-supplied numbers never get quietly averaged together.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="section-hd">
+      <p class="eyebrow">Status</p>
+      <h2>In active development</h2>
+    </div>
+
+    <div class="status-panel">
+      <p>Currently in private testing with our own shop,
+        <a href="conundrum.html">Conundrum by Este</a>. Public availability is planned
+        after maturation and review through Etsy's Commercial Access and Anthropic's
+        Connectors Directory.</p>
+      <ul class="gates">
+        <li>Private testing</li>
+        <li>Etsy Commercial Access review</li>
+        <li>Anthropic Connectors Directory review</li>
+        <li>Public availability</li>
+      </ul>
+    </div>
+
+    <div class="contact">
+      <div>
+        <span class="k">Questions</span>
+        <a href="mailto:estevan@626labs.dev">estevan@626labs.dev</a>
+      </div>
+      <div>
+        <span class="k">Privacy policy</span>
+        <div class="pending">https://etsy-agentic-connector.web.app/privacy.html
+          <em>Coming online with the beta</em></div>
+      </div>
+      <div>
+        <span class="k">Docs</span>
+        <div class="pending">https://etsy-agentic-connector.web.app/docs.html
+          <em>Coming online with the beta</em></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>626 Labs · Etsy Agentic Connector</span>
+  <span><a href="index.html">626labs.dev</a> · Imagine Something Else.</span>
+</footer>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>

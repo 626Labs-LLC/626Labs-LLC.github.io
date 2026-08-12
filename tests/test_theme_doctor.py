@@ -916,10 +916,13 @@ def test_browser_checks_open_every_hand_authored_product_page():
     # mod-launcher-games.html fetches off-origin — but every page here
     # already loads //gc.zgo.at/count.js, so that dependency existed either
     # way and is now closed in _check_viewport instead of routed around.
-    # All EIGHT hand-authored pages that link a theme stylesheet. The reading
+    # All NINE hand-authored pages that link a theme stylesheet. The reading
     # pair joined for the same reason as the product four; the
     # first time this gate opened thesis.html it found a live horizontal
     # scroll at 390px, which is the argument for the tuple in one line.
+    # etsy-mcp.html joined on arrival rather than after the fact — a page
+    # shipped straight into the rotation's blind spot is the same defect
+    # these eight were retrofitted out of.
     #
     # press.html and privacy.html joined last and on a stronger argument than
     # any of the six: they own NO chrome of their own, so the theme is the
@@ -927,7 +930,7 @@ def test_browser_checks_open_every_hand_authored_product_page():
     assert td.BROWSER_CHECK_LIVE_PAGES == (
         "conundrum.html", "rororo-plugins.html", "rororo.html",
         "mod-launcher-games.html", "thesis.html", "workflow.html",
-        "press.html", "privacy.html",
+        "press.html", "privacy.html", "etsy-mcp.html",
     )
     previewable = _render_hub_previewable_pages()
     for name in td.BROWSER_CHECK_LIVE_PAGES:
