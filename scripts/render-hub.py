@@ -62,6 +62,7 @@ WORKFLOW_HTML = ROOT / "workflow.html"
 ROROROPLUGINS_HTML = ROOT / "rororo-plugins.html"
 RORORO_HTML = ROOT / "rororo.html"
 MODLAUNCHERGAMES_HTML = ROOT / "mod-launcher-games.html"
+ETSYMCP_HTML = ROOT / "etsy-mcp.html"
 STORIES_DIR = ROOT / "content" / "stories"
 # Local Field Notes render to on-site reading pages under here:
 # editorial/<slug>/index.html, served at /editorial/<slug>/.
@@ -304,6 +305,12 @@ PRODUCT_SIGILS = {
         '<path d="M12 2L2 7l10 5 10-5-10-5z"/>'
         '<path d="M2 17l10 5 10-5"/>'
         '<path d="M2 12l10 5 10-5"/></svg>'
+    ),
+    "etsy-mcp": (
+        # Two link segments — a connector, joined but not merged
+        '<svg class="ic-lg ic" viewBox="0 0 24 24">'
+        '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>'
+        '<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
     ),
     "vibe-family": (
         # Constellation — the family as connected stars
@@ -860,8 +867,9 @@ def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
 # tokens.css's `header.hero h1` never matched `.page-hero` either, so
 # themes.html's h1 currently has no bloom at all; and press.html's
 # `.page-lead` is `max-width: 60ch` where themes.html's own copy is
-# `62ch`). All four bespoke product pages — conundrum.html,
-# rororo-plugins.html, rororo.html, mod-launcher-games.html — link
+# `62ch`). All five bespoke product pages — conundrum.html,
+# rororo-plugins.html, rororo.html, mod-launcher-games.html,
+# etsy-mcp.html — link
 # archetypes/product-tokens.css, the TOKEN half of the product
 # archetype, where THEIR private :root copies went. Deliberately not
 # archetypes/product.css: that file is the element dress
@@ -889,6 +897,7 @@ THEME_CSS_HREFS = {
     ROROROPLUGINS_HTML: "archetypes/product-tokens.css",
     RORORO_HTML: "archetypes/product-tokens.css",
     MODLAUNCHERGAMES_HTML: "archetypes/product-tokens.css",
+    ETSYMCP_HTML: "archetypes/product-tokens.css",
 }
 
 # Pages in THEME_CSS_HREFS that ALSO carry other renderer-owned zones, so
@@ -906,7 +915,7 @@ THEME_CSS_MULTI_ZONE_PAGES = (THEMES_HTML, CONUNDRUM_HTML)
 #     == set(THEME_CSS_ONLY_PAGES)
 THEME_CSS_ONLY_PAGES = (
     PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML, ROROROPLUGINS_HTML,
-    RORORO_HTML, MODLAUNCHERGAMES_HTML,
+    RORORO_HTML, MODLAUNCHERGAMES_HTML, ETSYMCP_HTML,
 )
 
 # What `--theme <slug> --out <dir>` writes beside index.html, so a QUEUED

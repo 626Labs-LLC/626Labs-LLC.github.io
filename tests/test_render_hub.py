@@ -505,6 +505,7 @@ CONVERTED_PAGES = (
     render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML,
     render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML,
     render_hub.RORORO_HTML, render_hub.MODLAUNCHERGAMES_HTML,
+    render_hub.ETSYMCP_HTML,
 )
 
 

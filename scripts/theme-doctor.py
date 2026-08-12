@@ -119,18 +119,19 @@ ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
 REQUIRED_ARCHETYPE_CSS = {"product": "product.css", "utility": "utility.css", "reading": "reading.css"}
 
 # The token half of the product archetype, split out of product.css so the
-# four bespoke product pages — conundrum.html, rororo-plugins.html,
-# rororo.html, mod-launcher-games.html — can link the VOCABULARY without
+# five bespoke product pages — conundrum.html, rororo-plugins.html,
+# rororo.html, mod-launcher-games.html, etsy-mcp.html — can link the
+# VOCABULARY without
 # inheriting the DRESS (bare `body`/`a:hover`/`section.hero`/`.card`/`.btn`
 # rules written for render-plugin-pages.py's templates, not for their
 # hand-authored markup). Required as its own file, and not folded into
 # REQUIRED_ARCHETYPE_CSS, because that dict is one-CSS-per-archetype and is
 # also what _archetype_source reads as "the archetype's dress."
 #
-# It has to be REQUIRED rather than optional-with-a-fallback: all four
+# It has to be REQUIRED rather than optional-with-a-fallback: all five
 # pages resolve it through an unguarded <link>, and render-plugin-pages.py
 # reads it with no existence guard, so a theme rotating in without it 404s
-# four live pages and raises FileNotFoundError across the other 15 —
+# five live pages and raises FileNotFoundError across the other 15 —
 # unattended, on the 1st.
 PRODUCT_TOKENS_CSS = "product-tokens.css"
 
@@ -151,7 +152,7 @@ READING_TOKENS_CSS = "reading-tokens.css"
 REQUIRED_TOKEN_CSS = (
     "tokens.css",                        # themes.html, index.html
     # conundrum.html, rororo-plugins.html, rororo.html,
-    # mod-launcher-games.html, +15 inlined
+    # mod-launcher-games.html, etsy-mcp.html, +15 inlined
     f"archetypes/{PRODUCT_TOKENS_CSS}",
     f"archetypes/{READING_TOKENS_CSS}",  # thesis.html, workflow.html
     "archetypes/utility.css",            # press.html, privacy.html
@@ -217,7 +218,7 @@ TOKEN_ONLY_CSS = (
 BROWSER_CHECK_LIVE_PAGES = (
     "conundrum.html", "rororo-plugins.html", "rororo.html",
     "mod-launcher-games.html", "thesis.html", "workflow.html",
-    "press.html", "privacy.html",
+    "press.html", "privacy.html", "etsy-mcp.html",
 )
 
 # The pages `check_page_renders_dressed` additionally grades — the ones that
@@ -1773,13 +1774,13 @@ def _check_viewport(page, url: str, width: int, dress_outcome: bool = False) -> 
     not get silently skipped and waved through.
 
     ── Third-party isolation, and why it is not optional ──────────────────
-    This gate opens twelve documents: one per archetype plus the eight live
+    This gate opens thirteen documents: one per archetype plus the nine live
     pages in BROWSER_CHECK_LIVE_PAGES. Three of the four archetype documents
     are shells the theme ships; `reading`'s is `about.html`, which
     `_archetype_source` swaps in because the Field Note shell carries only 3
-    of that archetype's 10 required classes. ELEVEN of the twelve carry
+    of that archetype's 10 required classes. TWELVE of the thirteen carry
     `<script async src="//gc.zgo.at/count.js">`, which over `http://127.0.0.1`
-    resolves to a real third-party host. (The twelfth is the `product`
+    resolves to a real third-party host. (The thirteenth is the `product`
     archetype's own shell, which ARCHETYPE_CHROME marks `analytics=False`.)
     Counted by grep against the shipped files, not incremented.
     So this gate ALREADY depended on gc.zgo.at being up at 09:00 UTC on the
