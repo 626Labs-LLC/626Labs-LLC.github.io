@@ -29,8 +29,11 @@ Targets (current desc length → target ~355–435):
 
 ## The bar (voice anchors)
 
-House rules: builder-to-builder, **second person**, sentence case. No
-"empower / leverage / seamlessly / unlock / unleash." Em-dashes welcome. No emoji.
+House rules: builder-to-builder, **second person**, sentence case. Em-dashes
+minimal; commas, periods, colons by default. No emoji. Banned words are
+canonical in `626labs-marketing/docs/banned.md` (tiers A and B) — read it rather
+than trusting a list pasted here, which is how this doc went stale for three
+months.
 
 The shape that worked in PR #42 — three beats:
 1. **What it does** (one tight clause).

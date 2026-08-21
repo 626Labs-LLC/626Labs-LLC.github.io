@@ -1,7 +1,9 @@
 # Announce — voice + emoji policy
 
-Voice follows the CODER VOICE SYNTHESIS block in `~/.claude/CLAUDE.md`:
-punchline-first, specific over generic, em-dashes, zero corporate speak,
+Voice follows the CODER VOICE SYNTHESIS block in `~/.claude-personal/CLAUDE.md`
+(the personal seat — `~/.claude` is the walled Marcus work seat and is not the
+source for 626 Labs voice): punchline-first, specific over generic, em-dashes
+minimal with commas, periods, and colons by default, zero corporate speak,
 no hedging.
 
 ## Per-channel register

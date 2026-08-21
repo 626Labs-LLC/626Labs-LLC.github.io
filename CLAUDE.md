@@ -25,13 +25,17 @@ around it.
 - **Brand:** Cyan `#17d4fa` + magenta `#f22f89` — always paired. Dark navy
   `#0f1f31` field. Space Grotesk display, Inter body, JetBrains Mono code
   + small UPPERCASE meta labels with +0.12em tracking.
-- **Voice:** Builder-to-builder, second person, sentence case. No
-  "empower / leverage / seamlessly / unlock / unleash." Em-dashes minimal; commas, periods, colons by default.
-  No emoji in UI copy or marketing surfaces. Tagline: *Imagine Something Else.*
+- **Voice:** Builder-to-builder, second person, sentence case. Em-dashes
+  minimal; commas, periods, colons by default. No emoji in UI copy or marketing
+  surfaces. Tagline: *Imagine Something Else.* (with the period, it is part of
+  the mark). **Banned words live in one place:**
+  `626labs-marketing/docs/banned.md` — tiers A and B apply to everything here.
+  Do not re-inline the list; it drifted four ways before it was consolidated on
+  2026-08-22.
 
 ## Design system
 
-The canonical brand spec lives at `~/.claude/skills/626labs-design/`
+The canonical brand spec lives at `~/.claude-personal/skills/626labs-design/`
 (globally available — same skill applies across every 626 Labs repo).
 Use `colors_and_type.css` as the token source and `ui_kits/` as the
 pattern reference. The local `Design/` folder is for repo-specific
