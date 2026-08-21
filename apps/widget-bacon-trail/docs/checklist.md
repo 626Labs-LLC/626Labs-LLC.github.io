@@ -172,7 +172,7 @@ Anchors: [`docs/scope.md`](./scope.md) · [`docs/prd.md`](./prd.md) · [`docs/sp
 
 **Parallel research:** spawn 2 Explore subagents in parallel:
 - **A.** *"Read `~/Projects/QuizShow/apps/bacon-trail/components/` for how each screen handles loading, error, and transition states. Return the patterns worth stealing (skeletons, transition durations, etc.) in under 200 words."*
-- **B.** *"Read `~/Projects/626labs-hub/Design/colors_and_type.css` (or `~/.claude/skills/626labs-design/colors_and_type.css`) and extract only the CSS custom properties we need for this widget (bg-0/1/2, fg-1/2/3, cyan, magenta, success, warning, danger, border tokens, type tokens, easing). Return as a ready-to-paste `tokens.css` under 80 lines."*
+- **B.** *"Read `~/Projects/626labs-hub/Design/colors_and_type.css` (or `~/.claude-personal/skills/626labs-design/colors_and_type.css`) and extract only the CSS custom properties we need for this widget (bg-0/1/2, fg-1/2/3, cyan, magenta, success, warning, danger, border tokens, type tokens, easing). Return as a ready-to-paste `tokens.css` under 80 lines."*
 
 **Effort:** 4-6h. Largest item.
 
