@@ -16,7 +16,7 @@
       "version": "0.5.2",
       "releasedAt": "2026-07-07",
       "minHostVersion": "1.8.0.0",
-      "installs": 45,
+      "installs": 50,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases/latest/download/plugin.zip"
@@ -28,7 +28,7 @@
       "publisher": "626 Labs LLC",
       "version": "0.4.0",
       "releasedAt": "2026-07-03",
-      "installs": 24,
+      "installs": 26,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/Ur-OCR",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/Ur-OCR/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/Ur-OCR/releases/latest/download/plugin.zip"
@@ -38,10 +38,10 @@
       "name": "RoRoRo Ur Task",
       "description": "Per-window-aware macro recording for RoRoRo-managed alts. Record once, play on any alt — round-robin assignments, keep-alive, window-relative mouse macros, and an action bridge for sibling plugins.",
       "publisher": "626 Labs LLC",
-      "version": "0.7.0",
-      "releasedAt": "2026-08-12",
+      "version": "0.8.0",
+      "releasedAt": "2026-08-22",
       "minHostVersion": "1.4.3",
-      "installs": 128,
+      "installs": 133,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/plugin.zip"
