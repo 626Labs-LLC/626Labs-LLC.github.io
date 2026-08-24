@@ -1,10 +1,10 @@
 {
   "$comment": "RoRoRo web marketplace data. Catalog identity comes from the same plugins-catalog.json the app reads; version/date/installs come from each plugin repo’s live releases.",
   "host": {
-    "version": "1.22.0.0",
-    "releasedAt": "2026-08-22",
+    "version": "1.23.0.0",
+    "releasedAt": "2026-08-23",
     "storeUrl": "https://apps.microsoft.com/detail/9NMJCS390KWB",
-    "setupUrl": "https://github.com/estevanhernandez-stack-ed/ROROROblox/releases/download/v1.22.0.0/RORORO-win-Setup.exe",
+    "setupUrl": "https://github.com/estevanhernandez-stack-ed/ROROROblox/releases/download/v1.23.0.0/RORORO-win-Setup.exe",
     "releasesUrl": "https://github.com/estevanhernandez-stack-ed/ROROROblox/releases"
   },
   "plugins": [
@@ -54,7 +54,7 @@
       "version": "0.8.0",
       "releasedAt": "2026-08-22",
       "minHostVersion": "1.19.0",
-      "installs": 134,
+      "installs": 135,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/plugin.zip"
