@@ -1,49 +1,17 @@
 {
-  "generatedAt": "2026-08-28T18:56:24.963Z",
+  "generatedAt": "2026-08-29T12:47:49.805Z",
   "source": "goatcounter",
   "site": "626labs.dev",
   "range": {
-    "start": "2026-07-29",
-    "end": "2026-08-28",
+    "start": "2026-07-30",
+    "end": "2026-08-29",
     "days": 30
   },
   "total": {
-    "total": 389,
+    "total": 403,
     "total_events": 0,
-    "total_utc": 384,
+    "total_utc": 395,
     "stats": [
-      {
-        "day": "2026-07-29",
-        "hourly": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "daily": 5,
-        "weekly": 53,
-        "monthly": 17
-      },
       {
         "day": "2026-07-30",
         "hourly": [
@@ -72,7 +40,9 @@
           0,
           0
         ],
-        "daily": 6
+        "daily": 6,
+        "weekly": 57,
+        "monthly": 12
       },
       {
         "day": "2026-07-31",
@@ -133,7 +103,7 @@
           1
         ],
         "daily": 11,
-        "monthly": 372
+        "monthly": 391
       },
       {
         "day": "2026-08-02",
@@ -253,8 +223,7 @@
           2,
           0
         ],
-        "daily": 9,
-        "weekly": 83
+        "daily": 9
       },
       {
         "day": "2026-08-06",
@@ -284,7 +253,8 @@
           0,
           1
         ],
-        "daily": 8
+        "daily": 8,
+        "weekly": 90
       },
       {
         "day": "2026-08-07",
@@ -464,8 +434,7 @@
           0,
           1
         ],
-        "daily": 16,
-        "weekly": 99
+        "daily": 16
       },
       {
         "day": "2026-08-13",
@@ -495,7 +464,8 @@
           0,
           0
         ],
-        "daily": 9
+        "daily": 9,
+        "weekly": 99
       },
       {
         "day": "2026-08-14",
@@ -675,8 +645,7 @@
           2,
           4
         ],
-        "daily": 16,
-        "weekly": 96
+        "daily": 16
       },
       {
         "day": "2026-08-20",
@@ -706,7 +675,8 @@
           0,
           0
         ],
-        "daily": 5
+        "daily": 5,
+        "weekly": 99
       },
       {
         "day": "2026-08-21",
@@ -886,8 +856,7 @@
           2,
           1
         ],
-        "daily": 19,
-        "weekly": 58
+        "daily": 19
       },
       {
         "day": "2026-08-27",
@@ -917,7 +886,8 @@
           1,
           0
         ],
-        "daily": 27
+        "daily": 27,
+        "weekly": 58
       },
       {
         "day": "2026-08-28",
@@ -936,6 +906,36 @@
           2,
           0,
           0,
+          1,
+          2,
+          1,
+          1,
+          0,
+          0,
+          0,
+          2,
+          1,
+          1
+        ],
+        "daily": 21
+      },
+      {
+        "day": "2026-08-29",
+        "hourly": [
+          1,
+          0,
+          1,
+          2,
+          0,
+          1,
+          1,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
           0,
           0,
           0,
@@ -947,52 +947,20 @@
           0,
           0
         ],
-        "daily": 12
+        "daily": 10
       }
     ]
   },
   "hits": {
     "hits": [
       {
-        "count": 327,
+        "count": 341,
         "path_id": 93366467,
         "path": "/rororo.html",
         "event": false,
         "title": "RORORO — multi-launcher for Roblox · 626 Labs",
         "max": 4,
         "stats": [
-          {
-            "day": "2026-07-29",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              2,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              1,
-              1,
-              0
-            ],
-            "daily": 5,
-            "weekly": 38,
-            "monthly": 14
-          },
           {
             "day": "2026-07-30",
             "hourly": [
@@ -1021,7 +989,9 @@
               0,
               0
             ],
-            "daily": 4
+            "daily": 4,
+            "weekly": 40,
+            "monthly": 9
           },
           {
             "day": "2026-07-31",
@@ -1082,7 +1052,7 @@
               1
             ],
             "daily": 10,
-            "monthly": 313
+            "monthly": 332
           },
           {
             "day": "2026-08-02",
@@ -1202,8 +1172,7 @@
               0,
               0
             ],
-            "daily": 7,
-            "weekly": 61
+            "daily": 7
           },
           {
             "day": "2026-08-06",
@@ -1233,7 +1202,8 @@
               0,
               1
             ],
-            "daily": 8
+            "daily": 8,
+            "weekly": 66
           },
           {
             "day": "2026-08-07",
@@ -1413,8 +1383,7 @@
               0,
               1
             ],
-            "daily": 12,
-            "weekly": 83
+            "daily": 12
           },
           {
             "day": "2026-08-13",
@@ -1444,7 +1413,8 @@
               0,
               0
             ],
-            "daily": 7
+            "daily": 7,
+            "weekly": 85
           },
           {
             "day": "2026-08-14",
@@ -1624,8 +1594,7 @@
               1,
               3
             ],
-            "daily": 14,
-            "weekly": 90
+            "daily": 14
           },
           {
             "day": "2026-08-20",
@@ -1655,7 +1624,8 @@
               0,
               0
             ],
-            "daily": 5
+            "daily": 5,
+            "weekly": 94
           },
           {
             "day": "2026-08-21",
@@ -1835,8 +1805,7 @@
               2,
               1
             ],
-            "daily": 18,
-            "weekly": 55
+            "daily": 18
           },
           {
             "day": "2026-08-27",
@@ -1866,7 +1835,8 @@
               1,
               0
             ],
-            "daily": 25
+            "daily": 25,
+            "weekly": 56
           },
           {
             "day": "2026-08-28",
@@ -1885,6 +1855,36 @@
               2,
               0,
               0,
+              1,
+              2,
+              1,
+              1,
+              0,
+              0,
+              0,
+              2,
+              1,
+              1
+            ],
+            "daily": 21
+          },
+          {
+            "day": "2026-08-29",
+            "hourly": [
+              1,
+              0,
+              1,
+              2,
+              0,
+              1,
+              1,
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
               0,
               0,
               0,
@@ -1896,7 +1896,7 @@
               0,
               0
             ],
-            "daily": 12
+            "daily": 10
           }
         ]
       },
@@ -1908,38 +1908,6 @@
         "title": "626 Labs — Imagine Something Else",
         "max": 2,
         "stats": [
-          {
-            "day": "2026-07-29",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 0,
-            "weekly": 6,
-            "monthly": 2
-          },
           {
             "day": "2026-07-30",
             "hourly": [
@@ -1968,7 +1936,9 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 8,
+            "monthly": 2
           },
           {
             "day": "2026-07-31",
@@ -2149,8 +2119,7 @@
               2,
               0
             ],
-            "daily": 2,
-            "weekly": 12
+            "daily": 2
           },
           {
             "day": "2026-08-06",
@@ -2180,7 +2149,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 12
           },
           {
             "day": "2026-08-07",
@@ -2360,8 +2330,7 @@
               0,
               0
             ],
-            "daily": 2,
-            "weekly": 8
+            "daily": 2
           },
           {
             "day": "2026-08-13",
@@ -2391,7 +2360,8 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 8
           },
           {
             "day": "2026-08-14",
@@ -2571,8 +2541,7 @@
               1,
               1
             ],
-            "daily": 2,
-            "weekly": 5
+            "daily": 2
           },
           {
             "day": "2026-08-20",
@@ -2602,7 +2571,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 4
           },
           {
             "day": "2026-08-21",
@@ -2782,8 +2752,7 @@
               0,
               0
             ],
-            "daily": 1,
-            "weekly": 1
+            "daily": 1
           },
           {
             "day": "2026-08-27",
@@ -2844,19 +2813,9 @@
               0
             ],
             "daily": 0
-          }
-        ]
-      },
-      {
-        "count": 16,
-        "path_id": 94314529,
-        "path": "/rororo-plugins.html",
-        "event": false,
-        "title": "RoRoRo Plugin Marketplace · 626 Labs",
-        "max": 4,
-        "stats": [
+          },
           {
-            "day": "2026-07-29",
+            "day": "2026-08-29",
             "hourly": [
               0,
               0,
@@ -2883,10 +2842,18 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 2,
-            "monthly": 1
-          },
+            "daily": 0
+          }
+        ]
+      },
+      {
+        "count": 16,
+        "path_id": 94314529,
+        "path": "/rororo-plugins.html",
+        "event": false,
+        "title": "RoRoRo Plugin Marketplace · 626 Labs",
+        "max": 4,
+        "stats": [
           {
             "day": "2026-07-30",
             "hourly": [
@@ -2915,7 +2882,9 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 2,
+            "monthly": 1
           },
           {
             "day": "2026-07-31",
@@ -3096,8 +3065,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 5
+            "daily": 0
           },
           {
             "day": "2026-08-06",
@@ -3127,7 +3095,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 7
           },
           {
             "day": "2026-08-07",
@@ -3307,8 +3276,7 @@
               0,
               0
             ],
-            "daily": 2,
-            "weekly": 6
+            "daily": 2
           },
           {
             "day": "2026-08-13",
@@ -3338,7 +3306,8 @@
               0,
               0
             ],
-            "daily": 1
+            "daily": 1,
+            "weekly": 4
           },
           {
             "day": "2026-08-14",
@@ -3518,8 +3487,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 1
+            "daily": 0
           },
           {
             "day": "2026-08-20",
@@ -3549,7 +3517,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-08-21",
@@ -3729,8 +3698,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 2
+            "daily": 0
           },
           {
             "day": "2026-08-27",
@@ -3760,10 +3728,41 @@
               0,
               0
             ],
-            "daily": 2
+            "daily": 2,
+            "weekly": 2
           },
           {
             "day": "2026-08-28",
+            "hourly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 0
+          },
+          {
+            "day": "2026-08-29",
             "hourly": [
               0,
               0,
@@ -3803,7 +3802,7 @@
         "max": 2,
         "stats": [
           {
-            "day": "2026-07-29",
+            "day": "2026-07-30",
             "hourly": [
               0,
               0,
@@ -3832,36 +3831,6 @@
             ],
             "daily": 0,
             "weekly": 7
-          },
-          {
-            "day": "2026-07-30",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 0
           },
           {
             "day": "2026-07-31",
@@ -4042,8 +4011,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 2
+            "daily": 0
           },
           {
             "day": "2026-08-06",
@@ -4073,7 +4041,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 2
           },
           {
             "day": "2026-08-07",
@@ -4734,19 +4703,9 @@
               0
             ],
             "daily": 0
-          }
-        ]
-      },
-      {
-        "count": 2,
-        "path_id": 94919150,
-        "path": "/conundrum.html",
-        "event": false,
-        "title": "Conundrum by Este · merch built by a machine · 626 Labs",
-        "max": 1,
-        "stats": [
+          },
           {
-            "day": "2026-07-29",
+            "day": "2026-08-29",
             "hourly": [
               0,
               0,
@@ -4774,7 +4733,17 @@
               0
             ],
             "daily": 0
-          },
+          }
+        ]
+      },
+      {
+        "count": 2,
+        "path_id": 94919150,
+        "path": "/conundrum.html",
+        "event": false,
+        "title": "Conundrum by Este · merch built by a machine · 626 Labs",
+        "max": 1,
+        "stats": [
           {
             "day": "2026-07-30",
             "hourly": [
@@ -4984,8 +4953,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 2
+            "daily": 0
           },
           {
             "day": "2026-08-06",
@@ -5015,7 +4983,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 2
           },
           {
             "day": "2026-08-07",
@@ -5649,6 +5618,36 @@
           },
           {
             "day": "2026-08-28",
+            "hourly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 0
+          },
+          {
+            "day": "2026-08-29",
             "hourly": [
               0,
               0,
@@ -5688,36 +5687,6 @@
         "max": 1,
         "stats": [
           {
-            "day": "2026-07-29",
-            "hourly": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "daily": 0
-          },
-          {
             "day": "2026-07-30",
             "hourly": [
               0,
@@ -6136,8 +6105,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 1
+            "daily": 0
           },
           {
             "day": "2026-08-13",
@@ -6167,7 +6135,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-08-14",
@@ -6618,19 +6587,9 @@
               0
             ],
             "daily": 0
-          }
-        ]
-      },
-      {
-        "count": 1,
-        "path_id": 94437643,
-        "path": "/mod-launcher-games.html",
-        "event": false,
-        "title": "Supported games · 626 Mod Launcher · 626 Labs",
-        "max": 1,
-        "stats": [
+          },
           {
-            "day": "2026-07-29",
+            "day": "2026-08-29",
             "hourly": [
               0,
               0,
@@ -6658,7 +6617,17 @@
               0
             ],
             "daily": 0
-          },
+          }
+        ]
+      },
+      {
+        "count": 1,
+        "path_id": 94437643,
+        "path": "/mod-launcher-games.html",
+        "event": false,
+        "title": "Supported games · 626 Mod Launcher · 626 Labs",
+        "max": 1,
+        "stats": [
           {
             "day": "2026-07-30",
             "hourly": [
@@ -6868,8 +6837,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 1
+            "daily": 0
           },
           {
             "day": "2026-08-06",
@@ -6899,7 +6867,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-08-07",
@@ -7560,19 +7529,9 @@
               0
             ],
             "daily": 0
-          }
-        ]
-      },
-      {
-        "count": 1,
-        "path_id": 88673491,
-        "path": "/workflow.html",
-        "event": false,
-        "title": "Operating tenets — 626 Labs",
-        "max": 1,
-        "stats": [
+          },
           {
-            "day": "2026-07-29",
+            "day": "2026-08-29",
             "hourly": [
               0,
               0,
@@ -7600,7 +7559,17 @@
               0
             ],
             "daily": 0
-          },
+          }
+        ]
+      },
+      {
+        "count": 1,
+        "path_id": 88673491,
+        "path": "/workflow.html",
+        "event": false,
+        "title": "Operating tenets — 626 Labs",
+        "max": 1,
+        "stats": [
           {
             "day": "2026-07-30",
             "hourly": [
@@ -8020,8 +7989,7 @@
               0,
               0
             ],
-            "daily": 0,
-            "weekly": 1
+            "daily": 0
           },
           {
             "day": "2026-08-13",
@@ -8051,7 +8019,8 @@
               0,
               0
             ],
-            "daily": 0
+            "daily": 0,
+            "weekly": 1
           },
           {
             "day": "2026-08-14",
@@ -8502,11 +8471,41 @@
               0
             ],
             "daily": 0
+          },
+          {
+            "day": "2026-08-29",
+            "hourly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "daily": 0
           }
         ]
       }
     ],
-    "total": 389,
+    "total": 403,
     "more": false
   },
   "refs": {
@@ -8514,24 +8513,24 @@
       {
         "id": "www.bing.com",
         "name": "www.bing.com",
-        "count": 220,
+        "count": 231,
         "ref_scheme": "h"
       },
       {
         "name": "",
-        "count": 62,
+        "count": 61,
         "ref_scheme": "o"
       },
       {
         "id": "Yahoo",
         "name": "Yahoo",
-        "count": 43,
+        "count": 46,
         "ref_scheme": "g"
       },
       {
         "id": "Google",
         "name": "Google",
-        "count": 24,
+        "count": 25,
         "ref_scheme": "g"
       },
       {
@@ -8596,12 +8595,17 @@
       {
         "id": "US",
         "name": "United States",
-        "count": 144
+        "count": 145
       },
       {
         "id": "PH",
         "name": "Philippines",
-        "count": 36
+        "count": 38
+      },
+      {
+        "id": "CA",
+        "name": "Canada",
+        "count": 20
       },
       {
         "id": "GB",
@@ -8609,14 +8613,14 @@
         "count": 20
       },
       {
-        "id": "CA",
-        "name": "Canada",
-        "count": 19
-      },
-      {
         "id": "FR",
         "name": "France",
-        "count": 17
+        "count": 18
+      },
+      {
+        "id": "VN",
+        "name": "Vietnam",
+        "count": 11
       },
       {
         "id": "NL",
@@ -8626,26 +8630,21 @@
       {
         "id": "PL",
         "name": "Poland",
-        "count": 10
-      },
-      {
-        "id": "VN",
-        "name": "Vietnam",
-        "count": 10
+        "count": 9
       },
       {
         "id": "BR",
         "name": "Brazil",
+        "count": 8
+      },
+      {
+        "id": "PT",
+        "name": "Portugal",
         "count": 7
       },
       {
         "id": "IN",
         "name": "India",
-        "count": 6
-      },
-      {
-        "id": "PT",
-        "name": "Portugal",
         "count": 6
       },
       {
@@ -8661,7 +8660,7 @@
       {
         "id": "Chrome",
         "name": "Chrome",
-        "count": 365
+        "count": 374
       },
       {
         "id": "Safari",
@@ -8686,12 +8685,12 @@
       {
         "id": "Windows",
         "name": "Windows",
-        "count": 339
+        "count": 347
       },
       {
         "id": "macOS",
         "name": "macOS",
-        "count": 36
+        "count": 37
       },
       {
         "id": "iOS",
