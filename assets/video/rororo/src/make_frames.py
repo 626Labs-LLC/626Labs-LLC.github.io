@@ -20,7 +20,9 @@ SIZES = {"9x16": (1080, 1920), "4x5": (1080, 1350), "1x1": (1080, 1080), "16x9":
 
 
 def scale(W, H):
-    """Type scale for stacked layouts: full at 9:16, shrinking as the canvas squares off."""
+    """Type scale: full at 9:16 and landscape, shrinking as a PORTRAIT canvas squares off."""
+    if W > H:
+        return min(W, H)
     return min(W, H) * min(1.0, (H / W) / 1.6)
 
 
@@ -124,8 +126,8 @@ def title(W, H):
         y += u * 0.05
         meta(d, "Free  ·  Windows + macOS", mono, W / 2, y, INK200)
     else:
-        tile = cube_tile(int(u * 0.5))
-        tx = int(W * 0.14)
+        tile = cube_tile(int(u * 0.62))
+        tx = int(W * 0.11)
         im.paste(tile, (tx, int(H / 2 - tile.height / 2)), tile)
         cx = tx + tile.width + (W - tx - tile.width) / 2
         meta(d, "626 Labs  /  RORORO", mono, cx, H * 0.22)
@@ -150,18 +152,28 @@ def bullets(W, H, kicker, heading, rows):
     for i, l in enumerate(lines):
         center(d, l, hf, W / 2, hy + i * u * 0.085)
     hairline(d, W / 2, hy + u * (0.085 * len(lines) + 0.03), u * 0.2)
-    tf = font("SpaceGrotesk-Variable.ttf", int(u * (0.05 if portrait else 0.042)), 500)
-    bf = font("Inter-Variable.ttf", int(u * (0.030 if portrait else 0.026)), 400)
+    tf = font("SpaceGrotesk-Variable.ttf", int(u * (0.05 if portrait else 0.048)), 500)
+    bf = font("Inter-Variable.ttf", int(u * (0.030 if portrait else 0.030)), 400)
     n = len(rows)
     top = hy + u * (0.085 * len(lines) + 0.12)
-    gap = (H * (0.9 if portrait else 0.92) - top) / n
-    colw = u * (0.82 if portrait else 1.2)
-    x0 = W / 2 - colw / 2
-    for i, (t, b) in enumerate(rows):
-        y = top + i * gap
-        d.ellipse([x0, y + u * 0.014, x0 + u * 0.026, y + u * 0.04], fill=CYAN if i % 2 == 0 else MAG)
-        d.text((x0 + u * 0.06, y), t, font=tf, fill=INK0)
-        d.text((x0 + u * 0.06, y + tf.size * 1.25), b, font=bf, fill=INK200)
+    if portrait:
+        gap = (H * 0.9 - top) / n
+        x0 = W / 2 - u * 0.82 / 2
+        for i, (t, b) in enumerate(rows):
+            y = top + i * gap
+            d.ellipse([x0, y + u * 0.014, x0 + u * 0.026, y + u * 0.04], fill=CYAN if i % 2 == 0 else MAG)
+            d.text((x0 + u * 0.06, y), t, font=tf, fill=INK0)
+            d.text((x0 + u * 0.06, y + tf.size * 1.25), b, font=bf, fill=INK200)
+    else:
+        per_col = (n + 1) // 2
+        gap = (H * 0.94 - top) / per_col
+        for i, (t, b) in enumerate(rows):
+            col, row = divmod(i, per_col)
+            x0 = W * (0.09 if col == 0 else 0.53)
+            y = top + row * gap
+            d.ellipse([x0, y + u * 0.014, x0 + u * 0.026, y + u * 0.04], fill=CYAN if i % 2 == 0 else MAG)
+            d.text((x0 + u * 0.06, y), t, font=tf, fill=INK0)
+            d.text((x0 + u * 0.06, y + tf.size * 1.25), b, font=bf, fill=INK200)
     brand_footer(d, W, H, u)
     return im
 
@@ -217,12 +229,6 @@ FEATURES = [
     ("Live status + RAM", "See the game and cost of every client at a glance."),
     ("Auto-update", "Always current, Windows and Mac."),
 ]
-FAMILY = [
-    ("Ur Task", "Portable, window-aware macros."),
-    ("Ur OCR", "Screen triggers that fire keybinds or macros."),
-    ("Ur AFK", "One-tap keep-alive."),
-]
-
 if __name__ == "__main__":
     for size, (W, H) in SIZES.items():
         out = os.path.join(HERE, "frames", size)
@@ -230,7 +236,5 @@ if __name__ == "__main__":
         title(W, H).save(os.path.join(out, "01-title.png"))
         bullets(W, H, "Quality of life", "Runs the clients. Babysits them too.", FEATURES).save(
             os.path.join(out, "02-features.png"))
-        bullets(W, H, "Plugin marketplace  ·  in-app", "The Ur family. One click to install.", FAMILY).save(
-            os.path.join(out, "03-family.png"))
         cta(W, H).save(os.path.join(out, "04-cta.png"))
         print("built", size)
