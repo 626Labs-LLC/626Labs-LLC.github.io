@@ -15,8 +15,8 @@ Why this hook: the library full of games people recognize (Palworld, Elden Ring,
 ## Slides
 
 ### Slide 2 — Game mods view (toggles, Windrose with 27 mods)
-- **Overlay text (add in TikTok):** "off = moved aside. never deleted."
-- **Voiceover:** "Turning a mod off just moves its files aside. Nothing is EVER deleted. Flip it back, and it's right where it was."
+- **Overlay text (add in TikTok):** "off = moved aside, not deleted"
+- **Voiceover:** "Turning a mod off just moves its files aside. Off never means deleted. Flip it back, and it's right where it was."
 
 ### Slide 3 — Add game + settings (cascade)
 - **Overlay text:** "Steam games found automatically"
@@ -63,11 +63,14 @@ Rotate the game tag per cut to match whichever games are visible in the hook.
 ## TTS note
 "six-two-six" is spelled out for the voice (digits read as six hundred twenty-six). Baseline speed 0.93 / stability 0.45; more than one round of per-line pacing fixes means switch to ElevenLabs Studio.
 
+## Studio handoff (pacing pass)
+Pacing on this one goes through ElevenLabs Studio per the escalation rule. Generate each paragraph below as its own clip (ItsJustEste, eleven_multilingual_v2), tune pauses/speed in Studio, export per paragraph, and drop the mp3s into `src/voiceover/` as `title.mp3`, `slide_01.mp3` ... `slide_07.mp3`. Then DELETE `src/voiceover/durations.json` — stale entries there override the real clip lengths; with it gone the renderer probes each mp3 directly. Re-run `python render.py <size>` per cut.
+
 ## Voiceover script (full, for ElevenLabs Studio or re-recording)
 [NARRATOR]
 Every game, every mod, one launcher. And it's built on one rule: your files are yours.
 
-Turning a mod off just moves its files aside. Nothing is EVER deleted. Flip it back, and it's right where it was.
+Turning a mod off just moves its files aside. Off never means deleted. Flip it back, and it's right where it was.
 
 It finds your Steam games automatically, and a signed game feed means new games show up without an app update.
 
