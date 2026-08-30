@@ -1,12 +1,12 @@
 """Render manifest.json at one canvas size via the tiktok-video-maker renderer.
 
-Usage: python render.py 9x16 | 16x9 | 1x1
+Usage: python render.py 9x16 | 4x5 | 1x1 | 16x9
 The still frames are full-canvas at each size (built by make_frames.py); screenshots
 get the renderer's blurred fill. Output lands at ../rororo-launch-<size>.mp4.
 """
 import importlib.util, json, os, sys
 
-SIZES = {"9x16": (1080, 1920), "16x9": (1920, 1080), "1x1": (1080, 1080)}
+SIZES = {"9x16": (1080, 1920), "4x5": (1080, 1350), "1x1": (1080, 1080), "16x9": (1920, 1080)}
 SKILL = os.path.expanduser("~/.claude-personal/skills/tiktok-video-maker/scripts/build_video.py")
 
 size = sys.argv[1] if len(sys.argv) > 1 else "9x16"

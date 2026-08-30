@@ -12,10 +12,16 @@ ROOT = os.path.abspath(os.path.join(HERE, "../../../.."))
 FONTS = os.path.join(ROOT, "fonts")
 CUBE = os.path.join(ROOT, "assets/thumb-rororo.png")
 STORE = "https://apps.microsoft.com/detail/9NMJCS390KWB"
+QR_URL = "https://626labs.dev/rororo.html?ref=tiktok"
 
 NAVY, CYAN, MAG = (15, 31, 49), (23, 212, 250), (242, 47, 137)
 INK0, INK200, INK300 = (255, 255, 255), (196, 205, 218), (164, 174, 189)
-SIZES = {"9x16": (1080, 1920), "16x9": (1920, 1080), "1x1": (1080, 1080)}
+SIZES = {"9x16": (1080, 1920), "4x5": (1080, 1350), "1x1": (1080, 1080), "16x9": (1920, 1080)}
+
+
+def scale(W, H):
+    """Type scale for stacked layouts: full at 9:16, shrinking as the canvas squares off."""
+    return min(W, H) * min(1.0, (H / W) / 1.6)
 
 
 def font(name, size, weight):
@@ -102,13 +108,14 @@ def brand_footer(d, W, H, u):
 def title(W, H):
     im = field(W, H)
     d = ImageDraw.Draw(im)
-    u = min(W, H)
+    u = scale(W, H)
     mono = font("JetBrainsMono-Variable.ttf", int(u * 0.03), 500)
-    if H > W:
+    if H >= W:
         meta(d, "626 Labs  /  RORORO", mono, W / 2, H * 0.09)
         tile = cube_tile(int(u * 0.42))
-        im.paste(tile, (int(W / 2 - tile.width / 2), int(H * 0.2)), tile)
-        y = H * 0.2 + tile.height + u * 0.14
+        ty = H * (0.2 if H / W > 1.5 else 0.16)
+        im.paste(tile, (int(W / 2 - tile.width / 2), int(ty)), tile)
+        y = ty + tile.height + u * 0.14
         th = gradient_text(im, "RORORO", font("SpaceGrotesk-Variable.ttf", int(u * 0.2), 700), W / 2, y)
         y += th / 2 + u * 0.05
         center(d, "Every alt. One click.", font("SpaceGrotesk-Variable.ttf", int(u * 0.07), 500), W / 2, y)
@@ -133,8 +140,8 @@ def title(W, H):
 def bullets(W, H, kicker, heading, rows):
     im = field(W, H)
     d = ImageDraw.Draw(im)
-    u = min(W, H)
-    portrait = H > W
+    u = scale(W, H)
+    portrait = H >= W
     top_k = H * (0.09 if portrait else 0.1)
     meta(d, kicker, font("JetBrainsMono-Variable.ttf", int(u * 0.03), 500), W / 2, top_k)
     hy = H * (0.14 if portrait else 0.17)
@@ -146,7 +153,7 @@ def bullets(W, H, kicker, heading, rows):
     tf = font("SpaceGrotesk-Variable.ttf", int(u * (0.05 if portrait else 0.042)), 500)
     bf = font("Inter-Variable.ttf", int(u * (0.032 if portrait else 0.027)), 400)
     n = len(rows)
-    top = H * (0.34 if portrait else 0.34)
+    top = hy + u * (0.085 * len(lines) + 0.12)
     gap = (H * (0.9 if portrait else 0.92) - top) / n
     colw = u * (0.82 if portrait else 1.2)
     x0 = W / 2 - colw / 2
@@ -162,26 +169,27 @@ def bullets(W, H, kicker, heading, rows):
 def cta(W, H):
     im = field(W, H)
     d = ImageDraw.Draw(im)
-    u = min(W, H)
-    portrait = H > W
+    u = scale(W, H)
+    portrait = H >= W
     q = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, border=2)
-    q.add_data(STORE)
+    q.add_data(QR_URL)
     q.make(fit=True)
     qi = q.make_image(fill_color="#0f1f31", back_color="white").convert("RGB")
     qs = int(u * (0.5 if portrait else 0.55))
     qi = qi.resize((qs, qs), Image.NEAREST)
     m = rounded_mask(qs, qs // 20)
     mono = font("JetBrainsMono-Variable.ttf", int(u * 0.03), 500)
-    big = font("SpaceGrotesk-Variable.ttf", int(u * 0.085), 700)
+    big = font("SpaceGrotesk-Variable.ttf", int(u * 0.062), 700)
     url = font("SpaceGrotesk-Variable.ttf", int(u * 0.055), 500)
     small = font("Inter-Variable.ttf", int(u * 0.027), 400)
-    mac = "Mac build: github.com/estevanhernandez-stack-ed/rororo-mac"
+    mac = "Microsoft Store and Mac links are on the page."
     legal = "Independent tool. Not affiliated with Roblox Corporation."
     if portrait:
-        meta(d, "Free on the Microsoft Store", mono, W / 2, H * 0.09)
-        center(d, "Scan to install", big, W / 2, H * 0.14)
-        im.paste(qi, (int(W / 2 - qs / 2), int(H * 0.27)), m)
-        y = H * 0.27 + qs + u * 0.08
+        meta(d, "Free  ·  Windows + macOS", mono, W / 2, H * 0.09)
+        center(d, "Scan. Save. Install on desktop.", big, W / 2, H * 0.14)
+        qy = H * 0.14 + u * 0.16
+        im.paste(qi, (int(W / 2 - qs / 2), int(qy)), m)
+        y = qy + qs + u * 0.08
         hairline(d, W / 2, y, u * 0.3)
         y += u * 0.06
         center(d, "626labs.dev/rororo.html", url, W / 2, y, CYAN)
@@ -191,8 +199,8 @@ def cta(W, H):
         qx = int(W * 0.12)
         im.paste(qi, (qx, int(H / 2 - qs / 2)), m)
         cx = qx + qs + (W - qx - qs) / 2
-        meta(d, "Free on the Microsoft Store", mono, cx, H * 0.22)
-        center(d, "Scan to install", big, cx, H * 0.3)
+        meta(d, "Free  ·  Windows + macOS", mono, cx, H * 0.22)
+        center(d, "Scan. Save. Install on desktop.", big, cx, H * 0.3)
         hairline(d, cx, H * 0.48, u * 0.3)
         center(d, "626labs.dev/rororo.html", url, cx, H * 0.53, CYAN)
         center(d, mac, small, cx, H * 0.64, INK300)
