@@ -34,7 +34,7 @@ Why this hook: the ad plan's count-up hook, collapsed into one frame. The produc
 
 ## CTA (slide 7, QR frame)
 - **Overlay text:** "scan it, open on desktop"
-- **Voiceover:** "It's free on the Microsoft Store, Windows AND Mac. Scan the code, save the page, and grab it on your desktop. RoRoRo, from six-two-six Labs!"
+- **Voiceover:** "Free on the Microsoft Store, Windows AND Mac. Scan the code, save the page, grab it on your desktop. RoRoRo, from six-two-six Labs. Imagine something else."
 
 ## Caption
 Eight Roblox clients on one PC — free. RoRoRo saves your alts, launches them one click each, lands them in the same private server, and now keeps your stats. Windows + Mac. Search RORORO. Not affiliated with Roblox.
@@ -61,7 +61,7 @@ Three "this is" openers stacked in the first 15s (ident, hook, slide 2); only th
 - Streamer-mode roster names (CaptainNoodle, LadyPixel...) are the published Store set — safe to show.
 
 ## TTS note
-The manifest spells the closing line "six-two-six Labs"; ElevenLabs reads "626" as six hundred twenty-six. Keep the digits in anything a human reads, keep the spelled form in anything a voice reads. Stability 0.35 = expressive; raise toward 0.5 if a take sounds unhinged.
+The manifest spells the closing line "six-two-six Labs" (ElevenLabs reads "626" as six hundred twenty-six) and slide 4 spells "upptime" so the voice says one word instead of "up time". Keep the digits in anything a human reads, keep the spelled form in anything a voice reads. Stability 0.35 = expressive; raise toward 0.5 if a take sounds unhinged.
 
 ## Voiceover script (full, for ElevenLabs Studio or re-recording)
 [NARRATOR]
@@ -77,4 +77,4 @@ Four built-in themes, plus a theme builder where an AI designs you a custom one 
 
 Your password never touches the app, the vault is encrypted, and a memory watchdog recycles a client before a leak crashes it. There are even keyboard shortcuts now.
 
-It's free on the Microsoft Store, Windows AND Mac. Scan the code, save the page, and grab it on your desktop. RoRoRo, from six-two-six Labs!
+Free on the Microsoft Store, Windows AND Mac. Scan the code, save the page, grab it on your desktop. RoRoRo, from six-two-six Labs. Imagine something else.
