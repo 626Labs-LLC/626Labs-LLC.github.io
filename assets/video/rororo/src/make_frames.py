@@ -211,8 +211,8 @@ def cta(W, H):
 
 FEATURES = [
     ("Encrypted vault", "Roblox's own login page. Your password stays there."),
-    ("Memory watchdog", "Recycles a client before a leak crashes it."),
-    ("AFK warning", "Pings you before Roblox kicks an idle alt."),
+    ("Memory watchdog", "Warns before a leak kills a client. One-click Recycle."),
+    ("Streamer mode", "Fake names and avatars everywhere while you're live."),
     ("Keyboard shortcuts", "Ctrl+L launches the roster. F1 shows the rest."),
     ("Live status + RAM", "See the game and cost of every client at a glance."),
     ("Auto-update", "Always current, Windows and Mac."),

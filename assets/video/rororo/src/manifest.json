@@ -49,11 +49,11 @@
     {
       "images": [
         {
-          "path": "shots-remote/cropped/06-history.png",
+          "path": "shots-remote/history-stats-v123.png",
           "effect": "slide_up"
         }
       ],
-      "narration": "And it keeps score now! Peak alts at once, total hours, a leaderboard of your alts, login streaks. Nothing leaves your machine."
+      "narration": "And it keeps score! Peak alts at once, total uptime, a leaderboard of your alts with login streaks. All computed on your machine, nothing leaves it."
     },
     {
       "images": [

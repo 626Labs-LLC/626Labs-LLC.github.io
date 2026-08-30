@@ -20,9 +20,9 @@ Why this hook: the ad plan's count-up hook, collapsed into one frame. The produc
 - **Overlay text:** "same private server. all of them."
 - **Voiceover:** "Squad Launch is the best part. One link, and every single account lands in the SAME private server, together."
 
-### Slide 4 — History stats page (06-history, cropped) — the v1.23 headline
+### Slide 4 — History stats page (history-stats-v123.png, captured 2026-08-30) — the v1.23 headline
 - **Overlay text:** "it keeps score now"
-- **Voiceover:** "And now it keeps score! Peak alts at once, total hours, a leaderboard of your alts, even login streaks. All computed on your machine, nothing leaves it."
+- **Voiceover:** "And it keeps score! Peak alts at once, total uptime, a leaderboard of your alts with login streaks. All computed on your machine, nothing leaves it."
 
 ### Slide 5 — Themes + AI theme builder (cascade)
 - **Overlay text:** "AI builds your theme"
@@ -68,7 +68,7 @@ This is RoRoRo! Save every alt once, and it's one click each. Live status, the g
 
 Squad Launch is the best part. One link, and every single account lands in the SAME private server, together.
 
-And now it keeps score! Peak alts at once, total hours, a leaderboard of your alts, even login streaks. All computed on your machine, nothing leaves it.
+And it keeps score! Peak alts at once, total uptime, a leaderboard of your alts with login streaks. All computed on your machine, nothing leaves it.
 
 Four built-in themes, plus a theme builder where an AI designs you a custom one from a vibe description.
 
