@@ -24,7 +24,8 @@ if size != "9x16":
     if os.path.isdir(vo_dir):
         shutil.rmtree(vo_dir)
     os.makedirs(vo_dir)
-    durs = json.load(open(os.path.join(vo_src, "durations.json")))
+    durs_path = os.path.join(vo_src, "durations.json")
+    durs = json.load(open(durs_path)) if os.path.exists(durs_path) else {}
     remap = {"slide_01": ("title.mp3", durs.get("title"))}
     for i in range(1, len(src["slides"])):
         remap[f"slide_{i + 1:02d}"] = (f"slide_{i:02d}.mp3", durs.get(f"slide_{i:02d}"))
