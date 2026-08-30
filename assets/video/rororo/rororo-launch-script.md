@@ -1,46 +1,48 @@
-# TikTok: RORORO, every Roblox alt at once
+# TikTok: RORORO, eight Roblox clients on one PC
 
-**Runtime:** ~38s · **Slides:** 7 · **Voiceover:** yes (ElevenLabs voice: ItsJustEste)
+**Runtime:** ~42s · **Slides:** 7 · **Voiceover:** yes (ElevenLabs voice: ItsJustEste, stability 0.35 for energy)
 
-Video is intentionally text-light. Every overlay below gets typed into TikTok's text tool so it stays editable and uses TikTok's fonts. Slides 1, 4, 5 and 7 are brand still frames; 2, 3 and 6 are product screenshots on a blurred fill.
+Built from the v1.23 Store screenshot set (`docs/store/screenshots/` in ROROROblox) and the feature ledger. Follows `docs/marketing/tiktok-ad-plan.md` guardrails: no ban-safety claims, no Ur/automation footage in the ad, "for Roblox" never "by Roblox", real UI only, 626 mark on the end card. Overlays get typed into TikTok's text tool; slides 6-7 are brand still frames.
 
-## The hook (slide 1, title frame)
-> Overlay text: "your alts. all open. one click."
-> Voiceover: "Stop logging in and out. RORORO runs every one of your Roblox accounts side by side, on one PC."
+## The hook (slide 1, the money shot: 8 live clients + compact overlay)
+> Overlay text: "8 clients. 1 PC."
+> Voiceover: "Okay, this is EIGHT Roblox clients, running at the same time, on one PC. And the app doing it is free."
 
-Why this hook: the pain (log out, log in, repeat) is universal for anyone running alts, and the fix is stated in the same breath.
+Why this hook: the ad plan's count-up hook, collapsed into one frame. The product demo IS the hook; no logo, no intro.
 
 ## Slides
 
-### Slide 2 — Accounts screen (win-main.png)
+### Slide 2 — Accounts roster, live (01-accounts-running, cropped)
 - **Overlay text (add in TikTok):** "save once. launch as."
-- **Voiceover:** "Save an account once. Hit Launch As, and a second client opens right next to the first."
+- **Voiceover:** "This is RoRoRo! Save every alt once, and it's one click each. Live status, the game each one is actually in, even the RAM each client is eating."
 
-### Slide 3 — Squad Launch (win-squad-launch.png)
-- **Overlay text:** "same server. every account."
-- **Voiceover:** "Squad Launch sends every account into the same private server. One link, everybody's in."
+### Slide 3 — Compact strip + Squad Launch (cascade)
+- **Overlay text:** "same private server. all of them."
+- **Voiceover:** "Squad Launch is the best part. One link, and every single account lands in the SAME private server, together."
 
-### Slide 4 — Features frame (still)
-- **Overlay text:** "it babysits the clients too"
-- **Voiceover:** "It watches each client's memory and offers a one-click Recycle before a leak takes the window down."
+### Slide 4 — History stats page (06-history, cropped) — the v1.23 headline
+- **Overlay text:** "it keeps score now"
+- **Voiceover:** "And now it keeps score! Peak alts at once, total hours, a leaderboard of your alts, even login streaks. All computed on your machine, nothing leaves it."
 
-### Slide 5 — Ur family frame (still)
-- **Overlay text:** "plugins. one click."
-- **Voiceover:** "Add plugins from the built-in marketplace: macros, screen triggers, one-tap keep-alive."
+### Slide 5 — Themes + AI theme builder (cascade)
+- **Overlay text:** "AI builds your theme"
+- **Voiceover:** "Four built-in themes, plus a theme builder where an AI designs you a custom one from a vibe description."
 
-### Slide 6 — Mac hero (mac-hero.png)
-- **Overlay text:** "Windows + Mac"
-- **Voiceover:** "Windows on the Microsoft Store, a native Mac build on GitHub. Free."
+### Slide 6 — Trust/features frame (still)
+- **Overlay text:** "your password never touches it"
+- **Voiceover:** "Your password never touches the app, the vault is encrypted, and a memory watchdog recycles a client before a leak crashes it. There are even keyboard shortcuts now."
 
 ## CTA (slide 7, QR frame)
 - **Overlay text:** "scan it, open on desktop"
-- **Voiceover:** "Scan the code, or hit the link in bio. RORORO, from 626 Labs."
+- **Voiceover:** "It's free on the Microsoft Store, Windows AND Mac. Scan the code, save the page, and grab it on your desktop. RoRoRo, from six-two-six Labs!"
 
 ## Caption
-Run every Roblox alt at once. RORORO is a free multi-launcher for Windows and Mac: saved accounts, Squad Launch, memory watch, plugins. Not affiliated with Roblox.
+Eight Roblox clients on one PC — free. RoRoRo saves your alts, launches them one click each, lands them in the same private server, and now keeps your stats. Windows + Mac. Search RORORO. Not affiliated with Roblox.
 
 ## Hashtags
-#roblox #robloxalts #multiinstance #petsim99 #rororo #626labs
+#roblox #petsim99 #ps99 #robloxalts #multiinstance #rororo
+
+Rotate the game tag per cut (PS99 first — it's the clan's game and the densest audience).
 
 ## Links
 - QR on slide 7 and the bio link: https://626labs.dev/rororo.html?ref=tiktok. Phone visitors see a "save this for your desktop" nudge with copy/share buttons; the Store and Mac links live on the page. A phone can't install a Windows app, so the page is the bridge, not the Store listing.
@@ -50,21 +52,26 @@ Run every Roblox alt at once. RORORO is a free multi-launcher for Windows and Ma
 ## Formats
 `rororo-launch-9x16.mp4` (TikTok) · `4x5` (fills an open foldable, modest bars on a phone) · `1x1` · `16x9` (hub embed). Same slides and narration, one manifest.
 
+## Guardrails carried from the ad plan
+- No "undetectable" / "safe" / "Roblox-approved" claims, ever.
+- Ur plugins stay out of the ad — Store narrative is launcher-not-automation.
+- Streamer-mode roster names (CaptainNoodle, LadyPixel...) are the published Store set — safe to show.
+
 ## TTS note
-The manifest spells the closing line "six-two-six Labs"; ElevenLabs reads "626" as six hundred twenty-six. Keep the digits in anything a human reads, keep the spelled form in anything a voice reads.
+The manifest spells the closing line "six-two-six Labs"; ElevenLabs reads "626" as six hundred twenty-six. Keep the digits in anything a human reads, keep the spelled form in anything a voice reads. Stability 0.35 = expressive; raise toward 0.5 if a take sounds unhinged.
 
 ## Voiceover script (full, for ElevenLabs Studio or re-recording)
 [NARRATOR]
-Stop logging in and out. RORORO runs every one of your Roblox accounts side by side, on one PC.
+Okay, this is EIGHT Roblox clients, running at the same time, on one PC. And the app doing it is free.
 
-Save an account once. Hit Launch As, and a second client opens right next to the first.
+This is RoRoRo! Save every alt once, and it's one click each. Live status, the game each one is actually in, even the RAM each client is eating.
 
-Squad Launch sends every account into the same private server. One link, everybody's in.
+Squad Launch is the best part. One link, and every single account lands in the SAME private server, together.
 
-It watches each client's memory and offers a one-click Recycle before a leak takes the window down.
+And now it keeps score! Peak alts at once, total hours, a leaderboard of your alts, even login streaks. All computed on your machine, nothing leaves it.
 
-Add plugins from the built-in marketplace: macros, screen triggers, one-tap keep-alive.
+Four built-in themes, plus a theme builder where an AI designs you a custom one from a vibe description.
 
-Windows on the Microsoft Store, a native Mac build on GitHub. Free.
+Your password never touches the app, the vault is encrypted, and a memory watchdog recycles a client before a leak crashes it. There are even keyboard shortcuts now.
 
-Scan the code, or hit the link in bio. RORORO, from 626 Labs.
+It's free on the Microsoft Store, Windows AND Mac. Scan the code, save the page, and grab it on your desktop. RoRoRo, from six-two-six Labs!

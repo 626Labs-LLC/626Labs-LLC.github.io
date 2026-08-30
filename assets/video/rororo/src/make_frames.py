@@ -151,7 +151,7 @@ def bullets(W, H, kicker, heading, rows):
         center(d, l, hf, W / 2, hy + i * u * 0.085)
     hairline(d, W / 2, hy + u * (0.085 * len(lines) + 0.03), u * 0.2)
     tf = font("SpaceGrotesk-Variable.ttf", int(u * (0.05 if portrait else 0.042)), 500)
-    bf = font("Inter-Variable.ttf", int(u * (0.032 if portrait else 0.027)), 400)
+    bf = font("Inter-Variable.ttf", int(u * (0.030 if portrait else 0.026)), 400)
     n = len(rows)
     top = hy + u * (0.085 * len(lines) + 0.12)
     gap = (H * (0.9 if portrait else 0.92) - top) / n
@@ -210,11 +210,12 @@ def cta(W, H):
 
 
 FEATURES = [
-    ("Saved accounts", "Encrypted vault. Your password never touches the app."),
-    ("Squad Launch", "Every account into one private server."),
-    ("Memory watch", "One-click Recycle before a leak drops the window."),
-    ("AFK awareness", "Warns you before Roblox kicks the idle client."),
-    ("Auto-update", "Velopack on Windows, Sparkle on Mac."),
+    ("Encrypted vault", "Roblox's own login page. Your password stays there."),
+    ("Memory watchdog", "Recycles a client before a leak crashes it."),
+    ("AFK warning", "Pings you before Roblox kicks an idle alt."),
+    ("Keyboard shortcuts", "Ctrl+L launches the roster. F1 shows the rest."),
+    ("Live status + RAM", "See the game and cost of every client at a glance."),
+    ("Auto-update", "Always current, Windows and Mac."),
 ]
 FAMILY = [
     ("Ur Task", "Portable, window-aware macros."),
@@ -227,7 +228,7 @@ if __name__ == "__main__":
         out = os.path.join(HERE, "frames", size)
         os.makedirs(out, exist_ok=True)
         title(W, H).save(os.path.join(out, "01-title.png"))
-        bullets(W, H, "What it does", "Runs the clients. Babysits them too.", FEATURES).save(
+        bullets(W, H, "Quality of life", "Runs the clients. Babysits them too.", FEATURES).save(
             os.path.join(out, "02-features.png"))
         bullets(W, H, "Plugin marketplace  ·  in-app", "The Ur family. One click to install.", FAMILY).save(
             os.path.join(out, "03-family.png"))
