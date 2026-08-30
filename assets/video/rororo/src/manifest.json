@@ -15,11 +15,14 @@
     {
       "images": [
         {
-          "path": "shots-remote/cropped/10-multi-instance.png",
-          "effect": "zoom_in"
+          "path": "shots-remote/cropped/10-multi-instance.png"
         }
       ],
-      "narration": "Okay, this is EIGHT Roblox clients, running at the same time, on one PC. And the app doing it is free."
+      "narration": "Okay, this is EIGHT Roblox clients, running at the same time, on one PC. And the app doing it is free.",
+      "kenburns": {
+        "cx": 0.46,
+        "cy": 0.55
+      }
     },
     {
       "images": [

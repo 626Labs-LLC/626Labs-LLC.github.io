@@ -50,7 +50,7 @@ Rotate the game tag per cut (PS99 first — it's the clan's game and the densest
 - Mac: https://github.com/estevanhernandez-stack-ed/rororo-mac
 
 ## Formats
-`rororo-launch-9x16.mp4` (TikTok) · `4x5` (fills an open foldable, modest bars on a phone) · `1x1` · `16x9` (hub embed). Same slides and narration, one manifest.
+`rororo-launch-9x16.mp4` (TikTok, 52s) · `4x5` (fills an open foldable, modest bars on a phone) · `1x1` · `16x9` (hub embed) — hub cuts run 55s. One manifest; two deliberate differences: the 9:16 opens cold on the money shot (ad plan: the demo IS the hook) while the other three open with the brand title card + a short ident, and the hook slide does a true Ken Burns push-in that ends on the RoRoRo overlay pane (render.py adds both).
 
 ## Guardrails carried from the ad plan
 - No "undetectable" / "safe" / "Roblox-approved" claims, ever.
