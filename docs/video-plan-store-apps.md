@@ -57,6 +57,19 @@ version on screen.
 3. **Sanduhr and RBX15** ride on capture sessions (both are Este-machine work; the video assembly is same-day once shots exist).
 4. **RTClickPng** whenever a capture half-hour appears; smallest production.
 
+## The loop seam (standing pattern, added 2026-08-30)
+
+TikTok loops every video, so the end and the start are one seam — design it as a
+sentence that completes on replay. Every video ends "...Imagine something else."
+and opens "Like the <product>." First play, the opener reads as an in-media-res
+cold open (acceptable: odd-but-intriguing IS a hook); every loop after, the seam
+says "Imagine something else. Like the 626 Mod Launcher." and the video becomes a
+sentence that never ends. Mechanics: the opening line rides the first slide (9:16)
+or the title card (hub cuts); no trailing silence on the final clip; the end
+frame's field and composition should rhyme with the first frame's so the cut
+lands soft. RORORO and Mod Launcher v1 predate this - retrofit each the next time
+its audio is touched (one clip per cut).
+
 ## Standing guardrails (carry from the RORORO cut)
 
 - Claims come from each repo's release notes/README — nothing on screen that isn't in the ledger.
