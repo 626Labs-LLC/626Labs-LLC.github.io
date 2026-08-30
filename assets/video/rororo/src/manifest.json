@@ -1,0 +1,79 @@
+{
+  "title": "rororo-launch",
+  "output": "../rororo-launch-{size}.mp4",
+  "fps": 30,
+  "background": {
+    "type": "blur"
+  },
+  "audio": {
+    "dir": "voiceover",
+    "gap": 0.4,
+    "min_slide": 2.0,
+    "default_slide": 3.0
+  },
+  "slides": [
+    {
+      "images": [
+        {
+          "path": "frames/{size}/01-title.png",
+          "effect": "fade"
+        }
+      ],
+      "narration": "Stop logging in and out. RORORO runs every one of your Roblox accounts side by side, on one PC."
+    },
+    {
+      "images": [
+        {
+          "path": "../../../screenshots/rororo/win-main.png",
+          "effect": "slide_up"
+        }
+      ],
+      "narration": "Save an account once. Hit Launch As, and a second client opens right next to the first."
+    },
+    {
+      "images": [
+        {
+          "path": "../../../screenshots/rororo/win-squad-launch.png",
+          "effect": "slide_up"
+        }
+      ],
+      "narration": "Squad Launch sends every account into the same private server. One link, everybody's in."
+    },
+    {
+      "images": [
+        {
+          "path": "frames/{size}/02-features.png",
+          "effect": "fade"
+        }
+      ],
+      "narration": "It watches each client's memory and offers a one-click Recycle before a leak takes the window down."
+    },
+    {
+      "images": [
+        {
+          "path": "frames/{size}/03-family.png",
+          "effect": "fade"
+        }
+      ],
+      "narration": "Add plugins from the built-in marketplace: macros, screen triggers, one-tap keep-alive."
+    },
+    {
+      "images": [
+        {
+          "path": "../../../screenshots/rororo/mac-hero@2x.png",
+          "effect": "slide_up"
+        }
+      ],
+      "narration": "Windows on the Microsoft Store, a native Mac build on GitHub. Free."
+    },
+    {
+      "images": [
+        {
+          "path": "frames/{size}/04-cta.png",
+          "effect": "fade"
+        }
+      ],
+      "narration": "Scan the code, or hit the link in bio. RORORO, from six-two-six Labs."
+    }
+  ]
+}
