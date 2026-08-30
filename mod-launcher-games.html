@@ -311,6 +311,15 @@
   /* PB icon stabilizer — the brand mark is the launcher's solid app-icon
      tile: compensate the scanline dimming, no line-art bloom. */
   .brand .mark { filter: brightness(1.3) saturate(1.08); }
+
+/* Phone nudge: the launcher is a desktop app, so a phone visitor (QR scan,
+   TikTok link) gets a way to carry the page to the machine that can install it. */
+.phone-nudge{display:none;margin:1rem 0 0;padding:.9rem 1rem;border:1px solid var(--page-panel-border);border-radius:10px;background:var(--page-panel);font-size:.92rem;line-height:1.45;color:var(--fg-muted)}
+.phone-nudge b{color:var(--fg-1,#fff)}
+.phone-nudge .acts{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap}
+.phone-nudge button{font:inherit;font-size:.85rem;padding:.45rem .8rem;border-radius:999px;border:1px solid var(--page-hairline);background:transparent;color:var(--cyan);cursor:pointer}
+.phone-nudge .done{font-family:var(--font-mono);font-size:.75rem;color:var(--fg-3);align-self:center}
+@media (max-width:720px) and (hover:none){.phone-nudge{display:block}}
 </style>
 </head>
 <body>
@@ -341,6 +350,16 @@
     </p>
     <p class="fine" id="hero-fine">loading the live list…</p>
   </div>
+
+  <div class="phone-nudge" id="phone-nudge">
+    <b>On a phone?</b> The launcher installs on Windows. Save this page and open it on your desktop, both install paths are right below.
+    <div class="acts">
+      <button type="button" id="nudge-copy">Copy link</button>
+      <button type="button" id="nudge-share">Share to myself</button>
+      <span class="done" id="nudge-done" aria-live="polite"></span>
+    </div>
+  </div>
+
 
   <div class="host-strip" id="get-launcher">
     <span class="hs-key">Get 626 Mod Launcher</span>
@@ -504,6 +523,28 @@
 })();
 </script>
 
+<script>
+// Phone nudge actions. Clean URL (no ?ref=) so what gets saved is the canonical page.
+(function () {
+  var url = 'https://626labs.dev/mod-launcher-games.html';
+  var done = document.getElementById('nudge-done');
+  var copy = document.getElementById('nudge-copy');
+  var share = document.getElementById('nudge-share');
+  if (!copy || !share) return;
+  copy.addEventListener('click', function () {
+    var ok = function () { done.textContent = 'copied'; };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(ok, function () { window.prompt('Copy this link', url); });
+    else window.prompt('Copy this link', url);
+  });
+  if (navigator.share) {
+    share.addEventListener('click', function () {
+      navigator.share({ title: '626 Mod Launcher', text: '626 Mod Launcher — reversible mod manager for Windows. Open on desktop.', url: url }).catch(function () {});
+    });
+  } else {
+    share.hidden = true;
+  }
+})();
+</script>
 <!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
 <script data-goatcounter="https://626labs.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>

@@ -1,0 +1,96 @@
+{
+  "title": "mod-launcher-launch",
+  "output": "../mod-launcher-launch-{size}.mp4",
+  "fps": 30,
+  "background": {
+    "type": "blur"
+  },
+  "audio": {
+    "dir": "voiceover",
+    "gap": 0.4,
+    "min_slide": 2.0,
+    "default_slide": 3.0
+  },
+  "slides": [
+    {
+      "images": [
+        {
+          "path": "shots/01-library-home.png"
+        }
+      ],
+      "kenburns": {
+        "cx": 0.28,
+        "cy": 0.25
+      },
+      "narration": "Every game, every mod, one launcher. And it's built on one rule: your files are yours."
+    },
+    {
+      "images": [
+        {
+          "path": "shots/02-game-mods-view.png"
+        }
+      ],
+      "kenburns": {
+        "cx": 0.35,
+        "cy": 0.45
+      },
+      "narration": "Turning a mod off just moves its files aside. Nothing is EVER deleted. Flip it back, and it's right where it was."
+    },
+    {
+      "images": [
+        {
+          "path": "shots/05-add-game.png"
+        },
+        {
+          "path": "shots/06-settings.png",
+          "effect": "slide_right",
+          "delay": 0.35
+        }
+      ],
+      "layout": "cascade",
+      "narration": "It finds your Steam games automatically, and a signed game feed means new games show up without an app update."
+    },
+    {
+      "images": [
+        {
+          "path": "shots/07-saves-snapshots.png"
+        }
+      ],
+      "kenburns": {
+        "cx": 0.5,
+        "cy": 0.5
+      },
+      "narration": "It snapshots your saves before you experiment. Bad afternoon? One click, and you're back."
+    },
+    {
+      "images": [
+        {
+          "path": "shots/08-back-up-everything.png"
+        }
+      ],
+      "kenburns": {
+        "cx": 0.5,
+        "cy": 0.5
+      },
+      "narration": "And now: back up EVERY game's mods, saves, and settings into one file. New PC? Restore exactly what you choose."
+    },
+    {
+      "images": [
+        {
+          "path": "frames/{size}/02-features.png",
+          "effect": "fade"
+        }
+      ],
+      "narration": "No ads, no telemetry, no account. And the quality of life runs deep. Read the list!"
+    },
+    {
+      "images": [
+        {
+          "path": "frames/{size}/04-cta.png",
+          "effect": "fade"
+        }
+      ],
+      "narration": "Free on the Microsoft Store, with the full build on GitHub. Scan the code, save the page, grab it on your desktop. Six-two-six Mod Launcher. Imagine something else."
+    }
+  ]
+}
