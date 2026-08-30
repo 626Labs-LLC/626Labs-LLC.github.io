@@ -6,9 +6,12 @@ Built from the v0.20 Store screenshot set (`docs/store-assets/screenshots-0.20/`
 
 **v0.20 note:** the Back-up-everything slide is the v0.20 headline. v0.20 was a DRAFT release when this was cut (2026-08-30) — confirm it shipped before posting.
 
+## The loop seam (this video debuts the pattern)
+Every cut opens with "Like the six-two-six Mod Launcher." — on the 9:16 it rides the hook slide, on hub cuts the title card. The CTA ends "...Imagine something else." so TikTok's loop completes the sentence: "Imagine something else. Like the 626 Mod Launcher." First play reads in-media-res; every replay closes the ring. CTA clip tail is trimmed to ~0.1s so the seam lands tight.
+
 ## The hook (slide 1, library wall with real cover art)
 > Overlay text: "every game. one launcher."
-> Voiceover: "Every game, every mod, one launcher. And it's built on one rule: your files are yours."
+> Voiceover: "Like the six-two-six Mod Launcher. — Every game, every mod, one launcher. And it's built on one rule: your files are yours."
 
 Why this hook: the library full of games people recognize (Palworld, Elden Ring, Monster Hunter Wilds) is the scroll-stopper; the rule is the brand promise in nine words. Ken Burns pushes into the cover row.
 
@@ -68,6 +71,8 @@ Pacing on this one goes through ElevenLabs Studio per the escalation rule. Gener
 
 ## Voiceover script (full, for ElevenLabs Studio or re-recording)
 [NARRATOR]
+Like the six-two-six Mod Launcher.
+
 Every game, every mod, one launcher. And it's built on one rule: your files are yours.
 
 Turning a mod off just moves its files aside. Off never means deleted. Flip it back, and it's right where it was.

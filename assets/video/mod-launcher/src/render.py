@@ -14,8 +14,30 @@ W, H = SIZES[size]
 here = os.path.dirname(os.path.abspath(__file__))
 src = json.load(open(os.path.join(here, "manifest.json")))
 
-# Hub-facing cuts open with the brand title card + a short ident; the 9x16
-# TikTok cut keeps the cold open (ad plan: the product demo IS the hook).
+# Loop seam: every cut opens with the completion line ("Like the <product>.")
+# so TikTok's replay finishes the closing tagline as a sentence. On hub cuts
+# the line rides the title card; on 9x16 (no card) it is concatenated ahead
+# of the hook clip, preserving the hook clip's own pacing.
+if size == "9x16":
+    import shutil, subprocess
+    op = os.path.join(here, "voiceover", "opener.mp3")
+    if os.path.exists(op):
+        vo_src = os.path.join(here, src["audio"]["dir"])
+        vo_dir = os.path.join(here, "vo-9x16")
+        if os.path.isdir(vo_dir):
+            shutil.rmtree(vo_dir)
+        shutil.copytree(vo_src, vo_dir)
+        s1 = os.path.join(vo_dir, "slide_01.mp3")
+        subprocess.run(["ffmpeg", "-y", "-v", "error",
+                        "-i", op, "-f", "lavfi", "-t", "0.3", "-i", "anullsrc=r=44100:cl=stereo",
+                        "-i", os.path.join(vo_src, "slide_01.mp3"),
+                        "-filter_complex", "[0:a][1:a][2:a]concat=n=3:v=0:a=1[a]",
+                        "-map", "[a]", "-c:a", "libmp3lame", "-q:a", "2", s1], check=True)
+        dj = os.path.join(vo_dir, "durations.json")
+        if os.path.exists(dj):
+            os.remove(dj)
+        src["audio"]["dir"] = "vo-9x16"
+
 if size != "9x16":
     import shutil, tempfile
     src["slides"].insert(0, {"images": [{"path": "frames/{size}/01-title.png", "effect": "fade"}]})
