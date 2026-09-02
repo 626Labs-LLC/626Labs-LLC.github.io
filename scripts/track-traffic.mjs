@@ -120,8 +120,26 @@ async function listPublicRepos(owner) {
   return all.filter((r) => !r.private && !r.archived && !r.fork);
 }
 
+// Returns { repos, failures }. The FAILURES half is the whole point, and it
+// is worth the changed return type: this function used to swallow a per-owner
+// listing error as a console.warn and hand back whatever the other owners
+// produced, which read as success to every caller.
+//
+// On 2026-08-03 GH_TOKEN expired. The user listing started returning 401, the
+// org listing kept working, and discovery quietly went from 51 repos to 2.
+// main()'s only guard was `length === 0`, and 2 is not 0 — so data/repos.json
+// was overwritten with the truncated list and the workflow exited GREEN every
+// morning for a month. 49 repos silently stopped being tracked. The traffic
+// API only serves a ~14-day trailing window, so that month of views and clones
+// is gone and cannot be backfilled.
+//
+// Nothing in this workflow noticed. track-downloads.yml did, the next morning
+// and every morning after, because ITS guard is stricter — it found no repo
+// shipping release assets and refused to write empty data. A job downstream
+// failed loudly for 20+ days about a fault that belonged here.
 async function discoverRepos() {
   const all = [];
+  const failures = [];
   for (const owner of OWNERS) {
     try {
       const repos = await listPublicRepos(owner);
@@ -129,15 +147,17 @@ async function discoverRepos() {
       all.push(...repos);
     } catch (err) {
       console.warn(`! list ${owner.type}/${owner.name}: ${err.message}`);
+      failures.push({ owner: `${owner.type}/${owner.name}`, message: err.message });
     }
   }
   // Dedupe by full_name (defensive — user-listing + org-listing shouldn't overlap).
   const seen = new Set();
-  return all.filter((r) => {
+  const repos = all.filter((r) => {
     if (seen.has(r.full_name)) return false;
     seen.add(r.full_name);
     return true;
   });
+  return { repos, failures };
 }
 
 async function fetchRepoWindow(repo) {
@@ -190,7 +210,28 @@ async function fetchRepoWindowSafe(repo) {
 }
 
 async function main() {
-  const discovered = await discoverRepos();
+  const { repos: discovered, failures } = await discoverRepos();
+
+  // Refuse to overwrite outputs with PARTIAL data, not just empty data. An
+  // owner that could not be listed is an owner whose repos would silently
+  // vanish from data/repos.json and from every downstream consumer of it.
+  // Aborting costs one day of traffic rows, which the next run recovers
+  // because the API window is trailing; writing a truncated list costs the
+  // history of every repo that dropped out, permanently. See discoverRepos.
+  //
+  // This is deliberately fatal rather than a warning. A listing failure here
+  // is always either an expired token or an owner that no longer exists, and
+  // both need a human — neither should be absorbed by a green checkmark.
+  if (failures.length > 0) {
+    for (const f of failures) console.error(`! could not list ${f.owner}: ${f.message}`);
+    console.error(
+      `Aborting: ${failures.length} of ${OWNERS.length} owners could not be listed. ` +
+      `Refusing to overwrite ${REPOS_PATH} with a partial list — check the PAT for ` +
+      `the owner(s) above (each needs "All repositories" access under its owner).`
+    );
+    process.exit(1);
+  }
+
   if (discovered.length === 0) {
     console.error('No repos discovered. Aborting to avoid overwriting CSV with empty data.');
     process.exit(1);
