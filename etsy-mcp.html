@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Etsy Agentic Connector · 626 Labs</title>
-<meta name="description" content="A hosted MCP connector that gives AI assistants read-only eyes on your Etsy shop — stats, listing performance, orders, and trends — without ever touching your credentials. In active development, private testing." />
-<meta property="og:title" content="626Labs Etsy Agentic Connector" />
-<meta property="og:description" content="Read-only Etsy shop data for AI assistants, over the official Open API. Sign-in happens on Etsy's own consent screen; no tool in the set can modify your shop." />
+<title>Agentic Sales Connector · Etsy · 626 Labs</title>
+<meta name="description" content="A hosted MCP connector that gives AI assistants read-only eyes on your Etsy shop — stats, listing performance, orders, and trends — without ever touching your credentials. Snapshots run in the cloud, so day-over-day movement exists as data. In active development, private testing." />
+<meta property="og:title" content="626Labs Agentic Sales Connector" />
+<meta property="og:description" content="Read-focused Etsy shop analytics for AI assistants, over the official Open API. Sign-in happens on Etsy's own consent screen; zero tools modify your shop." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://626labs.dev/etsy-mcp.html" />
 <meta property="og:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
@@ -230,6 +230,7 @@
   }
   footer a{ color:var(--fg-3); text-decoration:none; }
   footer a:hover{ color:var(--cyan); }
+  footer .disclaimer{ color:var(--fg-muted); text-transform:none; letter-spacing:.06em; }
 
   @media (max-width: 760px){
     .wrap{ padding: 40px 20px 56px; }
@@ -312,7 +313,7 @@
 <main class="wrap">
 
   <section class="hero">
-    <h1>626Labs <em>Etsy Agentic Connector</em></h1>
+    <h1>626Labs <em>Agentic Sales Connector</em></h1>
     <p class="dek">A trusted, hosted MCP connector that gives AI assistants read-only eyes
       on your Etsy shop — stats, listing performance, orders, and trends — without ever
       touching your credentials.</p>
@@ -321,7 +322,7 @@
     <div class="strip">
       <div>
         <span class="k">Access</span>
-        <span class="v">Read-only</span>
+        <span class="v">Read-only to Etsy</span>
       </div>
       <div>
         <span class="k">Protocol</span>
@@ -347,8 +348,16 @@
     <p class="lead">The connector links Claude — and any other MCP client — to an Etsy
       seller's shop data through Etsy's official Open API v3. You ask the questions in
       the assistant you already use; it reads the answers out of your shop.</p>
-    <p class="lead">Version 1 is read-only. The tools it exposes fetch and summarize,
-      and that is the whole surface area.</p>
+    <p class="lead">Version 1 is <b>read-focused</b>, which is a narrower word than
+      read-only and the accurate one. Seven of its nine tools only fetch and summarize.
+      The other two write, but never to Etsy: one parses a CSV you exported yourself
+      into the connector's own store, and one deletes everything the connector holds
+      about your shop.</p>
+    <p class="lead">Etsy's API reports lifetime counters — total views, total favorites —
+      so it cannot tell you what changed since yesterday. The connector takes a daily
+      snapshot server-side and computes the difference, which is what makes movement
+      exist as data at all. Because those snapshots run on a schedule in the cloud,
+      <b>your computer does not need to be on</b>.</p>
 
     <div class="cards">
       <div class="card">
@@ -430,8 +439,19 @@
 
       <div class="trust-row">
         <span class="k">Your data, deletable</span>
-        <div class="d"><b>Immediate on request.</b> And automatic: 30 days after you
-          disconnect, what is left purges itself whether you ask or not.</div>
+        <div class="d"><b>Immediate on request.</b> And automatic on disconnect, in two
+          speeds: access tokens are destroyed <b>right away</b>, while stored history
+          keeps a 30-day grace period so reconnecting does not cost you your snapshots.
+          After that it purges whether you ask or not.</div>
+      </div>
+
+      <div class="trust-row">
+        <span class="k">Honest numbers</span>
+        <div class="d">Every answer carries a timestamp and a source, so you always know
+          whether you are reading a live pull, a cached value, or something derived from
+          snapshots. A number that cannot be read comes back as <b>unknown, with a
+          reason — never as a zero</b>. If the connection breaks, the tools say so and
+          hand back a reconnect link instead of serving stale figures.</div>
       </div>
 
       <div class="trust-row">
@@ -470,13 +490,11 @@
       </div>
       <div>
         <span class="k">Privacy policy</span>
-        <div class="pending">https://etsy-agentic-connector.web.app/privacy.html
-          <em>Coming online with the beta</em></div>
+        <a href="https://etsy-agentic-connector.web.app/privacy.html" rel="noopener">What it reads, stores, and purges</a>
       </div>
       <div>
         <span class="k">Docs</span>
-        <div class="pending">https://etsy-agentic-connector.web.app/docs.html
-          <em>Coming online with the beta</em></div>
+        <a href="https://etsy-agentic-connector.web.app/docs.html" rel="noopener">Tools, example prompts, known gaps</a>
       </div>
     </div>
   </section>
@@ -484,7 +502,8 @@
 </main>
 
 <footer>
-  <span>626 Labs · Etsy Agentic Connector</span>
+  <span>626 Labs · Agentic Sales Connector</span>
+  <span class="disclaimer">Not affiliated with or endorsed by Etsy, Inc.</span>
   <span><a href="index.html">626labs.dev</a> · Imagine Something Else.</span>
 </footer>
 
