@@ -49,22 +49,29 @@ function normTitle(t) {
 }
 
 async function resolvePoster(entry) {
-  // Title+year search; accept the best result whose normalized title matches
-  // and whose release year is within 1 (TMDB regional dates drift).
-  const data = await tmdb('/search/movie', {
-    query: entry.title,
-    primary_release_year: entry.year,
-  });
+  // Exact-normalized-title match within ±1 year, searched twice: first with
+  // TMDB's hard primary_release_year filter, then without it (a roster year
+  // one off from TMDB's primary date otherwise filters the real film out —
+  // that exact miss once matched American Sniper to its making-of doc).
+  // No blind first-result fallback: a wrong poster is worse than none.
   const want = normTitle(entry.title);
-  const hit = (data.results ?? []).find((r) => {
-    const year = parseInt((r.release_date ?? '').slice(0, 4), 10);
-    return (
-      r.poster_path &&
-      Math.abs((year || 0) - entry.year) <= 1 &&
-      (normTitle(r.title) === want || normTitle(r.original_title ?? '') === want)
-    );
-  }) ?? (data.results ?? []).find((r) => r.poster_path);
-  return hit?.poster_path ?? null;
+  const attempts = [
+    { query: entry.title, primary_release_year: entry.year },
+    { query: entry.title },
+  ];
+  for (const params of attempts) {
+    const data = await tmdb('/search/movie', params);
+    const hit = (data.results ?? []).find((r) => {
+      const year = parseInt((r.release_date ?? '').slice(0, 4), 10);
+      return (
+        r.poster_path &&
+        Math.abs((year || 0) - entry.year) <= 1 &&
+        (normTitle(r.title) === want || normTitle(r.original_title ?? '') === want)
+      );
+    });
+    if (hit) return hit.poster_path;
+  }
+  return null;
 }
 
 async function main() {
