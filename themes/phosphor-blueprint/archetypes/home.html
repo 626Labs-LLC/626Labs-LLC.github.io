@@ -1243,6 +1243,14 @@
       width: 100%;
       max-width: 420px;
     }
+    /* An odd widget count in the two-up grid leaves a lone last card —
+       center it across both columns instead of stranding it left. */
+    @media (min-width: 960px) {
+      .play-grid.two-up > .play-widget:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        justify-self: center;
+      }
+    }
     .play-aside {
       display: flex;
       flex-direction: column;

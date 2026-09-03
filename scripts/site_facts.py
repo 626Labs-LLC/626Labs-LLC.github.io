@@ -54,10 +54,13 @@ def display_name(product: dict) -> str:
 
 
 def _widget_count() -> int:
-    if not APPS_DIR.exists():
-        return 0
+    # Count the shipped widget bundles at the repo root (what a visitor can
+    # actually play), not the apps/ source dirs — one app can build several
+    # widgets (apps/widget-movie-games builds two).
     return sum(
-        1 for p in APPS_DIR.iterdir() if p.is_dir() and p.name.startswith("widget-")
+        1
+        for p in ROOT.iterdir()
+        if p.is_dir() and p.name.startswith("widget-") and (p / "widget.js").exists()
     )
 
 

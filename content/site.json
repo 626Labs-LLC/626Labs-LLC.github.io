@@ -17,7 +17,7 @@
     "meta": [
       {
         "label": "Deployed",
-        "value": "{{fact:claude_plugins}} plugins · {{fact:widget_count}} widget · {{fact:ms_store_releases}} Microsoft Store Releases"
+        "value": "{{fact:claude_plugins}} plugins · {{fact:widget_count}} game widgets · {{fact:ms_store_releases}} Microsoft Store Releases"
       },
       {
         "label": "Stack",
@@ -1068,24 +1068,20 @@
           "ctaUrl": "#work",
           "ctaLabel": "See the full suite →"
         }
-      }
-    ],
-    "games": [
-      {
-        "id": "box-office-heads-up",
-        "title": "Box Office Heads Up",
-        "tagline": "Two posters, one question: which opened bigger? Ten rounds of real opening-weekend numbers, streaks, and the occasional humbling.",
-        "href": "https://weseeyouatthemovies.firebaseapp.com/box-office",
-        "meta": "We See You at the Movies",
-        "note": "free sign-in"
       },
       {
-        "id": "tag-that-line",
-        "title": "Tag That Line",
-        "tagline": "A real movie tagline, a grid of posters. Tap the one it belongs to before your streak dies.",
-        "href": "https://weseeyouatthemovies.firebaseapp.com/tag-that-line",
-        "meta": "We See You at the Movies",
-        "note": "free sign-in"
+        "id": "box-office-widget",
+        "script": "/widget-box-office/widget.js",
+        "stylesheet": "/widget-box-office/widget.css",
+        "initFn": "BoxOfficeWidget.init",
+        "config": {}
+      },
+      {
+        "id": "tag-that-line-widget",
+        "script": "/widget-tag-that-line/widget.js",
+        "stylesheet": "/widget-tag-that-line/widget.css",
+        "initFn": "TagThatLineWidget.init",
+        "config": {}
       }
     ]
   },

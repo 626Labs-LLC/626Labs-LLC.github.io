@@ -1243,6 +1243,14 @@
       width: 100%;
       max-width: 420px;
     }
+    /* An odd widget count in the two-up grid leaves a lone last card —
+       center it across both columns instead of stranding it left. */
+    @media (min-width: 960px) {
+      .play-grid.two-up > .play-widget:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        justify-self: center;
+      }
+    }
     .play-aside {
       display: flex;
       flex-direction: column;
@@ -1716,7 +1724,7 @@
         <a class="btn btn-ghost" href="/plugins/#thesis">Read the thesis</a>
       </div>
       <div class="hero-meta">
-        <div>Deployed<b>14 plugins · 1 widget · 6 Microsoft Store Releases</b></div>
+        <div>Deployed<b>14 plugins · 3 game widgets · 6 Microsoft Store Releases</b></div>
         <div>Stack<b>TypeScript · Swift · Python · C#</b></div>
         <div>Distribution<b>Claude Code · macOS · Windows · Replit</b></div>
       </div>
@@ -2304,27 +2312,21 @@
         <a class="play-link" href="/bacon-trail/">Open full page ↗</a>
       </div>
     </div>
-    <div class="play-grid">
+    <div class="play-grid two-up">
         <div id="bacon-widget" class="play-widget"></div>
-    </div>
-    <div class="play-games">
-        <a class="play-game-card" href="https://weseeyouatthemovies.firebaseapp.com/box-office" target="_blank" rel="noopener">
-          <div class="play-game-meta"><span>We See You at the Movies</span><span class="play-game-note">free sign-in</span></div>
-          <h3>Box Office Heads Up</h3>
-          <p>Two posters, one question: which opened bigger? Ten rounds of real opening-weekend numbers, streaks, and the occasional humbling.</p>
-          <span class="play-game-cta">Play ↗</span>
-        </a>
-        <a class="play-game-card" href="https://weseeyouatthemovies.firebaseapp.com/tag-that-line" target="_blank" rel="noopener">
-          <div class="play-game-meta"><span>We See You at the Movies</span><span class="play-game-note">free sign-in</span></div>
-          <h3>Tag That Line</h3>
-          <p>A real movie tagline, a grid of posters. Tap the one it belongs to before your streak dies.</p>
-          <span class="play-game-cta">Play ↗</span>
-        </a>
+        <div id="box-office-widget" class="play-widget"></div>
+        <div id="tag-that-line-widget" class="play-widget"></div>
     </div>
     <!-- widget assets -->
     <link rel="stylesheet" href="/widget-bacon-trail/widget.css" />
+      <link rel="stylesheet" href="/widget-box-office/widget.css" />
+      <link rel="stylesheet" href="/widget-tag-that-line/widget.css" />
     <script src="/widget-bacon-trail/widget.js" defer></script>
       <script>window.addEventListener("DOMContentLoaded", function(){if(window.BaconTrailWidget){BaconTrailWidget.init({container: document.getElementById("bacon-widget"), "ctaUrl": "#work", "ctaLabel": "See the full suite \u2192"});}});</script>
+      <script src="/widget-box-office/widget.js" defer></script>
+      <script>window.addEventListener("DOMContentLoaded", function(){if(window.BoxOfficeWidget){BoxOfficeWidget.init({container: document.getElementById("box-office-widget")});}});</script>
+      <script src="/widget-tag-that-line/widget.js" defer></script>
+      <script>window.addEventListener("DOMContentLoaded", function(){if(window.TagThatLineWidget){TagThatLineWidget.init({container: document.getElementById("tag-that-line-widget")});}});</script>
   </div>
 </section>
 <!-- SITE_JSON:play:end -->

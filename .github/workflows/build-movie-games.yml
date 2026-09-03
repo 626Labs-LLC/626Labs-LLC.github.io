@@ -1,0 +1,103 @@
+name: Build Widgets (movie-games)
+
+# Rebuilds the embedded Box Office Heads Up + Tag That Line widgets
+# whenever their shared source app changes. No secrets: both games are
+# fully client-side (static roster, TMDB public poster CDN). Result
+# bundles are committed back to `widget-box-office/` and
+# `widget-tag-that-line/` at the hub root so GitHub Pages picks them up.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/widget-movie-games/src/**'
+      - 'apps/widget-movie-games/package.json'
+      - 'apps/widget-movie-games/package-lock.json'
+      - 'apps/widget-movie-games/vite.config.ts'
+      - 'apps/widget-movie-games/tsconfig.json'
+      - '.github/workflows/build-movie-games.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: build-movie-games
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Don't re-trigger when our own bot commits the rebuilt bundles.
+    if: github.actor != 'github-actions[bot]'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: apps/widget-movie-games/package-lock.json
+
+      - name: Install dependencies
+        working-directory: apps/widget-movie-games
+        run: npm ci
+
+      - name: Typecheck
+        working-directory: apps/widget-movie-games
+        run: npm run typecheck
+
+      - name: Test
+        working-directory: apps/widget-movie-games
+        run: npm run test
+
+      - name: Build widget bundles
+        working-directory: apps/widget-movie-games
+        run: npm run build
+
+      - name: Report bundle sizes
+        run: |
+          echo "### Movie-games bundle sizes" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Bytes | Gzipped |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---:|---:|" >> $GITHUB_STEP_SUMMARY
+          FAIL=0
+          for d in widget-box-office widget-tag-that-line; do
+            JS_GZ=$(gzip -c $d/widget.js | wc -c)
+            CSS_GZ=$(gzip -c $d/widget.css | wc -c)
+            printf "| %s/widget.js | %d | %d |\n" "$d" "$(wc -c < $d/widget.js)" "$JS_GZ" >> $GITHUB_STEP_SUMMARY
+            printf "| %s/widget.css | %d | %d |\n" "$d" "$(wc -c < $d/widget.css)" "$CSS_GZ" >> $GITHUB_STEP_SUMMARY
+            if [[ "$JS_GZ" -gt 153600 ]]; then
+              echo "::error::$d/widget.js gzip size ($JS_GZ) exceeds 150 KB budget." >&2
+              FAIL=1
+            fi
+            if [[ "$CSS_GZ" -gt 20480 ]]; then
+              echo "::error::$d/widget.css gzip size ($CSS_GZ) exceeds 20 KB budget." >&2
+              FAIL=1
+            fi
+          done
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Budget: JS ≤ 150 KB gz, CSS ≤ 20 KB gz per widget." >> $GITHUB_STEP_SUMMARY
+          exit $FAIL
+
+      - name: Commit + push if bundles changed
+        run: |
+          if [[ -z "$(git status --porcelain widget-box-office/ widget-tag-that-line/)" ]]; then
+            echo "No bundle changes."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add widget-box-office/ widget-tag-that-line/
+          git commit -m "chore(widget): rebuild movie-games bundles $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          # Retry push — another bot job may have pushed first while we
+          # were building (same loop as every push-to-main workflow here).
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; rebasing onto remote main and retrying..."
+            git pull --rebase origin main
+            sleep $((attempt * 3))
+          done
+          echo "::error::Failed to push after 5 attempts."
+          exit 1
