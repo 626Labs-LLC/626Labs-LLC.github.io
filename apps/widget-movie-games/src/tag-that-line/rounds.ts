@@ -1,9 +1,8 @@
 // Round generator — the widget edition of WSYATM's getTaglineSession.
-// The server built its pool from TMDB popular movies daily; the hub embed
-// draws from the shared roster's curated classic taglines instead, so it
-// needs no backend, no key, and no cache. All the variety (round pick,
-// decoys, poster order) was always local shuffling — preserved here.
-import { MOVIES, shuffle, type Movie } from '../shared/movies';
+// The pool is injected (fetched at runtime from pool.json, which carries
+// curated classics plus a weekly TMDB sweep); all the variety (round
+// pick, decoys, poster order) is local shuffling, as it always was.
+import { shuffle, posterUrl, type PoolEntry } from '../shared/data';
 
 export type Poster = {
   movieId: string;
@@ -19,26 +18,33 @@ export type Round = {
 
 const POSTERS_PER_ROUND = 4;
 
-function toPoster(mv: Movie): Poster {
-  return { movieId: mv.id, title: mv.title, posterUrl: mv.posterUrl };
+function toPoster(e: PoolEntry): Poster {
+  return { movieId: e.id, title: e.title, posterUrl: posterUrl(e.posterPath) };
 }
 
-export function generateRounds(totalRounds = 8): Round[] {
-  const eligible = shuffle(
-    MOVIES.filter((mv) => mv.tagline && mv.posterUrl)
-  );
-  const decoyStock = MOVIES.filter((mv) => mv.posterUrl);
+export function generateRounds(pool: readonly PoolEntry[], totalRounds = 8): Round[] {
+  // Curated classics are the spine (~5 of 8 rounds); the TMDB sweep fills
+  // the rest so fresh titles keep showing up. Either side backfills the
+  // other when short.
+  const curated = shuffle(pool.filter((e) => e.source === 'curated'));
+  const swept = shuffle(pool.filter((e) => e.source !== 'curated'));
+  const curatedShare = Math.min(curated.length, Math.ceil(totalRounds * 0.6));
+  const answers = [
+    ...curated.slice(0, curatedShare),
+    ...swept,
+    ...curated.slice(curatedShare),
+  ].slice(0, totalRounds);
   const rounds: Round[] = [];
 
-  for (const answer of eligible.slice(0, totalRounds)) {
+  for (const answer of shuffle(answers)) {
     const decoys = shuffle(
-      // A same-franchise decoy would make "With great power…" a coin
-      // flip between Spider-Man and Deadpool on text alone — that
-      // ambiguity is the fun, so no franchise filtering on purpose.
-      decoyStock.filter((mv) => mv.id !== answer.id)
+      // A same-franchise decoy would make "With great power…" a coin flip
+      // between Spider-Man and Deadpool on text alone — that ambiguity is
+      // the fun, so no franchise filtering on purpose.
+      pool.filter((e) => e.id !== answer.id)
     ).slice(0, POSTERS_PER_ROUND - 1);
     rounds.push({
-      tagline: answer.tagline!,
+      tagline: answer.tagline,
       correctMovieId: answer.id,
       posters: shuffle([toPoster(answer), ...decoys.map(toPoster)]),
     });

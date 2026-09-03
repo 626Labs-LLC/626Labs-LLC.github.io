@@ -134,6 +134,30 @@
 }
 .ttl-btn-ghost:hover { color: var(--fg-1); }
 
+/* ─── Loading / error ─────────────────────────────────────────────── */
+.ttl-load {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: var(--s-4);
+  min-height: 300px;
+}
+.ttl-load-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fg-1);
+}
+.ttl-load-note {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
 /* ─── HUD ─────────────────────────────────────────────────────────── */
 .ttl-hud {
   display: flex;

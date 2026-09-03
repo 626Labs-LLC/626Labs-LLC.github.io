@@ -1,7 +1,8 @@
 // Box Office Heads Up — compact 420px widget edition. Game logic ported
 // from the WSYATM BoxOffice feature (vibe-taker bundle v1); UI re-dressed
 // in 626 Labs brand for the hub's play section. Anonymous play, best
-// score in localStorage.
+// score in localStorage. The roster is runtime data fetched from
+// /widget-box-office/data/movies.json (see shared/data.ts).
 import { useState, useCallback, useRef, useEffect } from 'react';
 import {
   generateMatchups,
@@ -9,7 +10,12 @@ import {
   getFunFact,
   type Matchup,
 } from './matchups';
-import { formatDollars, formatDollarsFull, type Movie } from '../shared/movies';
+import {
+  loadRoster,
+  formatDollars,
+  formatDollarsFull,
+  type Movie,
+} from '../shared/data';
 
 const BEST_KEY = '626-boxoffice-best';
 const ROUNDS = 10;
@@ -33,20 +39,45 @@ function readBest(): number {
 }
 
 export function Widget() {
-  // The first game is dealt at mount so round 1 shows through the
-  // translucent welcome overlay; Start just lifts the veil onto it.
-  const [matchups, setMatchups] = useState<Matchup[]>(() => generateMatchups(ROUNDS));
+  // The roster fetches at mount, then the first game is dealt so round 1
+  // shows through the translucent welcome overlay; Start lifts the veil.
+  const [movies, setMovies] = useState<Movie[] | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadTry, setLoadTry] = useState(0);
+  const [matchups, setMatchups] = useState<Matchup[]>([]);
   const [gameId, setGameId] = useState(0);
   const [covered, setCovered] = useState(true);
   const [result, setResult] = useState<GameResult | null>(null);
   const [best, setBest] = useState(readBest);
 
-  const redeal = useCallback((cover: boolean) => {
-    setMatchups(generateMatchups(ROUNDS));
-    setGameId((id) => id + 1);
-    setResult(null);
-    setCovered(cover);
-  }, []);
+  useEffect(() => {
+    let alive = true;
+    setLoadError(null);
+    loadRoster().then(
+      (roster) => {
+        if (!alive) return;
+        setMovies(roster);
+        setMatchups(generateMatchups(roster, ROUNDS));
+      },
+      (err: Error) => {
+        if (alive) setLoadError(err.message);
+      }
+    );
+    return () => {
+      alive = false;
+    };
+  }, [loadTry]);
+
+  const redeal = useCallback(
+    (cover: boolean) => {
+      if (!movies) return;
+      setMatchups(generateMatchups(movies, ROUNDS));
+      setGameId((id) => id + 1);
+      setResult(null);
+      setCovered(cover);
+    },
+    [movies]
+  );
 
   const complete = useCallback((r: GameResult) => {
     setResult(r);
@@ -67,7 +98,19 @@ export function Widget() {
         <span className="bow-brand-name">Box Office <em>Heads Up</em></span>
         <span className="bow-brand-tag">626 LABS</span>
       </div>
-      {result ? (
+      {loadError ? (
+        <div className="bow-screen bow-load">
+          <p className="bow-load-title">Projector trouble.</p>
+          <p className="bow-load-note">Couldn't load the movie data.</p>
+          <button className="bow-btn-primary" onClick={() => setLoadTry((t) => t + 1)}>
+            Retry
+          </button>
+        </div>
+      ) : !movies || matchups.length === 0 ? (
+        <div className="bow-screen bow-load">
+          <p className="bow-load-note">Loading the reel…</p>
+        </div>
+      ) : result ? (
         <Result result={result} best={best} onPlayAgain={() => redeal(false)} onMenu={() => redeal(true)} />
       ) : (
         <div className="bow-stage">
@@ -79,7 +122,10 @@ export function Widget() {
               </p>
               <ul className="bow-rules">
                 <li><strong>10</strong> rounds per game</li>
-                <li><strong>75</strong> films spanning 1972–2024</li>
+                <li>
+                  <strong>{movies.length}</strong> films spanning{' '}
+                  {Math.min(...movies.map((mv) => mv.year))}–{Math.max(...movies.map((mv) => mv.year))}
+                </li>
                 <li><strong>Streaks</strong> multiply your score</li>
               </ul>
               {best > 0 && (

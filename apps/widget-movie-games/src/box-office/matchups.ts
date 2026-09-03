@@ -1,8 +1,9 @@
 // Matchup generator — ported from WSYATM's movieService.ts (vibe-taker
 // bundle box-office-heads-up v1). Tier-adjacency pairing keeps contests
 // competitive: a tier-1 monster never faces a tier-4 sleeper unless the
-// pool runs dry late in a session.
-import { MOVIES, shuffle, type Movie } from '../shared/movies';
+// pool runs dry late in a session. The dataset is injected (fetched at
+// runtime by the widget; loaded from roster.json by tests).
+import { shuffle, type Movie } from '../shared/data';
 
 export type Matchup = {
   movieA: Movie;
@@ -17,8 +18,8 @@ const ADJACENT_TIERS: Record<number, number[]> = {
   4: [3, 4],
 };
 
-export function generateMatchups(totalRounds = 10): Matchup[] {
-  const pool = shuffle(MOVIES);
+export function generateMatchups(movies: readonly Movie[], totalRounds = 10): Matchup[] {
+  const pool = shuffle(movies);
   const used = new Set<string>();
   const matchups: Matchup[] = [];
 

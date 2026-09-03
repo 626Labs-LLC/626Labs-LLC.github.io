@@ -1,0 +1,765 @@
+{
+  "generated": "2026-09-03T23:14:12.817Z",
+  "movies": [
+    {
+      "id": "m01",
+      "title": "Avengers: Endgame",
+      "year": 2019,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 357115007,
+      "funFact": "The biggest opening weekend in history — earned more in 5 days than most films do in their entire run.",
+      "tagline": "Avenge the fallen.",
+      "posterPath": "/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg"
+    },
+    {
+      "id": "m02",
+      "title": "Spider-Man: No Way Home",
+      "year": 2021,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 260138569,
+      "funFact": "Opened during the pandemic era and still pulled the second-biggest opening ever.",
+      "tagline": "The Multiverse unleashed.",
+      "posterPath": "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg"
+    },
+    {
+      "id": "m03",
+      "title": "Avengers: Infinity War",
+      "year": 2018,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 257698183,
+      "funFact": "Held the opening weekend record for exactly one year before Endgame broke it.",
+      "posterPath": "/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg"
+    },
+    {
+      "id": "m04",
+      "title": "Star Wars: The Force Awakens",
+      "year": 2015,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 247966675,
+      "funFact": "The most anticipated movie in a generation. Fans camped out weeks in advance.",
+      "tagline": "Every generation has a story.",
+      "posterPath": "/wqnLdwVXoBjKibFRR5U3y0aDUhs.jpg"
+    },
+    {
+      "id": "m05",
+      "title": "Star Wars: The Last Jedi",
+      "year": 2017,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 220009584,
+      "posterPath": "/kOVEVeg59E0wsnXmF9nrh6OmWII.jpg"
+    },
+    {
+      "id": "m06",
+      "title": "Jurassic World",
+      "year": 2015,
+      "genre": "Adventure",
+      "rating": "PG-13",
+      "openingWeekend": 208806270,
+      "funFact": "First film ever to cross $200M in its opening weekend domestically.",
+      "tagline": "The park is open.",
+      "posterPath": "/rhr4y79GpxQF9IsfJItRXVaoGs4.jpg"
+    },
+    {
+      "id": "m07",
+      "title": "The Avengers",
+      "year": 2012,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 207438708,
+      "funFact": "The movie that proved the shared universe model could print money.",
+      "tagline": "Some assembly required.",
+      "posterPath": "/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg"
+    },
+    {
+      "id": "m08",
+      "title": "Black Panther",
+      "year": 2018,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 202003951,
+      "funFact": "Became a cultural phenomenon — its opening was bigger than any previous solo superhero debut.",
+      "tagline": "Long live the king.",
+      "posterPath": "/uxzzxijgPIY7slzFvMotPv8wjKA.jpg"
+    },
+    {
+      "id": "m09",
+      "title": "The Lion King",
+      "year": 2019,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 191770759,
+      "funFact": "The \"live-action\" remake opened bigger than the 1994 original earned in its entire first run.",
+      "tagline": "The king has returned.",
+      "posterPath": "/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg"
+    },
+    {
+      "id": "m10",
+      "title": "Avengers: Age of Ultron",
+      "year": 2015,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 191271109,
+      "posterPath": "/4ssDuvEDkSArWEdyBl2X5EHvYKU.jpg"
+    },
+    {
+      "id": "m11",
+      "title": "Doctor Strange in the Multiverse of Madness",
+      "year": 2022,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 187420998,
+      "posterPath": "/ddJcSKbcp4rKZTmuyWaMhuwcfMz.jpg"
+    },
+    {
+      "id": "m12",
+      "title": "Incredibles 2",
+      "year": 2018,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 182687905,
+      "funFact": "The biggest animated opening ever at the time — 14 years after the original.",
+      "posterPath": "/9lFKBtaVIhP7E2Pk0IY1CwTKTMZ.jpg"
+    },
+    {
+      "id": "m13",
+      "title": "Black Panther: Wakanda Forever",
+      "year": 2022,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 181339761,
+      "posterPath": "/sv1xJUazXeYqALzczSZ3O6nkH75.jpg"
+    },
+    {
+      "id": "m14",
+      "title": "Star Wars: The Rise of Skywalker",
+      "year": 2019,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 177383864,
+      "funFact": "Opened $70M lower than The Force Awakens — proof that franchise fatigue is real.",
+      "posterPath": "/db32LaOibwEliAmSL2jjDF6oDdj.jpg"
+    },
+    {
+      "id": "m15",
+      "title": "Iron Man 3",
+      "year": 2013,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 174144585,
+      "posterPath": "/qhPtAc1TKbMPqNvcdXSOn9Bn7hZ.jpg"
+    },
+    {
+      "id": "m16",
+      "title": "Harry Potter and the Deathly Hallows Part 2",
+      "year": 2011,
+      "genre": "Fantasy",
+      "rating": "PG-13",
+      "openingWeekend": 169189427,
+      "funFact": "The finale held the opening weekend record for a full year.",
+      "tagline": "It all ends.",
+      "posterPath": "/c54HpQmuwXjHq2C9wmoACjxoom3.jpg"
+    },
+    {
+      "id": "m17",
+      "title": "Batman v Superman: Dawn of Justice",
+      "year": 2016,
+      "genre": "Action",
+      "rating": "R",
+      "openingWeekend": 166007347,
+      "funFact": "Massive opening, but dropped 69% in week two — one of the steepest declines ever.",
+      "posterPath": "/5UsK3grJvtQrtzEgqNlDljJW96w.jpg"
+    },
+    {
+      "id": "m18",
+      "title": "Barbie",
+      "year": 2023,
+      "genre": "Comedy",
+      "rating": "PG-13",
+      "openingWeekend": 162022044,
+      "funFact": "The biggest opening ever for a film directed by a woman.",
+      "tagline": "She's everything. He's just Ken.",
+      "posterPath": "/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg"
+    },
+    {
+      "id": "m19",
+      "title": "The Dark Knight Rises",
+      "year": 2012,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 160887295,
+      "tagline": "The legend ends.",
+      "posterPath": "/hr0L2aueqlP2BYUblTTjmtn0hw4.jpg"
+    },
+    {
+      "id": "m20",
+      "title": "The Dark Knight",
+      "year": 2008,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 158411483,
+      "funFact": "Heath Ledger's posthumous Joker performance drove one of the decade's biggest openings.",
+      "tagline": "Why so serious?",
+      "posterPath": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+    },
+    {
+      "id": "m21",
+      "title": "The Hunger Games: Catching Fire",
+      "year": 2013,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 158074286,
+      "tagline": "Remember who the enemy is.",
+      "posterPath": "/vrQHDXjVmbYzadOXQ0UaObunoy2.jpg"
+    },
+    {
+      "id": "m22",
+      "title": "Rogue One: A Star Wars Story",
+      "year": 2016,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 155081681,
+      "tagline": "A rebellion built on hope.",
+      "posterPath": "/i0yw1mFbB7sNGHCs7EXZPzFkdA1.jpg"
+    },
+    {
+      "id": "m23",
+      "title": "Inside Out 2",
+      "year": 2024,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 154230000,
+      "funFact": "Proved Pixar still dominates — the biggest animated opening of all time.",
+      "tagline": "Make room for new emotions.",
+      "posterPath": "/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg"
+    },
+    {
+      "id": "m24",
+      "title": "Captain Marvel",
+      "year": 2019,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 153433423,
+      "tagline": "Higher. Further. Faster.",
+      "posterPath": "/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg"
+    },
+    {
+      "id": "m25",
+      "title": "The Hunger Games",
+      "year": 2012,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 152535747,
+      "tagline": "The world will be watching.",
+      "posterPath": "/yXCbOiVDCxO71zI7cuwBRXdftq8.jpg"
+    },
+    {
+      "id": "m26",
+      "title": "Spider-Man 3",
+      "year": 2007,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 151116516,
+      "posterPath": "/qFmwhVUoUSXjkKRmca5yGDEXBIj.jpg"
+    },
+    {
+      "id": "m27",
+      "title": "Jurassic World: Fallen Kingdom",
+      "year": 2018,
+      "genre": "Adventure",
+      "rating": "PG-13",
+      "openingWeekend": 148024610,
+      "tagline": "The park is gone.",
+      "posterPath": "/x2Us3jR6ToMJjbcPbLimYoxf6xr.jpg"
+    },
+    {
+      "id": "m28",
+      "title": "Fast & Furious 7",
+      "year": 2015,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 147187040,
+      "funFact": "Paul Walker's final film — the emotional tribute drove massive opening day turnout.",
+      "tagline": "Vengeance hits home.",
+      "posterPath": "/ktofZ9Htrjiy0P6LEowsDaxd3Ri.jpg"
+    },
+    {
+      "id": "m29",
+      "title": "The Super Mario Bros. Movie",
+      "year": 2023,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 146361865,
+      "funFact": "Critics were lukewarm but audiences showed up — the power of nostalgia.",
+      "posterPath": "/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg"
+    },
+    {
+      "id": "m30",
+      "title": "Jurassic World Dominion",
+      "year": 2022,
+      "genre": "Adventure",
+      "rating": "PG-13",
+      "openingWeekend": 145075625,
+      "posterPath": "/jbAvCACjLf1ZG0unB2tdmx5HAf1.jpg"
+    },
+    {
+      "id": "m31",
+      "title": "Thor: Love and Thunder",
+      "year": 2022,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 144165107,
+      "posterPath": "/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg"
+    },
+    {
+      "id": "m32",
+      "title": "Pirates of the Caribbean: Dead Man's Chest",
+      "year": 2006,
+      "genre": "Adventure",
+      "rating": "PG-13",
+      "openingWeekend": 135634554,
+      "posterPath": "/uXEqmloGyP7UXAiphJUu2v2pcuE.jpg"
+    },
+    {
+      "id": "m33",
+      "title": "Finding Dory",
+      "year": 2016,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 135060273,
+      "tagline": "An unforgettable journey she probably won't remember.",
+      "posterPath": "/3UVe8NL1E2ZdUZ9EDlKGJY5UzE.jpg"
+    },
+    {
+      "id": "m34",
+      "title": "The Batman",
+      "year": 2022,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 134009462,
+      "tagline": "Unmask the truth.",
+      "posterPath": "/74xTEgt7R36Fpooo50r9T25onhq.jpg"
+    },
+    {
+      "id": "m35",
+      "title": "Deadpool",
+      "year": 2016,
+      "genre": "Action",
+      "rating": "R",
+      "openingWeekend": 132434639,
+      "funFact": "The biggest R-rated opening weekend ever at the time — on a Valentine's Day weekend.",
+      "tagline": "With great power comes great irresponsibility.",
+      "posterPath": "/3E53WEZJqP6aM84D8CckXx4pIHw.jpg"
+    },
+    {
+      "id": "m36",
+      "title": "Frozen II",
+      "year": 2019,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 130263358,
+      "tagline": "The past is not what it seems.",
+      "posterPath": "/mINJaa34MtknCYl5AjtNJzWj8cD.jpg"
+    },
+    {
+      "id": "m37",
+      "title": "Top Gun: Maverick",
+      "year": 2022,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 126707459,
+      "funFact": "Tom Cruise's first $100M opening — 36 years after the original Top Gun.",
+      "tagline": "Feel the need... The need for speed.",
+      "posterPath": "/62HCnUTziyWcpDaBO2i1DX17ljH.jpg"
+    },
+    {
+      "id": "m38",
+      "title": "Deadpool 2",
+      "year": 2018,
+      "genre": "Action",
+      "rating": "R",
+      "openingWeekend": 125507153,
+      "posterPath": "/to0spRl1CMDvyUbOnbb4fTk3VAd.jpg"
+    },
+    {
+      "id": "m39",
+      "title": "It",
+      "year": 2017,
+      "genre": "Horror",
+      "rating": "R",
+      "openingWeekend": 123403419,
+      "funFact": "The biggest horror opening ever — more than doubled the previous record.",
+      "tagline": "You'll float too.",
+      "posterPath": "/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg"
+    },
+    {
+      "id": "m40",
+      "title": "Toy Story 4",
+      "year": 2019,
+      "genre": "Animation",
+      "rating": "G",
+      "openingWeekend": 120908065,
+      "posterPath": "/w9kR8qbmQ01HwnvK4alvnQ2ca0L.jpg"
+    },
+    {
+      "id": "m41",
+      "title": "Spider-Man: Across the Spider-Verse",
+      "year": 2023,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 120560249,
+      "posterPath": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg"
+    },
+    {
+      "id": "m42",
+      "title": "Guardians of the Galaxy Vol. 3",
+      "year": 2023,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 118414021,
+      "tagline": "Once more with feeling.",
+      "posterPath": "/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg"
+    },
+    {
+      "id": "m43",
+      "title": "Spider-Man",
+      "year": 2002,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 114844116,
+      "funFact": "The first film ever to open above $100M — a milestone that changed the industry.",
+      "tagline": "With great power comes great responsibility.",
+      "posterPath": "/kjdJntyBeEvqm9w97QGBdxPptzj.jpg"
+    },
+    {
+      "id": "m44",
+      "title": "Toy Story 3",
+      "year": 2010,
+      "genre": "Animation",
+      "rating": "G",
+      "openingWeekend": 110307189,
+      "tagline": "No toy gets left behind.",
+      "posterPath": "/AbbXspMOwdvwWZgVN0nabZq03Ec.jpg"
+    },
+    {
+      "id": "m45",
+      "title": "Shrek 2",
+      "year": 2004,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 108037878,
+      "posterPath": "/2yYP0PQjG8zVqturh1BAqu2Tixl.jpg"
+    },
+    {
+      "id": "m46",
+      "title": "Wonder Woman",
+      "year": 2017,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 103251471,
+      "tagline": "Wonder. Power. Courage.",
+      "posterPath": "/v4ncgZjG2Zu8ZW5al1vIZTsSjqX.jpg"
+    },
+    {
+      "id": "m47",
+      "title": "Transformers: Age of Extinction",
+      "year": 2014,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 100038390,
+      "posterPath": "/jyzrfx2WaeY60kYZpPYepSjGz4S.jpg"
+    },
+    {
+      "id": "m48",
+      "title": "The Fate of the Furious",
+      "year": 2017,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 98786705,
+      "tagline": "Family no more.",
+      "posterPath": "/dImWM7GJqryWJO9LHa3XQ8DD5NH.jpg"
+    },
+    {
+      "id": "m49",
+      "title": "Iron Man",
+      "year": 2008,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 98618668,
+      "funFact": "The movie that launched the MCU — made on a $140M budget, it changed cinema forever.",
+      "tagline": "Heroes aren't born. They're built.",
+      "posterPath": "/78lPtwv72eTNqFW9COBYI0dWDJa.jpg"
+    },
+    {
+      "id": "m50",
+      "title": "Joker",
+      "year": 2019,
+      "genre": "Drama",
+      "rating": "R",
+      "openingWeekend": 96202337,
+      "funFact": "An R-rated character study with no action sequences opened at nearly $100M.",
+      "tagline": "Put on a happy face.",
+      "posterPath": "/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg"
+    },
+    {
+      "id": "m51",
+      "title": "Spider-Man: Far From Home",
+      "year": 2019,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 92579212,
+      "posterPath": "/4q2NNj4S5dG2RLF9CpXsej7yXl.jpg"
+    },
+    {
+      "id": "m52",
+      "title": "The Matrix Reloaded",
+      "year": 2003,
+      "genre": "Sci-Fi",
+      "rating": "R",
+      "openingWeekend": 91774413,
+      "tagline": "Free your mind.",
+      "posterPath": "/aA5qHS0FbSXO8PxcxUIHbDrJyuh.jpg"
+    },
+    {
+      "id": "m53",
+      "title": "Inside Out",
+      "year": 2015,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 90440272,
+      "tagline": "Meet the little voices inside your head.",
+      "posterPath": "/2H1TmgdfNtsKlU9jKdeNyYL5y8T.jpg"
+    },
+    {
+      "id": "m54",
+      "title": "Logan",
+      "year": 2017,
+      "genre": "Action",
+      "rating": "R",
+      "openingWeekend": 88411916,
+      "funFact": "Hugh Jackman's final Wolverine film — an R-rated send-off that opened bigger than most PG-13 superhero films.",
+      "tagline": "His time has come.",
+      "posterPath": "/fnbjcRDYn6YviCcePDnGdyAkYsB.jpg"
+    },
+    {
+      "id": "m55",
+      "title": "Skyfall",
+      "year": 2012,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 88364714,
+      "tagline": "Think on your sins.",
+      "posterPath": "/d0IVecFQvsGdSbnMAHqiYsNYaJT.jpg"
+    },
+    {
+      "id": "m56",
+      "title": "Dune: Part Two",
+      "year": 2024,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 82500000,
+      "tagline": "Long live the fighters.",
+      "posterPath": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"
+    },
+    {
+      "id": "m57",
+      "title": "Oppenheimer",
+      "year": 2023,
+      "genre": "Drama",
+      "rating": "R",
+      "openingWeekend": 82455420,
+      "funFact": "A 3-hour R-rated biopic about physics opened at $82M — the Barbenheimer effect was real.",
+      "tagline": "The world forever changes.",
+      "posterPath": "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg"
+    },
+    {
+      "id": "m58",
+      "title": "Moana",
+      "year": 2016,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 81093407,
+      "tagline": "The ocean is calling.",
+      "posterPath": "/9tzN8sPbyod2dsa0lwuvrwBDWra.jpg"
+    },
+    {
+      "id": "m59",
+      "title": "Avatar",
+      "year": 2009,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 77025481,
+      "funFact": "Opened at just $77M but went on to earn $2.9B worldwide — the highest-grossing film of all time.",
+      "tagline": "Enter the world of Pandora.",
+      "posterPath": "/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg"
+    },
+    {
+      "id": "m60",
+      "title": "Zootopia",
+      "year": 2016,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 75063401,
+      "tagline": "Welcome to the urban jungle.",
+      "posterPath": "/hlK0e0wAQ3VLuJcsfIYPvb4JVud.jpg"
+    },
+    {
+      "id": "m61",
+      "title": "John Wick: Chapter 4",
+      "year": 2023,
+      "genre": "Action",
+      "rating": "R",
+      "openingWeekend": 73817950,
+      "tagline": "No way back, one way out.",
+      "posterPath": "/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg"
+    },
+    {
+      "id": "m62",
+      "title": "The Incredibles",
+      "year": 2004,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 70467623,
+      "posterPath": "/2LqaLgk4Z226KkgPJuiOQ58wvrm.jpg"
+    },
+    {
+      "id": "m63",
+      "title": "F9",
+      "year": 2021,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 70000000,
+      "posterPath": "/deEmLILTPejEb6OGsXRJ5MCvyDW.jpg"
+    },
+    {
+      "id": "m64",
+      "title": "Aquaman",
+      "year": 2018,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 67873522,
+      "tagline": "Home is calling.",
+      "posterPath": "/ufl63EFcc5XpByEV2Ecdw6WJZAI.jpg"
+    },
+    {
+      "id": "m65",
+      "title": "Inception",
+      "year": 2010,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 62785337,
+      "funFact": "Christopher Nolan's cerebral heist film — opened modestly but had incredible legs at the box office.",
+      "tagline": "Your mind is the scene of the crime.",
+      "posterPath": "/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg"
+    },
+    {
+      "id": "m66",
+      "title": "Gravity",
+      "year": 2013,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 55785112,
+      "tagline": "Don't let go.",
+      "posterPath": "/kZ2nZw8D681aphje8NJi8EfbL1U.jpg"
+    },
+    {
+      "id": "m67",
+      "title": "No Time to Die",
+      "year": 2021,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 55225007,
+      "posterPath": "/iUgygt3fscRoKWCV1d0C7FbM9TP.jpg"
+    },
+    {
+      "id": "m68",
+      "title": "Coco",
+      "year": 2017,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 50802605,
+      "tagline": "The celebration of a lifetime.",
+      "posterPath": "/6Ryitt95xrO8KXuqRGm1fUuNwqF.jpg"
+    },
+    {
+      "id": "m69",
+      "title": "A Quiet Place",
+      "year": 2018,
+      "genre": "Horror",
+      "rating": "PG-13",
+      "openingWeekend": 50203562,
+      "funFact": "Made for just $17M — its opening weekend alone was 3x its entire budget.",
+      "tagline": "If they hear you, they hunt you.",
+      "posterPath": "/nAU74GmpUk7t5iklEp3bufwDq4n.jpg"
+    },
+    {
+      "id": "m70",
+      "title": "Interstellar",
+      "year": 2014,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 47510360,
+      "funFact": "Opened modestly at $47M but became a cultural touchstone for a generation.",
+      "tagline": "Mankind was born on Earth. It was never meant to die here.",
+      "posterPath": "/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg"
+    },
+    {
+      "id": "m71",
+      "title": "Dune",
+      "year": 2021,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 40071429,
+      "funFact": "Simultaneous HBO Max release likely cost it tens of millions in opening weekend.",
+      "tagline": "Beyond fear, destiny awaits.",
+      "posterPath": "/gDzOcq0pfeCeqMBwKIJlSmQpjkZ.jpg"
+    },
+    {
+      "id": "m72",
+      "title": "Get Out",
+      "year": 2017,
+      "genre": "Horror",
+      "rating": "R",
+      "openingWeekend": 33377060,
+      "funFact": "Made for just $4.5M — its opening weekend was 7x its entire production budget.",
+      "tagline": "Just because you're invited, doesn't mean you're welcome.",
+      "posterPath": "/tFXcEccSQMf3lfhfXKSU9iRBpa3.jpg"
+    },
+    {
+      "id": "m73",
+      "title": "Titanic",
+      "year": 1997,
+      "genre": "Romance",
+      "rating": "PG-13",
+      "openingWeekend": 28638131,
+      "funFact": "Opened at just $28M — then stayed #1 for 15 consecutive weeks on its way to $600M domestic.",
+      "tagline": "Nothing on Earth could come between them.",
+      "posterPath": "/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg"
+    },
+    {
+      "id": "m74",
+      "title": "The Godfather",
+      "year": 1972,
+      "genre": "Crime",
+      "rating": "R",
+      "openingWeekend": 26081000,
+      "funFact": "Adjusted for inflation, this opening would be roughly $180M in today's dollars.",
+      "tagline": "An offer you can't refuse.",
+      "posterPath": "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg"
+    },
+    {
+      "id": "m75",
+      "title": "Everything Everywhere All at Once",
+      "year": 2022,
+      "genre": "Sci-Fi",
+      "rating": "R",
+      "openingWeekend": 609520,
+      "funFact": "Opened in just 10 theaters at $609K — then expanded to win 7 Oscars including Best Picture.",
+      "posterPath": "/u68AjlvlutfEIcpmbYpKcdi09ut.jpg"
+    }
+  ]
+}

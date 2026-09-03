@@ -1,0 +1,62 @@
+name: Refresh Game Data (movie-games)
+
+# Weekly refresh of the movie-game runtime datasets. Resolves TMDB poster
+# paths for new roster entries (writing the resolutions back into
+# apps/widget-movie-games/data/roster.json as a cache), rebuilds
+# widget-box-office/data/movies.json, and rebuilds the Tag That Line pool
+# (curated classics + a TMDB popular/top-rated sweep) at
+# widget-tag-that-line/data/pool.json. Data commits only — the widget
+# bundles never rebuild from this workflow.
+#
+# Reuses the VITE_TMDB_API_KEY secret the bacon-trail build already bakes.
+
+on:
+  schedule:
+    - cron: '30 7 * * 2' # Tuesdays 07:30 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: refresh-game-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Refresh datasets
+        env:
+          TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
+        run: node scripts/refresh-game-data.mjs
+
+      - name: Commit + push if data changed
+        run: |
+          PATHS="widget-box-office/data widget-tag-that-line/data apps/widget-movie-games/data/roster.json"
+          if [[ -z "$(git status --porcelain $PATHS)" ]]; then
+            echo "No data changes."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add $PATHS
+          git commit -m "chore(game-data): refresh datasets $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          # Retry push — another bot job may have pushed first (same loop
+          # as every push-to-main workflow in this repo).
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; rebasing onto remote main and retrying..."
+            git pull --rebase origin main
+            sleep $((attempt * 3))
+          done
+          echo "::error::Failed to push after 5 attempts."
+          exit 1

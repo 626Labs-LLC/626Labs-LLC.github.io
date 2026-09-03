@@ -2,8 +2,11 @@
 // the WSYATM TagThatLine component (vibe-taker bundle v1), scoring
 // preserved (10/5/2 by wrong taps, 3 misses auto-reveals), server
 // session/submission replaced by local generation + localStorage best.
-import { useState, useCallback } from 'react';
+// The tagline pool is runtime data fetched from
+// /widget-tag-that-line/data/pool.json (see shared/data.ts).
+import { useState, useCallback, useEffect } from 'react';
 import { generateRounds, pointsFor, type Round } from './rounds';
+import { loadPool, type PoolEntry } from '../shared/data';
 
 const BEST_KEY = '626-tagthatline-best';
 const ROUNDS = 8;
@@ -21,11 +24,14 @@ function readBest(): number {
 }
 
 export function Widget() {
-  // The first session is dealt at mount so round 1 shows through the
-  // translucent welcome overlay; Start just lifts the veil onto it.
+  // The pool fetches at mount, then the first session is dealt so round 1
+  // shows through the translucent welcome overlay; Start lifts the veil.
+  const [pool, setPool] = useState<PoolEntry[] | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadTry, setLoadTry] = useState(0);
   const [phase, setPhase] = useState<GamePhase>('playing');
   const [covered, setCovered] = useState(true);
-  const [rounds, setRounds] = useState<Round[]>(() => generateRounds(ROUNDS));
+  const [rounds, setRounds] = useState<Round[]>([]);
   const [roundIdx, setRoundIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [tagged, setTagged] = useState(0);
@@ -36,8 +42,27 @@ export function Widget() {
   const [cardStates, setCardStates] = useState<Record<string, CardState>>({});
   const [best, setBest] = useState(readBest);
 
+  useEffect(() => {
+    let alive = true;
+    setLoadError(null);
+    loadPool().then(
+      (entries) => {
+        if (!alive) return;
+        setPool(entries);
+        setRounds(generateRounds(entries, ROUNDS));
+      },
+      (err: Error) => {
+        if (alive) setLoadError(err.message);
+      }
+    );
+    return () => {
+      alive = false;
+    };
+  }, [loadTry]);
+
   const redeal = useCallback((cover: boolean) => {
-    setRounds(generateRounds(ROUNDS));
+    if (!pool) return;
+    setRounds(generateRounds(pool, ROUNDS));
     setRoundIdx(0);
     setScore(0);
     setTagged(0);
@@ -48,7 +73,7 @@ export function Widget() {
     setCardStates({});
     setPhase('playing');
     setCovered(cover);
-  }, []);
+  }, [pool]);
 
   const round = rounds[roundIdx];
 
@@ -114,6 +139,22 @@ export function Widget() {
         <span className="ttl-brand-name">Tag <em>That Line</em></span>
         <span className="ttl-brand-tag">626 LABS</span>
       </div>
+
+      {loadError && (
+        <div className="ttl-screen ttl-load">
+          <p className="ttl-load-title">Projector trouble.</p>
+          <p className="ttl-load-note">Couldn't load the tagline pool.</p>
+          <button className="ttl-btn-primary" onClick={() => setLoadTry((t) => t + 1)}>
+            Retry
+          </button>
+        </div>
+      )}
+
+      {!loadError && (!pool || rounds.length === 0) && (
+        <div className="ttl-screen ttl-load">
+          <p className="ttl-load-note">Loading the reel…</p>
+        </div>
+      )}
 
       {phase === 'playing' && round && (
         <div className="ttl-stage">
