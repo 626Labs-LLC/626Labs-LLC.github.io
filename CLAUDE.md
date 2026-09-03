@@ -53,7 +53,7 @@ references and one-off design artifacts.
 | `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 13 files: 9 bot workflows that push to main, plus 4 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
+| `.github/workflows/` | 14 files: 10 bot workflows that push to main, plus 4 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 | `themes/`, `content/themes.json`, `themes.html` | The monthly theme rotation: theme source dirs, the active/queue/archive registry, and the gallery page rendered from it. See **Theme rotation** below. |
 
@@ -68,11 +68,12 @@ references and one-off design artifacts.
 
 ## CI workflows
 
-The 9 bot workflows that push to main:
+The 10 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
 | `build-widget.yml` | Push to `apps/widget-bacon-trail/src/**` | Vite-builds the widget, commits the bundle to `widget-bacon-trail/`. Bakes `VITE_TMDB_API_KEY` (required) and `VITE_STATS_ENDPOINT` (optional — widget degrades to no play counts if unset) into the IIFE bundle at build time. |
+| `build-movie-games.yml` | Push to `apps/widget-movie-games/src/**` | Vite-builds Box Office Heads Up + Tag That Line (one app, two IIFE bundles), commits them to `widget-box-office/` and `widget-tag-that-line/`. No secrets — both games are fully client-side. |
 | `refresh-bacon-shards.yml` | Daily 06:00 UTC | Pulls bacon shard data from Firestore (uses `FIREBASE_SA_JSON` secret). |
 | `rebuild-hub.yml` | Push to `content/site.json` or `content/stories/**` | Builds Field Note social cards (`build-og-cards.py` → `assets/og/`) then re-runs render-hub.py and commits drift. Needs `Pillow`+`numpy` (in `requirements.txt`). |
 | `track-traffic.yml` | Daily 06:00 UTC | Auto-discovers all public, non-fork, non-archived repos under `estevanhernandez-stack-ed` (user) and `626Labs-LLC` (org), then pulls GitHub traffic metrics for each. Uses `TRAFFIC_PAT` (user-scope, needs Administration:Read on every tracked repo) and `TRAFFIC_PAT_ORG` (optional org-scope override — without it, org repos fall back to GH_TOKEN and 403 on the Traffic API). |
@@ -84,7 +85,7 @@ The 9 bot workflows that push to main:
 
 **Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`, `MCP_VERSION_TRUTH_KEY`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
-All nine use a retry+rebase loop on `git push` to handle the race where two
+All ten use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
 Plus four that never commit to this repo:
@@ -373,9 +374,10 @@ hand-edit the bundle output at `widget-bacon-trail/`.
 
 - **Commits:** Conventional commits — `feat`, `fix`, `chore`, `ci`, `docs`,
   `refactor`. Inferred from the recent log; no hard policy.
-- **No build artifacts in repo, with one exception:** `widget-bacon-trail/`
-  (the Vite bundle output) IS checked in — GitHub Pages serves it directly,
-  so the build artifact has to be in the tree.
+- **No build artifacts in repo, except the widget bundles:**
+  `widget-bacon-trail/`, `widget-box-office/` and `widget-tag-that-line/`
+  (Vite bundle outputs) ARE checked in — GitHub Pages serves them directly,
+  so the build artifacts have to be in the tree.
 - **Image filenames:** the admin's screenshot uploader generates them
   automatically (`<timestamp>-<slug>.<ext>` under
   `assets/screenshots/<product-id>/`). Don't bypass the uploader.
