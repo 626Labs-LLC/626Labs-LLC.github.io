@@ -1,5 +1,6 @@
 import path from 'node:path';
-import { defineConfig } from 'vite';
+import fs from 'node:fs';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 
 // Two library builds out of one app, selected by --mode:
@@ -22,9 +23,35 @@ const TARGETS = {
   },
 } as const;
 
+// Dev-server middleware: the widgets fetch their datasets from
+// /widget-box-office/data/ and /widget-tag-that-line/data/ at runtime
+// (the production URLs GitHub Pages serves). During `vite dev`, shim
+// those paths straight from the hub repo root — same trick as
+// widget-bacon-trail's serveHubShards().
+const HUB_ROOT = path.resolve(__dirname, '../..');
+function serveHubData(): Plugin {
+  return {
+    name: 'widget-movie-games:serve-hub-data',
+    configureServer(server) {
+      for (const dir of ['widget-box-office/data', 'widget-tag-that-line/data']) {
+        server.middlewares.use(`/${dir}`, (req, res, next) => {
+          if (!req.url) return next();
+          const filePath = path.join(HUB_ROOT, dir, req.url);
+          if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
+            return next();
+          }
+          res.setHeader('Content-Type', 'application/json');
+          res.setHeader('Cache-Control', 'no-cache');
+          fs.createReadStream(filePath).pipe(res);
+        });
+      }
+    },
+  };
+}
+
 export default defineConfig(({ command, mode }) => {
   const baseConfig = {
-    plugins: [react()],
+    plugins: [react(), serveHubData()],
     server: {
       port: 3004,
       host: '0.0.0.0',
@@ -55,7 +82,9 @@ export default defineConfig(({ command, mode }) => {
     },
     build: {
       outDir: path.resolve(__dirname, target.outDir),
-      emptyOutDir: true,
+      // The out dirs also hold the runtime datasets under data/ (owned by
+      // scripts/refresh-game-data.mjs) — never wipe them on rebuild.
+      emptyOutDir: false,
       sourcemap: true,
       target: 'es2019',
       lib: {
