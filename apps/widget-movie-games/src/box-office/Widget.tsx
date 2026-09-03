@@ -14,7 +14,6 @@ import { formatDollars, formatDollarsFull, type Movie } from '../shared/movies';
 const BEST_KEY = '626-boxoffice-best';
 const ROUNDS = 10;
 
-type GamePhase = 'welcome' | 'playing' | 'result';
 type RoundPhase = 'picking' | 'revealing' | 'revealed';
 
 type GameResult = {
@@ -34,15 +33,19 @@ function readBest(): number {
 }
 
 export function Widget() {
-  const [phase, setPhase] = useState<GamePhase>('welcome');
-  const [matchups, setMatchups] = useState<Matchup[]>([]);
+  // The first game is dealt at mount so round 1 shows through the
+  // translucent welcome overlay; Start just lifts the veil onto it.
+  const [matchups, setMatchups] = useState<Matchup[]>(() => generateMatchups(ROUNDS));
+  const [gameId, setGameId] = useState(0);
+  const [covered, setCovered] = useState(true);
   const [result, setResult] = useState<GameResult | null>(null);
   const [best, setBest] = useState(readBest);
 
-  const start = useCallback(() => {
+  const redeal = useCallback((cover: boolean) => {
     setMatchups(generateMatchups(ROUNDS));
+    setGameId((id) => id + 1);
     setResult(null);
-    setPhase('playing');
+    setCovered(cover);
   }, []);
 
   const complete = useCallback((r: GameResult) => {
@@ -56,7 +59,6 @@ export function Widget() {
       }
       return next;
     });
-    setPhase('result');
   }, []);
 
   return (
@@ -65,32 +67,29 @@ export function Widget() {
         <span className="bow-brand-name">Box Office <em>Heads Up</em></span>
         <span className="bow-brand-tag">626 LABS</span>
       </div>
-      {phase === 'welcome' && <Welcome best={best} onStart={start} />}
-      {phase === 'playing' && (
-        <Rounds matchups={matchups} onComplete={complete} />
+      {result ? (
+        <Result result={result} best={best} onPlayAgain={() => redeal(false)} onMenu={() => redeal(true)} />
+      ) : (
+        <div className="bow-stage">
+          <Rounds key={gameId} matchups={matchups} onComplete={complete} />
+          {covered && (
+            <div className="bow-overlay">
+              <p className="bow-lead">
+                Two movies. One question. Which opened bigger at the US box office?
+              </p>
+              <ul className="bow-rules">
+                <li><strong>10</strong> rounds per game</li>
+                <li><strong>75</strong> films spanning 1972–2024</li>
+                <li><strong>Streaks</strong> multiply your score</li>
+              </ul>
+              {best > 0 && (
+                <p className="bow-best">Best score <strong>{best.toLocaleString()}</strong></p>
+              )}
+              <button className="bow-btn-primary" onClick={() => setCovered(false)}>Start game</button>
+            </div>
+          )}
+        </div>
       )}
-      {phase === 'result' && result && (
-        <Result result={result} best={best} onPlayAgain={start} onMenu={() => setPhase('welcome')} />
-      )}
-    </div>
-  );
-}
-
-function Welcome({ best, onStart }: { best: number; onStart: () => void }) {
-  return (
-    <div className="bow-screen bow-welcome">
-      <p className="bow-lead">
-        Two movies. One question. Which opened bigger at the US box office?
-      </p>
-      <ul className="bow-rules">
-        <li><strong>10</strong> rounds per game</li>
-        <li><strong>75</strong> films spanning 1972–2024</li>
-        <li><strong>Streaks</strong> multiply your score</li>
-      </ul>
-      {best > 0 && (
-        <p className="bow-best">Best score <strong>{best.toLocaleString()}</strong></p>
-      )}
-      <button className="bow-btn-primary" onClick={onStart}>Start game</button>
     </div>
   );
 }
