@@ -1069,6 +1069,24 @@
           "ctaLabel": "See the full suite →"
         }
       }
+    ],
+    "games": [
+      {
+        "id": "box-office-heads-up",
+        "title": "Box Office Heads Up",
+        "tagline": "Two posters, one question: which opened bigger? Ten rounds of real opening-weekend numbers, streaks, and the occasional humbling.",
+        "href": "https://weseeyouatthemovies.firebaseapp.com/box-office",
+        "meta": "We See You at the Movies",
+        "note": "free sign-in"
+      },
+      {
+        "id": "tag-that-line",
+        "title": "Tag That Line",
+        "tagline": "A real movie tagline, a grid of posters. Tap the one it belongs to before your streak dies.",
+        "href": "https://weseeyouatthemovies.firebaseapp.com/tag-that-line",
+        "meta": "We See You at the Movies",
+        "note": "free sign-in"
+      }
     ]
   },
   "about": {

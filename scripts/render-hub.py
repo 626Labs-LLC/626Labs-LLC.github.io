@@ -1114,6 +1114,10 @@ def render_play_section(play: dict) -> str:
     widget listed in `play.widgets`. Forward-compatible: to add the
     CinePerks widget alongside the bacon trail one, append a second entry
     to `play.widgets` in site.json.
+
+    Games hosted elsewhere (not embeddable widgets) list under
+    `play.games` — each {id, title, tagline, href, meta, note?} renders
+    as a link card in a `.play-games` row beneath the widget grid.
     """
     eyebrow = esc(play.get("eyebrow", "05 · Play"))
     headline = esc(play.get("headline", "Also, we make games."))
@@ -1173,6 +1177,32 @@ def render_play_section(play: dict) -> str:
 
     grid_class = "play-grid" + (" two-up" if len(widgets) >= 2 else "")
 
+    # Externally-hosted game cards (play.games) — link out, no embed.
+    games = play.get("games") or []
+    game_cards: list[str] = []
+    for g in games:
+        title = g.get("title")
+        href = g.get("href")
+        if not (title and href):
+            continue
+        meta = esc(g.get("meta", ""))
+        note = esc(g.get("note", ""))
+        note_html = f'<span class="play-game-note">{note}</span>' if note else ""
+        tagline = esc(g.get("tagline", ""))
+        game_cards.append(
+            f'<a class="play-game-card" href="{attr(href)}" target="_blank" rel="noopener">\n'
+            f'          <div class="play-game-meta"><span>{meta}</span>{note_html}</div>\n'
+            f'          <h3>{esc(title)}</h3>\n'
+            f'          <p>{tagline}</p>\n'
+            f'          <span class="play-game-cta">Play ↗</span>\n'
+            f'        </a>'
+        )
+    games_block = (
+        '\n    <div class="play-games">\n        '
+        + "\n        ".join(game_cards)
+        + "\n    </div>"
+    ) if game_cards else ""
+
     return f"""\
 <section class="section play" id="play">
   <div class="wrap">
@@ -1185,7 +1215,7 @@ def render_play_section(play: dict) -> str:
     </div>
     <div class="{grid_class}">
         {mounts}
-    </div>
+    </div>{games_block}
     <!-- widget assets -->
     {stylesheets}
     {scripts}
