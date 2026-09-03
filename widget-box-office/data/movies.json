@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-03T23:14:12.817Z",
+  "generated": "2026-09-03T23:37:47.110Z",
   "movies": [
     {
       "id": "m01",
@@ -760,6 +760,617 @@
       "openingWeekend": 609520,
       "funFact": "Opened in just 10 theaters at $609K — then expanded to win 7 Oscars including Best Picture.",
       "posterPath": "/u68AjlvlutfEIcpmbYpKcdi09ut.jpg"
+    },
+    {
+      "id": "m76",
+      "title": "Deadpool & Wolverine",
+      "year": 2024,
+      "genre": "Action",
+      "rating": "R",
+      "openingWeekend": 211435291,
+      "funFact": "The biggest R-rated opening weekend ever — nearly doubling the record Deadpool set in 2016.",
+      "tagline": "Come together.",
+      "posterPath": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg"
+    },
+    {
+      "id": "m77",
+      "title": "Captain America: Civil War",
+      "year": 2016,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 179139142,
+      "tagline": "Divided we fall.",
+      "posterPath": "/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg"
+    },
+    {
+      "id": "m78",
+      "title": "Guardians of the Galaxy Vol. 2",
+      "year": 2017,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 146510104,
+      "posterPath": "/y4MBh0EjBlMuOzv9axM4qJlmhzz.jpg"
+    },
+    {
+      "id": "m79",
+      "title": "The Twilight Saga: New Moon",
+      "year": 2009,
+      "genre": "Fantasy",
+      "rating": "PG-13",
+      "openingWeekend": 142839137,
+      "funFact": "Broke the opening-day record with $72.7M — most of it before sundown.",
+      "posterPath": "/k2qTooPlHffgNABNWxeJdGMglPK.jpg"
+    },
+    {
+      "id": "m80",
+      "title": "The Twilight Saga: Breaking Dawn Part 2",
+      "year": 2012,
+      "genre": "Fantasy",
+      "rating": "PG-13",
+      "openingWeekend": 141067634,
+      "posterPath": "/7IGdPaKujv0BjI0Zd0m0a4CzEjJ.jpg"
+    },
+    {
+      "id": "m81",
+      "title": "Moana 2",
+      "year": 2024,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 139746656,
+      "funFact": "Started as a TV series before Disney rerouted it to theaters — then it broke Thanksgiving records.",
+      "posterPath": "/aLVkiINlIeCkcZIzb7XHzPYgO6L.jpg"
+    },
+    {
+      "id": "m82",
+      "title": "The Twilight Saga: Breaking Dawn Part 1",
+      "year": 2011,
+      "genre": "Fantasy",
+      "rating": "PG-13",
+      "openingWeekend": 138122261,
+      "posterPath": "/qs8LsHKYlVRmJbFUiSUhhRAygwj.jpg"
+    },
+    {
+      "id": "m83",
+      "title": "Avatar: The Way of Water",
+      "year": 2022,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 134100226,
+      "funFact": "Thirteen years after Avatar — and it still legged out to $2.3B worldwide.",
+      "tagline": "Return to Pandora.",
+      "posterPath": "/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg"
+    },
+    {
+      "id": "m84",
+      "title": "Suicide Squad",
+      "year": 2016,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 133682248,
+      "tagline": "Worst. Heroes. Ever.",
+      "posterPath": "/sk3FZgh3sRrmr8vyhaitNobMcfh.jpg"
+    },
+    {
+      "id": "m85",
+      "title": "Iron Man 2",
+      "year": 2010,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 128122480,
+      "posterPath": "/6WBeq4fCfn7AN0o21W9qNcRF2l9.jpg"
+    },
+    {
+      "id": "m86",
+      "title": "Thor: Ragnarok",
+      "year": 2017,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 122744989,
+      "posterPath": "/rzRwTcFvttcN1ZpX2xv4j3tSdJu.jpg"
+    },
+    {
+      "id": "m87",
+      "title": "The Hunger Games: Mockingjay Part 1",
+      "year": 2014,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 121897634,
+      "posterPath": "/4FAA18ZIja70d1Tu5hr5cj2q1sB.jpg"
+    },
+    {
+      "id": "m88",
+      "title": "Shrek the Third",
+      "year": 2007,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 121629270,
+      "funFact": "The biggest animated opening ever at the time.",
+      "posterPath": "/n4SexGGQzI26E269tfpa80MZaGV.jpg"
+    },
+    {
+      "id": "m89",
+      "title": "Spider-Man: Homecoming",
+      "year": 2017,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 117027503,
+      "tagline": "Homework can wait. The city can't.",
+      "posterPath": "/c24sv2weTHPsmDa7jEMN0m2P3RT.jpg"
+    },
+    {
+      "id": "m90",
+      "title": "Man of Steel",
+      "year": 2013,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 116619362,
+      "posterPath": "/8GFtkImmK0K1VaUChR0n9O61CFU.jpg"
+    },
+    {
+      "id": "m91",
+      "title": "Alice in Wonderland",
+      "year": 2010,
+      "genre": "Fantasy",
+      "rating": "PG",
+      "openingWeekend": 116101023,
+      "funFact": "The biggest March opening ever at the time — and it made 3D ticket premiums the industry norm.",
+      "tagline": "You've got a very important date.",
+      "posterPath": "/o0kre9wRCZz3jjSjaru7QU0UtFz.jpg"
+    },
+    {
+      "id": "m92",
+      "title": "Minions",
+      "year": 2015,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 115718405,
+      "tagline": "Before Gru, they had a history of bad bosses.",
+      "posterPath": "/dr02BdCNAUPVU07aOodwPYv6HCf.jpg"
+    },
+    {
+      "id": "m93",
+      "title": "Wicked",
+      "year": 2024,
+      "genre": "Musical",
+      "rating": "PG",
+      "openingWeekend": 112508340,
+      "funFact": "The biggest opening ever for a Broadway musical adaptation.",
+      "tagline": "Everyone deserves the chance to fly.",
+      "posterPath": "/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg"
+    },
+    {
+      "id": "m94",
+      "title": "Transformers: Revenge of the Fallen",
+      "year": 2009,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 108966307,
+      "posterPath": "/pLBb0whOzVDtJvyD4DPeQyQNOqp.jpg"
+    },
+    {
+      "id": "m95",
+      "title": "Star Wars: Episode III — Revenge of the Sith",
+      "year": 2005,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 108435841,
+      "tagline": "The saga is complete.",
+      "posterPath": "/xfSAoBEm9MNBjmlNcDYLvLSMlnq.jpg"
+    },
+    {
+      "id": "m96",
+      "title": "X-Men: The Last Stand",
+      "year": 2006,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 102750665,
+      "posterPath": "/a2xicU8DpKtRizOHjQLC1JyCSRS.jpg"
+    },
+    {
+      "id": "m97",
+      "title": "Harry Potter and the Goblet of Fire",
+      "year": 2005,
+      "genre": "Fantasy",
+      "rating": "PG-13",
+      "openingWeekend": 102685961,
+      "posterPath": "/fECBtHlr0RB3foNHDiCBXeg9Bv9.jpg"
+    },
+    {
+      "id": "m98",
+      "title": "The Hunger Games: Mockingjay Part 2",
+      "year": 2015,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 102665981,
+      "posterPath": "/lImKHDfExAulp16grYm8zD5eONE.jpg"
+    },
+    {
+      "id": "m99",
+      "title": "Guardians of the Galaxy",
+      "year": 2014,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 94320883,
+      "funFact": "A talking raccoon and a tree out-opened every other film that summer — Marvel's riskiest bet paid off.",
+      "posterPath": "/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg"
+    },
+    {
+      "id": "m100",
+      "title": "Justice League",
+      "year": 2017,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 93842239,
+      "tagline": "You can't save the world alone.",
+      "posterPath": "/eifGNCSDuxJeS1loAXil5bIGgvC.jpg"
+    },
+    {
+      "id": "m101",
+      "title": "Godzilla",
+      "year": 2014,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 93188384,
+      "posterPath": "/tphkjmQq8WebuVwNXelmjLUXuPJ.jpg"
+    },
+    {
+      "id": "m102",
+      "title": "It Chapter Two",
+      "year": 2019,
+      "genre": "Horror",
+      "rating": "R",
+      "openingWeekend": 91062152,
+      "tagline": "It ends.",
+      "posterPath": "/zfE0R94v1E8cuKAerbskfD3VfUt.jpg"
+    },
+    {
+      "id": "m103",
+      "title": "X-Men: Days of Future Past",
+      "year": 2014,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 90823660,
+      "posterPath": "/tYfijzolzgoMOtegh1Y7j2Enorg.jpg"
+    },
+    {
+      "id": "m104",
+      "title": "Harry Potter and the Sorcerer's Stone",
+      "year": 2001,
+      "genre": "Fantasy",
+      "rating": "PG",
+      "openingWeekend": 90294621,
+      "funFact": "The film that launched the biggest franchise decade in Hollywood history.",
+      "tagline": "Let the magic begin.",
+      "posterPath": "/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg"
+    },
+    {
+      "id": "m105",
+      "title": "American Sniper",
+      "year": 2015,
+      "genre": "Drama",
+      "rating": "R",
+      "openingWeekend": 89269066,
+      "funFact": "Obliterated the January record — nobody thought a drama could open like a superhero film.",
+      "tagline": "The most lethal sniper in U.S. history.",
+      "posterPath": "/7de9NIpEyBIdpcnCZy8Djn9uhy4.jpg"
+    },
+    {
+      "id": "m106",
+      "title": "Spider-Man 2",
+      "year": 2004,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 88156227,
+      "posterPath": "/aGuvNAaaZuWXYQQ6N2v7DeuP6mB.jpg"
+    },
+    {
+      "id": "m107",
+      "title": "Fifty Shades of Grey",
+      "year": 2015,
+      "genre": "Drama",
+      "rating": "R",
+      "openingWeekend": 85171450,
+      "tagline": "Mr. Grey will see you now.",
+      "posterPath": "/63kGofUkt1Mx0SIL4XI4Z5AoSgt.jpg"
+    },
+    {
+      "id": "m108",
+      "title": "Solo: A Star Wars Story",
+      "year": 2018,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 84420489,
+      "posterPath": "/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg"
+    },
+    {
+      "id": "m109",
+      "title": "The Passion of the Christ",
+      "year": 2004,
+      "genre": "Drama",
+      "rating": "R",
+      "openingWeekend": 83848082,
+      "funFact": "A subtitled R-rated film in Aramaic opened at $83.8M — still the February benchmark for shock openings.",
+      "posterPath": "/rBM5o2HpmCfDejuIPybI09tkY3V.jpg"
+    },
+    {
+      "id": "m110",
+      "title": "Despicable Me 2",
+      "year": 2013,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 83517315,
+      "posterPath": "/5Fh4NdoEnCjCK9wLjdJ9DJNFl2b.jpg"
+    },
+    {
+      "id": "m111",
+      "title": "Venom",
+      "year": 2018,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 80255756,
+      "funFact": "Critics panned it; it broke the October opening record anyway.",
+      "tagline": "The world has enough superheroes.",
+      "posterPath": "/2uNW4WbgBXL25BAbXGLnLqX71Sw.jpg"
+    },
+    {
+      "id": "m112",
+      "title": "Five Nights at Freddy's",
+      "year": 2023,
+      "genre": "Horror",
+      "rating": "PG-13",
+      "openingWeekend": 80001720,
+      "funFact": "Opened day-and-date on streaming and still hit $80M — the video-game-horror audience showed up twice.",
+      "tagline": "Can you survive five nights?",
+      "posterPath": "/7BpNtNfxuocYEVREzVMO75hso1l.jpg"
+    },
+    {
+      "id": "m113",
+      "title": "Harry Potter and the Half-Blood Prince",
+      "year": 2009,
+      "genre": "Fantasy",
+      "rating": "PG",
+      "openingWeekend": 77835727,
+      "posterPath": "/z7uo9zmQdQwU5ZJHFpv2Upl30i1.jpg"
+    },
+    {
+      "id": "m114",
+      "title": "Halloween",
+      "year": 2018,
+      "genre": "Horror",
+      "rating": "R",
+      "openingWeekend": 76221545,
+      "posterPath": "/f7JAX5EGk4GgsEnus6OxyzwpFp7.jpg"
+    },
+    {
+      "id": "m115",
+      "title": "Us",
+      "year": 2019,
+      "genre": "Horror",
+      "rating": "R",
+      "openingWeekend": 71117625,
+      "funFact": "The biggest opening ever for an original horror film.",
+      "tagline": "Watch yourself.",
+      "posterPath": "/ux2dU1jQ2ACIMShzB3yP93Udpzc.jpg"
+    },
+    {
+      "id": "m116",
+      "title": "Transformers",
+      "year": 2007,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 70502384,
+      "posterPath": "/lkZ9gqCEjzX85lKR6Jjd1uGAXNp.jpg"
+    },
+    {
+      "id": "m117",
+      "title": "Finding Nemo",
+      "year": 2003,
+      "genre": "Animation",
+      "rating": "G",
+      "openingWeekend": 70251710,
+      "tagline": "There are 3.7 trillion fish in the ocean. They're looking for one.",
+      "posterPath": "/eHuGQ10FUzK1mdOY69wF5pGgEf5.jpg"
+    },
+    {
+      "id": "m118",
+      "title": "Up",
+      "year": 2009,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 68108790,
+      "tagline": "Adventure is out there!",
+      "posterPath": "/mFvoEwSfLqbcWwFsDjQebn9bzFe.jpg"
+    },
+    {
+      "id": "m119",
+      "title": "Frozen",
+      "year": 2013,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 67391326,
+      "funFact": "Opened at $67M — then Let It Go happened, and it legged out to $400M domestic.",
+      "posterPath": "/itAKcobTYGpYT8Phwjd8c9hleTo.jpg"
+    },
+    {
+      "id": "m120",
+      "title": "WALL-E",
+      "year": 2008,
+      "genre": "Animation",
+      "rating": "G",
+      "openingWeekend": 63087526,
+      "tagline": "After 700 years of doing what he was built for, he'll discover what he's meant for.",
+      "posterPath": "/hbhFnRzzg6ZDmm8YAmxBnQpQIPh.jpg"
+    },
+    {
+      "id": "m121",
+      "title": "The Amazing Spider-Man",
+      "year": 2012,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 62004688,
+      "posterPath": "/jexoNYnPd6vVrmygwF6QZmWPFdu.jpg"
+    },
+    {
+      "id": "m122",
+      "title": "Monsters, Inc.",
+      "year": 2001,
+      "genre": "Animation",
+      "rating": "G",
+      "openingWeekend": 62577067,
+      "tagline": "We scare because we care.",
+      "posterPath": "/wFSpyMsp7H0ttERbxY7Trlv8xry.jpg"
+    },
+    {
+      "id": "m123",
+      "title": "The Lord of the Rings: The Return of the King",
+      "year": 2003,
+      "genre": "Fantasy",
+      "rating": "PG-13",
+      "openingWeekend": 72629713,
+      "funFact": "Opened at $72.6M on a Wednesday-shifted week — then won all 11 Oscars it was nominated for.",
+      "posterPath": "/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg"
+    },
+    {
+      "id": "m124",
+      "title": "Kong: Skull Island",
+      "year": 2017,
+      "genre": "Adventure",
+      "rating": "PG-13",
+      "openingWeekend": 61025472,
+      "posterPath": "/r2517Vz9EhDhj88qwbDVj8DCRZN.jpg"
+    },
+    {
+      "id": "m125",
+      "title": "Sonic the Hedgehog",
+      "year": 2020,
+      "genre": "Adventure",
+      "rating": "PG",
+      "openingWeekend": 58018348,
+      "funFact": "The fan backlash redesign cost months and millions — and bought the biggest video-game-movie opening ever at the time.",
+      "posterPath": "/aQvJ5WPzZgYVDrxLX4R6cLJCEaQ.jpg"
+    },
+    {
+      "id": "m126",
+      "title": "Ant-Man",
+      "year": 2015,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 57225526,
+      "posterPath": "/rQRnQfUl3kfp78nCWq8Ks04vnq1.jpg"
+    },
+    {
+      "id": "m127",
+      "title": "Big Hero 6",
+      "year": 2014,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 56215889,
+      "posterPath": "/2mxS4wUimwlLmI1xp6QW6NSU361.jpg"
+    },
+    {
+      "id": "m128",
+      "title": "Bohemian Rhapsody",
+      "year": 2018,
+      "genre": "Drama",
+      "rating": "PG-13",
+      "openingWeekend": 51061119,
+      "tagline": "The only thing more extraordinary than their music is his story.",
+      "posterPath": "/lHu1wtNaczFPGFDTrjCSzeLPTKN.jpg"
+    },
+    {
+      "id": "m129",
+      "title": "Independence Day",
+      "year": 1996,
+      "genre": "Sci-Fi",
+      "rating": "PG-13",
+      "openingWeekend": 50228264,
+      "funFact": "The July 4th release date wasn't a coincidence — it was the whole marketing campaign.",
+      "tagline": "We've always believed we weren't alone. On July 4th, we'll wish we were.",
+      "posterPath": "/p0BPQGSPoSa8Ml0DAf2mB2kCU0R.jpg"
+    },
+    {
+      "id": "m130",
+      "title": "Jurassic Park",
+      "year": 1993,
+      "genre": "Adventure",
+      "rating": "PG-13",
+      "openingWeekend": 47026828,
+      "funFact": "The biggest opening ever in 1993 — and the film that made CGI the industry standard.",
+      "tagline": "An adventure 65 million years in the making.",
+      "posterPath": "/63viWuPfYQjRYLSZSZNq7dglJP5.jpg"
+    },
+    {
+      "id": "m131",
+      "title": "Mad Max: Fury Road",
+      "year": 2015,
+      "genre": "Action",
+      "rating": "R",
+      "openingWeekend": 45428128,
+      "tagline": "The future belongs to the mad.",
+      "posterPath": "/ulcAi4dKpAjHwYGS08vNyx9H6I9.jpg"
+    },
+    {
+      "id": "m132",
+      "title": "The Conjuring",
+      "year": 2013,
+      "genre": "Horror",
+      "rating": "R",
+      "openingWeekend": 41855326,
+      "posterPath": "/wVYREutTvI2tmxr6ujrHT704wGF.jpg"
+    },
+    {
+      "id": "m133",
+      "title": "Twister",
+      "year": 1996,
+      "genre": "Adventure",
+      "rating": "PG-13",
+      "openingWeekend": 41059405,
+      "tagline": "Don't breathe. Don't look back.",
+      "posterPath": "/d4ie3f6QTvNw40V770Uzo87SDZn.jpg"
+    },
+    {
+      "id": "m134",
+      "title": "Spider-Man: Into the Spider-Verse",
+      "year": 2018,
+      "genre": "Animation",
+      "rating": "PG",
+      "openingWeekend": 35363376,
+      "funFact": "Opened at a third of live-action Spider-Man films — then won the Oscar and changed animation style industry-wide.",
+      "tagline": "Enter a universe where more than one wears the mask.",
+      "posterPath": "/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg"
+    },
+    {
+      "id": "m135",
+      "title": "Gladiator",
+      "year": 2000,
+      "genre": "Action",
+      "rating": "R",
+      "openingWeekend": 34819017,
+      "funFact": "Opened at just $34.8M — then won Best Picture and revived the entire swords-and-sandals genre.",
+      "tagline": "A hero will rise.",
+      "posterPath": "/wN2xWp1eIwCKOD0BHTcErTBv1Uq.jpg"
+    },
+    {
+      "id": "m136",
+      "title": "Godzilla vs. Kong",
+      "year": 2021,
+      "genre": "Action",
+      "rating": "PG-13",
+      "openingWeekend": 31625971,
+      "funFact": "The film that proved theaters were back — the biggest opening of the pandemic era to that point.",
+      "tagline": "One will fall.",
+      "posterPath": "/pgqgaUx1cJb5oZQQ5v0tNARCeBp.jpg"
+    },
+    {
+      "id": "m137",
+      "title": "The Matrix",
+      "year": 1999,
+      "genre": "Sci-Fi",
+      "rating": "R",
+      "openingWeekend": 27788331,
+      "funFact": "Opened at $27.8M on Easter weekend 1999 — then rewired action cinema permanently.",
+      "tagline": "What is the Matrix?",
+      "posterPath": "/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg"
     }
   ]
 }
