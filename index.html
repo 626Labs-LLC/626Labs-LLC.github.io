@@ -1243,6 +1243,14 @@
       width: 100%;
       max-width: 420px;
     }
+    /* The grid row already stretches each mount to the tallest widget in
+       its row (the bacon trail); make the game widgets fill that height so
+       side-by-side cards bottom-align. The bacon widget stays natural —
+       it's the row's height donor, so 100% of itself would be circular. */
+    .play-widget > .box-office-widget,
+    .play-widget > .tag-that-line-widget {
+      height: 100%;
+    }
     /* An odd widget count in the two-up grid leaves a lone last card —
        center it across both columns instead of stranding it left. */
     @media (min-width: 960px) {
