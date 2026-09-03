@@ -9,7 +9,7 @@ const BEST_KEY = '626-tagthatline-best';
 const ROUNDS = 8;
 const MAX_WRONG = 3;
 
-type GamePhase = 'welcome' | 'playing' | 'result';
+type GamePhase = 'playing' | 'result';
 type CardState = 'default' | 'incorrect' | 'correct';
 
 function readBest(): number {
@@ -21,8 +21,11 @@ function readBest(): number {
 }
 
 export function Widget() {
-  const [phase, setPhase] = useState<GamePhase>('welcome');
-  const [rounds, setRounds] = useState<Round[]>([]);
+  // The first session is dealt at mount so round 1 shows through the
+  // translucent welcome overlay; Start just lifts the veil onto it.
+  const [phase, setPhase] = useState<GamePhase>('playing');
+  const [covered, setCovered] = useState(true);
+  const [rounds, setRounds] = useState<Round[]>(() => generateRounds(ROUNDS));
   const [roundIdx, setRoundIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [tagged, setTagged] = useState(0);
@@ -33,7 +36,7 @@ export function Widget() {
   const [cardStates, setCardStates] = useState<Record<string, CardState>>({});
   const [best, setBest] = useState(readBest);
 
-  const start = useCallback(() => {
+  const redeal = useCallback((cover: boolean) => {
     setRounds(generateRounds(ROUNDS));
     setRoundIdx(0);
     setScore(0);
@@ -44,6 +47,7 @@ export function Widget() {
     setRoundDone(false);
     setCardStates({});
     setPhase('playing');
+    setCovered(cover);
   }, []);
 
   const round = rounds[roundIdx];
@@ -111,24 +115,8 @@ export function Widget() {
         <span className="ttl-brand-tag">626 LABS</span>
       </div>
 
-      {phase === 'welcome' && (
-        <div className="ttl-screen ttl-welcome">
-          <p className="ttl-lead">
-            A classic movie tagline, four posters. Tap the one it belongs to.
-          </p>
-          <ul className="ttl-rules">
-            <li><strong>{ROUNDS}</strong> taglines per game</li>
-            <li><strong>10</strong> points for a clean tag, less per miss</li>
-            <li><strong>3</strong> misses reveals the answer</li>
-          </ul>
-          {best > 0 && (
-            <p className="ttl-best">Best score <strong>{best}</strong></p>
-          )}
-          <button className="ttl-btn-primary" onClick={start}>Start game</button>
-        </div>
-      )}
-
       {phase === 'playing' && round && (
+        <div className="ttl-stage">
         <div className="ttl-screen">
           <div className="ttl-hud">
             <span className="ttl-progress">
@@ -187,6 +175,23 @@ export function Widget() {
             )}
           </div>
         </div>
+        {covered && (
+          <div className="ttl-overlay">
+            <p className="ttl-lead">
+              A classic movie tagline, four posters. Tap the one it belongs to.
+            </p>
+            <ul className="ttl-rules">
+              <li><strong>{ROUNDS}</strong> taglines per game</li>
+              <li><strong>10</strong> points for a clean tag, less per miss</li>
+              <li><strong>3</strong> misses reveals the answer</li>
+            </ul>
+            {best > 0 && (
+              <p className="ttl-best">Best score <strong>{best}</strong></p>
+            )}
+            <button className="ttl-btn-primary" onClick={() => setCovered(false)}>Start game</button>
+          </div>
+        )}
+        </div>
       )}
 
       {phase === 'result' && (
@@ -208,8 +213,8 @@ export function Widget() {
             <div><strong>{tagged}/{rounds.length}</strong><span>tagged</span></div>
             <div><strong>{bestStreak}</strong><span>best streak</span></div>
           </div>
-          <button className="ttl-btn-primary" onClick={start}>Play again</button>
-          <button className="ttl-btn-ghost" onClick={() => setPhase('welcome')}>Main menu</button>
+          <button className="ttl-btn-primary" onClick={() => redeal(false)}>Play again</button>
+          <button className="ttl-btn-ghost" onClick={() => redeal(true)}>Main menu</button>
         </div>
       )}
     </div>
