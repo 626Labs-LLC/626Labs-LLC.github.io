@@ -205,12 +205,14 @@ def contrast_ratio(a: tuple[int, int, int], b: tuple[int, int, int]) -> float:
 
 
 def grained_field(raster: Raster) -> tuple[int, int, int]:
-    """The field as a visitor sees it under the grain's worst case (peak
-    opacity of ink over the field); the field itself when there is no grain.
-    Text is graded against this, not the bare field."""
+    """The field at the grain's PEAK: GRAIN_OPACITY of ink over the field,
+    the lightest pixel the grain can put behind a letter; the field itself
+    when there is no grain. Text is graded against this, not the bare field
+    and not the mean (GRAIN_OPACITY / 2): a dek graded at the mean can sit
+    under 4.5:1 on the peak pixels and pass."""
     if raster.texture != "grain":
         return raster.field
-    a = GRAIN_OPACITY / 2  # mean coverage of the noise
+    a = GRAIN_OPACITY
     return tuple(int(round(f * (1 - a) + i * a)) for f, i in zip(raster.field, raster.ink))  # type: ignore[return-value]
 
 
