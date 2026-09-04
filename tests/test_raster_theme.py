@@ -20,6 +20,7 @@ What is pinned here, and why each pin exists:
 - The rotation regenerates the rasters after the render and before the
   first gate, and commits all three output locations.
 """
+import hashlib
 import importlib.util
 import io
 import json
@@ -59,13 +60,20 @@ SLATE = {
 
 # ─── the block ───────────────────────────────────────────────────────────
 @pytest.mark.parametrize("slug", _registered_slugs())
-def test_every_registered_theme_declares_a_block_that_parses(slug):
+def test_every_registered_theme_loads_a_raster(slug):
+    """A block, if declared, validates; no block means the defaults. The
+    spec allows a theme with no block (it draws Phosphor Blueprint's), and
+    the doctor agrees, so this must not require one: a November theme
+    queued without a block would otherwise go red here, on a test nobody
+    traces to the doctor's contrary ruling. Requiring a block is a spec
+    change and belongs in check_raster_block, where the doctor names it."""
     block = rt.read_block(slug)
-    assert block is not None, f"{slug} has no raster block"
-    assert rt.validate_block(block) == []
+    if block is not None:
+        assert rt.validate_block(block) == []
     r = rt.load(slug)
     assert r.slug == slug
     assert r.texture in rt.TEXTURES
+    assert (block is None) == r.is_default or block == rt.RASTER_DEFAULTS
 
 
 def test_defaults_are_phosphor_blueprints_block_exactly():
@@ -173,8 +181,9 @@ def test_contrast_math_matches_theme_doctors():
 @pytest.mark.parametrize("slug", _registered_slugs())
 def test_every_text_ink_clears_aa_on_the_field_under_the_grain(slug):
     """Social cards get read on phones in sunlight: title (ink), dek and
-    dateline (dim) and the cyan wordmark, each against the field as the
-    grain leaves it, all at or above 4.5:1."""
+    dateline (dim) and the cyan wordmark, each against the field at the
+    grain's PEAK (the lightest pixel the grain makes, not the mean), all
+    at or above 4.5:1."""
     r = rt.load(slug)
     ground = rt.grained_field(r)
     for name, fg in (("ink", r.ink), ("dim", r.dim), ("cyan", rt.CYAN)):
@@ -182,13 +191,20 @@ def test_every_text_ink_clears_aa_on_the_field_under_the_grain(slug):
 
 
 def test_slate_contrast_numbers_are_the_theme_sheets():
-    """The numbers the tokens.css header records, so the raster and the
-    page agree about the same inks on the same ground."""
+    """DELIBERATE CONTENT PIN. The bare-field numbers are the ones the
+    tokens.css header records, so the raster and the page agree about the
+    same inks on the same ground; the peak-grain ground and its ratios are
+    what the PR body claims. Changing slate's palette changes this test on
+    purpose."""
     r = rt.load("slate-broadsheet")
+    assert r.field == (0x3A, 0x43, 0x50)
     assert rt.contrast_ratio(r.ink, r.field) == pytest.approx(9.18, abs=0.01)
     assert rt.contrast_ratio(r.dim, r.field) == pytest.approx(5.55, abs=0.01)
     assert rt.contrast_ratio(rt.CYAN, r.field) == pytest.approx(5.64, abs=0.01)
-    assert rt.grained_field(r) == (65, 73, 86)
+    peak = rt.grained_field(r)
+    assert peak == (71, 79, 91)
+    assert rt.contrast_ratio(r.dim, peak) == pytest.approx(4.59, abs=0.01)
+    assert rt.contrast_ratio(rt.CYAN, peak) == pytest.approx(4.66, abs=0.01)
 
 
 # ─── the primitives branch on the block ──────────────────────────────────
@@ -269,40 +285,62 @@ def icon(eb, tmp_path_factory):
     return eb.build_transparent_icon(tmp_path_factory.mktemp("icon"))
 
 
-def test_phosphor_blueprint_banner_and_favicon_are_byte_identical_to_the_committed_ones(eb, icon, tmp_path):
-    """The no-regression proof: the default path reproduces today's assets
-    exactly. Only the 1200x630 banner, the favicon and the animated icon
-    here (the full set is ~5s); export-brand.py with no flag is the whole
-    proof and is run before every commit of this branch.
+def _sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
-    Only while Phosphor Blueprint is live: the committed assets are the
-    ACTIVE theme's build, so once the rotation regenerates them in slate
-    a PB build cannot match them, and this gate runs inside
-    rotate-theme.yml after the registry flips. (A post-rotation "active
-    build == committed" pin is deliberately not here either: assets/brand
-    is ubuntu-built from the 1st on, and FreeType rasterizes text a few
-    bytes differently on Windows, the same reason CLAUDE.md gives for not
-    committing OG cards from this box.)"""
-    if theme_registry.active_slug(theme_registry.load()) != "phosphor-blueprint":
-        pytest.skip("the PB no-regression proof only applies while phosphor-blueprint is live")
+
+def test_phosphor_blueprint_block_and_the_defaults_path_build_the_same_bytes(eb, icon, tmp_path):
+    """The PB no-regression proof, in-process: a theme that declares PB's
+    block and a theme that declares NO block (the defaults path) build
+    the same banner, favicon and animated icon, and the PB build carries
+    PB's marks (grid line on row 0, no magenta swatch, a multi-frame GIF).
+
+    NEVER against the committed files. Those were built on Este's Windows
+    box on 2026-07-07 and FreeType rasterizes text differently on the
+    ubuntu runner, so a bytes-vs-committed assert fails there for 10 of
+    11 files; worse, pytest 9's assertion rewriting diffs the two 700KB
+    strings with difflib and HANGS for hours (PR #117's first doctor run).
+    The old-script-vs-new-script byte identity was proven by hand on both
+    platforms; what a test can hold is that the two ways of asking for PB
+    agree, compared by digest so a mismatch fails in milliseconds."""
     pb = rt.load("phosphor-blueprint")
-    eb.build_banner((1200, 630), icon, tmp_path / "b.png", pb)
-    assert (tmp_path / "b.png").read_bytes() == (ROOT / "assets" / "brand" / "banner-1200x630.png").read_bytes()
-    eb.build_site_favicon(icon, pb, tmp_path / "f.png")
-    assert (tmp_path / "f.png").read_bytes() == (ROOT / "favicon-626.png").read_bytes()
-    eb.build_animated_icon(icon, pb, tmp_path)
-    assert (tmp_path / "icon-animated-512.gif").read_bytes() == (ROOT / "assets" / "brand" / "icon-animated-512.gif").read_bytes()
+    bare = rt.from_block("bare", rt.RASTER_DEFAULTS)
+    assert pb.is_default and bare.is_default
+    (tmp_path / "pb").mkdir(); (tmp_path / "bare").mkdir()
+    for r, d in ((pb, tmp_path / "pb"), (bare, tmp_path / "bare")):
+        eb.build_banner((600, 315), icon, d / "b.png", r)
+        eb.build_site_favicon(icon, r, d / "f.png")
+        eb.build_animated_icon(icon, r, d)
+    for name in ("b.png", "f.png", "icon-animated-512.gif"):
+        assert _sha(tmp_path / "pb" / name) == _sha(tmp_path / "bare" / name), name
+    banner = Image.open(tmp_path / "pb" / "b.png").convert("RGB")
+    assert banner.getpixel((3, 0)) != banner.getpixel((3, 1))  # the 120px grid line on row 0
+    # No color bar: the patch where place_color_bar would put it (bottom-
+    # right, inside the kicker's right padding) holds no paper-ink pixel.
+    # (Not "no magenta": PB's own hairline gradient ends on exact magenta.)
+    W, H = banner.size
+    right, bottom = W - int(W * 0.03), H - int(H * 0.07)
+    patch = np.asarray(banner)[bottom - 12:bottom, right - 48:right].reshape(-1, 3)
+    assert not (patch == np.array(pb.ink)).all(axis=1).any()
+    assert getattr(Image.open(tmp_path / "pb" / "icon-animated-512.gif"), "n_frames", 1) > 1
 
 
-def test_field_free_outputs_are_the_same_bytes_under_every_theme(eb, tmp_path):
+def test_field_free_outputs_take_no_raster_and_build_the_same_bytes_every_time(eb, tmp_path):
     """Transparent icons, the lockup and the portrait carry no field, so
-    they are identical to the committed files whatever theme is active."""
-    eb.build_transparent_icon(tmp_path)
-    eb.build_transparent_lockup(tmp_path)
-    eb.build_press_portrait(tmp_path)
+    they carry no theme: the builders take no Raster at all (structural),
+    and two builds in one process agree by digest (deterministic). Not
+    against the committed files, for the reason the test above gives."""
+    import inspect
+    for fn in (eb.build_transparent_icon, eb.build_transparent_lockup, eb.build_press_portrait):
+        assert "raster" not in inspect.signature(fn).parameters, fn.__name__
+    (tmp_path / "a").mkdir(); (tmp_path / "b").mkdir()
+    for d in (tmp_path / "a", tmp_path / "b"):
+        eb.build_transparent_icon(d)
+        eb.build_transparent_lockup(d)
+        eb.build_press_portrait(d)
     for name in ("icon-transparent-256.png", "icon-transparent-512.png", "icon-transparent-1024.png",
                  "logo-lockup-transparent-1080.png", "logo-portrait-256.png"):
-        assert (tmp_path / name).read_bytes() == (ROOT / "assets" / "brand" / name).read_bytes(), name
+        assert _sha(tmp_path / "a" / name) == _sha(tmp_path / "b" / name), name
 
 
 def test_slate_banner_is_grained_slate_with_a_color_bar_and_no_glow(eb, icon, tmp_path):
@@ -333,12 +371,13 @@ def test_slate_animated_icon_is_a_single_frame_gif(eb, icon, tmp_path):
 
 
 def test_slate_favicon_is_flat_slate_with_no_bloom(eb, icon, tmp_path):
-    eb.build_site_favicon(icon, rt.load("slate-broadsheet"), tmp_path / "f.png")
+    slate = rt.load("slate-broadsheet")
+    eb.build_site_favicon(icon, slate, tmp_path / "f.png")
     img = Image.open(tmp_path / "f.png").convert("RGB")
-    assert img.getpixel((0, 0)) == (58, 67, 80)
+    assert img.getpixel((0, 0)) == slate.field
     # Halfway in from the corner toward the mark, PB's bloom lifts the field;
     # slate's stays the ground.
-    assert img.getpixel((40, 256)) == (58, 67, 80)
+    assert img.getpixel((40, 256)) == slate.field
 
 
 def test_og_card_branches_on_the_block():
@@ -346,19 +385,21 @@ def test_og_card_branches_on_the_block():
     rh = og._load_render_hub()
     story = next(s for s in rh.discover_stories() if not s.get("external_url"))
     pb = og.build_card(story, rh, rt.load("phosphor-blueprint"))
-    slate = og.build_card(story, rh, rt.load("slate-broadsheet"))
+    sr = rt.load("slate-broadsheet")
+    slate = og.build_card(story, rh, sr)
     # (0,0) on PB is a grid line under the cyan glow; sample off-grid,
     # bottom-middle, where the field is near-black.
     assert max(pb.getpixel((601, 629))) < 40
     assert pb.getpixel((0, 0)) != slate.getpixel((0, 0))
     arr = np.asarray(slate).astype(int)[:8, :8].reshape(-1, 3)
-    assert (arr >= np.array([58, 67, 80]) - 1).all() and (arr <= np.array([72, 80, 92])).all()
-    # PB's card is unchanged by the refactor: same bytes as the committed
-    # card when this box rasterizes like the runner (one card does), and
-    # in any case the same bytes as a second in-memory build.
-    buf = io.BytesIO(); pb.save(buf, "PNG", optimize=True)
-    buf2 = io.BytesIO(); og.build_card(story, rh, rt.load("phosphor-blueprint")).save(buf2, "PNG", optimize=True)
-    assert buf.getvalue() == buf2.getvalue()
+    field, ink = np.array(sr.field), np.array(sr.ink)
+    assert (arr >= field - 1).all() and (arr <= field + rt.GRAIN_OPACITY * (ink - field) + 1).all()
+    # Two in-process builds agree by digest (never against the committed,
+    # ubuntu-built card: FreeType differs across platforms).
+    def digest(img):
+        buf = io.BytesIO(); img.save(buf, "PNG", optimize=True)
+        return hashlib.sha256(buf.getvalue()).hexdigest()
+    assert digest(pb) == digest(og.build_card(story, rh, rt.load("phosphor-blueprint")))
 
 
 def test_og_card_dek_face_follows_body_face():

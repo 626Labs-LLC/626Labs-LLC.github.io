@@ -16,3 +16,11 @@ numpy==2.3.4
 # unattended rotation would have aborted on every theme from 2026-09 on.
 # A real YAML parse is the right test; the defect was not declaring it.
 PyYAML==6.0.2
+# Test-only, never imported by the site, but PINNED here because every
+# workflow installs `-r requirements.txt pytest` with the bare name, which
+# floated to pytest 9.1.1 on the runner while this box tests on 8.3.3.
+# 9.x's assertion rewriting diffs failing byte-string compares through
+# difflib (quadratic): PR #117's first doctor run hung for hours in "Run
+# unit tests" on a 700KB compare instead of failing in milliseconds. A
+# specifier here constrains the bare `pytest` on the command line too.
+pytest>=8.3,<9
