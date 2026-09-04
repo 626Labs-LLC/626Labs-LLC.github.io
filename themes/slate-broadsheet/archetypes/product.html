@@ -48,7 +48,12 @@
      caption rule, the description as columned serif body with a drop cap,
      the install block as a hairline-boxed how-to in mono, the family strip
      as columned listings under an "Also in this section" folio, and the
-     footer with the color bar and the imprint line. Matte throughout: no
+     footer with the color bar and the imprint line. The imprint names
+     October 2026 as a literal: a theme is one month by construction, and
+     if the November gate fails and slate stays live past the 1st, the
+     page says October into November. Accepted; plugin pages are never
+     frozen, so it is a slipped-rotation hazard, not an archive one.
+     Matte throughout: no
      glow, no bloom, no scanlines, no grid, no gradient field. The stone
      grain rides on body::before; .pb-scanlines (page markup, kept by
      ruling) gets NO rule from this theme.
@@ -320,8 +325,8 @@
     font-family: var(--sb-serif);
     font-style: italic;
     font-size: clamp(20px, 1.8vw, 24px);
-    line-height: 1.3;
-    color: var(--fg-2);
+    line-height: 1.25;
+    color: var(--fg-1);
     max-width: 34em;
     text-wrap: pretty;
   }
@@ -338,6 +343,10 @@
     color: var(--fg-3);
     font-variant-numeric: tabular-nums;
   }
+  /* Reverses the FIRST meta span by position. Correct today because
+     render_hero() puts the version first on every page (heroMeta[0] is
+     version-shaped for all 14 and effective_version() overwrites it);
+     a page whose first meta is not the version would tab the wrong word. */
   .hero-meta span:first-child {
     background: var(--sb-tab-bg); color: var(--sb-tab-fg);
     font-weight: 600; letter-spacing: 0.1em; text-transform: none;
@@ -358,7 +367,7 @@
      sits on the slate under the brand pair's rule. */
   .hero-right { min-width: 0; }
   .hero-right::after {
-    content: 'Plate \00B7 a session in Claude Code';
+    content: 'Plate · a session in Claude Code';
     display: block;
     margin-top: 10px;
     padding-top: 9px;
@@ -374,8 +383,10 @@
     color: var(--fg-2);
   }
   .term { position: relative; border: 6px solid var(--sb-mat); background: var(--sb-raster); overflow: hidden; }
-  .term::after {
-    /* halftone screen: a 4px dot grid of paper at 14 percent over the raster */
+  .term::before {
+    /* halftone screen: a 4px dot grid of paper at 14 percent over the raster
+       FIELD; the bar and the transcript sit above it, so the glyphs are
+       printed on the screened plate rather than screened themselves. */
     content: '';
     position: absolute;
     inset: 0;
@@ -383,6 +394,7 @@
     background-image: radial-gradient(circle, var(--sb-screen) 0.9px, transparent 1.1px);
     background-size: 4px 4px;
   }
+  .term-bar, .term-body { position: relative; z-index: 1; }
   .term-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: var(--sb-hair); }
   .term-dot { width: 10px; height: 10px; border-radius: 50%; }
   .term-dot.r { background: #ff5f57; }
@@ -409,30 +421,38 @@
     border: 6px solid var(--sb-mat);
     background: var(--sb-raster);
   }
-  .hero-mark::after { content: 'Plate \00B7 the family mark'; }
+  .hero-mark::after { content: 'Plate · the family mark'; }
 
   /* ================= SECTION FRONT chrome =================
      Every section opens on the double rule (heavy, then hair) with its
      folio reversed as a tab, the section headline in Space Grotesk, and
      the deck in serif. */
   section.work, section.brain, section.install, section.family, section.thesis { padding: 34px 0 44px; }
-  .section-head { position: relative; border-top: var(--sb-heavy); padding-top: 16px; margin-bottom: 26px; }
-  .section-head::before {
+  main > section + section { border-top: var(--sb-hair); }
+  .section-head { margin-bottom: 26px; }
+  .section-head .eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    background: var(--sb-tab-bg); color: var(--sb-tab-fg);
+    letter-spacing: 0.1em;
+    padding: 4px 8px 3px;
+    line-height: 1;
+  }
+  /* The sheet's section-head: the label sits ON the double rule (heavy,
+     then hair 6px below), and the section's headline follows under it. */
+  .section-head h2 {
+    position: relative;
+    margin: 0 0 8px;
+    padding-top: 22px;
+    border-top: var(--sb-heavy);
+  }
+  .section-head h2::before {
     content: '';
     position: absolute;
     left: 0; right: 0;
     top: 5px;
     border-top: var(--sb-hair);
   }
-  .section-head .eyebrow {
-    display: inline-block;
-    margin-bottom: 14px;
-    background: var(--sb-tab-bg); color: var(--sb-tab-fg);
-    letter-spacing: 0.1em;
-    padding: 4px 8px 3px;
-    line-height: 1;
-  }
-  .section-head h2 { margin: 0 0 8px; }
   .section-head .lead {
     font-family: var(--sb-serif);
     font-size: 18px;
@@ -681,8 +701,10 @@
   /* ================= FOOTER: the color bar and the imprint =================
      The wayfinding sentence is the paper's imprint line. The 15 generated
      pages own no footer markup a theme can add a link to, so the sentence
-     arrives as generated content and the link is absent here, the same
-     limit the spec records for press.html and privacy.html. */
+     arrives as generated content, and the "see all themes" clause is
+     dropped rather than printed as a phrase nothing can click. The link
+     returns when render_footer() carries an imprint <p>, the same limit
+     the spec records for press.html and privacy.html. */
   footer { margin-top: 24px; position: relative; border-top: var(--sb-heavy); }
   footer::before {
     content: '';
@@ -713,7 +735,7 @@
     box-shadow: 13px 0 0 var(--magenta), 26px 0 0 var(--sb-ink);
   }
   footer .row::after {
-    content: 'Theme: October 2026 \00B7 this site changes monthly \00B7 see all themes';
+    content: 'Theme: October 2026 · this site changes monthly';
     flex-basis: 100%;
     margin-top: 10px;
     padding: 14px 0 44px;
