@@ -1,33 +1,45 @@
-"""Build branded social/OG cards — one per local Field Note.
+"""Build branded social/OG cards — one per local Field Note — in the ACTIVE
+theme's raster treatment.
 
 Every on-site Field Note gets a unique 1200x630 share image instead of the
-generic brand banner. The card is the brand signature (navy field + cyan/
-magenta glow) with the story's title as the hero, a cyan->magenta hairline,
-the dek, and a footer. render-hub.py points each story page's og:image (and
-its BlogPosting JSON-LD `image`) at the generated card when it exists, and
-falls back to assets/brand/medium-header-1500x600.png when it doesn't.
+generic brand banner. The card is the theme's field (scripts/
+raster_theme.py: color, texture, glows when the theme glows) with the
+story's title as the hero in Space Grotesk, a rule under it (the cyan->
+magenta hairline, or the printer's color bar when the theme carries one),
+the dek (Inter italic, or Source Serif 4 when the theme's `bodyFace` is
+serif), a mono dateline top-right, and a footer. render-hub.py points each
+story page's og:image (and its BlogPosting JSON-LD `image`) at the
+generated card when it exists, and falls back to
+assets/brand/medium-header-1500x600.png when it doesn't.
 
 Inputs:
   content/stories/*.md          — local published Field Notes (frontmatter)
   assets/brand/icon-transparent-512.png — the lockup mark
+  themes/<active>/theme.json    — the `raster` block
   fonts/SpaceGrotesk-Variable.ttf, fonts/Inter-Italic-Variable.ttf,
-  fonts/JetBrainsMono-Variable.ttf
+  fonts/SourceSerif4-Variable.ttf, fonts/JetBrainsMono-Variable.ttf
 
 Outputs (under assets/og/ — generated; don't hand-edit):
   assets/og/<slug>.png          — one per local published story, 1200x630
 
 CI runs this automatically: rebuild-hub.yml builds the cards before rendering
-on any push to content/stories/**, so a new story gets its card with no manual
-step. Run it by hand only for a local preview.
+on any push to content/stories/**, and rotate-theme.yml rebuilds them in the
+incoming theme on the 1st, so a new story or a new month gets its cards with
+no manual step. Run it by hand only for a local preview.
 
 Usage:
   python scripts/build-og-cards.py          # (re)generate every card
   python scripts/build-og-cards.py --check   # CI/idempotency: nonzero if any
                                              # card is missing or out of date
+  python scripts/build-og-cards.py --theme <slug> --out <dir>   # a queued theme,
+                                             # written outside the tree
 
-Determinism: PIL writes no timestamp chunk, so identical frontmatter ->
-identical bytes. --check regenerates in memory and byte-compares, so a stale
-or missing card fails loudly the same way render-hub --check catches drift.
+Determinism: PIL writes no timestamp chunk and the grain is seeded, so
+identical frontmatter -> identical bytes on one platform. --check
+regenerates in memory and byte-compares, so a stale or missing card fails
+loudly the same way render-hub --check catches drift. FreeType rasterizes a
+few bytes differently across platforms, so the ubuntu runner is the source
+of truth for assets/og and a Windows --check shows a harmless diff.
 """
 from __future__ import annotations
 
@@ -36,28 +48,28 @@ import io
 import sys
 from pathlib import Path
 
-import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR = ROOT / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+import raster_theme as rt  # noqa: E402 — sibling module in scripts/
+
 ASSETS = ROOT / "assets"
 OUT = ASSETS / "og"
 FONTS = ROOT / "fonts"
 ICON = ASSETS / "brand" / "icon-transparent-512.png"
 
-# Brand tokens — mirror scripts/export-brand.py (the canonical source).
-CYAN = (23, 212, 250)
-MAGENTA = (242, 47, 137)
-NAVY = (15, 31, 49)          # legacy field — superseded by PB_FIELD
-PB_FIELD = (0, 0, 0)         # Phosphor Blueprint field (adopted 2026-07-07)
-INK = (231, 237, 245)
-DIM = (138, 153, 174)
+CYAN = rt.CYAN
+MAGENTA = rt.MAGENTA
 
 W, H = 1200, 630
 MARGIN = 72
 
 SG = FONTS / "SpaceGrotesk-Variable.ttf"
 INTER_IT = FONTS / "Inter-Italic-Variable.ttf"
+SERIF = FONTS / "SourceSerif4-Variable.ttf"
 MONO = FONTS / "JetBrainsMono-Variable.ttf"
 
 
@@ -81,31 +93,9 @@ def _font(path: Path, size: int, axes: list[int] | None = None) -> ImageFont.Fre
     return f
 
 
-def _radial_glow(cx: float, cy: float, color, max_alpha: int, radius: float) -> Image.Image:
-    """Soft radial alpha falloff at (cx,cy); coords as fractions of the canvas."""
-    arr = np.zeros((H, W, 4), dtype=np.uint8)
-    yy, xx = np.indices((H, W))
-    dist = np.sqrt((xx - cx * W) ** 2 + (yy - cy * H) ** 2)
-    falloff = np.clip(1 - dist / (radius * max(W, H)), 0, 1) ** 2
-    arr[..., 0], arr[..., 1], arr[..., 2] = color
-    arr[..., 3] = (falloff * max_alpha).astype(np.uint8)
-    return Image.fromarray(arr, "RGBA")
-
-
-def _drafting_grid() -> Image.Image:
-    """Phosphor Blueprint two-scale drafting grid (adopted 2026-07-07):
-    24px cyan lines at ~5% alpha + 120px at ~11%, over the black field."""
-    arr = np.zeros((H, W, 4), dtype=np.uint8)
-    for step, alpha in ((24, 13), (120, 28)):
-        arr[::step, :, :3] = CYAN
-        arr[::step, :, 3] = np.maximum(arr[::step, :, 3], alpha)
-        arr[:, ::step, :3] = CYAN
-        arr[:, ::step, 3] = np.maximum(arr[:, ::step, 3], alpha)
-    return Image.fromarray(arr, "RGBA")
-
-
 def _gradient_strip(width: int, height: int, c1, c2) -> Image.Image:
     """Horizontal c1->c2 gradient, vectorized."""
+    import numpy as np
     t = np.linspace(0, 1, max(1, width))[None, :, None]
     row = (np.array(c1) * (1 - t) + np.array(c2) * t).astype(np.uint8)  # (1,width,3)
     arr = np.repeat(row, height, axis=0)
@@ -129,21 +119,35 @@ def _wrap(draw: ImageDraw.ImageDraw, text: str, font, max_w: int) -> list[str]:
     return lines
 
 
-def build_card(story: dict, rh) -> Image.Image:
-    """Compose the 1200x630 card for one story."""
+def _dek_font(raster: rt.Raster, size: int) -> ImageFont.FreeTypeFont:
+    """The dek's face follows the theme's body face: Inter italic on a lit
+    theme, Source Serif 4 (roman, weight 400, optical size at the pixel
+    size) on a printed one."""
+    if raster.body_face == "serif":
+        return _font(SERIF, size, [400, max(8, min(60, size))])
+    return _font(INTER_IT, size, [14, 400])
+
+
+def build_card(story: dict, rh, raster: rt.Raster | None = None) -> Image.Image:
+    """Compose the 1200x630 card for one story in `raster` (the active
+    theme's when None)."""
+    if raster is None:
+        raster = rt.load()
     title = str(story.get("title", "")).strip()
     dek = str(story.get("subtitle") or story.get("tagline") or "").strip()
     published = str(story.get("published", "")).strip()
     author = str(story.get("author") or "626 Labs").strip()
     read_min = rh._reading_minutes(str(story.get("_body", "")))
+    ink = raster.ink + (255,)
+    dim = raster.dim + (255,)
 
-    canvas = Image.new("RGBA", (W, H), PB_FIELD + (255,))
-    canvas.alpha_composite(_drafting_grid())
-    canvas.alpha_composite(_radial_glow(0.16, 0.22, CYAN, 78, 0.55))
-    canvas.alpha_composite(_radial_glow(0.86, 0.84, MAGENTA, 66, 0.58))
+    canvas = rt.paint_field(W, H, raster, glows=(
+        (0.16, 0.22, CYAN, 78, 0.55),
+        (0.86, 0.84, MAGENTA, 66, 0.58),
+    ))
     draw = ImageDraw.Draw(canvas)
 
-    # --- top band: icon + "626 Labs" lockup (left), FIELD NOTE eyebrow (right) ---
+    # --- top band: icon + "626 Labs" lockup (left), FIELD NOTE dateline (right) ---
     icon = Image.open(ICON).convert("RGBA")
     icon_h = 52
     icon = icon.resize((icon_h, icon_h), Image.LANCZOS)
@@ -155,14 +159,14 @@ def build_card(story: dict, rh) -> Image.Image:
     word_mid_y = top_y + icon_h // 2 - 22
     draw.text((wx, word_mid_y), "626", font=word_font, fill=CYAN + (255,))
     c_w = draw.textlength("626", font=word_font)
-    draw.text((wx + c_w, word_mid_y), " Labs", font=word_font, fill=INK + (255,))
+    draw.text((wx + c_w, word_mid_y), " Labs", font=word_font, fill=ink)
 
     eyebrow = f"FIELD NOTE  ·  {published}" if published else "FIELD NOTE"
     eb_font = _font(MONO, 20, [500])
     eb_w = draw.textlength(eyebrow, font=eb_font)
-    draw.text((W - MARGIN - eb_w, top_y + 6), eyebrow, font=eb_font, fill=DIM + (255,))
+    draw.text((W - MARGIN - eb_w, top_y + 6), eyebrow, font=eb_font, fill=dim)
 
-    # --- centered stack: title -> hairline -> dek, in the band below the lockup ---
+    # --- centered stack: title -> rule -> dek, in the band below the lockup ---
     band_top = top_y + icon_h + 40
     footer_top = H - MARGIN - 30
     avail_w = W - 2 * MARGIN
@@ -172,13 +176,17 @@ def build_card(story: dict, rh) -> Image.Image:
     # Dek wrap is independent of title size — measure it first so the title
     # fitter can budget the vertical space it leaves behind.
     dek_size = 27
-    dek_font = _font(INTER_IT, dek_size, [14, 400]) if dek else None
+    dek_font = _dek_font(raster, dek_size) if dek else None
     dek_lines = _wrap(draw, dek, dek_font, avail_w)[:2] if dek else []
     dek_gap = int(dek_size * 0.28)
     dek_pad_top = 28 if dek_lines else 0
     dek_h = (len(dek_lines) * dek_size + (len(dek_lines) - 1) * dek_gap) if dek_lines else 0
 
+    # The rule under the title: the cyan->magenta hairline, or the printer's
+    # color bar standing in for it on a theme that carries one.
     rule_pad_top, rule_h, rule_w = 30, 5, 320
+    if raster.color_bar:
+        rule_h = rt.color_bar_size(H)
     rule_block = rule_pad_top + rule_h
 
     # Largest Space Grotesk Bold where the title wraps into <= 3 lines AND the
@@ -206,22 +214,25 @@ def build_card(story: dict, rh) -> Image.Image:
     y = band_top + max(0, (avail_h - stack_h) // 2)
 
     for ln in lines:
-        draw.text((MARGIN, y), ln, font=title_font, fill=INK + (255,))
+        draw.text((MARGIN, y), ln, font=title_font, fill=ink)
         y += t_size + line_gap
     y += rule_pad_top - line_gap
-    canvas.alpha_composite(_gradient_strip(rule_w, rule_h, CYAN, MAGENTA), dest=(MARGIN, y))
+    if raster.color_bar:
+        canvas.alpha_composite(rt.color_bar(raster, rule_h), dest=(MARGIN, y))
+    else:
+        canvas.alpha_composite(_gradient_strip(rule_w, rule_h, CYAN, MAGENTA), dest=(MARGIN, y))
     y += rule_h + dek_pad_top
     for ln in dek_lines:
-        draw.text((MARGIN, y), ln, font=dek_font, fill=DIM + (255,))
+        draw.text((MARGIN, y), ln, font=dek_font, fill=dim)
         y += dek_size + dek_gap
 
     # --- footer: domain (left), author + reading time (right) ---
     dom_font = _font(SG, 25, [600])
-    draw.text((MARGIN, footer_top), "626labs.dev", font=dom_font, fill=INK + (255,))
+    draw.text((MARGIN, footer_top), "626labs.dev", font=dom_font, fill=ink)
     foot_r = f"{author}  ·  {read_min} min read"
     fr_font = _font(MONO, 20, [400])
     fr_w = draw.textlength(foot_r, font=fr_font)
-    draw.text((W - MARGIN - fr_w, footer_top + 2), foot_r, font=fr_font, fill=DIM + (255,))
+    draw.text((W - MARGIN - fr_w, footer_top + 2), foot_r, font=fr_font, fill=dim)
 
     return canvas.convert("RGB")
 
@@ -233,35 +244,43 @@ def _png_bytes(img: Image.Image) -> bytes:
 
 
 def main(argv: list[str]) -> int:
-    check = "--check" in argv
+    slug, out_dir, rest = rt.parse_args(argv)
+    check = "--check" in rest
+    unknown = [a for a in rest if a != "--check"]
+    if unknown:
+        print(f"usage: build-og-cards.py [--check] [--theme <slug>] [--out <dir>]  (unknown: {unknown})",
+              file=sys.stderr)
+        return 2
+    out = out_dir or OUT
+    raster = rt.load(slug)
     rh = _load_render_hub()
     stories = [s for s in rh.discover_stories() if not s.get("external_url")]
 
     if check:
         stale: list[str] = []
         for s in stories:
-            slug = rh.story_slug(s)
-            path = OUT / f"{slug}.png"
-            want = _png_bytes(build_card(s, rh))
+            slug_ = rh.story_slug(s)
+            path = out / f"{slug_}.png"
+            want = _png_bytes(build_card(s, rh, raster))
             have = path.read_bytes() if path.exists() else None
             if have != want:
-                stale.append(slug + ("" if path.exists() else " (missing)"))
+                stale.append(slug_ + ("" if path.exists() else " (missing)"))
         if stale:
-            print("OG cards out of date:")
+            print(f"OG cards out of date ({raster.slug}):")
             for s in stale:
                 print(f"  - {s}")
             print("Run: python scripts/build-og-cards.py")
             return 1
-        print(f"OG cards up to date ({len(stories)} cards).")
+        print(f"OG cards up to date ({len(stories)} cards, {raster.slug}).")
         return 0
 
-    OUT.mkdir(parents=True, exist_ok=True)
+    out.mkdir(parents=True, exist_ok=True)
     for s in stories:
-        slug = rh.story_slug(s)
-        path = OUT / f"{slug}.png"
-        path.write_bytes(_png_bytes(build_card(s, rh)))
+        slug_ = rh.story_slug(s)
+        path = out / f"{slug_}.png"
+        path.write_bytes(_png_bytes(build_card(s, rh, raster)))
         print(f"  wrote {path}  ({W}x{H})")
-    print(f"{len(stories)} OG card(s) built.")
+    print(f"{len(stories)} OG card(s) built ({raster.slug}).")
     return 0
 
 
