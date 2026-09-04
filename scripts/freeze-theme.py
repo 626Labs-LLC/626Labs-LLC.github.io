@@ -20,9 +20,28 @@ references are an accepted, documented boundary rather than an oversight:
     live widget is fine to keep sharing.
   - /assets/* images — accepted by the original spec; archives may show a
     since-replaced screenshot or OG image and that's fine.
-  - the runtime `fetch("data/plugin-versions.json")` call in the page's own
-    <script> — a relative path that 404s harmlessly from the nested archive
-    URL (it degrades to "no version chip," not a broken page).
+  - every RELATIVE reference the page makes — `src="assets/thumb-*.png"`,
+    `href="about.html"`, the runtime `fetch("data/plugin-versions.json")` —
+    resolves against the live site root, not the archive. The frozen document
+    carries `<base href="/">` for exactly this: served from the nested
+    /themes/archive/<YYYY-MM>/ URL, those relative paths otherwise 404 (the
+    logo lockup, seven product thumbnails and the version-chip fetch did, on
+    the first simulated freeze). So an archive shows the live site's CURRENT
+    image at each relative path, the same accepted boundary as /assets/*
+    above, and its page links go to the live pages. Two consequences of
+    `<base>` are handled or accepted here, and a third is worth knowing:
+      * the localized stylesheet hrefs are written ROOT-ABSOLUTE
+        (`/themes/archive/<YYYY-MM>/<file>`), never bare filenames — a bare
+        `tokens.css` would resolve to /tokens.css under `<base>` and the
+        archive would render undressed.
+      * fragment links (`href="#work"`) stay as written. The page's own nav
+        script intercepts every `a[href^="#"]` click and scrolls in-page, so
+        with scripts running they behave exactly as on the live page. With
+        scripts off they resolve to the live homepage's section instead of
+        the archive's — accepted; the banner already sends readers there.
+      * `url(#navg)`-style local references (the nav mark's SVG gradient)
+        are unaffected: CSS Values 4 resolves fragment-only url() against
+        the current document regardless of `<base>`.
 
 Usage:
   python scripts/freeze-theme.py <YYYY-MM>
@@ -70,6 +89,10 @@ STYLESHEET_LINK_RE = re.compile(r'<link\b[^>]*\brel="stylesheet"[^>]*>', re.I)
 HREF_ATTR_RE = re.compile(r'href="([^"]*)"')
 
 ROBOTS_META = '<meta name="robots" content="noindex">'
+# Injected right after ROBOTS_META. See the module docstring for what it fixes
+# (nine relative-path 404s per archive) and what it costs (localized hrefs
+# must be root-absolute; fragment links depend on the page's own script).
+BASE_TAG = '<base href="/">'
 
 BANNER_TEMPLATE = (
     '<div style="background:#111;color:#eee;font:14px/1.5 system-ui;'
@@ -134,7 +157,11 @@ def freeze(month: str, root: Path = ROOT) -> Path:
     references (minus FREEZE_EXCLUDE_PREFIXES) gets copied alongside the
     frozen index.html and its href rewritten to the local copy — so a later
     retokenize of the live /Design/*.css or /themes/<slug>/tokens.css layer
-    can never silently repaint an archived month.
+    can never silently repaint an archived month. The rewritten href is the
+    copy's ROOT-ABSOLUTE archive path, because the document also gets
+    `<base href="/">` (so its relative image/page/fetch paths resolve against
+    the live root instead of 404ing under the nested archive URL), and a
+    bare filename would resolve against that base too.
 
     Returns the archive directory (root/themes/archive/<month>/). Raises
     FileExistsError if that directory already exists — archives are
@@ -149,13 +176,16 @@ def freeze(month: str, root: Path = ROOT) -> Path:
     month_name = datetime.strptime(month, "%Y-%m").strftime("%B %Y")
     banner = BANNER_TEMPLATE.format(month_name=month_name)
 
-    html = HEAD_OPEN_RE.sub(lambda m: f"{m.group(0)}\n  {ROBOTS_META}", html, count=1)
+    html = HEAD_OPEN_RE.sub(
+        lambda m: f"{m.group(0)}\n  {ROBOTS_META}\n  {BASE_TAG}", html, count=1
+    )
     html = BODY_OPEN_RE.sub(lambda m: f"{m.group(0)}{banner}", html, count=1)
 
     hrefs = _local_stylesheet_hrefs(html, root)
     filenames = _flatten_filenames(hrefs)
+    archive_href = f"/themes/archive/{month}/"
     for href, filename in filenames.items():
-        html = html.replace(f'href="{href}"', f'href="{filename}"')
+        html = html.replace(f'href="{href}"', f'href="{archive_href}{filename}"')
 
     archive_dir.mkdir(parents=True)
     (archive_dir / "index.html").write_text(html, encoding="utf-8")

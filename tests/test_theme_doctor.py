@@ -2151,9 +2151,29 @@ def test_dropping_a_treatment_prefix_from_one_group_fails_that_group(
 
     errs = _reads_errors_for_live_theme({label: stripped})
     assert errs, f"deleting {label}'s private token definitions produced no error"
+    # Who may report the hole: the expected reader, or the stripped file
+    # ITSELF. Phosphor Blueprint's product-tokens.css never reads its own
+    # private names, so `expected_reader` alone described every error it could
+    # produce; the Slate Broadsheet's does by design (`--bg-0:
+    # var(--sb-ground)`, `--border-1/2`, the border shorthands), so the token
+    # file is the first reader to notice its own definitions are gone. Pinning
+    # the PB shape here failed the pytest gate on rotation morning with slate
+    # active — the only run of this suite that grades the theme going live.
+    # Likewise the group: a stylesheet in several groups (product-tokens.css is
+    # loaded alone by the hand-authored product pages AND with product.css by
+    # the plugin pages) reports the hole in each, so any group the label
+    # belongs to is a valid reporter; `consumer` must still be among them.
+    groups_with_label = [
+        group for group, (theme_labels, _site) in td.resolution_groups(tdir).items()
+        if label in theme_labels
+    ]
+    assert consumer in groups_with_label, (consumer, groups_with_label)
+    assert any(f"nothing loaded by {consumer} defines" in e for e in errs), errs
     for e in errs:
-        assert e.startswith(f"{expected_reader}: reads --"), e
-        assert f"nothing loaded by {consumer} defines" in e, e
+        assert e.startswith(f"{expected_reader}: reads --") or e.startswith(
+            f"{label}: reads --"
+        ), e
+        assert any(f"nothing loaded by {g} defines" in e for g in groups_with_label), e
 
     # And the deletion stays invisible to the token contract, which is why
     # this check has to exist at all.

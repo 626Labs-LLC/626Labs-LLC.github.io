@@ -745,8 +745,9 @@ def _theme_render_opts(slug: str, root: Path = ROOT) -> dict:
     """Per-theme render opt-ins, read off the theme's own theme.json:
 
       railLimit    int   render_field_notes shows at most this many Field
-                         Notes on the home page and emits a "More Field
-                         Notes" door to /editorial/ when any were cut.
+                         Notes open on the home page and folds the rest
+                         into a <details> block (summary: the cut count)
+                         when any were cut.
       foundingBody bool  render_founding wraps its paragraphs in a
                          `.founding-body` div so a shell can multicol them.
 

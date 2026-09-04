@@ -6,8 +6,9 @@ name: Rotate theme
 # queue is a clean no-op plus an issue, never a silent skip.
 #
 # Order: freeze the OUTGOING theme (still live at this point) -> rotate the
-# registry (queue[0] becomes active) -> render the new active theme -> gate
-# it -> commit + push, or (dry_run) stage + diff + stop.
+# registry (queue[0] becomes active) -> capture the incoming theme's
+# screenshot -> render the new active theme -> gate it -> commit + push, or
+# (dry_run) stage + diff + stop.
 
 on:
   schedule:
@@ -135,6 +136,23 @@ jobs:
           print(f"new_active={new_reg['active']}")
           PY
 
+      - name: Capture the incoming theme's screenshot
+        if: steps.queue.outputs.empty == 'false'
+        # BEFORE the render, never after. render-hub.py decides whether a
+        # gallery card on themes.html carries an <img> by whether
+        # assets/themes/<slug>.png exists at render time
+        # (_theme_thumbnail_href). Captured after the render, the incoming
+        # theme's card renders WITHOUT its thumbnail, this step then creates
+        # the file, and the render-drift gate below re-renders WITH it and
+        # fails the rotation. The capture renders the theme itself via
+        # `--theme <slug> --out <tmp>` and never reads the committed
+        # index.html or themes.html, so it is independent of the render
+        # step and can sit anywhere before it.
+        run: >
+          python scripts/freeze-theme.py --screenshot
+          "${{ steps.rotate.outputs.new_active }}"
+          "assets/themes/${{ steps.rotate.outputs.new_active }}.png"
+
       - name: Render the new active theme
         if: steps.queue.outputs.empty == 'false'
         # render-plugin-pages.py joins render-hub.py here — the 15 per-plugin
@@ -146,13 +164,6 @@ jobs:
           set -euo pipefail
           python scripts/render-hub.py
           python scripts/render-plugin-pages.py
-
-      - name: Capture the incoming theme's screenshot
-        if: steps.queue.outputs.empty == 'false'
-        run: >
-          python scripts/freeze-theme.py --screenshot
-          "${{ steps.rotate.outputs.new_active }}"
-          "assets/themes/${{ steps.rotate.outputs.new_active }}.png"
 
       - name: 'Gate: theme doctor (new active theme, browser checks)'
         if: steps.queue.outputs.empty == 'false'

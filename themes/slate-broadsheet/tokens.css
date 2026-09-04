@@ -9,6 +9,12 @@
    sheet-slate-broadsheet.html). The palette is transcribed from that
    sheet's :root, not invented here.
 
+   theme.json's "status" is informational only. Nothing reads it: the
+   gallery, the rotation and theme-doctor all take active/queue/archive
+   from content/themes.json. It says "queued" here and "live" in
+   phosphor-blueprint's, and neither string is updated by the rotation,
+   so read the registry, never this field, for what is live.
+
    Matte throughout. No glow, no bloom, no scanlines, no grid, no gradient
    field. The page markup keeps its `.pb-scanlines` div for the August
    archive's sake; this theme paints nothing on it. Cyan is the link ink;
