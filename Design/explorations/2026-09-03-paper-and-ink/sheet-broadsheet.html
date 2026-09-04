@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Broadsheet: paper and ink sheet (626 Labs)</title>
+<!--
+  THE BROADSHEET. A serious daily's front page and section fronts, set on
+  the site's own paper. Masthead between double rules, a dateline row that
+  IS the wayfinding line, the nav as the section index strip, a lead story
+  with the Field Notes boxed as a front-page rail, Work as a section front
+  with a screened plate for the flagship and nine columned listings under
+  real column rules, the founding as a two-column read with a drop cap and
+  a pull quote. Cyan and magenta appear only as a printer's color bar, a
+  caption rule, and a link underline: spot color, never a flood.
+
+  Base layers, root-absolute so this file serves from the repo root:
+  /Design/colors_and_type.css (brand base, dark-first), then
+  /Design/editorial.css (the paper layer, light), then this sheet's own
+  <style>. Body is class ed-page so editorial.css's paper/ink/serif apply
+  and the dark base body/p/h* colors are overridden below.
+
+  AA CONTRAST. Computed 2026-09-03, WCAG 2.1 relative luminance
+  (L = .2126R + .7152G + .0722B on linearized sRGB; ratio =
+  (Lmax + .05) / (Lmin + .05)). Every text/background pair this sheet
+  introduces, against every paper tone the text sits on. Paper tones:
+  ed-paper hex F7F5F0 (L .9138), ed-paper-soft hex FAFAF7 (L .9541),
+  ed-paper-deep hex EFEBE2 (L .8378). The fiber grain (below) composites a
+  worst-case 3 percent of ink over paper: paper becomes hex F0EFEA,
+  paper-deep becomes hex E8E5DD. Ratios are given against the composited
+  tone too, because that is what a visitor actually sees.
+
+  --pi-broadsheet-link (hex 086882, a cyan pulled down to ink weight; the
+  hue of --ed-link, the darkness of a real link on newsprint). Used as TEXT
+  for every anchor in the page: the dateline's "see all themes" and the
+  founding door as resting state, the nav strip, product names and Field
+  Note titles as focus state. Sizes 11px to 22px, so the 4.5:1 body floor
+  applies everywhere it is used, never the 3:1 large-text floor.
+    vs ed-paper            5.82:1  PASS
+    vs ed-paper-soft       6.06:1  PASS
+    vs ed-paper-deep       5.33:1  PASS
+    vs ed-paper + fiber    5.46:1  PASS
+    vs ed-paper-deep + fiber 4.99:1 PASS
+
+  --pi-broadsheet-link-hover (hex A8175C, a magenta pulled down the same
+  way; the pair to the link ink so hover keeps the cyan/magenta duo
+  the brand insists on). Used as TEXT on hover and focus for the same
+  anchors.
+    vs ed-paper            6.55:1  PASS
+    vs ed-paper-soft       6.83:1  PASS
+    vs ed-paper-deep       6.00:1  PASS
+    vs ed-paper + fiber    6.14:1  PASS
+    vs ed-paper-deep + fiber 5.62:1 PASS
+
+  --pi-broadsheet-fiber (ink at 3 percent alpha). Decorative only: two
+  repeating hairline gradients laid over the page as paper grain. Never a
+  text color. Its whole effect on contrast is the composited tones above.
+
+  --pi-broadsheet-screen (paper at 14 percent alpha). Decorative only: the
+  halftone dot screen laid over the dark raster plate so a CRT screenshot
+  reads as a screened press photo, not a hole in the page. Never text.
+
+  Reversed section tabs (the "01" and "02" folios, and the rail label):
+  ed-paper text on an ed-ink field, 15.29:1 PASS. Reused --ed-* pairs,
+  informational, editorial.css's own contract: ed-ink on paper 15.29:1,
+  ed-ink-2 on paper 11.19:1, ed-ink-3 on paper 4.96:1 and on paper + fiber
+  4.65:1 (captions, datelines, folio text, all 11px to 14px, all PASS at
+  the 4.5:1 floor). ed-paper-deep is NOT used as a surface anywhere in
+  this sheet; its ratios are given for the build, with one warning: with
+  the grain composited, ed-ink-3 on ed-paper-deep is 4.25:1, a fail, so a
+  deep-paper band in the build must carry ink or ink-2 text, never ink-3.
+  ed-ink-muted (2.59:1) is used for hairlines and dingbats only, never as
+  text.
+
+  BASE-LAYER DEFECT, NOT USED HERE: --ed-link (hex 0FA8C9) is 2.58:1 on
+  ed-paper and fails AA at every size. No text in this sheet inherits it;
+  every anchor is routed through --pi-broadsheet-link, including the
+  overrides of editorial.css's .ed-lockup .label and .ed-eyebrow colors
+  which this sheet does not render at all.
+
+  FONT NOTE: --font-serif leads with Source Serif 4, which is not
+  self-hosted in /fonts/fonts.css; the stack falls to Iowan Old Style on
+  Mac and Georgia on Windows. On a broadsheet that fallback is not a loss:
+  Georgia is a newspaper text face and the masthead sets in it honestly.
+  Inter, Space Grotesk and JetBrains Mono are self-hosted and used for
+  meta labels, the nav strip, and folio numbers respectively.
+-->
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/Design/colors_and_type.css">
+<link rel="stylesheet" href="/Design/editorial.css">
+<style>
+  :root {
+    --pi-broadsheet-link:       #086882;              /* AA link ink, cyan pulled to ink weight. Ratios in header. */
+    --pi-broadsheet-link-hover: #A8175C;              /* AA hover ink, magenta pulled the same way. Ratios in header. */
+    --pi-broadsheet-fiber:      rgba(15,31,49,.03);   /* paper grain hairlines. Decorative, never text. */
+    --pi-broadsheet-screen:     rgba(247,245,240,.14);/* halftone dot screen over the raster plate. Decorative, never text. */
+
+    /* Broadsheet measures. Not colors. */
+    --bs-page: 1280px;
+    --bs-gutter: 32px;
+    --bs-rule: 1px solid var(--ed-rule-strong);
+    --bs-hair: 1px solid var(--ed-rule);
+    --bs-heavy: 3px solid var(--ed-ink);
+    --bs-serif: var(--font-serif);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ed-paper);
+    color: var(--ed-ink);
+    font-family: var(--bs-serif);
+    font-size: 17px;
+    line-height: 1.5;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern", "liga", "onum";
+  }
+  /* Paper grain: two crossing hairline weaves at 3 percent ink. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    background:
+      repeating-linear-gradient(97deg, var(--pi-broadsheet-fiber) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(-4deg, var(--pi-broadsheet-fiber) 0 1px, transparent 1px 6px);
+  }
+  /* Undo the dark base layer's element colors. */
+  h1, h2, h3, h4, p, li { color: inherit; }
+  p { font-size: inherit; line-height: inherit; margin: 0; }
+  a {
+    color: var(--pi-broadsheet-link);
+    text-decoration: none;
+  }
+  a:hover, a:focus-visible { color: var(--pi-broadsheet-link-hover); }
+  a:focus-visible { outline: 2px solid var(--pi-broadsheet-link-hover); outline-offset: 2px; }
+  img, svg { max-width: 100%; }
+
+  .wrap {
+    max-width: var(--bs-page);
+    margin: 0 auto;
+    padding: 0 24px;
+    min-width: 0;
+  }
+
+  .skip {
+    position: absolute;
+    left: -9999px;
+    top: 8px;
+    background: var(--ed-ink);
+    color: var(--ed-paper);
+    padding: 8px 12px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    z-index: 10;
+  }
+  .skip:focus { left: 8px; color: var(--ed-paper); }
+
+  /* Meta label: the brand's UPPERCASE +0.12em convention, on Inter. */
+  .meta {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+  }
+  .folio {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+  /* Reversed tab: ink field, paper type. The section number sits here. */
+  .tab {
+    display: inline-block;
+    background: var(--ed-ink);
+    color: var(--ed-paper);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 4px 8px 3px;
+    line-height: 1;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+
+  /* Printer's color bar: the only place the brand pair floods a shape. */
+  .regbar {
+    display: inline-flex;
+    gap: 4px;
+    vertical-align: middle;
+  }
+  .regbar i {
+    display: block;
+    width: 9px;
+    height: 9px;
+  }
+  .regbar .c { background: var(--brand-cyan); }
+  .regbar .m { background: var(--brand-magenta); }
+  .regbar .k { background: var(--ed-ink); }
+
+  /* ================= MASTHEAD ================= */
+  .masthead { padding-top: 14px; }
+  .ears {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 0;
+    border-bottom: var(--bs-hair);
+  }
+  .ears .meta { color: var(--ed-ink-3); }
+  .masthead-title {
+    margin: 0;
+    padding: 22px 0 14px;
+    text-align: center;
+    font-family: var(--bs-serif);
+    font-weight: 700;
+    font-size: clamp(56px, 9vw, 124px);
+    letter-spacing: -0.035em;
+    line-height: 0.9;
+    color: var(--ed-ink);
+    border-bottom: var(--bs-heavy);
+    position: relative;
+  }
+  .masthead-title::after {
+    /* the second line of the double rule, hairline under the heavy one */
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    bottom: -6px;
+    border-bottom: var(--bs-hair);
+  }
+  .masthead-title a { color: inherit; }
+  .masthead-title a:hover { color: inherit; }
+  .masthead-title .lab { font-weight: 400; font-style: italic; letter-spacing: -0.02em; }
+
+  /* The dateline. Sits directly under the double rule at every width. */
+  .dateline {
+    margin: 6px 0 0;
+    padding: 10px 0;
+    border-bottom: var(--bs-rule);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px 20px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--ed-ink-2);
+  }
+  .dateline .dl-left { justify-self: start; }
+  .dateline .dl-right { justify-self: end; text-align: right; }
+  .dateline .dl-center {
+    text-align: center;
+    font-weight: 600;
+    color: var(--ed-ink);
+    letter-spacing: 0.02em;
+  }
+  .dateline .dl-center a {
+    color: var(--pi-broadsheet-link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  .dateline .dl-center a:hover { color: var(--pi-broadsheet-link-hover); }
+  .dateline .sep { color: var(--ed-ink-muted); padding: 0 4px; }
+
+  /* Nav as the section index strip. */
+  .nav {
+    border-bottom: var(--bs-heavy);
+    margin-bottom: 0;
+  }
+  .nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .nav li {
+    position: relative;
+  }
+  .nav li + li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    border-left: var(--bs-hair);
+  }
+  .nav a {
+    display: block;
+    padding: 12px 22px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+  }
+  .nav a:hover { color: var(--pi-broadsheet-link-hover); }
+
+  /* ================= HERO: the lead story + Field Notes rail ================= */
+  .hero { padding: 36px 0 40px; }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 0 var(--bs-gutter);
+  }
+  .lead {
+    min-width: 0;
+    padding-right: var(--bs-gutter);
+    border-right: var(--bs-rule);
+  }
+  .lead .kicker {
+    margin: 0 0 18px;
+  }
+  .lead-hed {
+    margin: 0 0 14px;
+    font-family: var(--bs-serif);
+    font-weight: 700;
+    font-size: clamp(42px, 5.6vw, 84px);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--ed-ink);
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+  .lead-accent {
+    margin: 0 0 20px;
+    font-family: var(--bs-serif);
+    font-style: italic;
+    font-size: clamp(22px, 2.2vw, 30px);
+    line-height: 1.2;
+    color: var(--ed-ink);
+    padding-bottom: 16px;
+    border-bottom: var(--bs-hair);
+  }
+  .lead-dek {
+    font-family: var(--bs-serif);
+    font-size: clamp(18px, 1.5vw, 21px);
+    line-height: 1.5;
+    color: var(--ed-ink-2);
+    max-width: 38em;
+    text-wrap: pretty;
+  }
+  .lead-dek::first-letter {
+    /* newspaper lead: the first letter of the deck set big and dropped */
+    float: left;
+    font-size: 3.4em;
+    line-height: 0.8;
+    padding: 6px 8px 0 0;
+    font-weight: 700;
+    color: var(--ed-ink);
+  }
+
+  .lead-plate { clear: both; padding-top: 30px; }
+  .lead-plate .raster { aspect-ratio: 16 / 9; }
+
+  /* Field Notes rail: a boxed column with a heavy top rule and a reversed label. */
+  .field-notes {
+    min-width: 0;
+    border-top: var(--bs-heavy);
+    padding-top: 12px;
+  }
+  .rail-label {
+    margin: 0 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    padding-bottom: 10px;
+    border-bottom: var(--bs-hair);
+  }
+  .field-notes ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .field-note {
+    padding: 16px 0 18px;
+    border-bottom: var(--bs-hair);
+    break-inside: avoid;
+    min-width: 0;
+  }
+  .field-note:last-child { border-bottom: 0; }
+  .field-note time {
+    display: block;
+    margin-bottom: 6px;
+  }
+  .field-note-title {
+    margin: 0 0 6px;
+    font-family: var(--bs-serif);
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    color: var(--ed-ink);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+  .field-note-title a { color: var(--ed-ink); }
+  .field-note-title a:hover { color: var(--pi-broadsheet-link-hover); }
+  .field-note-subtitle {
+    font-family: var(--bs-serif);
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--ed-ink-2);
+    text-wrap: pretty;
+  }
+
+  /* ================= SECTION FRONT chrome ================= */
+  .section { padding: 34px 0 44px; }
+  .section + .section { border-top: var(--bs-hair); }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 10px;
+    margin-bottom: 26px;
+    border-bottom: var(--bs-heavy);
+    position: relative;
+  }
+  .section-head::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    bottom: -6px;
+    border-bottom: var(--bs-hair);
+  }
+  .section-head .sep { color: var(--ed-ink-muted); margin-right: 10px; }
+  .section-head h2, .section-head .eyebrow {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    display: flex;
+    align-items: center;
+  }
+
+  /* ================= WORK: flagship listing + columned listings ================= */
+  .product-flagship {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    align-items: center;
+    gap: 0 var(--bs-gutter);
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    border-bottom: var(--bs-rule);
+  }
+  .product-flagship .product-head {
+    min-width: 0;
+    padding-left: var(--bs-gutter);
+    border-left: var(--bs-rule);
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .plate-thumb .plate-mat { padding: 4px; }
+  .plate-thumb figcaption { margin-top: 8px; padding-top: 7px; font-size: 12px; }
+  .product-flagship h3 {
+    margin: 10px 0 12px;
+    font-family: var(--bs-serif);
+    font-weight: 700;
+    font-size: clamp(30px, 3.2vw, 44px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+  .product-flagship .product-desc {
+    font-family: var(--bs-serif);
+    font-size: 20px;
+    line-height: 1.4;
+    color: var(--ed-ink-2);
+    font-style: italic;
+  }
+
+  /* The plate: how a dark CRT raster sits on newsprint.
+     Hairline mat in paper-soft, an ink keyline, then the raster with a
+     halftone dot screen and a caption rule set in the brand pair. */
+  .plate { margin: 0; min-width: 0; }
+  .plate-mat {
+    border: 1px solid var(--ed-ink);
+    background: var(--ed-paper-soft);
+    padding: 6px;
+  }
+  .raster {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: var(--ed-ink);
+    overflow: hidden;
+  }
+  .raster::before {
+    /* halftone screen: a 4px dot grid of paper at 14 percent over the ink */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--pi-broadsheet-screen) 0.9px, transparent 1.1px);
+    background-size: 4px 4px;
+  }
+  .raster::after {
+    /* the raster's own light: a faint CRT scan band so the plate has a subject */
+    content: '';
+    position: absolute;
+    left: 8%; right: 8%;
+    top: 14%; height: 1px;
+    background: var(--ed-ink-muted);
+    box-shadow: 0 22px 0 var(--ed-ink-2), 0 44px 0 var(--ed-ink-2), 0 66px 0 var(--ed-ink-2), 0 88px 0 var(--ed-ink-2);
+    opacity: .7;
+  }
+  .plate figcaption {
+    position: relative;
+    margin-top: 10px;
+    padding-top: 9px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--ed-ink-3);
+  }
+  .plate figcaption::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 56px; height: 2px;
+    background: var(--ed-accent-rule);
+  }
+  .plate figcaption b {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ed-ink-2);
+    margin-right: 8px;
+  }
+
+  .listing {
+    columns: 3;
+    column-gap: var(--bs-gutter);
+    column-rule: var(--bs-rule);
+  }
+  .product {
+    break-inside: avoid;
+    padding: 2px 0 16px;
+    margin-bottom: 16px;
+    border-bottom: var(--bs-hair);
+    min-width: 0;
+  }
+  .listing .product:last-child { border-bottom: 0; }
+  .product .num { display: block; margin-bottom: 6px; }
+  .product h3 {
+    margin: 0 0 6px;
+    font-family: var(--bs-serif);
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    color: var(--ed-ink);
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+  .product h3 a { color: var(--ed-ink); }
+  .product h3 a:hover { color: var(--pi-broadsheet-link-hover); }
+  .product-desc {
+    font-family: var(--bs-serif);
+    font-size: 16px;
+    line-height: 1.45;
+    color: var(--ed-ink-2);
+    text-wrap: pretty;
+  }
+
+  /* ================= THE FOUNDING ================= */
+  .founding-hed {
+    margin: 0 0 22px;
+    font-family: var(--bs-serif);
+    font-weight: 700;
+    font-size: clamp(32px, 3.8vw, 52px);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: var(--ed-ink);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+  .founding-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 0 var(--bs-gutter);
+  }
+  .pull {
+    margin: 0;
+    padding: 12px 0 18px;
+    border-top: var(--bs-heavy);
+    border-bottom: var(--bs-hair);
+    font-family: var(--bs-serif);
+    font-style: italic;
+    font-size: clamp(24px, 2.3vw, 30px);
+    line-height: 1.3;
+    color: var(--ed-ink);
+    text-wrap: pretty;
+    align-self: start;
+  }
+  .pull::before { content: '\201C'; color: var(--ed-ink-muted); margin-right: 2px; }
+  .pull::after { content: '\201D'; color: var(--ed-ink-muted); margin-left: 2px; }
+  .founding-body {
+    min-width: 0;
+    columns: 2;
+    column-gap: var(--bs-gutter);
+    column-rule: var(--bs-hair);
+    font-family: var(--bs-serif);
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ed-ink);
+  }
+  .founding-body p { margin: 0 0 1em; text-wrap: pretty; hanging-punctuation: first; }
+  .founding-body p:first-child::first-letter {
+    float: left;
+    font-size: 4.2em;
+    line-height: 0.82;
+    padding: 5px 8px 0 0;
+    font-weight: 700;
+    color: var(--ed-ink);
+  }
+  .door {
+    display: inline-block;
+    margin-top: 6px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pi-broadsheet-link);
+    padding-bottom: 3px;
+    background-image: var(--ed-accent-rule);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 2px;
+  }
+  .door:hover { color: var(--pi-broadsheet-link-hover); }
+
+  /* ================= FOOTER ================= */
+  .footer {
+    margin-top: 24px;
+    border-top: var(--bs-heavy);
+    position: relative;
+  }
+  .footer::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 5px;
+    border-top: var(--bs-hair);
+  }
+  .footer-inner {
+    padding: 28px 24px 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+  .footer-inner p {
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--ed-ink-2);
+  }
+  .footer-inner p .tag { font-style: italic; font-family: var(--bs-serif); font-size: 15px; color: var(--ed-ink); }
+
+  /* ================= 768 ================= */
+  @media (max-width: 960px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 32px 0; }
+    .lead { padding-right: 0; border-right: 0; }
+    .field-notes ol { columns: 2; column-gap: var(--bs-gutter); column-rule: var(--bs-hair); }
+    .field-note { padding-top: 12px; }
+    .product-flagship { grid-template-columns: 240px minmax(0, 1fr); gap: 0 var(--bs-gutter); }
+    .listing { columns: 2; }
+    .founding-grid { grid-template-columns: 1fr; gap: 22px 0; }
+    .founding-body { columns: 2; }
+  }
+  /* ================= 390 ================= */
+  @media (max-width: 600px) {
+    .wrap { padding: 0 18px; }
+    .masthead-title { padding: 18px 0 12px; }
+    .dateline {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 6px;
+      padding: 12px 0;
+    }
+    .dateline .dl-left, .dateline .dl-right { justify-self: center; text-align: center; }
+    .dateline .dl-center { font-size: 13px; line-height: 1.5; }
+    .nav a { padding: 11px 12px; font-size: 12px; letter-spacing: 0.1em; }
+    .hero { padding-top: 26px; }
+    .field-notes ol { columns: 1; }
+    .product-flagship { grid-template-columns: 1fr; gap: 18px 0; }
+    .product-flagship .product-head { padding-left: 0; border-left: 0; }
+    .listing { columns: 1; }
+    .founding-body { columns: 1; }
+    .footer-inner { padding: 22px 18px 36px; }
+  }
+</style>
+</head>
+<body class="ed-page">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="ears">
+      <span class="meta">626labs.dev</span>
+      <span class="regbar" aria-hidden="true"><i class="c"></i><i class="m"></i><i class="k"></i></span>
+    </div>
+    <h1 class="masthead-title"><a href="/">626 <span class="lab">Labs</span></a></h1>
+    <p class="dateline" id="dateline">
+      <span class="dl-left folio">Fort Worth, TX</span>
+      <span class="dl-center">Theme: October 2026 <span class="sep">·</span> this site changes monthly <span class="sep">·</span> <a href="/themes.html">see all themes</a></span>
+      <span class="dl-right folio">Monthly edition</span>
+    </p>
+    <nav class="nav" aria-label="Sections">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#field-notes">Field Notes</a></li>
+        <li><a href="/#lab">Lab</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" aria-labelledby="lead-hed">
+    <div class="wrap hero-inner">
+      <article class="lead">
+        <p class="kicker meta">626 Labs LLC · Fort Worth, TX</p>
+        <h2 class="lead-hed" id="lead-hed">Stabilize your builds</h2>
+        <p class="lead-accent">Ready for the 2nd User.</p>
+        <p class="lead-dek">Claude Code plugins for builders who vibe-code fast and still ship for real. Planning, docs, tests, security — with a native Windows/macOS widget for pacing your usage.</p>
+        <figure class="plate lead-plate">
+          <div class="plate-mat">
+            <div class="raster" role="img" aria-label="Front page plate placeholder, dark raster on paper"></div>
+          </div>
+          <figcaption><b>Plate</b>Every product screenshot is a dark CRT. On newsprint it gets a paper mat, an ink keyline, and a halftone screen, so it reads as a press photo and not a hole in the page.</figcaption>
+        </figure>
+      </article>
+
+      <aside class="field-notes" id="field-notes" aria-labelledby="rail-label">
+        <h2 class="rail-label" id="rail-label"><span>Field Notes</span><span class="folio">Front rail</span></h2>
+        <ol>
+          <li class="field-note">
+            <time class="folio" datetime="2026-06-26">2026-06-26</time>
+            <h3 class="field-note-title"><a href="/field-notes/">The first 626 Labs Day</a></h3>
+            <p class="field-note-subtitle">Today is 6/26/26, the first 626 Day since 626 Labs existed. The whole surface is shipped and live in one window: 14 Claude Code plugins and 6 Microsoft Store apps, one new and two with major updates this week.</p>
+          </li>
+          <li class="field-note">
+            <time class="folio" datetime="2026-07-03">2026-07-03</time>
+            <h3 class="field-note-title"><a href="/field-notes/">RoRoRo grew eyes, hands, and a heartbeat</a></h3>
+            <p class="field-note-subtitle">The Roblox multi-launcher you could recommend on camera now has three plugins (perception, action, and a keep-alive), wired together by a consent-gated bridge that never leaves your machine.</p>
+          </li>
+          <li class="field-note">
+            <time class="folio" datetime="2026-06-19">2026-06-19</time>
+            <h3 class="field-note-title"><a href="/field-notes/">The Vibe family is thirteen, and they all read the code first</a></h3>
+            <p class="field-note-subtitle">Thirteen Claude Code plugins on one shared spine — an opinionated agent that reads your repo before it touches it. They cover the whole lifecycle around the code, where vibe-coded apps actually rot.</p>
+          </li>
+          <li class="field-note">
+            <time class="folio" datetime="2026-05-29">2026-05-29</time>
+            <h3 class="field-note-title"><a href="/field-notes/">Same code, 3x the thinking: what I did with my first 8 hours with Opus 4.8.</a></h3>
+            <p class="field-note-subtitle">I turned on max-orchestration to see what would happen. Eight sessions later the agent had burned three times the tokens and written the same amount of code. The extra went into tests it caught before I saw them, and into a run that stopped answering the wheel once it started.</p>
+          </li>
+        </ol>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section products" id="work" aria-labelledby="work-hed">
+    <div class="wrap">
+      <header class="section-head">
+        <h2 id="work-hed"><span class="tab">01</span><span class="sep">·</span> Work</h2>
+        <span class="folio">Ten listings, one flagship</span>
+      </header>
+
+      <article class="product product-flagship">
+        <figure class="plate plate-thumb">
+          <div class="plate-mat">
+            <div class="raster" role="img" aria-label="Listing plate placeholder, dark raster on paper"></div>
+          </div>
+          <figcaption><b>Plate</b>Same mat and screen, at listing width.</figcaption>
+        </figure>
+        <div class="product-head">
+          <span class="num folio">No. 01</span>
+          <h3><a href="/vibe-cartographer.html">Vibe Cartographer</a></h3>
+          <p class="product-desc">Vibe coding with a map.</p>
+        </div>
+      </article>
+
+      <div class="listing">
+        <article class="product">
+          <span class="num folio">No. 02</span>
+          <h3><a href="/celestia-3.html">Celestia 3</a></h3>
+          <p class="product-desc">NASA-grade astrology AI.</p>
+        </article>
+        <article class="product">
+          <span class="num folio">No. 03</span>
+          <h3><a href="/vibe-iterate.html">Vibe Iterate</a></h3>
+          <p class="product-desc">Maintain your Atlas.</p>
+        </article>
+        <article class="product">
+          <span class="num folio">No. 04</span>
+          <h3><a href="/vibe-insights.html">Vibe Insights</a></h3>
+          <p class="product-desc">The /insights you wish you had.</p>
+        </article>
+        <article class="product">
+          <span class="num folio">No. 05</span>
+          <h3><a href="/vibe-keystone.html">Vibe Keystone</a></h3>
+          <p class="product-desc">Map the repo before the agent starts.</p>
+        </article>
+        <article class="product">
+          <span class="num folio">No. 06</span>
+          <h3><a href="/vibe-doc.html">Vibe Doc</a></h3>
+          <p class="product-desc">Point it at your codebase and it finds the docs you're missing — ADRs, runbooks, threat models, specs — then w</p>
+        </article>
+        <article class="product">
+          <span class="num folio">No. 07</span>
+          <h3><a href="/vibe-test.html">Vibe Test</a></h3>
+          <p class="product-desc">Put your code to the test before somebody else does.</p>
+        </article>
+        <article class="product">
+          <span class="num folio">No. 08</span>
+          <h3><a href="/vibe-thesis.html">Vibe Thesis</a></h3>
+          <p class="product-desc">Long-form research, drafted with discipline.</p>
+        </article>
+        <article class="product">
+          <span class="num folio">No. 09</span>
+          <h3><a href="/thesis-engine.html">Thesis Engine</a></h3>
+          <p class="product-desc">Surface topics. Gather sources. Seed the thesis.</p>
+        </article>
+        <article class="product">
+          <span class="num folio">No. 10</span>
+          <h3><a href="/sanduhr.html">Sanduhr für Claude</a></h3>
+          <p class="product-desc">Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yoursel</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section founding" id="founding" aria-labelledby="founding-hed">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow"><span class="tab">02</span><span class="sep">·</span> The founding</p>
+      </header>
+      <h2 class="founding-hed" id="founding-hed">626 Labs builds exact-fit software.</h2>
+      <div class="founding-grid">
+        <blockquote class="pull">I build tools, because care doesn't always scale.</blockquote>
+        <div class="founding-body">
+          <p>626 Labs builds exact-fit software. The founding argument is simple: it has never been easier to have the exact tools we need, and too much money has been going to too many companies for tools that only half fit. So we build and maintain our own, at a quality that rivals enterprise software, made to enhance the work people do instead of taking their jobs. We are here to make great products, even if only a handful of people need them. That's ok.</p>
+          <p>The line the lab was built on belongs to its founder: "I build tools, because care doesn't always scale." It is translation: take the care a person already has and build it into something that keeps working after their attention has to move on.</p>
+          <a class="door" href="about.html">Read the whole story</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <p>626 Labs LLC · Fort Worth, TX · <span class="tag">Imagine Something Else.</span></p>
+    <span class="regbar" aria-hidden="true"><i class="c"></i><i class="m"></i><i class="k"></i></span>
+  </div>
+</footer>
+</body>
+</html>
