@@ -119,6 +119,31 @@ def _wrap(draw: ImageDraw.ImageDraw, text: str, font, max_w: int) -> list[str]:
     return lines
 
 
+def _ellipsize(draw: ImageDraw.ImageDraw, line: str, font, max_w: int) -> str:
+    """`line` cut at a word boundary to fit max_w with a closing ellipsis.
+    Trailing punctuation before the cut is dropped so it never reads
+    "and,…"."""
+    words = line.split()
+    while words:
+        cand = " ".join(words).rstrip(",;:") + "…"
+        if draw.textlength(cand, font=font) <= max_w:
+            return cand
+        words.pop()
+    return "…"
+
+
+def _dek_lines(draw: ImageDraw.ImageDraw, dek: str, font, max_w: int, max_lines: int = 2) -> list[str]:
+    """The dek wrapped to at most `max_lines`. A dek that runs longer ends
+    on an ellipsis at a word boundary instead of stopping mid-phrase: it is
+    the most-read line on the most-seen surface."""
+    lines = _wrap(draw, dek, font, max_w)
+    if len(lines) <= max_lines:
+        return lines
+    kept = lines[:max_lines]
+    kept[-1] = _ellipsize(draw, kept[-1], font, max_w)
+    return kept
+
+
 def _dek_font(raster: rt.Raster, size: int) -> ImageFont.FreeTypeFont:
     """The dek's face follows the theme's body face: Inter italic on a lit
     theme, Source Serif 4 (roman, weight 400, optical size at the pixel
@@ -177,7 +202,7 @@ def build_card(story: dict, rh, raster: rt.Raster | None = None) -> Image.Image:
     # fitter can budget the vertical space it leaves behind.
     dek_size = 27
     dek_font = _dek_font(raster, dek_size) if dek else None
-    dek_lines = _wrap(draw, dek, dek_font, avail_w)[:2] if dek else []
+    dek_lines = _dek_lines(draw, dek, dek_font, avail_w) if dek else []
     dek_gap = int(dek_size * 0.28)
     dek_pad_top = 28 if dek_lines else 0
     dek_h = (len(dek_lines) * dek_size + (len(dek_lines) - 1) * dek_gap) if dek_lines else 0
