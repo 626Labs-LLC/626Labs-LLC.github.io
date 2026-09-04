@@ -93,7 +93,12 @@
   /* ---------- Shell ---------- */
   .shell{
     position:relative; z-index:1;
-    max-width:920px; margin:0 auto; width:100%;
+    /* No `width:100%`: body is a column flexbox, so the shell stretches to
+       the viewport and max-width clamps it. With width:100% the 32px side
+       padding sat OUTSIDE the box and the page ran 64px past every viewport
+       under 984px (832 at 768, 430 at 390); theme-doctor's horizontal-scroll
+       gate catches that now. Identical at 1440: 920 + 64 = 984 either way. */
+    max-width:920px; margin:0 auto;
     padding:64px 32px 40px;
     flex:1;
     display:flex; flex-direction:column; align-items:center;
