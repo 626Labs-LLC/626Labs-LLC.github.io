@@ -318,6 +318,8 @@ def test_main_require_browser_implies_browser_and_fails_when_unavailable(monkeyp
     def _fake_run(*a, **kw):
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
         for name in td.BROWSER_CHECK_LIVE_PAGES:
+            # preview mode writes nested pages at their relative path
+            (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
             (tmp_path / name).write_text(_good_html(), encoding="utf-8")
         return _Result()
 
@@ -348,6 +350,8 @@ def test_main_browser_alone_is_still_ergonomic_when_playwright_missing(monkeypat
     def _fake_run(*a, **kw):
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
         for name in td.BROWSER_CHECK_LIVE_PAGES:
+            # preview mode writes nested pages at their relative path
+            (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
             (tmp_path / name).write_text(_good_html(), encoding="utf-8")
         return _Result()
 
@@ -927,10 +931,14 @@ def test_browser_checks_open_every_hand_authored_product_page():
     # press.html and privacy.html joined last and on a stronger argument than
     # any of the six: they own NO chrome of their own, so the theme is the
     # only thing dressing them. See DRESS_OUTCOME_PAGES.
+    # 404.html, bacon-trail/index.html and sanduhr/index.html joined in
+    # October needs (piece 2), as repo-relative paths: two are named
+    # index.html, and a name-keyed set collapses them onto the home page.
     assert td.BROWSER_CHECK_LIVE_PAGES == (
         "conundrum.html", "rororo-plugins.html", "rororo.html",
         "mod-launcher-games.html", "thesis.html", "workflow.html",
         "press.html", "privacy.html", "etsy-mcp.html",
+        "404.html", "bacon-trail/index.html", "sanduhr/index.html",
     )
     previewable = _render_hub_previewable_pages()
     for name in td.BROWSER_CHECK_LIVE_PAGES:
@@ -1108,6 +1116,8 @@ def _stub_main_kwargs(tmp_path):
     def _fake_run(*a, **kw):
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
         for name in td.BROWSER_CHECK_LIVE_PAGES:
+            # preview mode writes nested pages at their relative path
+            (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
             (tmp_path / name).write_text(_good_html(), encoding="utf-8")
         return _Result()
 
@@ -1215,13 +1225,144 @@ def test_the_browser_gate_opens_every_previewable_theme_css_page():
     # BROWSER_CHECK_LIVE_PAGES is a hand-written literal. Add a tenth page to
     # the href map and it gets a resolution group automatically, render-hub
     # previews it, and the browser gate never opens it. Green, and silent.
-    previewable = {p.name for p in _render_hub_previewable_pages()}
+    previewable = {p.relative_to(ROOT).as_posix() for p in _render_hub_previewable_pages()}
     listed = set(td.BROWSER_CHECK_LIVE_PAGES)
     assert previewable == listed, (
         f"previewable but never opened by the browser gate: "
         f"{sorted(previewable - listed)}; "
         f"opened but not previewable: {sorted(listed - previewable)}"
     )
+
+
+def test_live_pages_are_keyed_by_repo_relative_path_and_none_collide():
+    # Two of the gate's pages are named index.html (bacon-trail/, sanduhr/),
+    # as is the home page. Keyed on Path.name they would collapse into one
+    # entry; the tuple has to hold their repo-relative posix paths, every
+    # entry has to exist on disk, and the bare names have to stay distinct
+    # from the home archetype's rendered output.
+    assert "bacon-trail/index.html" in td.BROWSER_CHECK_LIVE_PAGES
+    assert "sanduhr/index.html" in td.BROWSER_CHECK_LIVE_PAGES
+    assert "index.html" not in td.BROWSER_CHECK_LIVE_PAGES
+    assert len(set(td.BROWSER_CHECK_LIVE_PAGES)) == len(td.BROWSER_CHECK_LIVE_PAGES)
+    for name in td.BROWSER_CHECK_LIVE_PAGES:
+        assert "\\" not in name and not name.startswith("/"), name
+        assert (ROOT / name).is_file(), name
+
+
+def test_served_path_puts_a_nested_page_at_its_own_url():
+    # A nested page served at "/" resolves its relative assets against the
+    # root: sanduhr's `src="icon.png"` becomes /icon.png, a 404, a console
+    # error, and a failed theme for the page's geography. Archetype shells
+    # have no path and stay at the root.
+    for archetype in td.ARCHETYPE_CHROME:
+        assert td._served_path(archetype) == "/"
+    assert td._served_path("press.html") == "/press.html"
+    assert td._served_path("bacon-trail/index.html") == "/bacon-trail/index.html"
+    assert td._served_path("sanduhr/index.html") == "/sanduhr/index.html"
+
+
+def test_run_browser_checks_all_serves_each_live_page_at_its_own_path(monkeypatch):
+    seen = {}
+
+    def fake(html_text, require=False, dress_outcome=False, reading_dress=False,
+             served_path="/"):
+        seen[html_text] = served_path
+        return []
+
+    monkeypatch.setattr(td, "_import_sync_playwright", lambda: object())
+    monkeypatch.setattr(td, "_run_browser_checks", fake)
+    docs = {name: name for name in ("home", "product", "reading", "utility",
+                                    *td.BROWSER_CHECK_LIVE_PAGES)}
+    assert td._run_browser_checks_all(docs) == []
+    assert seen == {name: td._served_path(name) for name in docs}
+    assert seen["sanduhr/index.html"] == "/sanduhr/index.html"
+
+
+def test_run_browser_checks_serves_the_document_at_the_nested_path(monkeypatch):
+    """Through the REAL local server: the document has to answer at its own
+    nested path and at the directory form, and the browser has to be sent
+    to that path, not to the root."""
+    import urllib.request
+
+    visited = []
+    body_html = "<html><body>nested</body></html>"
+
+    class _Page:
+        def close(self):
+            pass
+
+    class _Browser:
+        def new_page(self, **kw):
+            return _Page()
+
+        def close(self):
+            pass
+
+    class _Chromium:
+        def launch(self, **kw):
+            return _Browser()
+
+    class _PW:
+        chromium = _Chromium()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    def _fake_viewport(page, url, width, **kw):
+        visited.append(url)
+        got = urllib.request.urlopen(url, timeout=5).read().decode("utf-8")
+        assert got == body_html, (url, got[:80])
+        folder = url.rsplit("/", 1)[0] + "/"
+        assert urllib.request.urlopen(folder, timeout=5).read().decode("utf-8") == body_html
+        return []
+
+    monkeypatch.setattr(td, "_import_sync_playwright", lambda: (lambda: _PW()))
+    monkeypatch.setattr(td, "_check_viewport", _fake_viewport)
+    errs = td._run_browser_checks(body_html, served_path="/bacon-trail/index.html")
+    assert errs == []
+    assert len(visited) == 3, visited
+    assert all(u.endswith("/bacon-trail/index.html") for u in visited), visited
+
+
+# --- a registered theme must name itself ---------------------------------
+
+
+def test_a_registered_theme_without_a_name_fails_and_an_unregistered_stub_does_not():
+    registered = ["phosphor-blueprint", "slate-broadsheet"]
+    # both live themes carry a name today
+    for slug in registered:
+        meta = json.loads((ROOT / "themes" / slug / "theme.json").read_text(encoding="utf-8"))
+        assert td.check_theme_names_itself(slug, meta, registered) == []
+    # a nameless registered theme fails, naming the slug and the consequence
+    errs = td.check_theme_names_itself("slate-broadsheet", {}, registered)
+    assert len(errs) == 1 and "slate-broadsheet" in errs[0] and "imprint" in errs[0], errs
+    assert td.check_theme_names_itself("slate-broadsheet", {"name": "   "}, registered)
+    assert td.check_theme_names_itself("slate-broadsheet", {"name": 7}, registered)
+    # the doctor's stub fixtures are `{}` and never reach the registry: green
+    assert td.check_theme_names_itself("wired", {}, registered) == []
+
+
+def test_a_nameless_theme_fails_main_only_once_it_is_registered(monkeypatch, tmp_path, capsys):
+    tdir = tmp_path / "nameless"
+    _make_complete_theme_dir(tdir)
+    assert json.loads((tdir / "theme.json").read_text(encoding="utf-8")).get("name") is None
+    monkeypatch.setattr(td.theme_registry, "theme_dir", lambda slug, root=None: tdir)
+    monkeypatch.setattr(td.subprocess, "run", _stub_main_kwargs(tmp_path))
+    monkeypatch.setattr(td.tempfile, "TemporaryDirectory",
+                        lambda **kw: _FakeTempDir(tmp_path))
+    real_load = td.theme_registry.load
+    # not registered: the stub passes exactly as it did before the check
+    assert td.main(["nameless"]) == 0, capsys.readouterr().out
+    # queued: the same theme fails, and the message says why
+    monkeypatch.setattr(td.theme_registry, "load",
+                        lambda root=None: {**real_load(), "queue": ["nameless"]})
+    rc = td.main(["nameless"])
+    out = capsys.readouterr().out
+    assert rc == 1
+    assert 'carries no non-empty "name"' in out, out
 
 
 def test_a_theme_may_not_hardcode_another_themes_slug(tmp_path):
@@ -1434,6 +1575,7 @@ def test_main_fails_when_preview_mode_stops_emitting_a_page_the_gate_opens(
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
         for name in td.BROWSER_CHECK_LIVE_PAGES:
             if name != dropped:
+                (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
                 (tmp_path / name).write_text(_good_html(), encoding="utf-8")
         return _Result()
 
@@ -1748,7 +1890,8 @@ def test_run_browser_checks_all_turns_the_dress_check_on_for_exactly_those_pages
     # see it. This drives _run_browser_checks_all itself.
     seen = {}
 
-    def fake(html_text, require=False, dress_outcome=False, reading_dress=False):
+    def fake(html_text, require=False, dress_outcome=False, reading_dress=False,
+             served_path="/"):
         seen[html_text] = dress_outcome
         return []
 
@@ -2069,9 +2212,10 @@ def test_resolution_groups_stay_in_lockstep_with_the_code_that_serves_the_pages(
     # 1. Every page render-hub.py gives a theme-css <link> is a consumer, and
     #    its group holds exactly the stylesheet that map names.
     for page, href in render_hub.THEME_CSS_HREFS.items():
-        owning = [g for g in groups if page.name in g.split(", ")]
-        assert len(owning) == 1, (page.name, owning)
-        assert groups[owning[0]][0] == (href,), (page.name, groups[owning[0]])
+        rel = page.relative_to(ROOT).as_posix()
+        owning = [g for g in groups if rel in g.split(", ")]
+        assert len(owning) == 1, (rel, owning)
+        assert groups[owning[0]][0] == (href,), (rel, groups[owning[0]])
 
     # 2. The 15 generated plugin pages get exactly what the renderer inlines.
     plugin_group = groups["plugins/*/index.html"][0]
@@ -2549,7 +2693,8 @@ def test_the_browser_phase_serves_about_dressed_in_the_themes_reading_css(monkey
     _make_complete_theme_dir(tdir)
     served = {True: [], False: []}
 
-    def fake(html_text, require=False, dress_outcome=False, reading_dress=False):
+    def fake(html_text, require=False, dress_outcome=False, reading_dress=False,
+             served_path="/"):
         served[reading_dress].append(html_text)
         return []
 
@@ -2572,7 +2717,8 @@ def test_the_browser_phase_serves_about_dressed_in_the_themes_reading_css(monkey
 def test_run_browser_checks_all_turns_the_reading_dress_check_on_for_exactly_reading(monkeypatch):
     seen = {}
 
-    def fake(html_text, require=False, dress_outcome=False, reading_dress=False):
+    def fake(html_text, require=False, dress_outcome=False, reading_dress=False,
+             served_path="/"):
         seen[html_text] = reading_dress
         return []
 

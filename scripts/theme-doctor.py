@@ -219,11 +219,35 @@ TOKEN_ONLY_CSS = (
 # a second theme's utility.css can silently change or break, and they were the
 # two pages nothing ever opened. See check_page_renders_dressed for the
 # outcome gate that rides along with opening them.
+# 404.html, bacon-trail/index.html and sanduhr/index.html joined in October
+# needs (piece 2), the commit they took the theme's tokens. Entries are
+# REPO-RELATIVE POSIX PATHS, not bare names: two of the three are named
+# index.html, and a name-keyed set would have collapsed them onto the home
+# page. `_served_path` turns each into the URL the browser opens, so a
+# nested page resolves its own relative assets (sanduhr's icon.png and
+# screenshots) exactly as it does live.
 BROWSER_CHECK_LIVE_PAGES = (
     "conundrum.html", "rororo-plugins.html", "rororo.html",
     "mod-launcher-games.html", "thesis.html", "workflow.html",
     "press.html", "privacy.html", "etsy-mcp.html",
+    "404.html", "bacon-trail/index.html", "sanduhr/index.html",
 )
+
+
+def _served_path(document: str) -> str:
+    """The URL path the browser phase opens `document` at.
+
+    The four archetype documents ("home", "product", "reading", "utility")
+    are shells with no path of their own and are served at the root. A
+    live page is served at its repo-relative path, so `bacon-trail/
+    index.html` opens as /bacon-trail/index.html and a relative `src` in
+    it resolves against /bacon-trail/, the way it does on 626labs.dev.
+    Serving every document at `/` was fine while every gate page sat at
+    the repo root; the first nested page would have 404'd its own assets
+    into the console check and failed the theme for the page's geography."""
+    if document in ARCHETYPE_CHROME:
+        return "/"
+    return "/" + document.lstrip("/")
 
 # The pages `check_page_renders_dressed` additionally grades — the ones that
 # borrow their whole chrome from the theme and state nothing of their own
@@ -413,6 +437,33 @@ def _css_classes(css: str) -> set[str]:
     letter so a bare decimal (`opacity: .5`, `rgba(0,0,0,.42)`) never reads
     as a class named "5" or "42" — CSS_CLASS_SELECTOR_RE encodes that."""
     return set(CSS_CLASS_SELECTOR_RE.findall(css))
+
+
+def check_theme_names_itself(
+    slug: str, theme_meta: dict, registered: list[str] | tuple[str, ...],
+) -> list[str]:
+    """A theme in the registry (active or queued) must carry a non-empty
+    `name` in its theme.json.
+
+    render-plugin-pages.py's footer imprint and the slate home shell print
+    that name on every page ("Theme: The Slate Broadsheet · this site
+    changes monthly · see all themes"); the renderer falls back to the slug
+    when the key is absent, so a nameless theme would ship "Theme:
+    slate-broadsheet" on 16 pages, unattended, on the 1st. The renderer
+    keeps its fallback (the doctor's stub fixtures are `{}` and import it);
+    the gate lives here instead, and only for slugs the registry actually
+    lists, so a fixture theme that never reaches content/themes.json is not
+    held to a rule about what rotates. Always called, scoped inside, so the
+    wiring test can prove a finding reaches the exit code."""
+    if slug not in registered:
+        return []
+    name = theme_meta.get("name")
+    if isinstance(name, str) and name.strip():
+        return []
+    return [
+        f"theme.json: {slug} is registered (active or queued) and carries no "
+        f"non-empty \"name\"; the footer imprint would print the slug"
+    ]
 
 
 def check_vocabulary(html: str, css: str, archetype: str) -> list[str]:
@@ -915,8 +966,11 @@ def resolution_groups(
     some sources and not others would be a trap.
 
     Pages that load an IDENTICAL set collapse into one group keyed by all of
-    their names, so press.html and privacy.html are graded once and the
-    error names both. index.html and themes.html do NOT collapse — index
+    their REPO-RELATIVE POSIX PATHS (`bacon-trail/index.html`, never a bare
+    `index.html` — two of the theme-css pages share that name with the home
+    page, and keying on Path.name credited both with the home page's widget
+    stylesheets and collided all three into one group), so press.html and
+    privacy.html are graded once and the error names both. index.html and themes.html do NOT collapse — index
     also links the widget stylesheet — which is the correct outcome: the
     tighter group still grades tokens.css alone.
     """
@@ -932,14 +986,16 @@ def resolution_groups(
         specs.setdefault(key, []).append(consumer)
 
     for page, href in render_hub.THEME_CSS_HREFS.items():
-        add(page.name, (href,), _page_site_stylesheets(root / page.name))
+        rel = page.relative_to(render_hub.ROOT).as_posix()
+        add(rel, (href,), _page_site_stylesheets(root / rel))
     inline_source = theme_registry.theme_dir(
         theme_registry.active_slug(theme_registry.load(root)), root
     )
     add("plugins/*/index.html", _inlined_theme_css(plugin_pages.STYLE, inline_source), ())
-    about_page = root / render_hub.ABOUT_HTML.name
+    about_rel = render_hub.ABOUT_HTML.relative_to(render_hub.ROOT).as_posix()
+    about_page = root / about_rel
     add(
-        about_page.name,
+        about_rel,
         _about_dress_css(render_hub, about_page, root),
         _page_site_stylesheets(about_page),
     )
@@ -948,7 +1004,7 @@ def resolution_groups(
     # raises KeyError naming the page if index.html ever leaves the mapping —
     # loud, never a silent default, which is the whole point of putting the
     # site's busiest page in a group at all.
-    index_page = render_hub.INDEX_HTML.name
+    index_page = render_hub.INDEX_HTML.relative_to(render_hub.ROOT).as_posix()
     shell = f"archetypes/{archetypes.archetype_for(index_page, archetypes.load(root))}.html"
     shell_theme_css, shell_site_css = _page_stylesheets(tdir / shell)
     add(index_page, (shell, *shell_theme_css), shell_site_css)
@@ -1204,8 +1260,12 @@ def _degrade(msg: str, require: bool) -> list[str]:
 
 def _run_browser_checks(
     html_text: str, require: bool = False, dress_outcome: bool = False,
-    reading_dress: bool = False,
+    reading_dress: bool = False, served_path: str = "/",
 ) -> list[str]:
+    """Serve `html_text` at `served_path` (see _served_path) on a local
+    server rooted at the repo, open it at three widths, and return every
+    finding. Everything else on the server is the working tree, so the
+    page's stylesheets, scripts and images resolve the way they do live."""
     sync_playwright = _import_sync_playwright()
     if sync_playwright is None:
         return _degrade("playwright not installed", require)
@@ -1219,7 +1279,7 @@ def _run_browser_checks(
             super().__init__(*a, directory=str(ROOT), **kw)
 
         def do_GET(self):  # noqa: N802 — stdlib method name
-            if self.path in ("/", "/index.html"):
+            if self.path.split("?", 1)[0] in served_at:
                 body = html_text.encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -1231,6 +1291,15 @@ def _run_browser_checks(
 
         def log_message(self, fmt, *args):  # quiet — the doctor has its own output
             pass
+
+    # The document answers at its own path and at the directory form of it
+    # (/bacon-trail/ for /bacon-trail/index.html; / for /index.html), the
+    # two URLs a live visitor could arrive by.
+    served_at = {served_path}
+    if served_path.endswith("/index.html"):
+        served_at.add(served_path[: -len("index.html")])
+    elif served_path == "/":
+        served_at.add("/index.html")
 
     errors: list[str] = []
     try:
@@ -1255,7 +1324,7 @@ def _run_browser_checks(
                     page = browser.new_page(viewport={"width": width, "height": 900})
                     try:
                         errors += _check_viewport(
-                            page, f"http://127.0.0.1:{port}/", width,
+                            page, f"http://127.0.0.1:{port}{served_path}", width,
                             dress_outcome=dress_outcome, reading_dress=reading_dress,
                         )
                     finally:
@@ -2353,6 +2422,7 @@ def _run_browser_checks_all(archetype_html: dict[str, str], require: bool = Fals
                 html_text, require=require,
                 dress_outcome=archetype in DRESS_OUTCOME_PAGES,
                 reading_dress=archetype == READING_DRESS_DOCUMENT,
+                served_path=_served_path(archetype),
             )
         ]
     return errors
@@ -2462,6 +2532,11 @@ def main(argv: list[str]) -> int:
     pairs = theme_meta.get("contrastPairs")
 
     errors: list[str] = []
+    # A registered theme has to name itself: the imprint prints the name.
+    registry = theme_registry.load()
+    errors += check_theme_names_itself(
+        slug, theme_meta, [registry["active"], *registry.get("queue", [])]
+    )
     # The token-variable contract (final review Fix 1 / archetypes.
     # REQUIRED_TOKENS): themes.html reads tokens.css directly; press.html/
     # privacy.html read archetypes/utility.css; thesis.html/workflow.html
