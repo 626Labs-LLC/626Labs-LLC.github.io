@@ -554,6 +554,14 @@
       box-shadow: var(--inner-stroke);
     }
     article.product:hover { border-color: var(--border-accent); }
+    /* Whole-card click-through: the renderer emits a stretched .product-cover
+       link to each card's primary destination. Real controls (any other
+       link, the CTA row, the install command) lift above the cover so they
+       keep their own targets and the install text stays selectable. */
+    .product-cover { position: absolute; inset: 0; z-index: 1; }
+    article.product a:not(.product-cover),
+    article.product .product-cta,
+    article.product .install { position: relative; z-index: 2; }
     article.product.flagship {
       grid-column: span 6;
       min-height: 380px;

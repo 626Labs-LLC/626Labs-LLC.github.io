@@ -1093,7 +1093,27 @@ def render_product(p: dict) -> str:
           </div>
         </div>"""
 
+    # Whole-card click-through: a stretched cover link to the card's primary
+    # destination (same hierarchy the card's own links present). Real
+    # controls z-lift above it in CSS, so store badges / CTAs still win.
+    if p.get("productPage"):
+        cover_dest, cover_blank = p["productPage"], False
+    elif p.get("liveUrl"):
+        cover_dest, cover_blank = p["liveUrl"], True
+    elif p.get("storeUrl"):
+        cover_dest, cover_blank = p["storeUrl"], False
+    elif p.get("repo"):
+        cover_dest, cover_blank = f"https://github.com/{p['repo']}", False
+    else:
+        cover_dest, cover_blank = None, False
+
     parts = [f'      <article class="{class_attr}">']
+    if cover_dest:
+        target = ' target="_blank" rel="noopener"' if cover_blank else ''
+        parts.append(
+            f'        <a class="product-cover" href="{attr(cover_dest)}"{target}'
+            f' aria-label="Open {title}"></a>'
+        )
     if visual_html:
         parts.append(visual_html)
     parts.extend([head, f"        <h3>{title}</h3>"])
