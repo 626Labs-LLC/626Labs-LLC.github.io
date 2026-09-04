@@ -1319,6 +1319,11 @@ _NOT_CALLED_BY_MAIN = {
     # its own wiring is pinned by
     # test_run_browser_checks_all_turns_the_dress_check_on_for_exactly_those_pages
     "check_page_renders_dressed": "needs a browser page; wired via _run_browser_checks_all",
+    # same shape: driven per viewport from _check_viewport, and its route to
+    # main()'s exit code is pinned end-to-end (through the REAL
+    # _run_browser_checks_all / _run_browser_checks / _check_viewport, with
+    # only the browser faked) by test_a_reading_dress_finding_reaches_the_exit_code
+    "check_reading_dress_reached": "needs a browser page; wired via _run_browser_checks_all",
 }
 
 _SENTINEL = "zz-wire-sentinel"
@@ -1743,7 +1748,7 @@ def test_run_browser_checks_all_turns_the_dress_check_on_for_exactly_those_pages
     # see it. This drives _run_browser_checks_all itself.
     seen = {}
 
-    def fake(html_text, require=False, dress_outcome=False):
+    def fake(html_text, require=False, dress_outcome=False, reading_dress=False):
         seen[html_text] = dress_outcome
         return []
 
@@ -2443,3 +2448,351 @@ def test_the_live_home_shell_resolves_everything_it_spends():
     assert td.check_theme_reads_only_what_it_defines(
         "index.html", _group_css(theme_labels, tdir), _live_site_css(site_labels)
     ) == []
+
+
+# ─── the reading dress: about.html served the way the picker dresses it ────
+#
+# THE GAP THIS CLOSES. The `reading` archetype's browser document is
+# about.html, and it was served BARE: the theme's archetypes/reading.css was
+# graded statically (vocabulary, reads, contrast) and never loaded in a
+# browser. A reading dress that 404s a font, overflows 390px, or leaves
+# `.lnt-*` elements on browser defaults passed the gate. About takes a
+# theme's reading dress through its picker, which appends
+# `<link id="about-dress-override" rel="stylesheet"
+# href="/themes/<slug>/archetypes/reading.css">` to <head> — after the
+# page's own inline <style>, the last stylesheet in the cascade. The doctor
+# now serves about.html with that exact link in that exact position
+# (dress_about_html, via browser_documents), so every browser check grades
+# the DRESSED page, and check_reading_dress_reached asserts the dress reached
+# every vocabulary element.
+
+
+def _about_html():
+    return (ROOT / "about.html").read_text(encoding="utf-8")
+
+
+def _dress_link(slug):
+    return (f'<link id="{td.ABOUT_DRESS_LINK_ID}" rel="stylesheet" '
+            f'href="/themes/{slug}/archetypes/reading.css">')
+
+
+def test_the_dress_link_id_and_href_are_the_pickers_own():
+    """What the doctor injects is what applyDress() injects — pinned against
+    the source of both halves rather than assumed. about.html's picker owns
+    the id (the restore path and the panel both set it); render-hub.py's
+    render_about_theme_dresses owns the href shape the registry carries."""
+    about = _about_html()
+    assert f"LINK_ID = '{td.ABOUT_DRESS_LINK_ID}'" in about
+    assert f"link.id = '{td.ABOUT_DRESS_LINK_ID}'" in about
+    render_hub = (ROOT / "scripts" / "render-hub.py").read_text(encoding="utf-8")
+    assert re.search(r'f"/themes/\{\w+\}/archetypes/reading\.css"', render_hub), (
+        "render_about_theme_dresses no longer writes the href shape the doctor injects"
+    )
+    assert td.reading_dress_href("x") == "/themes/x/archetypes/reading.css"
+
+
+def test_about_html_closes_head_exactly_once():
+    """dress_about_html's injection anchor. Were this to change, the reading
+    document would be served bare again and check_reading_dress_reached
+    would say so at gate time; pinning it here says so at pytest time."""
+    assert _about_html().count("</head>") == 1
+
+
+def test_dress_about_html_links_reading_css_where_the_picker_does():
+    about = _about_html()
+    dressed = td.dress_about_html(about, "some-theme")
+    link = _dress_link("some-theme")
+    assert dressed.count(link) == 1
+    head = dressed[: dressed.index("</head>")]
+    # The last thing in <head>, which is where head.appendChild() lands while
+    # <head> is still parsing (the restore path) and after it (the panel).
+    assert head.endswith(link + "\n")
+    # After the page's own inline <style> AND after /Design/editorial.css:
+    # the theme's rules are the last word on every equal-specificity tie.
+    assert head.rindex("</style>") < head.rindex(link)
+    assert head.rindex('href="/Design/editorial.css"') < head.rindex(link)
+    assert "<link" not in head[head.rindex(link) + len(link):]
+    # The body is About's own markup, byte for byte.
+    assert dressed[dressed.index("</head>"):] == about[about.index("</head>"):]
+
+
+def test_dress_about_html_never_raises_on_a_document_without_one_head():
+    # A gate that raises aborts every other archetype's result with it. An
+    # undressable document is returned unchanged and fails by OUTCOME instead
+    # (check_reading_dress_reached: "no <link id=...>").
+    bare = "<html><body></body></html>"
+    assert td.dress_about_html(bare, "x") == bare
+    two = "<head></head><head></head>"
+    assert td.dress_about_html(two, "x") == two
+
+
+def test_browser_documents_dresses_the_reading_document_and_nothing_else():
+    about = _about_html()
+    arche = {"home": "<h>", "product": "<p>", "reading": about, "utility": "<u>"}
+    live = {name: f"<{name}>" for name in td.BROWSER_CHECK_LIVE_PAGES}
+    docs = td.browser_documents(arche, live, "some-theme")
+    assert set(docs) == set(arche) | set(live)
+    assert _dress_link("some-theme") in docs["reading"]
+    for name, html in docs.items():
+        if name != td.READING_DRESS_DOCUMENT:
+            assert html == {**arche, **live}[name], name
+
+
+def test_the_browser_phase_serves_about_dressed_in_the_themes_reading_css(monkeypatch, tmp_path):
+    """THE WIRE for the reading dress. Drives main() with --browser and a
+    faked _run_browser_checks, and asserts the document handed to the
+    browser for `reading` is about.html WITH the theme-under-test's
+    reading.css linked where the picker links it. Cutting the
+    browser_documents() call in main() — serving `{**archetype_html,
+    **live_page_html}` again — fails this."""
+    tdir = tmp_path / "themes" / "wired"
+    _make_complete_theme_dir(tdir)
+    served = {True: [], False: []}
+
+    def fake(html_text, require=False, dress_outcome=False, reading_dress=False):
+        served[reading_dress].append(html_text)
+        return []
+
+    monkeypatch.setattr(td, "_import_sync_playwright", lambda: object())
+    monkeypatch.setattr(td, "_run_browser_checks", fake)
+    rc = _run_main_on(monkeypatch, tmp_path, tdir, argv=("wired", "--browser"))
+    assert rc == 0
+    assert len(served[True]) == 1, "exactly one document is the reading document"
+    html = served[True][0]
+    link = _dress_link("wired")
+    assert link in html, "the reading document was served BARE"
+    assert 'class="lnt-main"' in html, "the reading document is not about.html"
+    assert html.rindex("</style>") < html.index(link) < html.index("</head>")
+    # ...and the slug is the theme UNDER TEST, never whatever is live.
+    assert "/themes/wired/archetypes/reading.css" in html
+    for other in served[False]:
+        assert td.ABOUT_DRESS_LINK_ID not in other, "another document was dressed as About"
+
+
+def test_run_browser_checks_all_turns_the_reading_dress_check_on_for_exactly_reading(monkeypatch):
+    seen = {}
+
+    def fake(html_text, require=False, dress_outcome=False, reading_dress=False):
+        seen[html_text] = reading_dress
+        return []
+
+    monkeypatch.setattr(td, "_import_sync_playwright", lambda: object())
+    monkeypatch.setattr(td, "_run_browser_checks", fake)
+    docs = {name: name for name in ("home", "product", "reading", "utility",
+                                    *td.BROWSER_CHECK_LIVE_PAGES)}
+    assert td._run_browser_checks_all(docs) == []
+    assert [n for n, on in seen.items() if on] == [td.READING_DRESS_DOCUMENT]
+    assert td.READING_DRESS_DOCUMENT in seen
+
+
+def test_the_reading_dress_check_runs_only_when_asked(monkeypatch):
+    seen = []
+    monkeypatch.setattr(td, "check_reading_dress_reached",
+                        lambda page, width: seen.append(width) or [])
+    td._check_viewport(_StubPage(None), "http://127.0.0.1:8000/", 1440)
+    assert seen == [], "the reading dress check must be opt-in per document"
+    errs = td._check_viewport(_StubPage(None), "http://127.0.0.1:8000/", 390, reading_dress=True)
+    assert seen == [390]
+    assert errs == []
+
+
+def test_a_reading_dress_finding_reaches_the_viewports_errors(monkeypatch):
+    monkeypatch.setattr(td, "check_reading_dress_reached",
+                        lambda page, width: [f"browser: reading dress at {width}px: {_SENTINEL}"])
+    errs = td._check_viewport(_StubPage(None), "http://127.0.0.1:8000/", 768, reading_dress=True)
+    assert errs == [f"browser: reading dress at 768px: {_SENTINEL}"]
+
+
+class _StubClosablePage(_StubPage):
+    """_StubPage plus the close() _run_browser_checks calls on a real page."""
+
+    def close(self):
+        pass
+
+
+class _FakePlaywright:
+    """Just enough of sync_playwright() for _run_browser_checks to run its
+    REAL server + viewport loop against stub pages: the context manager, a
+    `chromium.launch()` that returns a browser, and `new_page()`."""
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    @property
+    def chromium(self):
+        return self
+
+    def launch(self):
+        return self
+
+    def new_page(self, viewport):
+        return _StubClosablePage(None)
+
+    def close(self):
+        pass
+
+
+def test_run_browser_checks_forwards_reading_dress_to_every_viewport(monkeypatch):
+    """The signature could grow the kwarg and drop it on the floor. This
+    drives the real _run_browser_checks (real local server, faked browser)
+    and asserts the reading dress check fires once per width — and never
+    when the flag is off."""
+    monkeypatch.setattr(td, "_import_sync_playwright", lambda: _FakePlaywright)
+    monkeypatch.setattr(td, "check_reading_dress_reached",
+                        lambda page, width: [f"browser: reading dress at {width}px: {_SENTINEL}"])
+    assert td._run_browser_checks("<html></html>", reading_dress=False) == []
+    errs = td._run_browser_checks("<html></html>", reading_dress=True)
+    assert sorted(errs) == sorted(
+        f"browser: reading dress at {w}px: {_SENTINEL}" for w in (1440, 768, 390)
+    )
+
+
+def test_a_reading_dress_finding_reaches_the_exit_code(monkeypatch, tmp_path, capsys):
+    """check_reading_dress_reached is exempt from the generic wiring test
+    (it needs a page), so its route to the exit code is pinned here
+    end-to-end: main() --browser, the REAL _run_browser_checks_all /
+    _run_browser_checks / _check_viewport, a faked browser, and the check
+    itself replaced by a sentinel. The sentinel must come out prefixed by
+    the reading document's name, and main() must exit 1 on it."""
+    tdir = tmp_path / "themes" / "wired"
+    _make_complete_theme_dir(tdir)
+    monkeypatch.setattr(td, "_import_sync_playwright", lambda: _FakePlaywright)
+    # The other page-needing check is not under test here; a stub page has
+    # nothing for it to measure.
+    monkeypatch.setattr(td, "check_page_renders_dressed", lambda page, width: [])
+    monkeypatch.setattr(td, "check_reading_dress_reached",
+                        lambda page, width: [f"browser: reading dress at {width}px: {_SENTINEL}"])
+    rc = _run_main_on(monkeypatch, tmp_path, tdir, argv=("wired", "--browser"))
+    out = capsys.readouterr().out
+    assert rc == 1, "a reading dress finding did not fail the gate"
+    assert f"  - reading: browser: reading dress at 390px: {_SENTINEL}" in out
+    assert out.count(_SENTINEL) == 3, "one finding per width, on the reading document only"
+
+
+# ─── check_reading_dress_reached, on canned measurements ─────────────────
+
+
+def _reading_measurement(**overrides):
+    """A measurement shaped like _READING_DRESS_PROBE_JS's return, carrying
+    what slate-broadsheet computes on about.html at 1440px: 'Source Serif 4'
+    prose, cyan-ink links, a UA baseline of Times / rgb(0, 0, 238)."""
+    serif = '"Source Serif 4", "Iowan Old Style", Georgia, serif'
+    elements = [
+        {"tag": "p", "classes": "lnt-prose", "fontFamily": serif,
+         "color": "rgb(20, 24, 28)", "isLink": False}
+        for _ in range(5)
+    ] + [
+        {"tag": "a", "classes": "", "fontFamily": serif,
+         "color": "rgb(9, 112, 136)", "isLink": True}
+        for _ in range(3)
+    ]
+    m = {
+        "ua": {"fontFamily": '"Times New Roman"', "linkColor": "rgb(0, 0, 238)"},
+        "link": {"href": "/themes/x/archetypes/reading.css", "styleRules": 94},
+        "elements": elements,
+    }
+    m.update(overrides)
+    return m
+
+
+def _reading_errors(measurement, width=1440):
+    return td.check_reading_dress_reached(_StubDressPage(measurement), width)
+
+
+def test_a_reached_reading_dress_reports_nothing():
+    assert _reading_errors(_reading_measurement()) == []
+
+
+def test_reading_dress_fails_when_the_link_is_missing_from_the_served_document():
+    errs = _reading_errors(_reading_measurement(link=None))
+    assert len(errs) == 1
+    assert td.ABOUT_DRESS_LINK_ID in errs[0] and "reading.css" in errs[0]
+    assert "never loaded" in errs[0]
+
+
+def test_reading_dress_fails_when_the_stylesheet_loaded_no_rules():
+    # A 404 leaves link.sheet null, which the probe reports as zero rules —
+    # named as such rather than blamed on the elements, every one of which
+    # About dresses itself.
+    errs = _reading_errors(_reading_measurement(
+        link={"href": "/themes/x/archetypes/reading.css", "styleRules": 0}))
+    assert len(errs) == 1
+    assert "404" in errs[0] and "/themes/x/archetypes/reading.css" in errs[0]
+
+
+def test_reading_dress_fails_when_an_lnt_element_falls_back_to_the_browsers_type():
+    m = _reading_measurement()
+    m["elements"][0]["fontFamily"] = '"Times New Roman"'
+    m["elements"][1]["fontFamily"] = "Times New Roman, serif"
+    errs = _reading_errors(m)
+    assert len(errs) == 1
+    assert "2 of 8 .lnt-* elements resolve the browser's default type" in errs[0]
+    assert "p.lnt-prose" in errs[0] and "reading.css" in errs[0]
+
+
+def test_any_deliberate_reading_type_choice_passes_including_a_generic_keyword():
+    m = _reading_measurement()
+    for i, fam in enumerate(("serif", "Georgia, serif", "system-ui",
+                             '"Iowan Old Style", "Times New Roman", serif')):
+        m["elements"][i]["fontFamily"] = fam
+    assert _reading_errors(m) == []
+
+
+def test_reading_dress_fails_when_a_link_inside_lnt_falls_back_to_the_browsers_link_color():
+    m = _reading_measurement()
+    m["elements"][-1]["color"] = "rgb(0, 0, 238)"
+    errs = _reading_errors(m)
+    assert len(errs) == 1
+    assert "1 of 3 links inside .lnt-* elements resolve the browser's own default link color" in errs[0]
+
+
+def test_a_non_link_lnt_element_in_the_browsers_link_color_is_not_a_finding():
+    # The link-color half is about links. A rail label a theme happens to
+    # color the same value the browser uses for :link is a choice, not a
+    # fallback, and the probe knows which elements are anchors.
+    m = _reading_measurement()
+    m["elements"][0]["color"] = "rgb(0, 0, 238)"
+    assert _reading_errors(m) == []
+
+
+def test_reading_dress_fails_when_no_lnt_element_is_present():
+    errs = _reading_errors(_reading_measurement(elements=[]))
+    assert len(errs) == 1 and "no .lnt-* element" in errs[0]
+
+
+def test_reading_dress_fails_loudly_without_the_ua_baseline():
+    errs = _reading_errors(_reading_measurement(ua=None))
+    assert len(errs) == 1 and "baseline" in errs[0]
+
+
+def test_reading_dress_failures_name_the_viewport_and_the_file():
+    m = _reading_measurement()
+    m["elements"][0]["fontFamily"] = '"Times New Roman"'
+    m["elements"][-1]["color"] = "rgb(0, 0, 238)"
+    errs = _reading_errors(m, width=390)
+    assert len(errs) == 2
+    assert all(e.startswith("browser: reading dress at 390px: ") for e in errs), errs
+    assert all("archetypes/reading.css" in e for e in errs), errs
+
+
+def test_the_reading_dress_probe_pins_no_family_and_no_color():
+    # Outcome, not values: both baselines are read from a blank iframe at
+    # runtime. Nothing in the probe or the judge names a font or a color.
+    import inspect
+    assert "Times" not in td._READING_DRESS_PROBE_JS
+    assert "rgb(" not in td._READING_DRESS_PROBE_JS
+    body = inspect.getsource(td.check_reading_dress_reached)
+    body = body[body.index('"""', body.index('"""') + 3) + 3:]   # strip the docstring
+    assert "rgb(" not in body and "#" not in body
+
+
+def test_the_reading_dress_probe_samples_every_lnt_element_and_the_links_inside():
+    # The selector is the vocabulary prefix, not a manifest of class names,
+    # and anchors inside a vocabulary element ride along as links.
+    js = td._READING_DRESS_PROBE_JS
+    assert "[class*=\"lnt-\"]" in js
+    assert "querySelectorAll('a')" in js
+    assert td.ABOUT_DRESS_LINK_ID not in js, "the id is passed in, never baked into the probe"

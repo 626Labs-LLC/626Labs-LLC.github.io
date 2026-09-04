@@ -55,8 +55,12 @@ horizontal scroll at 1440/768/390px and zero browser console errors, and on
 the two pages that own none of their own chrome (DRESS_OUTCOME_PAGES) to
 assert the theme's dress actually ARRIVED — see check_page_renders_dressed,
 which grades computed outcome and never a list of rules the theme must
-carry. Without
-it, or without playwright installed, those two checks are skipped with a
+carry. The `reading` archetype's document (about.html) is served DRESSED in
+the theme's archetypes/reading.css, linked exactly where About's own picker
+links it (dress_about_html), so those checks grade the reading dress in a
+browser and check_reading_dress_reached asserts it reached every `.lnt-*`
+element. Without
+it, or without playwright installed, those checks are skipped with a
 one-line note and never fail the gate on their own — that's the local
 convenience path, for a machine that hasn't run `playwright install`.
 
@@ -236,6 +240,75 @@ assert set(DRESS_OUTCOME_PAGES) <= set(BROWSER_CHECK_LIVE_PAGES), (
     "every DRESS_OUTCOME_PAGES entry must also be in BROWSER_CHECK_LIVE_PAGES, "
     "or the browser gate never opens it and the dress check silently no-ops"
 )
+
+# ─── the reading dress, served the way About's picker serves it ──────────
+#
+# The `reading` archetype's browser document is about.html (see
+# _archetype_source), and until this existed it was served BARE: the theme's
+# archetypes/reading.css was graded statically — vocabulary, reads, contrast —
+# and never once loaded in a browser. A reading dress that 404s a font,
+# overflows a viewport, throws, or leaves `.lnt-*` elements on browser
+# defaults passed the gate, unattended, on the 1st. The Slate Broadsheet's
+# reading dress was verified in a browser only by its builder's own harness.
+#
+# About takes a theme's reading dress through its easter-egg picker (type
+# "626"): applyDress() creates `<link id="about-dress-override"
+# rel="stylesheet" href="/themes/<slug>/archetypes/reading.css">` and
+# document.head.appendChild()s it. The restore path a returning visitor gets
+# (the inline script right after the registry) does the same thing while
+# <head> is still parsing. Either way the link is the LAST stylesheet in
+# <head>: after /Design/editorial.css and after the page's own inline
+# <style>, so the theme's rules win every equal-specificity tie against
+# About's own Long Now Terminal dress. dress_about_html reproduces exactly
+# that cascade position in the served markup — the link goes immediately
+# before </head>, which is where head.appendChild lands during parsing —
+# rather than driving the picker after load, for three reasons: page.goto's
+# `load` then waits for the stylesheet, a 404 lands on the console listener
+# that is already attached, and every existing check (horizontal scroll,
+# console, pageerror) grades the DRESSED page with no reordering.
+#
+# The id and the href shape are the picker's own, and a test pins both
+# against about.html and render-hub.py's render_about_theme_dresses.
+ABOUT_DRESS_LINK_ID = "about-dress-override"
+READING_DRESS_DOCUMENT = "reading"
+_HEAD_CLOSE = "</head>"
+
+
+def reading_dress_href(slug: str) -> str:
+    """The href About's picker registry carries for a theme — the same
+    string render_about_theme_dresses writes into about.html."""
+    return f"/themes/{slug}/archetypes/reading.css"
+
+
+def dress_about_html(about_html: str, slug: str) -> str:
+    """about.html with the theme's reading.css linked where the picker links
+    it: the last stylesheet in <head>, after the page's own inline <style>.
+
+    Returns the markup UNCHANGED when <head> does not close exactly once —
+    never raises, because a gate that raises aborts every other archetype's
+    result with it. The undressed document then fails
+    check_reading_dress_reached by outcome ("no <link id=...>"), which is a
+    finding that reaches the exit code and names the cause."""
+    if about_html.count(_HEAD_CLOSE) != 1:
+        return about_html
+    link = (
+        f'<link id="{ABOUT_DRESS_LINK_ID}" rel="stylesheet" '
+        f'href="{reading_dress_href(slug)}">'
+    )
+    return about_html.replace(_HEAD_CLOSE, f"{link}\n{_HEAD_CLOSE}", 1)
+
+
+def browser_documents(
+    archetype_html: dict[str, str], live_page_html: dict[str, str], slug: str,
+) -> dict[str, str]:
+    """Every document the browser phase opens, keyed by archetype or page
+    name — the archetype documents plus the live pages, with the reading
+    document dressed in the theme under test's reading.css. This is the one
+    place that dressing happens, so cutting it is a one-line mutation a test
+    catches."""
+    docs = {**archetype_html, **live_page_html}
+    docs[READING_DRESS_DOCUMENT] = dress_about_html(docs[READING_DRESS_DOCUMENT], slug)
+    return docs
 
 # Real, live chrome varies by archetype today — verified by grep against the
 # actual shipped pages (vibe-cartographer/index.html, press.html,
@@ -1130,7 +1203,8 @@ def _degrade(msg: str, require: bool) -> list[str]:
 
 
 def _run_browser_checks(
-    html_text: str, require: bool = False, dress_outcome: bool = False
+    html_text: str, require: bool = False, dress_outcome: bool = False,
+    reading_dress: bool = False,
 ) -> list[str]:
     sync_playwright = _import_sync_playwright()
     if sync_playwright is None:
@@ -1182,7 +1256,7 @@ def _run_browser_checks(
                     try:
                         errors += _check_viewport(
                             page, f"http://127.0.0.1:{port}/", width,
-                            dress_outcome=dress_outcome,
+                            dress_outcome=dress_outcome, reading_dress=reading_dress,
                         )
                     finally:
                         page.close()
@@ -1757,11 +1831,191 @@ def check_page_renders_dressed(page, width: int) -> list[str]:
     return errors
 
 
-def _check_viewport(page, url: str, width: int, dress_outcome: bool = False) -> list[str]:
+# ─── the reading dress, gated on OUTCOME ─────────────────────────────────
+#
+# about.html carries its own complete dress in an inline <style> (the Long
+# Now Terminal), so a theme's reading.css is an OVERRIDE layer on top of a
+# page that is never undressed. That rules out the region differential
+# check_page_renders_dressed uses: with the theme's link disabled, About is
+# still fully dressed by itself, and a reading.css that faithfully restates
+# About's own values (phosphor-blueprint's was extracted from it verbatim,
+# see docs/theme-archetypes.md, A7) would render IDENTICALLY with and without
+# — a correct theme, exit 1, rotation aborted.
+#
+# What CAN be asked by outcome, and is: the dress reached every vocabulary
+# element. No `.lnt-*` element, and no link inside one, may resolve the
+# browser's own default type or the browser's own link color after the
+# theme's stylesheet is the last word in the cascade. A reading dress whose
+# root type rule fails to take (a `font-family` that computes to the UA
+# default) leaves every `.lnt-*` element it did not name in Times New Roman
+# while every static check stays green: the selectors are present
+# (vocabulary), the tokens resolve (reads), the ratios clear (contrast). Both
+# baselines are measured at runtime from a blank same-document iframe, the
+# same technique as _DRESS_PROBE_JS, so nothing here pins a family or a color.
+#
+# Alongside it, the two premises a probe cannot skip past: the theme's
+# <link> is in the served document at all, and its sheet loaded rules (a
+# 404 or a parse failure leaves `link.sheet` null). Everything else the
+# dressed page can do wrong — a font that 404s, a rule that overflows 390px,
+# a stylesheet that throws — is already graded by the checks every other
+# document gets, which now run against the DRESSED reading document.
+_READING_DRESS_PROBE_JS = r"""
+(linkId) => {
+  // The undressed baseline, read from a blank same-document iframe: zero
+  // author CSS, so what it computes is this browser's own default. No
+  // network request, so the off-origin abort never sees it.
+  let ua = null;
+  const probe = document.createElement('iframe');
+  probe.setAttribute('aria-hidden', 'true');
+  probe.style.cssText = 'position:absolute;width:0;height:0;border:0;visibility:hidden';
+  document.body.appendChild(probe);
+  const doc = probe.contentDocument;
+  if (doc && doc.body) {
+    doc.body.innerHTML = '<p>p</p><a href="#">a</a>';
+    ua = {
+      fontFamily: getComputedStyle(doc.body).fontFamily,
+      linkColor: getComputedStyle(doc.body.querySelector('a')).color,
+    };
+  }
+  probe.remove();
+
+  // The picker's own link, by the picker's own id. `sheet` is null when the
+  // stylesheet failed to load, so a 404 reads as "no rules" rather than as
+  // a page every element of which happens to be dressed by About itself.
+  const link = document.getElementById(linkId);
+  let linkInfo = null;
+  if (link) {
+    let styleRules = 0;
+    if (link.sheet) { try { styleRules = link.sheet.cssRules.length; } catch (e) { styleRules = -1; } }
+    linkInfo = {href: link.getAttribute('href'), styleRules: styleRules};
+  }
+
+  // Every element carrying an lnt-* class, plus every anchor inside one —
+  // links in the prose and the nav are what "browser-default link blue"
+  // is about, and they carry no lnt-* class of their own.
+  const seen = new Set();
+  const elements = [];
+  const record = (el, isLink) => {
+    if (seen.has(el)) return;
+    seen.add(el);
+    const cs = getComputedStyle(el);
+    elements.push({
+      tag: el.tagName.toLowerCase(),
+      classes: Array.from(el.classList).join(' '),
+      fontFamily: cs.fontFamily,
+      color: cs.color,
+      isLink: isLink,
+    });
+  };
+  for (const el of document.querySelectorAll('[class*="lnt-"]')) {
+    if (!Array.from(el.classList).some((c) => c.startsWith('lnt-'))) continue;
+    record(el, el.tagName === 'A');
+    for (const a of el.querySelectorAll('a')) record(a, true);
+  }
+  return {ua: ua, link: linkInfo, elements: elements};
+}
+"""
+
+
+def check_reading_dress_reached(page, width: int) -> list[str]:
+    """Assert that the theme's reading.css, linked into about.html the way
+    the picker links it, REACHED every reading-vocabulary element. Returns a
+    list of failure strings, each naming the outcome that went missing and
+    the file responsible (archetypes/reading.css).
+
+    Outcome-shaped, like check_page_renders_dressed: no selector the theme
+    must carry, no family or color it must pick. What is asked:
+
+    1. The picker's <link> is in the served document (browser_documents put
+       it there; its absence means the injection was cut or about.html no
+       longer closes <head> once), and its sheet loaded at least one rule —
+       a 404 or a parse failure is a stylesheet that dresses nothing.
+    2. No element carrying an `lnt-*` class, and no anchor inside one,
+       resolves the browser's default type: the first family in its
+       computed font-family differs from what an undressed document
+       computes. Both are measured in the same browser at runtime.
+    3. No anchor among those resolves the browser's own default link color.
+
+    THE ONE TYPE CHOICE THIS FORBIDS is the same one check_page_renders_dressed
+    documents: a stack whose FIRST family is the browser's own standard
+    font. `"Times New Roman", serif` on `.lnt-prose` fails; `Georgia, "Times
+    New Roman", serif` passes. The assertion cannot tell "chose Times" from
+    "chose nothing", and "chose nothing" is the defect it exists for.
+
+    WHAT THIS DOES NOT CLAIM: that the theme's rules changed anything. About
+    dresses itself, so a reading.css whose selectors never match leaves the
+    page in About's own Long Now Terminal, fully typeset, and passes here.
+    The static vocabulary check is what requires each `lnt-*` selector to
+    exist; this check is what requires the dressed page to be typeset at
+    all, and the horizontal-scroll / console / pageerror checks that now run
+    against the dressed document are what catch a dress that loads and
+    breaks.
+    """
+    m = page.evaluate(_READING_DRESS_PROBE_JS, ABOUT_DRESS_LINK_ID)
+    errors: list[str] = []
+
+    def fail(msg: str) -> None:
+        errors.append(f"browser: reading dress at {width}px: {msg}")
+
+    link = m.get("link")
+    if not link:
+        fail(f"the served about.html carries no <link id=\"{ABOUT_DRESS_LINK_ID}\">, so "
+             f"the theme's archetypes/reading.css was never loaded and the reading "
+             f"dress was not graded")
+        return errors
+    if not link.get("styleRules"):
+        fail(f"the theme's archetypes/reading.css ({link.get('href')}) loaded no rules "
+             f"at all (404, or it failed to parse), so there is no reading dress to "
+             f"grade")
+        return errors
+
+    ua = m.get("ua")
+    if not ua:
+        fail("could not read the browser's undressed baseline, so the reading dress "
+             "was not graded")
+        return errors
+
+    elements = m.get("elements") or []
+    if not elements:
+        fail("no .lnt-* element is present on the page, so the reading dress could "
+             "not be graded")
+        return errors
+
+    def name(el: dict) -> str:
+        classes = (el.get("classes") or "").split()
+        return el.get("tag", "?") + "".join(f".{c}" for c in classes[:2])
+
+    ua_family = _first_family(ua.get("fontFamily", ""))
+    ua_type = [
+        el for el in elements
+        if _first_family(el.get("fontFamily", "")) in ("", ua_family)
+    ]
+    if ua_type:
+        sample = ", ".join(sorted({name(el) for el in ua_type})[:4])
+        fail(f"{len(ua_type)} of {len(elements)} .lnt-* elements resolve the browser's "
+             f"default type ({ua_type[0].get('fontFamily')!r}; e.g. {sample}), so the "
+             f"theme's archetypes/reading.css did not reach them")
+
+    anchors = [el for el in elements if el.get("isLink")]
+    ua_blue = [el for el in anchors if el.get("color") == ua.get("linkColor")]
+    if ua_blue:
+        sample = ", ".join(sorted({name(el) for el in ua_blue})[:4])
+        fail(f"{len(ua_blue)} of {len(anchors)} links inside .lnt-* elements resolve "
+             f"the browser's own default link color (e.g. {sample}), so the theme's "
+             f"archetypes/reading.css dresses them not at all")
+    return errors
+
+
+def _check_viewport(
+    page, url: str, width: int, dress_outcome: bool = False, reading_dress: bool = False,
+) -> list[str]:
     """Load `url` in an already-created page-like object at `width` and check it.
 
     `dress_outcome=True` additionally runs `check_page_renders_dressed` — see
     DRESS_OUTCOME_PAGES for which pages get it and why only those.
+    `reading_dress=True` additionally runs `check_reading_dress_reached` —
+    only the reading document, which browser_documents serves dressed in the
+    theme's reading.css (see dress_about_html).
 
     Split out from `_run_browser_checks` so it's unit-testable with a stub page
     (no real browser/server needed) — see test_theme_doctor.py.
@@ -1778,7 +2032,9 @@ def _check_viewport(page, url: str, width: int, dress_outcome: bool = False) -> 
     pages in BROWSER_CHECK_LIVE_PAGES. Three of the four archetype documents
     are shells the theme ships; `reading`'s is `about.html`, which
     `_archetype_source` swaps in because the Field Note shell carries only 3
-    of that archetype's 10 required classes. TWELVE of the thirteen carry
+    of that archetype's 10 required classes — served with the theme's
+    archetypes/reading.css linked the way About's picker links it, never
+    bare (see dress_about_html). TWELVE of the thirteen carry
     `<script async src="//gc.zgo.at/count.js">`, which over `http://127.0.0.1`
     resolves to a real third-party host. (The thirteenth is the `product`
     archetype's own shell, which ARCHETYPE_CHROME marks `analytics=False`.)
@@ -1879,10 +2135,12 @@ def _check_viewport(page, url: str, width: int, dress_outcome: bool = False) -> 
         errors.append(f"browser: console error at {width}px: {msg}")
     for msg in page_errors:
         errors.append(f"browser: uncaught page error at {width}px: {msg}")
-    # Last, so the probe's throwaway iframe cannot be in the DOM while
+    # Last, so the probes' throwaway iframes cannot be in the DOM while
     # scrollWidth is measured above.
     if dress_outcome:
         errors += check_page_renders_dressed(page, width)
+    if reading_dress:
+        errors += check_reading_dress_reached(page, width)
     return errors
 
 
@@ -1928,7 +2186,14 @@ def _archetype_source(
     classes would make the check pass for literally any theme's
     reading.css, including an empty one, so `_check_archetype` doesn't do
     that — only the vocabulary's 3 shared `ed-*` leaves get credited from
-    markup there."""
+    markup there.
+
+    The `html` returned here is BARE about.html, for the static checks —
+    its chrome and internal links are the page's own and the same for
+    every theme. The browser phase does not open it bare: `browser_documents`
+    links the theme's reading.css into it where the picker does before
+    `_run_browser_checks_all` serves it (see dress_about_html), so the
+    browser grades the dressed page and never About's own default."""
     if archetype == "home":
         inline_css = "\n".join(STYLE_BLOCK_RE.findall(home_html))
         return home_html, f"{inline_css}\n{tokens_css}", True
@@ -2071,7 +2336,12 @@ def _run_browser_checks_all(archetype_html: dict[str, str], require: bool = Fals
     it or doesn't, independent of which archetype is under test, so a
     missing install degrades to a single line instead of four identical
     ones. A genuine per-page failure (horizontal scroll, console error,
-    navigation failure) still fails per archetype, named in the message."""
+    navigation failure) still fails per archetype, named in the message.
+
+    Two documents get an extra outcome check: the DRESS_OUTCOME_PAGES pair
+    (check_page_renders_dressed) and the READING_DRESS_DOCUMENT
+    (check_reading_dress_reached), which the caller serves dressed via
+    browser_documents."""
     sync_playwright = _import_sync_playwright()
     if sync_playwright is None:
         return _degrade("playwright not installed", require)
@@ -2082,6 +2352,7 @@ def _run_browser_checks_all(archetype_html: dict[str, str], require: bool = Fals
             for e in _run_browser_checks(
                 html_text, require=require,
                 dress_outcome=archetype in DRESS_OUTCOME_PAGES,
+                reading_dress=archetype == READING_DRESS_DOCUMENT,
             )
         ]
     return errors
@@ -2280,7 +2551,8 @@ def main(argv: list[str]) -> int:
 
     if browser:
         errors += _run_browser_checks_all(
-            {**archetype_html, **live_page_html}, require=require_browser
+            browser_documents(archetype_html, live_page_html, slug),
+            require=require_browser,
         )
 
     if errors:
