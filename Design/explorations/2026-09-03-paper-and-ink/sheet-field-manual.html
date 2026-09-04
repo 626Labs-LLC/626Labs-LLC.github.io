@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Field Manual — Paper and Ink sheet (626 Labs)</title>
+<!--
+  THE FIELD MANUAL — paper-and-ink bake-off sheet, 2026-09-03.
+
+  A letterpress technical manual. Numbered sections, one specification
+  table, engineering plates with figure numbers, numbered paragraphs, a
+  record-of-changes list for the Field Notes, a printer's color-control
+  strip in the footer. Set on editorial.css's paper with the brand base
+  underneath; JetBrains Mono does the manual's tabular and label work,
+  Space Grotesk the item names and the title, the editorial serif the prose.
+
+  Stylesheets are root-absolute: serve the repo root (python -m http.server)
+  and browse /Design/explorations/2026-09-03-paper-and-ink/sheet-field-manual.html.
+
+  AA CONTRAST — computed 2026-09-03 with the WCAG 2.1 relative-luminance
+  formula (L = 0.2126R + 0.7152G + 0.0722B on linearized sRGB channels;
+  ratio = (Lmax + 0.05) / (Lmin + 0.05)). Paper luminances used:
+    --ed-paper       hex F7F5F0  L = 0.9137
+    --ed-paper-soft  hex FAFAF7  L = 0.9541
+    --ed-paper-deep  hex EFEBE2  L = 0.8326
+    zebra tint       hex EFEEE9  L = 0.8538  (--pi-field-manual-tint, ink at
+                                              alpha .035, composited over
+                                              --ed-paper; used on even table
+                                              rows only, never on paper-deep)
+
+  Text tokens this sheet introduces:
+
+  --pi-field-manual-link  hex 0A6478  L = 0.1053
+    A darkened brand cyan (same hue family as --brand-cyan-dim). Link ink,
+    section numerals, paragraph numerals, table item numbers, nav hover.
+      vs --ed-paper       6.20:1  PASS (floor 4.5:1)
+      vs --ed-paper-soft  6.46:1  PASS
+      vs --ed-paper-deep  5.68:1  PASS
+      vs zebra tint       5.82:1  PASS
+
+  --pi-field-manual-revision  hex 9E1A58  L = 0.0871
+    A darkened brand magenta (same hue family as --brand-magenta-dim). The
+    revision-mark ink: the document-control stamp (the wayfinding dateline),
+    figure numbers, table figure references, the door link. Always sits in
+    the same view as the cyan link ink, so the pair stays a pair.
+      vs --ed-paper       7.03:1  PASS
+      vs --ed-paper-soft  7.32:1  PASS
+      vs --ed-paper-deep  6.44:1  PASS
+      vs zebra tint       6.59:1  PASS
+
+  Base-layer inks reused on the zebra tint (informational, re-derived
+  because the tint is a surface this sheet introduces):
+      --ed-ink    hex 0F1F31  14.34:1  PASS
+      --ed-ink-2  hex 2A3649  10.50:1  PASS
+      --ed-ink-3  hex 5E6B7F   4.65:1  PASS (the tint is never stacked on
+                                        paper-deep, where ink-3 would drop
+                                        to 4.25:1 and fail)
+
+  Decorative-only tokens (never a text color, so no pair applies):
+      --pi-field-manual-rule    ink at alpha .32   table hairlines, plate mats
+      --pi-field-manual-tint    ink at alpha .035  zebra rows
+      --pi-field-manual-emboss  white at alpha .6  letterpress impression
+                                                   highlight under display type
+      --pi-field-manual-scan    white at alpha .045 scanline pattern inside the
+                                                   dark plate placeholders
+
+  NOT USED AS TEXT: --ed-link (hex 0FA8C9) is 2.58:1 on --ed-paper and
+  --ed-ink-muted (hex 8E9BAD) is 2.59:1; neither appears as a text color
+  anywhere in this sheet. Every anchor here sets its own color.
+
+  Plates: every product screenshot on this site is a dark raster. Each plate
+  is a --ed-ink block at 16:10 (the flagship at 2:1) with the brand's soft
+  duotone wash and a scanline pattern over it, set inside a hairline mat
+  with registration ticks, a caption rule, and a numbered figure caption.
+  The real build swaps the placeholder for the screenshot and keeps the mat.
+
+  Font note: --font-serif leads with Source Serif 4, which is not
+  self-hosted in /fonts/fonts.css, so the prose resolves to Iowan Old Style
+  (Mac) or Georgia (Windows, most Linux). Pre-existing base-layer gap, not
+  introduced here.
+-->
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/Design/colors_and_type.css">
+<link rel="stylesheet" href="/Design/editorial.css">
+<style>
+  :root {
+    --pi-field-manual-link:     #0A6478;               /* AA link and numeral ink, cyan family. Ratios in the header comment. */
+    --pi-field-manual-revision: #9E1A58;               /* AA revision-mark ink, magenta family. Ratios in the header comment. */
+    --pi-field-manual-rule:     rgba(15,31,49,.32);    /* hairlines, plate mats. Decorative. */
+    --pi-field-manual-tint:     rgba(15,31,49,.035);   /* zebra rows. Decorative. */
+    --pi-field-manual-emboss:   rgba(255,255,255,.6);  /* letterpress impression highlight. Decorative. */
+    --pi-field-manual-scan:     rgba(255,255,255,.045);/* scanlines inside plate placeholders. Decorative. */
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+
+  /* colors_and_type.css sets a dark body plus light p/h colors for the
+     product surface. The manual is paper, so every text element re-inks. */
+  body.fm {
+    background: var(--ed-paper);
+    color: var(--ed-ink);
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.6;
+    position: relative;
+  }
+  .fm p, .fm h1, .fm h2, .fm h3, .fm li, .fm td, .fm th, .fm figcaption, .fm blockquote {
+    color: var(--ed-ink);
+    margin: 0;
+  }
+
+  /* Paper grain: a fixed fractal-noise sheet multiplied over the page.
+     No color in the SVG; it is black noise at low alpha. */
+  body.fm::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    opacity: .16;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- Shared manual furniture ---------- */
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    display: flex;
+    align-items: baseline;
+    gap: .6em;
+  }
+  .eyebrow .num { color: var(--pi-field-manual-link); }
+  .eyebrow .sep { color: var(--ed-ink-3); font-weight: 400; }
+
+  .press {
+    /* the letterpress impression: ink sits in a shallow well, so a hairline
+       of paper catches light just below each stroke */
+    text-shadow: 0 1px 0 var(--pi-field-manual-emboss);
+  }
+
+  a { color: var(--pi-field-manual-link); text-decoration: underline; text-underline-offset: .18em; text-decoration-thickness: 1px; }
+  a:hover { color: var(--pi-field-manual-revision); }
+
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    font-family: var(--font-mono); font-size: 13px;
+    background: var(--ed-paper-deep); color: var(--ed-ink);
+    padding: 8px 12px; border: 1px solid var(--ed-ink);
+  }
+  .skip-link:focus { left: 12px; top: 12px; z-index: 60; }
+
+  /* ---------- Masthead (nav) ---------- */
+  .nav {
+    border-bottom: 1px solid var(--ed-ink);
+    position: relative;
+  }
+  .nav::after {
+    /* the second line of the classic double rule */
+    content: '';
+    display: block;
+    height: 0;
+    border-bottom: 3px solid var(--ed-ink);
+    margin-top: 2px;
+  }
+  .nav-inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding-top: 22px;
+    padding-bottom: 14px;
+  }
+  .lockup {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    color: var(--ed-ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .lockup:hover { color: var(--ed-ink); }
+  .lockup .mark {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid var(--ed-ink);
+    position: relative;
+    top: 1px;
+  }
+  .lockup .mark::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--ed-ink);
+  }
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .nav-links a {
+    color: var(--ed-ink-2);
+    text-decoration: none;
+    padding: 4px 0;
+  }
+  .nav-links a:hover { color: var(--pi-field-manual-link); text-decoration: underline; }
+  .nav-links .dot {
+    color: var(--ed-ink-3);
+    padding: 4px 12px;
+    font-weight: 400;
+  }
+
+  /* ---------- Hero: title page + document control ---------- */
+  .hero { padding: 56px 0 72px; }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 40px 64px;
+    align-items: start;
+  }
+  .hero-copy { min-width: 0; }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(42px, 6.2vw, 84px);
+    line-height: .98;
+    letter-spacing: -0.025em;
+    margin: 22px 0 18px;
+    text-wrap: balance;
+  }
+  .hero .accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.3;
+    color: var(--ed-ink-2);
+    margin: 0 0 28px;
+  }
+  .hero .accent::before {
+    /* a short revision mark ahead of the accent line: cyan and magenta,
+       always together, as a callout, never a flood */
+    content: '';
+    display: block;
+    width: 72px;
+    height: 2px;
+    margin-bottom: 18px;
+    background: var(--ed-accent-rule);
+  }
+  .hero .subhead {
+    font-size: 20px;
+    line-height: 1.55;
+    max-width: 34em;
+    color: var(--ed-ink);
+    text-wrap: pretty;
+  }
+
+  /* The document-control stamp. This is the wayfinding dateline. */
+  .doc-control {
+    align-self: start;
+    justify-self: end;
+    padding-top: 6px;
+  }
+  .dateline {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    letter-spacing: .04em;
+    color: var(--pi-field-manual-revision);
+    border: 2px solid var(--pi-field-manual-revision);
+    box-shadow: 0 0 0 3px var(--ed-paper), 0 0 0 4px var(--pi-field-manual-revision);
+    padding: 12px 16px;
+    max-width: 300px;
+    transform: rotate(-1.5deg);
+    transform-origin: center;
+    background: var(--ed-paper);
+  }
+  .dateline .k { font-weight: 700; text-transform: uppercase; letter-spacing: .12em; }
+  .dateline .sep { padding: 0 .25em; }
+  .dateline a {
+    color: var(--pi-field-manual-revision);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    font-weight: 700;
+  }
+  .dateline a:hover { color: var(--pi-field-manual-link); }
+  .dateline a::after { content: ' \2192'; }
+  .dateline a { white-space: nowrap; }
+
+  /* ---------- Sections ---------- */
+  .section { padding: 56px 0 0; }
+  .section-head {
+    border-top: 2px solid var(--ed-ink);
+    padding-top: 12px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .section-head .ref {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ed-ink-3);
+  }
+
+  /* ---------- Products: Table 1 and the plates ---------- */
+  .products { padding-top: 24px; }
+
+  .spec-table-wrap {
+    /* h-scroll is solved by reflow below 640px; this is only a fence so a
+       future column can never push the page. */
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 0 0 56px;
+  }
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 17px;
+    line-height: 1.45;
+  }
+  .spec-table caption {
+    caption-side: top;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    padding: 0 0 10px;
+  }
+  .spec-table caption .cnt {
+    color: var(--ed-ink-3);
+    font-weight: 400;
+    letter-spacing: .06em;
+    text-transform: none;
+  }
+  .spec-table thead th {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink-2);
+    text-align: left;
+    padding: 10px 12px 8px;
+    border-top: 3px double var(--ed-ink);
+    border-bottom: 1px solid var(--ed-ink);
+    white-space: nowrap;
+  }
+  .spec-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--pi-field-manual-rule);
+    vertical-align: baseline;
+  }
+  .spec-table tbody tr:nth-child(even) td { background: var(--pi-field-manual-tint); }
+  .spec-table tbody tr:last-child td { border-bottom: 2px solid var(--ed-ink); }
+  .spec-table .no {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 14px;
+    color: var(--pi-field-manual-link);
+    width: 64px;
+    white-space: nowrap;
+  }
+  .spec-table .item {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.005em;
+    width: 24%;
+    color: var(--ed-ink);
+  }
+  .spec-table .desc {
+    color: var(--ed-ink-2);
+    overflow-wrap: anywhere;
+  }
+  .spec-table .fig {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-align: right;
+    width: 72px;
+    white-space: nowrap;
+  }
+  .spec-table .fig a { color: var(--pi-field-manual-revision); text-decoration: none; }
+  .spec-table .fig a:hover { text-decoration: underline; }
+  .spec-table th.fig { text-align: right; }
+
+  /* Plates */
+  .plates {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 36px 28px;
+  }
+  .plate {
+    margin: 0;
+    min-width: 0;
+    position: relative;
+  }
+  .plate.plate-lg {
+    grid-column: 1 / -1;
+    margin-bottom: 56px;
+  }
+  .plate .mat {
+    position: relative;
+    padding: 10px;
+    border: 1px solid var(--pi-field-manual-rule);
+  }
+  /* registration ticks, two corners */
+  .plate .mat::before, .plate .mat::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    border-color: var(--ed-ink);
+    border-style: solid;
+    border-width: 0;
+  }
+  .plate .mat::before { left: -1px; top: -1px; border-top-width: 1px; border-left-width: 1px; }
+  .plate .mat::after  { right: -1px; bottom: -1px; border-bottom-width: 1px; border-right-width: 1px; }
+  .plate .raster {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background:
+      repeating-linear-gradient(0deg, var(--pi-field-manual-scan) 0 1px, transparent 1px 3px),
+      var(--brand-gradient-soft),
+      var(--ed-ink);
+    border: 1px solid var(--ed-ink);
+  }
+  .plate.plate-lg .raster { aspect-ratio: 21 / 9; }
+  .plate figcaption {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--ed-ink);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.005em;
+  }
+  .plate.plate-lg figcaption { font-size: 20px; }
+  .plate .fig-no {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--pi-field-manual-revision);
+    white-space: nowrap;
+  }
+  .plate .fig-tag {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 17px;
+    color: var(--ed-ink-2);
+    margin-left: auto;
+    text-align: right;
+  }
+
+  /* ---------- Founding ---------- */
+  .founding h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(30px, 3.6vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 36px;
+    max-width: 22em;
+    text-wrap: balance;
+  }
+  .founding-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 32px 64px;
+    align-items: start;
+  }
+  .paras { min-width: 0; max-width: 62ch; }
+  .para {
+    position: relative;
+    padding-left: 3.4em;
+    margin: 0 0 1.3em;
+    font-size: 18px;
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+  .para .pno {
+    position: absolute;
+    left: 0;
+    top: .35em;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: var(--pi-field-manual-link);
+  }
+  .door {
+    display: inline-block;
+    margin: 8px 0 0 3.4em;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--pi-field-manual-revision);
+    text-decoration: none;
+    border-bottom: 1px solid var(--pi-field-manual-revision);
+    padding-bottom: 3px;
+  }
+  .door::after { content: ' \2192'; }
+  .door:hover { color: var(--pi-field-manual-link); border-color: var(--pi-field-manual-link); }
+
+  .pull {
+    position: sticky;
+    top: 24px;
+    border: 1px solid var(--pi-field-manual-rule);
+    border-left: 3px solid var(--pi-field-manual-revision);
+    padding: 22px 24px 20px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.35;
+    color: var(--ed-ink);
+    text-wrap: pretty;
+  }
+  .pull::before {
+    content: 'Note';
+    display: block;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--pi-field-manual-revision);
+    margin-bottom: 10px;
+  }
+
+  /* ---------- Field Notes: record of changes ---------- */
+  .field-notes .section-head { margin-bottom: 0; }
+  .notes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 3px double var(--ed-ink);
+  }
+  .notes-head {
+    display: grid;
+    grid-template-columns: 56px 128px minmax(0, 1fr);
+    gap: 0 20px;
+    padding: 10px 0 8px;
+    border-bottom: 1px solid var(--ed-ink);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink-2);
+  }
+  .field-note {
+    display: grid;
+    grid-template-columns: 56px 128px minmax(0, 1fr);
+    gap: 4px 20px;
+    padding: 22px 0 24px;
+    border-bottom: 1px solid var(--pi-field-manual-rule);
+  }
+  .field-note:last-child { border-bottom: 2px solid var(--ed-ink); }
+  .field-note-no, .field-note-date {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    padding-top: 6px;
+    white-space: nowrap;
+  }
+  .field-note-no { color: var(--pi-field-manual-link); font-weight: 600; }
+  .field-note-date { color: var(--ed-ink-2); }
+  .field-note-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  .field-note-subtitle {
+    grid-column: 3;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ed-ink-2);
+    max-width: 66ch;
+    text-wrap: pretty;
+  }
+
+  /* ---------- Footer ---------- */
+  .footer { margin-top: 88px; border-top: 1px solid var(--ed-ink); }
+  .footer::before {
+    content: '';
+    display: block;
+    border-top: 3px solid var(--ed-ink);
+    margin-top: 2px;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 32px;
+    flex-wrap: wrap;
+    padding-top: 22px;
+    padding-bottom: 40px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: .04em;
+    color: var(--ed-ink-2);
+  }
+  .footer-inner p { color: var(--ed-ink-2); }
+  .footer-inner em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 15px;
+    letter-spacing: 0;
+    color: var(--ed-ink);
+  }
+  /* printer's color-control strip: the only place the brand pair prints at
+     full strength, and it prints as a swatch, not a surface */
+  .control-strip {
+    display: inline-flex;
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid var(--pi-field-manual-rule);
+  }
+  .control-strip i { display: block; width: 14px; height: 14px; }
+  .control-strip .c { background: var(--brand-cyan); }
+  .control-strip .m { background: var(--brand-magenta); }
+  .control-strip .k { background: var(--ed-ink); }
+  .control-strip .p { background: var(--ed-paper-deep); }
+
+  /* ---------- Breakpoints ---------- */
+  @media (max-width: 960px) {
+    .plates { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .founding-grid { grid-template-columns: minmax(0, 1fr); }
+    .pull { position: static; max-width: 34em; }
+    .hero-inner { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .doc-control { justify-self: start; order: -1; padding-top: 0; }
+    .dateline { transform: rotate(-1deg); }
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 0 18px; }
+    .hero { padding: 36px 0 52px; }
+    .hero h1 { margin-top: 18px; }
+    .dateline { transform: none; max-width: 100%; font-size: 12px; padding: 10px 12px; }
+    .doc-control { width: 100%; }
+
+    /* Table 1 reflows to a stacked ledger: the header row is hidden from
+       sight (kept for readers), each row becomes a small grid. The page
+       never scrolls sideways for it. */
+    .spec-table, .spec-table tbody { display: block; width: 100%; }
+    .spec-table caption { display: block; }
+    .spec-table thead {
+      position: absolute; width: 1px; height: 1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap;
+    }
+    .spec-table tr {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas: "no item fig" "no desc desc";
+      column-gap: 12px;
+      padding: 12px 8px;
+      border-bottom: 1px solid var(--pi-field-manual-rule);
+    }
+    .spec-table tbody tr:first-child { border-top: 3px double var(--ed-ink); }
+    .spec-table tbody tr:last-child { border-bottom: 2px solid var(--ed-ink); }
+    .spec-table td, .spec-table .no, .spec-table .item, .spec-table .fig { display: block; padding: 0; border: 0; width: auto; }
+    .nav-links .dot { padding: 4px 8px; }
+    .spec-table tbody tr:nth-child(even) td { background: transparent; }
+    .spec-table tbody tr:nth-child(even) { background: var(--pi-field-manual-tint); }
+    .spec-table .no { grid-area: no; padding-top: 3px; }
+    .spec-table .item { grid-area: item; font-size: 17px; }
+    .spec-table .fig { grid-area: fig; padding-top: 2px; }
+    .spec-table .desc { grid-area: desc; font-size: 16px; margin-top: 3px; }
+
+    .plates { gap: 28px 16px; }
+    .plate figcaption { flex-wrap: wrap; gap: 4px 10px; font-size: 15px; }
+    .plate .fig-tag { margin-left: 0; text-align: left; width: 100%; font-size: 15px; }
+
+    .para { padding-left: 0; font-size: 17px; }
+    .para .pno { position: static; display: block; margin-bottom: 4px; }
+    .door { margin-left: 0; }
+
+    .notes-head { grid-template-columns: 48px minmax(0, 1fr); }
+    .notes-head .h-entry { grid-column: 1 / -1; display: none; }
+    .field-note {
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 2px 14px;
+      padding: 18px 0 20px;
+    }
+    .field-note-date { grid-column: 2; padding-top: 0; }
+    .field-note-title { grid-column: 2; font-size: 20px; margin-top: 6px; }
+    .field-note-subtitle { grid-column: 2; font-size: 16px; }
+    .footer-inner { padding-bottom: 32px; }
+  }
+</style>
+</head>
+<body class="fm">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav" id="top">
+  <div class="wrap nav-inner">
+    <a class="lockup" href="/"><span class="mark" aria-hidden="true"></span>626 Labs</a>
+    <nav class="nav-links" aria-label="Site">
+      <a href="#work">Work</a><span class="dot" aria-hidden="true">&middot;</span>
+      <a href="#field-notes">Field Notes</a><span class="dot" aria-hidden="true">&middot;</span>
+      <a href="/#lab">Lab</a><span class="dot" aria-hidden="true">&middot;</span>
+      <a href="about.html">About</a><span class="dot" aria-hidden="true">&middot;</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">626 Labs LLC <span class="sep">&middot;</span> Fort Worth, TX</p>
+        <h1 class="press">Stabilize your builds</h1>
+        <p class="accent">Ready for the 2nd User.</p>
+        <p class="subhead">Claude Code plugins for builders who vibe-code fast and still ship for real. Planning, docs, tests, security — with a native Windows/macOS widget for pacing your usage.</p>
+      </div>
+      <aside class="doc-control">
+        <p class="dateline"><span class="k">Theme:</span> October 2026 <span class="sep">&middot;</span> this site changes monthly <span class="sep">&middot;</span> <a href="/themes.html">see all themes</a></p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section products" id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow"><span class="num">01</span> <span class="sep">&middot;</span> Work</p>
+        <span class="ref">Table 1 &middot; Figs. 1 to 10</span>
+      </div>
+
+      <div class="plates plates-lead">
+        <figure class="plate plate-lg" id="fig-1">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Cartographer"></span></div>
+          <figcaption><span class="fig-no">Fig. 1</span> Vibe Cartographer <span class="fig-tag">Vibe coding with a map.</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="spec-table-wrap">
+        <table class="spec-table">
+          <caption>Table 1</caption>
+          <thead>
+            <tr>
+              <th class="no">No.</th>
+              <th class="item">Item</th>
+              <th class="desc">Description</th>
+              <th class="fig">Fig.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="product">
+              <td class="no">1.1</td>
+              <td class="item">Vibe Cartographer</td>
+              <td class="desc">Vibe coding with a map.</td>
+              <td class="fig"><a href="#fig-1">1</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.2</td>
+              <td class="item">Celestia 3</td>
+              <td class="desc">NASA-grade astrology AI.</td>
+              <td class="fig"><a href="#fig-2">2</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.3</td>
+              <td class="item">Vibe Iterate</td>
+              <td class="desc">Maintain your Atlas.</td>
+              <td class="fig"><a href="#fig-3">3</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.4</td>
+              <td class="item">Vibe Insights</td>
+              <td class="desc">The /insights you wish you had.</td>
+              <td class="fig"><a href="#fig-4">4</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.5</td>
+              <td class="item">Vibe Keystone</td>
+              <td class="desc">Map the repo before the agent starts.</td>
+              <td class="fig"><a href="#fig-5">5</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.6</td>
+              <td class="item">Vibe Doc</td>
+              <td class="desc">Point it at your codebase and it finds the docs you're missing — ADRs, runbooks, threat models, specs — then w</td>
+              <td class="fig"><a href="#fig-6">6</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.7</td>
+              <td class="item">Vibe Test</td>
+              <td class="desc">Put your code to the test before somebody else does.</td>
+              <td class="fig"><a href="#fig-7">7</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.8</td>
+              <td class="item">Vibe Thesis</td>
+              <td class="desc">Long-form research, drafted with discipline.</td>
+              <td class="fig"><a href="#fig-8">8</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.9</td>
+              <td class="item">Thesis Engine</td>
+              <td class="desc">Surface topics. Gather sources. Seed the thesis.</td>
+              <td class="fig"><a href="#fig-9">9</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.10</td>
+              <td class="item">Sanduhr für Claude</td>
+              <td class="desc">Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yoursel</td>
+              <td class="fig"><a href="#fig-10">10</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="plates">
+        <figure class="plate" id="fig-2">
+          <div class="mat"><span class="raster" role="img" aria-label="Celestia 3"></span></div>
+          <figcaption><span class="fig-no">Fig. 2</span> Celestia 3</figcaption>
+        </figure>
+        <figure class="plate" id="fig-3">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Iterate"></span></div>
+          <figcaption><span class="fig-no">Fig. 3</span> Vibe Iterate</figcaption>
+        </figure>
+        <figure class="plate" id="fig-4">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Insights"></span></div>
+          <figcaption><span class="fig-no">Fig. 4</span> Vibe Insights</figcaption>
+        </figure>
+        <figure class="plate" id="fig-5">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Keystone"></span></div>
+          <figcaption><span class="fig-no">Fig. 5</span> Vibe Keystone</figcaption>
+        </figure>
+        <figure class="plate" id="fig-6">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Doc"></span></div>
+          <figcaption><span class="fig-no">Fig. 6</span> Vibe Doc</figcaption>
+        </figure>
+        <figure class="plate" id="fig-7">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Test"></span></div>
+          <figcaption><span class="fig-no">Fig. 7</span> Vibe Test</figcaption>
+        </figure>
+        <figure class="plate" id="fig-8">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Thesis"></span></div>
+          <figcaption><span class="fig-no">Fig. 8</span> Vibe Thesis</figcaption>
+        </figure>
+        <figure class="plate" id="fig-9">
+          <div class="mat"><span class="raster" role="img" aria-label="Thesis Engine"></span></div>
+          <figcaption><span class="fig-no">Fig. 9</span> Thesis Engine</figcaption>
+        </figure>
+        <figure class="plate" id="fig-10">
+          <div class="mat"><span class="raster" role="img" aria-label="Sanduhr für Claude"></span></div>
+          <figcaption><span class="fig-no">Fig. 10</span> Sanduhr für Claude</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section founding" id="founding">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow"><span class="num">02</span> <span class="sep">&middot;</span> The founding</p>
+        <span class="ref">Paras. 2.1 to 2.2</span>
+      </div>
+      <h2 class="press">626 Labs builds exact-fit software.</h2>
+      <div class="founding-grid">
+        <div class="paras">
+          <p class="para"><span class="pno">2.1</span>626 Labs builds exact-fit software. The founding argument is simple: it has never been easier to have the exact tools we need, and too much money has been going to too many companies for tools that only half fit. So we build and maintain our own, at a quality that rivals enterprise software, made to enhance the work people do instead of taking their jobs. We are here to make great products, even if only a handful of people need them. That's ok.</p>
+          <p class="para"><span class="pno">2.2</span>The line the lab was built on belongs to its founder: "I build tools, because care doesn't always scale." It is translation: take the care a person already has and build it into something that keeps working after their attention has to move on.</p>
+          <a class="door" href="about.html">Read the whole story</a>
+        </div>
+        <blockquote class="pull">I build tools, because care doesn't always scale.</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="section field-notes" id="field-notes">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow"><span class="num">03</span> <span class="sep">&middot;</span> Field Notes</p>
+        <span class="ref">Record of changes</span>
+      </div>
+      <ol class="notes">
+        <li class="notes-head" aria-hidden="true"><span>No.</span><span>Date</span><span class="h-entry">Entry</span></li>
+        <li class="field-note">
+          <span class="field-note-no">3.1</span>
+          <time class="field-note-date" datetime="2026-06-26">2026-06-26</time>
+          <h3 class="field-note-title">The first 626 Labs Day</h3>
+          <p class="field-note-subtitle">Today is 6/26/26, the first 626 Day since 626 Labs existed. The whole surface is shipped and live in one window: 14 Claude Code plugins and 6 Microsoft Store apps, one new and two with major updates this week.</p>
+        </li>
+        <li class="field-note">
+          <span class="field-note-no">3.2</span>
+          <time class="field-note-date" datetime="2026-07-03">2026-07-03</time>
+          <h3 class="field-note-title">RoRoRo grew eyes, hands, and a heartbeat</h3>
+          <p class="field-note-subtitle">The Roblox multi-launcher you could recommend on camera now has three plugins (perception, action, and a keep-alive), wired together by a consent-gated bridge that never leaves your machine.</p>
+        </li>
+        <li class="field-note">
+          <span class="field-note-no">3.3</span>
+          <time class="field-note-date" datetime="2026-06-19">2026-06-19</time>
+          <h3 class="field-note-title">The Vibe family is thirteen, and they all read the code first</h3>
+          <p class="field-note-subtitle">Thirteen Claude Code plugins on one shared spine — an opinionated agent that reads your repo before it touches it. They cover the whole lifecycle around the code, where vibe-coded apps actually rot.</p>
+        </li>
+        <li class="field-note">
+          <span class="field-note-no">3.4</span>
+          <time class="field-note-date" datetime="2026-05-29">2026-05-29</time>
+          <h3 class="field-note-title">Same code, 3x the thinking: what I did with my first 8 hours with Opus 4.8.</h3>
+          <p class="field-note-subtitle">I turned on max-orchestration to see what would happen. Eight sessions later the agent had burned three times the tokens and written the same amount of code. The extra went into tests it caught before I saw them, and into a run that stopped answering the wheel once it started.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <p>626 Labs LLC &middot; Fort Worth, TX &middot; <em>Imagine Something Else.</em></p>
+    <span class="control-strip" aria-hidden="true"><i class="c"></i><i class="m"></i><i class="k"></i><i class="p"></i></span>
+  </div>
+</footer>
+</body>
+</html>
