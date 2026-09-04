@@ -1,28 +1,50 @@
-"""Export 626 Labs brand assets — transparent icon + banner.
+"""Export 626 Labs brand assets — transparent icon + banners, in the ACTIVE
+theme's raster treatment.
 
 Inputs:
   assets/icon-626.png            — 256x256 baked-on-navy icon
   assets/logo-portrait-720x1080.png — higher-res icon + wordmark on navy
-  fonts/SpaceGrotesk-Bold.ttf, fonts/Inter-Italic.ttf, etc.
+  fonts/SpaceGrotesk-Variable.ttf, fonts/Inter-Italic-Variable.ttf, etc.
+  themes/<active>/theme.json     — the `raster` block (scripts/raster_theme.py)
 
-Outputs (under assets/brand/):
+Outputs (under assets/brand/, plus favicon-626.png at the repo root):
   icon-transparent-256.png   — color-keyed transparent icon
   icon-transparent-512.png   — same, upscaled (Lanczos)
   icon-transparent-1024.png  — same, upscaled
   banner-1500x500.png        — Twitter / X header
   banner-1280x640.png        — GitHub repo header / generic OG-ish
   banner-1200x630.png        — OG image / generic social
+  discord-splash-1920x1080.png
+  icon-animated-512.gif      — Discord server icon (pulses only when the
+                               theme glows; a static tile otherwise)
+  logo-portrait-256.png, logo-lockup-transparent-1080.png
+  favicon-626.png            — the browser-tab icon every page links
+
+The field, texture, glows and color bar come from the active theme's
+`raster` block, so the rotation regenerates these on the 1st and the
+banners change with the month. Field-free outputs (the transparent icons,
+the lockup, the portrait) carry no theme and are byte-identical across
+themes.
+
+Usage:
+  python scripts/export-brand.py                       # active theme, into the tree
+  python scripts/export-brand.py --theme <slug> --out <dir>   # a queued theme, elsewhere
 """
+import sys
 from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR = ROOT / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+import raster_theme as rt  # noqa: E402 — sibling module in scripts/
+
 ASSETS = ROOT / "assets"
 OUT = ASSETS / "brand"
+FAVICON_OUT = ROOT / "favicon-626.png"
 FONTS = ROOT / "fonts"
-
-OUT.mkdir(parents=True, exist_ok=True)
 
 BG_NAVY = np.array([25, 46, 69], dtype=np.float64)  # the field color we strip
 # Tighter lo + much wider hi gives the ramp room to unmix navy out of glow
@@ -32,12 +54,15 @@ KEY_LO = 6     # anything within this distance → fully transparent (true bg)
 KEY_HI = 150   # at this distance → fully opaque foreground
                # in between → ramped alpha + RGB unmix to recover original neon
 
-CYAN = (23, 212, 250)
-MAGENTA = (242, 47, 137)
+CYAN = rt.CYAN
+MAGENTA = rt.MAGENTA
 NAVY = (15, 31, 49)          # legacy field — kept for reference/inputs
-PB_FIELD = (0, 0, 0)         # Phosphor Blueprint field (adopted 2026-07-07)
-INK = (231, 237, 245)
-DIM = (138, 153, 174)
+
+# The drawing primitives live in raster_theme so build-og-cards.py and the
+# Medium / Vibe Plugins exporters draw the same field. Re-exported here for
+# anything that imported them from this module.
+drafting_grid = rt.drafting_grid
+radial_glow = rt.radial_glow
 
 
 def color_key(img: Image.Image, bg=BG_NAVY, lo=KEY_LO, hi=KEY_HI) -> Image.Image:
@@ -125,8 +150,9 @@ def find_icon_bottom(keyed: Image.Image, gap_rows: int = 8, content_alpha: int =
     return keyed.height
 
 
-def build_transparent_icon():
-    """Use the higher-res portrait as the source — cleaner edges than 256."""
+def build_transparent_icon(out: Path = OUT):
+    """Use the higher-res portrait as the source — cleaner edges than 256.
+    Field-free: carries no theme."""
     portrait = Image.open(ASSETS / "logo-portrait-720x1080.png").convert("RGBA")
     keyed_full = color_key(portrait)
     # Find the gap between icon and wordmark, crop just above it.
@@ -142,8 +168,8 @@ def build_transparent_icon():
             resized = squared.resize((size, size), Image.LANCZOS)
         else:
             resized = squared.resize((size, size), Image.LANCZOS)
-        resized.save(OUT / f"icon-transparent-{size}.png", optimize=True)
-        print(f"  wrote {OUT / f'icon-transparent-{size}.png'}  ({size}x{size})")
+        resized.save(out / f"icon-transparent-{size}.png", optimize=True)
+        print(f"  wrote {out / f'icon-transparent-{size}.png'}  ({size}x{size})")
     return squared  # full-res transparent icon for compositing into banners
 
 
@@ -163,49 +189,20 @@ def gradient_h(width: int, height: int, c1, c2) -> Image.Image:
     return grad
 
 
-def drafting_grid(width: int, height: int) -> Image.Image:
-    """Phosphor Blueprint two-scale drafting grid (adopted 2026-07-07):
-    24px cyan lines at ~5% alpha + 120px at ~11%. Composite over the black
-    field before the glows. Page-texture only — icons stay grid-free."""
-    arr = np.zeros((height, width, 4), dtype=np.uint8)
-    for step, alpha in ((24, 13), (120, 28)):
-        arr[::step, :, :3] = CYAN
-        arr[::step, :, 3] = np.maximum(arr[::step, :, 3], alpha)
-        arr[:, ::step, :3] = CYAN
-        arr[:, ::step, 3] = np.maximum(arr[:, ::step, 3], alpha)
-    return Image.fromarray(arr, "RGBA")
-
-
-def radial_glow(width: int, height: int, cx: float, cy: float, color, max_alpha: int, radius: float) -> Image.Image:
-    """Soft radial alpha falloff at (cx,cy) — coords as fractions of size."""
-    layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    arr = np.zeros((height, width, 4), dtype=np.uint8)
-    yy, xx = np.indices((height, width))
-    dx = xx - cx * width
-    dy = yy - cy * height
-    dist = np.sqrt(dx * dx + dy * dy)
-    falloff = np.clip(1 - dist / (radius * max(width, height)), 0, 1) ** 2
-    arr[..., 0] = color[0]
-    arr[..., 1] = color[1]
-    arr[..., 2] = color[2]
-    arr[..., 3] = (falloff * max_alpha).astype(np.uint8)
-    return Image.fromarray(arr, "RGBA")
-
-
-def build_banner(size: tuple[int, int], icon: Image.Image, out_path: Path):
+def build_banner(size: tuple[int, int], icon: Image.Image, out_path: Path, raster: rt.Raster):
     """Compose a brand banner.
 
-    Layout: Phosphor Blueprint field (black + drafting grid) + radial glows,
+    Layout: the theme's field (color + texture, glows when the theme glows),
     transparent icon left, wordmark + tagline right of the icon, hairline
-    cyan→magenta gradient under the wordmark.
+    cyan→magenta gradient under the wordmark, mono kicker top-right, and
+    the printer's color bar bottom-right when the theme carries one.
     """
     W, H = size
-    canvas = Image.new("RGBA", (W, H), PB_FIELD + (255,))
-    canvas.alpha_composite(drafting_grid(W, H))
-
-    # Brand mood: cyan glow top-left, magenta glow bottom-right.
-    canvas.alpha_composite(radial_glow(W, H, 0.18, 0.30, CYAN, 80, 0.50))
-    canvas.alpha_composite(radial_glow(W, H, 0.85, 0.75, MAGENTA, 70, 0.55))
+    # Brand mood under a glowing theme: cyan top-left, magenta bottom-right.
+    canvas = rt.paint_field(W, H, raster, glows=(
+        (0.18, 0.30, CYAN, 80, 0.50),
+        (0.85, 0.75, MAGENTA, 70, 0.55),
+    ))
 
     # Icon — sized to ~70% of banner height, padded inside.
     icon_target_h = int(H * 0.70)
@@ -250,7 +247,7 @@ def build_banner(size: tuple[int, int], icon: Image.Image, out_path: Path):
 
     draw = ImageDraw.Draw(canvas)
 
-    # Wordmark: "626" in cyan, "Labs LLC" in white. Measure widths.
+    # Wordmark: "626" in cyan, "Labs LLC" in the theme's ink. Measure widths.
     cyan_part = "626"
     white_part = "Labs LLC"
     bbox_c = draw.textbbox((0, 0), cyan_part, font=sg_bold)
@@ -266,9 +263,10 @@ def build_banner(size: tuple[int, int], icon: Image.Image, out_path: Path):
     word_top = (H - block_h) // 2
 
     draw.text((text_x, word_top), cyan_part, font=sg_bold, fill=CYAN + (255,))
-    draw.text((text_x + cyan_w, word_top), white_part, font=sg_bold, fill=INK + (255,))
+    draw.text((text_x + cyan_w, word_top), white_part, font=sg_bold, fill=raster.ink + (255,))
 
-    # Hairline cyan→magenta divider just under the wordmark.
+    # Hairline cyan→magenta divider just under the wordmark. A swatch, not
+    # text: the one gradient a matte theme still spends (the underline).
     line_y = word_top + word_size + pad_to_div
     grad_strip = gradient_h(word_w, line_h_div, CYAN, MAGENTA).convert("RGBA")
     canvas.alpha_composite(grad_strip, dest=(text_x, line_y))
@@ -276,7 +274,7 @@ def build_banner(size: tuple[int, int], icon: Image.Image, out_path: Path):
     # Tagline: "Imagine Something Else." in italic Inter.
     tagline = "Imagine Something Else."
     tag_y = line_y + line_h_div + pad_div_to_tag
-    draw.text((text_x, tag_y), tagline, font=inter_italic, fill=INK + (255,))
+    draw.text((text_x, tag_y), tagline, font=inter_italic, fill=raster.ink + (255,))
 
     # Mono kicker top-right: "626LABS · FORT WORTH" with cyan dot.
     kicker = "626LABS · FORT WORTH · TX"
@@ -284,20 +282,28 @@ def build_banner(size: tuple[int, int], icon: Image.Image, out_path: Path):
     kw = kbbox[2] - kbbox[0]
     kx = W - kw - int(W * 0.03)
     ky = int(H * 0.07)
-    draw.text((kx, ky), kicker, font=jb_mono, fill=DIM + (255,))
+    draw.text((kx, ky), kicker, font=jb_mono, fill=raster.dim + (255,))
+
+    # The printer's color bar, bottom-right, where the magenta glow sat.
+    rt.place_color_bar(canvas, raster, right=W - int(W * 0.03), bottom=H - int(H * 0.07))
 
     # Save flat (RGB) for max compatibility on social platforms.
     canvas.convert("RGB").save(out_path, "PNG", optimize=True)
     print(f"  wrote {out_path}  ({W}x{H})")
 
 
-def build_animated_icon(icon: Image.Image):
-    """626 heartbeat — animated server icon (Discord boost perk).
+def build_animated_icon(icon: Image.Image, raster: rt.Raster, out: Path = OUT):
+    """icon-animated-512.gif — the Discord server icon (boost perk).
 
-    Navy field, static mark, cyan + magenta glows pulsing in a lub-dub
-    heartbeat rhythm. GIF because Discord animated icons are GIF-only;
-    512x512, 2s loop. Bump centers sit at 0.15/0.43 of the cycle so the
-    loop seam lands in the rest beat (no visible pop).
+    Under a glowing theme: the 626 heartbeat. Field, static mark, cyan +
+    magenta glows pulsing in a lub-dub rhythm; 40 frames at 50ms, 2s loop,
+    bump centers at 0.15/0.43 of the cycle so the loop seam lands in the
+    rest beat (no visible pop).
+
+    Under a matte theme (glow false): ONE frame. A printed thing does not
+    pulse. Same filename, same GIF container, so Discord and anything that
+    embeds it keeps working. The grid stays off at icon scale (page
+    furniture); grain is stone and goes on the tile too.
     """
     import math
 
@@ -314,92 +320,118 @@ def build_animated_icon(icon: Image.Image):
             b += amp * math.exp(-((t - center) ** 2) / (2 * width**2))
         return b
 
+    n_frames = N_FRAMES if raster.glow else 1
     frames = []
-    for i in range(N_FRAMES):
+    for i in range(n_frames):
         k = beat(i / N_FRAMES)
-        f = Image.new("RGBA", (SIZE, SIZE), PB_FIELD + (255,))  # PB field; no grid at icon scale
-        f.alpha_composite(radial_glow(SIZE, SIZE, 0.30, 0.32, CYAN, int(28 + 70 * k), 0.55))
-        f.alpha_composite(radial_glow(SIZE, SIZE, 0.72, 0.70, MAGENTA, int(24 + 60 * k), 0.58))
+        f = rt.paint_field(SIZE, SIZE, raster, texture=raster.texture != "grid", glows=(
+            (0.30, 0.32, CYAN, int(28 + 70 * k), 0.55),
+            (0.72, 0.70, MAGENTA, int(24 + 60 * k), 0.58),
+        ))
         f.alpha_composite(icon_sized, dest=(icon_xy, icon_xy))
         frames.append(f.convert("RGB").convert("P", palette=Image.ADAPTIVE, colors=256))
 
-    out_path = OUT / "icon-animated-512.gif"
+    out_path = out / "icon-animated-512.gif"
     frames[0].save(
         out_path, save_all=True, append_images=frames[1:],
         duration=FRAME_MS, loop=0, optimize=True,
     )
-    print(f"  wrote {out_path}  (512x512, {N_FRAMES} frames, 2.0s loop)")
+    label = f"{N_FRAMES} frames, 2.0s loop" if raster.glow else "1 frame, static"
+    print(f"  wrote {out_path}  (512x512, {label})")
 
 
-def build_site_favicon(icon: Image.Image):
+def build_site_favicon(icon: Image.Image, raster: rt.Raster, out_path: Path = FAVICON_OUT):
     """favicon-626.png at the repo root — the browser-tab icon every page
-    links. Black field, no ambient glows (they read as murk at tab sizes),
-    mark at ~90% brightened toward full phosphor with a bloom underlay so
-    the strokes stay bright and stable at 16px. Script-owned as of pass 4;
-    re-tuned same week: Este wanted the mark brighter and more stable."""
+    links. The theme's field, no texture and no ambient glows (both read as
+    murk at tab sizes), mark at ~90% brightened toward full phosphor so the
+    strokes stay bright and stable at 16px. A bloom underlay only when the
+    theme glows; a matte theme gets the mark flat on the field. Script-owned
+    as of pass 4; re-tuned same week: Este wanted the mark brighter and
+    more stable."""
     SIZE = 512
-    f = Image.new("RGBA", (SIZE, SIZE), PB_FIELD + (255,))
+    f = Image.new("RGBA", (SIZE, SIZE), raster.field + (255,))
     mark = icon.resize((int(SIZE * 0.90),) * 2, Image.LANCZOS)
     arr = np.array(mark).astype(np.float64)
     arr[..., :3] = np.clip(arr[..., :3] * 1.35, 0, 255)
     mark = Image.fromarray(arr.astype(np.uint8), "RGBA")
     off = (SIZE - mark.width) // 2
-    halo = mark.filter(ImageFilter.GaussianBlur(14))
-    f.alpha_composite(halo, dest=(off, off))
+    if raster.glow:
+        halo = mark.filter(ImageFilter.GaussianBlur(14))
+        f.alpha_composite(halo, dest=(off, off))
     f.alpha_composite(mark, dest=(off, off))
-    out_path = ASSETS.parent / "favicon-626.png"
     f.convert("RGB").save(out_path, "PNG", optimize=True)
     print(f"  wrote {out_path}  ({SIZE}x{SIZE})")
 
 
-def build_transparent_lockup():
+def build_transparent_lockup(out: Path = OUT):
     """logo-lockup-transparent-1080.png — the square hero lockup (icon +
     wordmark + tagline) with the navy field keyed out. The homepage hero
-    mark uses this on the Phosphor Blueprint field; the baked-navy logo.png
-    stays at the root as the key source."""
+    mark uses this on the theme's field; the baked-navy logo.png stays at
+    the root as the key source. Field-free: carries no theme."""
     src = Image.open(ROOT / "logo.png").convert("RGBA")
     keyed = color_key(src)
-    out_path = OUT / "logo-lockup-transparent-1080.png"
+    out_path = out / "logo-lockup-transparent-1080.png"
     keyed.save(out_path, "PNG", optimize=True)
     print(f"  wrote {out_path}  ({keyed.width}x{keyed.height})")
 
 
-def main():
-    print("Building transparent icon…")
-    icon = build_transparent_icon()
-
-    print("\nBuilding banners…")
-    for size, name in [
-        ((1500, 500), "banner-1500x500.png"),       # X / Twitter header
-        ((1280, 640), "banner-1280x640.png"),       # GitHub repo header
-        ((1200, 630), "banner-1200x630.png"),       # OG / generic social
-        ((1920, 1080), "discord-splash-1920x1080.png"),  # Discord invite splash
-    ]:
-        build_banner(size, icon, OUT / name)
-
-    print("\nBuilding animated icon…")
-    build_animated_icon(icon)
-
-    print("\nBuilding press portrait…")
-    build_press_portrait()
-
-    print("\nBuilding site favicon…")
-    build_site_favicon(icon)
-
-    print("\nBuilding transparent lockup…")
-    build_transparent_lockup()
-
-
-def build_press_portrait():
+def build_press_portrait(out: Path = OUT):
     """256-wide icon+wordmark portrait for the press page's download button.
     press.html links assets/brand/logo-portrait-256.png; this makes that a
-    real, versioned output instead of a gitignored ghost (link-check #71)."""
+    real, versioned output instead of a gitignored ghost (link-check #71).
+    A resize of a baked source: carries no theme."""
     portrait = Image.open(ASSETS / "logo-portrait-720x1080.png").convert("RGB")
     w = 256
     h = round(portrait.height * w / portrait.width)
-    portrait.resize((w, h), Image.LANCZOS).save(OUT / "logo-portrait-256.png", "PNG", optimize=True)
-    print(f"  wrote {OUT / 'logo-portrait-256.png'}  ({w}x{h})")
+    portrait.resize((w, h), Image.LANCZOS).save(out / "logo-portrait-256.png", "PNG", optimize=True)
+    print(f"  wrote {out / 'logo-portrait-256.png'}  ({w}x{h})")
+
+
+BANNERS = [
+    ((1500, 500), "banner-1500x500.png"),       # X / Twitter header
+    ((1280, 640), "banner-1280x640.png"),       # GitHub repo header
+    ((1200, 630), "banner-1200x630.png"),       # OG / generic social
+    ((1920, 1080), "discord-splash-1920x1080.png"),  # Discord invite splash
+]
+
+
+def build_all(raster: rt.Raster, out: Path = OUT, favicon_out: Path = FAVICON_OUT) -> None:
+    out.mkdir(parents=True, exist_ok=True)
+    print(f"Raster treatment: {raster.slug} (field #{'%02X%02X%02X' % raster.field}, "
+          f"texture {raster.texture}, glow {raster.glow}, color bar {raster.color_bar})")
+
+    print("Building transparent icon…")
+    icon = build_transparent_icon(out)
+
+    print("\nBuilding banners…")
+    for size, name in BANNERS:
+        build_banner(size, icon, out / name, raster)
+
+    print("\nBuilding animated icon…")
+    build_animated_icon(icon, raster, out)
+
+    print("\nBuilding press portrait…")
+    build_press_portrait(out)
+
+    print("\nBuilding site favicon…")
+    build_site_favicon(icon, raster, favicon_out)
+
+    print("\nBuilding transparent lockup…")
+    build_transparent_lockup(out)
+
+
+def main(argv: list[str]) -> int:
+    slug, out_dir, rest = rt.parse_args(argv)
+    if rest:
+        print(f"usage: export-brand.py [--theme <slug>] [--out <dir>]  (unknown: {rest})", file=sys.stderr)
+        return 2
+    raster = rt.load(slug)
+    if out_dir is None:
+        build_all(raster)
+    else:
+        build_all(raster, out=out_dir, favicon_out=out_dir / "favicon-626.png")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main(sys.argv[1:]))
