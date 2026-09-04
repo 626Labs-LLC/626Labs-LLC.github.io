@@ -1,485 +1,695 @@
 /* ============================================================
    Theme: slate-broadsheet — reading archetype stylesheet.
 
-   Extracted VERBATIM from about.html's own inline <style> block (the
-   Long Now Terminal treatment, 2026-07-12 bake-off winner) — the one
-   artifact in the repo that actually dresses the reading archetype's
-   full vocabulary today (3 shared ed-* leaf classes + 7 lnt-* structural
-   classes; see scripts/archetypes.py VOCABULARY["reading"] and
-   docs/theme-archetypes.md). A3 found reading pages carry no per-theme
-   CSS artifact at all (Design/editorial.css is theme-agnostic, reading.html
-   is an HTML shell with no standalone stylesheet); A7 closes that gap so
-   the reading archetype has a real, swappable dress like product/utility
-   already do.
+   The Slate Broadsheet dress for about.html's Long Now Terminal
+   structure: the seven lnt-* structural classes plus the three shared
+   ed-* leaves (scripts/archetypes.py VOCABULARY["reading"]). Reached by
+   About's easter-egg theme picker, which appends a <link> to this file
+   AFTER the page's own inline <style>, so every rule here lands later in
+   the cascade at equal specificity and wins by order. Where a property
+   matters it is restated here; nothing is left to inherit from the
+   default dress by accident.
 
-   Two live consumers, both A7:
-   1. scripts/theme-doctor.py's reading-archetype gate reads this file
-      (not about.html's inline style) as the CSS half of the vocabulary
-      check, so a future theme's OWN reading.css is what gets graded —
-      about.html's markup no longer trivially satisfies the check by
-      itself (see _archetype_source's docstring for the mechanics).
-   2. about.html's client-side easter-egg toggle swaps a <link> to this
-      file's URL (/themes/slate-broadsheet/archetypes/reading.css) when
-      a visitor picks "The Slate Broadsheet" from the picker.
+   Two live consumers:
+   1. scripts/theme-doctor.py's reading-archetype gate reads this file as
+      the CSS half of the vocabulary check: every lnt-* class has to appear
+      here as a real selector.
+   2. about.html's picker swaps a <link> to
+      /themes/slate-broadsheet/archetypes/reading.css in when a visitor
+      picks "The Slate Broadsheet". A fresh visitor gets About's own
+      default, Long Now Terminal, unchanged.
 
-   NOT linked from about.html itself — About's own inline <style> stays
-   the live, authoritative source for its default (unconditional) look;
-   this file is a point-in-time snapshot of it, kept in sync by hand the
-   next time About's dress changes (same accepted-drift posture A4 used
-   for utility.css's extraction from press.html — see that file's own
-   header comment). NOT linked from reading.html either — Field Notes
-   stay theme-agnostic on purpose (A3's finding: linking a theme's tokens
-   there would silently repaint every Field Note along with About, which
-   nothing has asked for yet).
+   NOT linked from about.html itself and NOT linked from reading.html:
+   Field Notes stay theme-agnostic by ruling.
 
-   Selecting this theme in the toggle looks IDENTICAL to About's own
-   default while this file is still the SEEDED Long Now Terminal dress:
-   the August theme's reading.css was a snapshot of About's default, and
-   Task 4 replaces it with the slate broadsheet dress. Toggling to it swaps a real
-   <link> in for the inline <style> (verifiable in the DOM / network
-   panel); the pixels only diverge from the default once a later theme
-   ships its own, different reading.css.
+   Resolution group: this file plus Design/editorial.css (the only
+   stylesheet about.html links). So this file reads --ed-* and
+   --font-serif from editorial.css and everything else from its own :root
+   below. It cannot read --font-display / --font-mono (about.html links no
+   colors_and_type.css), so the display and mono stacks are literals here.
+
+   The editorial paper tokens are RE-PINNED for slate at the same
+   specificity About's own dark-mode overrides use
+   (:root:not([data-theme="light"]) and :root[data-theme="dark"], both
+   0,2,0), so the page is slate whatever the OS or the toggle says. The
+   page is printed, not lit: one ground. The light/dark toggle button is
+   hidden under this dress because it has nothing to switch.
+
+   Matte throughout: no glow, no bloom, no scanline, no grid, no gradient
+   field, no gradient-as-text. --sb-hair / --sb-rule / --sb-heavy are
+   border shorthands, spent on border-* only. Under the grain,
+   --sb-link-hover is a --sb-ground ink only; every anchor it tints sits on
+   the ground.
+
+   Contrast is the token contract's (reading-tokens.css header): primary
+   ink 9.18:1, secondary 6.90:1, caption 5.55:1, cyan 5.64:1, the hover
+   tint 5.41:1, all on the ground; the reversed tab 9.18:1.
    ============================================================ */
-:root {
-  /* ---------- Light tokens (default) — from preview-about-lnt.html ---------- */
-  --at-lnt-cyan-ink:    #097088;              /* AA-safe cyan text — eyebrow, rail values, tags, status stamp, nav/footer accents */
-  --at-lnt-cyan-bright: #0C8AA6;               /* large-display-only cyan — retrieval-year numeral */
-  --at-lnt-cyan-line:   rgba(15,168,201,.30);  /* hairlines, corner reticle ticks, chip/nav borders — not text */
-  --at-lnt-cyan-wash:   rgba(15,168,201,.05);  /* chip + frontispiece + nav backdrop tint — not text */
+@import url('/fonts/fonts.css');
 
-  /* ---------- Dark tokens (reserve) — from preview-about-lnt-dark.html ---------- */
-  --at-lntd-paper:       #0F1F31;               /* page bg — brand-navy-deep, the records room after hours */
-  --at-lntd-paper-soft:  #223A54;               /* raised card bg — brand-navy-soft, one step off the wall */
-  --at-lntd-ink:         #E4D6B8;               /* primary body ink — warm archive-lamp tone */
-  --at-lntd-ink-2:       #B9A67D;               /* secondary ink (dek) */
-  --at-lntd-ink-3:       #B4A47F;               /* captions / metadata */
-  --at-lntd-ink-muted:   #8F8676;               /* rail separator glyph (decorative) */
-  --at-lntd-rule:        rgba(228,214,184,.12); /* hairlines, card borders — not text */
-  --at-lntd-link-hover:  #FF5AA3;               /* back-link / footer-link hover — brand-magenta-bright */
-  --at-lntd-cyan-ink:    #3FC3E0;               /* restrained cyan text — eyebrow, rail values, tags, pull-id, artifact-meta, nav/footer accents */
-  --at-lntd-cyan-bright: #17D4FA;               /* large-display-only cyan — retrieval-year numeral */
-  --at-lntd-cyan-line:   rgba(23,212,250,.22);  /* hairlines, corner reticle ticks, chip/nav borders — not text */
-  --at-lntd-cyan-wash:   rgba(23,212,250,.07);  /* chip + nav backdrop tint — not text */
+:root,
+:root:not([data-theme="light"]),
+:root[data-theme="light"] {
+  /* The slate and the inks. */
+  --sb-ground:      #3A4350;
+  --sb-ink:         #F7F5F0;
+  --sb-ink-2:       #D9D6CF;
+  --sb-ink-3:       #C3C1BA;
+  --sb-ink-muted:   #BCBBB4;
+  --sb-link-hover:  #FFA3CC;
+  --sb-cyan:        #17d4fa;
+  --sb-magenta:     #f22f89;
+
+  /* Rule colors: paper at low alpha. Decorative, never text. */
+  --sb-hair-color:  rgba(247,245,240,.14);
+  --sb-rule-color:  rgba(247,245,240,.28);
+  --sb-impression:  rgba(15,31,49,.55);
+
+  /* The three rules, BORDER SHORTHANDS. border-* only. */
+  --sb-hair:        1px solid var(--sb-hair-color);
+  --sb-rule:        1px solid var(--sb-rule-color);
+  --sb-heavy:       3px solid var(--sb-ink);
+
+  /* The pale plate mat. No text sits on it. */
+  --sb-mat:         #EFEBE2;
+
+  /* The reversed folio tab. */
+  --sb-tab-bg:      var(--sb-ink);
+  --sb-tab-fg:      var(--sb-ground);
+
+  /* Broadsheet measures. */
+  --sb-page:        1280px;
+  --sb-gutter:      32px;
+
+  /* Stone grain. */
+  --sb-grain:         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23g%29'/%3E%3C/svg%3E");
+  --sb-grain-opacity: .07;
+
+  /* The Field Manual's type system. The serif is editorial.css's own
+     stack (Source Serif 4, self-hosted); display and mono are literals
+     because this group carries no colors_and_type.css. */
+  --sb-serif:       var(--font-serif);
+  --sb-display:     'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --sb-mono:        'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* The editorial paper tokens, inverted for slate. */
+  --ed-paper:       var(--sb-ground);
+  --ed-paper-soft:  #3E4754;
+  --ed-paper-deep:  var(--sb-mat);
+  --ed-ink:         var(--sb-ink);
+  --ed-ink-2:       var(--sb-ink-2);
+  --ed-ink-3:       var(--sb-ink-3);
+  --ed-ink-muted:   var(--sb-ink-muted);
+  --ed-rule:        var(--sb-hair-color);
+  --ed-rule-strong: var(--sb-rule-color);
+  --ed-link:        var(--sb-cyan);
+  --ed-link-hover:  var(--sb-link-hover);
 }
 
-/* Dark activation #1 — OS preference, only when no explicit choice is stamped */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --ed-paper:      var(--at-lntd-paper);
-    --ed-paper-soft: var(--at-lntd-paper-soft);
-    --ed-ink:        var(--at-lntd-ink);
-    --ed-ink-2:      var(--at-lntd-ink-2);
-    --ed-ink-3:      var(--at-lntd-ink-3);
-    --ed-ink-muted:  var(--at-lntd-ink-muted);
-    --ed-rule:       var(--at-lntd-rule);
-    --ed-link-hover: var(--at-lntd-link-hover);
-    --at-lnt-cyan-ink:    var(--at-lntd-cyan-ink);
-    --at-lnt-cyan-bright: var(--at-lntd-cyan-bright);
-    --at-lnt-cyan-line:   var(--at-lntd-cyan-line);
-    --at-lnt-cyan-wash:   var(--at-lntd-cyan-wash);
-  }
-}
-/* Dark activation #2 — explicit toggle, wins over OS pref either direction */
-:root[data-theme="dark"] {
-  --ed-paper:      var(--at-lntd-paper);
-  --ed-paper-soft: var(--at-lntd-paper-soft);
-  --ed-ink:        var(--at-lntd-ink);
-  --ed-ink-2:      var(--at-lntd-ink-2);
-  --ed-ink-3:      var(--at-lntd-ink-3);
-  --ed-ink-muted:  var(--at-lntd-ink-muted);
-  --ed-rule:       var(--at-lntd-rule);
-  --ed-link-hover: var(--at-lntd-link-hover);
-  --at-lnt-cyan-ink:    var(--at-lntd-cyan-ink);
-  --at-lnt-cyan-bright: var(--at-lntd-cyan-bright);
-  --at-lnt-cyan-line:   var(--at-lntd-cyan-line);
-  --at-lnt-cyan-wash:   var(--at-lntd-cyan-wash);
-}
-
-* { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--sb-ground); }
 body { margin: 0; }
 
-/* ---------- Top nav ---------- */
+/* ---------- The page ---------- */
+.ed-page {
+  position: relative;
+  background: var(--sb-ground);
+  color: var(--sb-ink);
+  font-family: var(--sb-serif);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern", "liga", "onum";
+}
+/* Stone grain: fractal noise, white at half alpha, laid at 7 percent. */
+.ed-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: var(--sb-grain-opacity);
+  background-image: var(--sb-grain);
+}
+.ed-page a:focus-visible { outline: 2px solid var(--sb-link-hover); outline-offset: 2px; }
+
+/* ---------- Top nav: the nameplate, small, with the section index ---------- */
 .lnt-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: var(--ed-paper);
-  border-bottom: 1px solid var(--at-lnt-cyan-line);
+  position: relative;
+  top: auto;
+  z-index: auto;
+  background: var(--sb-ground);
+  border-bottom: var(--sb-heavy);
+}
+.lnt-nav::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -6px;
+  border-bottom: var(--sb-hair);
 }
 .lnt-nav-inner {
-  max-width: 1040px;
+  max-width: var(--sb-page);
   margin: 0 auto;
-  padding: 14px 24px;
+  padding: 10px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 8px 24px;
 }
 .lnt-nav-brand {
   display: inline-flex;
   align-items: baseline;
-  gap: 2px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: -0.01em;
-  color: var(--ed-ink);
+  gap: 0;
+  font-family: var(--sb-display);
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--sb-ink);
   text-decoration: none;
+  text-shadow: 0 1px 0 var(--sb-impression);
 }
-.lnt-nav-brand .accent { color: var(--at-lnt-cyan-ink); }
+.lnt-nav-brand .accent { color: var(--sb-ink); font-weight: 500; }
 .lnt-nav-links {
   display: flex;
-  gap: 24px;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  font-family: var(--sb-mono);
+  font-size: 12px;
 }
 .lnt-nav-links a {
-  color: var(--ed-ink-2);
+  position: relative;
+  display: block;
+  padding: 10px 16px;
+  font-family: var(--sb-mono);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sb-ink);
   text-decoration: none;
   transition: color 120ms;
 }
-.lnt-nav-links a:hover { color: var(--ed-link-hover); }
+.lnt-nav-links a + a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  border-left: var(--sb-hair);
+}
+.lnt-nav-links a:hover, .lnt-nav-links a:focus-visible { color: var(--sb-link-hover); }
 .lnt-nav-right { display: flex; align-items: center; gap: 20px; }
-.lnt-theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border-radius: 8px;
-  border: 1px solid var(--at-lnt-cyan-line);
-  background: var(--at-lnt-cyan-wash);
-  color: var(--at-lnt-cyan-ink);
-  cursor: pointer;
-  transition: background 120ms, border-color 120ms;
-}
-.lnt-theme-toggle:hover { background: var(--at-lnt-cyan-line); }
-.lnt-theme-toggle svg { width: 16px; height: 16px; display: block; }
-.lnt-theme-toggle .ti-moon { display: none; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .lnt-theme-toggle .ti-sun { display: none; }
-  :root:not([data-theme="light"]) .lnt-theme-toggle .ti-moon { display: block; }
-}
-:root[data-theme="dark"] .lnt-theme-toggle .ti-sun { display: none; }
-:root[data-theme="dark"] .lnt-theme-toggle .ti-moon { display: block; }
-:root[data-theme="light"] .lnt-theme-toggle .ti-sun { display: block; }
-:root[data-theme="light"] .lnt-theme-toggle .ti-moon { display: none; }
+/* One ground. The light/dark switch has nothing to switch under this dress. */
+.lnt-theme-toggle { display: none; }
 @media (max-width: 640px) {
-  .lnt-nav-links { display: none; }
+  .lnt-nav-inner { padding: 12px 18px 0; }
+  .lnt-nav-links {
+    display: flex;
+    order: 3;
+    flex-basis: 100%;
+    margin-top: 4px;
+    border-top: var(--sb-hair);
+  }
+  .lnt-nav-links a { padding: 11px 10px; font-size: 11px; letter-spacing: 0.1em; }
 }
 
-/* ---------- Header / frontispiece ---------- */
+/* ---------- Header: the ears, the lead head, the masthead ---------- */
 .lnt-header {
-  max-width: 1040px;
+  max-width: var(--sb-page);
   margin: 0 auto;
-  padding: 20px 24px 0;
+  padding: 36px 24px 0;
 }
+/* The ears: the meta label left, the printer's color bar right. */
 .lnt-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 0 0 22px;
+  padding: 0 0 8px;
+  border-bottom: var(--sb-hair);
+  font-family: var(--sb-mono);
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: .14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--at-lnt-cyan-ink);
-  margin: 24px 0 20px;
+  color: var(--sb-ink-3);
+}
+.lnt-eyebrow::after {
+  content: '';
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin-right: 26px;
+  background: var(--sb-cyan);
+  box-shadow: 13px 0 0 var(--sb-magenta), 26px 0 0 var(--sb-ink);
+}
+.ed-title {
+  margin: 0 0 14px;
+  font-family: var(--sb-display);
+  font-weight: 500;
+  font-size: clamp(42px, 5.6vw, 84px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: var(--sb-ink);
+  text-shadow: 0 1px 0 var(--sb-impression);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 .lnt-title { margin-top: 0; }
-
+/* The accent line under the lead head: serif italic on a hairline. */
+.ed-dek {
+  margin: 0;
+  padding-bottom: 16px;
+  border-bottom: var(--sb-hair);
+  max-width: none;
+  font-family: var(--sb-serif);
+  font-style: italic;
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1.2;
+  color: var(--sb-ink);
+  text-wrap: pretty;
+}
+/* The masthead: the retrieval year as the nameplate numeral, between the
+   heavy rule and a hairline, the accession folios beside it. */
 .lnt-frontispiece {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   flex-wrap: wrap;
-  gap: 28px;
-  border-top: 1px solid var(--at-lnt-cyan-line);
-  border-bottom: 1px solid var(--at-lnt-cyan-line);
-  padding: 24px 0;
-  margin: 44px 0 0;
+  gap: 20px 28px;
+  border-top: var(--sb-heavy);
+  border-bottom: var(--sb-hair);
+  padding: 14px 0 12px;
+  margin: 28px 0 0;
 }
-.lnt-fr-meta { display: flex; flex-direction: column; gap: 7px; }
+.lnt-fr-meta { display: flex; flex-direction: column; gap: 6px; }
 .lnt-fr-row {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: .06em;
-  color: var(--at-lnt-cyan-ink);
   margin: 0;
+  font-family: var(--sb-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-ink-3);
+  font-variant-numeric: tabular-nums;
 }
 .lnt-fr-row .k {
-  color: var(--ed-ink-3);
+  color: var(--sb-ink-2);
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: .1em;
   margin-right: 10px;
 }
 .lnt-fr-year { text-align: right; }
 .lnt-fr-year-num {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: clamp(40px, 6vw, 64px);
-  letter-spacing: .01em;
-  line-height: 1;
-  color: var(--at-lnt-cyan-bright);
   margin: 0;
+  font-family: var(--sb-display);
+  font-weight: 500;
+  font-size: clamp(56px, 9vw, 124px);
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+  color: var(--sb-ink);
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 0 var(--sb-impression);
 }
 .lnt-fr-year-cap {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--ed-ink-3);
   margin: 8px 0 0;
+  font-family: var(--sb-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-ink-3);
 }
 @media (max-width: 640px) {
   .lnt-frontispiece { flex-direction: column; align-items: flex-start; }
   .lnt-fr-year { text-align: left; }
 }
 
-/* ---------- Main content wrapper — the reading vocabulary's required
-   structural anchor (archetypes.py VOCABULARY["reading"]). Explicit
-   display:block matches <main>'s UA default exactly (zero visual
-   change) — this rule exists so the class has a real CSS selector a
-   theme's dress can hook into, not because the page needed styling. ---------- */
+/* ---------- Main ---------- */
 .lnt-main { display: block; }
 
-/* ---------- Epigraph — sits between the frontispiece and the records ---------- */
+/* ---------- Epigraph: the pull, between the masthead and the records ---------- */
 .lnt-epigraph-wrap {
-  max-width: 720px;
+  max-width: var(--sb-page);
   margin: 0 auto;
-  padding: 56px 24px 0;
+  padding: 40px 24px 0;
 }
-
-/* ---------- Record scaffold (one per section) ---------- */
-.lnt-record {
-  padding: 96px 24px;
-  border-bottom: 1px solid var(--ed-rule);
-}
-.lnt-record:first-of-type { padding-top: 72px; }
-.lnt-record:last-of-type { border-bottom: 0; padding-bottom: 120px; }
-.lnt-record-inner {
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.lnt-rail {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 10px;
-  font-family: 'JetBrains Mono', monospace;
+.lnt-tag {
+  display: block;
+  margin: 0 0 4px;
+  padding: 0 0 8px;
+  gap: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-family: var(--sb-mono);
   font-size: 11px;
-  letter-spacing: .07em;
-  margin: 0 0 28px;
-}
-.lnt-rail-item { color: var(--at-lnt-cyan-ink); text-transform: uppercase; }
-.lnt-rail-item .k { color: var(--ed-ink-3); margin-right: 6px; }
-.lnt-rail-sep { color: var(--ed-ink-muted); }
-
-.lnt-open {
-  font-family: 'JetBrains Mono', monospace;
   font-weight: 600;
-  font-size: 26px;
-  letter-spacing: .04em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ed-ink);
-  margin: 0 0 36px;
+  color: var(--sb-ink-3);
+}
+.lnt-passage {
+  margin: 0;
+  padding: 12px 0 18px;
+  border: 0;
+  border-top: var(--sb-heavy);
+  border-bottom: var(--sb-hair);
+  background: none;
+}
+.lnt-passage p {
+  margin: 0 0 0.6em;
+  font-family: var(--sb-serif);
+  font-style: italic;
+  font-size: clamp(24px, 2.3vw, 30px);
+  line-height: 1.3;
+  color: var(--sb-ink);
+  text-wrap: pretty;
+  hanging-punctuation: none;
+}
+.lnt-passage p:last-child { margin-bottom: 0; }
+.lnt-passage p::before { content: '\201C'; color: var(--sb-ink-2); margin-right: 2px; }
+.lnt-passage p::after { content: '\201D'; color: var(--sb-ink-2); margin-left: 2px; }
+
+/* ---------- Records: a folio column on the left, the copy on the right ---------- */
+.lnt-record {
+  max-width: var(--sb-page);
+  margin: 0 auto;
+  padding: 44px 24px 48px;
+  border-bottom: var(--sb-hair);
+}
+.lnt-record:first-of-type { padding-top: 40px; }
+.lnt-record:last-of-type { border-bottom: 0; padding-bottom: 72px; }
+.lnt-record-inner {
+  max-width: none;
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+  column-gap: var(--sb-gutter);
+  align-items: start;
+}
+.lnt-record-inner > * { grid-column: 2; min-width: 0; }
+/* The rail becomes the folio column: rec-ids in mono, stacked, a column
+   rule to its right that runs the record's full height. */
+.lnt-rail {
+  grid-column: 1;
+  grid-row: 1 / span 40;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 10px;
+  margin: 0;
+  padding-right: var(--sb-gutter);
+  border-right: var(--sb-rule);
+  font-family: var(--sb-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.lnt-rail-item {
+  display: block;
+  color: var(--sb-ink-3);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.lnt-rail-item .k {
+  display: block;
+  margin: 0 0 2px;
+  color: var(--sb-ink-2);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+.lnt-rail-sep { display: none; }
+/* The section head: the double rule under it. */
+.lnt-open {
+  position: relative;
+  margin: 0 0 24px;
+  padding-bottom: 10px;
+  border-bottom: var(--sb-heavy);
+  font-family: var(--sb-display);
+  font-weight: 500;
+  font-size: clamp(30px, 3.2vw, 44px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  text-transform: none;
+  color: var(--sb-ink);
+  text-shadow: 0 1px 0 var(--sb-impression);
+  text-wrap: balance;
+}
+.lnt-open::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -6px;
+  border-bottom: var(--sb-hair);
 }
 
-/* Shared corner-reticle frame — retrieved-record motif */
+/* The corner marks become plain hairline corners. */
 .lnt-frame { position: relative; }
 .lnt-frame::before, .lnt-frame::after {
   content: '';
   position: absolute;
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   border-style: solid;
-  border-color: var(--at-lnt-cyan-line);
+  border-color: var(--sb-hair-color);
   border-width: 0;
 }
-.lnt-frame::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
-.lnt-frame::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+.lnt-frame::before { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
+.lnt-frame::after { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
 
-/* ---------- Plain running prose (the lab's own institutional prose) ---------- */
+/* ---------- Running prose ---------- */
 .lnt-prose {
-  font-family: var(--font-serif);
-  font-size: var(--ed-t-body);
-  line-height: var(--ed-lh-body);
-  color: var(--ed-ink);
-  margin: 0 0 1.4em;
+  margin: 0 0 1em;
+  font-family: var(--sb-serif);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--sb-ink);
   text-wrap: pretty;
-  hanging-punctuation: first last;
+  hanging-punctuation: first;
 }
 .lnt-prose:last-child { margin-bottom: 0; }
-
-/* ---------- Passages (retrieved-transcript quotation, e.g. the epigraph) ---------- */
-.lnt-passage {
-  margin: 0 0 4px;
-  padding: 28px 32px;
-  border: 1px solid var(--ed-rule);
-  background: var(--ed-paper-soft);
-}
-.lnt-passage p {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--ed-t-body);
-  line-height: var(--ed-lh-body);
-  color: var(--ed-ink);
-  margin: 0 0 1em;
-  text-wrap: pretty;
-  hanging-punctuation: first last;
-}
-.lnt-passage p:last-child { margin-bottom: 0; }
-
-.lnt-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--at-lnt-cyan-ink);
-  background: var(--at-lnt-cyan-wash);
-  border: 1px solid var(--at-lnt-cyan-line);
-  border-radius: 999px;
-  padding: 5px 12px;
-  margin: 0 0 10px;
+/* The first paragraph of a record opens on a drop cap. */
+.lnt-open + .lnt-prose::first-letter {
+  float: left;
+  font-size: 4.2em;
+  line-height: 0.82;
+  padding: 5px 8px 0 0;
+  font-weight: 700;
+  color: var(--sb-ink);
 }
 
-/* ---------- Keystone / pull-quote cards — the attributed quotes ---------- */
+/* ---------- Pull quotes: serif italic, heavy rule above, hairline below ---------- */
 .lnt-pull-card {
-  padding: 32px 32px 30px;
-  border: 1px solid var(--ed-rule);
-  background: var(--ed-paper-soft);
-  margin: 0 0 32px;
+  clear: both;
+  margin: 8px 0 28px;
+  padding: 12px 0 18px;
+  border: 0;
+  border-top: var(--sb-heavy);
+  border-bottom: var(--sb-hair);
+  background: none;
 }
 .lnt-pull-card:last-child { margin-bottom: 0; }
 .lnt-pull-id {
-  font-family: 'JetBrains Mono', monospace;
+  margin: 0 0 10px;
+  font-family: var(--sb-mono);
   font-size: 11px;
-  letter-spacing: .1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--at-lnt-cyan-ink);
-  margin: 0 0 18px;
+  color: var(--sb-ink-3);
+  font-variant-numeric: tabular-nums;
 }
 .lnt-pull-quote { margin: 0; }
 .lnt-pull-quote p {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--ed-t-pull);
-  line-height: var(--ed-lh-pull);
-  color: var(--ed-ink);
   margin: 0;
+  font-family: var(--sb-serif);
+  font-style: italic;
+  font-size: clamp(24px, 2.3vw, 30px);
+  line-height: 1.3;
+  color: var(--sb-ink);
   text-wrap: pretty;
 }
+.lnt-pull-quote p::before { content: '\201C'; color: var(--sb-ink-2); margin-right: 2px; }
+.lnt-pull-quote p::after { content: '\201D'; color: var(--sb-ink-2); margin-left: 2px; }
 
-/* ---------- Artifact card — a distinct record block ---------- */
+/* ---------- Artifact records: a boxed notice under a heavy rule ---------- */
 .lnt-artifact-card {
-  padding: 32px 32px 28px;
-  border: 1px solid var(--ed-rule);
-  background: var(--ed-paper-soft);
-  margin: 0 0 20px;
+  clear: both;
+  margin: 8px 0 24px;
+  padding: 12px 0 18px;
+  border: 0;
+  border-top: var(--sb-heavy);
+  border-bottom: var(--sb-hair);
+  background: none;
 }
 .lnt-artifact-card:last-child { margin-bottom: 0; }
 .lnt-artifact-file {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 15px;
-  color: var(--ed-ink);
-  margin: 0 0 14px;
-  word-break: break-word;
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: var(--sb-hair);
+  font-family: var(--sb-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sb-ink);
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
 .lnt-artifact-body {
-  font-family: var(--font-serif);
-  font-size: var(--ed-t-body);
-  line-height: var(--ed-lh-body);
-  color: var(--ed-ink);
-  margin: 0 0 24px;
+  margin: 0 0 1em;
+  font-family: var(--sb-serif);
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--sb-ink-2);
   text-wrap: pretty;
-  hanging-punctuation: first last;
+  hanging-punctuation: none;
 }
 .lnt-status {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: .82em;
-  letter-spacing: .1em;
+  font-family: var(--sb-mono);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--at-lnt-cyan-ink);
+  color: var(--sb-ink);
 }
 .lnt-artifact-meta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  color: var(--at-lnt-cyan-ink);
-  padding-top: 18px;
-  border-top: 1px solid var(--ed-rule);
   margin: 0;
+  padding-top: 10px;
+  border-top: var(--sb-hair);
+  font-family: var(--sb-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-ink-3);
+  font-variant-numeric: tabular-nums;
 }
-.lnt-artifact-meta .k { color: var(--ed-ink-3); margin-right: 6px; }
+.lnt-artifact-meta .k { color: var(--sb-ink-2); font-weight: 600; letter-spacing: 0.12em; margin-right: 6px; }
+.lnt-artifact-meta .lnt-rail-sep { display: inline; color: var(--sb-ink-3); margin: 0 6px; }
 
-/* ---------- Footer colophon ---------- */
+/* ---------- Footer: the heavy rule, the color bar, the imprint ---------- */
 .lnt-footer {
-  max-width: 1040px;
-  margin: 0 auto;
-  padding: 24px 24px 96px;
-  text-align: center;
+  position: relative;
+  max-width: none;
+  margin: 24px 0 0;
+  /* full-bleed rule, content on the broadsheet measure, no extra markup */
+  padding: 28px max(24px, calc((100% - var(--sb-page)) / 2)) 44px;
+  border-top: var(--sb-heavy);
+  text-align: left;
 }
+.lnt-footer::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 5px;
+  border-top: var(--sb-hair);
+}
+/* The printer's color bar. */
 .lnt-footer-rule {
-  height: 1px;
-  background: var(--at-lnt-cyan-line);
-  margin-bottom: 32px;
+  width: 9px;
+  height: 9px;
+  margin: 0 0 18px;
+  background: var(--sb-cyan);
+  box-shadow: 13px 0 0 var(--sb-magenta), 26px 0 0 var(--sb-ink);
 }
 .lnt-colophon {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--ed-ink-3);
-  margin: 0 0 28px;
+  margin: 0 0 14px;
+  font-family: var(--sb-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--sb-ink-2);
 }
-.lnt-colophon .accent { color: var(--at-lnt-cyan-ink); }
+.lnt-colophon .accent { color: var(--sb-ink); font-weight: 600; }
 .lnt-footer-links {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: var(--ed-ink-3);
-  margin: 0 0 24px;
-}
-.lnt-footer-links a { color: var(--ed-ink-3); text-decoration: none; transition: color 120ms; }
-.lnt-footer-links a:hover { color: var(--ed-link-hover); }
-.lnt-footer-meta {
-  font-family: 'JetBrains Mono', monospace;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  margin: 0 0 14px;
+  padding: 4px 0;
+  border-top: var(--sb-hair);
+  border-bottom: var(--sb-hair);
+  font-family: var(--sb-mono);
   font-size: 12px;
-  letter-spacing: .04em;
-  line-height: 1.7;
-  color: var(--ed-ink-3);
+  color: var(--sb-ink);
+}
+.lnt-footer-links a {
+  position: relative;
+  display: block;
+  padding: 6px 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sb-ink);
+  text-decoration: none;
+  transition: color 120ms;
+}
+.lnt-footer-links a:first-child { padding-left: 0; }
+.lnt-footer-links a + a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  border-left: var(--sb-hair);
+}
+.lnt-footer-links a:hover, .lnt-footer-links a:focus-visible { color: var(--sb-link-hover); }
+.lnt-footer-meta {
   margin: 0;
+  font-family: var(--sb-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  color: var(--sb-ink-2);
+}
+/* The imprint: the wayfinding sentence. Generated content, so no link. */
+.lnt-footer::after {
+  content: 'Theme: October 2026 · this site changes monthly · see all themes at 626labs.dev/themes.html';
+  display: block;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: var(--sb-hair);
+  font-family: var(--sb-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: var(--sb-ink-2);
 }
 
+/* ---------- 390 ---------- */
 @media (max-width: 640px) {
-  .lnt-header { padding: 20px 16px 0; }
-  .lnt-epigraph-wrap { padding: 40px 16px 0; }
-  .lnt-record { padding: 56px 16px; }
-  .lnt-record:first-of-type { padding-top: 40px; }
-  .lnt-record:last-of-type { padding-bottom: 72px; }
-  .lnt-open { font-size: 21px; }
-  .lnt-passage { padding: 22px 20px; }
-  .lnt-pull-card { padding: 24px 20px 22px; }
-  .lnt-artifact-card { padding: 24px 20px 22px; }
-  .lnt-footer { padding: 24px 16px 72px; }
+  .lnt-header { padding: 26px 18px 0; }
+  .lnt-epigraph-wrap { padding: 32px 18px 0; }
+  .lnt-record { padding: 36px 18px 40px; }
+  .lnt-record:first-of-type { padding-top: 32px; }
+  .lnt-record:last-of-type { padding-bottom: 56px; }
+  .lnt-record-inner { grid-template-columns: minmax(0, 1fr); }
+  .lnt-record-inner > * { grid-column: 1; }
+  .lnt-rail {
+    grid-column: 1;
+    grid-row: auto;
+    align-self: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    padding: 0 0 10px;
+    margin: 0 0 18px;
+    border-right: 0;
+    border-bottom: var(--sb-hair);
+  }
+  .lnt-rail-item .k { display: inline; margin: 0 6px 0 0; }
+  .lnt-open { font-size: 28px; }
+  .lnt-passage { padding: 10px 0 14px; }
+  .lnt-pull-card { padding: 10px 0 14px; }
+  .lnt-artifact-card { padding: 10px 0 14px; }
+  .lnt-footer { padding: 22px 18px 36px; }
 }
-
-/* ============================================================
-   The base token vocabulary these pages used to find here now lives in
-   archetypes/reading-tokens.css, which thesis.html and workflow.html
-   link instead of this file. This file is the DRESS: about.html's Long
-   Now Terminal treatment, reached by its easter-egg theme picker.
-
-   Keeping them apart is what stops a future element rule added here from
-   landing uninvited on two hand-authored pages that only ever wanted the
-   palette. See reading-tokens.css's header for the regression that shape
-   caused on the product archetype before it was split.
-   ============================================================ */
