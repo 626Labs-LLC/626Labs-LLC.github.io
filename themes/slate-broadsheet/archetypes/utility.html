@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Theme: slate-broadsheet — utility archetype.
+     Extracted from press.html (the brief's designated reference), the
+     shared chrome — nav, page-hero wrapper, footer — is byte-identical
+     across press.html/privacy.html/themes.html today (verified by diff,
+     not assumed). {{UTILITY:...}} tokens mark the per-page content.
+
+     The chrome CSS lives in the sibling utility.css, not inline here —
+     that split is now load-bearing, not aspirational: press.html and
+     privacy.html actually link archetypes/utility.css via a render-hub.py-
+     owned "theme-css" zone that tracks the ACTIVE theme (content/
+     themes.json), so utility pages stop being frozen in whatever theme
+     last hand-authored them once the site rotates. See utility.css's own
+     header for the extraction provenance and the deliberate drift it
+     preserves, and docs/theme-archetypes.md, "The utility archetype file."
+
+     This HTML shell itself still has NO live render-hub.py consumer —
+     press.html/privacy.html/themes.html stay hand-authored HTML, only
+     their stylesheet <link> is renderer-owned. It exists so theme
+     completeness (theme_registry/theme-doctor) can require all four
+     archetype files with the shell.html fallback gone, and as the target
+     markup shape for whichever later task wires a real utility HTML
+     renderer.
+
+     themes.html is a deliberate exception to the utility.css link below:
+     it keeps linking tokens.css (also via a theme-css zone, so it still
+     tracks the active theme) because switching it to utility.css would
+     have changed its pixels — see utility.css's header comment for the
+     specifics (unconditional h1 bloom, .page-lead max-width drift).
+
+     Known gap this file does NOT solve: utility pages have no shared
+     component stylesheet the way reading pages share Design/editorial.css.
+     Each page's body-specific CSS (press.html's .copy-block/.asset-grid,
+     privacy.html's .tldr, themes.html's .theme-card gallery, …) stays
+     page-specific and travels with {{UTILITY:BODY}} — utility.css only
+     carries the genuinely shared skeleton: base tokens, resets, nav,
+     page-hero, footer. -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{{UTILITY:HEAD}}
+<link rel="icon" type="image/png" href="/favicon-626.png" />
+
+<!-- Theme treatment layer — the utility archetype's chrome CSS lives
+     in the sibling utility.css (not embedded here), same file
+     press.html/privacy.html actually link. -->
+<link rel="stylesheet" href="/themes/slate-broadsheet/archetypes/utility.css">
+</head>
+<body>
+<div class="pb-scanlines" aria-hidden="true"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html#top">
+      <span class="brand-626">626</span><span class="brand-labs">&nbsp;Labs</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#work">Work</a>
+      <a href="plugins/#thesis">Thinking</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <a href="index.html#contact" class="nav-cta">
+      Get in touch
+      <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="page-hero-bg">
+    <div class="grid"></div>
+    <div class="glow"></div>
+  </div>
+  <div class="wrap page-hero-inner">
+    <div class="eyebrow">
+      <span class="pulse"></span>
+      <span>{{UTILITY:EYEBROW}}</span>
+    </div>
+    <h1 class="page-title">{{UTILITY:PAGE_TITLE}}</h1>
+{{UTILITY:PAGE_LEAD}}
+    <p class="page-meta">
+{{UTILITY:PAGE_META}}
+    </p>
+  </div>
+</header>
+
+{{UTILITY:BODY}}
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-meta">
+      &copy; 2026 626 Labs LLC &middot; <span class="brand-tagline">Imagine Something Else.</span><br/>
+      &ldquo;Claude&rdquo; and &ldquo;claude.ai&rdquo; are trademarks of Anthropic PBC, used nominatively.
+    </div>
+    <div class="footer-links">
+{{UTILITY:FOOTER_LINKS}}
+      <a href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">GitHub &#8599;</a>
+    </div>
+  </div>
+</footer>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>

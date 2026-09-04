@@ -1,0 +1,25 @@
+{
+  "name": "The Slate Broadsheet",
+  "slug": "slate-broadsheet",
+  "thesis": "The page is printed, not lit.",
+  "month": "2026-10",
+  "status": "queued",
+  "contrastPairs": [
+    [
+      "--fg-1",
+      "--bg-0"
+    ],
+    [
+      "--fg-2",
+      "--bg-0"
+    ],
+    [
+      "--fg-3",
+      "--bg-1"
+    ],
+    [
+      "--cyan",
+      "--bg-0"
+    ]
+  ]
+}
