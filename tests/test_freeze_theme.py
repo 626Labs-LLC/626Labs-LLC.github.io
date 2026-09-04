@@ -35,8 +35,35 @@ def test_freeze_creates_archive_with_noindex_and_banner(tmp_path):
 def test_freeze_rewrites_stylesheet_to_local_copy(tmp_path):
     out = fz.freeze("2026-09", root=_site(tmp_path))
     html = (out / "index.html").read_text(encoding="utf-8")
-    assert 'href="tokens.css"' in html
+    # Root-absolute, not a bare filename: the document carries <base href="/">
+    # (next test), under which a bare `tokens.css` resolves to /tokens.css and
+    # the archive renders undressed.
+    assert 'href="/themes/archive/2026-09/tokens.css"' in html
+    assert 'href="tokens.css"' not in html
     assert "/themes/t/tokens.css" not in html
+
+
+def test_freeze_injects_base_href_so_relative_paths_resolve_against_the_live_root(tmp_path):
+    # Archives are write-once, and the first simulated freeze served from the
+    # site root 404ed nine relative paths (the logo lockup, seven product
+    # thumbnails, the plugin-versions fetch) under /themes/archive/<month>/.
+    # <base href="/"> is the fix; it goes right after the robots meta, inside
+    # <head>, before any href the browser has to resolve.
+    root = _site(tmp_path)
+    (root / "index.html").write_text(
+        '<html><head><link rel="stylesheet" href="/themes/t/tokens.css"></head>'
+        '<body><img src="assets/thumb-x.png"><a href="#work">w</a></body></html>',
+        encoding="utf-8")
+    out = fz.freeze("2026-09", root=root)
+    html = (out / "index.html").read_text(encoding="utf-8")
+    head = html[: html.index("</head>")]
+    assert '<base href="/">' in head
+    assert head.index('name="robots"') < head.index("<base ")
+    assert head.index("<base ") < head.index('rel="stylesheet"')
+    # Fragment links are deliberately left as written (the page's own nav
+    # script handles them); relative asset paths are left for <base> to fix.
+    assert 'href="#work"' in html
+    assert 'src="assets/thumb-x.png"' in html
 
 
 def test_freeze_refuses_to_overwrite(tmp_path):
@@ -68,7 +95,7 @@ def test_freeze_copies_and_rewrites_additional_local_stylesheets(tmp_path):
 
     out = fz.freeze("2026-09", root=root)
     html = (out / "index.html").read_text(encoding="utf-8")
-    assert 'href="colors_and_type.css"' in html
+    assert 'href="/themes/archive/2026-09/colors_and_type.css"' in html
     assert "/Design/colors_and_type.css" not in html
     assert (out / "colors_and_type.css").read_text(encoding="utf-8") == ":root{--y:#000}"
 
@@ -247,7 +274,7 @@ def test_freeze_flattens_colliding_basenames(tmp_path):
 
     out = fz.freeze("2026-09", root=root)
     html = (out / "index.html").read_text(encoding="utf-8")
-    assert 'href="themes__t__tokens.css"' in html
-    assert 'href="Design__tokens.css"' in html
+    assert 'href="/themes/archive/2026-09/themes__t__tokens.css"' in html
+    assert 'href="/themes/archive/2026-09/Design__tokens.css"' in html
     assert (out / "themes__t__tokens.css").read_text(encoding="utf-8") == ":root{--x:#fff}"
     assert (out / "Design__tokens.css").read_text(encoding="utf-8") == ":root{--z:#123}"
