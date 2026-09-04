@@ -110,6 +110,15 @@ VOCABULARY: dict[str, set[str]] = {
         "page-title",
         "page-meta",
         "footer-inner",
+        # The reading measure is part of the contract (Este's ruling,
+        # 2026-09-04, from PR #97's open question). press.html and
+        # privacy.html own no chrome; `.wrap` is the column their prose
+        # sits in and `.nav-inner` is the nav's, and a utility.css that
+        # styles neither ships both pages full-bleed at 1440. Both live
+        # themes style both; a future theme that drops either now fails
+        # the vocabulary check instead of shipping.
+        "wrap",
+        "nav-inner",
     },
 }
 
