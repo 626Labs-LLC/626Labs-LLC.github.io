@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Paper and Ink — October theme bake-off (2026-09-03)</title>
+<!--
+  Gallery for the M2b bake-off. Editorial tokens via ../../editorial.css
+  (resolves to /Design/editorial.css when the repo root is served). Every
+  color and type value below is a var() of an --ed-* token; nothing inlined.
+  Serve: python -m http.server 8631 from the repo root, then open
+  /Design/explorations/2026-09-03-paper-and-ink/index.html
+-->
+<link rel="stylesheet" href="../../editorial.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  .bakeoff-shell { max-width: 960px; margin: 0 auto; padding: 72px 24px 140px; }
+  .bakeoff-eyebrow {
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
+    font-size: var(--ed-t-eyebrow); letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ed-ink-3); margin: 0 0 12px;
+  }
+  .bakeoff-title { font-family: var(--font-serif); font-size: var(--ed-t-h1); line-height: 1.05; margin: 0 0 16px; color: var(--ed-ink); }
+  .bakeoff-intro { font-size: var(--ed-t-dek); line-height: 1.4; color: var(--ed-ink-2); margin: 0 0 12px; max-width: 40ch; }
+  .bakeoff-dateline { font-size: var(--ed-t-caption); color: var(--ed-ink-3); margin: 0 0 48px; border-top: 1px solid var(--ed-rule); padding-top: 12px; }
+  .bakeoff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .bakeoff-card {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--ed-paper-soft); border: 1px solid var(--ed-rule-strong);
+    padding: 24px 22px 26px; transition: border-color .15s ease;
+  }
+  .bakeoff-card:hover, .bakeoff-card:focus-visible { border-color: var(--ed-ink-muted); outline: none; }
+  .bakeoff-card .slug { font-family: var(--font-mono, 'JetBrains Mono', monospace); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ed-ink-3); margin: 0 0 10px; }
+  .bakeoff-card .name { font-family: var(--font-serif); font-size: var(--ed-t-h3); margin: 0 0 10px; color: var(--ed-ink); }
+  .bakeoff-card .thesis { font-size: var(--ed-t-foot); line-height: 1.5; color: var(--ed-ink-2); margin: 0; }
+  .bakeoff-card .shots { margin: 16px 0 0; font-size: 13px; color: var(--ed-ink-3); }
+  .bakeoff-card .shots span { display: inline-block; margin-right: 12px; }
+  .bakeoff-foot { margin-top: 56px; font-size: var(--ed-t-foot); color: var(--ed-ink-3); border-top: 1px solid var(--ed-rule); padding-top: 16px; }
+  .bakeoff-foot a { color: var(--ed-ink-2); }
+</style>
+</head>
+<body class="ed-page">
+  <div class="bakeoff-shell">
+    <p class="bakeoff-eyebrow">626 Labs — design bake-off</p>
+    <h1 class="bakeoff-title">Paper and Ink — October's theme (2026-09-03)</h1>
+    <p class="bakeoff-intro">Three print traditions, one specimen. Judge the chrome; the words are identical on every sheet.</p>
+    <p class="bakeoff-dateline">Follows August's black CRT. The question on every sheet: does a visitor read the site as alive, or as broken.</p>
+    <div class="bakeoff-grid">
+      <a class="bakeoff-card" href="sheet-broadsheet.html" data-slug="broadsheet">
+        <p class="slug">broadsheet</p>
+        <p class="name">The Broadsheet</p>
+        <p class="thesis">A newspaper. Multi-column grid, hairline rules, a dateline, dense headline hierarchy with real decks. Products as columned listings, Field Notes as a front-page rail. Fast, informational, ink-heavy.</p>
+        <p class="shots"><span>shot-broadsheet-1440.png</span><span>shot-broadsheet-390.png</span></p>
+      </a>
+      <a class="bakeoff-card" href="sheet-monograph.html" data-slug="monograph">
+        <p class="slug">monograph</p>
+        <p class="name">The Monograph</p>
+        <p class="thesis">An exhibition catalog. Enormous margins, one commanding display serif, products as plates with numbered captions, one idea per screenful. Slow, expensive, confident.</p>
+        <p class="shots"><span>shot-monograph-1440.png</span><span>shot-monograph-390.png</span></p>
+      </a>
+      <a class="bakeoff-card" href="sheet-field-manual.html" data-slug="field-manual">
+        <p class="slug">field-manual</p>
+        <p class="name">The Field Manual</p>
+        <p class="thesis">A letterpress technical manual. Numbered sections, specification tables, engineering plates, printed-document texture. The lab as it is, a catalog of tools, printed in 1962.</p>
+        <p class="shots"><span>shot-field-manual-1440.png</span><span>shot-field-manual-390.png</span></p>
+      </a>
+    </div>
+    <p class="bakeoff-foot">Rubric, gates, and the verdict form live in <a href="judging-README.md">judging-README.md</a>. Specimen copy in <a href="specimen.md">specimen.md</a>. Token gate: <code>check-tokens.py</code>.</p>
+  </div>
+</body>
+</html>
