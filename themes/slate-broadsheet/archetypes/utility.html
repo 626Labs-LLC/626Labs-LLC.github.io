@@ -2,6 +2,21 @@
 <html lang="en">
 <head>
 <!-- Theme: slate-broadsheet — utility archetype.
+     The Slate Broadsheet's inside page. The markup below is press.html's
+     own chrome shape, kept byte-for-byte because the dress in the sibling
+     utility.css has to fit press.html and privacy.html AS THEY SHIP: the
+     pages own their markup and a theme cannot add an element to them.
+     That is why the shell still carries the empty .page-hero-bg .grid /
+     .glow divs, the .pulse span and the .pb-scanlines div: on this theme
+     the wrapper is display:none, the pulse becomes the printer's color
+     bar, and nothing is painted on the scanlines div. The nameplate sits
+     small in the nav with the section index; the page title is a section
+     head with a reversed folio tab and the accent word in the serif
+     italic; the footer carries the heavy rule, the color bar, and the
+     wayfinding imprint as generated content on .footer-inner::after
+     (no link is possible from generated content; the design spec records
+     this as a limit).
+
      Extracted from press.html (the brief's designated reference), the
      shared chrome — nav, page-hero wrapper, footer — is byte-identical
      across press.html/privacy.html/themes.html today (verified by diff,

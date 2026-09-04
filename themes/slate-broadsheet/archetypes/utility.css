@@ -11,17 +11,18 @@
    treatment block, identical to tokens.css. This file is its own
    resolution group, so nothing here may read a name tokens.css defines.
 
-   Dress half: SEEDED from the August theme's utility dress and awaiting
-   the broadsheet dress (Task 4). What was removed with the seed: the
-   August treatment layer (its bespoke tokens, the scanline overlay, the
-   drafting-grid body background, the h1 bloom). What still stands and is
-   Task 4's to replace: the `.page-hero-bg .grid` and `.glow` rules, the
-   `.nav-cta` and `.eyebrow .pulse` glow box-shadows, the navy-glass nav
-   background, and `h1.page-title .accent`, which paints --brand-gradient
-   AS TEXT via background-clip (press.html "Brand Kit", privacy.html
-   "Policy"): the magenta end is 2.64:1 on slate, under even the 3:1
-   large-text floor, and the browser gate's title assertion measures size,
-   not color. None of it is matte; all of it is dress.
+   Dress half: the Slate Broadsheet, below the token block. press.html and
+   privacy.html as inside pages of the paper: the nameplate small in the
+   nav with the section index and the door, the page title as a section
+   head with a reversed folio tab and the accent word in the serif italic,
+   the eyebrow as the ears (meta label and the printer's color bar), the
+   page-meta as the dateline, the body on the inside-page measure, links
+   in cyan with a pale underline, the footer under the heavy rule with the
+   color bar and the imprint line as generated content. What the seed
+   carried and this dress removed: the `.page-hero-bg .grid` drafting grid
+   and `.glow` blur, the `.nav-cta` and `.eyebrow .pulse` glow box-shadows,
+   the navy-glass sticky nav, and `h1.page-title .accent` painting
+   --brand-gradient as text (2.64:1 at the magenta end). Matte now.
 
    AA CONTRAST, computed with scripts/theme-doctor.py's own WCAG 2.1 math
    (the numbers the gate will grade). The 4.5:1 body floor applies to every
@@ -196,195 +197,416 @@
   --sb-mono:        var(--font-mono);
 }
 
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
+/* ============================================================
+   THE DRESS: press.html and privacy.html as inside pages of the paper.
+
+   Everything below spends only names the token block above defines. This
+   file is its own resolution group (the two pages link nothing else), so
+   a read of anything tokens.css alone declares would be an unresolved
+   var() on a live page. Matte throughout: no glow, no bloom, no grid, no
+   scanline, no gradient field, no gradient-as-text. The brand pair floods
+   a shape in exactly two places, the printer's color bar (three 9px
+   squares, drawn with zero-blur offset box-shadows: copies, not glow) and
+   the 2px rule under the door link (--brand-gradient as a swatch). The
+   three rules --sb-hair / --sb-rule / --sb-heavy are border shorthands
+   and are spent on border-* only; hairline COLOR reads --sb-hair-color.
+
+   Under the grain, --sb-link-hover (--magenta-pale) is a --bg-0 ink only.
+   It is the hover ink of the nav, the door and the footer, all of which
+   sit on the ground. a.inline-link is the exception: press.html places
+   inline links inside --bg-1 contact cards, so its hover ink is
+   --cyan-pale (5.80:1 on grained --bg-1) and the magenta arrives as the
+   underline swatch instead. That is the one place this dress departs from
+   the sheet's anchor hover, and the grained-contrast rule is why.
+
+   The imprint. The wayfinding sentence is generated content on
+   .footer-inner::after, because these two pages own their footer markup
+   and a theme cannot add an element to them. Generated content cannot
+   carry a link, so "see all themes" names the URL in prose instead of
+   linking it. Recorded in the design spec as a limit; the durable fix is
+   a site-wide footer line in page markup.
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg-0); }
 body {
+  margin: 0;
+  padding: 0;
+  position: relative;
   background: var(--bg-0);
   color: var(--fg-1);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
-  overflow-x: hidden;
+  font-family: var(--sb-serif);
+  font-size: 17px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern", "liga", "onum";
 }
+/* Stone grain: fractal noise, white at half alpha, laid at 7 percent.
+   Matte tooth, not scanlines, not a grid. Nothing is painted on the
+   page's own .pb-scanlines div. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: var(--sb-grain-opacity);
+  background-image: var(--sb-grain);
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--sb-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--sb-ink);
+}
+p { color: inherit; }
 a { color: inherit; text-decoration: none; }
+a:focus-visible { outline: 2px solid var(--sb-link-hover); outline-offset: 2px; }
+img, svg { max-width: 100%; }
+.ic { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Links in the running text: cyan ink, a pale cyan underline. */
 a.inline-link {
   color: var(--cyan);
-  border-bottom: 1px solid rgba(23,212,250,.35);
-  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--border-accent);
+  transition: color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
 }
-a.inline-link:hover { color: var(--cyan-pale); border-bottom-color: var(--cyan-pale); }
-h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
+a.inline-link:hover, a.inline-link:focus-visible {
+  color: var(--cyan-pale);
+  text-decoration-color: var(--magenta);
+}
 
+/* The inside page's measure. The nav and footer run the full broadsheet
+   measure (--sb-page); the text column is narrower. */
 .wrap {
   max-width: 880px;
   margin: 0 auto;
-  padding: 0 var(--s-8);
+  padding: 0 24px;
+  min-width: 0;
 }
 
-/* ========== Nav (mirrors index.html) ========== */
+/* ========== Nav: the nameplate, small, with the section index ========== */
 nav.nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: rgba(0,0,0, 0.72);
-  border-bottom: 1px solid var(--border-1);
+  position: relative;
+  background: var(--bg-0);
+  border-bottom: var(--sb-heavy);
+}
+nav.nav::after {
+  /* the second line of the double rule, hairline under the heavy one */
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -6px;
+  border-bottom: var(--sb-hair);
 }
 .nav-inner {
-  max-width: 1240px;
+  max-width: var(--sb-page);
   margin: 0 auto;
-  padding: 0 var(--s-8);
-  height: 56px;
+  padding: 10px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--s-6);
+  flex-wrap: wrap;
+  gap: 8px 24px;
 }
 .nav-brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--s-3);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: -0.01em;
+  gap: 10px;
+  font-family: var(--sb-display);
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--sb-ink);
+  text-shadow: 0 1px 0 var(--sb-impression);
 }
-.nav-brand .brand-626 { color: var(--cyan); }
-.nav-brand .brand-labs { color: var(--fg-1); }
+.nav-brand .brand-626 { font-weight: 500; color: var(--sb-ink); }
+.nav-brand .brand-labs { font-weight: 300; color: var(--sb-ink); margin-left: 0.22em; }
 .nav-links {
   display: flex;
-  gap: var(--s-6);
-  font-size: 14px;
-  color: var(--fg-2);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 .nav-links a {
   position: relative;
-  padding: 6px 2px;
+  display: block;
+  padding: 10px 16px;
+  font-family: var(--sb-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sb-ink);
   transition: color var(--dur-fast) var(--ease-out);
 }
-.nav-links a:hover { color: var(--fg-1); }
+.nav-links a + a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  border-left: var(--sb-hair);
+}
+.nav-links a:hover, .nav-links a:focus-visible { color: var(--sb-link-hover); }
+/* The door: mono, cyan, the brand pair as a 2px rule underneath. */
 .nav-cta {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  gap: 8px;
+  font-family: var(--sb-mono);
+  font-size: 12px;
   font-weight: 600;
-  color: var(--ink-950);
-  background: var(--cyan);
-  padding: 8px 14px;
-  border-radius: var(--r-md);
-  border: none;
-  box-shadow: 0 0 0 1px rgba(23,212,250,.4), 0 0 18px rgba(23,212,250,.25);
-  transition: all var(--dur-fast) var(--ease-out);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  padding: 0 0 3px;
+  border: 0;
+  border-radius: 0;
+  background-image: var(--brand-gradient);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 2px;
+  transition: color var(--dur-fast) var(--ease-out);
 }
-.nav-cta:hover {
-  background: var(--cyan-pale);
-  box-shadow: 0 0 0 1px rgba(92,230,255,.55), 0 0 28px rgba(23,212,250,.5);
+.nav-cta:hover, .nav-cta:focus-visible { color: var(--sb-link-hover); }
+@media (max-width: 720px) {
+  .nav-inner { padding: 12px 18px 0; }
+  .nav-links {
+    order: 3;
+    flex-basis: 100%;
+    margin-top: 4px;
+    border-top: var(--sb-hair);
+  }
+  .nav-links a { padding: 11px 10px; font-size: 11px; letter-spacing: 0.1em; }
 }
-@media (max-width: 720px) { .nav-links { display: none; } }
-.ic { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-/* ========== Page header ========== */
+/* ========== Page header: the section head ========== */
 header.page-hero {
   position: relative;
-  padding: clamp(56px, 8vw, 96px) 0 var(--s-12);
-  overflow: hidden;
-  border-bottom: 1px solid var(--border-1);
+  padding: 36px 0 0;
+  border-bottom: var(--sb-heavy);
 }
-.page-hero-bg { position: absolute; inset: 0; pointer-events: none; }
-.page-hero-bg .grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(to right, rgba(23,212,250,.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(242,47,137,.035) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 75%);
-}
-.page-hero-bg .glow {
+header.page-hero::after {
+  content: '';
   position: absolute;
-  top: -30%; right: -20%;
-  width: 70%; height: 100%;
-  background: radial-gradient(closest-side, rgba(23,212,250,.18), transparent 70%);
-  filter: blur(60px);
+  left: 0; right: 0;
+  bottom: -6px;
+  border-bottom: var(--sb-hair);
 }
+/* The page ships .grid and .glow inside this wrapper. Nothing on this
+   theme paints them. */
+.page-hero-bg { display: none; }
 .page-hero-inner { position: relative; }
+/* The ears: the meta label left, the printer's color bar right. */
 .eyebrow {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: var(--s-3);
-  font-family: var(--font-mono);
+  justify-content: space-between;
+  gap: 14px;
+  margin: 0 0 22px;
+  padding: 0 0 8px;
+  border-bottom: var(--sb-hair);
+  font-family: var(--sb-mono);
   font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--fg-3);
-  margin-bottom: var(--s-5);
+  color: var(--sb-ink-3);
 }
 .eyebrow .pulse {
-  width: 6px; height: 6px;
-  border-radius: 999px;
-  background: var(--ok);
-  box-shadow: 0 0 10px var(--ok);
+  order: 2;
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin-right: 26px;
+  border-radius: 0;
+  background: var(--cyan);
+  box-shadow: 13px 0 0 var(--magenta), 26px 0 0 var(--sb-ink);
 }
 h1.page-title {
-  font-size: clamp(36px, 5vw, 56px);
-  line-height: 1.02;
+  margin: 0 0 16px;
+  font-family: var(--sb-display);
+  font-weight: 500;
+  font-size: clamp(40px, 5.6vw, 72px);
+  line-height: 0.98;
   letter-spacing: -0.03em;
-  font-weight: 700;
-  margin: 0 0 var(--s-4);
-  color: var(--fg-1);
+  color: var(--sb-ink);
+  text-shadow: 0 1px 0 var(--sb-impression);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
 }
+/* The folio tab, reversed: ink field, slate type, the section sign. */
+h1.page-title::before {
+  content: '\00A7';
+  display: inline-block;
+  position: relative;
+  top: -0.1em;
+  vertical-align: middle;
+  margin-right: 14px;
+  padding: 4px 8px 3px;
+  background: var(--sb-tab-bg);
+  color: var(--sb-tab-fg);
+  font-family: var(--sb-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-shadow: none;
+}
+/* The accent word in the serif italic. Ink, never a gradient. */
 h1.page-title .accent {
-  background: var(--brand-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-family: var(--sb-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--sb-ink);
+  background: none;
 }
 .page-lead {
-  font-size: clamp(16px, 1.6vw, 19px);
-  color: var(--fg-2);
-  max-width: 60ch;
-  margin: 0 0 var(--s-5);
+  margin: 0 0 22px;
+  font-family: var(--sb-serif);
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.5;
+  color: var(--sb-ink-2);
+  max-width: 38em;
+  text-wrap: pretty;
 }
+.page-lead::first-letter {
+  /* newspaper lead: the first letter of the deck set big and dropped */
+  float: left;
+  font-size: 3.4em;
+  line-height: 0.8;
+  padding: 6px 8px 0 0;
+  font-weight: 700;
+  color: var(--sb-ink);
+}
+/* The dateline row. */
 .page-meta {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--fg-3);
-  letter-spacing: 0.04em;
+  clear: both;
+  margin: 0;
+  padding: 10px 0;
+  border-top: var(--sb-rule);
+  font-family: var(--sb-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-ink-3);
+  font-variant-numeric: tabular-nums;
 }
-.page-meta .sep { margin: 0 var(--s-3); color: var(--text-mute); }
+.page-meta .sep { margin: 0 10px; color: var(--sb-ink-3); }
 
-/* ========== Footer (mirrors index.html) ========== */
+/* ========== Main: the page's own content, on the paper's type ========== */
+main {
+  display: block;
+  font-family: var(--sb-serif);
+  color: var(--sb-ink);
+}
+main h2 {
+  padding-bottom: 8px;
+  border-bottom: var(--sb-hair);
+  text-shadow: 0 1px 0 var(--sb-impression);
+  text-wrap: balance;
+}
+
+/* ========== Footer: the heavy rule, the color bar, the imprint ========== */
 footer {
-  border-top: 1px solid var(--border-1);
-  padding: var(--s-8) 0;
+  position: relative;
+  margin-top: 24px;
   background: var(--bg-0);
+  border-top: var(--sb-heavy);
+}
+footer::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 5px;
+  border-top: var(--sb-hair);
 }
 .footer-inner {
-  max-width: 1240px;
+  max-width: var(--sb-page);
   margin: 0 auto;
-  padding: 0 var(--s-8);
+  padding: 28px 24px 44px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--s-6);
   flex-wrap: wrap;
+  gap: 14px 24px;
+}
+.footer-meta {
+  font-family: var(--sb-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: var(--sb-ink-2);
+}
+.footer-meta .brand-tagline {
+  font-family: var(--sb-serif);
+  font-style: italic;
+  font-size: 15px;
+  letter-spacing: 0;
+  color: var(--sb-ink);
 }
 .footer-links {
   display: flex;
-  gap: var(--s-5);
-  font-size: 13px;
-  color: var(--fg-3);
   flex-wrap: wrap;
+  align-items: center;
 }
-.footer-links a { color: var(--fg-3); transition: color var(--dur-fast) var(--ease-out); }
-.footer-links a:hover { color: var(--cyan); }
-.footer-meta {
-  font-family: var(--font-mono);
+.footer-links a {
+  position: relative;
+  display: block;
+  padding: 6px 14px;
+  font-family: var(--sb-mono);
   font-size: 12px;
-  color: var(--fg-3);
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sb-ink);
+  transition: color var(--dur-fast) var(--ease-out);
 }
-.footer-meta .brand-tagline { color: var(--cyan); }
+.footer-links a:first-child { padding-left: 0; }
+.footer-links a + a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  border-left: var(--sb-hair);
+}
+.footer-links a:hover, .footer-links a:focus-visible { color: var(--sb-link-hover); }
+/* The printer's color bar closes the link row. */
+.footer-links::after {
+  content: '';
+  flex: none;
+  align-self: center;
+  width: 9px;
+  height: 9px;
+  margin: 0 26px 0 14px;
+  background: var(--cyan);
+  box-shadow: 13px 0 0 var(--magenta), 26px 0 0 var(--sb-ink);
+}
+/* The imprint: the wayfinding sentence, at the foot of the page. */
+.footer-inner::after {
+  content: 'Theme: October 2026 · this site changes monthly · see all themes at 626labs.dev/themes.html';
+  flex-basis: 100%;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: var(--sb-hair);
+  font-family: var(--sb-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: var(--sb-ink-2);
+}
+
+/* ========== 390 ========== */
+@media (max-width: 600px) {
+  .wrap { padding: 0 18px; }
+  header.page-hero { padding-top: 26px; }
+  .footer-inner { padding: 22px 18px 36px; }
+  .footer-links a { padding: 6px 10px; }
+}
