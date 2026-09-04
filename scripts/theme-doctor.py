@@ -93,6 +93,7 @@ if str(SCRIPTS_DIR) not in sys.path:
 import archetypes      # noqa: E402 — sibling module in scripts/ — VOCABULARY, ARCHETYPES
 import browser_origin  # noqa: E402 — sibling module in scripts/ — third-party isolation
 import css_color       # noqa: E402 — sibling module in scripts/ — CSS color -> sRGB
+import raster_theme    # noqa: E402 — sibling module in scripts/ — the `raster` block
 import theme_registry  # noqa: E402 — sibling module in scripts/
 
 ZONES = ("hero", "hero-chips", "products", "lab-pool", "thinking", "founding",
@@ -1250,6 +1251,18 @@ def check_theme_references_only_itself(tdir: Path) -> list[str]:
                     f"on its own."
                 )
     return errors
+
+
+def check_raster_block(theme_meta: dict) -> list[str]:
+    """The optional `raster` block in theme.json: colors parse (any CSS
+    color css_color understands), `texture` is grain | grid | none,
+    `glow` and `colorBar` are booleans, `bodyFace` (optional) is sans |
+    serif, no unknown keys. No block is no error: the generators draw
+    Phosphor Blueprint's treatment for a theme that never declared one."""
+    block = theme_meta.get("raster")
+    if block is None:
+        return []
+    return [f"theme.json: {e}" for e in raster_theme.validate_block(block)]
 
 
 def check_contrast(
@@ -2572,6 +2585,14 @@ def main(argv: list[str]) -> int:
     pairs = theme_meta.get("contrastPairs")
 
     errors: list[str] = []
+    # The `raster` block (scripts/raster_theme.py). export-brand.py, the
+    # Medium and Vibe Plugins exporters and build-og-cards.py all read it
+    # from the ACTIVE theme, and rotate-theme.yml runs all four right after
+    # the registry flips, unattended. A malformed block has to fail HERE,
+    # while the theme is still queued, not on the rotation morning. Absent
+    # is fine: a theme with no block draws Phosphor Blueprint's treatment
+    # (raster_theme.RASTER_DEFAULTS), and every error names its key.
+    errors += check_raster_block(theme_meta)
     # A registered theme has to name itself: the imprint prints the name.
     registry = theme_registry.load()
     errors += check_theme_names_itself(

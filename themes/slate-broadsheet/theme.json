@@ -31,5 +31,14 @@
       "--magenta-pale",
       "--bg-2"
     ]
-  ]
+  ],
+  "raster": {
+    "field": "#3A4350",
+    "ink": "#F7F5F0",
+    "dim": "#C3C1BA",
+    "texture": "grain",
+    "glow": false,
+    "colorBar": true,
+    "bodyFace": "serif"
+  }
 }
