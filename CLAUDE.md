@@ -206,11 +206,13 @@ repointing a page's stylesheet moves its group in the same commit.
 1. Empty queue → open a "Theme queue is empty" issue, change nothing, exit. (`dry_run: true` skips even the issue — just logs it.)
 2. Freeze the outgoing theme (`scripts/freeze-theme.py <month>`) — see **Archives** below.
 3. `active = queue.shift()`; append the outgoing theme to `archive[]`.
-4. Re-render the site (`render-hub.py`, no flags) — this also re-renders `themes.html`'s gallery against the new registry state.
+4. Re-render the site (`render-hub.py`, no flags) — this also re-renders `themes.html`'s gallery against the new registry state. Then regenerate the rasters in the new theme: `export-brand.py`, `export-medium-header.py`, `export-vibe-plugins-logo.py`, `build-og-cards.py` (they read the `raster` block from the now-active theme; see **Brand exports** under **Tools**). Before the gates, so a drawing failure aborts the rotation rather than shipping half a set.
 5. Gate stack, in order: `theme-doctor.py <new-active> --browser --require-browser` (the `--require-browser` half is load-bearing: without it an environment that cannot launch chromium SKIPS the browser checks and the gate rubber-stamps the rotation), `render-hub.py --check`, `render-plugin-pages.py --check`, `pytest tests/ -q`, `site-doctor.py --check`.
 6. Any gate failure → nothing committed. Every step downstream chains off the prior step's implicit success, so one failure stops the whole tail; an issue opens with the failed run's link. The site stays at its last verified state — **the site can only ever move from one verified state to another.**
 7. `dry_run: true` runs every gate and stages the diff (`git add -A && git diff --stat --cached`) but commits and pushes nothing — use it to sanity-check a queued theme before the 1st actually arrives.
-8. Success → one commit (`content/themes.json`, `index.html`, `feed.xml`, `sitemap.xml`, `conundrum.html`, `themes.html`, `editorial/`, `themes/archive/`), pushed with the same retry+rebase loop every other bot workflow in this repo uses.
+8. Success → one commit (`content/themes.json`, `index.html`, `feed.xml`, `sitemap.xml`, `conundrum.html`, `themes.html`, `editorial/`, `themes/archive/`, `assets/brand/`, `assets/og/`, `favicon-626.png`), pushed with the same retry+rebase loop every other bot workflow in this repo uses.
+
+**The archive shares `/assets/*`** (see **Archives** below), so a frozen September page shows October's banner wherever it references one. Accepted and recorded, same as fonts and the widget CSS.
 
 **Archives:** frozen at rotation time to `themes/archive/<YYYY-MM>/index.html` — a COPY of the already-rendered homepage, never re-rendered again. Two injections: `<meta name="robots" content="noindex">`, and a banner reading "the site as it looked in \<Month Year\>." It carries local copies of every linked stylesheet it needs, so a later retokenize of `tokens.css` or the base `/Design/*.css` layer can't silently repaint it — except fonts, the Bacon Trail widget CSS, and `/assets/*` images, an accepted and documented sharing boundary (see `scripts/freeze-theme.py`'s module docstring for the exact rationale on each). `freeze()` refuses to overwrite an existing archive month — write-once, never re-frozen. Archives are excluded from `sitemap.xml` and from `link-check.yml`'s lychee scan — they're history, not maintained pages.
 
@@ -243,18 +245,41 @@ Tracks per-attempt sidecars (`<output>.attempt1.png`, `.attempt2.png`)
 and copies the best to your `-o` path. See the file's docstring for the
 full mode rundown and tradeoffs.
 
-### Brand exports — `scripts/export-brand.py`
+### Brand exports — `scripts/export-brand.py` (+ the Medium and Vibe Plugins exporters)
 
-Regenerates `assets/brand/` (transparent icon at 256/512/1024 + banner
-PNGs at 1500x500, 1280x640, 1200x630). Re-run after brand changes.
+Regenerates `assets/brand/` (transparent icon at 256/512/1024, the three
+banners, the Discord splash, `icon-animated-512.gif`, the lockup and
+portrait) plus the root `favicon-626.png`. `export-medium-header.py` and
+`export-vibe-plugins-logo.py` draw the six Medium headers and the six Vibe
+Plugins banners + square from the same primitives (they read
+`icon-transparent-1024.png`, so run `export-brand.py` first).
 No `--check` flag — verify visually by opening `icon-transparent-512.png`
 and one banner.
+
+**The rasters follow the theme.** Every field these draw comes from the
+ACTIVE theme's `raster` block in `themes/<slug>/theme.json`, read through
+`scripts/raster_theme.py`: `field`, `ink`, `dim` (any CSS color),
+`texture` (`grain` | `grid` | `none`), `glow`, `colorBar`, and the optional
+`bodyFace` (`sans` | `serif`, the OG-card dek's face). A theme with no
+block draws Phosphor Blueprint's (`raster_theme.RASTER_DEFAULTS`, pinned
+to PB's own block by a test). `theme-doctor` validates the block for every
+registered theme and names the key on a malformed one. `--theme <slug>
+--out <dir>` builds a queued theme's set outside the tree for a look;
+`rotate-theme.yml` regenerates all of it, plus the OG cards, in the
+incoming theme on the 1st (after the render, before the gates, so a
+drawing failure aborts the rotation). Field-free outputs (the transparent
+icons, the lockup, the portrait) are byte-identical across themes. The
+grain is seeded, so a rebuild is byte-stable on one platform.
+`assets/favicon-admin.png` (`build-admin-favicon.py`) is never themed.
 
 ### Field Note social cards — `scripts/build-og-cards.py`
 
 Generates a branded 1200x630 OG/social card per local Field Note into
-`assets/og/<slug>.png` (navy field + cyan/magenta glow, title hero,
-hairline, dek, footer). `render-hub.py` points each story page's
+`assets/og/<slug>.png` in the ACTIVE theme's raster treatment (see
+**Brand exports** above: the field, texture and glows from the `raster`
+block; the title in Space Grotesk, the rule under it as the cyan-to-magenta
+hairline or the printer's color bar, the dek in Inter italic or Source
+Serif 4 per `bodyFace`, a mono dateline, a footer). `render-hub.py` points each story page's
 `og:image` and BlogPosting `image` at the card when it exists, else falls
 back to `assets/brand/medium-header-1500x600.png`. **CI owns `assets/og/`**
 — `rebuild-hub.yml` (ubuntu) builds the cards before rendering on any push
