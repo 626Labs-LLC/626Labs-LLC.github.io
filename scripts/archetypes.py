@@ -114,9 +114,13 @@ VOCABULARY: dict[str, set[str]] = {
         # 2026-09-04, from PR #97's open question). press.html and
         # privacy.html own no chrome; `.wrap` is the column their prose
         # sits in and `.nav-inner` is the nav's, and a utility.css that
-        # styles neither ships both pages full-bleed at 1440. Both live
-        # themes style both; a future theme that drops either now fails
-        # the vocabulary check instead of shipping.
+        # styles neither ships both pages full-bleed at 1440. These two
+        # are credited from a CSS selector in utility.css ONLY, never from
+        # the shell's markup (theme-doctor's UTILITY_CSS_ONLY_CLASSES): the
+        # theme's own utility.html carries both class names, so markup
+        # credit would pass an unstyled measure. Both live themes style
+        # both; a theme whose utility.css drops either fails the
+        # vocabulary check instead of shipping.
         "wrap",
         "nav-inner",
     },

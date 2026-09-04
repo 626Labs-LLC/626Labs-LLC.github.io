@@ -194,7 +194,7 @@ def test_footer_carries_exactly_one_imprint_with_a_themes_link_and_the_active_na
     assert footer.count('class="container imprint"') == 1
     assert footer.count(IMPRINT_LINK) == 1
     assert f"Theme: {name} · this site changes monthly · {IMPRINT_LINK}" in footer
-    assert "\00B7" not in footer and "&middot;" not in footer
+    assert "\\00B7" not in footer and "&middot;" not in footer
 
 
 def test_every_generated_page_carries_the_imprint_once():

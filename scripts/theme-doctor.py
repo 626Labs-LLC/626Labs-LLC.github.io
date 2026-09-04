@@ -466,7 +466,25 @@ def check_theme_names_itself(
     ]
 
 
-def check_vocabulary(html: str, css: str, archetype: str) -> list[str]:
+# Utility vocabulary that has to be STYLED, not merely present in the shell's
+# markup. `_check_archetype` feeds the utility check the theme's own
+# archetypes/utility.html, which carries class="wrap" and class="nav-inner"
+# in its markup, so the markup-or-CSS rule credited both from HTML and a
+# utility.css that never styled `.wrap` passed every gate (static, browser,
+# dress differential) and rendered press.html's prose 1440px wide at 1440.
+# The ruling (2026-09-04) is that the reading measure is part of the
+# contract, and a measure is a CSS rule: these two are credited from a CSS
+# selector ONLY, the same treatment `reading`'s lnt-* classes get.
+UTILITY_CSS_ONLY_CLASSES = frozenset({"wrap", "nav-inner"})
+assert UTILITY_CSS_ONLY_CLASSES <= archetypes.VOCABULARY["utility"], (
+    "UTILITY_CSS_ONLY_CLASSES must be a subset of the utility vocabulary, "
+    "or the css-only rule names a class the vocabulary no longer requires"
+)
+
+
+def check_vocabulary(
+    html: str, css: str, archetype: str, css_only: frozenset[str] = frozenset(),
+) -> list[str]:
     """Enforces archetypes.VOCABULARY[archetype]: every required class has
     to appear as a literal HTML class attribute OR as a CSS selector —
     the theme's dress can supply the semantic anchor through markup (a
@@ -486,18 +504,36 @@ def check_vocabulary(html: str, css: str, archetype: str) -> list[str]:
     feeds a synthetic, 3-class `html` string instead of about.html's real
     (theme-invariant) markup.
 
+    `css_only` names the required classes that markup may NOT satisfy: they
+    have to appear as a CSS selector in `css`, because the thing the
+    vocabulary demands of them is a style (a measure), and a shell that
+    carries the class name while the dress never styles it is exactly the
+    full-bleed failure the entry exists to stop. `_check_archetype` passes
+    UTILITY_CSS_ONLY_CLASSES for `utility`; the default is empty so every
+    other archetype keeps the markup-or-CSS rule.
+
     Failure strings name both the archetype and the missing class, per the
     brief ("per-archetype failures name the archetype in the message")."""
     required = archetypes.VOCABULARY.get(archetype)
     if required is None:
         return [f"{archetype}: vocabulary: unknown archetype"]
-    found = _html_classes(html) | _css_classes(css)
-    return [
+    styled = _css_classes(css)
+    found = _html_classes(html) | styled
+    errors = [
         f"{archetype}: vocabulary missing required class {cls!r} "
         f"(not found as an HTML class or a CSS selector)"
         for cls in sorted(required)
-        if cls not in found
+        if cls not in found and cls not in css_only
     ]
+    errors += [
+        f"{archetype}: vocabulary: required class {cls!r} is not styled by any "
+        f"CSS selector in the theme's dress (its presence in the shell's markup "
+        f"does not count: the measure is the style, and an unstyled .{cls} "
+        f"renders the page full-bleed)"
+        for cls in sorted(required & css_only)
+        if cls not in styled
+    ]
+    return errors
 
 
 # ─── required tokens (final review Fix 1) ──────────────────────────────
@@ -2359,6 +2395,10 @@ def _check_archetype(
     if archetype == "reading":
         anchor_html = "".join(f'<div class="{c}"></div>' for c in sorted(READING_SHARED_LEAF_CLASSES))
         errors += check_vocabulary(anchor_html, css, archetype)
+    elif archetype == "utility":
+        # The theme's own utility.html carries class="wrap" and "nav-inner"
+        # in its markup, so those two are credited from utility.css alone.
+        errors += check_vocabulary(html, css, archetype, css_only=UTILITY_CSS_ONLY_CLASSES)
     else:
         errors += check_vocabulary(html, css, archetype)
 

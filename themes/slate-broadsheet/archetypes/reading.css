@@ -651,19 +651,9 @@ body { margin: 0; }
   line-height: 1.7;
   color: var(--sb-ink-2);
 }
-/* The imprint: the wayfinding sentence. Generated content, so no link. */
-.lnt-footer::after {
-  content: 'Theme: October 2026 · this site changes monthly · see all themes at 626labs.dev/themes.html';
-  display: block;
-  margin-top: 8px;
-  padding-top: 14px;
-  border-top: var(--sb-hair);
-  font-family: var(--sb-mono);
-  font-size: 12px;
-  line-height: 1.7;
-  letter-spacing: 0.04em;
-  color: var(--sb-ink-2);
-}
+/* No generated imprint here. The reading dress reaches About only through
+   its easter-egg picker, and the one imprint with a real link is the
+   renderer's (scripts/render-plugin-pages.py, render_imprint). */
 
 /* ---------- 390 ---------- */
 @media (max-width: 640px) {
