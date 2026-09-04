@@ -7,8 +7,9 @@ name: Rotate theme
 #
 # Order: freeze the OUTGOING theme (still live at this point) -> rotate the
 # registry (queue[0] becomes active) -> capture the incoming theme's
-# screenshot -> render the new active theme -> gate it -> commit + push, or
-# (dry_run) stage + diff + stop.
+# screenshot -> render the new active theme -> regenerate the brand rasters
+# and Field Note cards in it -> gate it -> commit + push, or (dry_run)
+# stage + diff + stop.
 
 on:
   schedule:
@@ -165,6 +166,27 @@ jobs:
           python scripts/render-hub.py
           python scripts/render-plugin-pages.py
 
+      - name: Regenerate the brand rasters + Field Note cards in the new active theme
+        if: steps.queue.outputs.empty == 'false'
+        # The off-site rasters follow the theme (docs/superpowers/specs/
+        # 2026-09-04-slate-rasters-design.md): the X/Discord banners, the
+        # Medium and Vibe Plugins headers, the Discord server icon, the
+        # browser-tab favicon and the per-story OG cards. Every generator
+        # reads the ACTIVE theme's `raster` block, and the registry flipped
+        # above, so these draw the incoming month. After the render and
+        # BEFORE the gates, so a drawing failure aborts the rotation instead
+        # of shipping half a set. export-brand.py first: the other two brand
+        # exporters read its icon-transparent-1024.png. Both assets/brand/
+        # and assets/og/ are ubuntu-built here, the same FreeType
+        # rebuild-hub.yml commits OG cards with (CLAUDE.md, "Field Note
+        # social cards").
+        run: |
+          set -euo pipefail
+          python scripts/export-brand.py
+          python scripts/export-medium-header.py
+          python scripts/export-vibe-plugins-logo.py
+          python scripts/build-og-cards.py
+
       - name: 'Gate: theme doctor (new active theme, browser checks)'
         if: steps.queue.outputs.empty == 'false'
         # --require-browser: this is the only unattended run of this gate, so
@@ -224,8 +246,12 @@ jobs:
           # on the runner and never be committed, leaving one page in the
           # OUTGOING theme's dress after a rotation with nothing to
           # indicate it.
+          # assets/brand, assets/og and the root favicon-626.png are the
+          # regenerated rasters (the step above); all three are generator
+          # outputs, never hand-edited.
           git add -- content/themes.json index.html feed.xml sitemap.xml \
             editorial themes/archive assets/themes \
+            assets/brand assets/og favicon-626.png \
             $(python3 scripts/render-hub.py --list-renderer-owned-pages) \
             $(python3 scripts/render-plugin-pages.py --list-outputs)
           git commit -m "chore(themes): rotate to ${{ steps.rotate.outputs.new_active }} for ${{ steps.month.outputs.month_name }}
