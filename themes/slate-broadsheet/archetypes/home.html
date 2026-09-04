@@ -105,7 +105,6 @@
       font-size: 17px;
       line-height: 1.5;
       position: relative;
-      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       font-feature-settings: "kern", "liga", "onum";
@@ -186,16 +185,17 @@
       font-variant-numeric: tabular-nums;
     }
     /* Reversed tab, inverted back: ink field, slate type. The renderer emits
-       every section label as `.eyebrow > span`, so the first span of an
-       eyebrow IS the tab; the pulse dot and the trailing line are not
-       newspaper furniture and are not drawn. */
+       every section label as `.eyebrow > span`, with `.pulse` first in the
+       hero and `.line` last everywhere; the text span (neither class) IS
+       the tab. The pulse dot and the line are not newspaper furniture and
+       are not drawn (the gap collapses with them). */
     .eyebrow {
       display: flex;
       align-items: center;
       gap: 10px;
       margin: 0 0 14px;
     }
-    .eyebrow > span:first-of-type, .tab {
+    .eyebrow > span:not(.pulse):not(.line), .tab {
       display: inline-block;
       background: var(--sb-tab-bg);
       color: var(--sb-tab-fg);
@@ -220,7 +220,7 @@
     /* A door: the mono, uppercase, cyan link with the brand pair ruled
        under it. Every renderer-emitted button becomes one. */
     .btn, .door, .product-link, .play-link, .sponsor-cta, .thinking-link a,
-    .field-notes-subscribe, .field-note-link a, .artifact-links a {
+    .field-notes-subscribe, .field-notes-more, .field-note-link a, .artifact-links a {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -240,7 +240,7 @@
       cursor: pointer;
     }
     .btn:hover, .door:hover, .product-link:hover, .play-link:hover, .sponsor-cta:hover,
-    .thinking-link a:hover, .field-notes-subscribe:hover, .field-note-link a:hover, .artifact-links a:hover {
+    .thinking-link a:hover, .field-notes-subscribe:hover, .field-notes-more:hover, .field-note-link a:hover, .artifact-links a:hover {
       color: var(--sb-link-hover);
     }
     .btn-ghost, .field-note-link a {
@@ -339,7 +339,7 @@
     }
     /* The kicker: the hero eyebrow as a plain meta line, not a tab. */
     .lead .eyebrow { margin: 0 0 18px; }
-    .lead .eyebrow > span:first-of-type {
+    .lead .eyebrow > span:not(.pulse):not(.line) {
       background: none;
       color: var(--sb-ink-3);
       padding: 0;
@@ -530,7 +530,7 @@
       margin: 0 0 8px;
       justify-content: space-between;
     }
-    section.field-notes .eyebrow > span:first-of-type {
+    section.field-notes .eyebrow > span:not(.pulse):not(.line) {
       background: none;
       color: var(--sb-ink);
       padding: 0;
@@ -608,7 +608,7 @@
     }
     .field-note-link { margin-top: 8px; }
     .field-note-link a { font-size: 11px; letter-spacing: 0.1em; padding-bottom: 2px; }
-    .field-notes-subscribe { margin-top: 14px; }
+    .field-notes-more, .field-notes-subscribe { margin-top: 14px; margin-right: 22px; }
 
     /* ================= SECTION FRONT chrome ================= */
     .section { padding: 34px 0 44px; }
@@ -703,7 +703,7 @@
     }
     .tag + .tag::before { content: '·'; margin: 0 6px; color: var(--sb-ink-3); }
     .tag.live { color: var(--ok); }
-    .tag.wip { color: var(--warn); }
+    .tag.wip { color: var(--magenta-pale); }
     .tag.magenta { color: var(--magenta-pale); }
     article.product h3 {
       margin: 0 0 6px;
@@ -925,6 +925,23 @@
       min-width: 0;
     }
     section.thinking .wrap > p strong { font-weight: 700; color: var(--sb-ink); }
+    /* The founding body (render-hub wraps it when theme.json sets
+       foundingBody) runs in two serif columns under a hairline rule, as
+       the sheet sets it. */
+    section.thinking .founding-body {
+      grid-column: 2;
+      min-width: 0;
+      columns: 2;
+      column-gap: var(--sb-gutter);
+      column-rule: var(--sb-hair);
+      font-family: var(--sb-serif);
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--sb-ink);
+    }
+    section.thinking .founding-body p { margin: 0 0 1em; text-wrap: pretty; hanging-punctuation: first; }
+    section.thinking .founding-body p strong { font-weight: 700; color: var(--sb-ink); }
+    section.thinking .founding-body p:first-child::first-letter,
     section.thinking blockquote + p::first-letter,
     section.thinking .section-head + p::first-letter {
       float: left;
@@ -1074,6 +1091,7 @@
        keep their own chrome; only the mat and the caption are the paper's. */
     .play-widget {
       position: relative;
+      align-self: start;
       width: 100%;
       max-width: 432px;
       margin-bottom: 44px;
@@ -1099,14 +1117,12 @@
       background-position: 0 0;
       background-size: 56px 2px;
     }
+    /* Each mat hugs its own plate (align-self: start above): a mat that
+       stretched to the row's tallest widget would show bare paper under a
+       shorter one, and the widgets change height with their own state. */
     .play-widget > .bacon-trail-widget,
     .play-widget > .box-office-widget,
     .play-widget > .tag-that-line-widget { max-width: none; }
-    /* The grid row already stretches each mount to the tallest widget in
-       its row (the bacon trail); the game widgets fill that height so
-       side-by-side plates bottom-align. */
-    .play-widget > .box-office-widget,
-    .play-widget > .tag-that-line-widget { height: 100%; }
     /* A lone last plate in a two-across row is centered, not stranded. */
     @media (min-width: 640px) and (max-width: 1011px) {
       .play-grid > .play-widget:last-child:nth-child(odd) { grid-column: 1 / -1; }
@@ -1584,13 +1600,14 @@
       .lead { padding-right: 0; border-right: 0; }
       .field-notes-grid { columns: 2; column-gap: var(--sb-gutter); column-rule: var(--sb-hair); }
       .field-note { padding-top: 12px; }
+      .nav-links a { padding: 11px 12px; font-size: 11px; letter-spacing: 0.1em; }
       .section-head { grid-template-columns: 1fr; gap: 10px 0; }
       .section-head > p { padding-bottom: 0; }
       .products { columns: 2; }
       article.product.flagship { grid-template-columns: minmax(0, 1fr) minmax(0, 44%); }
       section.thinking .wrap { grid-template-columns: 1fr; }
       section.thinking blockquote { grid-column: 1; grid-row: auto; margin-bottom: 22px; }
-      section.thinking .wrap > p, section.thinking .thinking-link { grid-column: 1; }
+      section.thinking .wrap > p, section.thinking .thinking-link, section.thinking .founding-body { grid-column: 1; }
       section.thinking .thinking-artifacts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .thinking-artifact + .thinking-artifact { margin-left: 0; padding-left: 0; border-left: 0; }
       .thinking-artifact:nth-child(2n) {
@@ -1616,7 +1633,6 @@
       .wrap { padding: 0 18px; }
       .masthead-title { padding: 18px 0 12px; }
       .dateline { padding: 12px 0; }
-      .nav-links a { padding: 11px 12px; font-size: 11px; letter-spacing: 0.1em; }
       .hero { padding-top: 26px; }
       .hero-meta { grid-template-columns: 1fr; }
       .field-notes-grid { columns: 1; }
@@ -1633,6 +1649,7 @@
       .thinking-artifact:nth-child(n) { margin-left: 0; padding-left: 0; border-left: 0; }
       section.lab-runs .frames { grid-template-columns: 1fr; }
       section.lab-runs .caption { columns: 1; }
+      section.thinking .founding-body { columns: 1; }
       .play-grid, .play-grid.two-up { grid-template-columns: 1fr; }
       .play-games { grid-template-columns: 1fr; }
       .starmap-sky { height: 260px; }
@@ -1752,7 +1769,10 @@
   <div class="wrap">
     <div class="section-head">
       <div>
-        <div class="eyebrow"><span>04 · Notices</span><span class="line"></span></div>
+        <!-- Unnumbered on purpose: the renderer's own folios (05 Play, 06 About,
+             07 Contact) precede and nest here, so a "04" would read as a
+             misprint. The tab is the page name. -->
+        <div class="eyebrow"><span>Notices</span><span class="line"></span></div>
         <h2>The back page.</h2>
       </div>
       <p>Other things the lab has shipped, how to keep it running, and where to write. Eight notices per load, reshuffled from a larger pool; hit shuffle for a fresh slate.</p>

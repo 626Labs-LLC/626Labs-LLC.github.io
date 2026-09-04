@@ -4,6 +4,8 @@
   "thesis": "The page is printed, not lit.",
   "month": "2026-10",
   "status": "queued",
+  "railLimit": 4,
+  "foundingBody": true,
   "contrastPairs": [
     [
       "--fg-1",
