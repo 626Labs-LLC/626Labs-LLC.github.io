@@ -390,6 +390,8 @@ content shape.
 | `page-title` | the page's H1 |
 | `page-meta` | a metadata line under the title (last-updated, byline, etc.) |
 | `footer-inner` | the footer's content wrapper — same as `home` |
+| `wrap` | the reading measure: the centered column `press.html`'s and `privacy.html`'s content sits in. Required since 2026-09-04 (Este's ruling on PR #97's open question): those two pages own no chrome, so a `utility.css` that never styles `.wrap` ships them full-bleed |
+| `nav-inner` | the nav bar's inner measure, the same column for the nav. Required for the same reason and on the same date |
 
 Evidence: `press.html`, cross-checked against `privacy.html` and
 `themes.html` (all three share `nav`/`nav-brand`/`nav-inner`/`nav-links`/
