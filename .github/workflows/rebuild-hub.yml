@@ -11,6 +11,10 @@ on:
       - 'themes/**'
       - 'scripts/render-hub.py'
       - 'scripts/build-og-cards.py'
+      # build-og-cards.py draws its field from the active theme's `raster`
+      # block through this module, so a change to it is a change to every
+      # card, the same as a change to the script itself.
+      - 'scripts/raster_theme.py'
       # render-plugin-pages.py runs in this workflow too (see the step
       # below), so ITS inputs belong here or an edit to either one renders
       # nowhere until the next daily refresh-plugin-versions.yml cron.
