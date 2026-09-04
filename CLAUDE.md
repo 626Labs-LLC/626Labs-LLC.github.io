@@ -262,8 +262,10 @@ ACTIVE theme's `raster` block in `themes/<slug>/theme.json`, read through
 `texture` (`grain` | `grid` | `none`), `glow`, `colorBar`, and the optional
 `bodyFace` (`sans` | `serif`, the OG-card dek's face). A theme with no
 block draws Phosphor Blueprint's (`raster_theme.RASTER_DEFAULTS`, pinned
-to PB's own block by a test). `theme-doctor` validates the block for every
-registered theme and names the key on a malformed one. `--theme <slug>
+to PB's own block by a test). `theme-doctor <slug>` validates the block of
+the theme it is invoked on and names the key on a malformed one; the
+pytest parametrization over `content/themes.json` is what covers every
+registered theme. `--theme <slug>
 --out <dir>` builds a queued theme's set outside the tree for a look;
 `rotate-theme.yml` regenerates all of it, plus the OG cards, in the
 incoming theme on the 1st (after the render, before the gates, so a
