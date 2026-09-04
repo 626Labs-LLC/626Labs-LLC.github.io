@@ -139,6 +139,18 @@
   .section-hd{ margin: 52px 0 18px; display:flex; align-items:baseline; justify-content:space-between; gap:18px; }
   .section-hd h2{ font-family:var(--font-display); font-size:24px; font-weight:600; margin:0; }
   .section-hd .r{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-muted); }
+  .video-frame{ margin: 0 0 8px; }
+  .video-frame video{
+    display:block; width:100%; height:auto; aspect-ratio: 16 / 9;
+    background: var(--bg-2);
+    border: 1px solid var(--border-1); border-radius: 14px;
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .video-frame video:hover{ border-color: var(--border-accent); }
+  .video-cap{
+    margin: 8px 2px 0; font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--fg-muted);
+  }
   .section-dek{ margin:-8px 0 18px; color:var(--fg-3); font-size:13.5px; line-height:1.6; max-width:720px; }
 
   /* ---------- Featured cover rail ---------- */
@@ -366,6 +378,18 @@
     <span class="spacer"></span>
     <a class="btn primary" href="https://apps.microsoft.com/detail/9N53V6RRJK95">Microsoft Store</a>
     <a class="btn" href="https://github.com/estevanhernandez-stack-ed/626-mod-launcher/releases">Direct download</a>
+  </div>
+
+  <div class="section-hd">
+    <h2>See it run</h2>
+    <div class="r">the launch cut</div>
+  </div>
+  <div class="video-frame">
+    <video controls preload="metadata" playsinline
+           poster="assets/video/mod-launcher/mod-launcher-launch-poster.jpg">
+      <source src="assets/video/mod-launcher/mod-launcher-launch-16x9.mp4" type="video/mp4" />
+    </video>
+    <p class="video-cap">Install a game, stack the mods, hit play &middot; sound on</p>
   </div>
 
   <div class="loading" id="loading">Fetching the live game feed…</div>
