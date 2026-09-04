@@ -1068,3 +1068,58 @@ def test_preview_mode_emits_the_theme_css_pages_too(tmp_path):
     # And it renders only the page set, not the rest of the pipeline.
     assert not (tmp_path / "feed.xml").exists()
     assert not (tmp_path / "sitemap.xml").exists()
+
+
+# ─── theme.json render opt-ins: railLimit + foundingBody ─────────────
+# Both run unattended inside rotate-theme.yml on the 1st. The contract:
+# a theme without the keys (phosphor-blueprint) renders exactly the
+# pre-opt-in output; a theme with them gets the rail fold / body wrapper.
+
+def _stories(n):
+    return [{"title": f"Note {i}", "published": f"2026-0{1 + i // 9}-{1 + i % 9:02d}",
+             "_filename": f"note-{i}.md"} for i in range(n)]
+
+
+def test_render_opts_default_off_and_reject_bad_values(tmp_path):
+    _make_theme(tmp_path, "plain")
+    assert render_hub._theme_render_opts("plain", tmp_path) == {"railLimit": None, "foundingBody": False}
+    _make_theme(tmp_path, "slate", railLimit=4, foundingBody=True)
+    assert render_hub._theme_render_opts("slate", tmp_path) == {"railLimit": 4, "foundingBody": True}
+    # bools, zero, negatives and strings are not a limit; a truthy non-True is not an opt-in
+    for bad in (True, 0, -3, "4"):
+        _make_theme(tmp_path, f"bad-{bad!r}".replace("'", ""), railLimit=bad, foundingBody="yes")
+        opts = render_hub._theme_render_opts(f"bad-{bad!r}".replace("'", ""), tmp_path)
+        assert opts == {"railLimit": None, "foundingBody": False}, bad
+    assert render_hub._theme_render_opts("missing", tmp_path) == {"railLimit": None, "foundingBody": False}
+
+
+def test_field_notes_rail_limit_folds_overflow_into_details_with_every_link():
+    html = render_hub.render_field_notes(_stories(10), rail_limit=4)
+    assert html.count('<article class="field-note">') == 10
+    assert html.count('<details class="field-notes-more">') == 1
+    assert "<summary>More Field Notes (6)</summary>" in html
+    assert 'href="/editorial/"' not in html          # an expander, not a door out
+    before, after = html.split("<details", 1)
+    assert before.count('<article class="field-note">') == 4
+    assert after.count('<article class="field-note">') == 6
+    for i in range(10):
+        assert f'href="https://626labs.dev/editorial/note-{i}/"' in html
+
+
+def test_field_notes_without_rail_limit_emits_no_details():
+    for html in (render_hub.render_field_notes(_stories(10)),
+                 render_hub.render_field_notes(_stories(10), rail_limit=None),
+                 render_hub.render_field_notes(_stories(3), rail_limit=4)):
+        assert html.count('<article class="field-note">') in (10, 3)
+        assert "<details" not in html and "More Field Notes" not in html
+
+
+def test_founding_body_wrapper_is_opt_in():
+    bare = render_hub.render_founding(_founding())
+    assert "founding-body" not in bare
+    assert bare == render_hub.render_founding(_founding(), {"foundingBody": False})
+    wrapped = render_hub.render_founding(_founding(), {"foundingBody": True})
+    assert '<div class="founding-body">' in wrapped
+    assert wrapped.count("<p>") == bare.count("<p>") == 2
+    assert wrapped.index("founding-body") < wrapped.index("<strong>First</strong>")
+    assert wrapped.index("</div>") < wrapped.index('class="thinking-link"')

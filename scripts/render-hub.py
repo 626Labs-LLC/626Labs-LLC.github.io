@@ -1788,11 +1788,15 @@ def render_field_notes(stories: list[dict], rail_limit: int | None = None) -> st
     index.html) but jumps to the top of the page until the first story
     is published. Acceptable v1 — single follow-up commit fixes it.
 
-    `rail_limit` (a theme.json opt-in, see _theme_render_opts) caps the
-    cards at that many newest-first and adds a "More Field Notes" door to
-    /editorial/ when any were cut, so a theme that sets the notes as a
-    front rail can cut the rail to the page without hiding a link. None
-    means every published note, the pre-opt-in output.
+    `rail_limit` (a theme.json opt-in, see _theme_render_opts) shows that
+    many cards newest-first and folds the REST into
+    `<details class="field-notes-more"><summary>More Field Notes (N)</summary>`,
+    so a theme that sets the notes as a front rail can cut the rail to the
+    page while every note's link stays in the homepage DOM: crawlable,
+    reachable, expanded in place (a newspaper's "continued inside"). It is
+    NOT a link out: editorial/index.html is hand-authored and does not list
+    the notes, so a door there would strand the cut ones for the month.
+    None means every card in the open grid, the pre-opt-in output.
     """
     if not stories:
         return ""
@@ -1800,12 +1804,12 @@ def render_field_notes(stories: list[dict], rail_limit: int | None = None) -> st
     cards = "\n".join(render_field_note(s) for s in shown)
     more = ""
     if len(shown) < len(stories):
+        rest = "\n".join(render_field_note(s) for s in stories[len(shown):])
         more = (
-            f'\n    <a class="field-notes-more" href="/editorial/">More Field Notes '
-            f'({len(stories) - len(shown)} more)'
-            '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
-            'stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" '
-            'aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>'
+            '\n    <details class="field-notes-more">\n'
+            f'      <summary>More Field Notes ({len(stories) - len(shown)})</summary>\n'
+            f'{rest}\n'
+            '    </details>'
         )
     return f"""\
 <section class="section field-notes" id="field-notes">
