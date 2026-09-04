@@ -63,6 +63,15 @@ ROROROPLUGINS_HTML = ROOT / "rororo-plugins.html"
 RORORO_HTML = ROOT / "rororo.html"
 MODLAUNCHERGAMES_HTML = ROOT / "mod-launcher-games.html"
 ETSYMCP_HTML = ROOT / "etsy-mcp.html"
+# The three pages that never took a theme (October needs, piece 2): each
+# carried a private --pb-* block and painted its own field, grid, scanlines
+# and bloom, so under any future theme it stayed Phosphor Blueprint. Two
+# of them are directory indexes — the only nested paths in the map, which
+# is why preview mode and the CI page lists key on the repo-relative path
+# and never on Path.name (both would collapse to "index.html").
+NOTFOUND_HTML = ROOT / "404.html"
+BACONTRAIL_HTML = ROOT / "bacon-trail" / "index.html"
+SANDUHR_HTML = ROOT / "sanduhr" / "index.html"
 STORIES_DIR = ROOT / "content" / "stories"
 # Local Field Notes render to on-site reading pages under here:
 # editorial/<slug>/index.html, served at /editorial/<slug>/.
@@ -928,6 +937,17 @@ THEME_CSS_HREFS = {
     RORORO_HTML: "archetypes/product-tokens.css",
     MODLAUNCHERGAMES_HTML: "archetypes/product-tokens.css",
     ETSYMCP_HTML: "archetypes/product-tokens.css",
+    # October needs, piece 2. bacon-trail/ and sanduhr/ are product pages
+    # (content/page-archetypes.json) and take the product TOKEN half for the
+    # same reason the five above do. 404.html is the utility archetype but
+    # deliberately NOT archetypes/utility.css: that file is press.html's and
+    # privacy.html's whole chrome (nav.nav, header.page-hero, footer), and
+    # the 404 page is structurally bare — a centered <main> with its own
+    # layout and no chrome for a dress to land on. It links tokens.css, the
+    # same base layer themes.html takes, for its palette alone.
+    BACONTRAIL_HTML: "archetypes/product-tokens.css",
+    SANDUHR_HTML: "archetypes/product-tokens.css",
+    NOTFOUND_HTML: "tokens.css",
 }
 
 # Pages in THEME_CSS_HREFS that ALSO carry other renderer-owned zones, so
@@ -946,6 +966,7 @@ THEME_CSS_MULTI_ZONE_PAGES = (THEMES_HTML, CONUNDRUM_HTML)
 THEME_CSS_ONLY_PAGES = (
     PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML, ROROROPLUGINS_HTML,
     RORORO_HTML, MODLAUNCHERGAMES_HTML, ETSYMCP_HTML,
+    BACONTRAIL_HTML, SANDUHR_HTML, NOTFOUND_HTML,
 )
 
 # What `--theme <slug> --out <dir>` writes beside index.html, so a QUEUED
@@ -2382,7 +2403,13 @@ def main(argv: list[str]) -> int:
                 "theme-css",
                 render_theme_css_link(slug, THEME_CSS_HREFS[page_path]),
             )
-            page_dest = out_dir / page_path.name
+            # Repo-relative, never Path.name: bacon-trail/index.html and
+            # sanduhr/index.html are both named index.html, and so is the
+            # home preview written just above. Keyed on the name, the three
+            # would overwrite one another in out_dir and the last writer
+            # would win silently.
+            page_dest = out_dir / page_path.relative_to(ROOT)
+            page_dest.parent.mkdir(parents=True, exist_ok=True)
             page_dest.write_text(preview, encoding="utf-8")
             print(f"preview written: {page_dest}")
         return 0
@@ -2423,8 +2450,9 @@ def main(argv: list[str]) -> int:
     themes_changed = themes_new != themes_old
 
     # press.html / privacy.html / thesis.html / workflow.html /
-    # rororo-plugins.html / rororo.html / mod-launcher-games.html — no
-    # other zones, just the "theme-css" link (see THEME_CSS_HREFS above).
+    # rororo-plugins.html / rororo.html / mod-launcher-games.html /
+    # etsy-mcp.html / bacon-trail/index.html / sanduhr/index.html / 404.html
+    # — no other zones, just the "theme-css" link (see THEME_CSS_HREFS above).
     # conundrum.html has the same link but is rendered in its own block
     # above, beside its gallery zones.
     theme_css_pages = []
