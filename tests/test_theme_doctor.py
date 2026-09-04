@@ -298,7 +298,13 @@ def _make_complete_theme_dir(tdir):
     (tdir / "archetypes" / td.READING_TOKENS_CSS).write_text(
         _required_tokens_css(), encoding="utf-8"
     )
-    (tdir / "archetypes" / "utility.css").write_text(_required_tokens_css(), encoding="utf-8")
+    # utility.css has to STYLE the two measures (UTILITY_CSS_ONLY_CLASSES);
+    # the stub's utility.html carrying the class names no longer counts.
+    (tdir / "archetypes" / "utility.css").write_text(
+        _required_tokens_css()
+        + "".join(f".{c} {{ max-width: 880px; }}" + chr(10) for c in sorted(td.UTILITY_CSS_ONLY_CLASSES)),
+        encoding="utf-8",
+    )
     (tdir / "archetypes" / "reading.css").write_text(_compliant_reading_css(), encoding="utf-8")
 
 
@@ -392,6 +398,64 @@ def test_vocabulary_css_targeting_an_off_vocabulary_class_still_fails():
 def test_vocabulary_class_may_come_from_html_alone():
     html = "".join(f'<div class="{c}"></div>' for c in td.archetypes.VOCABULARY["utility"])
     assert td.check_vocabulary(html, "", "utility") == []
+
+
+# --- the reading measure is part of the contract: wrap and nav-inner ------
+
+
+def test_utility_vocabulary_requires_wrap_and_nav_inner_as_css_only():
+    # Deleting either entry from VOCABULARY["utility"] fails here, and so
+    # does dropping it from the css-only set: the ruling is both halves.
+    assert {"wrap", "nav-inner"} <= td.archetypes.VOCABULARY["utility"]
+    assert td.UTILITY_CSS_ONLY_CLASSES == frozenset({"wrap", "nav-inner"})
+
+
+def test_wrap_in_the_shells_markup_does_not_satisfy_the_utility_vocabulary():
+    # Every utility class present as markup, nothing styled: the
+    # markup-or-CSS rule alone says PASS, the css-only rule names both.
+    html = "".join(f'<div class="{c}"></div>' for c in td.archetypes.VOCABULARY["utility"])
+    errs = td.check_vocabulary(html, "", "utility", css_only=td.UTILITY_CSS_ONLY_CLASSES)
+    assert len(errs) == 2, errs
+    assert any("'wrap'" in e and "not styled" in e for e in errs), errs
+    assert any("'nav-inner'" in e and "not styled" in e for e in errs), errs
+    # ...and styling both, with nothing else in the CSS, clears it.
+    assert td.check_vocabulary(
+        html, ".wrap { max-width: 880px; } .nav-inner { max-width: 880px; }",
+        "utility", css_only=td.UTILITY_CSS_ONLY_CLASSES) == []
+    # markup credit still holds for the rest of the vocabulary
+    assert td.check_vocabulary(
+        '<div class="wrap nav-inner"></div>', ".wrap{} .nav-inner{}", "utility",
+        css_only=td.UTILITY_CSS_ONLY_CLASSES,
+    ) == [
+        e for e in td.check_vocabulary('<div class="wrap nav-inner"></div>', ".wrap{} .nav-inner{}", "utility")
+    ]
+
+
+def _utility_dress_without(tdir, cls: str) -> str:
+    """The theme's real utility.css with every `.cls` selector renamed, the
+    way a theme that never styled the measure would read."""
+    css = (tdir / "archetypes" / "utility.css").read_text(encoding="utf-8")
+    import re as _re
+    return _re.sub(rf"\.{_re.escape(cls)}(?![\w-])", f".{cls}-renamed", css)
+
+
+@pytest.mark.parametrize("slug", [
+    td.theme_registry.load()["active"], *td.theme_registry.load().get("queue", [])
+])  # inline: _registered_theme_slugs is defined further down, after collection reaches here
+@pytest.mark.parametrize("cls", sorted(td.UTILITY_CSS_ONLY_CLASSES))
+def test_a_real_utility_css_that_never_styles_the_measure_fails_the_archetype(slug, cls):
+    """Through _check_archetype, with the theme's REAL utility.html (which
+    carries both class names in its markup) and its real utility.css
+    mutated so `.cls` is never styled. Before the css-only rule this was a
+    PASS, and press.html measured .wrap at 1440px wide at 1440."""
+    tdir = td.theme_registry.theme_dir(slug)
+    html = (tdir / "archetypes" / "utility.html").read_text(encoding="utf-8")
+    good = (tdir / "archetypes" / "utility.css").read_text(encoding="utf-8")
+    assert f".{cls}" in good
+    vocab = lambda errs: [e for e in errs if "vocabulary" in e]  # noqa: E731
+    assert vocab(td._check_archetype("utility", html, good, False, None)) == []
+    errs = vocab(td._check_archetype("utility", html, _utility_dress_without(tdir, cls), False, None))
+    assert len(errs) == 1 and f"'{cls}'" in errs[0] and "not styled" in errs[0], errs
 
 
 def test_vocabulary_class_may_come_from_a_css_selector_instead_of_html():
@@ -1331,16 +1395,18 @@ def test_run_browser_checks_serves_the_document_at_the_nested_path(monkeypatch):
 
 
 def test_a_registered_theme_without_a_name_fails_and_an_unregistered_stub_does_not():
-    registered = ["phosphor-blueprint", "slate-broadsheet"]
+    registered = _registered_theme_slugs()
+    assert registered, "the registry lists no theme"
     # both live themes carry a name today
     for slug in registered:
         meta = json.loads((ROOT / "themes" / slug / "theme.json").read_text(encoding="utf-8"))
         assert td.check_theme_names_itself(slug, meta, registered) == []
     # a nameless registered theme fails, naming the slug and the consequence
-    errs = td.check_theme_names_itself("slate-broadsheet", {}, registered)
-    assert len(errs) == 1 and "slate-broadsheet" in errs[0] and "imprint" in errs[0], errs
-    assert td.check_theme_names_itself("slate-broadsheet", {"name": "   "}, registered)
-    assert td.check_theme_names_itself("slate-broadsheet", {"name": 7}, registered)
+    victim = registered[-1]
+    errs = td.check_theme_names_itself(victim, {}, registered)
+    assert len(errs) == 1 and victim in errs[0] and "imprint" in errs[0], errs
+    assert td.check_theme_names_itself(victim, {"name": "   "}, registered)
+    assert td.check_theme_names_itself(victim, {"name": 7}, registered)
     # the doctor's stub fixtures are `{}` and never reach the registry: green
     assert td.check_theme_names_itself("wired", {}, registered) == []
 
