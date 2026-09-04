@@ -240,6 +240,17 @@
   .feature p{ font-size:12.5px; color:var(--fg-3); line-height:1.5; margin:0; }
 
   /* ---------- Screenshot gallery ---------- */
+  .video-frame{ margin: 0 0 18px; }
+  .video-frame video{
+    display:block; width:100%; height:auto; aspect-ratio: 16 / 9;
+    background: var(--bg-1);
+    border: 1px solid var(--border-1); border-radius: var(--r-lg);
+  }
+  .video-frame video:hover{ border-color: var(--border-accent); }
+  .video-cap{
+    margin: 8px 2px 0; font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--fg-muted);
+  }
   .gallery{ display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; }
   .gallery figure{
     margin:0;
@@ -704,6 +715,14 @@ brew install --cask rororo</code>
       <p>The surfaces you actually use &mdash; the welcome flow, the add-account window, Squad Launch, settings, the diagnostics tab.</p>
     </div>
     <div class="r">The app</div>
+  </div>
+
+  <div class="video-frame">
+    <video controls preload="metadata" playsinline
+           poster="assets/video/rororo/rororo-launch-poster.jpg">
+      <source src="assets/video/rororo/rororo-launch-16x9.mp4" type="video/mp4" />
+    </video>
+    <p class="video-cap">The launch cut &middot; 53 seconds, sound on</p>
   </div>
 
   <div class="gallery">
