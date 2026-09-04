@@ -10,23 +10,25 @@
   <link rel="preload" as="font" type="font/woff2" href="/fonts/SpaceGrotesk-Variable.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-Variable.woff2" crossorigin />
   <link rel="stylesheet" href="/fonts/fonts.css" />
+  <!-- Base tokens (--bg-0, --text, --cyan, --brand-gradient ...) come from
+       the active theme's tokens.css. This zone is renderer-owned:
+       scripts/render-hub.py rewrites it from content/themes.json on every
+       run, so the page follows the rotation. Never edit the link by hand. -->
+  <!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/phosphor-blueprint/tokens.css">
+  <!-- SITE_JSON:theme-css:end -->
   <style>
-    :root {
-      --navy-deep: #0f1f31;
-      --cyan:      #17d4fa;
-      --magenta:   #f22f89;
-      --text:      #e8f2ff;
-      --text-sec:  #a8c2d9;
-      --text-dim:  #6a849e;
-      --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
-    }
+    /* This page defines no token of its own. Its palette is the theme's
+       base vocabulary (archetypes.REQUIRED_TOKENS), linked above; the
+       layout below is the page's. One literal is kept where no token
+       carries its value — named at the rule that spends it. */
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; height: 100%; }
     body {
       background:
         radial-gradient(60% 50% at 30% 20%, rgba(23,212,250,.16) 0%, transparent 60%),
         radial-gradient(45% 45% at 78% 70%, rgba(242,47,137,.13) 0%, transparent 60%),
-        var(--navy-deep);
+        var(--bg-0);
       color: var(--text);
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       line-height: 1.55;
@@ -40,7 +42,11 @@
     .eyebrow {
       font-family: 'JetBrains Mono', ui-monospace, monospace;
       font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--text-dim); margin-bottom: 20px;
+      /* Literal kept: this eyebrow has always been #6a849e, dimmer than any
+         theme's --text-dim (#9fafc0) or --text-mute (#92a5bd), and the
+         conversion is 0-pixel by contract. A theme cannot reach this one
+         value; it is recorded, not hidden. */
+      color: #6a849e; margin-bottom: 20px;
     }
     .code {
       font-family: 'Space Grotesk', sans-serif;
@@ -65,7 +71,7 @@
       font-weight: 600; font-size: 15px; text-decoration: none;
       transition: all 140ms cubic-bezier(.2,.7,.2,1);
     }
-    .btn-primary { background: var(--brand-gradient); color: #050c18; }
+    .btn-primary { background: var(--brand-gradient); color: var(--ink-950); }
     .btn-primary:hover { filter: brightness(1.08); box-shadow: 0 0 24px rgba(23,212,250,.35); }
     .btn-ghost { color: var(--text); border: 1px solid rgba(255,255,255,.16); }
     .btn-ghost:hover { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.32); }
@@ -74,35 +80,43 @@
     }
   
     /* ============================================================
-       Phosphor Blueprint — treatment layer (adopted 2026-07-07)
-       Append-only override + in-place navy-glass swaps; matches the
-       homepage treatment (626labs.dev PR #73).
+       Phosphor Blueprint treatment — the same alias pattern the bespoke
+       product pages carry (conundrum.html, rororo.html, etsy-mcp.html).
+
+       Each alias reads the theme's treatment name and falls back to the
+       contracted token behind it. Under phosphor-blueprint every one
+       resolves to the --pb-* value the linked tokens.css defines, exactly
+       as when this page defined them itself. Under a theme that satisfies
+       archetypes.REQUIRED_TOKENS and ships no treatment, the field falls
+       through to --bg-0 and the grid, the scanlines and the bloom
+       disappear, so the page rotates instead of staying a private copy of
+       one month's dress.
+
+       No contracted token is redefined here. A page that overrides --bg-0
+       is a page the rotation cannot reach, which is the same defect as the
+       private :root this replaced, one indirection deeper.
        ============================================================ */
     :root {
-      --pb-field: rgb(0,0,0);
-      --pb-grid-fine: rgba(23,212,250,.05);
-      --pb-grid-coarse: rgba(23,212,250,.11);
-      --pb-scanline: rgba(0,0,0,.42);
-      --pb-panel: rgba(0,0,0,.72);
-      --pb-panel-border: rgba(23,212,250,.25);
-      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+      --page-field: var(--pb-field, var(--bg-0));
+      --page-grid-coarse: var(--pb-grid-coarse, transparent);
+      --page-scanline: var(--pb-scanline, transparent);
+      --page-bloom: var(--pb-bloom-cyan, none);
     }
     .pb-scanlines {
       position: fixed; inset: 0; pointer-events: none; z-index: 60;
-      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+      background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
     }
 
     body {
       background:
         radial-gradient(60% 50% at 30% 20%, rgba(23,212,250,.16) 0%, transparent 60%),
         radial-gradient(45% 45% at 78% 70%, rgba(242,47,137,.13) 0%, transparent 60%),
-        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-        var(--pb-field);
+        linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+        var(--page-field);
       background-size: auto, auto, 120px 120px, 120px 120px;
     }
-    h1 { text-shadow: var(--pb-bloom-cyan); }
+    h1 { text-shadow: var(--page-bloom); }
   </style>
 </head>
 <body>

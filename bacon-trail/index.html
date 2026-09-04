@@ -16,51 +16,23 @@
 <meta name="twitter:image" content="https://626labs.dev/assets/og-bacon-trail.png" />
 <link rel="icon" type="image/png" href="/favicon-626.png" />
 
+<!-- Token vocabulary (--bg-0, --fg-*, --cyan, --font-*, --border-1 ...) comes
+     from the active theme's product-tokens.css. This zone is renderer-owned:
+     scripts/render-hub.py rewrites it from content/themes.json on every run,
+     so the page follows the rotation. Never edit the link by hand. -->
+<!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/product-tokens.css">
+<!-- SITE_JSON:theme-css:end -->
+
 <style>
   /* ---------- Web fonts ---------- */
   @import url('/fonts/fonts.css');
 
-  /* ---------- Brand tokens (subset of Design/colors_and_type.css used here) ---------- */
-  :root {
-    --brand-navy:        #192e44;
-    --brand-navy-deep:   #0f1f31;
-    --brand-cyan:        #17d4fa;
-    --brand-cyan-bright: #5ce6ff;
-    --brand-magenta:     #f22f89;
-
-    --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-magenta) 100%);
-
-    --ink-0:   #ffffff;
-    --ink-200: #c4cdda;
-    --ink-300: #a4aebd;
-    --ink-400: #99a4b4;
-
-    --fg-1: var(--ink-0);
-    --fg-2: var(--ink-200);
-    --fg-3: var(--ink-300);
-    --fg-muted: var(--ink-400);
-
-    --bg-0: var(--brand-navy-deep);
-
-    --border-1: rgba(255,255,255,.08);
-    --border-2: rgba(255,255,255,.14);
-    --border-accent: rgba(23,212,250,.45);
-
-    --r-md: 10px;
-    --r-lg: 14px;
-    --r-xl: 20px;
-
-    --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-
-    --shadow-2: 0 4px 16px rgba(0,0,0,.45);
-    --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.06);
-
-    --ease-out: cubic-bezier(.2,.7,.2,1);
-    --dur-fast: 120ms;
-    --dur-med: 220ms;
-  }
+  /* This page defines no token of its own. Its palette is the theme's
+     product vocabulary (archetypes.REQUIRED_TOKENS), linked above; the
+     layout below is the page's. The Bacon Trail widget it mounts scopes
+     every token it reads under .bacon-trail-widget in its own stylesheet
+     and takes nothing from this page. */
 
   html, body { margin:0; padding:0; min-height:100vh; }
   body{
@@ -91,7 +63,7 @@
     backdrop-filter: blur(16px) saturate(140%);
     -webkit-backdrop-filter: blur(16px) saturate(140%);
     background: rgba(0,0,0,.65);
-    border-bottom: 1px solid var(--border-1);
+    border-bottom: 1px solid var(--page-hairline);
   }
   .topnav-inner{
     max-width: 1100px; margin: 0 auto; padding: 14px 32px;
@@ -114,8 +86,8 @@
     transition: color var(--dur-fast);
     display:inline-flex; align-items:center; gap:8px;
   }
-  .topnav .links a:hover{ color: var(--brand-cyan); }
-  .topnav .links a.cta{ color: var(--brand-cyan); }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
   .topnav .links a svg{ flex-shrink: 0; }
 
   /* ---------- Shell ---------- */
@@ -129,13 +101,13 @@
   }
   .eyebrow{
     font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
-    color:var(--brand-cyan); display:inline-flex; align-items:center; gap:10px; margin-bottom:18px;
+    color:var(--cyan); display:inline-flex; align-items:center; gap:10px; margin-bottom:18px;
   }
   .eyebrow::before, .eyebrow::after{
     content:""; width:24px; height:1px;
   }
-  .eyebrow::before{ background:linear-gradient(90deg, transparent, var(--brand-cyan)); }
-  .eyebrow::after{ background:linear-gradient(90deg, var(--brand-cyan), transparent); }
+  .eyebrow::before{ background:linear-gradient(90deg, transparent, var(--cyan)); }
+  .eyebrow::after{ background:linear-gradient(90deg, var(--cyan), transparent); }
 
   h1.title{
     font-family:var(--font-display); font-weight:700; font-size:clamp(40px,6vw,68px);
@@ -152,7 +124,7 @@
     font-family:var(--font-mono); font-size:12px; letter-spacing:.04em;
     color:var(--fg-muted); margin:0 0 44px;
   }
-  .howto b{ color:var(--brand-cyan); font-weight:500; }
+  .howto b{ color:var(--cyan); font-weight:500; }
 
   /* ---------- Widget stage ---------- */
   .stage{
@@ -164,7 +136,7 @@
   /* ---------- Footer ---------- */
   footer{
     position:relative; z-index:1;
-    border-top:1px solid var(--border-1);
+    border-top:1px solid var(--page-hairline);
     margin-top:auto;
   }
   .footer-inner{
@@ -173,10 +145,10 @@
     font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
     color:var(--fg-muted);
   }
-  .footer-inner .brand-tagline{ color:var(--brand-cyan); }
+  .footer-inner .brand-tagline{ color:var(--cyan); }
   .footer-links{ display:flex; gap:20px; }
   .footer-links a{ color:var(--fg-3); text-decoration:none; transition:color var(--dur-fast); }
-  .footer-links a:hover{ color:var(--brand-cyan); }
+  .footer-links a:hover{ color:var(--cyan); }
 
   @media (max-width:560px){
     .shell{ padding:44px 20px 32px; }
@@ -184,7 +156,7 @@
   }
   .skip-link {
     position: absolute; left: 12px; top: -56px; z-index: 200;
-    background: #17d4fa; color: #0f1f31;
+    background: var(--cyan); color: var(--navy-deep);
     padding: 10px 18px; border-radius: 8px;
     font-weight: 600; font-size: 14px; text-decoration: none;
     transition: top 140ms ease;
@@ -200,52 +172,57 @@
   }
 
     /* ============================================================
-       Phosphor Blueprint — treatment layer (adopted 2026-07-07)
-       Append-only override + in-place navy-glass swaps; matches the
-       homepage treatment (626labs.dev PR #73).
+       Phosphor Blueprint treatment — the same alias pattern the bespoke
+       product pages carry (conundrum.html, rororo.html, etsy-mcp.html).
+
+       Each alias reads the theme's treatment name and falls back to the
+       contracted token behind it. Under phosphor-blueprint every one
+       resolves to the --pb-* value the linked product-tokens.css defines,
+       exactly as when this page defined them itself. Under a theme that
+       satisfies archetypes.REQUIRED_TOKENS and ships no treatment, the
+       structural aliases fall through to --bg-0/--border-1 and the
+       decorative ones disappear, so the page rotates instead of staying a
+       private copy of one month's dress.
+
+       No contracted token is redefined here. The old block repointed
+       --bg-0/--border-1/--border-2 and set --bg-1/--bg-2 to black-glass
+       literals; --bg-1/--bg-2/--border-2 were read by nothing on this page
+       (the widget scopes its own), and the two --border-1 reads now go
+       through --page-hairline. A page that overrides a contracted token is
+       a page the rotation cannot reach.
        ============================================================ */
     :root {
-      --pb-field: rgb(0,0,0);
-      --pb-grid-fine: rgba(23,212,250,.05);
-      --pb-grid-coarse: rgba(23,212,250,.11);
-      --pb-scanline: rgba(0,0,0,.42);
-      --pb-panel: rgba(0,0,0,.72);
-      --pb-panel-border: rgba(23,212,250,.25);
-      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+      --page-field: var(--pb-field, var(--bg-0));
+      --page-hairline: var(--pb-hairline, var(--border-1));
+      --page-grid-fine: var(--pb-grid-fine, transparent);
+      --page-grid-coarse: var(--pb-grid-coarse, transparent);
+      --page-scanline: var(--pb-scanline, transparent);
+      --page-bloom: var(--pb-bloom-cyan, none);
     }
     .pb-scanlines {
       position: fixed; inset: 0; pointer-events: none; z-index: 60;
-      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
-    }
-
-    :root {
-      --bg-0: var(--pb-field);
-      --bg-1: rgba(0,0,0,.6);
-      --bg-2: rgba(0,0,0,.72);
-      --border-1: rgba(23,212,250,.14);
-      --border-2: rgba(23,212,250,.25);
+      background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
     }
 
     body {
       background:
-        linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
-        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-        var(--pb-field);
+        linear-gradient(90deg, var(--page-grid-fine) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--page-grid-fine) 1px, transparent 1px),
+        linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+        var(--page-field);
       background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
     }
     @media (max-width: 720px) {
       body {
         background:
-          linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-          linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-          var(--pb-field);
+          linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+          linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+          var(--page-field);
         background-size: 120px 120px, 120px 120px;
       }
     }
-    h1 { text-shadow: var(--pb-bloom-cyan); }
+    h1 { text-shadow: var(--page-bloom); }
     /* The Bacon Trail widget plays crisp — no CRT over the quiz. Drop the
        shell's stacking context (z:auto still paints above the fixed grid by
        DOM order) so the stage can lift above the scanline overlay (60); the
@@ -256,7 +233,7 @@
     .topnav { z-index: 70; }
     .topnav::after {
       content: ''; position: absolute; inset: 0; pointer-events: none;
-      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+      background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
     }
   </style>
 </head>

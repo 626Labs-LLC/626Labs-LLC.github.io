@@ -14,21 +14,39 @@
   <meta property="og:image" content="https://626labs.dev/sanduhr/icon.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
+  <!-- Token vocabulary (--bg-0, --bg-1, --border-2 ...) comes from the
+       active theme's product-tokens.css. This zone is renderer-owned:
+       scripts/render-hub.py rewrites it from content/themes.json on every
+       run, so the page follows the rotation. Never edit the link by hand. -->
+  <!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/phosphor-blueprint/archetypes/product-tokens.css">
+  <!-- SITE_JSON:theme-css:end -->
+
   <style>
+    /* Sanduhr's own palette — the app's colors, not a copy of the 626 Labs
+       design system. #3bb4d9 is the widget's cyan, #e13aa0 its magenta, and
+       the navy trio is the product's, a hair off the brand's. None matches
+       a token value, so none becomes a theme read (the conversion is 0-pixel
+       by contract), and all are named --sd-* so that no contracted name is
+       shadowed after the theme link above: the theme's --bg-0/--fg-1 chains
+       resolve through the theme's own --navy-deep/--text, never these.
+       The field, the header panel, its rule and the CRT come from the
+       theme; the product's ink and accents stay the product's. Like the
+       baked-navy screenshot rasters on this page, they are Sanduhr's. */
     :root {
-      --navy-deep: #0f182b;
-      --navy-mid:  #162033;
-      --navy-hi:   #1a2540;
-      --navy-line: #2a3a5c;
-      --cyan:      #3bb4d9;
-      --cyan-pale: #7ae0f5;
-      --magenta:   #e13aa0;
-      --text:      #e8f2ff;
-      --text-sec:  #a8c2d9;
-      --text-dim:  #9fafc0;
-      --text-mute: #92a5bd;
-      --ok:        #4ade80;
-      --warn:      #fb923c;
+      --sd-navy-deep: #0f182b;
+      --sd-navy-mid:  #162033;
+      --sd-navy-hi:   #1a2540;
+      --sd-navy-line: #2a3a5c;
+      --sd-cyan:      #3bb4d9;
+      --sd-cyan-pale: #7ae0f5;
+      --sd-magenta:   #e13aa0;
+      --sd-text:      #e8f2ff;
+      --sd-text-sec:  #a8c2d9;
+      --sd-text-dim:  #9fafc0;
+      --sd-text-mute: #92a5bd;
+      --sd-ok:        #4ade80;
+      --sd-warn:      #fb923c;
     }
 
     * { box-sizing: border-box; }
@@ -36,8 +54,8 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: radial-gradient(ellipse at top, var(--navy-hi), var(--navy-deep) 70%);
-      color: var(--text);
+      background: radial-gradient(ellipse at top, var(--sd-navy-hi), var(--sd-navy-deep) 70%);
+      color: var(--sd-text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI",
                    Roboto, "Helvetica Neue", Arial, sans-serif;
       font-size: 16px;
@@ -46,8 +64,8 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    a { color: var(--cyan); text-decoration: none; }
-    a:hover { color: var(--cyan-pale); text-decoration: underline; }
+    a { color: var(--sd-cyan); text-decoration: none; }
+    a:hover { color: var(--sd-cyan-pale); text-decoration: underline; }
 
     .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
@@ -73,21 +91,21 @@
       align-items: center;
       gap: 8px;
       font-size: 14px;
-      color: var(--text-sec);
+      color: var(--sd-text-sec);
     }
     header.site .crumb a {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      color: var(--text-sec);
+      color: var(--sd-text-sec);
     }
-    header.site .crumb a:hover { color: var(--cyan-pale); text-decoration: none; }
+    header.site .crumb a:hover { color: var(--sd-cyan-pale); text-decoration: none; }
     header.site .crumb img { width: 24px; height: 24px; border-radius: 5px; display: block; }
-    header.site .crumb .sep { color: var(--text-mute); }
-    header.site .crumb .current { color: var(--text); font-weight: 600; }
+    header.site .crumb .sep { color: var(--sd-text-mute); }
+    header.site .crumb .current { color: var(--sd-text); font-weight: 600; }
     header.site nav { display: flex; gap: 20px; font-size: 14px; }
-    header.site nav a { color: var(--text-sec); }
-    header.site nav a:hover { color: var(--cyan); text-decoration: none; }
+    header.site nav a { color: var(--sd-text-sec); }
+    header.site nav a:hover { color: var(--sd-cyan); text-decoration: none; }
     @media (max-width: 620px) {
       header.site nav { display: none; }
     }
@@ -112,22 +130,22 @@
       letter-spacing: -0.025em;
       line-height: 1.1;
       padding-bottom: 0.06em;
-      background: linear-gradient(135deg, var(--cyan) 0%, var(--cyan-pale) 45%, var(--magenta) 100%);
-      background: linear-gradient(in oklch, var(--cyan) 0%, var(--cyan-pale) 45%, var(--magenta) 100%);
+      background: linear-gradient(135deg, var(--sd-cyan) 0%, var(--sd-cyan-pale) 45%, var(--sd-magenta) 100%);
+      background: linear-gradient(in oklch, var(--sd-cyan) 0%, var(--sd-cyan-pale) 45%, var(--sd-magenta) 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
     section.hero p.tag {
       font-size: 18px;
-      color: var(--text-sec);
+      color: var(--sd-text-sec);
       max-width: 640px;
       margin: 0 auto 8px;
       line-height: 1.55;
     }
     section.hero p.sub {
       font-size: 14px;
-      color: var(--text-dim);
+      color: var(--sd-text-dim);
       max-width: 620px;
       margin: 0 auto 32px;
     }
@@ -151,18 +169,18 @@
       cursor: pointer;
     }
     .btn.primary {
-      color: var(--navy-deep);
-      background: linear-gradient(135deg, var(--cyan-pale) 0%, var(--cyan) 50%, var(--magenta) 100%);
-      background: linear-gradient(in oklch, var(--cyan-pale) 0%, var(--cyan) 50%, var(--magenta) 100%);
+      color: var(--sd-navy-deep);
+      background: linear-gradient(135deg, var(--sd-cyan-pale) 0%, var(--sd-cyan) 50%, var(--sd-magenta) 100%);
+      background: linear-gradient(in oklch, var(--sd-cyan-pale) 0%, var(--sd-cyan) 50%, var(--sd-magenta) 100%);
     }
     .btn.primary:hover { transform: translateY(-1px); text-decoration: none; }
     .btn.secondary {
-      color: var(--text);
+      color: var(--sd-text);
       background: rgba(26, 37, 64, 0.55);
-      border-color: var(--navy-line);
+      border-color: var(--sd-navy-line);
     }
     .btn.secondary:hover {
-      border-color: var(--cyan);
+      border-color: var(--sd-cyan);
       background: rgba(59, 180, 217, 0.1);
       text-decoration: none;
     }
@@ -181,7 +199,7 @@
     section.platforms p.lead,
     section.features p.lead,
     section.themes p.lead {
-      color: var(--text-dim);
+      color: var(--sd-text-dim);
       margin: 0 0 28px;
       font-size: 15px;
     }
@@ -196,12 +214,12 @@
       flex-direction: column;
       padding: 22px 24px;
       background: rgba(26, 37, 64, 0.4);
-      border: 1px solid var(--navy-line);
+      border: 1px solid var(--sd-navy-line);
       border-radius: 14px;
       transition: border-color .15s ease, background .15s ease, transform .15s ease;
     }
     .platform-card:hover {
-      border-color: var(--cyan);
+      border-color: var(--sd-cyan);
       background: rgba(59, 180, 217, 0.06);
       transform: translateY(-2px);
     }
@@ -215,7 +233,7 @@
       font-size: 10px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--cyan-pale);
+      color: var(--sd-cyan-pale);
       background: rgba(59, 180, 217, 0.12);
       border: 1px solid rgba(59, 180, 217, 0.3);
       padding: 2px 8px;
@@ -226,7 +244,7 @@
     }
     .platform-card p {
       margin: 0 0 12px;
-      color: var(--text-sec);
+      color: var(--sd-text-sec);
       font-size: 13.5px;
       line-height: 1.55;
       flex: 1;
@@ -236,7 +254,7 @@
       padding: 0;
       margin: 0 0 14px;
       font-size: 13px;
-      color: var(--text-dim);
+      color: var(--sd-text-dim);
     }
     .platform-card ul li {
       padding-left: 18px;
@@ -245,14 +263,14 @@
     }
     .platform-card ul li::before {
       content: "→";
-      color: var(--cyan);
+      color: var(--sd-cyan);
       position: absolute;
       left: 0;
     }
     .platform-card .platform-link {
       font-size: 14px;
       font-weight: 600;
-      color: var(--cyan);
+      color: var(--sd-cyan);
     }
 
     /* ── showcase (expanded-view hero shot) ───────────────── */
@@ -265,10 +283,10 @@
       max-width: 480px;
       width: 100%;
       border-radius: 14px;
-      border: 1px solid var(--navy-line);
+      border: 1px solid var(--sd-navy-line);
       overflow: hidden;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-      background: var(--pb-panel);
+      background: var(--page-panel-fill);
     }
     .showcase-frame img {
       display: block;
@@ -291,17 +309,17 @@
       height: 60px;
       padding: 0 18px;
       background: rgba(15, 24, 43, 0.6);
-      border: 1px solid var(--navy-line);
+      border: 1px solid var(--sd-navy-line);
       border-radius: 8px;
-      color: var(--text);
+      color: var(--sd-text);
       text-decoration: none;
       transition: border-color .15s ease, background .15s ease, transform .15s ease;
       box-sizing: border-box;
     }
     .store-badge:hover {
-      border-color: var(--cyan);
+      border-color: var(--sd-cyan);
       background: rgba(59, 180, 217, 0.08);
-      color: var(--text);
+      color: var(--sd-text);
       text-decoration: none;
       transform: translateY(-1px);
     }
@@ -309,7 +327,7 @@
       width: 28px;
       height: 28px;
       flex-shrink: 0;
-      color: var(--text);
+      color: var(--sd-text);
     }
     .store-badge-text {
       display: flex;
@@ -320,14 +338,14 @@
     .store-badge-top {
       font-size: 9.5px;
       font-weight: 500;
-      color: var(--text-dim);
+      color: var(--sd-text-dim);
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
     .store-badge-bottom {
       font-size: 15px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--sd-text);
       letter-spacing: -0.005em;
     }
 
@@ -344,18 +362,18 @@
     .feature {
       padding: 18px 20px;
       background: rgba(26, 37, 64, 0.3);
-      border: 1px solid var(--navy-line);
+      border: 1px solid var(--sd-navy-line);
       border-radius: 12px;
     }
     .feature h4 {
       margin: 0 0 6px;
       font-size: 15px;
       font-weight: 600;
-      color: var(--cyan-pale);
+      color: var(--sd-cyan-pale);
     }
     .feature p {
       margin: 0;
-      color: var(--text-sec);
+      color: var(--sd-text-sec);
       font-size: 13.5px;
       line-height: 1.55;
     }
@@ -371,7 +389,7 @@
       gap: 14px;
     }
     .theme-shot {
-      border: 1px solid var(--navy-line);
+      border: 1px solid var(--sd-navy-line);
       border-radius: 12px;
       overflow: hidden;
       background: rgba(26, 37, 64, 0.3);
@@ -384,10 +402,10 @@
     .theme-shot .caption {
       padding: 10px 14px;
       font-size: 13px;
-      color: var(--text-sec);
-      border-top: 1px solid var(--navy-line);
+      color: var(--sd-text-sec);
+      border-top: 1px solid var(--sd-navy-line);
     }
-    .theme-shot .caption strong { color: var(--text); font-weight: 600; }
+    .theme-shot .caption strong { color: var(--sd-text); font-weight: 600; }
 
     /* ── privacy callout ───────────────────────────────── */
     section.privacy {
@@ -403,16 +421,16 @@
     .privacy-card h3 {
       margin: 0 0 10px;
       font-size: 20px;
-      color: var(--ok);
+      color: var(--sd-ok);
     }
     .privacy-card p {
       margin: 0 0 10px;
-      color: var(--text-sec);
+      color: var(--sd-text-sec);
       font-size: 14.5px;
       line-height: 1.6;
     }
     .privacy-card p:last-child { margin-bottom: 0; }
-    .privacy-card a { color: var(--cyan-pale); }
+    .privacy-card a { color: var(--sd-cyan-pale); }
 
     /* ── deeper-docs CTA ───────────────────────────────── */
     section.deeper {
@@ -420,7 +438,7 @@
       text-align: center;
     }
     section.deeper p {
-      color: var(--text-dim);
+      color: var(--sd-text-dim);
       margin: 0 0 14px;
       font-size: 14px;
     }
@@ -428,10 +446,10 @@
     /* ── footer ────────────────────────────────────────── */
     footer {
       margin-top: 40px;
-      border-top: 1px solid var(--navy-line);
+      border-top: 1px solid var(--sd-navy-line);
       padding: 28px 0 48px;
       font-size: 13px;
-      color: var(--text-dim);
+      color: var(--sd-text-dim);
     }
     footer .inner {
       display: flex;
@@ -440,53 +458,70 @@
       justify-content: space-between;
       align-items: baseline;
     }
-    footer a { color: var(--text-sec); }
+    footer a { color: var(--sd-text-sec); }
     footer .legal { max-width: 720px; font-size: 12px; }
   
     /* ============================================================
-       Phosphor Blueprint — treatment layer (adopted 2026-07-07)
-       Append-only override + in-place navy-glass swaps; matches the
-       homepage treatment (626labs.dev PR #73).
+       Phosphor Blueprint treatment — the same alias pattern the bespoke
+       product pages carry (conundrum.html, rororo.html, etsy-mcp.html).
+
+       Each alias reads the theme's treatment name and falls back to the
+       contracted token behind it. Under phosphor-blueprint every one
+       resolves to the --pb-* value the linked product-tokens.css defines,
+       exactly as when this page defined them itself. Under a theme that
+       satisfies archetypes.REQUIRED_TOKENS and ships no treatment, the
+       structural aliases fall through to --bg-0/--bg-1/--border-2 and the
+       decorative ones disappear, so the page rotates instead of staying a
+       private copy of one month's dress.
+
+       No contracted token is redefined here. A page that overrides --bg-0
+       is a page the rotation cannot reach, which is the same defect as the
+       private :root this replaced, one indirection deeper.
        ============================================================ */
     :root {
-      --pb-field: rgb(0,0,0);
-      --pb-grid-fine: rgba(23,212,250,.05);
-      --pb-grid-coarse: rgba(23,212,250,.11);
-      --pb-scanline: rgba(0,0,0,.42);
-      --pb-panel: rgba(0,0,0,.72);
-      --pb-panel-border: rgba(23,212,250,.25);
-      --pb-bloom-cyan: 0 0 14px rgba(23,212,250,.5);
-      --pb-trail: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+      --page-field: var(--pb-field, var(--bg-0));
+      --page-panel-fill: var(--pb-panel, var(--bg-1));
+      --page-panel-border: var(--pb-panel-border, var(--border-2));
+      --page-grid-fine: var(--pb-grid-fine, transparent);
+      --page-grid-coarse: var(--pb-grid-coarse, transparent);
+      --page-scanline: var(--pb-scanline, transparent);
+      --page-bloom: var(--pb-bloom-cyan, none);
     }
     .pb-scanlines {
       position: fixed; inset: 0; pointer-events: none; z-index: 60;
-      background: repeating-linear-gradient(0deg, var(--pb-scanline) 0 1px, transparent 1px 3px);
+      background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
     }
-    header.site { background: rgba(0,0,0,.72); border-bottom-color: var(--pb-panel-border); }
+    header.site { background: var(--page-panel-fill); border-bottom-color: var(--page-panel-border); }
 
     body {
       background:
-        linear-gradient(90deg, var(--pb-grid-fine) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-fine) 1px, transparent 1px),
-        linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-        linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-        var(--pb-field);
+        linear-gradient(90deg, var(--page-grid-fine) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--page-grid-fine) 1px, transparent 1px),
+        linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+        var(--page-field);
       background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
     }
     @media (max-width: 720px) {
       body {
         background:
-          linear-gradient(90deg, var(--pb-grid-coarse) 1px, transparent 1px),
-          linear-gradient(0deg,  var(--pb-grid-coarse) 1px, transparent 1px),
-          var(--pb-field);
+          linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+          linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+          var(--page-field);
         background-size: 120px 120px, 120px 120px;
       }
     }
-    h1 { text-shadow: var(--pb-bloom-cyan); }
+    h1 { text-shadow: var(--page-bloom); }
     /* PB icon stabilizer — marks are bright phosphor: the bloom fills the
        raster gaps so line-art icons read stable under the scanlines instead
        of chopped into dashes. Transparent line-art assets only — never a
-       baked-field raster (a lit field reads as a glowing slab). */
+       baked-field raster (a lit field reads as a glowing slab).
+
+       Literal filters, kept. No treatment token carries these values, so
+       there is nothing to gate them on without minting one, and the
+       conversion is 0-pixel by contract. Same class of residue as
+       rororo.html's family-icon brightness: October's cleanup, after the
+       archive freezes. */
     header.site .crumb img,
     img[src*="icon-transparent"], img[src*="mark-transparent"] {
       filter: brightness(1.5) saturate(1.15)

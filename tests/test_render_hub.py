@@ -506,6 +506,8 @@ CONVERTED_PAGES = (
     render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML,
     render_hub.RORORO_HTML, render_hub.MODLAUNCHERGAMES_HTML,
     render_hub.ETSYMCP_HTML,
+    # October needs, piece 2: the three pages that never took a theme.
+    render_hub.NOTFOUND_HTML, render_hub.BACONTRAIL_HTML, render_hub.SANDUHR_HTML,
 )
 
 
@@ -583,7 +585,13 @@ def test_no_workflow_hand_enumerates_a_renderer_owned_page():
     """
     import re
 
-    owned = {p.name for p in render_hub.THEME_CSS_HREFS} | {render_hub.ABOUT_HTML.name}
+    # Repo-relative paths, not Path.name: bacon-trail/index.html and
+    # sanduhr/index.html are both named index.html, and index.html is a
+    # pipeline output both workflows name on purpose.
+    owned = {
+        p.relative_to(render_hub.ROOT).as_posix()
+        for p in (*render_hub.THEME_CSS_HREFS, render_hub.ABOUT_HTML)
+    }
     for wf in ("rebuild-hub.yml", "rotate-theme.yml"):
         text = (render_hub.ROOT / ".github" / "workflows" / wf).read_text(encoding="utf-8")
         # Comments explain; command lines act. Only the latter matter.
@@ -687,6 +695,9 @@ PRODUCT_TOKEN_PAGES = (
     render_hub.ROROROPLUGINS_HTML,
     render_hub.RORORO_HTML,
     render_hub.MODLAUNCHERGAMES_HTML,
+    # October needs, piece 2: the two product pages that never took a theme.
+    render_hub.BACONTRAIL_HTML,
+    render_hub.SANDUHR_HTML,
 )
 
 
@@ -967,12 +978,29 @@ def test_product_pages_define_no_token_of_their_own():
     # That is the page's own styling decision; a literal there would be the
     # photocopy growing back.
     for page in (render_hub.CONUNDRUM_HTML, render_hub.RORORO_HTML,
-                 render_hub.MODLAUNCHERGAMES_HTML):
+                 render_hub.MODLAUNCHERGAMES_HTML, render_hub.BACONTRAIL_HTML):
         for name, value in declarations(page):
             assert value.strip().startswith("var(--"), (
                 f"{page.name} defines {name} as the literal {value.strip()!r} — "
                 "a private copy the rotation cannot reach"
             )
+
+    # sanduhr/index.html is the one product page whose palette is the
+    # PRODUCT's, not the design system's: #3bb4d9 is the Sanduhr app's cyan,
+    # #e13aa0 its magenta, and its navy trio is a hair off the brand's. None
+    # of those values matches a token, and the conversion is 0-pixel by
+    # contract, so they stay literals — under page-owned --sd-* names, never
+    # contracted ones, so the theme's --bg-0/--fg-1 chains resolve through
+    # the theme's own --navy-deep/--text and not through the product's.
+    # Everything else it declares is a --page-* alias reading the theme.
+    for name, value in declarations(render_hub.SANDUHR_HTML):
+        if name.startswith("--sd-"):
+            continue
+        assert name.startswith("--page-") and value.strip().startswith("var(--"), (
+            f"sanduhr/index.html defines {name} as {value.strip()!r} — only "
+            "--sd-* product colors may be literals here, and only --page-* "
+            "aliases may read the theme"
+        )
 
 
 def test_product_pages_own_their_scanline_overlay_rule():
@@ -1029,6 +1057,70 @@ def test_product_pages_resolve_every_var_they_read():
         )
 
 
+# 404.html — the utility archetype's third live page, and the one with no
+# chrome for archetypes/utility.css to dress: a centered <main>, its own
+# layout, served by name by GitHub Pages. It links tokens.css, the base layer
+# themes.html takes, for its palette alone — the same treatment-alias pattern
+# as the product pages, against a different token file.
+def test_theme_css_map_covers_the_404_page():
+    assert render_hub.THEME_CSS_HREFS[render_hub.NOTFOUND_HTML] == "tokens.css"
+    assert render_hub.NOTFOUND_HTML in render_hub.THEME_CSS_ONLY_PAGES
+
+
+def test_404_page_carries_the_zone_and_tracks_the_registry_on_disk():
+    slug = render_hub.theme_registry.load()["active"]
+    expected = render_hub.render_theme_css_link(slug, "tokens.css")
+    html = render_hub.NOTFOUND_HTML.read_text(encoding="utf-8")
+    assert "<!-- SITE_JSON:theme-css:start -->" in html
+    assert "<!-- SITE_JSON:theme-css:end -->" in html
+    assert expected in html
+    assert render_hub.substitute_zone(html, "theme-css", expected) == html
+    # Still a working 404: GitHub Pages serves it by name, and it stays out
+    # of the index.
+    assert 'name="robots" content="noindex"' in html
+    assert 'href="/"' in html
+
+
+def test_404_page_defines_no_token_of_its_own():
+    import re
+
+    style = re.sub(r"/\*.*?\*/", "", _page_style(render_hub.NOTFOUND_HTML), flags=re.S)
+    for name, value in re.findall(r"(--[\w-]+)\s*:\s*([^;{}]+)", style):
+        assert name.startswith("--page-") and value.strip().startswith("var(--"), (
+            f"404.html defines {name} as {value.strip()!r} — a private copy "
+            "the rotation cannot reach"
+        )
+
+
+def test_404_page_owns_its_scanline_overlay_rule():
+    import re
+
+    html = render_hub.NOTFOUND_HTML.read_text(encoding="utf-8")
+    assert 'class="pb-scanlines"' in html, "404.html lost the element"
+    style = re.sub(r"/\*.*?\*/", "", _page_style(render_hub.NOTFOUND_HTML), flags=re.S)
+    assert re.search(r"(^|[\s,}])\.pb-scanlines\s*[,{]", style), (
+        "404.html carries a .pb-scanlines element but declares no rule for it"
+    )
+
+
+def test_404_page_resolves_every_var_it_reads():
+    # Graded against whatever content/themes.json says is ACTIVE, like the
+    # reading and product twins, so inside rotate-theme.yml's gate stack
+    # this asserts against the dress about to go live.
+    import re
+
+    slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
+    css = (render_hub.ROOT / "themes" / slug / "tokens.css").read_text(encoding="utf-8")
+    defined = set(re.findall(r"(--[\w-]+)\s*:", css))
+    html = render_hub.NOTFOUND_HTML.read_text(encoding="utf-8")
+    used = _unguarded_reads(html)
+    local = set(re.findall(r"(--[\w-]+)\s*:", _page_style(render_hub.NOTFOUND_HTML)))
+    assert not used - defined - local, (
+        f"404.html reads {sorted(used - defined - local)}, undefined in "
+        f"themes/{slug}/tokens.css and not declared locally"
+    )
+
+
 def test_preview_mode_emits_the_theme_css_pages_too(tmp_path):
     # --theme/--out used to write index.html and nothing else, which left a
     # queued theme's effect on the hand-authored pages impossible to see or
@@ -1054,12 +1146,20 @@ def test_preview_mode_emits_the_theme_css_pages_too(tmp_path):
     assert rc == 0
     assert (tmp_path / "index.html").exists()
     for page in render_hub.PREVIEWABLE_THEME_CSS_PAGES:
-        written = tmp_path / page.name
-        assert written.exists(), f"preview did not emit {page.name}"
+        # Repo-relative, not Path.name: bacon-trail/index.html and
+        # sanduhr/index.html are both named index.html, and so is the home
+        # preview. Keyed on the name the three would overwrite one another.
+        written = tmp_path / page.relative_to(render_hub.ROOT)
+        assert written.exists(), f"preview did not emit {page.relative_to(render_hub.ROOT)}"
         expected = render_hub.render_theme_css_link(
             slug, render_hub.THEME_CSS_HREFS[page]
         )
         assert expected in written.read_text(encoding="utf-8")
+    home = (tmp_path / "index.html").read_text(encoding="utf-8")
+    for nested in (render_hub.BACONTRAIL_HTML, render_hub.SANDUHR_HTML):
+        assert home != (tmp_path / nested.relative_to(render_hub.ROOT)).read_text(
+            encoding="utf-8"
+        ), f"the home preview was overwritten by {nested.relative_to(render_hub.ROOT)}"
 
     for page, original in before.items():
         assert page.read_bytes() == original, (
