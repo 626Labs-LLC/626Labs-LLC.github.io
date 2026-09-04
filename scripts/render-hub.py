@@ -741,6 +741,35 @@ def _theme_month_label(month: str | None) -> str:
         return month
 
 
+def _theme_render_opts(slug: str, root: Path = ROOT) -> dict:
+    """Per-theme render opt-ins, read off the theme's own theme.json:
+
+      railLimit    int   render_field_notes shows at most this many Field
+                         Notes on the home page and emits a "More Field
+                         Notes" door to /editorial/ when any were cut.
+      foundingBody bool  render_founding wraps its paragraphs in a
+                         `.founding-body` div so a shell can multicol them.
+
+    Both default to OFF (unlimited rail, bare paragraphs), so a theme.json
+    without the keys — phosphor-blueprint's — renders byte-identically to
+    the pre-opt-in output and `--check` stays green on the live tree. The
+    keys are theme-scoped by design: a shell that wants the markup opts in
+    beside the tokens it ships, and no other theme's page moves."""
+    meta_path = theme_registry.theme_dir(slug, root) / "theme.json"
+    opts = {"railLimit": None, "foundingBody": False}
+    if not meta_path.exists():
+        return opts
+    try:
+        data = json.loads(meta_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return opts
+    limit = data.get("railLimit")
+    if isinstance(limit, int) and not isinstance(limit, bool) and limit > 0:
+        opts["railLimit"] = limit
+    opts["foundingBody"] = data.get("foundingBody") is True
+    return opts
+
+
 def _theme_meta(slug: str, root: Path) -> dict:
     """Best-effort name/thesis/month straight off the theme's own
     theme.json. A card's STATUS and LINK come from the registry only (see
@@ -1351,7 +1380,7 @@ def render_thinking(thinking: dict) -> str:
 
 
 # ─── founding (section 02 — the founding story teaser) ──────────────
-def render_founding(founding: dict) -> str:
+def render_founding(founding: dict, opts: dict | None = None) -> str:
     """Render the `.founding` section — homepage teaser for the founding
     story, with a door to about.html.
 
@@ -1360,6 +1389,11 @@ def render_founding(founding: dict) -> str:
     to `founding`) — no new CSS needed. `paragraphs[]` are emitted as raw
     HTML so inline <strong>/<em> carry through; eyebrow/headline/quote are
     escaped; `door` (label/href) renders like the old CTA link.
+
+    `opts["foundingBody"]` (a theme.json opt-in, see _theme_render_opts)
+    wraps the paragraphs in `<div class="founding-body">` so a shell can
+    run them in CSS columns; the paragraphs are otherwise bare siblings
+    of the blockquote, which no stylesheet can multicol.
     """
     eyebrow = esc(founding.get("eyebrow", ""))
     headline = esc(founding.get("headline", ""))
@@ -1368,6 +1402,8 @@ def render_founding(founding: dict) -> str:
     door = founding.get("door") or {}
 
     para_html = "\n".join(f"    <p>{p}</p>" for p in paragraphs)  # raw HTML on purpose
+    if para_html and (opts or {}).get("foundingBody"):
+        para_html = '    <div class="founding-body">\n' + para_html + '\n    </div>'
 
     door_html = ""
     if door.get("label") and door.get("href"):
@@ -1744,17 +1780,33 @@ def render_field_note(story: dict) -> str:
     return "\n".join(parts)
 
 
-def render_field_notes(stories: list[dict]) -> str:
+def render_field_notes(stories: list[dict], rail_limit: int | None = None) -> str:
     """Whole `<section>` block. Returns "" when no published stories.
 
     When empty, the SITE_JSON:stories zone collapses to nothing — no
     section, no nav anchor target. The nav link still exists (see
     index.html) but jumps to the top of the page until the first story
     is published. Acceptable v1 — single follow-up commit fixes it.
+
+    `rail_limit` (a theme.json opt-in, see _theme_render_opts) caps the
+    cards at that many newest-first and adds a "More Field Notes" door to
+    /editorial/ when any were cut, so a theme that sets the notes as a
+    front rail can cut the rail to the page without hiding a link. None
+    means every published note, the pre-opt-in output.
     """
     if not stories:
         return ""
-    cards = "\n".join(render_field_note(s) for s in stories)
+    shown = stories[:rail_limit] if rail_limit else stories
+    cards = "\n".join(render_field_note(s) for s in shown)
+    more = ""
+    if len(shown) < len(stories):
+        more = (
+            f'\n    <a class="field-notes-more" href="/editorial/">More Field Notes '
+            f'({len(stories) - len(shown)} more)'
+            '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+            'stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" '
+            'aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>'
+        )
     return f"""\
 <section class="section field-notes" id="field-notes">
   <div class="wrap">
@@ -1767,7 +1819,7 @@ def render_field_notes(stories: list[dict]) -> str:
     </div>
     <div class="field-notes-grid">
 {cards}
-    </div>
+    </div>{more}
     <a class="field-notes-subscribe" href="/feed.xml">Subscribe via Atom<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a>
   </div>
 </section>"""
@@ -2259,6 +2311,7 @@ def main(argv: list[str]) -> int:
         )
         return 2
     src = shell.read_text(encoding="utf-8")
+    render_opts = _theme_render_opts(slug)
     dest = (out_dir / "index.html") if out_dir else INDEX_HTML
 
     content = json.loads(SITE_JSON.read_text(encoding="utf-8"))
@@ -2277,8 +2330,8 @@ def main(argv: list[str]) -> int:
         render_thinking(content["thinking"]) if "thinking" in content else "")
     out = substitute_zone(
         out, "founding",
-        render_founding(content["founding"]) if "founding" in content else "")
-    out = substitute_zone(out, "stories", render_field_notes(stories))
+        render_founding(content["founding"], render_opts) if "founding" in content else "")
+    out = substitute_zone(out, "stories", render_field_notes(stories, render_opts["railLimit"]))
     if "labRuns" in content:
         out = substitute_zone(out, "lab-runs", render_lab_runs(content["labRuns"]))
     if "play" in content:
