@@ -273,7 +273,18 @@ def test_phosphor_blueprint_banner_and_favicon_are_byte_identical_to_the_committ
     """The no-regression proof: the default path reproduces today's assets
     exactly. Only the 1200x630 banner, the favicon and the animated icon
     here (the full set is ~5s); export-brand.py with no flag is the whole
-    proof and is run before every commit of this branch."""
+    proof and is run before every commit of this branch.
+
+    Only while Phosphor Blueprint is live: the committed assets are the
+    ACTIVE theme's build, so once the rotation regenerates them in slate
+    a PB build cannot match them, and this gate runs inside
+    rotate-theme.yml after the registry flips. (A post-rotation "active
+    build == committed" pin is deliberately not here either: assets/brand
+    is ubuntu-built from the 1st on, and FreeType rasterizes text a few
+    bytes differently on Windows, the same reason CLAUDE.md gives for not
+    committing OG cards from this box.)"""
+    if theme_registry.active_slug(theme_registry.load()) != "phosphor-blueprint":
+        pytest.skip("the PB no-regression proof only applies while phosphor-blueprint is live")
     pb = rt.load("phosphor-blueprint")
     eb.build_banner((1200, 630), icon, tmp_path / "b.png", pb)
     assert (tmp_path / "b.png").read_bytes() == (ROOT / "assets" / "brand" / "banner-1200x630.png").read_bytes()
