@@ -18,7 +18,7 @@
    the eyebrow as the ears (meta label and the printer's color bar), the
    page-meta as the dateline, the body on the inside-page measure, links
    in cyan with a pale underline, the footer under the heavy rule with the
-   color bar and the imprint line as generated content. What the seed
+   color bar. What the seed
    carried and this dress removed: the `.page-hero-bg .grid` drafting grid
    and `.glow` blur, the `.nav-cta` and `.eyebrow .pulse` glow box-shadows,
    the navy-glass sticky nav, and `h1.page-title .accent` painting
@@ -219,12 +219,13 @@
    underline swatch instead. That is the one place this dress departs from
    the sheet's anchor hover, and the grained-contrast rule is why.
 
-   The imprint. The wayfinding sentence is generated content on
-   .footer-inner::after, because these two pages own their footer markup
-   and a theme cannot add an element to them. Generated content cannot
-   carry a link, so "see all themes" names the URL in prose instead of
-   linking it. Recorded in the design spec as a limit; the durable fix is
-   a site-wide footer line in page markup.
+   No imprint. press.html and privacy.html own their footer markup and a
+   theme cannot add an element to them; generated content cannot carry a
+   link, so a `.footer-inner::after` imprint here could only name the
+   gallery URL in prose. These two pages carry no imprint rather than a
+   fake one. The real imprint, with its link, is page markup: the home
+   shell's `.imprint` and the line render-plugin-pages.py emits on every
+   generated plugin page, both reading the theme's name.
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; }
 html { background: var(--bg-0); }
@@ -513,7 +514,7 @@ main h2 {
   text-wrap: balance;
 }
 
-/* ========== Footer: the heavy rule, the color bar, the imprint ========== */
+/* ========== Footer: the heavy rule, the color bar ========== */
 footer {
   position: relative;
   margin-top: 24px;
@@ -589,20 +590,6 @@ footer::before {
   background: var(--cyan);
   box-shadow: 13px 0 0 var(--magenta), 26px 0 0 var(--sb-ink);
 }
-/* The imprint: the wayfinding sentence, at the foot of the page. */
-.footer-inner::after {
-  content: 'Theme: October 2026 · this site changes monthly · see all themes at 626labs.dev/themes.html';
-  flex-basis: 100%;
-  margin-top: 8px;
-  padding-top: 14px;
-  border-top: var(--sb-hair);
-  font-family: var(--sb-mono);
-  font-size: 12px;
-  line-height: 1.7;
-  letter-spacing: 0.04em;
-  color: var(--sb-ink-2);
-}
-
 /* ========== 390 ========== */
 @media (max-width: 600px) {
   .wrap { padding: 0 18px; }
