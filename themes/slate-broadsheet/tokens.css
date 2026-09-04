@@ -28,6 +28,32 @@
    --magenta-pale #FFA3CC            5.41:1          5.09:1          4.85:1
    --ok #2BD99A                      5.48:1          5.14:1          4.90:1
 
+   COMPOSITED UNDER THE GRAIN. --sb-grain is painted fixed at z-index 5 over
+   everything, panels included, and the sheet's contract is graded under it:
+   worst case 3.5 percent paper over each surface. Same inks, grained surfaces:
+
+   ink / surface+grain       --bg-0 #414956  --bg-1 #444D59  --bg-2 #47505D
+   --fg-1 #F7F5F0                    8.34:1          7.86:1          7.49:1
+   --fg-2 #D9D6CF                    6.26:1          5.90:1          5.62:1
+   --fg-3 #C3C1BA                    5.04:1          4.76:1          4.53:1
+   --fg-muted #BCBBB4                4.72:1          4.45:1          4.24:1
+   --cyan #17D4FA                    5.12:1          4.83:1          4.60:1
+   --cyan-pale #5CE6FF               6.15:1          5.80:1          5.52:1
+   --magenta-pale #FFA3CC            4.91:1          4.63:1          4.42:1
+   --ok #2BD99A                      4.97:1          4.69:1          4.47:1
+
+   THE RULE THAT FOLLOWS: under grain, --fg-muted, --magenta-pale and --ok are
+   --bg-0 INKS ONLY. None of the three clears 4.5:1 on a grained --bg-1 or
+   --bg-2, and --fg-3 on a grained --bg-2 is a hair over. A dress that sets a
+   folio in --fg-muted on a --bg-2 rail ships under AA with every gate green,
+   because the doctor grades flat colors. theme.json gates the flat ceiling
+   (--fg-muted/--bg-2, --magenta-pale/--bg-2); the grained one is this rule.
+
+   SHORTHANDS: --sb-hair, --sb-rule and --sb-heavy are BORDER SHORTHANDS
+   (width + style + color), exactly as the remix sheet declares them. Spend
+   them on border-* and column-rule only. The bare colors are --sb-hair-color
+   and --sb-rule-color, which --border-1 and --border-2 read.
+
    Reversed folio tab, ground-colored type on the ink field
    (#3A4350 on #F7F5F0): 9.18:1. Ground on the plate mat
    (#3A4350 on #EFEBE2): 8.41:1. No text sits on the mat.
@@ -74,8 +100,8 @@
 
   /* Rules are paper at low alpha: hairline, mid rule, and the heavy rule
      a dress draws in ink itself. Cyan hairline for the accent border. */
-  --border-1: var(--sb-hair);
-  --border-2: var(--sb-rule);
+  --border-1: var(--sb-hair-color);
+  --border-2: var(--sb-rule-color);
   --border-strong: rgba(247,245,240,.42);
   --border-accent: rgba(23,212,250,.45);
 
@@ -122,14 +148,21 @@
   --sb-ink-muted:   #BCBBB4;   /* the fourth step the contract's --fg-muted needs */
   --sb-link-hover:  #FFA3CC;   /* hover and focus ink; magenta as a tint, 5.41:1 */
 
-  /* Rules and screens: paper at low alpha. Decorative, never text. */
-  --sb-hair:        rgba(247,245,240,.14);  /* hairlines, column rules */
-  --sb-rule:        rgba(247,245,240,.28);  /* the mid rule */
+  /* Rule colors: paper at low alpha. Decorative, never text. */
+  --sb-hair-color:  rgba(247,245,240,.14);  /* hairlines, column rules */
+  --sb-rule-color:  rgba(247,245,240,.28);  /* the mid rule */
   --sb-screen:      rgba(247,245,240,.14);  /* halftone dot screen over a raster */
   --sb-impression:  rgba(15,31,49,.55);     /* letterpress impression under display heads */
-  --sb-rule-hair:   1px solid var(--sb-hair);
-  --sb-rule-mid:    1px solid var(--sb-rule);
-  --sb-rule-heavy:  3px solid var(--sb-ink);
+
+  /* The three rules, as the remix sheet declares them: BORDER SHORTHANDS,
+     width + style + color. Spend them on border-* and column-rule ONLY
+     (`border-top: var(--sb-hair)`, `column-rule: var(--sb-hair)`,
+     `border-top: var(--sb-heavy)`); never as a color. A bare color spent
+     as a shorthand parses with border-style none and the rule vanishes
+     silently. For a color, read --sb-hair-color / --sb-rule-color. */
+  --sb-hair:        1px solid var(--sb-hair-color);
+  --sb-rule:        1px solid var(--sb-rule-color);
+  --sb-heavy:       3px solid var(--sb-ink);
 
   /* The mounted plate: a pale mat carries a dark raster so a photo reads
      as pasted onto the slate, not as a hole in it. No text on the mat. */
