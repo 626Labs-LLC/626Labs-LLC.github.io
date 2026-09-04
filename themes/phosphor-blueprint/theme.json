@@ -8,5 +8,14 @@
     ["--fg-1", "--pb-field"],
     ["--fg-2", "--pb-field"],
     ["--fg-3", "--pb-panel"]
-  ]
+  ],
+  "raster": {
+    "field": "#000000",
+    "ink": "#E7EDF5",
+    "dim": "#8A99AE",
+    "texture": "grid",
+    "glow": true,
+    "colorBar": false,
+    "bodyFace": "sans"
+  }
 }
