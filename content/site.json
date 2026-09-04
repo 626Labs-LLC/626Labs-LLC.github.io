@@ -414,7 +414,7 @@
       "npm": null,
       "install": null,
       "productPage": "/sanduhr/",
-      "storeUrl": "https://apps.microsoft.com/detail/9NH3NK2RGCF5",
+      "storeUrl": "https://apps.microsoft.com/detail/9NH3NK2RGCF5?cid=site-home",
       "banner": "assets/sanduhr-card-shot.png",
       "meta": "Free on MS Store · Mac + Win native",
       "screenshots": []
@@ -613,7 +613,7 @@
       "repo": "estevanhernandez-stack-ed/RBX15-Shirt-and-Pants",
       "npm": null,
       "install": null,
-      "storeUrl": "https://apps.microsoft.com/detail/9mv9g4xfj8s0",
+      "storeUrl": "https://apps.microsoft.com/detail/9mv9g4xfj8s0?cid=site-home",
       "banner": "assets/thumb-rbx15.png",
       "meta": "Windows · Roblox creator tooling",
       "screenshots": []
@@ -644,7 +644,7 @@
       "repo": "estevanhernandez-stack-ed/RTClickPng",
       "npm": null,
       "install": null,
-      "storeUrl": "https://apps.microsoft.com/detail/9PKKLK6R5WFL",
+      "storeUrl": "https://apps.microsoft.com/detail/9PKKLK6R5WFL?cid=site-home",
       "banner": "assets/thumb-rtclickpng.png",
       "meta": "Windows shell extension · 24h build",
       "screenshots": []
@@ -675,7 +675,7 @@
       "repo": null,
       "npm": null,
       "install": null,
-      "storeUrl": "https://apps.microsoft.com/detail/9PBX8F5TR0VR",
+      "storeUrl": "https://apps.microsoft.com/detail/9PBX8F5TR0VR?cid=site-home",
       "banner": "assets/thumb-snapsnip.png",
       "meta": "Windows native · context-aware screenshots",
       "screenshots": []
@@ -706,7 +706,7 @@
       "repo": "estevanhernandez-stack-ed/ROROROblox",
       "npm": null,
       "install": null,
-      "storeUrl": "https://apps.microsoft.com/detail/9NMJCS390KWB",
+      "storeUrl": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-home",
       "productPage": "rororo.html",
       "banner": "assets/thumb-rororo.png",
       "meta": "Free · Windows + macOS · plugin-extensible",
@@ -738,7 +738,7 @@
       "repo": "estevanhernandez-stack-ed/626-mod-launcher",
       "npm": null,
       "install": null,
-      "storeUrl": "https://apps.microsoft.com/detail/9N53V6RRJK95",
+      "storeUrl": "https://apps.microsoft.com/detail/9N53V6RRJK95?cid=site-home",
       "productPage": "mod-launcher-games.html",
       "productPageLabel": "Browse supported games",
       "banner": "assets/thumb-mod-launcher.png",
