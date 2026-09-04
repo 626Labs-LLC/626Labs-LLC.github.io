@@ -141,10 +141,22 @@ For each sheet, one of:
   pull [named element] from another sheet into this one.
 
 ```
-broadsheet:     KEEP / KILL / REMIX —
-monograph:      KEEP / KILL / REMIX —
-field-manual:   KEEP / KILL / REMIX —
+broadsheet:     REMIX — keep the structure; take the type system from the
+                Field Manual; move the ground to slate grey with the ink
+                inverted; the dateline no longer has to sit up top.
+monograph:      KILL
+field-manual:   KILL as a direction; its type system survives in the remix.
 ```
+
+**Verdict (Este, 2026-09-03):** "Themes don't need to be up top. I like
+Broadsheet, but the font from Field Manual. I also would prefer a darker
+background. Maybe slate grey."
+
+Three named changes, one of which (the ground) changes the palette's
+premise from paper to slate, so a remix sheet is built and judged before
+the eleven-file theme: `sheet-slate-broadsheet.html`. The wayfinding
+contract relaxes from "first viewport at 390" to "present on every page";
+a newspaper's imprint lives on the editorial page, not page one.
 
 Mark this file up or say it in chat. One REMIX worth naming so it is on
 the table: the Field Manual's structure (table, plates, stamp, record of
