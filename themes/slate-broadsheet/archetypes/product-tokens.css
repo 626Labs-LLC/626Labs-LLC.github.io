@@ -1,0 +1,158 @@
+/* ============================================================
+   Theme: slate-broadsheet — product archetype, TOKEN VOCABULARY.
+
+   This file is custom-property definitions and nothing else. No element
+   selectors, no class selectors, no media queries, no @import. That is a
+   contract, enforced by scripts/theme-doctor.py's
+   check_token_css_declares_only_tokens(), not a convention.
+
+   Who reads it: conundrum.html, rororo-plugins.html, rororo.html,
+   mod-launcher-games.html and etsy-mcp.html LINK it for their palette and
+   keep their own layout; scripts/render-plugin-pages.py CONCATENATES it
+   after archetypes/product.css into the 15 generated plugin pages. Names
+   this file shares with product.css's own :root must carry the same
+   values (tests/test_render_plugin_pages.py asserts it on the active
+   theme), so the slate dress (Task 3) reads these rather than restating
+   them.
+
+   COMPLETE against archetypes.REQUIRED_TOKENS (47 names), plus the --sb-*
+   treatment block, identical to tokens.css. The spacing scale is present
+   and unspent for the same reason it always was: the theme OFFERS a
+   scale; the linking pages decline it.
+
+   AA CONTRAST, computed with scripts/theme-doctor.py's own WCAG 2.1 math
+   (the numbers the gate will grade). The 4.5:1 body floor applies to every
+   pair, including sizes that would qualify as large text.
+
+   ink / surface             --bg-0 #3A4350  --bg-1 #3E4754  --bg-2 #414A58
+   --fg-1 #F7F5F0                    9.18:1          8.63:1          8.22:1
+   --fg-2 #D9D6CF                    6.90:1          6.48:1          6.17:1
+   --fg-3 #C3C1BA                    5.55:1          5.22:1          4.97:1
+   --fg-muted #BCBBB4                5.20:1          4.88:1          4.65:1
+   --cyan #17D4FA                    5.64:1          5.30:1          5.05:1
+   --cyan-pale #5CE6FF               6.77:1          6.36:1          6.06:1
+   --magenta-pale #FFA3CC            5.41:1          5.09:1          4.85:1
+   --ok #2BD99A                      5.48:1          5.14:1          4.90:1
+
+   Reversed folio tab, ground-colored type on the ink field
+   (#3A4350 on #F7F5F0): 9.18:1. Ground on the plate mat
+   (#3A4350 on #EFEBE2): 8.41:1. No text sits on the mat.
+
+   NEVER TEXT on slate, with the ratios that rule them out on --bg-0:
+   --magenta #F22F89 2.64:1 (the color bar and the underline
+   swatch only); the brand's pale magenta #FF5AA3 3.45:1, which is why
+   --magenta-pale here is the sheet's declared hover tint #FFA3CC instead;
+   --ed-link #0FA8C9 3.56:1; --ink-950 and the navy trio are field
+   constants for the brand and are not inks on this theme.
+   ============================================================ */
+:root {
+  /* Brand constants. The navy trio and --ink-950 are the 626 Labs field
+     colors every theme carries; on slate they are values a dress may spend
+     on a plate raster or a reversed swatch, never a surface text sits on. */
+  --navy-deep: #0f1f31;
+  --navy-mid:  #192e44;
+  --navy-hi:   #223a54;
+  --navy-line: #2a3a5c;
+  --cyan:      #17d4fa;
+  --cyan-pale: #5ce6ff;
+  --cyan-dim:  #0fa8c9;
+  --magenta:   #f22f89;
+  --magenta-pale: #FFA3CC;
+  --ink-0:     #ffffff;
+  --ink-950:   #050c18;
+  --ok:        #2bd99a;
+  --warn:      #ffb454;
+
+  /* The ink ramp: the editorial paper tones, inverted. */
+  --text:      #F7F5F0;
+  --text-sec:  #D9D6CF;
+  --text-dim:  #C3C1BA;
+  --text-mute: #BCBBB4;
+
+  /* The slate. One ground, two steps lighter for mats and rails. */
+  --bg-0: var(--sb-ground);
+  --bg-1: #3E4754;
+  --bg-2: #414A58;
+  --fg-1: var(--text);
+  --fg-2: var(--text-sec);
+  --fg-3: var(--text-dim);
+  --fg-muted: var(--text-mute);
+
+  /* Rules are paper at low alpha: hairline, mid rule, and the heavy rule
+     a dress draws in ink itself. Cyan hairline for the accent border. */
+  --border-1: var(--sb-hair);
+  --border-2: var(--sb-rule);
+  --border-strong: rgba(247,245,240,.42);
+  --border-accent: rgba(23,212,250,.45);
+
+  /* The printer's color bar. A swatch recipe, never a text fill. */
+  --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+  --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
+  --inner-stroke: inset 0 0 0 1px rgba(247,245,240,.06);
+
+  /* Matte drop shadows for anything lifted off the page. No glow tokens:
+     this theme defines none, so a dress cannot spend one by accident. */
+  --shadow-2: 0 4px 16px rgba(0,0,0,.28);
+  --shadow-3: 0 12px 32px rgba(0,0,0,.36);
+
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  --dur-fast: 120ms;
+  --dur-med: 220ms;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+  --r-pill: 999px;
+
+  /* The Field Manual's type system: Space Grotesk on every head, the
+     serif on body and decks, JetBrains Mono on every piece of furniture.
+     Source Serif 4 is self-hosted in /fonts/fonts.css (roman + italic). */
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body:    'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* The Slate Broadsheet — treatment layer (--sb-*). Same block as tokens.css. */
+:root {
+  /* The slate and the inks. --sb-ground is the ONLY place the ground is
+     declared; --bg-0 reads it. */
+  --sb-ground:      #3A4350;
+  --sb-ink:         #F7F5F0;   /* primary ink: masthead, heads, body copy */
+  --sb-ink-2:       #D9D6CF;   /* secondary ink: decks, descriptions, the imprint */
+  --sb-ink-3:       #C3C1BA;   /* caption ink: folios, datelines, plate captions */
+  --sb-ink-muted:   #BCBBB4;   /* the fourth step the contract's --fg-muted needs */
+  --sb-link-hover:  #FFA3CC;   /* hover and focus ink; magenta as a tint, 5.41:1 */
+
+  /* Rules and screens: paper at low alpha. Decorative, never text. */
+  --sb-hair:        rgba(247,245,240,.14);  /* hairlines, column rules */
+  --sb-rule:        rgba(247,245,240,.28);  /* the mid rule */
+  --sb-screen:      rgba(247,245,240,.14);  /* halftone dot screen over a raster */
+  --sb-impression:  rgba(15,31,49,.55);     /* letterpress impression under display heads */
+  --sb-rule-hair:   1px solid var(--sb-hair);
+  --sb-rule-mid:    1px solid var(--sb-rule);
+  --sb-rule-heavy:  3px solid var(--sb-ink);
+
+  /* The mounted plate: a pale mat carries a dark raster so a photo reads
+     as pasted onto the slate, not as a hole in it. No text on the mat. */
+  --sb-mat:         #EFEBE2;   /* the editorial paper-deep tone */
+  --sb-raster:      #0F1F31;   /* the plate placeholder, brand navy */
+
+  /* The reversed folio tab: a pale tab with slate type, and the skip link. */
+  --sb-tab-bg:      var(--sb-ink);
+  --sb-tab-fg:      var(--sb-ground);
+
+  /* Broadsheet measures. */
+  --sb-page:        1280px;
+  --sb-gutter:      32px;
+
+  /* Stone grain: fractal noise, white at half alpha, laid at 7 percent.
+     Matte tooth, not scanlines, not a grid. No color literal in the SVG. */
+  --sb-grain:         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23g%29'/%3E%3C/svg%3E");
+  --sb-grain-opacity: .07;
+
+  /* Role aliases the remix sheet's rules read. */
+  --sb-serif:       var(--font-body);
+  --sb-display:     var(--font-display);
+  --sb-mono:        var(--font-mono);
+}
