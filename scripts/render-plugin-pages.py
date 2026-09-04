@@ -78,6 +78,18 @@ DATA = ROOT / "content" / "plugin-pages.json"
 _theme_reg = theme_registry.load()
 _active_theme = theme_registry.active_slug(_theme_reg)
 _ARCHETYPE_DIR = theme_registry.theme_dir(_active_theme) / "archetypes"
+# The footer imprint names the active theme. Read from theme.json rather
+# than typed into a dress or a shell, so the line is right in every month
+# with no edit: "Phosphor Blueprint" today, "The Slate Broadsheet" after
+# the 1st. No theme can put a link in this footer (the renderer owns the
+# markup), which is why the generated-content imprints the dresses used
+# to carry could never link /themes.html. This one does. A theme.json
+# with no "name" (theme-doctor's stub themes are `{}`) falls back to the
+# slug; tests/test_render_plugin_pages.py pins the real name on the real
+# active theme, so a shipped theme without one still fails the gate.
+ACTIVE_THEME_NAME = json.loads(
+    (theme_registry.theme_dir(_active_theme) / "theme.json").read_text(encoding="utf-8")
+).get("name") or _active_theme
 _PRODUCT_TOKENS_CSS = _ARCHETYPE_DIR / "product-tokens.css"
 _PRODUCT_CSS = _ARCHETYPE_DIR / "product.css"
 STYLE = (
@@ -480,8 +492,23 @@ def render_family(current_id, family):
 """
 
 
+def render_imprint():
+    """The one imprint line every generated page carries: the active theme's
+    name, the monthly-rotation sentence, and a REAL link to the gallery.
+    The interpunct is the literal character, never a CSS escape: a
+    `\\00B7` in generated content once ate the space after it and
+    shipped "·this"."""
+    return (
+        '    <div class="container imprint">\n'
+        f"      <p>Theme: {escape(ACTIVE_THEME_NAME)} · this site changes monthly · "
+        '<a href="/themes.html">see all themes</a></p>\n'
+        "    </div>\n"
+    )
+
+
 def render_footer():
-    return """
+    return (
+        """
   <footer>
     <div class="container row">
       <div>626Labs LLC · MIT · 2026</div>
@@ -491,8 +518,11 @@ def render_footer():
         <a href="https://github.com/estevanhernandez-stack-ed/vibe-plugins">Marketplace</a>
       </div>
     </div>
-  </footer>
 """
+        + render_imprint()
+        + """  </footer>
+"""
+    )
 
 
 def render_page(p, family):

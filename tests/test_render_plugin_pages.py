@@ -9,6 +9,7 @@ pages this renderer generates need both halves, so it concatenates them —
 and the concatenation has exactly two ways to go wrong.
 """
 import importlib.util
+import json
 import re
 import sys
 from pathlib import Path
@@ -169,3 +170,42 @@ def test_product_css_and_tokens_agree_on_every_shared_name():
         f"product.css and product-tokens.css disagree on {sorted(mismatched)}: "
         f"{mismatched}"
     )
+
+
+def _active_theme_name() -> str:
+    slug = theme_registry.active_slug(theme_registry.load())
+    meta = json.loads((ROOT / "themes" / slug / "theme.json").read_text(encoding="utf-8"))
+    return meta["name"]
+
+
+IMPRINT_LINK = '<a href="/themes.html">see all themes</a>'
+
+
+def test_footer_carries_exactly_one_imprint_with_a_themes_link_and_the_active_name():
+    """The footer is renderer-owned, so no theme can put a link in it. The
+    imprint line is emitted here from the active theme's theme.json name,
+    which is what makes it right in every month with no edit. Exactly one
+    imprint, a real /themes.html link, the name as theme.json spells it,
+    and the interpunct as the literal character (a `\00B7` escape once
+    ate the space after it and shipped "·this"). Fails when the emission
+    is removed: verified by mutation."""
+    footer = _load_renderer().render_footer()
+    name = _active_theme_name()
+    assert footer.count('class="container imprint"') == 1
+    assert footer.count(IMPRINT_LINK) == 1
+    assert f"Theme: {name} · this site changes monthly · {IMPRINT_LINK}" in footer
+    assert "\00B7" not in footer and "&middot;" not in footer
+
+
+def test_every_generated_page_carries_the_imprint_once():
+    """The footer is shared by the 15 plugin pages and the family index;
+    each carries the one imprint, and nothing else on the page links the
+    gallery so the count is exactly one."""
+    mod = _load_renderer()
+    name = _active_theme_name()
+    outputs = mod.build()
+    assert len(outputs) >= 15
+    for path, html in outputs.items():
+        assert html.count('class="container imprint"') == 1, path
+        assert html.count(IMPRINT_LINK) == 1, path
+        assert f"Theme: {name} ·" in html, path

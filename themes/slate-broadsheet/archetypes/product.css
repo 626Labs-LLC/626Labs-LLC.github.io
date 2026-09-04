@@ -11,12 +11,13 @@
        caption rule, the description as columned serif body with a drop cap,
        the install block as a hairline-boxed how-to in mono, the family strip
        as columned listings under an "Also in this section" folio, and the
-       footer with the color bar and the imprint line. The imprint names
-       October 2026 as a literal: a theme is one month by construction, and
-       if the November gate fails and slate stays live past the 1st, the
-       page says October into November. Accepted; plugin pages are never
-       frozen, so it is a slipped-rotation hazard, not an archive one.
-       Matte throughout: no
+       footer with the color bar and the imprint line. The imprint is page
+       markup: render-plugin-pages.py emits `.imprint` from the active
+       theme's theme.json name with a real link to /themes.html, so the
+       line is right in every month and this dress only styles it. (It
+       used to be generated content on `footer .row::after` naming
+       "October 2026" as a literal, which could neither link nor survive a
+       slipped rotation.) Matte throughout: no
        glow, no bloom, no scanlines, no grid, no gradient field. The stone
        grain rides on body::before; .pb-scanlines (page markup, kept by
        ruling) gets NO rule from this theme.
@@ -697,16 +698,29 @@
       background: var(--cyan);
       box-shadow: 13px 0 0 var(--magenta), 26px 0 0 var(--sb-ink);
     }
-    footer .row::after {
-      content: 'Theme: October 2026 · this site changes monthly';
-      flex-basis: 100%;
+    /* The imprint: the wayfinding sentence at the foot of the page, the
+       sheet's treatment (mono, small, the link in cyan). Markup from
+       render-plugin-pages.py; the name from the active theme.json. */
+    footer .imprint {
       margin-top: 10px;
       padding: 14px 0 44px;
       border-top: var(--sb-hair);
+    }
+    footer .imprint p {
+      font-family: var(--sb-mono);
       font-size: 12px;
       line-height: 1.7;
+      letter-spacing: 0.04em;
       color: var(--fg-2);
     }
+    footer .imprint a {
+      color: var(--cyan);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      white-space: nowrap;
+    }
+    footer .imprint a:hover { color: var(--sb-link-hover); }
 
     /* ================= 768 ================= */
     @media (max-width: 960px) {
@@ -731,5 +745,6 @@
       section.work, section.brain, section.install, section.family, section.thesis { padding: 28px 0 36px; }
       .cards-grid, .cards-grid.cols-3, .mini-grid, .family-grid, section.thesis .thesis-artifacts { columns: 1; }
       footer .row { padding: 22px 0 16px; }
-      footer .row::after { padding: 12px 0 36px; line-height: 1.75; }
+      footer .imprint { padding: 12px 0 36px; }
+      footer .imprint p { line-height: 1.75; }
     }
