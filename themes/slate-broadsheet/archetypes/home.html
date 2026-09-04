@@ -220,7 +220,7 @@
     /* A door: the mono, uppercase, cyan link with the brand pair ruled
        under it. Every renderer-emitted button becomes one. */
     .btn, .door, .product-link, .play-link, .sponsor-cta, .thinking-link a,
-    .field-notes-subscribe, .field-notes-more, .field-note-link a, .artifact-links a {
+    .field-notes-subscribe, .field-notes-more > summary, .field-note-link a, .artifact-links a {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -240,7 +240,7 @@
       cursor: pointer;
     }
     .btn:hover, .door:hover, .product-link:hover, .play-link:hover, .sponsor-cta:hover,
-    .thinking-link a:hover, .field-notes-subscribe:hover, .field-notes-more:hover, .field-note-link a:hover, .artifact-links a:hover {
+    .thinking-link a:hover, .field-notes-subscribe:hover, .field-notes-more > summary:hover, .field-note-link a:hover, .artifact-links a:hover {
       color: var(--sb-link-hover);
     }
     .btn-ghost, .field-note-link a {
@@ -608,7 +608,22 @@
     }
     .field-note-link { margin-top: 8px; }
     .field-note-link a { font-size: 11px; letter-spacing: 0.1em; padding-bottom: 2px; }
-    .field-notes-more, .field-notes-subscribe { margin-top: 14px; margin-right: 22px; }
+    .field-notes-subscribe { margin-top: 14px; }
+    /* Continued inside: the renderer folds the notes past railLimit into a
+       <details>; its summary is the door, and the cards it reveals wear the
+       same dress as the four above them. Every note's link stays in the DOM. */
+    .field-notes-more { margin: 0; }
+    .field-notes-more > summary {
+      list-style: none;
+      margin-top: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .field-notes-more > summary::-webkit-details-marker { display: none; }
+    .field-notes-more > summary::after { content: '\2192'; }
+    .field-notes-more[open] > summary::after { content: '\2191'; }
+    .field-notes-more[open] > summary { margin-bottom: 4px; border-bottom: var(--sb-hair); padding-bottom: 8px; background-image: none; }
+    .field-notes-more > summary:focus-visible { outline: 2px solid var(--sb-link-hover); outline-offset: 2px; }
 
     /* ================= SECTION FRONT chrome ================= */
     .section { padding: 34px 0 44px; }
