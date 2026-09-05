@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05T10:51:32.683Z",
+  "generatedAt": "2026-09-05T15:42:56.445Z",
   "source": "goatcounter",
   "site": "626labs.dev",
   "range": {
@@ -8,9 +8,9 @@
     "days": 30
   },
   "total": {
-    "total": 508,
+    "total": 513,
     "total_events": 0,
-    "total_utc": 499,
+    "total_utc": 508,
     "stats": [
       {
         "day": "2026-08-06",
@@ -20,7 +20,7 @@
           0,
           0,
           0,
-          1,
+          0,
           0,
           0,
           0,
@@ -40,9 +40,9 @@
           0,
           1
         ],
-        "daily": 7,
-        "weekly": 89,
-        "monthly": 413
+        "daily": 6,
+        "weekly": 88,
+        "monthly": 412
       },
       {
         "day": "2026-08-07",
@@ -826,7 +826,7 @@
           1
         ],
         "daily": 21,
-        "monthly": 95
+        "monthly": 101
       },
       {
         "day": "2026-09-02",
@@ -887,7 +887,7 @@
           3
         ],
         "daily": 28,
-        "weekly": 58
+        "weekly": 64
       },
       {
         "day": "2026-09-04",
@@ -928,11 +928,11 @@
           2,
           2,
           5,
+          1,
           0,
-          0,
-          0,
-          0,
-          0,
+          3,
+          1,
+          1,
           0,
           0,
           0,
@@ -947,14 +947,14 @@
           0,
           0
         ],
-        "daily": 10
+        "daily": 16
       }
     ]
   },
   "hits": {
     "hits": [
       {
-        "count": 447,
+        "count": 452,
         "path_id": 93366467,
         "path": "/rororo.html",
         "event": false,
@@ -969,7 +969,7 @@
               0,
               0,
               0,
-              1,
+              0,
               0,
               0,
               0,
@@ -989,9 +989,9 @@
               0,
               1
             ],
-            "daily": 7,
-            "weekly": 65,
-            "monthly": 363
+            "daily": 6,
+            "weekly": 64,
+            "monthly": 362
           },
           {
             "day": "2026-08-07",
@@ -1775,7 +1775,7 @@
               1
             ],
             "daily": 20,
-            "monthly": 84
+            "monthly": 90
           },
           {
             "day": "2026-09-02",
@@ -1836,7 +1836,7 @@
               1
             ],
             "daily": 23,
-            "weekly": 48
+            "weekly": 54
           },
           {
             "day": "2026-09-04",
@@ -1877,11 +1877,11 @@
               2,
               2,
               5,
+              1,
               0,
-              0,
-              0,
-              0,
-              0,
+              3,
+              1,
+              1,
               0,
               0,
               0,
@@ -1896,7 +1896,7 @@
               0,
               0
             ],
-            "daily": 10
+            "daily": 16
           }
         ]
       },
@@ -9448,7 +9448,7 @@
         ]
       }
     ],
-    "total": 508,
+    "total": 513,
     "more": false
   },
   "refs": {
@@ -9456,19 +9456,19 @@
       {
         "id": "www.bing.com",
         "name": "www.bing.com",
-        "count": 314,
+        "count": 316,
         "ref_scheme": "h"
+      },
+      {
+        "id": "Yahoo",
+        "name": "Yahoo",
+        "count": 62,
+        "ref_scheme": "g"
       },
       {
         "name": "",
         "count": 60,
         "ref_scheme": "o"
-      },
-      {
-        "id": "Yahoo",
-        "name": "Yahoo",
-        "count": 59,
-        "ref_scheme": "g"
       },
       {
         "id": "Google",
@@ -9537,7 +9537,7 @@
       {
         "id": "PH",
         "name": "Philippines",
-        "count": 58
+        "count": 60
       },
       {
         "id": "FR",
@@ -9557,7 +9557,7 @@
       {
         "id": "VN",
         "name": "Vietnam",
-        "count": 20
+        "count": 21
       },
       {
         "id": "NL",
@@ -9597,7 +9597,7 @@
       {
         "id": "Chrome",
         "name": "Chrome",
-        "count": 479
+        "count": 485
       },
       {
         "id": "Safari",
@@ -9622,7 +9622,7 @@
       {
         "id": "Windows",
         "name": "Windows",
-        "count": 440
+        "count": 446
       },
       {
         "id": "macOS",
