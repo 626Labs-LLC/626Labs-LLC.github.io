@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-03T23:41:44.856Z",
+  "generated": "2026-09-08T12:14:49.590Z",
   "entries": [
     {
       "id": "m01",
@@ -658,6 +658,14 @@
       "source": "tmdb"
     },
     {
+      "id": "t1204680",
+      "title": "Coyote vs. Acme",
+      "year": 2026,
+      "tagline": "The movie ACME doesn't want you to see.",
+      "posterPath": "/orkLtdgMGiO9rTVMqJ1kKwrnup1.jpg",
+      "source": "tmdb"
+    },
+    {
       "id": "t1368337",
       "title": "The Odyssey",
       "year": 2026,
@@ -674,75 +682,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1516698",
-      "title": "The Last Sunrise",
-      "year": 2026,
-      "tagline": "One summer to feel everything.",
-      "posterPath": "/3PWJqDfygN0YNNjWsDUOXclCp3h.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1204680",
-      "title": "Coyote vs. Acme",
-      "year": 2026,
-      "tagline": "The movie ACME doesn't want you to see.",
-      "posterPath": "/vhv7lBWYM0DUuNU2a0V7Rhq21dD.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t860508",
-      "title": "The Whisper Man",
-      "year": 2026,
-      "tagline": "If you leave a door half open, soon you'll hear the whispers spoken.",
-      "posterPath": "/6UqflU8Qqkz7Dq4swJPqs0ZJjY4.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1339713",
-      "title": "Obsession",
-      "year": 2026,
-      "tagline": "Be careful who you wish for…",
-      "posterPath": "/bRwnj8WEKBCvmfeUNOukJPwB43K.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1232569",
-      "title": "Pinocchio: Unstrung",
-      "year": 2026,
-      "tagline": "He has no strings to hold him back now.",
-      "posterPath": "/eUJXk3bTvLBi5Zcb0BCedZU7lVL.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1084244",
-      "title": "Toy Story 5",
-      "year": 2026,
-      "tagline": "It's on.",
-      "posterPath": "/sfQtVlIHljToOwYjhe21KPGzZWK.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t1375646",
       "title": "Colony",
       "year": 2026,
       "tagline": "Survive the hive.",
       "posterPath": "/tN799oUR0f1gUKDYdMNrDaY7I51.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1315772",
-      "title": "Minions & Monsters",
-      "year": 2026,
-      "tagline": "Hollywood has a monster problem.",
-      "posterPath": "/4LwvU9SZc8QQzW1X1FAPhNbXnEU.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1108427",
-      "title": "Moana",
-      "year": 2026,
-      "tagline": "The ocean chose her for a reason.",
-      "posterPath": "/zKVgiv5qHCvCLT4A2ymJi5QeXDH.jpg",
       "source": "tmdb"
     },
     {
@@ -754,11 +698,75 @@
       "source": "tmdb"
     },
     {
-      "id": "t1284465",
-      "title": "The Death of Robin Hood",
+      "id": "t1137844",
+      "title": "Mayday",
       "year": 2026,
-      "tagline": "He was no hero.",
-      "posterPath": "/13MmRwmG5NmaMfU8qNrtgGXisiD.jpg",
+      "tagline": "A friendship with major red flags.",
+      "posterPath": "/hVXjX1jLZ1ljFSNGXpjJfbTUOa7.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1506560",
+      "title": "Clash of the Thundermans",
+      "year": 2026,
+      "tagline": "This changes everything.",
+      "posterPath": "/16oqRrWVzQm6qdGfBxvziZ2UiMT.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1339713",
+      "title": "Obsession",
+      "year": 2026,
+      "tagline": "Be careful who you wish for…",
+      "posterPath": "/bRwnj8WEKBCvmfeUNOukJPwB43K.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1516698",
+      "title": "The Last Sunrise",
+      "year": 2026,
+      "tagline": "One summer to feel everything.",
+      "posterPath": "/3PWJqDfygN0YNNjWsDUOXclCp3h.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1108427",
+      "title": "Moana",
+      "year": 2026,
+      "tagline": "The ocean chose her for a reason.",
+      "posterPath": "/zKVgiv5qHCvCLT4A2ymJi5QeXDH.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1084244",
+      "title": "Toy Story 5",
+      "year": 2026,
+      "tagline": "It's on.",
+      "posterPath": "/sfQtVlIHljToOwYjhe21KPGzZWK.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1315772",
+      "title": "Minions & Monsters",
+      "year": 2026,
+      "tagline": "Hollywood has a monster problem.",
+      "posterPath": "/4LwvU9SZc8QQzW1X1FAPhNbXnEU.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t860508",
+      "title": "The Whisper Man",
+      "year": 2026,
+      "tagline": "If you leave a door half open, soon you'll hear the whispers spoken.",
+      "posterPath": "/6UqflU8Qqkz7Dq4swJPqs0ZJjY4.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1232569",
+      "title": "Pinocchio: Unstrung",
+      "year": 2026,
+      "tagline": "He has no strings to hold him back now.",
+      "posterPath": "/eUJXk3bTvLBi5Zcb0BCedZU7lVL.jpg",
       "source": "tmdb"
     },
     {
@@ -770,51 +778,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t278",
-      "title": "The Shawshank Redemption",
-      "year": 1994,
-      "tagline": "Fear can hold you prisoner. Hope can set you free.",
-      "posterPath": "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1083381",
-      "title": "Backrooms",
-      "year": 2026,
-      "tagline": "See how far it goes.",
-      "posterPath": "/rhGx6E3qRNMgj3i5su2oukNHwIQ.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t1275779",
       "title": "Disclosure Day",
       "year": 2026,
       "tagline": "We deserve to know.",
       "posterPath": "/AnJ8IQJI23hNpYXVNaythu061Ru.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t687163",
-      "title": "Project Hail Mary",
-      "year": 2026,
-      "tagline": "Believe in the Hail Mary.",
-      "posterPath": "/yihdXomYb5kTeSivtFndMy5iDmf.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1384216",
-      "title": "The Dog Stars",
-      "year": 2026,
-      "tagline": "At the end of the world, no one survives alone.",
-      "posterPath": "/5O616X9vmRzQdB68PHzBewPittd.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1212461",
-      "title": "OBEX",
-      "year": 2026,
-      "tagline": "It's just a game...",
-      "posterPath": "/989voQxc9qAJKuBaoBHngqnpLsD.jpg",
       "source": "tmdb"
     },
     {
@@ -826,27 +794,51 @@
       "source": "tmdb"
     },
     {
-      "id": "t1432706",
-      "title": "Bury the Devil",
+      "id": "t1083381",
+      "title": "Backrooms",
       "year": 2026,
-      "tagline": "Nothing stays buried forever.",
-      "posterPath": "/yQ3GeVsebrhOPIBhIdoSslbndEv.jpg",
+      "tagline": "See how far it goes.",
+      "posterPath": "/rhGx6E3qRNMgj3i5su2oukNHwIQ.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1081003",
-      "title": "Supergirl",
+      "id": "t1284465",
+      "title": "The Death of Robin Hood",
       "year": 2026,
-      "tagline": "Truth. Justice. Whatever.",
-      "posterPath": "/uhzRnTW4DM13UQBvZP3eVNzQTuz.jpg",
+      "tagline": "He was no hero.",
+      "posterPath": "/13MmRwmG5NmaMfU8qNrtgGXisiD.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t980431",
-      "title": "Avatar Aang: The Last Airbender",
+      "id": "t687163",
+      "title": "Project Hail Mary",
       "year": 2026,
-      "tagline": "The legacy reawakens.",
-      "posterPath": "/3sgnSfNT27Bx5O5ukr7B26mhEQq.jpg",
+      "tagline": "Believe in the Hail Mary.",
+      "posterPath": "/yihdXomYb5kTeSivtFndMy5iDmf.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t278",
+      "title": "The Shawshank Redemption",
+      "year": 1994,
+      "tagline": "Fear can hold you prisoner. Hope can set you free.",
+      "posterPath": "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1228710",
+      "title": "The Mandalorian and Grogu",
+      "year": 2026,
+      "tagline": "If you're searching for new adventure, \"this is the way.\"",
+      "posterPath": "/cE9LAdexd9ju0yIkmCJBOKZg9JR.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1101412",
+      "title": "Fall 2: Deadpoint",
+      "year": 2026,
+      "tagline": "Are you down?",
+      "posterPath": "/sY65bOZcjQqO6VdpOXLN5VcW61e.jpg",
       "source": "tmdb"
     },
     {
@@ -858,14 +850,6 @@
       "source": "tmdb"
     },
     {
-      "id": "t299536",
-      "title": "Avengers: Infinity War",
-      "year": 2018,
-      "tagline": "An entire universe. Once and for all.",
-      "posterPath": "/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t1599993",
       "title": "Animals",
       "year": 2026,
@@ -874,11 +858,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t1594914",
-      "title": "Lucky Strike",
+      "id": "t980431",
+      "title": "Avatar Aang: The Last Airbender",
       "year": 2026,
-      "tagline": "One man's fight to survive.",
-      "posterPath": "/7AEBdyGYXumXWmMFeynE8227KeZ.jpg",
+      "tagline": "The legacy reawakens.",
+      "posterPath": "/3sgnSfNT27Bx5O5ukr7B26mhEQq.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1081003",
+      "title": "Supergirl",
+      "year": 2026,
+      "tagline": "Truth. Justice. Whatever.",
+      "posterPath": "/uhzRnTW4DM13UQBvZP3eVNzQTuz.jpg",
       "source": "tmdb"
     },
     {
@@ -886,7 +878,15 @@
       "title": "Deep Water",
       "year": 2026,
       "tagline": "Surviving the crash is just the beginning.",
-      "posterPath": "/cyI2Ugpq98WZN1GEYeWkn4ztXOc.jpg",
+      "posterPath": "/ZWHxL2ETItcZzeVsVfs6gv3SZ7.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t299536",
+      "title": "Avengers: Infinity War",
+      "year": 2018,
+      "tagline": "An entire universe. Once and for all.",
+      "posterPath": "/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
       "source": "tmdb"
     },
     {
@@ -954,19 +954,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t497",
-      "title": "The Green Mile",
-      "year": 1999,
-      "tagline": "Paul Edgecomb didn't believe in miracles. Until the day he met one.",
-      "posterPath": "/8VG8fDNiy50H4FedGwdSVUPoaJe.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t122",
       "title": "The Lord of the Rings: The Return of the King",
       "year": 2003,
       "tagline": "There can be no triumph without loss. No victory without suffering. No freedom without sacrifice.",
       "posterPath": "/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t497",
+      "title": "The Green Mile",
+      "year": 1999,
+      "tagline": "Paul Edgecomb didn't believe in miracles. Until the day he met one.",
+      "posterPath": "/8VG8fDNiy50H4FedGwdSVUPoaJe.jpg",
       "source": "tmdb"
     },
     {
@@ -1026,19 +1026,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t346",
-      "title": "Seven Samurai",
-      "year": 1954,
-      "tagline": "Unmatched for suspense and spectacle!",
-      "posterPath": "/lOMGc8bnSwQhS4XyE1S99uH8NXf.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t769",
       "title": "GoodFellas",
       "year": 1990,
       "tagline": "Three decades of life in the mafia.",
       "posterPath": "/9OkCLM73MIU2CrKZbqiT8Ln1wY2.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t346",
+      "title": "Seven Samurai",
+      "year": 1954,
+      "tagline": "Unmatched for suspense and spectacle!",
+      "posterPath": "/lOMGc8bnSwQhS4XyE1S99uH8NXf.jpg",
       "source": "tmdb"
     },
     {
@@ -1058,14 +1058,6 @@
       "source": "tmdb"
     },
     {
-      "id": "t1330021",
-      "title": "Remarkably Bright Creatures",
-      "year": 2026,
-      "tagline": "Brighter together.",
-      "posterPath": "/9HcEqn3D4J6b2Z0jK54id9nA0fr.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t637",
       "title": "Life Is Beautiful",
       "year": 1997,
@@ -1079,6 +1071,14 @@
       "year": 1999,
       "tagline": "Mischief. Mayhem. Soap.",
       "posterPath": "/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1330021",
+      "title": "Remarkably Bright Creatures",
+      "year": 2026,
+      "tagline": "Brighter together.",
+      "posterPath": "/9HcEqn3D4J6b2Z0jK54id9nA0fr.jpg",
       "source": "tmdb"
     },
     {
