@@ -129,3 +129,20 @@ def build_slide(idx, slide, m, dur, audio_path, tmpdir):
 bv.build_slide = build_slide
 sys.argv = ["build_video.py", tmp]
 bv.main()
+
+# Attach the (localized) title card as embedded cover art, so players,
+# explorers and upload dialogs show the branded face instead of frame one.
+import subprocess
+out_mp4 = os.path.abspath(os.path.join(here, src["output"].replace("{size}", size)))
+frames_root = f"frames-{lang}" if lang else "frames"
+card = os.path.join(here, frames_root, size, "01-title.png")
+if os.path.exists(out_mp4) and os.path.exists(card):
+    cover = os.path.join(here, f"_cover-{lang or 'en'}-{size}.jpg")
+    cover_tmp = out_mp4 + ".cover.mp4"
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", card, "-q:v", "2", cover], check=True)
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", out_mp4, "-i", cover,
+                    "-map", "0", "-map", "1", "-c", "copy", "-c:v:1", "mjpeg",
+                    "-disposition:v:1", "attached_pic", cover_tmp], check=True)
+    os.replace(cover_tmp, out_mp4)
+    os.remove(cover)
+    print("cover art attached:", os.path.basename(out_mp4))
