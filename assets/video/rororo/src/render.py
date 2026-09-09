@@ -1,18 +1,34 @@
 """Render manifest.json at one canvas size via the tiktok-video-maker renderer.
 
-Usage: python render.py 9x16 | 4x5 | 1x1 | 16x9
+Usage: python render.py 9x16 | 4x5 | 1x1 | 16x9 [--lang fr|de|ru|pt-BR|pl|es]
 The still frames are full-canvas at each size (built by make_frames.py); screenshots
-get the renderer's blurred fill. Output lands at ../rororo-launch-<size>.mp4.
+get the renderer's blurred fill. Output lands at ../rororo-launch-<size>.mp4, or
+../rororo-launch-<lang>-<size>.mp4 for a localized cut.
+
+A localized cut swaps every input set: frames-<lang>/ (make_frames.py --lang),
+shots-<lang>/cropped/ (tools/prep_localized_shots.py), voiceover-<lang-lower>/
+(the approved VO tracks), with slide 4 pointing at the language's own cropped
+history capture. The English squad-launch panel is a deliberate reuse (owner
+accepted; the fleet did not capture it localized).
 """
 import importlib.util, json, os, sys
 
 SIZES = {"9x16": (1080, 1920), "4x5": (1080, 1350), "1x1": (1080, 1080), "16x9": (1920, 1080)}
 SKILL = os.path.expanduser("~/.claude-personal/skills/tiktok-video-maker/scripts/build_video.py")
 
-size = sys.argv[1] if len(sys.argv) > 1 else "9x16"
+args = sys.argv[1:]
+lang = None
+if "--lang" in args:
+    i = args.index("--lang")
+    lang = args[i + 1]
+    args = args[:i] + args[i + 2:]
+size = args[0] if args else "9x16"
 W, H = SIZES[size]
 here = os.path.dirname(os.path.abspath(__file__))
 src = json.load(open(os.path.join(here, "manifest.json")))
+if lang:
+    src["output"] = src["output"].replace("rororo-launch-", f"rororo-launch-{lang}-")
+    src["audio"]["dir"] = f"voiceover-{lang.lower()}"
 
 # Hub-facing cuts open with the brand title card + a short ident; the 9x16
 # TikTok cut keeps the cold open (ad plan: the product demo IS the hook).
@@ -20,7 +36,7 @@ if size != "9x16":
     import shutil, tempfile
     src["slides"].insert(0, {"images": [{"path": "frames/{size}/01-title.png", "effect": "fade"}]})
     vo_src = os.path.join(here, src["audio"]["dir"])
-    vo_dir = os.path.join(here, f"vo-{size}")
+    vo_dir = os.path.join(here, f"vo-{lang or 'en'}-{size}")
     if os.path.isdir(vo_dir):
         shutil.rmtree(vo_dir)
     os.makedirs(vo_dir)
@@ -36,10 +52,15 @@ if size != "9x16":
             if dur:
                 new_durs[key] = dur
     json.dump(new_durs, open(os.path.join(vo_dir, "durations.json"), "w"))
-    src["audio"]["dir"] = f"vo-{size}"
+    src["audio"]["dir"] = f"vo-{lang or 'en'}-{size}"
 
 text = json.dumps(src).replace("{size}", size)
-tmp = os.path.join(here, f"manifest-{size}.json")
+if lang:
+    text = text.replace("shots-remote/history-stats-v123.png",
+                        f"shots-{lang}/cropped/06-history.png")
+    text = text.replace("shots-remote/cropped/", f"shots-{lang}/cropped/")
+    text = text.replace("frames/", f"frames-{lang}/")
+tmp = os.path.join(here, f"manifest-{lang + '-' if lang else ''}{size}.json")
 open(tmp, "w").write(text)
 
 spec = importlib.util.spec_from_file_location("build_video", SKILL)

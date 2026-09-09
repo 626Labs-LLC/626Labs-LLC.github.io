@@ -18,6 +18,61 @@ NAVY, CYAN, MAG = (15, 31, 49), (23, 212, 250), (242, 47, 137)
 INK0, INK200, INK300 = (255, 255, 255), (196, 205, 218), (164, 174, 189)
 SIZES = {"9x16": (1080, 1920), "4x5": (1080, 1350), "1x1": (1080, 1080), "16x9": (1920, 1080)}
 
+# ---- localization -------------------------------------------------------
+# English is the in-code default (byte-stable when no --lang is given).
+# Other languages load from card-text.json, extracted from ROROROblox
+# docs/videos/launch-video-script.md by assets/video/tools/extract_card_text.py.
+EN_TEXT = {
+    "tagline": "Every alt. One click.",
+    "badge": "Free  ·  Windows + macOS",
+    "kicker": "Quality of life",
+    "features_heading": "Runs the clients. Babysits them too.",
+    "f1_label": "Encrypted vault", "f1_body": "Roblox's own login page. Your password stays there.",
+    "f2_label": "Memory watchdog", "f2_body": "Warns before a leak kills a client. One-click Recycle.",
+    "f3_label": "Streamer mode", "f3_body": "Fake names and avatars everywhere while you're live.",
+    "f4_label": "Keyboard shortcuts", "f4_body": "Ctrl+L launches the roster. F1 shows the rest.",
+    "f5_label": "Live status + RAM", "f5_body": "See the game and cost of every client at a glance.",
+    "f6_label": "Auto-update", "f6_body": "Always current, Windows and Mac.",
+    "cta_badge": "Free  ·  Windows + macOS",
+    "cta_heading": "Scan. Save. Install on desktop.",
+    "cta_note": "Microsoft Store and Mac links are on the page.",
+    "cta_legal": "Independent tool. Not affiliated with Roblox Corporation.",
+}
+LANG = "en"
+T = dict(EN_TEXT)
+
+
+def set_lang(lang):
+    """Switch the card text; en keeps the in-code defaults."""
+    global LANG, T
+    LANG = lang
+    T = dict(EN_TEXT)
+    if lang != "en":
+        import json as _json
+        data = _json.load(open(os.path.join(HERE, "card-text.json"), encoding="utf-8"))
+        T.update(data[lang])
+        # de badge order differs in the doc but keeps the same tokens; the
+        # doc's badge is uppercase and meta() letterspaces as-is.
+        T["badge"] = T["badge"].replace(" · ", "  ·  ")
+        T["cta_badge"] = T.get("cta_badge", T["badge"]).replace(" · ", "  ·  ")
+
+
+def fit_font(name, size, weight, texts, max_w):
+    """Shrink a font until every text fits max_w — translations never clip.
+    One size for the whole group, so a card keeps uniform typography."""
+    if isinstance(texts, str):
+        texts = [texts]
+    # Space Grotesk carries no Cyrillic — Russian display text falls back
+    # to Inter (full Cyrillic set) at the same size and weight.
+    if name.startswith("SpaceGrotesk") and any(
+            "\u0400" <= ch <= "\u04ff" for t in texts for ch in t):
+        name = "Inter-Variable.ttf"
+    f = font(name, size, weight)
+    while size > 10 and max(f.getlength(t) for t in texts) > max_w:
+        size = int(size * 0.95)
+        f = font(name, size, weight)
+    return f
+
 
 def scale(W, H):
     """Type scale: full at 9:16 and landscape, shrinking as a PORTRAIT canvas squares off."""
@@ -120,11 +175,11 @@ def title(W, H):
         y = ty + tile.height + u * 0.14
         th = gradient_text(im, "RORORO", font("SpaceGrotesk-Variable.ttf", int(u * 0.2), 700), W / 2, y)
         y += th / 2 + u * 0.05
-        center(d, "Every alt. One click.", font("SpaceGrotesk-Variable.ttf", int(u * 0.07), 500), W / 2, y)
+        center(d, T["tagline"], fit_font("SpaceGrotesk-Variable.ttf", int(u * 0.07), 500, T["tagline"], W * 0.9), W / 2, y)
         y += u * 0.13
         hairline(d, W / 2, y, u * 0.3)
         y += u * 0.05
-        meta(d, "Free  ·  Windows + macOS", mono, W / 2, y, INK200)
+        meta(d, T["badge"], mono, W / 2, y, INK200)
     else:
         tile = cube_tile(int(u * 0.62))
         tx = int(W * 0.11)
@@ -132,9 +187,9 @@ def title(W, H):
         cx = tx + tile.width + (W - tx - tile.width) / 2
         meta(d, "626 Labs  /  RORORO", mono, cx, H * 0.22)
         gradient_text(im, "RORORO", font("SpaceGrotesk-Variable.ttf", int(u * 0.2), 700), cx, H * 0.43)
-        center(d, "Every alt. One click.", font("SpaceGrotesk-Variable.ttf", int(u * 0.065), 500), cx, H * 0.56)
+        center(d, T["tagline"], fit_font("SpaceGrotesk-Variable.ttf", int(u * 0.065), 500, T["tagline"], (W - tx - tile.width) * 0.92), cx, H * 0.56)
         hairline(d, cx, H * 0.7, u * 0.3)
-        meta(d, "Free  ·  Windows + macOS", mono, cx, H * 0.75, INK200)
+        meta(d, T["badge"], mono, cx, H * 0.75, INK200)
     brand_footer(d, W, H, u)
     return im
 
@@ -147,13 +202,15 @@ def bullets(W, H, kicker, heading, rows):
     top_k = H * (0.09 if portrait else 0.1)
     meta(d, kicker, font("JetBrainsMono-Variable.ttf", int(u * 0.03), 500), W / 2, top_k)
     hy = H * (0.14 if portrait else 0.17)
-    hf = font("SpaceGrotesk-Variable.ttf", int(u * 0.07), 700)
     lines = [l + "." for l in heading.rstrip(".").split(". ")] if portrait else [heading]
+    hf = fit_font("SpaceGrotesk-Variable.ttf", int(u * 0.07), 700, lines, W * 0.92)
     for i, l in enumerate(lines):
         center(d, l, hf, W / 2, hy + i * u * 0.085)
     hairline(d, W / 2, hy + u * (0.085 * len(lines) + 0.03), u * 0.2)
-    tf = font("SpaceGrotesk-Variable.ttf", int(u * (0.05 if portrait else 0.048)), 500)
-    bf = font("Inter-Variable.ttf", int(u * (0.030 if portrait else 0.030)), 400)
+    col_w = (u * 0.82 - u * 0.06) if portrait else (W * 0.44)
+    tf = fit_font("SpaceGrotesk-Variable.ttf", int(u * (0.05 if portrait else 0.048)), 500,
+                  [t for t, _ in rows], col_w)
+    bf = fit_font("Inter-Variable.ttf", int(u * 0.030), 400, [b for _, b in rows], col_w)
     n = len(rows)
     top = hy + u * (0.085 * len(lines) + 0.12)
     if portrait:
@@ -194,47 +251,52 @@ def cta(W, H):
     big = font("SpaceGrotesk-Variable.ttf", int(u * 0.062), 700)
     url = font("SpaceGrotesk-Variable.ttf", int(u * 0.055), 500)
     small = font("Inter-Variable.ttf", int(u * 0.027), 400)
-    mac = "Microsoft Store and Mac links are on the page."
-    legal = "Independent tool. Not affiliated with Roblox Corporation."
+    mac = T["cta_note"]
+    legal = T["cta_legal"]
     if portrait:
-        meta(d, "Free  ·  Windows + macOS", mono, W / 2, H * 0.09)
-        center(d, "Scan. Save. Install on desktop.", big, W / 2, H * 0.14)
+        meta(d, T["cta_badge"], mono, W / 2, H * 0.09)
+        center(d, T["cta_heading"], fit_font("SpaceGrotesk-Variable.ttf", int(u * 0.062), 700, T["cta_heading"], W * 0.92), W / 2, H * 0.14)
         qy = H * 0.14 + u * 0.16
         im.paste(qi, (int(W / 2 - qs / 2), int(qy)), m)
         y = qy + qs + u * 0.08
         hairline(d, W / 2, y, u * 0.3)
         y += u * 0.06
         center(d, "626labs.dev/rororo.html", url, W / 2, y, CYAN)
-        center(d, mac, small, W / 2, y + u * 0.11, INK300)
-        center(d, legal, small, W / 2, H - u * 0.14, INK300)
+        sf = fit_font("Inter-Variable.ttf", int(u * 0.027), 400, [mac, legal], W * 0.92)
+        center(d, mac, sf, W / 2, y + u * 0.11, INK300)
+        center(d, legal, sf, W / 2, H - u * 0.14, INK300)
     else:
         qx = int(W * 0.12)
         im.paste(qi, (qx, int(H / 2 - qs / 2)), m)
         cx = qx + qs + (W - qx - qs) / 2
-        meta(d, "Free  ·  Windows + macOS", mono, cx, H * 0.22)
-        center(d, "Scan. Save. Install on desktop.", big, cx, H * 0.3)
+        meta(d, T["cta_badge"], mono, cx, H * 0.22)
+        center(d, T["cta_heading"], fit_font("SpaceGrotesk-Variable.ttf", int(u * 0.062), 700, T["cta_heading"], (W - qx - qs) * 0.9), cx, H * 0.3)
         hairline(d, cx, H * 0.48, u * 0.3)
         center(d, "626labs.dev/rororo.html", url, cx, H * 0.53, CYAN)
-        center(d, mac, small, cx, H * 0.64, INK300)
-        center(d, legal, small, cx, H * 0.7, INK300)
+        sf = fit_font("Inter-Variable.ttf", int(u * 0.027), 400, [mac, legal], (W - qx - qs) * 0.92)
+        center(d, mac, sf, cx, H * 0.64, INK300)
+        center(d, legal, sf, cx, H * 0.7, INK300)
     brand_footer(d, W, H, u)
     return im
 
 
-FEATURES = [
-    ("Encrypted vault", "Roblox's own login page. Your password stays there."),
-    ("Memory watchdog", "Warns before a leak kills a client. One-click Recycle."),
-    ("Streamer mode", "Fake names and avatars everywhere while you're live."),
-    ("Keyboard shortcuts", "Ctrl+L launches the roster. F1 shows the rest."),
-    ("Live status + RAM", "See the game and cost of every client at a glance."),
-    ("Auto-update", "Always current, Windows and Mac."),
-]
+def features():
+    return [(T[f"f{i}_label"], T[f"f{i}_body"]) for i in range(1, 7)]
+
+
 if __name__ == "__main__":
+    import sys
+    lang = "en"
+    args = sys.argv[1:]
+    if "--lang" in args:
+        lang = args[args.index("--lang") + 1]
+    set_lang(lang)
+    frames_root = "frames" if lang == "en" else f"frames-{lang}"
     for size, (W, H) in SIZES.items():
-        out = os.path.join(HERE, "frames", size)
+        out = os.path.join(HERE, frames_root, size)
         os.makedirs(out, exist_ok=True)
         title(W, H).save(os.path.join(out, "01-title.png"))
-        bullets(W, H, "Quality of life", "Runs the clients. Babysits them too.", FEATURES).save(
+        bullets(W, H, T["kicker"], T["features_heading"], features()).save(
             os.path.join(out, "02-features.png"))
         cta(W, H).save(os.path.join(out, "04-cta.png"))
-        print("built", size)
+        print("built", lang, size)
