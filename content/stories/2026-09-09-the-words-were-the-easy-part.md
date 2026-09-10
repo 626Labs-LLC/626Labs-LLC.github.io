@@ -6,7 +6,7 @@ subtitle: "RoRoRo shipped in six languages. The translating took an afternoon; f
 published: 2026-09-09
 tagline: "I set out to translate an app. What I found was every place a product speaks, and every one of them breaks differently."
 hero_image: /assets/stories/2026-09-09-words-easy-part/header.png
-draft: true
+draft: false
 ---
 
 <figure class="ed-figure ed-fullbleed">
