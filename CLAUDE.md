@@ -53,7 +53,7 @@ references and one-off design artifacts.
 | `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 15 files: 11 bot workflows that push to main, plus 4 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
+| `.github/workflows/` | 16 files: 12 bot workflows that push to main, plus 4 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 | `themes/`, `content/themes.json`, `themes.html` | The monthly theme rotation: theme source dirs, the active/queue/archive registry, and the gallery page rendered from it. See **Theme rotation** below. |
 
@@ -68,7 +68,7 @@ references and one-off design artifacts.
 
 ## CI workflows
 
-The 11 bot workflows that push to main:
+The 12 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
@@ -80,14 +80,15 @@ The 11 bot workflows that push to main:
 | `track-traffic.yml` | Daily 06:00 UTC | Auto-discovers all public, non-fork, non-archived repos under `estevanhernandez-stack-ed` (user) and `626Labs-LLC` (org), then pulls GitHub traffic metrics for each. Uses `TRAFFIC_PAT` (user-scope, needs Administration:Read on every tracked repo) and `TRAFFIC_PAT_ORG` (optional org-scope override — without it, org repos fall back to GH_TOKEN and 403 on the Traffic API). |
 | `track-downloads.yml` | Daily 06:15 UTC | Snapshots release-asset `download_count` for every repo in `data/repos.json` that ships release assets → `data/download-stats.json` (current detail) + `data/downloads.csv` (daily lifetime totals; day-over-day diff = downloads that day). Public data — implicit `GITHUB_TOKEN` only. |
 | `fetch-site-stats.yml` | Daily 06:30 UTC | Pulls GoatCounter visit stats for `626labs.dev` and writes `data/site-stats.json` (uses `GOATCOUNTER_TOKEN` secret). |
+| `track-store-analytics.yml` | Daily 06:53 UTC | Pulls Microsoft Store analytics (usagedaily, installs, acquisitions, ratings, failurehits) for all six Store apps via the legacy Dev Center API → `data/store-analytics.json`. Uses the `STORE_TENANT_ID`/`STORE_CLIENT_ID`/`STORE_CLIENT_SECRET` secrets (the Store Listing Console's Entra app, Manager role). v1 auth (`resource=`, not `scope=`); requests paced because the API 429s readily; deliberately no pull_request trigger (credential exfil guard). Store data lags ~2-3 days — empty latest dates are the API, not a failure. |
 | `refresh-rororo-plugins.yml` | Daily 06:45 UTC | Reads the same `plugins-catalog.json` the RoRoRo app reads (off ROROROblox's latest release), enriches each entry with live release version/date/installs → `data/rororo-plugins.json`. `rororo-plugins.html` and the plugins section of `rororo.html` render from it client-side; warns on catalog-vs-release drift. |
 | `refresh-plugin-versions.yml` | Daily 07:00 UTC | Reads each plugin repo's latest tag (`content/plugin-repos.json` → GitHub API), writes `data/plugin-versions.json`, re-renders plugin pages so version chips can't drift. Default `GITHUB_TOKEN` reads public tags — no extra secret. |
 | `rotate-theme.yml` | Monthly, 09:00 UTC on the 1st + `workflow_dispatch` | Promotes `content/themes.json`'s `queue[0]` to active, unattended. See **Theme rotation** below for the full contract — this row is just the CI-table entry. No extra secret beyond the implicit `GITHUB_TOKEN`. |
 
-**Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`, `MCP_VERSION_TRUTH_KEY`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
+**Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`, `MCP_VERSION_TRUTH_KEY`, `STORE_TENANT_ID`, `STORE_CLIENT_ID`, `STORE_CLIENT_SECRET`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
-All eleven use a retry+rebase loop on `git push` to handle the race where two
-bots try to push to main simultaneously.
+All twelve push-to-main bots use a retry+rebase loop on `git push` to handle the race
+where two bots try to push to main simultaneously.
 
 Plus four that never commit to this repo:
 
@@ -445,103 +446,11 @@ remote.origin.url`. The Architect handles this without ceremony.
   `apps/widget-bacon-trail/src/`, push, and let `build-widget.yml` rebuild.
 
 <!-- gitnexus:start -->
-# GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **626labs-hub** (2424 symbols, 5028 relationships, 138 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+## GitNexus index
 
-> If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
-
-## Always Do
-
-- **MUST run impact analysis before editing any symbol.** Before modifying a function, class, or method, run `gitnexus_impact({target: "symbolName", direction: "upstream"})` and report the blast radius (direct callers, affected processes, risk level) to the user.
-- **MUST run `gitnexus_detect_changes()` before committing** to verify your changes only affect expected symbols and execution flows.
-- **MUST warn the user** if impact analysis returns HIGH or CRITICAL risk before proceeding with edits.
-- When exploring unfamiliar code, use `gitnexus_query({query: "concept"})` to find execution flows instead of grepping. It returns process-grouped results ranked by relevance.
-- When you need full context on a specific symbol — callers, callees, which execution flows it participates in — use `gitnexus_context({name: "symbolName"})`.
-
-## When Debugging
-
-1. `gitnexus_query({query: "<error or symptom>"})` — find execution flows related to the issue
-2. `gitnexus_context({name: "<suspect function>"})` — see all callers, callees, and process participation
-3. `READ gitnexus://repo/626labs-hub/process/{processName}` — trace the full execution flow step by step
-4. For regressions: `gitnexus_detect_changes({scope: "compare", base_ref: "main"})` — see what your branch changed
-
-## When Refactoring
-
-- **Renaming**: MUST use `gitnexus_rename({symbol_name: "old", new_name: "new", dry_run: true})` first. Review the preview — graph edits are safe, text_search edits need manual review. Then run with `dry_run: false`.
-- **Extracting/Splitting**: MUST run `gitnexus_context({name: "target"})` to see all incoming/outgoing refs, then `gitnexus_impact({target: "target", direction: "upstream"})` to find all external callers before moving code.
-- After any refactor: run `gitnexus_detect_changes({scope: "all"})` to verify only expected files changed.
-
-## Never Do
-
-- NEVER edit a function, class, or method without first running `gitnexus_impact` on it.
-- NEVER ignore HIGH or CRITICAL risk warnings from impact analysis.
-- NEVER rename symbols with find-and-replace — use `gitnexus_rename` which understands the call graph.
-- NEVER commit changes without running `gitnexus_detect_changes()` to check affected scope.
-
-## Tools Quick Reference
-
-| Tool | When to use | Command |
-|------|-------------|---------|
-| `query` | Find code by concept | `gitnexus_query({query: "auth validation"})` |
-| `context` | 360-degree view of one symbol | `gitnexus_context({name: "validateUser"})` |
-| `impact` | Blast radius before editing | `gitnexus_impact({target: "X", direction: "upstream"})` |
-| `detect_changes` | Pre-commit scope check | `gitnexus_detect_changes({scope: "staged"})` |
-| `rename` | Safe multi-file rename | `gitnexus_rename({symbol_name: "old", new_name: "new", dry_run: true})` |
-| `cypher` | Custom graph queries | `gitnexus_cypher({query: "MATCH ..."})` |
-
-## Impact Risk Levels
-
-| Depth | Meaning | Action |
-|-------|---------|--------|
-| d=1 | WILL BREAK — direct callers/importers | MUST update these |
-| d=2 | LIKELY AFFECTED — indirect deps | Should test |
-| d=3 | MAY NEED TESTING — transitive | Test if critical path |
-
-## Resources
-
-| Resource | Use for |
-|----------|---------|
-| `gitnexus://repo/626labs-hub/context` | Codebase overview, check index freshness |
-| `gitnexus://repo/626labs-hub/clusters` | All functional areas |
-| `gitnexus://repo/626labs-hub/processes` | All execution flows |
-| `gitnexus://repo/626labs-hub/process/{name}` | Step-by-step execution trace |
-
-## Self-Check Before Finishing
-
-Before completing any code modification task, verify:
-1. `gitnexus_impact` was run for all modified symbols
-2. No HIGH/CRITICAL risk warnings were ignored
-3. `gitnexus_detect_changes()` confirms changes match expected scope
-4. All d=1 (WILL BREAK) dependents were updated
-
-## Keeping the Index Fresh
-
-After committing code changes, the GitNexus index becomes stale. Re-run analyze to update it:
-
-```bash
-npx gitnexus analyze
-```
-
-If the index previously included embeddings, preserve them by adding `--embeddings`:
-
-```bash
-npx gitnexus analyze --embeddings
-```
-
-To check whether embeddings exist, inspect `.gitnexus/meta.json` — the `stats.embeddings` field shows the count (0 means no embeddings). **Running analyze without `--embeddings` will delete any previously generated embeddings.**
-
-> Claude Code users: A PostToolUse hook handles this automatically after `git commit` and `git merge`.
-
-## CLI
-
-| Task | Read this skill file |
-|------|---------------------|
-| Understand architecture / "How does X work?" | `.claude/skills/gitnexus/gitnexus-exploring/SKILL.md` |
-| Blast radius / "What breaks if I change X?" | `.claude/skills/gitnexus/gitnexus-impact-analysis/SKILL.md` |
-| Trace bugs / "Why is X failing?" | `.claude/skills/gitnexus/gitnexus-debugging/SKILL.md` |
-| Rename / extract / split / refactor | `.claude/skills/gitnexus/gitnexus-refactoring/SKILL.md` |
-| Tools, resources, schema reference | `.claude/skills/gitnexus/gitnexus-guide/SKILL.md` |
-| Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
+Indexed as **626labs-hub** — 2424 symbols, 5028 relationships, 138 execution flows. Resources are under `gitnexus://repo/626labs-hub/`.
+How to use the tools is in the global `gitnexus` skill. If a tool reports the
+index stale, run `npx gitnexus analyze`.
 
 <!-- gitnexus:end -->

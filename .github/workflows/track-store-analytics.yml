@@ -1,0 +1,56 @@
+name: Track Store Analytics
+
+on:
+  schedule:
+    # 06:53 UTC daily — staggered inside the 06:00-07:00 bot cluster, off-minute on purpose.
+    - cron: '53 6 * * *'
+  workflow_dispatch:
+
+# Deliberately NO pull_request trigger: the job reads Store credentials, and a
+# PR-triggered run would hand them to arbitrary branch code.
+concurrency:
+  group: track-store-analytics
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    # Don't re-trigger on our own bot commit. Same guard as the other push jobs.
+    if: github.actor != 'github-actions[bot]'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Snapshot Store analytics (usage, installs, acquisitions, ratings, failures)
+        env:
+          STORE_TENANT_ID: ${{ secrets.STORE_TENANT_ID }}
+          STORE_CLIENT_ID: ${{ secrets.STORE_CLIENT_ID }}
+          STORE_CLIENT_SECRET: ${{ secrets.STORE_CLIENT_SECRET }}
+        run: node scripts/track-store-analytics.mjs
+
+      - name: Commit + push if changed
+        run: |
+          if [[ -z "$(git status --porcelain data/store-analytics.json)" ]]; then
+            echo "No analytics movement."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/store-analytics.json
+          git commit -m "chore(store-analytics): snapshot $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; rebasing onto remote main and retrying..."
+            git pull --rebase origin main
+            sleep $((attempt * 3))
+          done
+          echo "::error::Failed to push after 5 attempts."
+          exit 1

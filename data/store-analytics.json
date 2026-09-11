@@ -1,0 +1,1536 @@
+{
+ "fetchedAt": "2026-09-11T22:02:04.683Z",
+ "windowDays": 30,
+ "apps": {
+  "9NMJCS390KWB": {
+   "name": "RoRoRo",
+   "usageDaily": {
+    "2026-08-12": {
+     "dailyActiveUsers": 60,
+     "dailyActiveDevices": 60,
+     "dailyNewUsers": 8,
+     "dailySessionCount": 124,
+     "engagementDurationMinutes": 145.1
+    },
+    "2026-08-13": {
+     "dailyActiveUsers": 63,
+     "dailyActiveDevices": 64,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 113,
+     "engagementDurationMinutes": 104.7
+    },
+    "2026-08-14": {
+     "dailyActiveUsers": 50,
+     "dailyActiveDevices": 50,
+     "dailyNewUsers": 7,
+     "dailySessionCount": 87,
+     "engagementDurationMinutes": 65.8
+    },
+    "2026-08-15": {
+     "dailyActiveUsers": 67,
+     "dailyActiveDevices": 66,
+     "dailyNewUsers": 9,
+     "dailySessionCount": 122,
+     "engagementDurationMinutes": 185.9
+    },
+    "2026-08-16": {
+     "dailyActiveUsers": 64,
+     "dailyActiveDevices": 64,
+     "dailyNewUsers": 9,
+     "dailySessionCount": 156,
+     "engagementDurationMinutes": 175.9
+    },
+    "2026-08-17": {
+     "dailyActiveUsers": 63,
+     "dailyActiveDevices": 62,
+     "dailyNewUsers": 8,
+     "dailySessionCount": 113,
+     "engagementDurationMinutes": 112.5
+    },
+    "2026-08-18": {
+     "dailyActiveUsers": 67,
+     "dailyActiveDevices": 66,
+     "dailyNewUsers": 9,
+     "dailySessionCount": 145,
+     "engagementDurationMinutes": 165.3
+    },
+    "2026-08-19": {
+     "dailyActiveUsers": 60,
+     "dailyActiveDevices": 58,
+     "dailyNewUsers": 9,
+     "dailySessionCount": 115,
+     "engagementDurationMinutes": 127.8
+    },
+    "2026-08-20": {
+     "dailyActiveUsers": 58,
+     "dailyActiveDevices": 58,
+     "dailyNewUsers": 8,
+     "dailySessionCount": 125,
+     "engagementDurationMinutes": 156.9
+    },
+    "2026-08-21": {
+     "dailyActiveUsers": 65,
+     "dailyActiveDevices": 65,
+     "dailyNewUsers": 12,
+     "dailySessionCount": 141,
+     "engagementDurationMinutes": 153.6
+    },
+    "2026-08-22": {
+     "dailyActiveUsers": 86,
+     "dailyActiveDevices": 84,
+     "dailyNewUsers": 12,
+     "dailySessionCount": 173,
+     "engagementDurationMinutes": 231.2
+    },
+    "2026-08-23": {
+     "dailyActiveUsers": 82,
+     "dailyActiveDevices": 82,
+     "dailyNewUsers": 11,
+     "dailySessionCount": 182,
+     "engagementDurationMinutes": 284.9
+    },
+    "2026-08-24": {
+     "dailyActiveUsers": 75,
+     "dailyActiveDevices": 74,
+     "dailyNewUsers": 10,
+     "dailySessionCount": 154,
+     "engagementDurationMinutes": 202.2
+    },
+    "2026-08-25": {
+     "dailyActiveUsers": 76,
+     "dailyActiveDevices": 76,
+     "dailyNewUsers": 9,
+     "dailySessionCount": 174,
+     "engagementDurationMinutes": 255.8
+    },
+    "2026-08-26": {
+     "dailyActiveUsers": 86,
+     "dailyActiveDevices": 82,
+     "dailyNewUsers": 14,
+     "dailySessionCount": 233,
+     "engagementDurationMinutes": 294.3
+    },
+    "2026-08-27": {
+     "dailyActiveUsers": 79,
+     "dailyActiveDevices": 76,
+     "dailyNewUsers": 18,
+     "dailySessionCount": 197,
+     "engagementDurationMinutes": 339.8
+    },
+    "2026-08-28": {
+     "dailyActiveUsers": 88,
+     "dailyActiveDevices": 86,
+     "dailyNewUsers": 21,
+     "dailySessionCount": 240,
+     "engagementDurationMinutes": 277.1
+    },
+    "2026-08-29": {
+     "dailyActiveUsers": 100,
+     "dailyActiveDevices": 97,
+     "dailyNewUsers": 18,
+     "dailySessionCount": 228,
+     "engagementDurationMinutes": 323.1
+    },
+    "2026-08-30": {
+     "dailyActiveUsers": 106,
+     "dailyActiveDevices": 104,
+     "dailyNewUsers": 20,
+     "dailySessionCount": 280,
+     "engagementDurationMinutes": 437.3
+    },
+    "2026-08-31": {
+     "dailyActiveUsers": 84,
+     "dailyActiveDevices": 82,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 174,
+     "engagementDurationMinutes": 203.7
+    },
+    "2026-09-01": {
+     "dailyActiveUsers": 93,
+     "dailyActiveDevices": 90,
+     "dailyNewUsers": 21,
+     "dailySessionCount": 202,
+     "engagementDurationMinutes": 220.1
+    },
+    "2026-09-02": {
+     "dailyActiveUsers": 88,
+     "dailyActiveDevices": 85,
+     "dailyNewUsers": 12,
+     "dailySessionCount": 184,
+     "engagementDurationMinutes": 271.9
+    },
+    "2026-09-03": {
+     "dailyActiveUsers": 93,
+     "dailyActiveDevices": 91,
+     "dailyNewUsers": 18,
+     "dailySessionCount": 235,
+     "engagementDurationMinutes": 610
+    },
+    "2026-09-04": {
+     "dailyActiveUsers": 94,
+     "dailyActiveDevices": 91,
+     "dailyNewUsers": 11,
+     "dailySessionCount": 188,
+     "engagementDurationMinutes": 212.5
+    },
+    "2026-09-05": {
+     "dailyActiveUsers": 117,
+     "dailyActiveDevices": 116,
+     "dailyNewUsers": 14,
+     "dailySessionCount": 255,
+     "engagementDurationMinutes": 309.1
+    },
+    "2026-09-06": {
+     "dailyActiveUsers": 103,
+     "dailyActiveDevices": 102,
+     "dailyNewUsers": 11,
+     "dailySessionCount": 239,
+     "engagementDurationMinutes": 260.4
+    },
+    "2026-09-07": {
+     "dailyActiveUsers": 111,
+     "dailyActiveDevices": 109,
+     "dailyNewUsers": 19,
+     "dailySessionCount": 233,
+     "engagementDurationMinutes": 249
+    },
+    "2026-09-08": {
+     "dailyActiveUsers": 93,
+     "dailyActiveDevices": 92,
+     "dailyNewUsers": 10,
+     "dailySessionCount": 190,
+     "engagementDurationMinutes": 184.7
+    },
+    "2026-09-09": {
+     "dailyActiveUsers": 84,
+     "dailyActiveDevices": 84,
+     "dailyNewUsers": 3,
+     "dailySessionCount": 160,
+     "engagementDurationMinutes": 176.6
+    },
+    "2026-09-10": {
+     "dailyActiveUsers": 98,
+     "dailyActiveDevices": 96,
+     "dailyNewUsers": 25,
+     "dailySessionCount": 193,
+     "engagementDurationMinutes": 223.2
+    }
+   },
+   "installsDaily": {
+    "2026-08-12": {
+     "successfulInstallCount": 22
+    },
+    "2026-08-13": {
+     "successfulInstallCount": 18
+    },
+    "2026-08-14": {
+     "successfulInstallCount": 11
+    },
+    "2026-08-15": {
+     "successfulInstallCount": 15
+    },
+    "2026-08-16": {
+     "successfulInstallCount": 27
+    },
+    "2026-08-17": {
+     "successfulInstallCount": 16
+    },
+    "2026-08-18": {
+     "successfulInstallCount": 16
+    },
+    "2026-08-19": {
+     "successfulInstallCount": 15
+    },
+    "2026-08-20": {
+     "successfulInstallCount": 14
+    },
+    "2026-08-21": {
+     "successfulInstallCount": 21
+    },
+    "2026-08-22": {
+     "successfulInstallCount": 21
+    },
+    "2026-08-23": {
+     "successfulInstallCount": 22
+    },
+    "2026-08-24": {
+     "successfulInstallCount": 23
+    },
+    "2026-08-25": {
+     "successfulInstallCount": 15
+    },
+    "2026-08-26": {
+     "successfulInstallCount": 27
+    },
+    "2026-08-27": {
+     "successfulInstallCount": 24
+    },
+    "2026-08-28": {
+     "successfulInstallCount": 33
+    },
+    "2026-08-29": {
+     "successfulInstallCount": 42
+    },
+    "2026-08-30": {
+     "successfulInstallCount": 31
+    },
+    "2026-08-31": {
+     "successfulInstallCount": 30
+    },
+    "2026-09-01": {
+     "successfulInstallCount": 24
+    },
+    "2026-09-02": {
+     "successfulInstallCount": 15
+    },
+    "2026-09-03": {
+     "successfulInstallCount": 27
+    },
+    "2026-09-04": {
+     "successfulInstallCount": 29
+    },
+    "2026-09-05": {
+     "successfulInstallCount": 27
+    },
+    "2026-09-06": {
+     "successfulInstallCount": 27
+    },
+    "2026-09-07": {
+     "successfulInstallCount": 39
+    }
+   },
+   "acquisitionsDaily": {
+    "2026-08-12": {
+     "acquisitionQuantity": 11
+    },
+    "2026-08-13": {
+     "acquisitionQuantity": 12
+    },
+    "2026-08-14": {
+     "acquisitionQuantity": 3
+    },
+    "2026-08-15": {
+     "acquisitionQuantity": 8
+    },
+    "2026-08-16": {
+     "acquisitionQuantity": 7
+    },
+    "2026-08-17": {
+     "acquisitionQuantity": 9
+    },
+    "2026-08-18": {
+     "acquisitionQuantity": 5
+    },
+    "2026-08-19": {
+     "acquisitionQuantity": 8
+    },
+    "2026-08-20": {
+     "acquisitionQuantity": 7
+    },
+    "2026-08-21": {
+     "acquisitionQuantity": 7
+    },
+    "2026-08-22": {
+     "acquisitionQuantity": 10
+    },
+    "2026-08-23": {
+     "acquisitionQuantity": 10
+    },
+    "2026-08-24": {
+     "acquisitionQuantity": 5
+    },
+    "2026-08-25": {
+     "acquisitionQuantity": 11
+    },
+    "2026-08-26": {
+     "acquisitionQuantity": 11
+    },
+    "2026-08-27": {
+     "acquisitionQuantity": 13
+    },
+    "2026-08-28": {
+     "acquisitionQuantity": 15
+    },
+    "2026-08-29": {
+     "acquisitionQuantity": 24
+    },
+    "2026-08-30": {
+     "acquisitionQuantity": 13
+    },
+    "2026-08-31": {
+     "acquisitionQuantity": 13
+    },
+    "2026-09-01": {
+     "acquisitionQuantity": 10
+    },
+    "2026-09-02": {
+     "acquisitionQuantity": 12
+    },
+    "2026-09-03": {
+     "acquisitionQuantity": 9
+    },
+    "2026-09-04": {
+     "acquisitionQuantity": 14
+    },
+    "2026-09-05": {
+     "acquisitionQuantity": 20
+    },
+    "2026-09-06": {
+     "acquisitionQuantity": 15
+    },
+    "2026-09-07": {
+     "acquisitionQuantity": 10
+    },
+    "2026-09-08": {
+     "acquisitionQuantity": 14
+    },
+    "2026-09-09": {
+     "acquisitionQuantity": 29
+    },
+    "2026-09-10": {
+     "acquisitionQuantity": 22
+    },
+    "2026-09-11": {
+     "acquisitionQuantity": 4
+    }
+   },
+   "ratingsWindow": {
+    "oneStar": 1,
+    "twoStars": 0,
+    "threeStars": 0,
+    "fourStars": 0,
+    "fiveStars": 2,
+    "rows": 3
+   },
+   "failuresWindow": [
+    {
+     "failureName": null,
+     "failureHash": null,
+     "eventCount": 309,
+     "deviceCount": 201
+    }
+   ]
+  },
+  "9N53V6RRJK95": {
+   "name": "626 Mod Launcher",
+   "usageDaily": {
+    "2026-08-12": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.2
+    },
+    "2026-08-14": {
+     "dailyActiveUsers": 5,
+     "dailyActiveDevices": 4,
+     "dailyNewUsers": 3,
+     "dailySessionCount": 17,
+     "engagementDurationMinutes": 16.6
+    },
+    "2026-08-15": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 14,
+     "engagementDurationMinutes": 1.3
+    },
+    "2026-08-16": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 30.7
+    },
+    "2026-08-18": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.1
+    },
+    "2026-08-21": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.1
+    },
+    "2026-08-23": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 3,
+     "engagementDurationMinutes": 1.3
+    },
+    "2026-08-24": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 0.5
+    },
+    "2026-08-25": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 5,
+     "engagementDurationMinutes": 3.6
+    },
+    "2026-08-26": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.4
+    },
+    "2026-08-27": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 7,
+     "engagementDurationMinutes": 12.3
+    },
+    "2026-08-28": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 1.4
+    },
+    "2026-08-29": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.7
+    },
+    "2026-08-30": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.4
+    },
+    "2026-09-01": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 4.6
+    },
+    "2026-09-02": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 1.4
+    },
+    "2026-09-04": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 5,
+     "engagementDurationMinutes": 1.9
+    },
+    "2026-09-05": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 3.8
+    },
+    "2026-09-06": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 3,
+     "dailySessionCount": 7,
+     "engagementDurationMinutes": 3.5
+    },
+    "2026-09-07": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.2
+    },
+    "2026-09-08": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 1.3
+    },
+    "2026-09-09": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 0.2
+    }
+   },
+   "installsDaily": {
+    "2026-08-12": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-13": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-14": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-15": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-16": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-17": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-18": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-21": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-22": {
+     "successfulInstallCount": 3
+    },
+    "2026-08-23": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-24": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-25": {
+     "successfulInstallCount": 3
+    },
+    "2026-08-26": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-27": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-28": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-29": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-30": {
+     "successfulInstallCount": 4
+    },
+    "2026-08-31": {
+     "successfulInstallCount": 5
+    },
+    "2026-09-01": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-02": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-03": {
+     "successfulInstallCount": 2
+    },
+    "2026-09-04": {
+     "successfulInstallCount": 3
+    },
+    "2026-09-05": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-06": {
+     "successfulInstallCount": 4
+    },
+    "2026-09-07": {
+     "successfulInstallCount": 2
+    }
+   },
+   "acquisitionsDaily": {
+    "2026-08-13": {
+     "acquisitionQuantity": 3
+    },
+    "2026-08-14": {
+     "acquisitionQuantity": 2
+    },
+    "2026-08-15": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-16": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-17": {
+     "acquisitionQuantity": 2
+    },
+    "2026-08-18": {
+     "acquisitionQuantity": 2
+    },
+    "2026-08-21": {
+     "acquisitionQuantity": 3
+    },
+    "2026-08-22": {
+     "acquisitionQuantity": 2
+    },
+    "2026-08-23": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-24": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-25": {
+     "acquisitionQuantity": 4
+    },
+    "2026-08-26": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-27": {
+     "acquisitionQuantity": 2
+    },
+    "2026-08-28": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-29": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-30": {
+     "acquisitionQuantity": 5
+    },
+    "2026-08-31": {
+     "acquisitionQuantity": 3
+    },
+    "2026-09-01": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-03": {
+     "acquisitionQuantity": 3
+    },
+    "2026-09-04": {
+     "acquisitionQuantity": 2
+    },
+    "2026-09-06": {
+     "acquisitionQuantity": 4
+    },
+    "2026-09-07": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-08": {
+     "acquisitionQuantity": 2
+    },
+    "2026-09-09": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-11": {
+     "acquisitionQuantity": 1
+    }
+   },
+   "ratingsWindow": {
+    "oneStar": 0,
+    "twoStars": 0,
+    "threeStars": 0,
+    "fourStars": 0,
+    "fiveStars": 0,
+    "rows": 0
+   },
+   "failuresWindow": [
+    {
+     "failureName": null,
+     "failureHash": null,
+     "eventCount": 10,
+     "deviceCount": 2
+    }
+   ]
+  },
+  "9PBX8F5TR0VR": {
+   "name": "SnapSnip",
+   "usageDaily": {
+    "2026-08-17": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 7,
+     "engagementDurationMinutes": 0.3
+    },
+    "2026-08-24": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.2
+    },
+    "2026-09-02": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.1
+    }
+   },
+   "installsDaily": {
+    "2026-08-17": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-24": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-29": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-02": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-06": {
+     "successfulInstallCount": 1
+    }
+   },
+   "acquisitionsDaily": {
+    "2026-08-12": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-19": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-23": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-02": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-06": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-09": {
+     "acquisitionQuantity": 1
+    }
+   },
+   "ratingsWindow": {
+    "oneStar": 0,
+    "twoStars": 0,
+    "threeStars": 0,
+    "fourStars": 0,
+    "fiveStars": 0,
+    "rows": 0
+   },
+   "failuresWindow": []
+  },
+  "9PKKLK6R5WFL": {
+   "name": "Right Click to PNG",
+   "usageDaily": {
+    "2026-08-19": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.5
+    },
+    "2026-08-20": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 2
+    },
+    "2026-08-30": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.3
+    },
+    "2026-09-01": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 3,
+     "engagementDurationMinutes": 0.9
+    },
+    "2026-09-03": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.1
+    },
+    "2026-09-04": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.1
+    }
+   },
+   "installsDaily": {
+    "2026-08-18": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-19": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-20": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-23": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-25": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-30": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-31": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-01": {
+     "successfulInstallCount": 3
+    },
+    "2026-09-03": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-04": {
+     "successfulInstallCount": 1
+    }
+   },
+   "acquisitionsDaily": {
+    "2026-08-12": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-18": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-20": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-28": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-29": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-31": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-01": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-03": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-08": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-09": {
+     "acquisitionQuantity": 2
+    }
+   },
+   "ratingsWindow": {
+    "oneStar": 0,
+    "twoStars": 0,
+    "threeStars": 0,
+    "fourStars": 0,
+    "fiveStars": 0,
+    "rows": 0
+   },
+   "failuresWindow": [
+    {
+     "failureName": null,
+     "failureHash": null,
+     "eventCount": 1,
+     "deviceCount": 1
+    }
+   ]
+  },
+  "9MV9G4XFJ8S0": {
+   "name": "RBX15 Classic Shirt and Pants Maker",
+   "usageDaily": {
+    "2026-08-13": {
+     "dailyActiveUsers": 5,
+     "dailyActiveDevices": 5,
+     "dailyNewUsers": 4,
+     "dailySessionCount": 28,
+     "engagementDurationMinutes": 20.4
+    },
+    "2026-08-14": {
+     "dailyActiveUsers": 5,
+     "dailyActiveDevices": 5,
+     "dailyNewUsers": 4,
+     "dailySessionCount": 32,
+     "engagementDurationMinutes": 50.4
+    },
+    "2026-08-15": {
+     "dailyActiveUsers": 4,
+     "dailyActiveDevices": 4,
+     "dailyNewUsers": 3,
+     "dailySessionCount": 22,
+     "engagementDurationMinutes": 16
+    },
+    "2026-08-16": {
+     "dailyActiveUsers": 6,
+     "dailyActiveDevices": 6,
+     "dailyNewUsers": 5,
+     "dailySessionCount": 11,
+     "engagementDurationMinutes": 22.7
+    },
+    "2026-08-17": {
+     "dailyActiveUsers": 4,
+     "dailyActiveDevices": 4,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 8,
+     "engagementDurationMinutes": 22.3
+    },
+    "2026-08-18": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 3,
+     "dailySessionCount": 9,
+     "engagementDurationMinutes": 10.8
+    },
+    "2026-08-19": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 11.2
+    },
+    "2026-08-20": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 15,
+     "engagementDurationMinutes": 45.2
+    },
+    "2026-08-22": {
+     "dailyActiveUsers": 4,
+     "dailyActiveDevices": 4,
+     "dailyNewUsers": 4,
+     "dailySessionCount": 8,
+     "engagementDurationMinutes": 34
+    },
+    "2026-08-23": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 5,
+     "engagementDurationMinutes": 14.4
+    },
+    "2026-08-24": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 11,
+     "engagementDurationMinutes": 17.5
+    },
+    "2026-08-25": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 3,
+     "engagementDurationMinutes": 9.9
+    },
+    "2026-08-26": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 11,
+     "engagementDurationMinutes": 16.5
+    },
+    "2026-08-27": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 8,
+     "engagementDurationMinutes": 8.6
+    },
+    "2026-08-28": {
+     "dailyActiveUsers": 7,
+     "dailyActiveDevices": 7,
+     "dailyNewUsers": 5,
+     "dailySessionCount": 16,
+     "engagementDurationMinutes": 17
+    },
+    "2026-08-29": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 3,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 24.3
+    },
+    "2026-08-30": {
+     "dailyActiveUsers": 6,
+     "dailyActiveDevices": 6,
+     "dailyNewUsers": 4,
+     "dailySessionCount": 32,
+     "engagementDurationMinutes": 51.8
+    },
+    "2026-08-31": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 5,
+     "engagementDurationMinutes": 7
+    },
+    "2026-09-01": {
+     "dailyActiveUsers": 6,
+     "dailyActiveDevices": 6,
+     "dailyNewUsers": 4,
+     "dailySessionCount": 43,
+     "engagementDurationMinutes": 88.2
+    },
+    "2026-09-02": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 19,
+     "engagementDurationMinutes": 13.6
+    },
+    "2026-09-03": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.9
+    },
+    "2026-09-05": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 7,
+     "engagementDurationMinutes": 6.6
+    },
+    "2026-09-06": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 8,
+     "engagementDurationMinutes": 13.6
+    },
+    "2026-09-07": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 6,
+     "engagementDurationMinutes": 6.1
+    },
+    "2026-09-08": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 5,
+     "engagementDurationMinutes": 3.4
+    },
+    "2026-09-09": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.1
+    },
+    "2026-09-10": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 3,
+     "dailySessionCount": 11,
+     "engagementDurationMinutes": 29.2
+    }
+   },
+   "installsDaily": {
+    "2026-08-12": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-13": {
+     "successfulInstallCount": 8
+    },
+    "2026-08-14": {
+     "successfulInstallCount": 7
+    },
+    "2026-08-15": {
+     "successfulInstallCount": 4
+    },
+    "2026-08-16": {
+     "successfulInstallCount": 8
+    },
+    "2026-08-17": {
+     "successfulInstallCount": 5
+    },
+    "2026-08-18": {
+     "successfulInstallCount": 4
+    },
+    "2026-08-19": {
+     "successfulInstallCount": 3
+    },
+    "2026-08-20": {
+     "successfulInstallCount": 5
+    },
+    "2026-08-21": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-22": {
+     "successfulInstallCount": 6
+    },
+    "2026-08-23": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-24": {
+     "successfulInstallCount": 5
+    },
+    "2026-08-25": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-26": {
+     "successfulInstallCount": 5
+    },
+    "2026-08-27": {
+     "successfulInstallCount": 2
+    },
+    "2026-08-28": {
+     "successfulInstallCount": 6
+    },
+    "2026-08-29": {
+     "successfulInstallCount": 3
+    },
+    "2026-08-30": {
+     "successfulInstallCount": 6
+    },
+    "2026-08-31": {
+     "successfulInstallCount": 5
+    },
+    "2026-09-01": {
+     "successfulInstallCount": 6
+    },
+    "2026-09-02": {
+     "successfulInstallCount": 3
+    },
+    "2026-09-03": {
+     "successfulInstallCount": 3
+    },
+    "2026-09-04": {
+     "successfulInstallCount": 4
+    },
+    "2026-09-05": {
+     "successfulInstallCount": 3
+    },
+    "2026-09-06": {
+     "successfulInstallCount": 4
+    },
+    "2026-09-07": {
+     "successfulInstallCount": 2
+    }
+   },
+   "acquisitionsDaily": {
+    "2026-08-12": {
+     "acquisitionQuantity": 4
+    },
+    "2026-08-13": {
+     "acquisitionQuantity": 6
+    },
+    "2026-08-14": {
+     "acquisitionQuantity": 6
+    },
+    "2026-08-15": {
+     "acquisitionQuantity": 4
+    },
+    "2026-08-16": {
+     "acquisitionQuantity": 4
+    },
+    "2026-08-17": {
+     "acquisitionQuantity": 3
+    },
+    "2026-08-18": {
+     "acquisitionQuantity": 4
+    },
+    "2026-08-19": {
+     "acquisitionQuantity": 5
+    },
+    "2026-08-20": {
+     "acquisitionQuantity": 3
+    },
+    "2026-08-21": {
+     "acquisitionQuantity": 3
+    },
+    "2026-08-22": {
+     "acquisitionQuantity": 5
+    },
+    "2026-08-23": {
+     "acquisitionQuantity": 3
+    },
+    "2026-08-24": {
+     "acquisitionQuantity": 4
+    },
+    "2026-08-26": {
+     "acquisitionQuantity": 3
+    },
+    "2026-08-27": {
+     "acquisitionQuantity": 2
+    },
+    "2026-08-28": {
+     "acquisitionQuantity": 4
+    },
+    "2026-08-29": {
+     "acquisitionQuantity": 4
+    },
+    "2026-08-30": {
+     "acquisitionQuantity": 9
+    },
+    "2026-08-31": {
+     "acquisitionQuantity": 6
+    },
+    "2026-09-01": {
+     "acquisitionQuantity": 6
+    },
+    "2026-09-02": {
+     "acquisitionQuantity": 3
+    },
+    "2026-09-03": {
+     "acquisitionQuantity": 4
+    },
+    "2026-09-04": {
+     "acquisitionQuantity": 2
+    },
+    "2026-09-05": {
+     "acquisitionQuantity": 2
+    },
+    "2026-09-06": {
+     "acquisitionQuantity": 4
+    },
+    "2026-09-07": {
+     "acquisitionQuantity": 4
+    },
+    "2026-09-08": {
+     "acquisitionQuantity": 2
+    },
+    "2026-09-09": {
+     "acquisitionQuantity": 3
+    },
+    "2026-09-10": {
+     "acquisitionQuantity": 2
+    },
+    "2026-09-11": {
+     "acquisitionQuantity": 2
+    }
+   },
+   "ratingsWindow": {
+    "oneStar": 0,
+    "twoStars": 0,
+    "threeStars": 0,
+    "fourStars": 0,
+    "fiveStars": 0,
+    "rows": 0
+   },
+   "failuresWindow": [
+    {
+     "failureName": null,
+     "failureHash": null,
+     "eventCount": 1,
+     "deviceCount": 1
+    }
+   ]
+  },
+  "9NH3NK2RGCF5": {
+   "name": "Sanduhr für Claude",
+   "usageDaily": {
+    "2026-08-12": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 0.5
+    },
+    "2026-08-13": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 3,
+     "engagementDurationMinutes": 1.7
+    },
+    "2026-08-14": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 0.4
+    },
+    "2026-08-16": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 6,
+     "engagementDurationMinutes": 5.1
+    },
+    "2026-08-17": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 1.2
+    },
+    "2026-08-18": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 2
+    },
+    "2026-08-19": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.4
+    },
+    "2026-08-20": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.2
+    },
+    "2026-08-23": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.6
+    },
+    "2026-08-26": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.5
+    },
+    "2026-08-27": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.3
+    },
+    "2026-09-07": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 3,
+     "engagementDurationMinutes": 1.6
+    },
+    "2026-09-08": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.1
+    },
+    "2026-09-09": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.4
+    },
+    "2026-09-10": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 3,
+     "engagementDurationMinutes": 0.6
+    }
+   },
+   "installsDaily": {
+    "2026-08-14": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-16": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-18": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-20": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-23": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-24": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-27": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-30": {
+     "successfulInstallCount": 1
+    },
+    "2026-08-31": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-01": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-04": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-07": {
+     "successfulInstallCount": 2
+    }
+   },
+   "acquisitionsDaily": {
+    "2026-08-14": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-16": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-17": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-20": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-23": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-24": {
+     "acquisitionQuantity": 3
+    },
+    "2026-08-27": {
+     "acquisitionQuantity": 1
+    },
+    "2026-08-31": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-01": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-02": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-06": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-07": {
+     "acquisitionQuantity": 2
+    },
+    "2026-09-08": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-10": {
+     "acquisitionQuantity": 2
+    }
+   },
+   "ratingsWindow": {
+    "oneStar": 0,
+    "twoStars": 0,
+    "threeStars": 0,
+    "fourStars": 0,
+    "fiveStars": 0,
+    "rows": 0
+   },
+   "failuresWindow": [
+    {
+     "failureName": null,
+     "failureHash": null,
+     "eventCount": 10,
+     "deviceCount": 6
+    }
+   ]
+  }
+ }
+}
