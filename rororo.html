@@ -240,7 +240,10 @@
   .feature p{ font-size:12.5px; color:var(--fg-3); line-height:1.5; margin:0; }
 
   /* ---------- Screenshot gallery ---------- */
-  .video-frame{ margin: 0 0 18px; }
+  /* The player rides above the CRT overlay (z 60) — video stays clean
+     while the page keeps the treatment. Same move as the theme's own
+     .play-widget lift. */
+  .video-frame{ margin: 0 0 18px; position: relative; z-index: 61; }
   .video-frame video{
     display:block; width:100%; height:auto; aspect-ratio: 16 / 9;
     background: var(--bg-1);
