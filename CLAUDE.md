@@ -53,7 +53,7 @@ references and one-off design artifacts.
 | `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 15 files: 11 bot workflows that push to main, plus 4 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
+| `.github/workflows/` | 16 files: 12 bot workflows that push to main, plus 4 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 | `themes/`, `content/themes.json`, `themes.html` | The monthly theme rotation: theme source dirs, the active/queue/archive registry, and the gallery page rendered from it. See **Theme rotation** below. |
 
@@ -68,7 +68,7 @@ references and one-off design artifacts.
 
 ## CI workflows
 
-The 11 bot workflows that push to main:
+The 12 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
@@ -80,13 +80,14 @@ The 11 bot workflows that push to main:
 | `track-traffic.yml` | Daily 06:00 UTC | Auto-discovers all public, non-fork, non-archived repos under `estevanhernandez-stack-ed` (user) and `626Labs-LLC` (org), then pulls GitHub traffic metrics for each. Uses `TRAFFIC_PAT` (user-scope, needs Administration:Read on every tracked repo) and `TRAFFIC_PAT_ORG` (optional org-scope override — without it, org repos fall back to GH_TOKEN and 403 on the Traffic API). |
 | `track-downloads.yml` | Daily 06:15 UTC | Snapshots release-asset `download_count` for every repo in `data/repos.json` that ships release assets → `data/download-stats.json` (current detail) + `data/downloads.csv` (daily lifetime totals; day-over-day diff = downloads that day). Public data — implicit `GITHUB_TOKEN` only. |
 | `fetch-site-stats.yml` | Daily 06:30 UTC | Pulls GoatCounter visit stats for `626labs.dev` and writes `data/site-stats.json` (uses `GOATCOUNTER_TOKEN` secret). |
+| `track-store-analytics.yml` | Daily 06:53 UTC | Pulls Microsoft Store analytics (usagedaily, installs, acquisitions, ratings, failurehits) for all six Store apps via the legacy Dev Center API → `data/store-analytics.json`. Uses the `STORE_TENANT_ID`/`STORE_CLIENT_ID`/`STORE_CLIENT_SECRET` secrets (the Store Listing Console's Entra app, Manager role). v1 auth (`resource=`, not `scope=`); requests paced because the API 429s readily; deliberately no pull_request trigger (credential exfil guard). Store data lags ~2-3 days — empty latest dates are the API, not a failure. |
 | `refresh-rororo-plugins.yml` | Daily 06:45 UTC | Reads the same `plugins-catalog.json` the RoRoRo app reads (off ROROROblox's latest release), enriches each entry with live release version/date/installs → `data/rororo-plugins.json`. `rororo-plugins.html` and the plugins section of `rororo.html` render from it client-side; warns on catalog-vs-release drift. |
 | `refresh-plugin-versions.yml` | Daily 07:00 UTC | Reads each plugin repo's latest tag (`content/plugin-repos.json` → GitHub API), writes `data/plugin-versions.json`, re-renders plugin pages so version chips can't drift. Default `GITHUB_TOKEN` reads public tags — no extra secret. |
 | `rotate-theme.yml` | Monthly, 09:00 UTC on the 1st + `workflow_dispatch` | Promotes `content/themes.json`'s `queue[0]` to active, unattended. See **Theme rotation** below for the full contract — this row is just the CI-table entry. No extra secret beyond the implicit `GITHUB_TOKEN`. |
 
-**Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`, `MCP_VERSION_TRUTH_KEY`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
+**Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`, `MCP_VERSION_TRUTH_KEY`, `STORE_TENANT_ID`, `STORE_CLIENT_ID`, `STORE_CLIENT_SECRET`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
-All eleven use a retry+rebase loop on `git push` to handle the race where two
+All twelve use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
 Plus four that never commit to this repo:
