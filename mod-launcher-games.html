@@ -139,7 +139,10 @@
   .section-hd{ margin: 52px 0 18px; display:flex; align-items:baseline; justify-content:space-between; gap:18px; }
   .section-hd h2{ font-family:var(--font-display); font-size:24px; font-weight:600; margin:0; }
   .section-hd .r{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-muted); }
-  .video-frame{ margin: 0 0 8px; }
+  /* The player rides above the CRT overlay (z 60) — video stays clean
+     while the page keeps the treatment. Same move as the theme's own
+     .play-widget lift. */
+  .video-frame{ margin: 0 0 8px; position: relative; z-index: 61; }
   .video-frame video{
     display:block; width:100%; height:auto; aspect-ratio: 16 / 9;
     background: var(--bg-2);
