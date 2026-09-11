@@ -58,7 +58,7 @@
 
   /* ---------- Subtle circuit grid backdrop ---------- */
   .grid-bg{
-    position:fixed; inset:0; pointer-events:none; z-index:0;
+    position:fixed; inset:0; pointer-events:none; z-index:-1;
     background-image:
       linear-gradient(rgba(23,212,250,.045) 1px, transparent 1px),
       linear-gradient(90deg, rgba(23,212,250,.045) 1px, transparent 1px);
@@ -69,7 +69,7 @@
 
   /* ---------- Top nav ---------- */
   .topnav{
-    position:sticky; top:0; z-index:50;
+    position:sticky; top:0; z-index:70;
     backdrop-filter: blur(16px) saturate(140%);
     -webkit-backdrop-filter: blur(16px) saturate(140%);
     background: rgba(15,31,49,.65);
@@ -96,7 +96,7 @@
   .topnav .links a.cta{ color: var(--cyan); }
 
   /* ---------- Layout ---------- */
-  .wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding: 56px 32px 72px; }
+  .wrap{ position:relative; max-width:1180px; margin:0 auto; padding: 56px 32px 72px; }
 
   .hero h1{
     font-family:var(--font-display); font-weight:700;
