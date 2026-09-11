@@ -62,6 +62,10 @@ def fit_font(name, size, weight, texts, max_w):
     One size for the whole group, so a card keeps uniform typography."""
     if isinstance(texts, str):
         texts = [texts]
+    if LANG == "en":
+        # English defined the slots — never refit it, so EN output stays
+        # byte-identical to the shipped frames by construction.
+        return font(name, size, weight)
     # Space Grotesk carries no Cyrillic — Russian display text falls back
     # to Inter (full Cyrillic set) at the same size and weight.
     if name.startswith("SpaceGrotesk") and any(
