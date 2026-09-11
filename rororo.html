@@ -251,6 +251,23 @@
     margin: 8px 2px 0; font-family: var(--font-mono); font-size: 11px;
     letter-spacing: .08em; text-transform: uppercase; color: var(--fg-muted);
   }
+  .video-foot{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; flex-wrap:wrap;
+  }
+  .video-langs{ display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .lang-pill{
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.04em;
+    color: var(--fg-3); background: rgba(255,255,255,.03);
+    border: 1px solid var(--border-1); border-radius: 999px;
+    padding: 5px 12px; cursor: pointer;
+    transition: color var(--dur-fast), border-color var(--dur-fast);
+  }
+  .lang-pill:hover{ color: var(--cyan); border-color: var(--border-accent); }
+  .lang-pill.is-active{
+    color: var(--cyan); border-color: var(--border-accent);
+    background: rgba(23,212,250,.08);
+  }
   .gallery{ display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; }
   .gallery figure{
     margin:0;
@@ -754,12 +771,50 @@ brew install --cask rororo</code>
   </div>
 
   <div class="video-frame">
-    <video controls preload="metadata" playsinline
+    <video id="launch-video" controls preload="metadata" playsinline
            poster="assets/video/rororo/rororo-launch-poster.jpg">
       <source src="assets/video/rororo/rororo-launch-16x9.mp4" type="video/mp4" />
     </video>
-    <p class="video-cap">The launch cut &middot; 57 seconds, sound on</p>
+    <div class="video-foot">
+      <p class="video-cap" id="launch-cap">The launch cut &middot; 57 seconds, sound on</p>
+      <div class="video-langs" id="launch-langs" role="group" aria-label="Trailer language">
+        <button type="button" class="lang-pill is-active" data-lang="">English</button>
+        <button type="button" class="lang-pill" data-lang="fr" data-secs="67">Fran&ccedil;ais</button>
+        <button type="button" class="lang-pill" data-lang="de" data-secs="66">Deutsch</button>
+        <button type="button" class="lang-pill" data-lang="ru" data-secs="66">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</button>
+        <button type="button" class="lang-pill" data-lang="pt-BR" data-secs="56">Portugu&ecirc;s</button>
+        <button type="button" class="lang-pill" data-lang="pl" data-secs="64">Polski</button>
+        <button type="button" class="lang-pill" data-lang="es" data-secs="59">Espa&ntilde;ol</button>
+      </div>
+    </div>
   </div>
+  <script>
+  (function(){
+    // Same trailer, six voices: the pills swap the source, poster and
+    // caption. Each localized cut carries Este's voice on the ElevenLabs
+    // multilingual model plus the app captured in that language.
+    var video = document.getElementById('launch-video');
+    var cap = document.getElementById('launch-cap');
+    var pills = document.querySelectorAll('#launch-langs .lang-pill');
+    var base = 'assets/video/rororo/rororo-launch';
+    pills.forEach(function(p){
+      p.addEventListener('click', function(){
+        if (p.classList.contains('is-active')) return;
+        pills.forEach(function(q){ q.classList.remove('is-active'); });
+        p.classList.add('is-active');
+        var lang = p.getAttribute('data-lang');
+        var suffix = lang ? '-' + lang : '';
+        video.pause();
+        video.poster = base + '-poster' + suffix + '.jpg';
+        video.querySelector('source').src = base + suffix + '-16x9.mp4';
+        video.load();
+        cap.textContent = lang
+          ? 'The launch cut · ' + p.getAttribute('data-secs') + ' seconds · ' + p.textContent
+          : 'The launch cut · 57 seconds, sound on';
+      });
+    });
+  })();
+  </script>
 
   <div class="gallery">
     <figure>
