@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-09-12T00:33:59.910Z",
+ "fetchedAt": "2026-09-12T11:17:49.178Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
@@ -207,6 +207,13 @@
      "dailyNewUsers": 25,
      "dailySessionCount": 193,
      "engagementDurationMinutes": 223.2
+    },
+    "2026-09-11": {
+     "dailyActiveUsers": 90,
+     "dailyActiveDevices": 89,
+     "dailyNewUsers": 17,
+     "dailySessionCount": 194,
+     "engagementDurationMinutes": 162.2
     }
    },
    "installsDaily": {
@@ -287,6 +294,9 @@
     },
     "2026-09-07": {
      "successfulInstallCount": 39
+    },
+    "2026-09-08": {
+     "successfulInstallCount": 26
     }
    },
    "acquisitionsDaily": {
@@ -377,8 +387,8 @@
     "2026-09-10": {
      "acquisitionQuantity": 22
     },
-    "2026-09-11": {
-     "acquisitionQuantity": 5
+    "2026-09-12": {
+     "acquisitionQuantity": 17
     }
    },
    "reviews": [
@@ -512,7 +522,7 @@
     }
    ],
    "unclassifiedHits": {
-    "eventCount": 299,
+    "eventCount": 315,
     "deviceCount": 112
    }
   },
@@ -739,6 +749,9 @@
     },
     "2026-09-07": {
      "successfulInstallCount": 2
+    },
+    "2026-09-08": {
+     "successfulInstallCount": 4
     }
    },
    "acquisitionsDaily": {
@@ -814,8 +827,8 @@
     "2026-09-09": {
      "acquisitionQuantity": 1
     },
-    "2026-09-11": {
-     "acquisitionQuantity": 1
+    "2026-09-12": {
+     "acquisitionQuantity": 2
     }
    },
    "reviews": [],
@@ -983,6 +996,9 @@
      "successfulInstallCount": 1
     },
     "2026-09-04": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-08": {
      "successfulInstallCount": 1
     }
    },
@@ -1223,6 +1239,13 @@
      "dailyNewUsers": 3,
      "dailySessionCount": 11,
      "engagementDurationMinutes": 29.2
+    },
+    "2026-09-11": {
+     "dailyActiveUsers": 6,
+     "dailyActiveDevices": 6,
+     "dailyNewUsers": 5,
+     "dailySessionCount": 20,
+     "engagementDurationMinutes": 37.5
     }
    },
    "installsDaily": {
@@ -1302,6 +1325,9 @@
      "successfulInstallCount": 4
     },
     "2026-09-07": {
+     "successfulInstallCount": 2
+    },
+    "2026-09-08": {
      "successfulInstallCount": 2
     }
    },
@@ -1390,8 +1416,8 @@
     "2026-09-10": {
      "acquisitionQuantity": 2
     },
-    "2026-09-11": {
-     "acquisitionQuantity": 2
+    "2026-09-12": {
+     "acquisitionQuantity": 1
     }
    },
    "reviews": [],
@@ -1511,6 +1537,13 @@
      "dailyNewUsers": 1,
      "dailySessionCount": 3,
      "engagementDurationMinutes": 0.6
+    },
+    "2026-09-11": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 2.3
     }
    },
    "installsDaily": {
@@ -1548,6 +1581,9 @@
      "successfulInstallCount": 1
     },
     "2026-09-07": {
+     "successfulInstallCount": 2
+    },
+    "2026-09-08": {
      "successfulInstallCount": 2
     }
    },
@@ -1593,6 +1629,9 @@
     },
     "2026-09-10": {
      "acquisitionQuantity": 2
+    },
+    "2026-09-12": {
+     "acquisitionQuantity": 1
     }
    },
    "reviews": [
