@@ -2392,18 +2392,197 @@ function RepoStatsRow({ repo, last }) {
   );
 }
 
+// ─────────────────────────────────────────────────────────────
+// Store — Microsoft Store analytics (reads data/store-analytics.json)
+// ─────────────────────────────────────────────────────────────
+const REVIEW_SURFACE_URL = "https://claude.ai/code/artifact/5c7b4df9-a5b6-47c6-a6c5-d0ad88a900dd";
+const STAR = "★", EMPTY_STAR = "☆", MID = "·", RARR = "→";
+
+function storeSpark(values, w, h) {
+  if (!values || !values.length) return null;
+  const pad = 4, n = values.length;
+  const lo = Math.min(...values), hi = Math.max(...values), rng = (hi - lo) || 1;
+  const X = i => pad + (w - 2 * pad) * (i / (n > 1 ? n - 1 : 1));
+  const Y = v => pad + (h - 2 * pad) * (1 - (v - lo) / rng);
+  const pts = values.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+  const area = `${pad},${h - pad} ${pts} ${X(n - 1).toFixed(1)},${h - pad}`;
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h} preserveAspectRatio="none" style={{ display: "block", width: "100%" }}>
+      <polyline points={area} fill="rgba(23,212,250,.13)" stroke="none"/>
+      <polyline points={pts} fill="none" stroke={A.cyan} strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round"/>
+      <circle cx={X(n - 1).toFixed(1)} cy={Y(values[values.length - 1]).toFixed(1)} r="2.6" fill={A.cyan}/>
+    </svg>
+  );
+}
+
+function wowPct(dates, byDate, key) {
+  if (dates.length < 14) return null;
+  const vals = dates.map(d => (byDate[d] || {})[key] || 0);
+  const last7 = vals.slice(-7).reduce((a, b) => a + b, 0) / 7;
+  const prev7 = vals.slice(-14, -7).reduce((a, b) => a + b, 0) / 7;
+  if (!prev7) return null;
+  return (last7 - prev7) / prev7 * 100;
+}
+
+function WoW({ pct }) {
+  if (pct === null || pct === undefined)
+    return <span style={{ color: A.dim2, fontFamily: "JetBrains Mono, monospace", fontSize: 10 }}>{"—"} WoW</span>;
+  const up = pct >= 0;
+  return <span style={{ color: up ? A.green : A.danger, fontFamily: "JetBrains Mono, monospace", fontSize: 10 }}>{up ? "▲" : "▼"} {Math.abs(pct).toFixed(0)}% WoW</span>;
+}
+
+function StoreStats({ token }) {
+  const [data, setData] = React.useState(null);
+  const [error, setError] = React.useState(null);
+  const [missing, setMissing] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [reloadKey, setReloadKey] = React.useState(0);
+  const [triggering, setTriggering] = React.useState(false);
+  const [dispatchStatus, setDispatchStatus] = React.useState(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    setLoading(true); setError(null); setMissing(false);
+    const headers = { Accept: "application/vnd.github.raw", "X-GitHub-Api-Version": "2022-11-28" };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/store-analytics.json?ref=${REPO_BRANCH}&t=${Date.now()}`, { headers, cache: "no-store" })
+      .then(r => {
+        if (r.status === 404) { setMissing(true); return null; }
+        if (!r.ok) return r.text().then(t => Promise.reject(`${r.status} ${t.slice(0, 100)}`));
+        return r.json();
+      })
+      .then(json => { if (cancelled) return; if (json) setData(json); setLoading(false); })
+      .catch(e => { if (cancelled) return; setError(typeof e === "string" ? e : (e && e.message) || "Failed to load"); setLoading(false); });
+    return () => { cancelled = true; };
+  }, [token, reloadKey]);
+
+  async function triggerFresh() {
+    if (!token) { setDispatchStatus({ ok: false, message: "no PAT loaded" }); return; }
+    setTriggering(true); setDispatchStatus(null);
+    try {
+      const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/track-store-analytics.yml/dispatches`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "Content-Type": "application/json" },
+        body: JSON.stringify({ ref: REPO_BRANCH }),
+      });
+      if (res.status === 204) setDispatchStatus({ ok: true, message: "queued — reload in ~2 min" });
+      else { const t = await res.text(); setDispatchStatus({ ok: false, message: `${res.status}: ${t.slice(0, 80)}` }); }
+    } catch (e) { setDispatchStatus({ ok: false, message: (e && e.message) || "dispatch failed" }); }
+    finally { setTriggering(false); }
+  }
+
+  if (loading) return <div style={{ padding: 56, color: A.dim, textAlign: "center", fontSize: 13 }}>Loading Store analytics{"…"}</div>;
+  if (missing) return <div style={{ padding: 56, color: A.dim, textAlign: "center", fontSize: 13 }}>No data/store-analytics.json yet {MID} the daily bot writes it at 06:53 UTC, or hit Pull fresh.</div>;
+  if (error) return <div style={{ padding: 56, color: A.danger, textAlign: "center", fontSize: 13 }}>Failed to load: {error}</div>;
+
+  const apps = Object.entries(data.apps).map(([sid, app]) => {
+    const u = app.usageDaily || {}, dates = Object.keys(u).sort();
+    const dau = dates.map(d => u[d].dailyActiveUsers || 0);
+    const idict = app.installsDaily || {}, idates = Object.keys(idict).sort();
+    const rl = app.ratingsLifetime || {}, fails = app.failuresWindow;
+    return {
+      sid, name: app.name, dau,
+      dauAvg: dau.length ? dau.reduce((a, b) => a + b, 0) / dau.length : 0,
+      dauPeak: dau.length ? Math.max(...dau) : 0,
+      installs: Object.values(idict).reduce((s, r) => s + (r.successfulInstallCount || 0), 0),
+      sessions: Object.values(u).reduce((s, r) => s + (r.dailySessionCount || 0), 0),
+      dauWow: wowPct(dates, u, "dailyActiveUsers"),
+      instWow: wowPct(idates, idict, "successfulInstallCount"),
+      rating: rl.average, oneStar: rl.oneStar || 0,
+      failKnown: fails !== null && fails !== undefined,
+      failEvents: (fails || []).reduce((s, f) => s + (f.eventCount || 0), 0),
+      failN: (fails || []).length,
+      reviews: app.reviews || [],
+    };
+  }).sort((a, b) => b.installs - a.installs);
+
+  const fmt = n => (n || 0).toLocaleString();
+  const fleetInstalls = apps.reduce((s, a) => s + a.installs, 0);
+  const fleetSessions = apps.reduce((s, a) => s + a.sessions, 0);
+  const allReviews = apps.flatMap(a => a.reviews.map(r => ({ ...r, appName: a.name })));
+  const fleetRating = allReviews.length ? allReviews.reduce((s, r) => s + r.rating, 0) / allReviews.length : null;
+  const oneStars = allReviews.filter(r => r.rating === 1).sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  const peak = apps.reduce((m, a) => a.dauPeak > m.dauPeak ? a : m, apps[0]);
+
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
+        <div style={{ fontSize: 11, color: A.dim2, fontFamily: "JetBrains Mono, monospace" }}>snapshot {new Date(data.fetchedAt).toISOString().slice(0, 16).replace("T", " ")} UTC {MID} 30-day usage, lifetime ratings</div>
+        <div style={{ flex: 1 }}/>
+        <a href={REVIEW_SURFACE_URL} target="_blank" rel="noopener" style={{ fontSize: 12, color: A.cyan, fontFamily: "JetBrains Mono, monospace", textDecoration: "none" }}>All reviews &amp; replies {RARR}</a>
+        <Btn size="sm" ghost onClick={() => setReloadKey(k => k + 1)}>Reload</Btn>
+        <Btn size="sm" onClick={triggerFresh} disabled={triggering}>{triggering ? "Queuing…" : "Pull fresh"}</Btn>
+      </div>
+      {dispatchStatus && <div style={{ marginBottom: 12, fontSize: 12, color: dispatchStatus.ok ? A.green : A.danger, fontFamily: "JetBrains Mono, monospace" }}>{dispatchStatus.message}</div>}
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10, marginBottom: 22 }}>
+        <DataTile ic={Ic.download} label="Installs · 30d" value={fmt(fleetInstalls)} tone="cyan"/>
+        <DataTile ic={Ic.activity} label="Sessions · 30d" value={fmt(fleetSessions)} tone="cyan"/>
+        <DataTile ic={Ic.star} label={`Rating · ${allReviews.length}`} value={fleetRating ? fleetRating.toFixed(1) + STAR : "—"} tone="wip"/>
+        <DataTile ic={Ic.activity} label={`Peak DAU · ${peak.name}`} value={fmt(peak.dauPeak)} tone="magenta"/>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 12 }}>
+        {apps.map(a => (
+          <div key={a.sid} style={{ background: A.panel2, border: `1px solid ${A.line}`, borderRadius: 10, padding: "14px 16px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
+              <strong style={{ fontSize: 15 }}>{a.name}</strong>
+              {a.oneStar > 0 && <span style={{ fontSize: 10, color: A.danger, fontFamily: "JetBrains Mono, monospace" }}>{a.oneStar}{"×"} 1{STAR}</span>}
+            </div>
+            <div style={{ height: 40, margin: "10px 0" }}>{storeSpark(a.dau, 268, 40)}</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 10 }}>
+              <span style={{ fontSize: 24, fontWeight: 700, fontFamily: "Space Grotesk, sans-serif" }}>{Math.round(a.dauAvg).toLocaleString()}</span>
+              <span style={{ fontSize: 10, color: A.dim2, textTransform: "uppercase", letterSpacing: ".08em" }}>avg DAU</span>
+              <WoW pct={a.dauWow}/>
+              <span style={{ marginLeft: "auto", fontSize: 11, color: A.dim, fontFamily: "JetBrains Mono, monospace" }}>peak {a.dauPeak}</span>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, fontFamily: "JetBrains Mono, monospace" }}>
+              <div><div style={{ fontSize: 9.5, color: A.dim2, textTransform: "uppercase" }}>Installs</div><div style={{ fontSize: 14, fontWeight: 600 }}>{fmt(a.installs)}</div><div style={{ marginTop: 2 }}><WoW pct={a.instWow}/></div></div>
+              <div><div style={{ fontSize: 9.5, color: A.dim2, textTransform: "uppercase" }}>Sessions</div><div style={{ fontSize: 14, fontWeight: 600 }}>{fmt(a.sessions)}</div></div>
+              <div><div style={{ fontSize: 9.5, color: A.dim2, textTransform: "uppercase" }}>Rating</div><div style={{ fontSize: 14, fontWeight: 600, color: A.amber }}>{a.rating ? a.rating.toFixed(1) + STAR : "—"}</div></div>
+            </div>
+            <div style={{ marginTop: 10, fontSize: 10.5, color: A.dim, fontFamily: "JetBrains Mono, monospace" }}>{a.failKnown ? (a.failN ? `${fmt(a.failEvents)} crash ev` : "no crashes") : "crashes: unknown"}</div>
+          </div>
+        ))}
+      </div>
+
+      {oneStars.length > 0 && (
+        <div style={{ marginTop: 26 }}>
+          <div style={{ fontSize: 11, color: A.dim2, textTransform: "uppercase", letterSpacing: ".12em", fontFamily: "JetBrains Mono, monospace", marginBottom: 10 }}>Reviews needing eyes</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            {oneStars.map((r, i) => (
+              <div key={i} style={{ background: A.panel2, border: `1px solid ${A.line}`, borderLeft: `3px solid ${A.danger}`, borderRadius: 10, padding: "12px 14px" }}>
+                <div style={{ display: "flex", gap: 8, alignItems: "baseline", flexWrap: "wrap", marginBottom: 5 }}>
+                  <span style={{ color: A.danger, fontSize: 13 }}>{STAR.repeat(r.rating)}{EMPTY_STAR.repeat(5 - r.rating)}</span>
+                  <span style={{ fontSize: 10.5, color: A.dim2, fontFamily: "JetBrains Mono, monospace" }}>{r.reviewerName} {MID} {r.market} {MID} v{r.packageVersion || "—"}</span>
+                  <span style={{ marginLeft: "auto", fontSize: 9.5, color: A.cyan, fontFamily: "JetBrains Mono, monospace" }}>{r.appName}</span>
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 2 }}>{r.reviewTitle || "(no title)"}</div>
+                <div style={{ fontSize: 12.5, color: A.dim }}>{r.reviewText || "(rating only)"}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 12 }}><a href={REVIEW_SURFACE_URL} target="_blank" rel="noopener" style={{ fontSize: 12, color: A.cyan, fontFamily: "JetBrains Mono, monospace", textDecoration: "none" }}>Draft replies in the review console {RARR}</a></div>
+        </div>
+      )}
+      <div style={{ marginTop: 22, fontSize: 11, color: A.dim2, fontFamily: "JetBrains Mono, monospace", lineHeight: 1.7 }}>Source: data/store-analytics.json {MID} Dev Center analytics {MID} usage lags ~2{"–"}3 days {MID} crashes are identified failures only {MID} WoW = last 7 days vs prior 7.</div>
+    </div>
+  );
+}
+
 function AnalyticsView({ token }) {
-  const [tab, setTab] = React.useState("site");
+  const [tab, setTab] = React.useState("store");
   return (
     <div>
       <PanelHeader
         title="Analytics"
-        subtitle="Site visits via GoatCounter (privacy-friendly, cookieless) and plugin-repo traffic from GitHub"
+        subtitle="Microsoft Store usage &amp; reviews, site visits via GoatCounter, and plugin-repo traffic from GitHub"
         actions={
           <TabBar
             value={tab}
             onChange={setTab}
             options={[
+              { value: "store", label: "Store" },
               { value: "site", label: "Site" },
               { value: "repos", label: "Plugin repos" },
             ]}
@@ -2411,6 +2590,7 @@ function AnalyticsView({ token }) {
         }
       />
       <div style={{ padding: "18px 26px 32px" }}>
+        {tab === "store" && <StoreStats token={token}/>}
         {tab === "site" && <SiteStats token={token}/>}
         {tab === "repos" && <RepoStats token={token}/>}
       </div>
