@@ -1,17 +1,10 @@
 {
- "fetchedAt": "2026-09-11T22:06:28.633Z",
+ "fetchedAt": "2026-09-12T00:33:59.910Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
    "name": "RoRoRo",
    "usageDaily": {
-    "2026-08-12": {
-     "dailyActiveUsers": 60,
-     "dailyActiveDevices": 60,
-     "dailyNewUsers": 8,
-     "dailySessionCount": 124,
-     "engagementDurationMinutes": 145.1
-    },
     "2026-08-13": {
      "dailyActiveUsers": 63,
      "dailyActiveDevices": 64,
@@ -217,9 +210,6 @@
     }
    },
    "installsDaily": {
-    "2026-08-12": {
-     "successfulInstallCount": 22
-    },
     "2026-08-13": {
      "successfulInstallCount": 18
     },
@@ -300,9 +290,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-08-12": {
-     "acquisitionQuantity": 11
-    },
     "2026-08-13": {
      "acquisitionQuantity": 12
     },
@@ -391,36 +378,147 @@
      "acquisitionQuantity": 22
     },
     "2026-09-11": {
-     "acquisitionQuantity": 4
+     "acquisitionQuantity": 5
     }
    },
-   "ratingsWindow": {
-    "oneStar": 1,
+   "reviews": [
+    {
+     "reviewerName": "Charlie",
+     "rating": 5,
+     "reviewTitle": null,
+     "reviewText": null,
+     "market": "GB",
+     "date": "9/8/2026 4:32:31 PM",
+     "packageVersion": "",
+     "isRevised": false,
+     "id": "46817bce-c72f-fe26-b2b9-be61d7ad3bc9"
+    },
+    {
+     "reviewerName": "Ethan",
+     "rating": 5,
+     "reviewTitle": "Good launcer",
+     "reviewText": "I was struggling to find a good Roblox multi launcher and i came across this works great thank you!!",
+     "market": "CA",
+     "date": "9/4/2026 8:17:58 AM",
+     "packageVersion": "1.24.0.0",
+     "isRevised": true,
+     "id": "90020ba7-3eb3-3218-300b-34e22f82e99a"
+    },
+    {
+     "reviewerName": "Bentley",
+     "rating": 1,
+     "reviewTitle": "stole my robux",
+     "reviewText": "i downloaded it and opened 4 accounts and afk a game but after a few days i tried to buy something with my 3800 robux and i only had 2, i am very sure it stole my robux",
+     "market": "US",
+     "date": "9/1/2026 4:02:07 PM",
+     "packageVersion": "",
+     "isRevised": false,
+     "id": "e13924ce-3301-6b10-e743-f72bc58985b0"
+    },
+    {
+     "reviewerName": "Mohammed",
+     "rating": 5,
+     "reviewTitle": "Easy and Fast to use",
+     "reviewText": "it took me abt 5 mins to connect to of my account of now I can run 2 acc at the same time so fast and easy",
+     "market": "GB",
+     "date": "7/12/2026 10:44:47 PM",
+     "packageVersion": "1.11.1.0",
+     "isRevised": true,
+     "id": "8c4938a3-db8c-2b5e-9a35-ff6efc20476a"
+    },
+    {
+     "reviewerName": "Sebastian",
+     "rating": 1,
+     "reviewTitle": "hacked my account",
+     "reviewText": "DONT use its sketchy I think it took some of my details and I lost my acc ive been playing on since 2019",
+     "market": "GB",
+     "date": "6/25/2026 6:55:13 PM",
+     "packageVersion": "",
+     "isRevised": false,
+     "id": "1814d594-0df1-9da8-a153-bea28658d20e"
+    },
+    {
+     "reviewerName": "Marc-Olivier",
+     "rating": 5,
+     "reviewTitle": "Merci aux devs",
+     "reviewText": "Tres bon travail et l'application est fonctionnelle, pour l'instant j'ai pas de soucis, c'est l'application que je recherchai.",
+     "market": "FR",
+     "date": "5/26/2026 6:49:19 PM",
+     "packageVersion": "1.6.0.0",
+     "isRevised": true,
+     "id": "34426c52-add4-977a-6192-b6ffc7e069ca"
+    },
+    {
+     "reviewerName": "Kendra",
+     "rating": 5,
+     "reviewTitle": null,
+     "reviewText": null,
+     "market": "US",
+     "date": "5/24/2026 6:17:43 PM",
+     "packageVersion": "1.4.3.0",
+     "isRevised": false,
+     "id": "ee81a353-114f-9d64-016c-742183f667f6"
+    },
+    {
+     "reviewerName": "Dexter",
+     "rating": 5,
+     "reviewTitle": "Great app",
+     "reviewText": "Hopefully, it wont get shutdown cuz its very helpful!",
+     "market": "PH",
+     "date": "5/19/2026 3:09:56 PM",
+     "packageVersion": "1.4.3.0",
+     "isRevised": true,
+     "id": "9495bb7b-cb71-e2d5-046a-02294a6fbbba"
+    },
+    {
+     "reviewerName": "Estevan",
+     "rating": 5,
+     "reviewTitle": null,
+     "reviewText": null,
+     "market": "US",
+     "date": "5/11/2026 6:30:25 PM",
+     "packageVersion": "1.3.4.0",
+     "isRevised": false,
+     "id": "c088db7e-8de9-6fc4-f784-f30e39cbe3e8"
+    },
+    {
+     "reviewerName": "Jemma",
+     "rating": 5,
+     "reviewTitle": "WOW!",
+     "reviewText": "This app is way better then others like it, so easy to use and the support is also amazing! Highly recommend!",
+     "market": "GB",
+     "date": "5/9/2026 3:22:51 PM",
+     "packageVersion": "1.3.1.0",
+     "isRevised": true,
+     "id": "8fce077e-b31b-c362-1fa2-06ba48882914"
+    }
+   ],
+   "ratingsLifetime": {
+    "oneStar": 2,
     "twoStars": 0,
     "threeStars": 0,
     "fourStars": 0,
-    "fiveStars": 2,
-    "rows": 3
+    "fiveStars": 8,
+    "total": 10,
+    "average": 4.2,
+    "oneStarWithText": 2
    },
    "failuresWindow": [
     {
-     "failureName": null,
-     "failureHash": null,
-     "eventCount": 309,
-     "deviceCount": 201
+     "failureName": "CLR_EXCEPTION_80263001_626LabsLLC.RoRoRoBlox_ROROROblox!unknown_function",
+     "failureHash": "459271eb-3397-7bb2-e68e-559fc6bb203d",
+     "eventCount": 1,
+     "deviceCount": 1
     }
-   ]
+   ],
+   "unclassifiedHits": {
+    "eventCount": 299,
+    "deviceCount": 112
+   }
   },
   "9N53V6RRJK95": {
    "name": "626 Mod Launcher",
    "usageDaily": {
-    "2026-08-12": {
-     "dailyActiveUsers": 2,
-     "dailyActiveDevices": 2,
-     "dailyNewUsers": 2,
-     "dailySessionCount": 2,
-     "engagementDurationMinutes": 0.2
-    },
     "2026-08-14": {
      "dailyActiveUsers": 5,
      "dailyActiveDevices": 4,
@@ -570,9 +668,6 @@
     }
    },
    "installsDaily": {
-    "2026-08-12": {
-     "successfulInstallCount": 1
-    },
     "2026-08-13": {
      "successfulInstallCount": 2
     },
@@ -723,22 +818,22 @@
      "acquisitionQuantity": 1
     }
    },
-   "ratingsWindow": {
+   "reviews": [],
+   "ratingsLifetime": {
     "oneStar": 0,
     "twoStars": 0,
     "threeStars": 0,
     "fourStars": 0,
     "fiveStars": 0,
-    "rows": 0
+    "total": 0,
+    "average": null,
+    "oneStarWithText": 0
    },
-   "failuresWindow": [
-    {
-     "failureName": null,
-     "failureHash": null,
-     "eventCount": 10,
-     "deviceCount": 2
-    }
-   ]
+   "failuresWindow": [],
+   "unclassifiedHits": {
+    "eventCount": 10,
+    "deviceCount": 2
+   }
   },
   "9PBX8F5TR0VR": {
    "name": "SnapSnip",
@@ -783,9 +878,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-08-12": {
-     "acquisitionQuantity": 1
-    },
     "2026-08-19": {
      "acquisitionQuantity": 1
     },
@@ -802,15 +894,19 @@
      "acquisitionQuantity": 1
     }
    },
-   "ratingsWindow": {
+   "reviews": [],
+   "ratingsLifetime": {
     "oneStar": 0,
     "twoStars": 0,
     "threeStars": 0,
     "fourStars": 0,
     "fiveStars": 0,
-    "rows": 0
+    "total": 0,
+    "average": null,
+    "oneStarWithText": 0
    },
-   "failuresWindow": []
+   "failuresWindow": [],
+   "unclassifiedHits": null
   },
   "9PKKLK6R5WFL": {
    "name": "Right Click to PNG",
@@ -891,9 +987,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-08-12": {
-     "acquisitionQuantity": 1
-    },
     "2026-08-18": {
      "acquisitionQuantity": 1
     },
@@ -922,22 +1015,22 @@
      "acquisitionQuantity": 2
     }
    },
-   "ratingsWindow": {
+   "reviews": [],
+   "ratingsLifetime": {
     "oneStar": 0,
     "twoStars": 0,
     "threeStars": 0,
     "fourStars": 0,
     "fiveStars": 0,
-    "rows": 0
+    "total": 0,
+    "average": null,
+    "oneStarWithText": 0
    },
-   "failuresWindow": [
-    {
-     "failureName": null,
-     "failureHash": null,
-     "eventCount": 1,
-     "deviceCount": 1
-    }
-   ]
+   "failuresWindow": [],
+   "unclassifiedHits": {
+    "eventCount": 1,
+    "deviceCount": 1
+   }
   },
   "9MV9G4XFJ8S0": {
    "name": "RBX15 Classic Shirt and Pants Maker",
@@ -1133,9 +1226,6 @@
     }
    },
    "installsDaily": {
-    "2026-08-12": {
-     "successfulInstallCount": 1
-    },
     "2026-08-13": {
      "successfulInstallCount": 8
     },
@@ -1216,9 +1306,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-08-12": {
-     "acquisitionQuantity": 4
-    },
     "2026-08-13": {
      "acquisitionQuantity": 6
     },
@@ -1307,33 +1394,26 @@
      "acquisitionQuantity": 2
     }
    },
-   "ratingsWindow": {
+   "reviews": [],
+   "ratingsLifetime": {
     "oneStar": 0,
     "twoStars": 0,
     "threeStars": 0,
     "fourStars": 0,
     "fiveStars": 0,
-    "rows": 0
+    "total": 0,
+    "average": null,
+    "oneStarWithText": 0
    },
-   "failuresWindow": [
-    {
-     "failureName": null,
-     "failureHash": null,
-     "eventCount": 1,
-     "deviceCount": 1
-    }
-   ]
+   "failuresWindow": [],
+   "unclassifiedHits": {
+    "eventCount": 1,
+    "deviceCount": 1
+   }
   },
   "9NH3NK2RGCF5": {
    "name": "Sanduhr für Claude",
    "usageDaily": {
-    "2026-08-12": {
-     "dailyActiveUsers": 2,
-     "dailyActiveDevices": 2,
-     "dailyNewUsers": 0,
-     "dailySessionCount": 4,
-     "engagementDurationMinutes": 0.5
-    },
     "2026-08-13": {
      "dailyActiveUsers": 1,
      "dailyActiveDevices": 1,
@@ -1515,22 +1595,34 @@
      "acquisitionQuantity": 2
     }
    },
-   "ratingsWindow": {
+   "reviews": [
+    {
+     "reviewerName": "Sabrina",
+     "rating": 5,
+     "reviewTitle": null,
+     "reviewText": null,
+     "market": "US",
+     "date": "4/24/2026 12:45:39 AM",
+     "packageVersion": "2.0.4.0",
+     "isRevised": false,
+     "id": "7333105b-f665-5d53-0913-cd0c0f86e20c"
+    }
+   ],
+   "ratingsLifetime": {
     "oneStar": 0,
     "twoStars": 0,
     "threeStars": 0,
     "fourStars": 0,
-    "fiveStars": 0,
-    "rows": 0
+    "fiveStars": 1,
+    "total": 1,
+    "average": 5,
+    "oneStarWithText": 0
    },
-   "failuresWindow": [
-    {
-     "failureName": null,
-     "failureHash": null,
-     "eventCount": 10,
-     "deviceCount": 6
-    }
-   ]
+   "failuresWindow": [],
+   "unclassifiedHits": {
+    "eventCount": 10,
+    "deviceCount": 6
+   }
   }
  }
 }

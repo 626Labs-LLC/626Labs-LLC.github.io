@@ -32,6 +32,10 @@ const APPS = {
 
 const BASE = "https://manage.devcenter.microsoft.com/v1.0/my/analytics";
 const WINDOW_DAYS = 30;
+// Reviews and ratings are pulled lifetime, not 30-day: a 30-day window hid 7 of RoRoRo's
+// 10 reviews on the first run, and lifetime is what the star average and the reviews list
+// actually mean. 2026-04-01 predates the first Store publish (2026-05-06) for every app.
+const LIFETIME_START = "2026-04-01";
 const PACE_MS = 2500;
 
 const env = (n) => {
@@ -61,21 +65,31 @@ async function token() {
   return (await r.json()).access_token;
 }
 
-async function pull(tok, endpoint, appId, extra = "") {
+async function pull(tok, endpoint, appId, extra = "", startOverride = null) {
   const end = new Date().toISOString().slice(0, 10);
-  const start = new Date(Date.now() - WINDOW_DAYS * 86400e3).toISOString().slice(0, 10);
+  const start = startOverride || new Date(Date.now() - WINDOW_DAYS * 86400e3).toISOString().slice(0, 10);
   const url = `${BASE}/${endpoint}?applicationId=${appId}&startDate=${start}&endDate=${end}&top=10000${extra}`;
-  for (let attempt = 1; attempt <= 4; attempt++) {
-    const r = await fetch(url, { headers: { Authorization: `Bearer ${tok}` } });
-    if (r.status === 429) {
-      // Rate limited — the API says "try again in 2 seconds" and means it.
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    let r;
+    try {
+      r = await fetch(url, { headers: { Authorization: `Bearer ${tok}` } });
+    } catch (e) {
+      // Network hiccup — treat like a transient server error and back off.
+      if (attempt === 5) throw new Error(`${endpoint}/${appId}: ${e.message}`);
+      await sleep(3000 * attempt);
+      continue;
+    }
+    // 429 rate limit and 5xx gateway/timeouts (504 seen on failurehits) are both
+    // transient — back off and retry rather than abandoning the whole run.
+    if (r.status === 429 || r.status >= 500) {
+      if (attempt === 5) throw new Error(`${endpoint}/${appId}: HTTP ${r.status} after ${attempt} attempts`);
       await sleep(4000 * attempt);
       continue;
     }
     if (!r.ok) throw new Error(`${endpoint}/${appId}: HTTP ${r.status}`);
     return (await r.json()).Value ?? [];
   }
-  throw new Error(`${endpoint}/${appId}: rate-limited after 4 attempts`);
+  throw new Error(`${endpoint}/${appId}: retries exhausted`);
 }
 
 // Sum segmented rows into one record per date for the named numeric fields.
@@ -94,7 +108,9 @@ const main = async () => {
   const tok = await token();
   const snapshot = { fetchedAt: new Date().toISOString(), windowDays: WINDOW_DAYS, apps: {} };
 
+  const errors = [];
   for (const [id, name] of Object.entries(APPS)) {
+   try {
     const app = { name };
 
     // groupby=date is load-bearing on the daily endpoints: without it the API returns
@@ -117,30 +133,78 @@ const main = async () => {
     app.acquisitionsDaily = byDate(acq, ["acquisitionQuantity"]);
     await sleep(PACE_MS);
 
-    const ratings = await pull(tok, "ratings", id);
+    // Reviews: lifetime, with text. This is the canonical review list both the Store Pulse
+    // dashboard and the reply surface read from. The star average is computed from these,
+    // so it's the true lifetime rating rather than a 30-day slice.
+    const reviews = await pull(tok, "reviews", id, "", LIFETIME_START);
+    app.reviews = reviews.map((r) => ({
+      reviewerName: r.reviewerName, rating: r.rating, reviewTitle: r.reviewTitle,
+      reviewText: r.reviewText, market: r.market, date: r.date,
+      packageVersion: r.packageVersion, isRevised: r.isRevised, id: r.id,
+    })).sort((a, b) => new Date(b.date) - new Date(a.date));
     const stars = { oneStar: 0, twoStars: 0, threeStars: 0, fourStars: 0, fiveStars: 0 };
-    for (const row of ratings) for (const k of Object.keys(stars)) stars[k] += row[k] ?? 0;
-    app.ratingsWindow = { ...stars, rows: ratings.length };
+    const K = [null, "oneStar", "twoStars", "threeStars", "fourStars", "fiveStars"];
+    for (const r of reviews) if (K[r.rating]) stars[K[r.rating]] += 1;
+    const n = reviews.length;
+    app.ratingsLifetime = {
+      ...stars, total: n,
+      average: n ? +(reviews.reduce((s, r) => s + r.rating, 0) / n).toFixed(2) : null,
+      oneStarWithText: reviews.filter((r) => r.rating === 1 && (r.reviewText || "").trim()).length,
+    };
     await sleep(PACE_MS);
 
-    const failures = await pull(tok, "failurehits", id);
+    // Failures grouped by name+hash so real crashes carry an identity. The API also emits
+    // one empty-name/empty-hash bucket per app that aggregates unclassified hits — it is
+    // NOT a crash and must not read as one (it showed as "309 events / 201 devices" and
+    // looked like a storm; the real crash was 1 event on 1 device). Split it out.
+    // failurehits is the flakiest endpoint (504s observed) and the least critical field.
+    // Soft-fail it: an app keeps its usage, installs and reviews even if crashes can't be
+    // fetched this run. failuresWindow becomes null so the dashboard can say "unknown"
+    // rather than falsely "no crashes".
+    let failures = null;
+    try {
+      failures = await pull(tok, "failurehits", id, "&groupby=failureName,failureHash");
+    } catch (e) {
+      errors.push(`${name} failurehits: ${e.message}`);
+    }
     const byFailure = {};
-    for (const row of failures) {
-      const key = row.failureName ?? row.failureHash ?? "unknown";
-      byFailure[key] ??= { failureName: row.failureName, failureHash: row.failureHash, eventCount: 0, deviceCount: 0 };
+    let unclassified = { eventCount: 0, deviceCount: 0 };
+    for (const row of (failures || [])) {
+      const name = (row.failureName || "").trim();
+      const hash = (row.failureHash || "").trim();
+      if (!name && !hash) {
+        unclassified.eventCount += row.eventCount ?? 0;
+        unclassified.deviceCount = Math.max(unclassified.deviceCount, row.deviceCount ?? 0);
+        continue;
+      }
+      const key = hash || name;
+      byFailure[key] ??= { failureName: name || null, failureHash: hash || null, eventCount: 0, deviceCount: 0 };
       byFailure[key].eventCount += row.eventCount ?? 0;
       byFailure[key].deviceCount += row.deviceCount ?? 0;
     }
-    app.failuresWindow = Object.values(byFailure).sort((a, b) => b.eventCount - a.eventCount);
+    // null = couldn't fetch this run; [] = fetched, genuinely no crashes.
+    app.failuresWindow = failures === null ? null
+      : Object.values(byFailure).sort((a, b) => b.eventCount - a.eventCount);
+    app.unclassifiedHits = unclassified.eventCount ? unclassified : null;
     await sleep(PACE_MS);
 
     snapshot.apps[id] = app;
-    console.log(`${name}: usage dates=${Object.keys(app.usageDaily).length} installs dates=${Object.keys(app.installsDaily).length} ratings rows=${app.ratingsWindow.rows} failures=${app.failuresWindow.length}`);
+    const fc = app.failuresWindow === null ? "unknown" : app.failuresWindow.length;
+    console.log(`${name}: usage=${Object.keys(app.usageDaily).length}d installs=${Object.keys(app.installsDaily).length}d reviews=${app.reviews.length} (${app.ratingsLifetime.average ?? '-'}avg) realFailures=${fc}`);
+   } catch (e) {
+    // One app's failure must not sink the batch — record it and keep going.
+    errors.push(`${name}: ${e.message}`);
+    console.error(`${name}: SKIPPED — ${e.message}`);
+   }
   }
 
+  if (errors.length) snapshot.errors = errors;
   mkdirSync("data", { recursive: true });
   writeFileSync("data/store-analytics.json", JSON.stringify(snapshot, null, 1) + "\n");
-  console.log("wrote data/store-analytics.json");
+  console.log(`wrote data/store-analytics.json (${Object.keys(snapshot.apps).length}/${Object.keys(APPS).length} apps${errors.length ? ", " + errors.length + " soft errors" : ""})`);
+  // Exit non-zero only if NOTHING came back, so CI notices a total failure but tolerates
+  // a single flaky endpoint.
+  if (!Object.keys(snapshot.apps).length) process.exit(1);
 };
 
 main().catch((e) => {
