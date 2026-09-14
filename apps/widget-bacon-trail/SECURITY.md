@@ -49,7 +49,7 @@ The hub (`626labs.dev`) does not currently set a CSP. If one is ever added, it n
 
 ## Reporting a vulnerability
 
-Email **estevan.hernandez@gmail.com** with the subject line `SECURITY — widget-bacon-trail`. Please include:
+Email **security@626labs.dev** with the subject line `SECURITY — widget-bacon-trail`. Please include:
 
 - A description of the vulnerability and its impact.
 - Steps to reproduce.
