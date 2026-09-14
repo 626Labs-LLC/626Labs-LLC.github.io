@@ -64,4 +64,4 @@ Any future feature that collects more than the current anonymous aggregate will:
 
 ## Contact
 
-Questions about this policy: **estevan.hernandez@gmail.com**.
+Questions about this policy: **privacy@626labs.dev**.
