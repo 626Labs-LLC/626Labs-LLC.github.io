@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-09-14T13:23:53.438Z",
+ "fetchedAt": "2026-09-14T21:00:52.141Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
@@ -390,8 +390,11 @@
     "2026-09-12": {
      "acquisitionQuantity": 36
     },
+    "2026-09-13": {
+     "acquisitionQuantity": 28
+    },
     "2026-09-14": {
-     "acquisitionQuantity": 4
+     "acquisitionQuantity": 6
     }
    },
    "reviews": [
@@ -527,8 +530,18 @@
     "average": 4.27,
     "oneStarWithText": 2
    },
-   "failuresWindow": null,
-   "unclassifiedHits": null
+   "failuresWindow": [
+    {
+     "failureName": "CLR_EXCEPTION_80263001_626LabsLLC.RoRoRoBlox_ROROROblox!unknown_function",
+     "failureHash": "459271eb-3397-7bb2-e68e-559fc6bb203d",
+     "eventCount": 1,
+     "deviceCount": 1
+    }
+   ],
+   "unclassifiedHits": {
+    "eventCount": 343,
+    "deviceCount": 111
+   }
   },
   "9N53V6RRJK95": {
    "name": "626 Mod Launcher",
@@ -839,7 +852,7 @@
      "acquisitionQuantity": 6
     },
     "2026-09-14": {
-     "acquisitionQuantity": 2
+     "acquisitionQuantity": 1
     }
    },
    "reviews": [],
@@ -1436,8 +1449,8 @@
     "2026-09-12": {
      "acquisitionQuantity": 4
     },
-    "2026-09-14": {
-     "acquisitionQuantity": 2
+    "2026-09-13": {
+     "acquisitionQuantity": 3
     }
    },
    "reviews": [],
@@ -1646,8 +1659,8 @@
     "2026-09-12": {
      "acquisitionQuantity": 2
     },
-    "2026-09-14": {
-     "acquisitionQuantity": 1
+    "2026-09-13": {
+     "acquisitionQuantity": 2
     }
    },
    "reviews": [
@@ -1679,8 +1692,5 @@
     "deviceCount": 6
    }
   }
- },
- "errors": [
-  "RoRoRo failurehits: failurehits/9NMJCS390KWB: HTTP 400"
- ]
+ }
 }
