@@ -3,21 +3,21 @@
   "version": 1,
   "hero": {
     "eyebrow": "626 Labs LLC · Fort Worth, TX",
-    "headline": "Stabilize your builds",
-    "headlineAccent": "Ready for the 2nd User.",
-    "subhead": "Claude Code plugins for builders who vibe-code fast and still ship for real. Planning, docs, tests, security — with a native Windows/macOS widget for pacing your usage.",
+    "headline": "Astrology engines, dev tools, streetwear.",
+    "headlineAccent": "Imagine Something Else.",
+    "subhead": "A NASA-grade astrology app, Claude Code plugins for builders who ship for real, and merch designed by its own AI pipeline. Three shelves, one lab.",
     "primaryCta": {
       "label": "See the work",
       "href": "#work"
     },
     "secondaryCta": {
-      "label": "Read the thesis",
-      "href": "/plugins/#thesis"
+      "label": "Try Celestia 3",
+      "href": "https://celestia.626labs.dev"
     },
     "meta": [
       {
         "label": "Deployed",
-        "value": "{{fact:claude_plugins}} plugins · {{fact:widget_count}} game widgets · {{fact:ms_store_releases}} Microsoft Store Releases"
+        "value": "{{fact:claude_plugins}} plugins · {{fact:ms_store_releases}} Microsoft Store releases · {{fact:widget_count}} game widgets"
       },
       {
         "label": "Stack",
@@ -25,29 +25,25 @@
       },
       {
         "label": "Distribution",
-        "value": "Claude Code · macOS · Windows · Replit"
+        "value": "Claude Code · macOS · Windows · Etsy"
       }
     ],
     "chips": [
       {
-        "label": "vibe-cartographer",
+        "label": "celestia 3",
         "tone": "cyan"
       },
       {
-        "label": "vibe-iterate",
-        "tone": "cyan"
-      },
-      {
-        "label": "vibe-doc",
+        "label": "conundrum",
         "tone": "magenta"
+      },
+      {
+        "label": "rororo",
+        "tone": "cyan"
       },
       {
         "label": "vibe-test · live",
         "tone": "success"
-      },
-      {
-        "label": "claude-code",
-        "tone": "cyan"
       }
     ]
   },
@@ -120,35 +116,6 @@
   },
   "products": [
     {
-      "id": "vibe-cartographer",
-      "flagship": true,
-      "title": "Vibe Cartographer",
-      "tagline": "Vibe coding with a map.",
-      "description": "{{fact:cmd_vibe-cartographer_word}} slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect. Each step reads what the last one wrote, so the plan compounds instead of drifting, and it remembers where you left off between sessions. Pick a builder persona, keep a living architecture doc, run autonomous or step-by-step. Structure for vibe coding that doesn't kill the vibe.",
-      "tags": [
-        {
-          "label": "Flagship",
-          "tone": "magenta"
-        },
-        {
-          "label": "Live",
-          "tone": "live"
-        },
-        {
-          "label": "Claude Code plugin",
-          "tone": "cyan"
-        }
-      ],
-      "status": "live",
-      "repo": "estevanhernandez-stack-ed/vibe-cartographer",
-      "npm": "@esthernandez/vibe-cartographer",
-      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer",
-      "claudeCode": true,
-      "anthropicApproved": true,
-      "screenshots": [],
-      "productPage": "/vibe-cartographer/"
-    },
-    {
       "id": "celestia-3",
       "title": "Celestia 3",
       "tagline": "NASA-grade astrology AI.",
@@ -178,8 +145,71 @@
       "liveUrl": "https://celestia.626labs.dev",
       "liveCtaLabel": "Start free",
       "demoUrl": "https://www.youtube.com/watch?v=HV8dUMReNgI",
+      "banner": "assets/thumb-celestia.png",
       "meta": "Free to explore · ascend from $3.99/mo · cancel anytime",
       "screenshots": []
+    },
+    {
+      "id": "conundrum",
+      "title": "Conundrum by Este",
+      "description": "The 626 Labs merch shop — streetwear-grade prints designed by an AI pipeline and sold print-on-demand on Etsy. Gemini generates the art (always textless — type is composited after, so the lettering is real), a QA pass filters the AI slop, classical CV cuts the backgrounds, and one base artwork fans out into a full variant matrix before anything ships. Human approval gates every publish. Socks, joggers, totes, hats.",
+      "tags": [
+        {
+          "label": "Merch",
+          "tone": "magenta"
+        },
+        {
+          "label": "Etsy",
+          "tone": "cyan"
+        },
+        {
+          "label": "AI pipeline",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": null,
+      "npm": null,
+      "install": null,
+      "storeUrl": null,
+      "productPage": "conundrum.html",
+      "productPageLabel": "Visit the shop",
+      "banner": "assets/thumb-conundrum.png",
+      "meta": "POD merch · Etsy · AI-designed",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-cartographer",
+      "flagship": true,
+      "title": "Vibe Cartographer",
+      "tagline": "Vibe coding with a map.",
+      "description": "{{fact:cmd_vibe-cartographer_word}} slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect. Each step reads what the last one wrote, so the plan compounds instead of drifting, and it remembers where you left off between sessions. Pick a builder persona, keep a living architecture doc, run autonomous or step-by-step. Structure for vibe coding that doesn't kill the vibe.",
+      "tags": [
+        {
+          "label": "Flagship",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        },
+        {
+          "label": "Claude Code plugin",
+          "tone": "cyan"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-cartographer",
+      "npm": "@esthernandez/vibe-cartographer",
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer",
+      "claudeCode": true,
+      "anthropicApproved": true,
+      "screenshots": [],
+      "productPage": "/vibe-cartographer/"
     },
     {
       "id": "vibe-iterate",
@@ -743,39 +773,6 @@
       "productPageLabel": "Browse supported games",
       "banner": "assets/thumb-mod-launcher.png",
       "meta": "Free on MS Store · Windows native",
-      "screenshots": []
-    },
-    {
-      "id": "conundrum",
-      "title": "Conundrum by Este",
-      "description": "The 626 Labs merch shop — streetwear-grade prints designed by an AI pipeline and sold print-on-demand on Etsy. Gemini generates the art (always textless — type is composited after, so the lettering is real), a QA pass filters the AI slop, classical CV cuts the backgrounds, and one base artwork fans out into a full variant matrix before anything ships. Human approval gates every publish. Socks, joggers, totes, hats.",
-      "tags": [
-        {
-          "label": "Merch",
-          "tone": "magenta"
-        },
-        {
-          "label": "Etsy",
-          "tone": "cyan"
-        },
-        {
-          "label": "AI pipeline",
-          "tone": "magenta"
-        },
-        {
-          "label": "Live",
-          "tone": "live"
-        }
-      ],
-      "status": "live",
-      "repo": null,
-      "npm": null,
-      "install": null,
-      "storeUrl": null,
-      "productPage": "conundrum.html",
-      "productPageLabel": "Visit the shop",
-      "banner": "assets/thumb-conundrum.png",
-      "meta": "POD merch · Etsy · AI-designed",
       "screenshots": []
     },
     {
