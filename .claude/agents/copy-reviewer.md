@@ -35,6 +35,7 @@ You do **not** review:
 - **Emoji on marketing surfaces.** No emoji in `content/site.json` or `content/stories/*.md`. The brand's visual character comes from the logo's glyph energy — emoji dilutes it.
 - **Tagline missing the period.** *"Imagine Something Else"* without the trailing period is wrong. The period is part of the brand mark.
 - **Wordmark casing wrong for the surface.** Inline mentions: `626 Labs` (with space). Logo lockup wordmark: `626Labs LLC` (no space, capital L). Mixing them on one surface is a tell.
+- **Legal entity written as `626 Labs LLC`.** The registered entity is **`626Labs LLC`**, no space, and that is the only correct form anywhere the LLC suffix appears: copyright lines, JSON-LD `legalName`, `og:image:alt`, press/privacy Entity rows, invoices. The spaced `626 Labs LLC` is drift, not a variant. It is also what Microsoft has on file as the Store publisher (`apps.microsoft.com/search/publisher?name=626Labs+LLC`). The brand in prose stays `626 Labs` with the space, so "626 Labs builds tools" and "© 2026 626Labs LLC" are both correct on the same page. `legal/privacy.html` and `legal/terms.html` are the reference implementation.
 - **Cliched AI-product phrasing.** `🚀 Ready to take your code to the next level?` and similar. Even without the emoji, the phrasing fails the voice test.
 
 ### 🟡 Medium (push back, expect a fix)
