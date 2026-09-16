@@ -20,7 +20,7 @@
   <meta property="og:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="626 Labs LLC — Imagine Something Else" />
+  <meta property="og:image:alt" content="626Labs LLC — Imagine Something Else" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="626 Labs — Imagine Something Else" />
   <meta name="twitter:description" content="626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins. Enterprise grade, reached for via vibe coding." />
@@ -43,7 +43,7 @@
         "@type": "Organization",
         "@id": "https://626labs.dev/#org",
         "name": "626 Labs",
-        "legalName": "626 Labs LLC",
+        "legalName": "626Labs LLC",
         "url": "https://626labs.dev/",
         "logo": "https://626labs.dev/assets/brand/icon-transparent-512.png",
         "description": "Builder studio shipping vibe-coded SaaS, native apps, and Claude Code plugins.",
@@ -1615,6 +1615,16 @@
       .lead { padding-right: 0; border-right: 0; }
       .field-notes-grid { columns: 2; column-gap: var(--sb-gutter); column-rule: var(--sb-hair); }
       .field-note { padding-top: 12px; }
+      /* The stories zone renders a FULL section (its own heading, lead, and
+         every published note), and this theme nests that section inside the
+         hero's .rail. Beside the lead at 5fr it reads as a front-page rail;
+         stacked at one column it became a ~1750px editorial block sitting
+         AHEAD of the portfolio, pushing .products 1278px further down at
+         390px than the active theme does (measured, not inferred). Cap the
+         rail to a two-note teaser on phones: every note keeps its own
+         indexed page and its own link, and the desktop front page is
+         untouched. Revisit if the rail ever stops being a hero child. */
+      .rail .field-notes-grid .field-note:nth-of-type(n+3) { display: none; }
       .nav-links a { padding: 11px 12px; font-size: 11px; letter-spacing: 0.1em; }
       .section-head { grid-template-columns: 1fr; gap: 10px 0; }
       .section-head > p { padding-bottom: 0; }
@@ -1821,7 +1831,7 @@
 <footer class="footer">
   <div class="wrap footer-inner">
     <div class="footer-meta">
-      © 2026 626 Labs LLC · Fort Worth, TX · <span class="brand-tagline">Imagine Something Else.</span><br/>
+      © 2026 626Labs LLC · Fort Worth, TX · <span class="brand-tagline">Imagine Something Else.</span><br/>
       &ldquo;Claude&rdquo; and &ldquo;claude.ai&rdquo; are trademarks of Anthropic PBC, used nominatively.
     </div>
     <span class="regbar" aria-hidden="true"><i class="c"></i><i class="m"></i><i class="k"></i></span>

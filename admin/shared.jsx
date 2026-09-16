@@ -3,7 +3,7 @@
 
 const INITIAL_CONTENT = {
   hero: {
-    eyebrow: "626 Labs LLC · Fort Worth, TX",
+    eyebrow: "626Labs LLC · Fort Worth, TX",
     headline: "Vibe coded.",
     headlineAccent: "Shipped at enterprise grade.",
     subhead:
