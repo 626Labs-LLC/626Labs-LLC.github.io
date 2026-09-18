@@ -16,7 +16,7 @@
       "version": "0.5.2",
       "releasedAt": "2026-07-07",
       "minHostVersion": "1.8.0.0",
-      "installs": 100,
+      "installs": 104,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases/latest/download/plugin.zip"
@@ -41,7 +41,7 @@
       "publisher": "626 Labs LLC",
       "version": "0.4.0",
       "releasedAt": "2026-07-03",
-      "installs": 37,
+      "installs": 38,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/Ur-OCR",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/Ur-OCR/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/Ur-OCR/releases/latest/download/plugin.zip"
@@ -54,7 +54,7 @@
       "version": "0.3.5",
       "releasedAt": "2026-09-17",
       "minHostVersion": "1.28.0.0",
-      "installs": 11,
+      "installs": 12,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/Ur-Score",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/Ur-Score/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/Ur-Score/releases/latest/download/plugin.zip"
@@ -67,7 +67,7 @@
       "version": "0.8.0",
       "releasedAt": "2026-08-22",
       "minHostVersion": "1.19.0",
-      "installs": 164,
+      "installs": 167,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/plugin.zip"
