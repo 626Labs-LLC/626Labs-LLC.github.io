@@ -513,33 +513,33 @@
       ]
     },
     "estevanhernandez-stack-ed/ROROROblox": {
-      "total": 33534,
+      "total": 34851,
       "releases": [
         {
           "tag": "v1.29.0.0",
           "published": "2026-09-16",
-          "total": 2616,
+          "total": 3853,
           "assets": {
-            "plugins-catalog.json": 14,
+            "plugins-catalog.json": 23,
             "RELEASES": 1,
-            "releases.win.json": 35,
-            "roblox-compat.json": 1308,
-            "roblox-compat.json.sig": 1237,
+            "releases.win.json": 45,
+            "roblox-compat.json": 1930,
+            "roblox-compat.json.sig": 1830,
             "RORORO-1.29.0-delta.nupkg": 5,
             "RORORO-1.29.0-full.nupkg": 2,
             "RORORO-win-Portable.zip": 1,
-            "RORORO-win-Setup.exe": 13
+            "RORORO-win-Setup.exe": 16
           }
         },
         {
           "tag": "v1.28.0.0",
           "published": "2026-09-12",
-          "total": 2722,
+          "total": 2732,
           "assets": {
             "dev-cert.cer": 2,
             "plugins-catalog.json": 19,
             "RELEASES": 3,
-            "releases.win.json": 73,
+            "releases.win.json": 83,
             "roblox-compat.json": 1331,
             "roblox-compat.json.sig": 1262,
             "RORORO-1.28.0-delta.nupkg": 6,
@@ -552,12 +552,12 @@
         {
           "tag": "v1.27.0.0",
           "published": "2026-09-08",
-          "total": 3333,
+          "total": 3343,
           "assets": {
             "dev-cert.cer": 1,
             "plugins-catalog.json": 42,
             "RELEASES": 1,
-            "releases.win.json": 131,
+            "releases.win.json": 141,
             "roblox-compat.json": 1610,
             "roblox-compat.json.sig": 1525,
             "RORORO-1.27.0-delta.nupkg": 3,
@@ -570,12 +570,12 @@
         {
           "tag": "v1.26.0.0",
           "published": "2026-09-07",
-          "total": 1106,
+          "total": 1116,
           "assets": {
             "dev-cert.cer": 0,
             "plugins-catalog.json": 9,
             "RELEASES": 0,
-            "releases.win.json": 142,
+            "releases.win.json": 152,
             "roblox-compat.json": 484,
             "roblox-compat.json.sig": 463,
             "RORORO-1.26.0-delta.nupkg": 0,
@@ -588,12 +588,12 @@
         {
           "tag": "v1.25.0.0",
           "published": "2026-09-05",
-          "total": 1523,
+          "total": 1533,
           "assets": {
             "dev-cert.cer": 3,
             "plugins-catalog.json": 6,
             "RELEASES": 3,
-            "releases.win.json": 160,
+            "releases.win.json": 170,
             "roblox-compat.json": 687,
             "roblox-compat.json.sig": 646,
             "RORORO-1.25.0-delta.nupkg": 3,
@@ -606,12 +606,12 @@
         {
           "tag": "v1.24.0.0",
           "published": "2026-08-30",
-          "total": 3959,
+          "total": 3969,
           "assets": {
             "dev-cert.cer": 1,
             "plugins-catalog.json": 34,
             "RELEASES": 2,
-            "releases.win.json": 215,
+            "releases.win.json": 225,
             "roblox-compat.json": 1908,
             "roblox-compat.json.sig": 1767,
             "RORORO-1.24.0-delta.nupkg": 2,
@@ -624,12 +624,12 @@
         {
           "tag": "v1.23.0.0",
           "published": "2026-08-23",
-          "total": 456,
+          "total": 466,
           "assets": {
             "dev-cert.cer": 1,
             "plugins-catalog.json": 49,
             "RELEASES": 4,
-            "releases.win.json": 278,
+            "releases.win.json": 288,
             "roblox-compat.json": 46,
             "roblox-compat.json.sig": 44,
             "RORORO-1.23.0-delta.nupkg": 1,
@@ -642,12 +642,12 @@
         {
           "tag": "v1.22.0.0",
           "published": "2026-08-22",
-          "total": 866,
+          "total": 876,
           "assets": {
             "dev-cert.cer": 0,
             "plugins-catalog.json": 2,
             "RELEASES": 0,
-            "releases.win.json": 287,
+            "releases.win.json": 297,
             "roblox-compat.json": 303,
             "roblox-compat.json.sig": 268,
             "RORORO-1.22.0-delta.nupkg": 0,
@@ -660,11 +660,11 @@
         {
           "tag": "v1.21.0.0",
           "published": "2026-08-13",
-          "total": 5185,
+          "total": 5195,
           "assets": {
             "plugins-catalog.json": 52,
             "RELEASES": 2,
-            "releases.win.json": 351,
+            "releases.win.json": 361,
             "roblox-compat.json": 2522,
             "roblox-compat.json.sig": 2216,
             "RORORO-1.21.0-delta.nupkg": 0,
@@ -1213,16 +1213,16 @@
       ]
     },
     "estevanhernandez-stack-ed/Ur-OCR": {
-      "total": 102,
+      "total": 105,
       "releases": [
         {
           "tag": "v0.4.0",
           "published": "2026-07-03",
-          "total": 68,
+          "total": 71,
           "assets": {
-            "manifest.json": 23,
-            "manifest.sha256": 21,
-            "plugin.zip": 24
+            "manifest.json": 24,
+            "manifest.sha256": 22,
+            "plugin.zip": 25
           }
         },
         {
@@ -1333,18 +1333,70 @@
       ]
     },
     "estevanhernandez-stack-ed/Ur-Score": {
-      "total": 55,
+      "total": 73,
       "releases": [
+        {
+          "tag": "v0.3.9",
+          "published": "2026-09-19",
+          "total": 6,
+          "assets": {
+            "manifest.json": 2,
+            "manifest.sha256": 2,
+            "pet-sim-99-clan-battle.recipe.json": 0,
+            "pet-sim-99-profile.recipe.json": 0,
+            "pet-sim-99-top-clans.recipe.json": 0,
+            "plugin.zip": 2
+          }
+        },
+        {
+          "tag": "v0.3.8",
+          "published": "2026-09-19",
+          "total": 3,
+          "assets": {
+            "manifest.json": 1,
+            "manifest.sha256": 1,
+            "pet-sim-99-clan-battle.recipe.json": 0,
+            "pet-sim-99-profile.recipe.json": 0,
+            "pet-sim-99-top-clans.recipe.json": 0,
+            "plugin.zip": 1
+          }
+        },
+        {
+          "tag": "v0.3.7",
+          "published": "2026-09-19",
+          "total": 4,
+          "assets": {
+            "manifest.json": 1,
+            "manifest.sha256": 1,
+            "pet-sim-99-clan-battle.recipe.json": 0,
+            "pet-sim-99-profile.recipe.json": 0,
+            "pet-sim-99-top-clans.recipe.json": 1,
+            "plugin.zip": 1
+          }
+        },
+        {
+          "tag": "v0.3.6",
+          "published": "2026-09-19",
+          "total": 2,
+          "assets": {
+            "manifest.json": 1,
+            "manifest.sha256": 0,
+            "pet-sim-99-clan-battle.recipe.json": 0,
+            "pet-sim-99-profile.recipe.json": 0,
+            "pet-sim-99-top-clans.recipe.json": 1,
+            "plugin.zip": 0
+          }
+        },
         {
           "tag": "v0.3.5",
           "published": "2026-09-17",
-          "total": 11,
+          "total": 14,
           "assets": {
-            "manifest.json": 3,
-            "manifest.sha256": 3,
+            "manifest.json": 4,
+            "manifest.sha256": 4,
             "pet-sim-99-clan-battle.recipe.json": 1,
             "pet-sim-99-profile.recipe.json": 1,
-            "plugin.zip": 3
+            "plugin.zip": 4
           }
         },
         {
@@ -1445,14 +1497,14 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-mac": {
-      "total": 407,
+      "total": 412,
       "releases": [
         {
           "tag": "v0.8.0",
           "published": "2026-09-13",
-          "total": 30,
+          "total": 35,
           "assets": {
-            "RORORO.pkg": 30
+            "RORORO.pkg": 35
           }
         },
         {
@@ -1618,16 +1670,16 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-afk": {
-      "total": 324,
+      "total": 328,
       "releases": [
         {
           "tag": "v0.5.2",
           "published": "2026-07-07",
-          "total": 287,
+          "total": 291,
           "assets": {
-            "manifest.json": 98,
-            "manifest.sha256": 95,
-            "plugin.zip": 94
+            "manifest.json": 99,
+            "manifest.sha256": 96,
+            "plugin.zip": 96
           }
         },
         {
@@ -1728,16 +1780,16 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-task": {
-      "total": 482,
+      "total": 488,
       "releases": [
         {
           "tag": "v0.8.0",
           "published": "2026-08-22",
-          "total": 127,
+          "total": 133,
           "assets": {
-            "manifest.json": 42,
-            "manifest.sha256": 41,
-            "plugin.zip": 44
+            "manifest.json": 44,
+            "manifest.sha256": 43,
+            "plugin.zip": 46
           }
         },
         {
