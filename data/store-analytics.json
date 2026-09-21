@@ -1,17 +1,10 @@
 {
- "fetchedAt": "2026-09-20T11:51:26.803Z",
+ "fetchedAt": "2026-09-21T13:23:51.572Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
    "name": "RoRoRo",
    "usageDaily": {
-    "2026-08-21": {
-     "dailyActiveUsers": 65,
-     "dailyActiveDevices": 65,
-     "dailyNewUsers": 12,
-     "dailySessionCount": 141,
-     "engagementDurationMinutes": 153.6
-    },
     "2026-08-22": {
      "dailyActiveUsers": 86,
      "dailyActiveDevices": 84,
@@ -214,12 +207,16 @@
      "dailyNewUsers": 46,
      "dailySessionCount": 396,
      "engagementDurationMinutes": 586.9
+    },
+    "2026-09-20": {
+     "dailyActiveUsers": 144,
+     "dailyActiveDevices": 142,
+     "dailyNewUsers": 25,
+     "dailySessionCount": 337,
+     "engagementDurationMinutes": 385.2
     }
    },
    "installsDaily": {
-    "2026-08-21": {
-     "successfulInstallCount": 21
-    },
     "2026-08-22": {
      "successfulInstallCount": 21
     },
@@ -300,12 +297,15 @@
     },
     "2026-09-17": {
      "successfulInstallCount": 41
+    },
+    "2026-09-18": {
+     "successfulInstallCount": 32
+    },
+    "2026-09-19": {
+     "successfulInstallCount": 71
     }
    },
    "acquisitionsDaily": {
-    "2026-08-21": {
-     "acquisitionQuantity": 7
-    },
     "2026-08-22": {
      "acquisitionQuantity": 10
     },
@@ -391,13 +391,27 @@
      "acquisitionQuantity": 25
     },
     "2026-09-19": {
-     "acquisitionQuantity": 2
+     "acquisitionQuantity": 63
     },
     "2026-09-20": {
-     "acquisitionQuantity": 22
+     "acquisitionQuantity": 1
+    },
+    "2026-09-21": {
+     "acquisitionQuantity": 16
     }
    },
    "reviews": [
+    {
+     "reviewerName": "Dexter",
+     "rating": 5,
+     "reviewTitle": "Still Perfectly Works",
+     "reviewText": "Hopefully, it wont get shutdown cuz its very helpful!Edit: Great App for handling many accounts at once, credits to the dev for making this smooth and seamless account manager for rgames.",
+     "market": "PH",
+     "date": "9/20/2026 12:43:15 PM",
+     "packageVersion": "1.29.0.0",
+     "isRevised": true,
+     "id": "9495bb7b-cb71-e2d5-046a-02294a6fbbba"
+    },
     {
      "reviewerName": "Cat",
      "rating": 3,
@@ -498,17 +512,6 @@
      "id": "ee81a353-114f-9d64-016c-742183f667f6"
     },
     {
-     "reviewerName": "Dexter",
-     "rating": 5,
-     "reviewTitle": "Great app",
-     "reviewText": "Hopefully, it wont get shutdown cuz its very helpful!",
-     "market": "PH",
-     "date": "5/19/2026 3:09:56 PM",
-     "packageVersion": "1.4.3.0",
-     "isRevised": true,
-     "id": "9495bb7b-cb71-e2d5-046a-02294a6fbbba"
-    },
-    {
      "reviewerName": "Estevan",
      "rating": 5,
      "reviewTitle": null,
@@ -550,20 +553,13 @@
     }
    ],
    "unclassifiedHits": {
-    "eventCount": 365,
+    "eventCount": 363,
     "deviceCount": 150
    }
   },
   "9N53V6RRJK95": {
    "name": "626 Mod Launcher",
    "usageDaily": {
-    "2026-08-21": {
-     "dailyActiveUsers": 1,
-     "dailyActiveDevices": 1,
-     "dailyNewUsers": 1,
-     "dailySessionCount": 1,
-     "engagementDurationMinutes": 0.1
-    },
     "2026-08-23": {
      "dailyActiveUsers": 2,
      "dailyActiveDevices": 2,
@@ -724,12 +720,16 @@
      "dailyNewUsers": 2,
      "dailySessionCount": 6,
      "engagementDurationMinutes": 9.4
+    },
+    "2026-09-20": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.2
     }
    },
    "installsDaily": {
-    "2026-08-21": {
-     "successfulInstallCount": 2
-    },
     "2026-08-22": {
      "successfulInstallCount": 3
     },
@@ -804,12 +804,15 @@
     },
     "2026-09-17": {
      "successfulInstallCount": 2
+    },
+    "2026-09-18": {
+     "successfulInstallCount": 3
+    },
+    "2026-09-19": {
+     "successfulInstallCount": 4
     }
    },
    "acquisitionsDaily": {
-    "2026-08-21": {
-     "acquisitionQuantity": 3
-    },
     "2026-08-22": {
      "acquisitionQuantity": 2
     },
@@ -882,8 +885,11 @@
     "2026-09-18": {
      "acquisitionQuantity": 3
     },
-    "2026-09-20": {
-     "acquisitionQuantity": 5
+    "2026-09-19": {
+     "acquisitionQuantity": 3
+    },
+    "2026-09-21": {
+     "acquisitionQuantity": 1
     }
    },
    "reviews": [],
@@ -943,6 +949,12 @@
     },
     "2026-09-09": {
      "successfulInstallCount": 1
+    },
+    "2026-09-18": {
+     "successfulInstallCount": 1
+    },
+    "2026-09-19": {
+     "successfulInstallCount": 1
     }
    },
    "acquisitionsDaily": {
@@ -962,6 +974,9 @@
      "acquisitionQuantity": 1
     },
     "2026-09-18": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-19": {
      "acquisitionQuantity": 1
     }
    },
@@ -1294,12 +1309,16 @@
      "dailyNewUsers": 5,
      "dailySessionCount": 30,
      "engagementDurationMinutes": 68.3
+    },
+    "2026-09-20": {
+     "dailyActiveUsers": 10,
+     "dailyActiveDevices": 9,
+     "dailyNewUsers": 6,
+     "dailySessionCount": 71,
+     "engagementDurationMinutes": 172
     }
    },
    "installsDaily": {
-    "2026-08-21": {
-     "successfulInstallCount": 1
-    },
     "2026-08-22": {
      "successfulInstallCount": 6
     },
@@ -1380,12 +1399,15 @@
     },
     "2026-09-17": {
      "successfulInstallCount": 4
+    },
+    "2026-09-18": {
+     "successfulInstallCount": 3
+    },
+    "2026-09-19": {
+     "successfulInstallCount": 7
     }
    },
    "acquisitionsDaily": {
-    "2026-08-21": {
-     "acquisitionQuantity": 3
-    },
     "2026-08-22": {
      "acquisitionQuantity": 5
     },
@@ -1467,7 +1489,10 @@
     "2026-09-18": {
      "acquisitionQuantity": 4
     },
-    "2026-09-20": {
+    "2026-09-19": {
+     "acquisitionQuantity": 6
+    },
+    "2026-09-21": {
      "acquisitionQuantity": 1
     }
    },
@@ -1637,6 +1662,9 @@
     },
     "2026-09-16": {
      "successfulInstallCount": 1
+    },
+    "2026-09-19": {
+     "successfulInstallCount": 2
     }
    },
    "acquisitionsDaily": {
@@ -1687,6 +1715,9 @@
     },
     "2026-09-17": {
      "acquisitionQuantity": 1
+    },
+    "2026-09-19": {
+     "acquisitionQuantity": 3
     }
    },
    "reviews": [
@@ -1714,8 +1745,8 @@
    },
    "failuresWindow": [],
    "unclassifiedHits": {
-    "eventCount": 8,
-    "deviceCount": 5
+    "eventCount": 6,
+    "deviceCount": 4
    }
   }
  }
