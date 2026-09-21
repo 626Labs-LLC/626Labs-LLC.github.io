@@ -65,7 +65,7 @@ If the user doesn't tell you the surface, ask. Don't guess.
 - **Inconsistent aspect ratios across a product's screenshot set.** All four shots of one product should match in ratio.
 - **EXIF metadata still present on screenshots.** Phone screenshots leak GPS, device, app version. Marketing assets should be stripped — privacy + size win. Strip with `exiftool -all=` or `pillow image.save()` defaults.
 - **Color profile not sRGB.** OG images, social posts, and anything heading to a third-party renderer needs sRGB or it'll look different on half the clients.
-- **Wordmark casing wrong on a banner / OG.** `626 Labs` inline vs `626Labs LLC` lockup — mixing them on one surface looks unstudied.
+- **Wordmark casing wrong on a banner / OG.** `626 Labs` inline vs `626Labs LLC` lockup — mixing them on one surface looks unstudied. The LLC suffix is always `626Labs LLC`, no space: that is the registered entity and what `scripts/export-brand.py` already draws into the lockup. A rendered asset showing `626 Labs LLC` means someone hand-edited it instead of re-running the exporter.
 - **A duotone tint would push it on-brand.** Photos that are obviously off-brand cool-warm could be tinted with the cyan/magenta duo at 6-15% opacity.
 
 ### 🟢 Suggested (nice to have)
