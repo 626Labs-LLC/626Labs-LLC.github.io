@@ -92,6 +92,26 @@ async function pull(tok, endpoint, appId, extra = "", startOverride = null) {
   throw new Error(`${endpoint}/${appId}: retries exhausted`);
 }
 
+// Sum segmented rows into one total per market (ISO-3166 alpha-2).
+//
+// This is the INVERSE of byDate's problem. byDate needs groupby=date because the
+// daily endpoints otherwise return a whole-window aggregate with date: null. Here
+// the whole-window aggregate is exactly what we want — lifetime installs per
+// country, no time axis — so the pull uses groupby=market and every row arrives
+// with date: null by design. Do not "fix" that by adding date to the groupby.
+function byMarket(rows) {
+  const out = {};
+  for (const row of rows) {
+    const m = (row.market ?? "").trim().toUpperCase();
+    if (!m || m.length !== 2) continue; // guard against "Unknown"/blank buckets
+    out[m] = (out[m] ?? 0) + (row.acquisitionQuantity ?? 0);
+  }
+  // Sorted high-to-low so the committed JSON diffs legibly as ranks shift.
+  return Object.fromEntries(
+    Object.entries(out).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]),
+  );
+}
+
 // Sum segmented rows into one record per date for the named numeric fields.
 function byDate(rows, fields) {
   const out = {};
@@ -131,6 +151,21 @@ const main = async () => {
 
     const acq = await pull(tok, "appacquisitions", id, DAILY);
     app.acquisitionsDaily = byDate(acq, ["acquisitionQuantity"]);
+    await sleep(PACE_MS);
+
+    // Lifetime installs per country, for the reach map on the product pages.
+    // Lifetime rather than the 30-day window on purpose: the map answers "where
+    // has this ended up", so a country that installed once in June should keep
+    // its dot forever instead of blinking out. Soft-failed like failurehits — a
+    // bad run must not cost the app its usage, installs and reviews. Null (not
+    // {}) so the page can tell "not fetched yet" from "genuinely no installs".
+    app.acquisitionsByMarket = null;
+    try {
+      const geo = await pull(tok, "appacquisitions", id, "&groupby=market", LIFETIME_START);
+      app.acquisitionsByMarket = byMarket(geo);
+    } catch (e) {
+      errors.push(`${name} appacquisitions/market: ${e.message}`);
+    }
     await sleep(PACE_MS);
 
     // Reviews: lifetime, with text. This is the canonical review list both the Store Pulse

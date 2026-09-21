@@ -51,3 +51,7 @@ assets/video/*/src/vo-*/
 assets/video/*/src/manifest-*.json
 assets/video/*/src/shots-*/*.png
 !assets/video/*/src/shots-*/cropped/*.png
+
+# Natural Earth source for scripts/build-world-map.py — fetched on demand,
+# only the derived data/world-robinson.json is committed.
+.cache/

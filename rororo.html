@@ -1011,6 +1011,19 @@ brew install --cask rororo</code>
     </div>
   </div>
 
+  <!-- ============ REACH ============ -->
+  <div class="section-hd">
+    <div class="l">
+      <h2>Where it ended up</h2>
+      <p>Every Microsoft Store install since launch, plotted by country. Dot area is proportional to install count, so the long tail stays readable next to the United States.</p>
+    </div>
+    <div class="r">Lifetime installs</div>
+  </div>
+
+  <!-- Renders itself from data/store-analytics.json; stays hidden until the
+       geography pull has run. See assets/reach-map.js. -->
+  <div class="reach-map" data-app="9NMJCS390KWB" data-label="RORORO"></div>
+
   <div class="footnote">
     <span class="axiom">Run six. <em>Trust the window you're recording.</em> Own the provenance.</span>
     <span>626 Labs LLC &middot; Imagine Something Else. &middot; <a href="index.html">Lab</a> &middot; <a href="thesis.html">Thesis</a> &middot; <a href="privacy.html">Privacy</a></span>
@@ -1098,6 +1111,7 @@ brew install --cask rororo</code>
   }
 })();
 </script>
+<script src="/assets/reach-map.js" defer></script>
 <!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
 <script data-goatcounter="https://626labs.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
