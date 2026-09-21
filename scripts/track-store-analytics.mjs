@@ -19,7 +19,7 @@
  * couple of dates simply have no rows yet. That is the API, not a bug.
  */
 
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 
 const APPS = {
   "9NMJCS390KWB": "RoRoRo",
@@ -128,6 +128,19 @@ const main = async () => {
   const tok = await token();
   const snapshot = { fetchedAt: new Date().toISOString(), windowDays: WINDOW_DAYS, apps: {} };
 
+  // Last run's snapshot, read only so acquisitionsByMarket can be carried
+  // forward when its pull fails. Every other field is a WINDOW and must not be
+  // carried — a stale 30-day usage curve or a stale crash list would actively
+  // lie. Lifetime geography is the one field where staleness is harmless,
+  // because installs only ever accumulate: last week's country map is a subset
+  // of today's, never a contradiction of it.
+  let previous = {};
+  try {
+    previous = JSON.parse(readFileSync("data/store-analytics.json", "utf8")).apps ?? {};
+  } catch {
+    // First run, or the file is missing/corrupt. Nothing to carry.
+  }
+
   const errors = [];
   for (const [id, name] of Object.entries(APPS)) {
    try {
@@ -164,7 +177,18 @@ const main = async () => {
       const geo = await pull(tok, "appacquisitions", id, "&groupby=market", LIFETIME_START);
       app.acquisitionsByMarket = byMarket(geo);
     } catch (e) {
-      errors.push(`${name} appacquisitions/market: ${e.message}`);
+      // Carry the last known map forward rather than blanking it. A transient
+      // 429 should not erase a country map that is still true; the endpoint is
+      // rate-limited enough that this WILL happen eventually.
+      const kept = previous[id]?.acquisitionsByMarket;
+      if (kept && Object.keys(kept).length) {
+        app.acquisitionsByMarket = kept;
+        errors.push(
+          `${name} appacquisitions/market: ${e.message} — kept previous ${Object.keys(kept).length} markets`,
+        );
+      } else {
+        errors.push(`${name} appacquisitions/market: ${e.message}`);
+      }
     }
     await sleep(PACE_MS);
 

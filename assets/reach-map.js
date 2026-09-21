@@ -127,7 +127,7 @@
       const c = el("circle", {
         class: "reach-map__dot", cx: d.x, cy: d.y, r,
         tabindex: "0", role: "listitem",
-        "aria-label": `${d.name}: ${fmt(d.n)} installs`,
+        "aria-label": `${d.name}: ${fmt(d.n)} install${d.n === 1 ? "" : "s"}`,
       });
       const show = (cx, cy) => {
         tip.innerHTML = `${d.name} &middot; <b>${fmt(d.n)}</b>`;
