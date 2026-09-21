@@ -19,7 +19,7 @@
  * couple of dates simply have no rows yet. That is the API, not a bug.
  */
 
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 
 const APPS = {
   "9NMJCS390KWB": "RoRoRo",
@@ -92,6 +92,26 @@ async function pull(tok, endpoint, appId, extra = "", startOverride = null) {
   throw new Error(`${endpoint}/${appId}: retries exhausted`);
 }
 
+// Sum segmented rows into one total per market (ISO-3166 alpha-2).
+//
+// This is the INVERSE of byDate's problem. byDate needs groupby=date because the
+// daily endpoints otherwise return a whole-window aggregate with date: null. Here
+// the whole-window aggregate is exactly what we want — lifetime installs per
+// country, no time axis — so the pull uses groupby=market and every row arrives
+// with date: null by design. Do not "fix" that by adding date to the groupby.
+function byMarket(rows) {
+  const out = {};
+  for (const row of rows) {
+    const m = (row.market ?? "").trim().toUpperCase();
+    if (!m || m.length !== 2) continue; // guard against "Unknown"/blank buckets
+    out[m] = (out[m] ?? 0) + (row.acquisitionQuantity ?? 0);
+  }
+  // Sorted high-to-low so the committed JSON diffs legibly as ranks shift.
+  return Object.fromEntries(
+    Object.entries(out).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]),
+  );
+}
+
 // Sum segmented rows into one record per date for the named numeric fields.
 function byDate(rows, fields) {
   const out = {};
@@ -107,6 +127,19 @@ function byDate(rows, fields) {
 const main = async () => {
   const tok = await token();
   const snapshot = { fetchedAt: new Date().toISOString(), windowDays: WINDOW_DAYS, apps: {} };
+
+  // Last run's snapshot, read only so acquisitionsByMarket can be carried
+  // forward when its pull fails. Every other field is a WINDOW and must not be
+  // carried — a stale 30-day usage curve or a stale crash list would actively
+  // lie. Lifetime geography is the one field where staleness is harmless,
+  // because installs only ever accumulate: last week's country map is a subset
+  // of today's, never a contradiction of it.
+  let previous = {};
+  try {
+    previous = JSON.parse(readFileSync("data/store-analytics.json", "utf8")).apps ?? {};
+  } catch {
+    // First run, or the file is missing/corrupt. Nothing to carry.
+  }
 
   const errors = [];
   for (const [id, name] of Object.entries(APPS)) {
@@ -131,6 +164,32 @@ const main = async () => {
 
     const acq = await pull(tok, "appacquisitions", id, DAILY);
     app.acquisitionsDaily = byDate(acq, ["acquisitionQuantity"]);
+    await sleep(PACE_MS);
+
+    // Lifetime installs per country, for the reach map on the product pages.
+    // Lifetime rather than the 30-day window on purpose: the map answers "where
+    // has this ended up", so a country that installed once in June should keep
+    // its dot forever instead of blinking out. Soft-failed like failurehits — a
+    // bad run must not cost the app its usage, installs and reviews. Null (not
+    // {}) so the page can tell "not fetched yet" from "genuinely no installs".
+    app.acquisitionsByMarket = null;
+    try {
+      const geo = await pull(tok, "appacquisitions", id, "&groupby=market", LIFETIME_START);
+      app.acquisitionsByMarket = byMarket(geo);
+    } catch (e) {
+      // Carry the last known map forward rather than blanking it. A transient
+      // 429 should not erase a country map that is still true; the endpoint is
+      // rate-limited enough that this WILL happen eventually.
+      const kept = previous[id]?.acquisitionsByMarket;
+      if (kept && Object.keys(kept).length) {
+        app.acquisitionsByMarket = kept;
+        errors.push(
+          `${name} appacquisitions/market: ${e.message} — kept previous ${Object.keys(kept).length} markets`,
+        );
+      } else {
+        errors.push(`${name} appacquisitions/market: ${e.message}`);
+      }
+    }
     await sleep(PACE_MS);
 
     // Reviews: lifetime, with text. This is the canonical review list both the Store Pulse
