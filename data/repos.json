@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-21T12:15:09.522Z",
+  "generatedAt": "2026-09-22T11:08:12.163Z",
   "count": 57,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -10,10 +10,10 @@
       "full_name": "626Labs-LLC/626Labs-LLC.github.io",
       "owner": "626Labs-LLC",
       "name": "626Labs-LLC.github.io",
-      "description": "626Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
+      "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-09-21T11:11:14Z",
+      "pushed_at": "2026-09-22T10:24:42Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -109,7 +109,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-09-16T12:31:28Z",
+      "pushed_at": "2026-09-21T22:19:32Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -457,7 +457,7 @@
       "description": "RoRoRo Ur Score — clan battle dashboard and metric reporter for the RoRoRo plugin system.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Ur-Score",
       "language": "C#",
-      "pushed_at": "2026-09-21T04:22:15Z",
+      "pushed_at": "2026-09-22T04:05:25Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -565,7 +565,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-09-21T08:22:33Z",
+      "pushed_at": "2026-09-22T08:20:11Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
