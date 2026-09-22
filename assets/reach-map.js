@@ -217,7 +217,7 @@
     }
     for (const node of nodes) {
       const app = (stats.apps || {})[node.dataset.app];
-      const markets = app && app.acquisitionsByMarket;
+      const markets = app && app.installsByMarket;
       const label = node.dataset.label || (app && app.name) || "this app";
       if (!markets || !Object.keys(markets).length || !render(node, world, markets, label)) {
         node.hidden = true;
