@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-09-22T00:18:17.387Z",
+ "fetchedAt": "2026-09-22T12:05:01.418Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
@@ -207,6 +207,13 @@
      "dailyNewUsers": 25,
      "dailySessionCount": 337,
      "engagementDurationMinutes": 385.2
+    },
+    "2026-09-21": {
+     "dailyActiveUsers": 113,
+     "dailyActiveDevices": 110,
+     "dailyNewUsers": 16,
+     "dailySessionCount": 301,
+     "engagementDurationMinutes": 412
     }
    },
    "installsDaily": {
@@ -296,6 +303,9 @@
     },
     "2026-09-20": {
      "successfulInstallCount": 47
+    },
+    "2026-09-21": {
+     "successfulInstallCount": 39
     }
    },
    "acquisitionsDaily": {
@@ -387,24 +397,27 @@
      "acquisitionQuantity": 44
     },
     "2026-09-21": {
-     "acquisitionQuantity": 17
+     "acquisitionQuantity": 3
+    },
+    "2026-09-22": {
+     "acquisitionQuantity": 15
     }
    },
    "installsByMarket": {
     "US": 770,
-    "PH": 202,
+    "PH": 205,
     "GB": 123,
     "FR": 98,
-    "BR": 93,
+    "BR": 94,
     "CA": 80,
-    "DE": 77,
-    "PL": 65,
+    "DE": 78,
+    "PL": 70,
     "RU": 62,
-    "AU": 50,
-    "IN": 47,
-    "ID": 34,
-    "NL": 33,
-    "VN": 32,
+    "AU": 51,
+    "IN": 49,
+    "ID": 36,
+    "NL": 35,
+    "VN": 35,
     "JP": 29,
     "DK": 27,
     "TW": 26,
@@ -419,7 +432,7 @@
     "MX": 16,
     "ZA": 15,
     "NO": 15,
-    "MY": 14,
+    "MY": 15,
     "HK": 13,
     "PT": 13,
     "ES": 13,
@@ -428,33 +441,33 @@
     "TR": 12,
     "AE": 11,
     "AR": 10,
-    "KZ": 9,
+    "KZ": 10,
     "PE": 9,
     "MA": 8,
     "NZ": 8,
     "PK": 8,
     "SK": 8,
+    "SA": 8,
     "BD": 7,
     "FI": 7,
-    "SA": 7,
     "LV": 7,
     "CH": 6,
     "CN": 6,
     "LT": 6,
+    "CO": 6,
     "BG": 5,
-    "CO": 5,
     "EG": 5,
     "HR": 5,
     "KE": 5,
     "MN": 5,
     "DO": 5,
     "DZ": 5,
+    "KH": 5,
     "EC": 4,
     "GR": 4,
     "IE": 4,
     "IL": 4,
     "JM": 4,
-    "KH": 4,
     "MD": 4,
     "UY": 4,
     "VI": 4,
@@ -482,6 +495,7 @@
     "TN": 2,
     "CI": 2,
     "GA": 2,
+    "PY": 2,
     "AM": 1,
     "AW": 1,
     "AZ": 1,
@@ -496,7 +510,6 @@
     "LY": 1,
     "MM": 1,
     "MU": 1,
-    "PY": 1,
     "RW": 1,
     "SM": 1,
     "SN": 1,
@@ -507,7 +520,8 @@
     "AQ": 1,
     "IO": 1,
     "AF": 1,
-    "YE": 1
+    "YE": 1,
+    "TT": 1
    },
    "reviews": [
     {
@@ -662,8 +676,8 @@
     }
    ],
    "unclassifiedHits": {
-    "eventCount": 384,
-    "deviceCount": 168
+    "eventCount": 415,
+    "deviceCount": 179
    }
   },
   "9N53V6RRJK95": {
@@ -836,6 +850,13 @@
      "dailyNewUsers": 2,
      "dailySessionCount": 2,
      "engagementDurationMinutes": 0.2
+    },
+    "2026-09-21": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.2
     }
    },
    "installsDaily": {
@@ -919,6 +940,9 @@
     },
     "2026-09-20": {
      "successfulInstallCount": 6
+    },
+    "2026-09-21": {
+     "successfulInstallCount": 3
     }
    },
    "acquisitionsDaily": {
@@ -996,13 +1020,10 @@
     },
     "2026-09-20": {
      "acquisitionQuantity": 7
-    },
-    "2026-09-21": {
-     "acquisitionQuantity": 1
     }
    },
    "installsByMarket": {
-    "US": 27,
+    "US": 29,
     "IN": 16,
     "NL": 7,
     "DE": 6,
@@ -1054,7 +1075,8 @@
     "SG": 1,
     "SI": 1,
     "SN": 1,
-    "ZA": 1
+    "ZA": 1,
+    "GE": 1
    },
    "reviews": [],
    "ratingsLifetime": {
@@ -1280,9 +1302,6 @@
     },
     "2026-09-20": {
      "acquisitionQuantity": 1
-    },
-    "2026-09-21": {
-     "acquisitionQuantity": 1
     }
    },
    "installsByMarket": {
@@ -1343,8 +1362,8 @@
    },
    "failuresWindow": [],
    "unclassifiedHits": {
-    "eventCount": 1,
-    "deviceCount": 1
+    "eventCount": 2,
+    "deviceCount": 2
    }
   },
   "9MV9G4XFJ8S0": {
@@ -1545,6 +1564,13 @@
      "dailyNewUsers": 6,
      "dailySessionCount": 71,
      "engagementDurationMinutes": 172
+    },
+    "2026-09-21": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 18,
+     "engagementDurationMinutes": 15.9
     }
    },
    "installsDaily": {
@@ -1634,6 +1660,9 @@
     },
     "2026-09-20": {
      "successfulInstallCount": 6
+    },
+    "2026-09-21": {
+     "successfulInstallCount": 2
     }
    },
    "acquisitionsDaily": {
@@ -1721,8 +1750,8 @@
     "2026-09-20": {
      "acquisitionQuantity": 4
     },
-    "2026-09-21": {
-     "acquisitionQuantity": 4
+    "2026-09-22": {
+     "acquisitionQuantity": 3
     }
    },
    "installsByMarket": {
@@ -1737,7 +1766,7 @@
     "ID": 17,
     "AU": 15,
     "PK": 15,
-    "CA": 14,
+    "CA": 15,
     "FR": 14,
     "SA": 12,
     "KE": 9,
@@ -1835,7 +1864,8 @@
     "TH": 1,
     "TW": 1,
     "UZ": 1,
-    "VE": 1
+    "VE": 1,
+    "UA": 1
    },
    "reviews": [
     {
@@ -2059,6 +2089,9 @@
     },
     "2026-09-19": {
      "acquisitionQuantity": 3
+    },
+    "2026-09-22": {
+     "acquisitionQuantity": 1
     }
    },
    "installsByMarket": {
