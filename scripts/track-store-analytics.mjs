@@ -99,12 +99,20 @@ async function pull(tok, endpoint, appId, extra = "", startOverride = null) {
 // the whole-window aggregate is exactly what we want — lifetime installs per
 // country, no time axis — so the pull uses groupby=market and every row arrives
 // with date: null by design. Do not "fix" that by adding date to the groupby.
+//
+// INSTALLS, not acquisitions. These are different metrics and the first version
+// of this used the wrong one: an acquisition is one per customer, an install one
+// per device. Measured over the same 30-day window, RoRoRo shows 998 installs
+// against 586 acquisitions (1.70x), and the Partner Center "geographical spread"
+// export matched the installs figure at 1.79x the acquisitions pull. The map says
+// "install" and so does the Store's own report, so successfulInstallCount is the
+// number that must back it.
 function byMarket(rows) {
   const out = {};
   for (const row of rows) {
     const m = (row.market ?? "").trim().toUpperCase();
     if (!m || m.length !== 2) continue; // guard against "Unknown"/blank buckets
-    out[m] = (out[m] ?? 0) + (row.acquisitionQuantity ?? 0);
+    out[m] = (out[m] ?? 0) + (row.successfulInstallCount ?? 0);
   }
   // Sorted high-to-low so the committed JSON diffs legibly as ranks shift.
   return Object.fromEntries(
@@ -128,7 +136,7 @@ const main = async () => {
   const tok = await token();
   const snapshot = { fetchedAt: new Date().toISOString(), windowDays: WINDOW_DAYS, apps: {} };
 
-  // Last run's snapshot, read only so acquisitionsByMarket can be carried
+  // Last run's snapshot, read only so installsByMarket can be carried
   // forward when its pull fails. Every other field is a WINDOW and must not be
   // carried — a stale 30-day usage curve or a stale crash list would actively
   // lie. Lifetime geography is the one field where staleness is harmless,
@@ -172,22 +180,22 @@ const main = async () => {
     // its dot forever instead of blinking out. Soft-failed like failurehits — a
     // bad run must not cost the app its usage, installs and reviews. Null (not
     // {}) so the page can tell "not fetched yet" from "genuinely no installs".
-    app.acquisitionsByMarket = null;
+    app.installsByMarket = null;
     try {
-      const geo = await pull(tok, "appacquisitions", id, "&groupby=market", LIFETIME_START);
-      app.acquisitionsByMarket = byMarket(geo);
+      const geo = await pull(tok, "installs", id, "&groupby=market", LIFETIME_START);
+      app.installsByMarket = byMarket(geo);
     } catch (e) {
       // Carry the last known map forward rather than blanking it. A transient
       // 429 should not erase a country map that is still true; the endpoint is
       // rate-limited enough that this WILL happen eventually.
-      const kept = previous[id]?.acquisitionsByMarket;
+      const kept = previous[id]?.installsByMarket;
       if (kept && Object.keys(kept).length) {
-        app.acquisitionsByMarket = kept;
+        app.installsByMarket = kept;
         errors.push(
-          `${name} appacquisitions/market: ${e.message} — kept previous ${Object.keys(kept).length} markets`,
+          `${name} installs/market: ${e.message} — kept previous ${Object.keys(kept).length} markets`,
         );
       } else {
-        errors.push(`${name} appacquisitions/market: ${e.message}`);
+        errors.push(`${name} installs/market: ${e.message}`);
       }
     }
     await sleep(PACE_MS);
