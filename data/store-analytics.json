@@ -1,17 +1,10 @@
 {
- "fetchedAt": "2026-09-21T13:23:51.572Z",
+ "fetchedAt": "2026-09-22T00:01:46.562Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
    "name": "RoRoRo",
    "usageDaily": {
-    "2026-08-22": {
-     "dailyActiveUsers": 86,
-     "dailyActiveDevices": 84,
-     "dailyNewUsers": 12,
-     "dailySessionCount": 173,
-     "engagementDurationMinutes": 231.2
-    },
     "2026-08-23": {
      "dailyActiveUsers": 82,
      "dailyActiveDevices": 82,
@@ -217,9 +210,6 @@
     }
    },
    "installsDaily": {
-    "2026-08-22": {
-     "successfulInstallCount": 21
-    },
     "2026-08-23": {
      "successfulInstallCount": 22
     },
@@ -303,12 +293,12 @@
     },
     "2026-09-19": {
      "successfulInstallCount": 71
+    },
+    "2026-09-20": {
+     "successfulInstallCount": 47
     }
    },
    "acquisitionsDaily": {
-    "2026-08-22": {
-     "acquisitionQuantity": 10
-    },
     "2026-08-23": {
      "acquisitionQuantity": 10
     },
@@ -394,11 +384,103 @@
      "acquisitionQuantity": 63
     },
     "2026-09-20": {
-     "acquisitionQuantity": 1
+     "acquisitionQuantity": 44
     },
     "2026-09-21": {
-     "acquisitionQuantity": 16
+     "acquisitionQuantity": 17
     }
+   },
+   "acquisitionsByMarket": {
+    "US": 404,
+    "PH": 76,
+    "BR": 71,
+    "FR": 54,
+    "GB": 53,
+    "RU": 42,
+    "DE": 41,
+    "CA": 32,
+    "PL": 31,
+    "ID": 30,
+    "IN": 28,
+    "AU": 26,
+    "MX": 14,
+    "DK": 14,
+    "UA": 13,
+    "JP": 12,
+    "TW": 12,
+    "TR": 11,
+    "VN": 11,
+    "TH": 10,
+    "BE": 10,
+    "NL": 8,
+    "SK": 8,
+    "ZA": 8,
+    "FI": 8,
+    "KR": 8,
+    "PT": 7,
+    "AE": 7,
+    "IT": 7,
+    "RO": 7,
+    "SE": 6,
+    "PE": 6,
+    "NO": 6,
+    "AR": 6,
+    "CZ": 6,
+    "KZ": 5,
+    "SA": 5,
+    "CL": 4,
+    "MY": 4,
+    "DO": 4,
+    "ES": 4,
+    "CH": 4,
+    "CO": 4,
+    "EG": 4,
+    "HK": 4,
+    "LV": 3,
+    "DZ": 3,
+    "SG": 3,
+    "BY": 3,
+    "NZ": 3,
+    "HR": 3,
+    "CN": 3,
+    "MN": 3,
+    "EE": 2,
+    "PK": 2,
+    "RS": 2,
+    "NP": 2,
+    "UY": 2,
+    "EC": 2,
+    "IE": 2,
+    "HU": 2,
+    "IQ": 2,
+    "MD": 2,
+    "PY": 1,
+    "UZ": 1,
+    "VE": 1,
+    "BD": 1,
+    "GH": 1,
+    "BG": 1,
+    "SI": 1,
+    "BF": 1,
+    "LA": 1,
+    "SV": 1,
+    "AQ": 1,
+    "PA": 1,
+    "MA": 1,
+    "AT": 1,
+    "NG": 1,
+    "IL": 1,
+    "JM": 1,
+    "AZ": 1,
+    "AF": 1,
+    "AS": 1,
+    "GT": 1,
+    "BH": 1,
+    "TN": 1,
+    "AW": 1,
+    "MV": 1,
+    "GR": 1,
+    "GA": 1
    },
    "reviews": [
     {
@@ -553,110 +635,8 @@
     }
    ],
    "unclassifiedHits": {
-    "eventCount": 363,
-    "deviceCount": 150
-   },
-   "acquisitionsByMarket": {
-    "US": 770,
-    "PH": 140,
-    "GB": 123,
-    "FR": 98,
-    "BR": 93,
-    "DE": 72,
-    "CA": 67,
-    "PL": 62,
-    "RU": 62,
-    "AU": 50,
-    "IN": 39,
-    "DK": 27,
-    "TW": 26,
-    "VN": 26,
-    "IT": 22,
-    "JP": 22,
-    "UA": 21,
-    "NL": 20,
-    "ID": 19,
-    "SE": 18,
-    "BE": 18,
-    "MX": 16,
-    "TH": 16,
-    "CZ": 15,
-    "NO": 15,
-    "KR": 15,
-    "ZA": 14,
-    "RO": 14,
-    "ES": 13,
-    "TR": 12,
-    "PT": 11,
-    "AR": 10,
-    "MY": 9,
-    "AE": 9,
-    "HK": 9,
-    "PE": 8,
-    "SK": 8,
-    "LV": 7,
-    "SG": 6,
-    "FI": 5,
-    "DZ": 5,
-    "DO": 5,
-    "NZ": 5,
-    "SA": 5,
-    "CO": 5,
-    "EC": 4,
-    "HR": 4,
-    "LT": 4,
-    "IL": 4,
-    "NP": 4,
-    "CH": 4,
-    "IE": 4,
-    "HU": 4,
-    "KZ": 4,
-    "CN": 4,
-    "MD": 4,
-    "UY": 3,
-    "EG": 3,
-    "BD": 3,
-    "LA": 3,
-    "MV": 3,
-    "CL": 3,
-    "PK": 3,
-    "AT": 3,
-    "NG": 3,
-    "MN": 3,
-    "RS": 2,
-    "GR": 2,
-    "GA": 2,
-    "BY": 2,
-    "JM": 2,
-    "KW": 2,
-    "GE": 2,
-    "CI": 2,
-    "BG": 2,
-    "IQ": 2,
-    "GH": 2,
-    "GT": 2,
-    "MA": 2,
-    "TN": 2,
-    "EE": 2,
-    "AW": 1,
-    "AS": 1,
-    "PY": 1,
-    "QA": 1,
-    "SI": 1,
-    "AM": 1,
-    "BH": 1,
-    "AQ": 1,
-    "PR": 1,
-    "IS": 1,
-    "HN": 1,
-    "IO": 1,
-    "AZ": 1,
-    "AF": 1,
-    "YE": 1,
-    "SV": 1,
-    "KE": 1,
-    "SN": 1,
-    "BA": 1
+    "eventCount": 384,
+    "deviceCount": 168
    }
   },
   "9N53V6RRJK95": {
@@ -832,9 +812,6 @@
     }
    },
    "installsDaily": {
-    "2026-08-22": {
-     "successfulInstallCount": 3
-    },
     "2026-08-23": {
      "successfulInstallCount": 1
     },
@@ -912,12 +889,12 @@
     },
     "2026-09-19": {
      "successfulInstallCount": 4
+    },
+    "2026-09-20": {
+     "successfulInstallCount": 6
     }
    },
    "acquisitionsDaily": {
-    "2026-08-22": {
-     "acquisitionQuantity": 2
-    },
     "2026-08-23": {
      "acquisitionQuantity": 1
     },
@@ -990,9 +967,54 @@
     "2026-09-19": {
      "acquisitionQuantity": 3
     },
+    "2026-09-20": {
+     "acquisitionQuantity": 7
+    },
     "2026-09-21": {
      "acquisitionQuantity": 1
     }
+   },
+   "acquisitionsByMarket": {
+    "US": 44,
+    "IN": 12,
+    "DE": 7,
+    "AU": 5,
+    "RU": 4,
+    "NL": 4,
+    "PL": 4,
+    "FR": 4,
+    "TR": 3,
+    "GB": 3,
+    "ID": 3,
+    "VN": 2,
+    "NO": 2,
+    "ES": 2,
+    "BR": 2,
+    "UG": 2,
+    "IT": 2,
+    "SE": 2,
+    "MY": 2,
+    "CN": 2,
+    "FJ": 1,
+    "GR": 1,
+    "CG": 1,
+    "TH": 1,
+    "AZ": 1,
+    "HU": 1,
+    "SI": 1,
+    "ZA": 1,
+    "AT": 1,
+    "BE": 1,
+    "PK": 1,
+    "MQ": 1,
+    "NZ": 1,
+    "GE": 1,
+    "ZW": 1,
+    "LT": 1,
+    "DK": 1,
+    "CA": 1,
+    "PH": 1,
+    "RS": 1
    },
    "reviews": [],
    "ratingsLifetime": {
@@ -1007,8 +1029,8 @@
    },
    "failuresWindow": [],
    "unclassifiedHits": {
-    "eventCount": 10,
-    "deviceCount": 2
+    "eventCount": 4,
+    "deviceCount": 1
    }
   },
   "9PBX8F5TR0VR": {
@@ -1081,6 +1103,26 @@
     "2026-09-19": {
      "acquisitionQuantity": 1
     }
+   },
+   "acquisitionsByMarket": {
+    "US": 8,
+    "CN": 3,
+    "IN": 2,
+    "CO": 2,
+    "RU": 1,
+    "GB": 1,
+    "VG": 1,
+    "GH": 1,
+    "ID": 1,
+    "BD": 1,
+    "AU": 1,
+    "TG": 1,
+    "PK": 1,
+    "KR": 1,
+    "CA": 1,
+    "ES": 1,
+    "DE": 1,
+    "PL": 1
    },
    "reviews": [],
    "ratingsLifetime": {
@@ -1168,6 +1210,9 @@
     },
     "2026-09-15": {
      "successfulInstallCount": 1
+    },
+    "2026-09-20": {
+     "successfulInstallCount": 1
     }
    },
    "acquisitionsDaily": {
@@ -1194,7 +1239,49 @@
     },
     "2026-09-15": {
      "acquisitionQuantity": 1
+    },
+    "2026-09-20": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-21": {
+     "acquisitionQuantity": 1
     }
+   },
+   "acquisitionsByMarket": {
+    "US": 16,
+    "CN": 7,
+    "BR": 6,
+    "IT": 4,
+    "DE": 3,
+    "PT": 3,
+    "CL": 3,
+    "EC": 2,
+    "ES": 2,
+    "EG": 2,
+    "ID": 2,
+    "TW": 2,
+    "NL": 2,
+    "AR": 2,
+    "DK": 2,
+    "MX": 2,
+    "GT": 2,
+    "SE": 1,
+    "BY": 1,
+    "UA": 1,
+    "PY": 1,
+    "RU": 1,
+    "MY": 1,
+    "IN": 1,
+    "IL": 1,
+    "VE": 1,
+    "TR": 1,
+    "PE": 1,
+    "AU": 1,
+    "VN": 1,
+    "FR": 1,
+    "KZ": 1,
+    "GB": 1,
+    "PL": 1
    },
    "reviews": [],
    "ratingsLifetime": {
@@ -1216,13 +1303,6 @@
   "9MV9G4XFJ8S0": {
    "name": "RBX15 Classic Shirt and Pants Maker",
    "usageDaily": {
-    "2026-08-22": {
-     "dailyActiveUsers": 4,
-     "dailyActiveDevices": 4,
-     "dailyNewUsers": 4,
-     "dailySessionCount": 8,
-     "engagementDurationMinutes": 34
-    },
     "2026-08-23": {
      "dailyActiveUsers": 2,
      "dailyActiveDevices": 2,
@@ -1421,9 +1501,6 @@
     }
    },
    "installsDaily": {
-    "2026-08-22": {
-     "successfulInstallCount": 6
-    },
     "2026-08-23": {
      "successfulInstallCount": 2
     },
@@ -1507,12 +1584,12 @@
     },
     "2026-09-19": {
      "successfulInstallCount": 7
+    },
+    "2026-09-20": {
+     "successfulInstallCount": 6
     }
    },
    "acquisitionsDaily": {
-    "2026-08-22": {
-     "acquisitionQuantity": 5
-    },
     "2026-08-23": {
      "acquisitionQuantity": 3
     },
@@ -1594,9 +1671,109 @@
     "2026-09-19": {
      "acquisitionQuantity": 6
     },
+    "2026-09-20": {
+     "acquisitionQuantity": 4
+    },
     "2026-09-21": {
-     "acquisitionQuantity": 1
+     "acquisitionQuantity": 4
     }
+   },
+   "acquisitionsByMarket": {
+    "US": 212,
+    "IN": 41,
+    "GB": 33,
+    "BR": 26,
+    "PH": 25,
+    "DE": 23,
+    "CA": 20,
+    "ID": 17,
+    "ZA": 17,
+    "FR": 16,
+    "AU": 13,
+    "PL": 8,
+    "SA": 7,
+    "MX": 7,
+    "NG": 7,
+    "NL": 6,
+    "TR": 6,
+    "ES": 5,
+    "AZ": 5,
+    "BD": 5,
+    "RU": 5,
+    "UY": 5,
+    "PT": 4,
+    "JO": 4,
+    "PK": 4,
+    "IL": 4,
+    "EG": 4,
+    "CO": 4,
+    "IT": 4,
+    "JP": 4,
+    "TN": 4,
+    "GH": 4,
+    "MY": 3,
+    "KE": 3,
+    "AO": 3,
+    "RO": 3,
+    "UG": 3,
+    "PE": 3,
+    "ZW": 3,
+    "VN": 3,
+    "KZ": 3,
+    "GR": 3,
+    "HU": 3,
+    "TT": 3,
+    "IQ": 3,
+    "MA": 3,
+    "UA": 2,
+    "ZM": 2,
+    "FJ": 2,
+    "DK": 2,
+    "NA": 2,
+    "LK": 2,
+    "AR": 2,
+    "SE": 2,
+    "VC": 2,
+    "VE": 2,
+    "NO": 2,
+    "CH": 2,
+    "TZ": 2,
+    "GA": 2,
+    "CZ": 2,
+    "AE": 2,
+    "MP": 1,
+    "MM": 1,
+    "BE": 1,
+    "MK": 1,
+    "GD": 1,
+    "BG": 1,
+    "SG": 1,
+    "EE": 1,
+    "NC": 1,
+    "PY": 1,
+    "SV": 1,
+    "TW": 1,
+    "PS": 1,
+    "RS": 1,
+    "DZ": 1,
+    "BW": 1,
+    "CY": 1,
+    "IE": 1,
+    "UM": 1,
+    "NP": 1,
+    "BB": 1,
+    "NZ": 1,
+    "SK": 1,
+    "AT": 1,
+    "MD": 1,
+    "HR": 1,
+    "AG": 1,
+    "BI": 1,
+    "KR": 1,
+    "MU": 1,
+    "CF": 1,
+    "JM": 1,
+    "PG": 1
    },
    "reviews": [
     {
@@ -1821,6 +1998,87 @@
     "2026-09-19": {
      "acquisitionQuantity": 3
     }
+   },
+   "acquisitionsByMarket": {
+    "US": 58,
+    "FR": 16,
+    "GB": 15,
+    "IN": 13,
+    "CM": 12,
+    "DE": 10,
+    "JP": 10,
+    "BR": 8,
+    "BF": 7,
+    "NG": 6,
+    "SA": 5,
+    "NE": 5,
+    "AU": 4,
+    "ES": 4,
+    "TG": 4,
+    "GH": 3,
+    "DK": 3,
+    "SL": 3,
+    "AT": 3,
+    "IT": 3,
+    "BJ": 3,
+    "CN": 3,
+    "GA": 3,
+    "CD": 3,
+    "CH": 2,
+    "AE": 2,
+    "HT": 2,
+    "CO": 2,
+    "PK": 2,
+    "UA": 2,
+    "HN": 2,
+    "ML": 2,
+    "MX": 2,
+    "AO": 2,
+    "ZW": 2,
+    "TR": 2,
+    "MY": 2,
+    "UG": 1,
+    "MM": 1,
+    "KH": 1,
+    "PL": 1,
+    "IL": 1,
+    "TW": 1,
+    "CA": 1,
+    "TD": 1,
+    "TH": 1,
+    "AF": 1,
+    "NP": 1,
+    "LY": 1,
+    "GT": 1,
+    "NL": 1,
+    "ID": 1,
+    "GQ": 1,
+    "GW": 1,
+    "BL": 1,
+    "KE": 1,
+    "DZ": 1,
+    "MZ": 1,
+    "ZM": 1,
+    "BI": 1,
+    "CI": 1,
+    "VN": 1,
+    "LR": 1,
+    "UZ": 1,
+    "AR": 1,
+    "HU": 1,
+    "RU": 1,
+    "GN": 1,
+    "ZA": 1,
+    "TN": 1,
+    "MG": 1,
+    "KR": 1,
+    "LU": 1,
+    "PH": 1,
+    "RW": 1,
+    "CG": 1,
+    "RE": 1,
+    "SN": 1,
+    "BE": 1
    },
    "reviews": [
     {
