@@ -120,6 +120,18 @@ function byMarket(rows) {
   );
 }
 
+// Per-market maximum across two snapshots. See the call site for why max rather
+// than replace. Sorted high-to-low so the committed JSON diffs legibly.
+function mergeMax(prev, next) {
+  const out = { ...(prev ?? {}) };
+  for (const [m, n] of Object.entries(next ?? {})) {
+    out[m] = Math.max(out[m] ?? 0, n);
+  }
+  return Object.fromEntries(
+    Object.entries(out).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]),
+  );
+}
+
 // Sum segmented rows into one record per date for the named numeric fields.
 function byDate(rows, fields) {
   const out = {};
@@ -183,7 +195,27 @@ const main = async () => {
     app.installsByMarket = null;
     try {
       const geo = await pull(tok, "installs", id, "&groupby=market", LIFETIME_START);
-      app.installsByMarket = byMarket(geo);
+      // MERGE AS A HIGH-WATER MARK, never replace.
+      //
+      // startDate is NOT honoured as a true lifetime bound: the endpoint returns
+      // a sliding window regardless. Proof, measured against a Partner Center
+      // export taken days EARLIER than the query — installs are cumulative, so a
+      // later query can only ever return MORE. It returned less. 25 markets went
+      // backwards (US 770 -> 524, a 314-install shortfall overall), 7 markets
+      // vanished outright including Antarctica, and 17 new ones appeared. That
+      // is a window sliding forward, not data being corrected.
+      //
+      // Since installs only accumulate, the per-market max across runs is a
+      // correct lower bound, and each run heals the window by contributing
+      // whatever it can currently see. It also encodes what the map is FOR: a
+      // country that installed once in June keeps its dot, which is the whole
+      // premise of "where it ended up".
+      //
+      // The tradeoff, stated plainly: a genuine downward revision (refunds, a
+      // Microsoft correction) will never pull a number back down. For a reach
+      // map that is the right bias — reached is reached — but it does mean this
+      // field is a high-water mark, not a live balance. Do not reuse it as one.
+      app.installsByMarket = mergeMax(previous[id]?.installsByMarket, byMarket(geo));
     } catch (e) {
       // Carry the last known map forward rather than blanking it. A transient
       // 429 should not erase a country map that is still true; the endpoint is

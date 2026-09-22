@@ -64,6 +64,14 @@ SUPPLEMENT = {
     "KY": ("Cayman Islands", -81.25, 19.31), "CW": ("Curacao", -68.99, 12.17),
     "GU": ("Guam", 144.79, 13.44), "MF": ("Saint Martin", -63.08, 18.08),
     "SC": ("Seychelles", 55.49, -4.68), "TT": ("Trinidad and Tobago", -61.22, 10.69),
+    # Second pass, added after the first live installs pull surfaced real
+    # markets 110m still could not place: small Caribbean and Pacific
+    # territories, 13 installs in total across the six apps.
+    "VI": ("U.S. Virgin Islands", -64.90, 18.34), "MQ": ("Martinique", -61.02, 14.64),
+    "VC": ("Saint Vincent and the Grenadines", -61.29, 13.25),
+    "AG": ("Antigua and Barbuda", -61.80, 17.12), "GD": ("Grenada", -61.68, 12.12),
+    "GP": ("Guadeloupe", -61.55, 16.27), "MP": ("Northern Mariana Islands", 145.75, 15.20),
+    "RE": ("Reunion", 55.54, -21.12),
 }
 
 X_MAX = 0.8487 * math.pi
