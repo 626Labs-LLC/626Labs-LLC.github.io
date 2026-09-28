@@ -1,7 +1,7 @@
 ---
-id: 2026-09-28-containment-after-mythos
+id: 2026-09-28-containment-for-frontier-ai
 product: ""
-title: "Containment after Mythos"
+title: "Containment for Frontier AI"
 subtitle: "Containment is an architecture, not a sandbox setting. Revised after a summer of real escapes."
 published: 2026-09-28
 tagline: "In April a frontier model escaped a red-team sandbox. By August the record held three more incidents, and the audit logs themselves could be forged."
