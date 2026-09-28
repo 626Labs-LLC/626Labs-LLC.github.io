@@ -1223,3 +1223,30 @@ def test_founding_body_wrapper_is_opt_in():
     assert wrapped.count("<p>") == bare.count("<p>") == 2
     assert wrapped.index("founding-body") < wrapped.index("<strong>First</strong>")
     assert wrapped.index("</div>") < wrapped.index('class="thinking-link"')
+
+
+# ─── Field Note analytics ───────────────────────────────────────────────
+# Every Field Note page shipped without the GoatCounter script from May to
+# September 2026: the reading.html shell never carried it, and theme-doctor's
+# `reading` chrome check reads about.html's markup, not this shell, so no
+# gate noticed. Seven articles published with zero read data. These two
+# tests pin the shell (every theme) and the committed pages on disk.
+
+def test_every_theme_reading_shell_counts_field_note_reads():
+    shells = sorted((ROOT / "themes").glob("*/archetypes/reading.html"))
+    assert shells, "no reading archetype shells found"
+    story = {"title": "T", "published": "2026-09-27", "_body": "x", "slug": "t"}
+    for shell_path in shells:
+        html = render_hub.render_story_page(
+            story, "<p>x</p>", shell_path.read_text(encoding="utf-8"))
+        assert 'data-goatcounter="https://626labs.goatcounter.com/count"' in html, (
+            f"{shell_path.relative_to(ROOT).as_posix()} renders Field Notes "
+            "without the GoatCounter script, so their reads go uncounted")
+
+
+def test_committed_field_note_pages_carry_goatcounter():
+    pages = sorted((ROOT / "editorial").glob("*/index.html"))
+    assert pages, "no Field Note pages on disk"
+    missing = [p.parent.name for p in pages
+               if "data-goatcounter" not in p.read_text(encoding="utf-8")]
+    assert not missing, f"Field Note pages without analytics: {missing}"
