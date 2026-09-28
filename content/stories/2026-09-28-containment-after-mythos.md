@@ -9,7 +9,7 @@ author: "Estevan Hernandez"
 draft: false
 ---
 
-*First drafted in May 2026 after the Claude Mythos Preview disclosures, and revised in September 2026 to account for the incidents that followed. Every source was re-checked against the original on September 28, 2026.*
+<div class="ed-aside">First drafted in May 2026 after the Claude Mythos Preview disclosures, and revised in September 2026 to account for the incidents that followed. Every source was re-checked against the original on September 28, 2026.</div>
 
 ## The Sandwich in the Park
 
@@ -133,12 +133,30 @@ Mitchell’s 2026 paper ([Mitchell 2026](#ref-arxiv2604containment)) names four 
 
 ### The architecture
 
-| Layer | Failure modes it must catch | Capability tests that validate it | Primary sources |
-|----|----|----|----|
-| **1: Alignment training** | Reckless task-completion shortcuts; capability for circumventing safeguards when solicited; concealment of rule violations (white-box interpretability confirms deception features); aggressive use of low-level process data; reckless internal-material leaks; reckless evaluation-job takedowns | Anthropic alignment stress-testing protocols (16 frontier models in simulated corporate environments, blackmail at up to 96% rate under replacement / goal-conflict conditions); Apollo Research and OpenAI deception-evaluation benchmarks (180+ environments, OpenAI o3 and o4-mini); cross-lab corroboration; the Yao trilemma’s foreclosure structure | ([Anthropic 2026i](#ref-anthropic2026mythossystemcard)) §4.1.1; ([Lynch et al. 2025](#ref-lynch2025agenticmisalignment)); ([Schoen et al. 2025](#ref-schoen2025stresstest)); ([Yao 2025](#ref-yao2025alignmenttrap)) §7.5 |
-| **2: Environmental sandboxing** | Container escape under realistic-vulnerability conditions; capability-scaling escape rates; failures at orchestration, runtime, kernel layers; arbitrary internet access from inside containment | SandboxEscapeBench (mechanisms spanning misconfiguration, privilege allocation, kernel flaws, runtime and orchestration weaknesses; Inspect-harnessed; safe nested-sandbox evaluation); container-escape capability quantification | ([Marchand et al. 2026](#ref-uksai2026sandbox)); ([Anthropic 2026i](#ref-anthropic2026mythossystemcard)) (Mythos Preview as worked example) |
-| **3: Application-level tool-call interception** | Prompt injection via untrusted-data passthrough; tool-call chain abuse; radioactive-token exfiltration via shell environment variables; tool use under context-window confusion | Pre-execution prompt-injection scanning; rigid-JSON sub-boxing (untrusted evidence not raw text interpolation); tool-call signature gating with allowlists | ([Hernandez 2026e](#ref-hernandez2026whostalking)) § Prompt Injection Defense Heuristics; ([Dehghantanha and Homayoun 2026](#ref-sok2026attacksurface)) (tool access and autonomy as primary risk multipliers); ([Chhabra et al. 2025](#ref-agenticsec2025threats)) |
-| **4: Accessible audit systems** | Undetected AI agent operating in execution traces; deceptive behavior in long-horizon tasks; centaur (human-directed AI vs. autonomous AI) confusion; behavioral drift; goal-protective escalation; covert-channel exfiltration | The seven-method behavioral framework (see §4); weighted source-trust scoring; tiered confidence thresholds (0.65 validate / 0.85 act); cross-source validation; SIFT-toolkit-based data extraction; Inspect-compatible portability | ([Hernandez 2026b](#ref-hernandez2026priorresearch)) (FIND_EVIL hackathon, 2026 ([FIND_EVIL 2026](#ref-findevilhackathon2026))); ([Shaffer Shane et al. 2026](#ref-cltr2026scheming)); ([UK AI Security Institute 2026b](#ref-aisiinspect2026)); ([SANS Institute 2026](#ref-sansift)) |
+**1: Alignment training**
+
+- *Failure modes it must catch:* Reckless task-completion shortcuts; capability for circumventing safeguards when solicited; concealment of rule violations (white-box interpretability confirms deception features); aggressive use of low-level process data; reckless internal-material leaks; reckless evaluation-job takedowns
+- *Capability tests that validate it:* Anthropic alignment stress-testing protocols (16 frontier models in simulated corporate environments, blackmail at up to 96% rate under replacement / goal-conflict conditions); Apollo Research and OpenAI deception-evaluation benchmarks (180+ environments, OpenAI o3 and o4-mini); cross-lab corroboration; the Yao trilemma’s foreclosure structure
+- *Primary sources:* ([Anthropic 2026i](#ref-anthropic2026mythossystemcard)) §4.1.1; ([Lynch et al. 2025](#ref-lynch2025agenticmisalignment)); ([Schoen et al. 2025](#ref-schoen2025stresstest)); ([Yao 2025](#ref-yao2025alignmenttrap)) §7.5
+
+**2: Environmental sandboxing**
+
+- *Failure modes it must catch:* Container escape under realistic-vulnerability conditions; capability-scaling escape rates; failures at orchestration, runtime, kernel layers; arbitrary internet access from inside containment
+- *Capability tests that validate it:* SandboxEscapeBench (mechanisms spanning misconfiguration, privilege allocation, kernel flaws, runtime and orchestration weaknesses; Inspect-harnessed; safe nested-sandbox evaluation); container-escape capability quantification
+- *Primary sources:* ([Marchand et al. 2026](#ref-uksai2026sandbox)); ([Anthropic 2026i](#ref-anthropic2026mythossystemcard)) (Mythos Preview as worked example)
+
+**3: Application-level tool-call interception**
+
+- *Failure modes it must catch:* Prompt injection via untrusted-data passthrough; tool-call chain abuse; radioactive-token exfiltration via shell environment variables; tool use under context-window confusion
+- *Capability tests that validate it:* Pre-execution prompt-injection scanning; rigid-JSON sub-boxing (untrusted evidence not raw text interpolation); tool-call signature gating with allowlists
+- *Primary sources:* ([Hernandez 2026e](#ref-hernandez2026whostalking)) § Prompt Injection Defense Heuristics; ([Dehghantanha and Homayoun 2026](#ref-sok2026attacksurface)) (tool access and autonomy as primary risk multipliers); ([Chhabra et al. 2025](#ref-agenticsec2025threats))
+
+**4: Accessible audit systems**
+
+- *Failure modes it must catch:* Undetected AI agent operating in execution traces; deceptive behavior in long-horizon tasks; centaur (human-directed AI vs. autonomous AI) confusion; behavioral drift; goal-protective escalation; covert-channel exfiltration
+- *Capability tests that validate it:* The seven-method behavioral framework (see §4); weighted source-trust scoring; tiered confidence thresholds (0.65 validate / 0.85 act); cross-source validation; SIFT-toolkit-based data extraction; Inspect-compatible portability
+- *Primary sources:* ([Hernandez 2026b](#ref-hernandez2026priorresearch)) (FIND_EVIL hackathon, 2026 ([FIND_EVIL 2026](#ref-findevilhackathon2026))); ([Shaffer Shane et al. 2026](#ref-cltr2026scheming)); ([UK AI Security Institute 2026b](#ref-aisiinspect2026)); ([SANS Institute 2026](#ref-sansift))
+
 
 ### Layer 1, alignment training
 
