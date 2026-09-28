@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T11:36:20.938Z",
+  "generatedAt": "2026-09-28T13:10:52.408Z",
   "count": 57,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-09-27T10:53:31Z",
+      "pushed_at": "2026-09-28T13:00:43Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -37,7 +37,7 @@
       "description": "626 Mod Launcher Games",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-game-manifest",
       "language": "Python",
-      "pushed_at": "2026-09-21T06:04:49Z",
+      "pushed_at": "2026-09-28T06:05:00Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -109,7 +109,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-09-24T03:24:54Z",
+      "pushed_at": "2026-09-28T04:28:53Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -313,7 +313,7 @@
       "description": "Drive RoRoRo from Claude: a stdio MCP server shipped as a consent-gated RoRoRo plugin. Accounts + Ur Task macros, thirteen tools. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-mcp",
       "language": "C#",
-      "pushed_at": "2026-09-24T14:56:44Z",
+      "pushed_at": "2026-09-28T03:51:53Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -325,7 +325,7 @@
       "description": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't bound. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "language": "C#",
-      "pushed_at": "2026-09-24T15:07:52Z",
+      "pushed_at": "2026-09-28T04:34:26Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -337,7 +337,7 @@
       "description": "Multiroblox as current as possible",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
-      "pushed_at": "2026-09-24T03:31:11Z",
+      "pushed_at": "2026-09-28T04:03:30Z",
       "stargazers_count": 6,
       "archived": false,
       "fork": false
@@ -445,7 +445,7 @@
       "description": "RoRoRo plugin — watches user-defined screen regions for OCR text or color triggers and fires keybinds when they match. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Ur-OCR",
       "language": "C#",
-      "pushed_at": "2026-09-24T14:56:35Z",
+      "pushed_at": "2026-09-27T17:38:52Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -457,7 +457,7 @@
       "description": "RoRoRo Ur Score — clan battle dashboard and metric reporter for the RoRoRo plugin system.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Ur-Score",
       "language": "C#",
-      "pushed_at": "2026-09-25T04:49:08Z",
+      "pushed_at": "2026-09-27T17:56:37Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -565,7 +565,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-09-26T14:06:25Z",
+      "pushed_at": "2026-09-28T08:27:07Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
