@@ -8,9 +8,12 @@
  * writes) and, for each repo that has release assets, records:
  *
  *   1. data/download-stats.json — full current detail: per repo, per release,
- *      per asset counts + rollups. The rororo-plugins page and admin read this.
- *   2. data/downloads.csv       — one row per day per repo with the lifetime
- *      total (date,repo,downloads). Day-over-day diff = downloads that day.
+ *      per asset counts + rollups. `total` is every asset's counter; `installers`
+ *      counts only assets a person downloads to get the app (see asset-kind.mjs).
+ *   2. data/downloads.csv       — one row per day per repo:
+ *      date,repo,downloads,installers. `downloads` is the raw lifetime total and
+ *      is dominated by installed apps polling manifests; `installers` is the
+ *      figure to quote as audience. Day-over-day diff = movement that day.
  *
  * Unlike the Traffic API this data is public, so the implicit GITHUB_TOKEN is
  * enough in CI (no PAT). Works unauthenticated locally but ~90 repos will eat
@@ -20,11 +23,13 @@
  */
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
+import { bucketAssets } from './asset-kind.mjs';
 
 const REPOS_PATH = 'data/repos.json';
 const OUT_JSON = 'data/download-stats.json';
 const OUT_CSV = 'data/downloads.csv';
-const CSV_HEADER = 'date,repo,downloads';
+const CSV_HEADER = 'date,repo,downloads,installers';
+const CSV_HEADER_V1 = 'date,repo,downloads'; // pre-2026-09-29 files; rows are upgraded on write
 
 const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
 const headers = {
@@ -82,13 +87,16 @@ async function main() {
         published: (rel.published_at || '').slice(0, 10),
         ...(rel.prerelease ? { prerelease: true } : {}),
         total: relTotal,
+        ...bucketAssets(assets),
         assets,
       });
     }
     if (recorded.length === 0) continue; // repo ships no release assets — not a product surface
     const total = recorded.reduce((sum, r) => sum + r.total, 0);
-    products[full_name] = { total, releases: recorded };
-    console.log(`${full_name}: ${total} downloads across ${recorded.length} releases`);
+    const kinds = { installer: 0, update: 0, polling: 0, other: 0 };
+    for (const r of recorded) for (const k of Object.keys(kinds)) kinds[k] += r[k];
+    products[full_name] = { total, installers: kinds.installer, updates: kinds.update, polling: kinds.polling, other: kinds.other, releases: recorded };
+    console.log(`${full_name}: ${total} raw, ${kinds.installer} installers, ${kinds.polling} polling across ${recorded.length} releases`);
   }
 
   if (Object.keys(products).length === 0) {
@@ -106,6 +114,7 @@ async function main() {
       {
         $comment:
           'Lifetime release-asset download counts (drafts excluded, prereleases flagged). ' +
+          '`total` includes installed apps polling manifests; `installers` is people getting the app. ' +
           'Snapshot only — daily history lives in downloads.csv.',
         products: sorted,
       },
@@ -118,18 +127,19 @@ async function main() {
   const today = new Date().toISOString().slice(0, 10);
   const rows = new Map();
   try {
-    const [hdr, ...lines] = (await readFile(OUT_CSV, 'utf8')).trim().split('\n');
-    if (hdr !== CSV_HEADER) throw new Error(`CSV header mismatch: ${hdr}`);
+    const [hdr, ...lines] = (await readFile(OUT_CSV, 'utf8')).replace(/\r/g, '').trim().split('\n');
+    if (hdr !== CSV_HEADER && hdr !== CSV_HEADER_V1) throw new Error(`CSV header mismatch: ${hdr}`);
     for (const line of lines) {
       if (!line) continue;
-      const [date, repo] = line.split(',');
-      rows.set(`${date}|${repo}`, line);
+      const [date, repo, downloads, installers = ''] = line.split(',');
+      // History from before the split has no installer count; leave it empty, never guess.
+      rows.set(`${date}|${repo}`, `${date},${repo},${downloads},${installers}`);
     }
   } catch (err) {
     if (err.code !== 'ENOENT') throw err;
   }
-  for (const [repo, { total }] of Object.entries(sorted)) {
-    rows.set(`${today}|${repo}`, `${today},${repo},${total}`);
+  for (const [repo, { total, installers }] of Object.entries(sorted)) {
+    rows.set(`${today}|${repo}`, `${today},${repo},${total},${installers}`);
   }
   const csv = [CSV_HEADER, ...[...rows.keys()].sort().map((k) => rows.get(k))].join('\n') + '\n';
   await writeFile(OUT_CSV, csv);
