@@ -1,9 +1,10 @@
+// usage: node build-map.mjs [path/to/store-analytics.json]  (from a dir with the npm deps installed)
 import fs from 'fs';
 import {createRequire} from 'module';
 const require=createRequire(import.meta.url);
 const topo=require('topojson-client'), d3=require('d3-geo'), iso=require('i18n-iso-countries');
 const w=JSON.parse(fs.readFileSync('node_modules/world-atlas/countries-110m.json','utf8'));
-const sa=JSON.parse(fs.readFileSync('C:/Users/estev/Projects/626labs-hub/data/store-analytics.json','utf8'));
+const sa=JSON.parse(fs.readFileSync(process.argv[2] || 'data/store-analytics.json','utf8'));
 const fc=topo.feature(w,w.objects.countries);
 const proj=d3.geoNaturalEarth1().fitExtent([[4,4],[956,496]],{type:'Sphere'});
 const path=d3.geoPath(proj).digits?d3.geoPath(proj).digits(1):d3.geoPath(proj);

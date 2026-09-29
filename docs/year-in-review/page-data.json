@@ -34,7 +34,7 @@
    "category": "origin",
    "headline": true,
    "confidence": "verified",
-   "detail": "Started at 3:45 pm. By 10:45 there was a command line and a Google Colab Fandango scrape. By 11:45 it broke, because the business day was over and the scraper never knew to roll forward. The first lesson was that you still have to know more than the AI. The repo history bookends the day: created at 3:04 pm, last upload at 11:59 pm."
+   "detail": "Started at 3:45 pm. By 10:45 there was a command line and a Google Colab scrape. By 11:45 it broke, because the business day was over and the scraper never knew to roll forward. The first lesson was that you still have to know more than the AI. The repo history bookends the day: created at 3:04 pm, last upload at 11:59 pm."
   },
   {
    "date": "2025-08-15",
