@@ -1,0 +1,264 @@
+<title>626 Labs Year One</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap">
+<!--__THEME_LINK__-->
+<style>
+/* Layout: a single vertical spine with dated cards, era banners as section breaks, filters pinned on top. Brand tokens from the 626 Labs design system (cyan + magenta on navy). */
+:root{
+  --y-bg:#f3f6fa; --y-panel:#ffffff; --y-fg:#0f1f31; --y-dim:#52667d; --y-line:#ccd7e4;
+  --y-cyan:#0a86a6; --y-mag:#c4175f; --y-ok:#1a7f52; --y-warn:#9a6a00;
+  --y-f-display:"Space Grotesk",system-ui,sans-serif; --y-f-body:"Inter",system-ui,sans-serif; --y-f-mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --y-bg:#0f1f31; --y-panel:#152a41; --y-fg:#e8f0f8; --y-dim:#8fa5bd; --y-line:#2a4460;
+  --y-cyan:#17d4fa; --y-mag:#f22f89; --y-ok:#4fd6a0; --y-warn:#f0c25a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --y-bg:#0f1f31; --y-panel:#152a41; --y-fg:#e8f0f8; --y-dim:#8fa5bd; --y-line:#2a4460;
+  --y-cyan:#17d4fa; --y-mag:#f22f89; --y-ok:#4fd6a0; --y-warn:#f0c25a; color-scheme:dark}
+*{box-sizing:border-box}
+/*__THEME_MAP__*/
+body{margin:0;background:var(--y-bg);color:var(--y-fg);font:15px/1.55 var(--y-f-body);padding-inline:16px;padding-block:32px 80px}
+.wrap{max-width:1080px;margin:0 auto}
+.lede,.era p{max-width:62ch}
+.reach,.gaps{max-width:860px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 172px;gap:32px;align-items:start}
+#tl{min-width:0}
+h1,h2,h3{font-family:var(--y-f-display);text-wrap:balance;margin:0}
+.eyebrow{font:500 11px var(--y-f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--y-cyan)}
+h1{font-size:clamp(34px,7vw,58px);line-height:1.02;letter-spacing:-.02em;margin:10px 0 14px}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--y-cyan),var(--y-mag));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{max-width:60ch;color:var(--y-dim);font-size:17px;margin:0 0 28px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--y-line);border:1px solid var(--y-line);margin-bottom:36px}
+.stats div{background:var(--y-panel);padding:14px}
+.stats b{display:block;font:700 26px var(--y-f-display);font-variant-numeric:tabular-nums}
+.stats span{font:500 11px var(--y-f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--y-dim)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--y-bg);padding-block:10px;z-index:5;border-bottom:1px solid var(--y-line);margin-bottom:8px}
+.chip{font:500 12px var(--y-f-mono);border:1px solid var(--y-line);background:transparent;color:var(--y-dim);padding:6px 11px;cursor:pointer;border-radius:999px}
+.chip[aria-pressed="true"]{color:var(--y-bg);background:var(--y-fg);border-color:var(--y-fg)}
+.chip:focus-visible,.hl-toggle:focus-visible{outline:2px solid var(--y-cyan);outline-offset:2px}
+.era{margin:44px 0 6px}
+.era h2{font-size:24px}
+.era p{margin:4px 0 0;color:var(--y-dim);max-width:62ch}
+.era .range{font:500 11px var(--y-f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--y-mag)}
+.spine{list-style:none;margin:16px 0 0;padding:0 0 0 0;position:relative}
+.spine::before{content:"";position:absolute;left:104px;top:0;bottom:0;width:2px;background:linear-gradient(var(--y-cyan),var(--y-mag));opacity:.55}
+.ev{display:grid;grid-template-columns:96px 1fr;gap:0 26px;margin:0 0 14px;position:relative}
+.ev time{font:500 12px var(--y-f-mono);color:var(--y-dim);text-align:right;padding-top:14px;font-variant-numeric:tabular-nums}
+.card{background:var(--y-panel);border:1px solid var(--y-line);padding:12px 14px;position:relative;min-width:0}
+.card::before{content:"";position:absolute;left:-31px;top:19px;width:10px;height:10px;border-radius:50%;background:var(--y-bg);border:2px solid var(--y-dim)}
+.ev.hl .card{border-color:var(--y-mag)}
+.ev.hl .card::before{background:var(--y-mag);border-color:var(--y-mag);box-shadow:0 0 0 4px color-mix(in srgb,var(--y-mag) 25%,transparent)}
+.tag{font:500 10px var(--y-f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--y-cyan)}
+.tag i{font-style:normal;color:var(--y-warn);margin-left:8px}
+.card h3{font-size:16px;line-height:1.25;margin:3px 0 4px}
+.ev.hl h3{font-size:19px}
+.card p{margin:0;color:var(--y-dim);font-size:14px}
+.pulse{position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px);padding-top:16px}
+.pulse h2{font-size:15px;margin:2px 0 4px}
+.pulse .sum{font:500 11px var(--y-f-mono);color:var(--y-dim);line-height:1.5;margin:0 0 10px}
+.pulse .sum b{color:var(--y-fg);font-weight:500}
+.pgrid{position:relative;display:grid;grid-template-columns:26px repeat(7,1fr);grid-template-rows:repeat(var(--weeks),1fr);gap:2px;height:calc(100vh - 210px);min-height:440px}
+.pgrid .ml{font:500 9px/1 var(--y-f-mono);color:var(--y-dim);align-self:center;white-space:nowrap}
+.pd{background:color-mix(in srgb,var(--y-line) 45%,var(--y-panel));cursor:pointer;min-width:0}
+.pd.l1{background:color-mix(in srgb,var(--y-cyan) 28%,var(--y-panel))}
+.pd.l2{background:color-mix(in srgb,var(--y-cyan) 55%,var(--y-panel))}
+.pd.l3{background:var(--y-cyan)}
+.pd.l4{background:color-mix(in srgb,var(--y-cyan) 45%,var(--y-mag))}
+.pd.l5{background:var(--y-mag)}
+.pd.hlday{outline:1.5px solid var(--y-fg);outline-offset:0;z-index:1}
+.pd.off{visibility:hidden}
+.band{position:absolute;left:-3px;right:-3px;border:1.5px solid var(--y-fg);pointer-events:none;transition:top .12s;z-index:2}
+.pread{font:500 11px var(--y-f-mono);min-height:32px;margin:8px 0 0;color:var(--y-dim)}
+.pread b{color:var(--y-fg);font-weight:500}
+.pleg{display:flex;align-items:center;gap:3px;font:500 9px var(--y-f-mono);color:var(--y-dim);margin-top:6px}
+.pleg i{width:10px;height:10px;display:inline-block}
+.pnote{font:400 10px/1.4 var(--y-f-mono);color:var(--y-dim);margin:8px 0 0}
+@media(max-width:900px){
+  .cols{grid-template-columns:minmax(0,1fr)}
+  .pulse{position:static;order:-1;padding-top:0;margin-bottom:8px}
+  .pgrid{grid-template-columns:none;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;height:auto;min-height:0;gap:1px}
+  .pgrid .ml,.band{display:none}
+  .pd{aspect-ratio:1}
+}
+.reach{margin-top:56px}
+.reach h2{font-size:26px;margin-bottom:6px}
+.mapbox{margin-top:16px;border:1px solid var(--y-line);background:var(--y-panel)}
+.mapbox svg{display:block;width:100%;height:auto}
+.sea{fill:var(--y-panel)}
+.c{fill:var(--y-bg);stroke:var(--y-line);stroke-width:.5}
+.c[data-c]{cursor:pointer}
+.c[data-c]:hover,.c.sel{stroke:var(--y-fg);stroke-width:1.4}
+.b1{fill:color-mix(in srgb,var(--y-cyan) 28%,var(--y-panel))}
+.b2{fill:color-mix(in srgb,var(--y-cyan) 55%,var(--y-panel))}
+.b3{fill:var(--y-cyan)}
+.b4{fill:color-mix(in srgb,var(--y-cyan) 45%,var(--y-mag))}
+.b5{fill:var(--y-mag)}
+.c.aq{stroke:var(--y-mag);stroke-width:1.6}
+.readout{margin:0;padding:10px 14px;border-top:1px solid var(--y-line);font:500 13px var(--y-f-mono);min-height:42px}
+.readout span{color:var(--y-dim)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0 0;font:500 11px var(--y-f-mono);color:var(--y-dim);align-items:center}
+.legend .b1{background:color-mix(in srgb,var(--y-cyan) 28%,var(--y-panel))}.legend .b2{background:color-mix(in srgb,var(--y-cyan) 55%,var(--y-panel))}.legend .b3{background:var(--y-cyan)}.legend .b4{background:color-mix(in srgb,var(--y-cyan) 45%,var(--y-mag))}.legend .b5{background:var(--y-mag)}
+.legend i{display:inline-block;width:14px;height:10px;margin-right:5px;vertical-align:-1px;border:1px solid var(--y-line)}
+.mk{list-style:none;padding:0;margin:14px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:4px 18px;font:500 12px var(--y-f-mono);font-variant-numeric:tabular-nums}
+.mk li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--y-line);padding:3px 0;min-width:0}
+.mk li b{font-weight:500;color:var(--y-cyan)}
+details.mkd{margin-top:14px;border:1px solid var(--y-line);background:var(--y-panel)}
+details.mkd summary{cursor:pointer;padding:10px 14px;font:500 13px var(--y-f-mono)}
+details.mkd summary:focus-visible{outline:2px solid var(--y-cyan);outline-offset:-2px}
+details.mkd .mk{margin:0;padding:0 14px 12px}
+.aq{margin-top:16px;border:1px dashed var(--y-cyan);padding:12px 14px;color:var(--y-fg)}
+.gaps{margin-top:48px;border-top:1px solid var(--y-line);padding-top:20px}
+.gaps ul{margin:8px 0 0;padding-left:20px;color:var(--y-dim)}
+.foot{margin-top:40px;font:400 11px var(--y-f-mono);color:var(--y-dim)}
+@media(max-width:560px){
+  .spine::before{left:7px}
+  .ev{grid-template-columns:1fr;padding-left:26px}
+  .ev time{text-align:left;padding:0 0 4px}
+  .card::before{left:-25px;top:-16px}
+  .ev time{position:relative}
+}
+@media(prefers-reduced-motion:no-preference){.card{transition:transform .15s}.card:hover{transform:translateX(3px)}}
+</style>
+<div class="wrap">
+  <div class="eyebrow">626Labs LLC · through 2026-09-29</div>
+  <h1>From a Roblox game to <em>165 markets</em></h1>
+  <p class="lede">A Roblox game in July, a work tool on August 8, a Droplet a week later, a first commit in October. Eleven months after that commit: a dashboard, fourteen plugins, six Store apps, a site that re-themes itself, and Claude driving Roblox with consent gates.</p>
+  <div class="stats" id="stats"></div>
+  <div class="filters" id="filters" role="group" aria-label="Filter timeline"></div>
+  <div class="cols">
+    <div id="tl"></div>
+    <aside class="pulse" aria-label="Commit activity across the estate">
+      <div class="eyebrow">Activity</div>
+      <h2>Estate commits</h2>
+      <p class="sum" id="psum"></p>
+      <div class="pgrid" id="pgrid"></div>
+      <p class="pread" id="pread">Hover a day.</p>
+      <div class="pleg" id="pleg"></div>
+      <p class="pnote">One cell per day, one row per week, Sunday to Saturday. Bots excluded. Outlined days carry a headline moment.</p>
+    </aside>
+  </div>
+  <section class="reach">
+    <div class="eyebrow">Microsoft Store · snapshot 2026-09-27</div>
+    <h2>Where the installs are</h2>
+    <p class="lede" style="margin:0">165 markets have a tracked install across the six Store apps, about three in four outside the US. The table's time window is undocumented, so read counts as relative sizes.</p>
+    <div class="mapbox"><svg id="wmap" viewBox="0 0 960 500" role="img" aria-label="World map shaded by Microsoft Store installs per market"></svg><p class="readout" id="readout"><span>Hover or tap a country. Small territories show as dots.</span></p></div>
+    <div class="legend" id="legend"></div>
+    <ol class="mk" id="top10"></ol>
+    <details class="mkd"><summary id="sum2"></summary><ol class="mk" id="mid"></ol></details>
+    <details class="mkd"><summary id="sum1"></summary><ol class="mk" id="ones"></ol></details>
+    <div class="aq"><b>Antarctica is real.</b> The market table has one install under AQ, a RoRoRo download, alongside single installs in places like Qatar, Yemen and the British Indian Ocean Territory.</div>
+  </section>
+  <section class="gaps">
+    <div class="eyebrow">Open items</div>
+    <h2 style="font-size:20px">Still to confirm</h2>
+    <ul>
+      <li>RoRoRo article two (Jul 3) is on X but not yet on Medium.</li>
+      <li>Containment for Frontier AI is live on X and pending review at its Medium publication.</li>
+      <li>Discord opens to the public when there is an active audience to host. The server and release bot already exist.</li>
+    </ul>
+  </section>
+  <p class="foot">Sources: git history across the estate, 626 dashboard decisions, Partner Center first-publish dates, Medium and X article lists, Store analytics snapshot. Generated 2026-09-29.</p>
+</div>
+<script>
+const D=__DATA__;
+const GROUPS={infra:['droplet','firebase','infra','automation'],products:['product','plugin','store','agent'],surface:['design','website'],making:['publishing','voice','video','community'],origin:['origin','other']};
+const GL={all:'All',infra:'Servers and bots',products:'Products',surface:'Design and site',making:'Publishing and video',origin:'Origins'};
+const grp=c=>Object.keys(GROUPS).find(k=>GROUPS[k].includes(c))||'origin';
+const ERAS=[
+ ['2025-07','Foundation','Jul to Dec 2025','A Roblox game, a work tool built in seven hours, a Droplet, a first commit, and Firebase two weeks later.'],
+ ['2026-01','Platform','Jan to mid Apr 2026','Agent OS brings Cloud Functions and the MCP server, and the plugin family starts.'],
+ ['2026-04-17','Surface','mid Apr to May 2026','626labs.dev, the design system, the admin, the first Store apps.'],
+ ['2026-06','Voice and reach','Jun to Aug 2026','626 Day, Discord, launch copy, theme rotation, Claude at the controls.'],
+ ['2026-09','Production','Sep 2026','Trailers in six languages, Store analytics, and Containment for Frontier AI.']];
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmt=e=>{const p=e.date.split('-');return p.length==3?`${MON[+p[1]-1]} ${+p[2]}, ${p[0]}`:p.length==2?`${MON[+p[1]-1]} ${p[0]}`:p[0]};
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const S=D.stats;
+document.getElementById('stats').innerHTML=[
+ [S.hubCommits.toLocaleString(),'hub commits'],[S.dashboardProjects,'dashboard projects'],[S.claudePlugins,'Claude plugins'],[S.storeApps,'Store apps'],[S.marketsCount,'Store markets'],[(3864).toLocaleString(),'Store installs'],[S.roroDau,'RoRoRo daily users']
+].map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join('');
+let cur='all',hlOnly=false;
+const F=document.getElementById('filters');
+F.innerHTML=Object.keys(GL).map(k=>`<button class="chip" data-k="${k}" aria-pressed="${k=='all'}">${GL[k]}</button>`).join('')+`<button class="chip hl-toggle" id="hl" aria-pressed="false">Headlines only</button>`;
+F.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.id=='hl'){hlOnly=!hlOnly;b.setAttribute('aria-pressed',hlOnly)}else{cur=b.dataset.k;F.querySelectorAll('[data-k]').forEach(x=>x.setAttribute('aria-pressed',x===b))}
+  render()});
+function render(){
+  const list=D.events.filter(e=>(cur=='all'||grp(e.category)==cur)&&(!hlOnly||e.headline));
+  let html='';
+  ERAS.forEach((era,i)=>{
+    const lo=era[0],hi=ERAS[i+1]?ERAS[i+1][0]:'9999';
+    const items=list.filter(e=>e.date>=lo&&e.date<hi);
+    if(!items.length)return;
+    html+=`<div class="era"><div class="range">${era[2]}</div><h2>${era[1]}</h2><p>${era[3]}</p></div><ol class="spine">`+
+    items.map(e=>{const approx=e.confidence=='inferred'||e.confidence=='user-stated'||e.precision!='day';
+      return `<li class="ev${e.headline?' hl':''}" data-d="${e.date}"><time>${fmt(e)}</time><div class="card"><div class="tag">${GL[grp(e.category)]}${approx?'<i>approx</i>':''}</div><h3>${esc(e.title)}</h3><p>${esc(e.detail)}</p></div></li>`}).join('')+'</ol>';
+  });
+  document.getElementById('tl').innerHTML=html||'<p class="lede">Nothing matches that filter.</p>';if(window.__spy)window.__spy();
+}
+render();
+
+const ACT=__ACT__;
+(function(){
+  const DAY=86400000, ymd=d=>d.toISOString().slice(0,10);
+  const start=new Date(Date.UTC(2025,6,20)), end=new Date(Date.UTC(2026,8,29));
+  const weeks=Math.ceil(((end-start)/DAY+1)/7);
+  const hl=new Set(D.events.filter(e=>e.headline&&e.date.length==10).map(e=>e.date));
+  const lv=n=>n>=114?5:n>=68?4:n>=32?3:n>=8?2:n>=1?1:0;
+  const g=document.getElementById('pgrid');g.style.setProperty('--weeks',weeks);
+  let h='',prevM=-1;
+  for(let w=0;w<weeks;w++){
+    const wd=new Date(start.getTime()+w*7*DAY);
+    let lab='';
+    for(let i=0;i<7;i++){const d=new Date(wd.getTime()+i*DAY);if(d.getUTCDate()<=7&&i==0||d.getUTCDate()==1){const m=d.getUTCMonth();if(m!=prevM){prevM=m;lab=MON[m]+(m==0||w==0?" '"+String(d.getUTCFullYear()).slice(2):'')}}}
+    if(w==0&&!lab){lab=MON[wd.getUTCMonth()]+" '"+String(wd.getUTCFullYear()).slice(2);prevM=wd.getUTCMonth()}
+    h+=`<div class="ml">${lab}</div>`;
+    for(let i=0;i<7;i++){
+      const d=new Date(wd.getTime()+i*DAY),k=ymd(d),n=ACT[k]||0;
+      h+=`<div class="pd l${lv(n)}${hl.has(k)?' hlday':''}${d>end?' off':''}" data-k="${k}" data-n="${n}"></div>`;
+    }
+  }
+  g.innerHTML=h+'<div class="band" id="band" style="top:0;height:calc(100%/'+weeks+' - 2px)"></div>';
+  const tot=Object.values(ACT).reduce((a,b)=>a+b,0),act=Object.keys(ACT).length,pk=Object.keys(ACT).sort((a,b)=>ACT[b]-ACT[a])[0];
+  const f=k=>{const p=k.split('-');return `${MON[+p[1]-1]} ${+p[2]}, ${p[0]}`};
+  document.getElementById('psum').innerHTML=`<b>${tot.toLocaleString()}</b> commits<br><b>${act}</b> active days<br>peak <b>${ACT[pk]}</b> on ${f(pk)}`;
+  document.getElementById('pleg').innerHTML='less '+[0,1,2,3,4,5].map(i=>`<i class="pd l${i}"></i>`).join('')+' more';
+  const rd=document.getElementById('pread');
+  const info=k=>{const n=ACT[k]||0,ev=D.events.filter(e=>e.date==k).map(e=>e.title);rd.innerHTML=`<b>${f(k)}</b><br>${n} commit${n==1?'':'s'}${ev.length?'<br>'+esc(ev[0]):''}`};
+  g.addEventListener('pointerover',e=>{const c=e.target.closest('.pd');if(c&&!c.classList.contains('off'))info(c.dataset.k)});
+  g.addEventListener('click',e=>{const c=e.target.closest('.pd');if(!c)return;info(c.dataset.k);
+    const els=[...document.querySelectorAll('#tl .ev')];const el=els.find(x=>x.dataset.d>=c.dataset.k)||els[els.length-1];
+    if(el)el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'})});
+  const band=document.getElementById('band');
+  let tick=false;
+  const spy=()=>{tick=false;if(getComputedStyle(band).display=='none')return;
+    const y=innerHeight*.4,els=[...document.querySelectorAll('#tl .ev')];const el=els.find(x=>x.getBoundingClientRect().bottom>y);if(!el)return;
+    const dd=el.dataset.d,iso=dd.length==10?dd:dd.length==7?dd+'-15':dd+'-07-01';
+    const w=Math.max(0,Math.min(weeks-1,Math.floor((new Date(iso+'T00:00:00Z')-start)/DAY/7)));
+    band.style.top=`calc(${w} * (100% + 2px) / ${weeks})`};
+  addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(spy)}},{passive:true});
+  window.__spy=spy;spy();
+})();
+const M=__MAP__;
+const R=Object.fromEntries(M.rows.map(r=>[r.c,r]));
+const bk=n=>n>=100?5:n>=20?4:n>=5?3:n>=2?2:1;
+const cls=c=>'c'+(R[c]?' b'+bk(R[c].n):'')+(c=='AQ'?' aq':'');
+document.getElementById('wmap').innerHTML='<path class="sea" d="'+M.sphere+'"/>'+
+  Object.keys(M.paths).map(c=>`<path class="${cls(c)}"${R[c]?` data-c="${c}"`:''} d="${M.paths[c]}"/>`).join('')+
+  M.dots.map(o=>`<circle class="${cls(o.c)}" data-c="${o.c}" cx="${o.x}" cy="${o.y}" r="4.5"/>`).join('');
+const AN=M.appNames;
+const show=c=>{const r=R[c];if(!r)return;
+  const ap=Object.entries(r.apps).sort((a,b)=>b[1]-a[1]).map(([id,n])=>`${AN[id].replace(' Classic Shirt and Pants Maker','').replace(' für Claude','')} ${n}`).join(' · ');
+  document.getElementById('readout').innerHTML=`<b>${esc(r.name)}</b> ${r.n} install${r.n>1?'s':''} <span>${esc(ap)}</span>`;
+  document.querySelectorAll('#wmap .sel').forEach(x=>x.classList.remove('sel'));
+  document.querySelectorAll(`#wmap [data-c="${c}"]`).forEach(x=>x.classList.add('sel'))};
+const svg=document.getElementById('wmap');
+['pointerover','click'].forEach(ev=>svg.addEventListener(ev,e=>{const el=e.target.closest('[data-c]');if(el)show(el.dataset.c)}));
+document.getElementById('legend').innerHTML=[['b1','1'],['b2','2 to 4'],['b3','5 to 19'],['b4','20 to 99'],['b5','100+']].map(([k,l])=>`<span><i class="${k}"></i>${l}</span>`).join('')+'<span>installs per market</span>';
+const li=r=>`<li><span>${esc(r.name)}</span><b>${r.n}</b></li>`;
+const head=M.rows.slice(0,10),mid=M.rows.slice(10).filter(r=>r.n>1),ones=M.rows.filter(r=>r.n==1);
+document.getElementById('top10').innerHTML=head.map(li).join('');
+document.getElementById('mid').innerHTML=mid.map(li).join('');
+document.getElementById('sum2').textContent=`${mid.length} more markets with 2 or more installs`;
+document.getElementById('ones').innerHTML=ones.map(li).join('');
+document.getElementById('sum1').textContent=`${ones.length} single-install markets, Antarctica included`;
+</script>
