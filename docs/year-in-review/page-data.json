@@ -7,16 +7,16 @@
    "category": "origin",
    "headline": true,
    "confidence": "verified",
-   "detail": "A pet-collecting space simulator, designed with Gemini in a running game design document. You ignite a star, form planets, sacrifice them for Stardust Pet chrysalises, and rebirth in a supernova. The GDD is at v0.4 by 7/26."
+   "detail": "A pet-collecting space simulator, designed with Gemini in a running design document. You ignite a star, form planets, sacrifice them for Stardust Pet chrysalises, and rebirth in a supernova. The document is at v0.4 by July 26."
   },
   {
    "date": "2025-07-29",
    "precision": "day",
-   "title": "Galaxy Genesis v0.7 gets a real data layer and a hub world",
+   "title": "Galaxy Genesis v0.7 adds saved player data and a hub world",
    "category": "origin",
    "headline": false,
    "confidence": "verified",
-   "detail": "ProfileStore session-locked player data, portals into per-player pocket universes, and a hub world called 1st and 1st."
+   "detail": "Player data is locked to one session at a time, portals lead into a private pocket universe for each player, and the hub world is called 1st and 1st."
   },
   {
    "date": "2025-08-07",
@@ -34,7 +34,7 @@
    "category": "origin",
    "headline": true,
    "confidence": "verified",
-   "detail": "Started at 3:45 pm. By 10:45 there was a command line and a Google Colab scrape. By 11:45 it broke, because the business day was over and the scraper never knew to roll forward. The first lesson was that you still have to know more than the AI. The repo history bookends the day: created at 3:04 pm, last upload at 11:59 pm."
+   "detail": "Started at 3:45 pm. By 10:45 pm it had a command line and a Google Colab scrape. By 11:45 it broke, because the business day was over and the scraper never knew to roll forward. The lesson was that you still have to know more than the AI. The repo history bookends the day, created at 3:04 pm, last upload at 11:59 pm."
   },
   {
    "date": "2025-08-15",
@@ -43,7 +43,7 @@
    "category": "droplet",
    "headline": true,
    "confidence": "verified",
-   "detail": "First boot at 8:26 am Central, and the first SSH setup follows seven minutes later. The first stop for the PriceScout scraper and the other early concepts, before any of it had a proper repo."
+   "detail": "A cloud server comes up at 8:26 am Central, with SSH access set up seven minutes later. It becomes the first home for the PriceScout scraper and the other early concepts, before any of it had a proper repo."
   },
   {
    "date": "2025-08-18",
@@ -52,7 +52,7 @@
    "category": "origin",
    "headline": false,
    "confidence": "verified",
-   "detail": "The first price reports come out on Aug 17. The next evening a commit called \"most stable web build with .db initiated\" gives it somewhere to keep them."
+   "detail": "The first price reports come out on August 17. The next evening a commit called \"most stable web build with .db initiated\" gives it somewhere to keep them."
   },
   {
    "date": "2025-09-05",
@@ -78,7 +78,7 @@
    "lane": "activity",
    "category": "origin",
    "title": "First line of code lands in Project-626Labs-1",
-   "detail": "Initial commit 7fceba1b, the canonical 626 Labs repo.",
+   "detail": "The canonical 626 Labs repo.",
    "confidence": "verified",
    "headline": true
   },
@@ -88,17 +88,7 @@
    "lane": "firebase",
    "category": "firebase",
    "title": "Firebase enters the dashboard codebase",
-   "detail": "Firebase lands in package.json one day after the first commit.",
-   "confidence": "verified",
-   "headline": false
-  },
-  {
-   "date": "2025-11-04",
-   "precision": "day",
-   "lane": "activity",
-   "category": "origin",
-   "title": "Chef-I-s first commit",
-   "detail": "Early personal project.",
+   "detail": "One day after the first commit, Firebase joins the dependencies.",
    "confidence": "verified",
    "headline": false
   },
@@ -107,20 +97,10 @@
    "precision": "day",
    "lane": "firebase",
    "category": "firebase",
-   "title": "First firebase.json makes the dashboard the first Firebase app",
-   "detail": "Hosting, Firestore, Storage, functions and Data Connect config land together, project-626labs.",
+   "title": "The dashboard becomes the first Firebase app",
+   "detail": "The first firebase.json sets up hosting, the database, storage, functions and Data Connect config in one commit, under project-626labs.",
    "confidence": "verified",
    "headline": true
-  },
-  {
-   "date": "2025-11-12",
-   "precision": "day",
-   "lane": "firebase",
-   "category": "firebase",
-   "title": "Dashboard CI deploy workflow appears",
-   "detail": "deploy.yml is created. The first successful run is not recorded in git.",
-   "confidence": "verified",
-   "headline": false
   },
   {
    "date": "2025-12",
@@ -129,25 +109,15 @@
    "category": "product",
    "headline": false,
    "confidence": "user-stated",
-   "detail": "About a week after the first build, a Gemini hackathon opened. Starting over kept the entry in compliance. Celestia3 grows from that restart."
+   "detail": "A Gemini hackathon opened about a week after the first build. Starting over kept the entry in compliance, and Celestia3 grew from that restart."
   },
   {
    "date": "2025-12-08",
    "precision": "day",
    "lane": "firebase",
    "category": "firebase",
-   "title": "CinePerks Cinema App (WeSeeYouAtTheMovies) arrives with Firebase config",
-   "detail": "The first commit is also the first firebase.json.",
-   "confidence": "verified",
-   "headline": false
-  },
-  {
-   "date": "2025-12-19",
-   "precision": "day",
-   "lane": "activity",
-   "category": "product",
-   "title": "Celestia3 GitHub repo created",
-   "detail": "Local history starts 2026-03-13. What sat in between is unknown.",
+   "title": "CinePerks Cinema App arrives, Firebase config included",
+   "detail": "Its first commit is also its first firebase.json. The repo is WeSeeYouAtTheMovies.",
    "confidence": "verified",
    "headline": false
   },
@@ -165,8 +135,8 @@
    "precision": "day",
    "lane": "firebase",
    "category": "firebase",
-   "title": "The Lineup ships with a Firestore backend on day one",
-   "detail": "No firebase.json yet, and the deploy is unverified.",
+   "title": "The Lineup ships with a cloud database on day one",
+   "detail": "",
    "confidence": "verified",
    "headline": false
   },
@@ -175,7 +145,7 @@
    "precision": "day",
    "lane": "products",
    "category": "product",
-   "title": "Cleanup Ranger created; first scripted demo narration ships",
+   "title": "Cleanup Ranger starts, and the first narrated demo ships",
    "detail": "The Scripted Demo Automator, with captions and narration, arrives the same day.",
    "confidence": "verified",
    "headline": false
@@ -185,8 +155,8 @@
    "precision": "day",
    "lane": "making",
    "category": "video",
-   "title": "Veo 3.1 demo-video generator is the first generative-video experiment",
-   "detail": "It lives in the dashboard project and predates the ffmpeg and ElevenLabs pipeline.",
+   "title": "The first generative-video experiment runs on Veo 3.1",
+   "detail": "A demo-video generator inside the dashboard project, built before the ffmpeg and ElevenLabs pipeline.",
    "confidence": "verified",
    "headline": false
   },
@@ -195,8 +165,8 @@
    "precision": "day",
    "lane": "products",
    "category": "product",
-   "title": "Celestia3, Anote-That and Reel-Battles seeded the same day",
-   "detail": "Celestia3 runs as project celestia3 on Firebase, served at celestia.626labs.dev. This is the restart that became Celestia3.",
+   "title": "Celestia3, Anote-That and Reel-Battles start the same day",
+   "detail": "This is the restart from the December hackathon. Celestia3 runs on Firebase at celestia.626labs.dev.",
    "confidence": "verified",
    "headline": false
   },
@@ -206,7 +176,7 @@
    "lane": "droplet",
    "category": "droplet",
    "title": "The Droplet becomes a deployment target",
-   "detail": "Agent OS deploy target manager and server-access tools.",
+   "detail": "Agent OS gains a deploy target manager and server-access tools.",
    "confidence": "verified",
    "headline": false
   },
@@ -215,8 +185,8 @@
    "precision": "day",
    "lane": "making",
    "category": "publishing",
-   "title": "WriterStudio starts with an ElevenLabs audiobook pipeline, docs only",
-   "detail": "No audiobook exists yet.",
+   "title": "WriterStudio starts with an audiobook pipeline on paper",
+   "detail": "The pipeline uses ElevenLabs and exists only as documentation. No audiobook exists yet.",
    "confidence": "verified",
    "headline": false
   },
@@ -225,8 +195,8 @@
    "precision": "day",
    "lane": "firebase",
    "category": "firebase",
-   "title": "Tag That Line deploys to Firebase Hosting with an api function",
-   "detail": "Hackathon build, project tagthatline.",
+   "title": "Tag That Line goes up on Firebase for a hackathon",
+   "detail": "Hosting plus an API function, under the project tagthatline.",
    "confidence": "verified",
    "headline": false
   },
@@ -235,8 +205,8 @@
    "precision": "day",
    "lane": "activity",
    "category": "plugin",
-   "title": "Vibe Cartographer first commit",
-   "detail": "It started life as App Project Readiness Plugin. Oldest Vibe repo.",
+   "title": "Vibe Cartographer gets its first commit",
+   "detail": "It started life as App Project Readiness Plugin, the oldest Vibe repo.",
    "confidence": "verified",
    "headline": false
   },
@@ -245,8 +215,8 @@
    "precision": "day",
    "lane": "decisions",
    "category": "origin",
-   "title": "Earliest recoverable dashboard decisions set a nine-item roadmap in a day",
-   "detail": "Media, Docs, Attachments, Types, Writing, The Wire, Portfolio, Universe Bridge, Autopilot.",
+   "title": "The earliest dashboard decisions on record set a nine-item roadmap",
+   "detail": "The nine: Media, Docs, Attachments, Types, Writing, The Wire, Portfolio, Universe Bridge, Autopilot.",
    "confidence": "verified",
    "headline": false
   },
@@ -255,8 +225,8 @@
    "precision": "day",
    "lane": "droplet",
    "category": "droplet",
-   "title": "57 Cloud Functions, the MCP server, and Universe live with 43 projects",
-   "detail": "MCP on the Droplet at port 3626 (PM2), Functions on Firebase.",
+   "title": "57 Cloud Functions, the MCP server and Universe go live with 43 projects",
+   "detail": "The MCP server runs on the Droplet at port 3626. The functions run on Firebase.",
    "confidence": "verified",
    "headline": true
   },
@@ -266,7 +236,7 @@
    "lane": "decisions",
    "category": "product",
    "title": "Architect Galaxy ships with 27 commits and 689 tests",
-   "detail": "Canvas renderer reaches prod 04-15.",
+   "detail": "Its canvas renderer reaches production on April 15.",
    "confidence": "verified",
    "headline": false
   },
@@ -285,8 +255,8 @@
    "precision": "day",
    "lane": "tools",
    "category": "website",
-   "title": "626labs.dev exists with the hub's first commit and CNAME",
-   "detail": "11 commits that day. 1309 commits since.",
+   "title": "626labs.dev exists with the hub's first commit and its domain",
+   "detail": "11 commits that day, 1309 since.",
    "confidence": "verified",
    "headline": true
   },
@@ -295,8 +265,8 @@
    "precision": "day",
    "lane": "tools",
    "category": "design",
-   "title": "Design system, admin and site.json renderer arrive in one day",
-   "detail": "Tokens committed, PAT-gated Control Room admin, render-hub.py and rebuild CI.",
+   "title": "The design system, admin and site renderer arrive in one day",
+   "detail": "Design tokens, the Control Room admin, render-hub.py and the rebuild automation.",
    "confidence": "verified",
    "headline": true
   },
@@ -306,18 +276,8 @@
    "lane": "store",
    "category": "store",
    "title": "Sanduhr for Claude goes live on the Microsoft Store",
-   "detail": "First Store app. Partner Center confirms first publish at 18:23 UTC.",
+   "detail": "The first Store app. Microsoft confirms the first publish at 18:23 UTC.",
    "confidence": "verified",
-   "headline": false
-  },
-  {
-   "date": "2026-04-21",
-   "precision": "day",
-   "lane": "tools",
-   "category": "automation",
-   "title": "Daily traffic tracker becomes the first data bot",
-   "detail": "The date is inferred.",
-   "confidence": "inferred",
    "headline": false
   },
   {
@@ -327,7 +287,7 @@
    "category": "store",
    "headline": false,
    "confidence": "verified",
-   "detail": "Partner Center first publish, the day after Sanduhr."
+   "detail": "First publish, the day after Sanduhr."
   },
   {
    "date": "2026-04-22",
@@ -335,7 +295,7 @@
    "lane": "products",
    "category": "store",
    "title": "Right Click to PNG hits the Store one day after its first commit",
-   "detail": "Partner Center first publish: 20:11 UTC.",
+   "detail": "First publish at 20:11 UTC.",
    "confidence": "verified",
    "headline": true
   },
@@ -344,8 +304,8 @@
    "precision": "day",
    "lane": "products",
    "category": "product",
-   "title": "Bacon Trail widget scaffolded, logPlay Cloud Function bootstrapped",
-   "detail": "The hub's first backend, on guestbuzz-cineperks.",
+   "title": "The Bacon Trail widget starts, with the hub's first backend",
+   "detail": "The logPlay Cloud Function, on guestbuzz-cineperks.",
    "confidence": "verified",
    "headline": false
   },
@@ -354,8 +314,8 @@
    "precision": "day",
    "lane": "making",
    "category": "publishing",
-   "title": "ThesisStudio, BlogStudio and vibe-thesis start",
-   "detail": "All three the same day.",
+   "title": "ThesisStudio, BlogStudio and vibe-thesis all start on one day",
+   "detail": "",
    "confidence": "verified",
    "headline": false
   },
@@ -364,8 +324,8 @@
    "precision": "day",
    "lane": "making",
    "category": "publishing",
-   "title": "From Legitimate to Sustainable and The Second User go out first",
-   "detail": "On Medium and X, a builder guide to vibe-coded software that lasts on 04-28, and how seven Claude Code plugins stabilized the workflow on 04-29.",
+   "title": "The first two articles go out on Medium and X",
+   "detail": "Both ran on Medium and X. From Legitimate to Sustainable, a builder guide to vibe-coded software that lasts, went out April 28. The Second User, on how seven Claude Code plugins stabilized the workflow, followed April 29.",
    "confidence": "verified",
    "headline": false
   },
@@ -374,8 +334,8 @@
    "precision": "day",
    "lane": "activity",
    "category": "product",
-   "title": "ROROROblox first commit from a Cart spike",
-   "detail": "1,147 commits and 35 releases by 09-24.",
+   "title": "ROROROblox gets its first commit, out of a Cartographer spike",
+   "detail": "1,147 commits and 35 releases by September 24.",
    "confidence": "verified",
    "headline": false
   },
@@ -386,7 +346,7 @@
    "category": "store",
    "headline": false,
    "confidence": "verified",
-   "detail": "Partner Center first publish. A certification fix shipped the same day."
+   "detail": "First publish. A certification fix shipped the same day."
   },
   {
    "date": "2026-05-06",
@@ -394,7 +354,7 @@
    "lane": "store",
    "category": "store",
    "title": "RoRoRo goes live on the Store as v1.1.2.0 after a naming rejection",
-   "detail": "Rejection 10.1.1.1 forced ROROROblox to become RORORO. Partner Center first publish: 22:06 UTC.",
+   "detail": "The Store rejected the name, so ROROROblox became RORORO. First publish at 22:06 UTC.",
    "confidence": "verified",
    "headline": false
   },
@@ -413,7 +373,7 @@
    "lane": "products",
    "category": "plugin",
    "title": "RoRoRo 1.4.0.0 ships the plugin system and Ur Task",
-   "detail": "Seed of the Ur family.",
+   "detail": "The seed of the Ur family.",
    "confidence": "verified",
    "headline": false
   },
@@ -424,14 +384,14 @@
    "category": "publishing",
    "headline": false,
    "confidence": "verified",
-   "detail": "Medium on 05-17, X on 05-19."
+   "detail": "On Medium May 17, on X May 19."
   },
   {
    "date": "2026-05-21",
    "precision": "day",
    "lane": "tools",
    "category": "publishing",
-   "title": "/announce launch skill written; Celestia3 Stripe paywall live",
+   "title": "The /announce launch skill is written, and Celestia3's paywall goes live",
    "detail": "",
    "confidence": "verified",
    "headline": false
@@ -441,7 +401,7 @@
    "precision": "day",
    "lane": "droplet",
    "category": "droplet",
-   "title": "Local MCP traffic moves off the Droplet to a Firebase Cloud Function",
+   "title": "Local MCP traffic moves off the Droplet onto Firebase",
    "detail": "",
    "confidence": "verified",
    "headline": false
@@ -451,8 +411,8 @@
    "precision": "day",
    "lane": "tools",
    "category": "automation",
-   "title": "Site management plane lands in a 42-commit day",
-   "detail": "site-doctor, site.py agent CLI, portfolio MCP, Atom feed. The Field Notes feed and first stories arrive the same day.",
+   "title": "The site gets a management plane in a 42-commit day",
+   "detail": "A health-check script, an agent command line, a portfolio MCP server and an Atom feed. The Field Notes feed and first stories arrive the same day.",
    "confidence": "verified",
    "headline": true
   },
@@ -461,7 +421,7 @@
    "precision": "day",
    "lane": "decisions",
    "category": "publishing",
-   "title": "Containment after Mythos becomes a work; spine locked in one evening",
+   "title": "Containment after Mythos gets its spine in one evening",
    "detail": "A citation pass caught five framing errors.",
    "confidence": "verified",
    "headline": false
@@ -472,7 +432,7 @@
    "lane": "making",
    "category": "publishing",
    "title": "Same code, 3x the thinking: first eight hours with Opus 4.8",
-   "detail": "Published on Medium and X on 05-30.",
+   "detail": "Out on Medium and X the same day.",
    "confidence": "verified",
    "headline": false
   },
@@ -491,7 +451,7 @@
    "precision": "day",
    "lane": "making",
    "category": "voice",
-   "title": "Publishing and design skills go global; Oscar voice mode arrives",
+   "title": "Publishing and design skills go global, and Oscar voice mode arrives",
    "detail": "",
    "confidence": "verified",
    "headline": false
@@ -501,8 +461,8 @@
    "precision": "day",
    "lane": "products",
    "category": "product",
-   "title": "Celestia3 replaces its GPL Swiss Ephemeris engine",
-   "detail": "Swiss Ephemeris is copyleft, which a closed-source paywalled app cannot ship. The web engine becomes MIT astronomy-engine at about one arcminute, shedding 12.5 MB per page load. Sub-arcsecond stays a native-app goal.",
+   "title": "Celestia3 swaps its GPL engine for an MIT one",
+   "detail": "Swiss Ephemeris is copyleft, which a closed-source app cannot ship. The web version now runs on the MIT-licensed astronomy-engine at about one arcminute, and each page load sheds 12.5 MB. Sub-arcsecond accuracy stays a goal for the native app.",
    "confidence": "verified",
    "headline": true
   },
@@ -522,7 +482,7 @@
    "lane": "store",
    "category": "store",
    "title": "626 Mod Launcher goes live as the sixth Store app",
-   "detail": "Partner Center first publish: 22:27 UTC.",
+   "detail": "First publish at 22:27 UTC.",
    "confidence": "verified",
    "headline": false
   },
@@ -532,7 +492,7 @@
    "lane": "tools",
    "category": "community",
    "title": "The first 626 Day arrives with 14 plugins and 6 Store apps",
-   "detail": "Annual beat from now on.",
+   "detail": "626 Day is now annual.",
    "confidence": "verified",
    "headline": true
   },
@@ -551,8 +511,8 @@
    "precision": "day",
    "lane": "decisions",
    "category": "agent",
-   "title": "RoRoRo's next focus is an AI connector so Claude drives the launcher",
-   "detail": "Plus a Pet Sim 99 knowledge base. Origin of Claude playing Roblox.",
+   "title": "RoRoRo's next move is a connector so Claude can drive the launcher",
+   "detail": "A Pet Sim 99 knowledge base comes with it. This is where Claude playing Roblox starts.",
    "confidence": "verified",
    "headline": false
   },
@@ -571,7 +531,7 @@
    "precision": "day",
    "lane": "tools",
    "category": "design",
-   "title": "Phosphor Blueprint adopted as first brand treatment",
+   "title": "Phosphor Blueprint becomes the first brand treatment",
    "detail": "",
    "confidence": "verified",
    "headline": false
@@ -581,19 +541,9 @@
    "precision": "day",
    "lane": "products",
    "category": "product",
-   "title": "Conundrum Etsy shop and POD pipeline go public",
+   "title": "The Conundrum Etsy shop and its print-on-demand pipeline go public",
    "detail": "",
    "confidence": "verified",
-   "headline": false
-  },
-  {
-   "date": "2026-07-13",
-   "precision": "day",
-   "lane": "making",
-   "category": "video",
-   "title": "tiktok-video-maker skill created",
-   "detail": "The date is the directory's birth date.",
-   "confidence": "inferred",
    "headline": false
   },
   {
@@ -603,14 +553,14 @@
    "category": "product",
    "headline": false,
    "confidence": "verified",
-   "detail": "The about page drops \"NASA-JPL-calibrated\" for \"high-precision, professionally-validated\"."
+   "detail": "The about page trades \"NASA-JPL-calibrated\" for \"high-precision, professionally-validated\"."
   },
   {
    "date": "2026-07-19",
    "precision": "day",
    "lane": "decisions",
    "category": "product",
-   "title": "Sanduhr 3.3.0 cut within hours to beat the Fable entitlement flip",
+   "title": "Sanduhr 3.3.0 ships within hours, ahead of the Fable access change",
    "detail": "",
    "confidence": "verified",
    "headline": false
@@ -620,8 +570,8 @@
    "precision": "day",
    "lane": "tools",
    "category": "automation",
-   "title": "Theme rotation machinery built and gated in one day",
-   "detail": "Registry, theme-doctor, freeze, rotate-theme.yml; 10 commits in a 32-commit day.",
+   "title": "Theme rotation is built and gated in one day",
+   "detail": "A registry, a checker called theme-doctor, a freeze step and the monthly workflow. 10 commits in a 32-commit day.",
    "confidence": "verified",
    "headline": true
   },
@@ -630,8 +580,8 @@
    "precision": "day",
    "lane": "firebase",
    "category": "firebase",
-   "title": "Etsy connector gets its own Firebase project; first Blaze deploy 08-12",
-   "detail": "",
+   "title": "The Etsy connector gets its own Firebase project",
+   "detail": "It first deploys on August 12.",
    "confidence": "verified",
    "headline": false
   },
@@ -641,7 +591,7 @@
    "lane": "products",
    "category": "agent",
    "title": "RoRoRo Ur MCP 0.1.0 gives Claude thirteen consent-gated tools",
-   "detail": "The tools drive Roblox. No pet-simulator-specific release; the ore-finder macro follows 09-28.",
+   "detail": "They drive Roblox. Nothing in this release is specific to a pet simulator. The ore-finder macro follows September 28.",
    "confidence": "verified",
    "headline": true
   },
@@ -651,7 +601,7 @@
    "lane": "making",
    "category": "video",
    "title": "RoRoRo and 626 Mod Launcher launch videos land in four cuts",
-   "detail": "They use the loop-seam tagline pattern.",
+   "detail": "Each video ends on its tagline and opens with the words that finish it, so the loop completes the sentence.",
    "confidence": "verified",
    "headline": true
   },
@@ -660,8 +610,8 @@
    "precision": "day",
    "lane": "tools",
    "category": "website",
-   "title": "Slate Broadsheet queued; two movie games embedded on the hub",
-   "detail": "43-commit day.",
+   "title": "Slate Broadsheet joins the queue, and two movie games land on the hub",
+   "detail": "A 43-commit day.",
    "confidence": "verified",
    "headline": false
   },
@@ -670,7 +620,7 @@
    "precision": "day",
    "lane": "tools",
    "category": "design",
-   "title": "Theme-aware rasters make brand exports and OG cards follow the active theme",
+   "title": "Brand exports and social cards now follow the active theme",
    "detail": "",
    "confidence": "verified",
    "headline": false
@@ -680,8 +630,8 @@
    "precision": "day",
    "lane": "firebase",
    "category": "firebase",
-   "title": "Translation Verification deploys under project-626labs",
-   "detail": "It gets its own hosting target.",
+   "title": "Translation Verification gets its own hosting target under project-626labs",
+   "detail": "",
    "confidence": "verified",
    "headline": false
   },
@@ -691,7 +641,7 @@
    "lane": "making",
    "category": "video",
    "title": "RoRoRo ships six localized trailers and Publishing Console",
-   "detail": "Built in a day. RoRoRo article three, The words were the easy part, goes to X on 09-09 and Medium on 09-14.",
+   "detail": "Built in a day. RoRoRo article three, The words were the easy part, goes to X on September 9 and Medium on September 14.",
    "confidence": "verified",
    "headline": true
   },
@@ -700,8 +650,8 @@
    "precision": "day",
    "lane": "store",
    "category": "automation",
-   "title": "Microsoft Store analytics becomes the twelfth push bot",
-   "detail": "Reach map follows 09-21.",
+   "title": "Microsoft Store analytics becomes the twelfth data bot",
+   "detail": "The reach map follows on September 21.",
    "confidence": "verified",
    "headline": false
   },
@@ -710,7 +660,7 @@
    "precision": "day",
    "lane": "decisions",
    "category": "other",
-   "title": "Legal entity ruled 626Labs LLC; 33 references fixed",
+   "title": "The name settles as 626Labs LLC, and 33 references get fixed",
    "detail": "",
    "confidence": "verified",
    "headline": false
@@ -720,7 +670,7 @@
    "precision": "day",
    "lane": "store",
    "category": "store",
-   "title": "RoRoRo Store single-day peak hits 71 installs and 63 acquisitions",
+   "title": "RoRoRo peaks at 71 installs and 63 acquisitions in one day",
    "detail": "",
    "confidence": "verified",
    "headline": false
@@ -750,7 +700,7 @@
    "precision": "day",
    "lane": "decisions",
    "category": "infra",
-   "title": "Firebase Data Connect retired; macro-maker repo for event-day loop",
+   "title": "Data Connect retires, and a macro-maker repo starts for the event-day loop",
    "detail": "",
    "confidence": "verified",
    "headline": false
