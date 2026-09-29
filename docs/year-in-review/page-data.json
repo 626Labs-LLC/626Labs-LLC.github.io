@@ -1,0 +1,785 @@
+{
+ "events": [
+  {
+   "date": "2025-07-26",
+   "precision": "day",
+   "title": "Galaxy Genesis is the Roblox game that came first",
+   "category": "origin",
+   "headline": true,
+   "confidence": "verified",
+   "detail": "A pet-collecting space simulator, designed with Gemini in a running game design document. You ignite a star, form planets, sacrifice them for Stardust Pet chrysalises, and rebirth in a supernova. The GDD is at v0.4 by 7/26."
+  },
+  {
+   "date": "2025-07-29",
+   "precision": "day",
+   "title": "Galaxy Genesis v0.7 gets a real data layer and a hub world",
+   "category": "origin",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "ProfileStore session-locked player data, portals into per-player pocket universes, and a hub world called 1st and 1st."
+  },
+  {
+   "date": "2025-08-07",
+   "precision": "day",
+   "title": "Galaxy Genesis goes on GitHub",
+   "category": "origin",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "The first personal repo, pushed the day before PriceScout. Its last commit lands on PriceScout day and reads \"Just trying to get it right this time.\""
+  },
+  {
+   "date": "2025-08-08",
+   "precision": "day",
+   "title": "PriceScout, a work tool built in seven hours",
+   "category": "origin",
+   "headline": true,
+   "confidence": "verified",
+   "detail": "Started at 3:45 pm. By 10:45 there was a command line and a Google Colab Fandango scrape. By 11:45 it broke, because the business day was over and the scraper never knew to roll forward. The first lesson was that you still have to know more than the AI. The repo history bookends the day: created at 3:04 pm, last upload at 11:59 pm."
+  },
+  {
+   "date": "2025-08-15",
+   "precision": "day",
+   "title": "The Droplet is born",
+   "category": "droplet",
+   "headline": true,
+   "confidence": "verified",
+   "detail": "First boot at 8:26 am Central, and the first SSH setup follows seven minutes later. The first stop for the PriceScout scraper and the other early concepts, before any of it had a proper repo."
+  },
+  {
+   "date": "2025-08-18",
+   "precision": "day",
+   "title": "PriceScout gets a database",
+   "category": "origin",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "The first price reports come out on Aug 17. The next evening a commit called \"most stable web build with .db initiated\" gives it somewhere to keep them."
+  },
+  {
+   "date": "2025-09-05",
+   "precision": "day",
+   "title": "Texas Comptroller letter arrives",
+   "category": "origin",
+   "detail": "The formal start of 626Labs LLC.",
+   "confidence": "user-stated",
+   "headline": true
+  },
+  {
+   "date": "2025-10-22",
+   "precision": "day",
+   "title": "The first PriceScout demo video",
+   "category": "video",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "Two months after the scrape, the tool gets a screen recording of its own."
+  },
+  {
+   "date": "2025-10-28",
+   "precision": "day",
+   "lane": "activity",
+   "category": "origin",
+   "title": "First line of code lands in Project-626Labs-1",
+   "detail": "Initial commit 7fceba1b, the canonical 626 Labs repo.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2025-10-29",
+   "precision": "day",
+   "lane": "firebase",
+   "category": "firebase",
+   "title": "Firebase enters the dashboard codebase",
+   "detail": "Firebase lands in package.json one day after the first commit.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2025-11-04",
+   "precision": "day",
+   "lane": "activity",
+   "category": "origin",
+   "title": "Chef-I-s first commit",
+   "detail": "Early personal project.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2025-11-11",
+   "precision": "day",
+   "lane": "firebase",
+   "category": "firebase",
+   "title": "First firebase.json makes the dashboard the first Firebase app",
+   "detail": "Hosting, Firestore, Storage, functions and Data Connect config land together, project-626labs.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2025-11-12",
+   "precision": "day",
+   "lane": "firebase",
+   "category": "firebase",
+   "title": "Dashboard CI deploy workflow appears",
+   "detail": "deploy.yml is created. The first successful run is not recorded in git.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2025-12",
+   "precision": "month",
+   "title": "A Gemini hackathon opens and Celestia restarts clean",
+   "category": "product",
+   "headline": false,
+   "confidence": "user-stated",
+   "detail": "About a week after the first build, a Gemini hackathon opened. Starting over kept the entry in compliance. Celestia3 grows from that restart."
+  },
+  {
+   "date": "2025-12-08",
+   "precision": "day",
+   "lane": "firebase",
+   "category": "firebase",
+   "title": "CinePerks Cinema App (WeSeeYouAtTheMovies) arrives with Firebase config",
+   "detail": "The first commit is also the first firebase.json.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2025-12-19",
+   "precision": "day",
+   "lane": "activity",
+   "category": "product",
+   "title": "Celestia3 GitHub repo created",
+   "detail": "Local history starts 2026-03-13. What sat in between is unknown.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2025-12-19",
+   "precision": "day",
+   "title": "Celestia begins, with a tarot mode",
+   "category": "product",
+   "headline": false,
+   "confidence": "user-stated",
+   "detail": "The original Celestia let an agent build you a custom tarot deck. It made a lot of Christopher Walken decks. Great ones."
+  },
+  {
+   "date": "2026-01-31",
+   "precision": "day",
+   "lane": "firebase",
+   "category": "firebase",
+   "title": "The Lineup ships with a Firestore backend on day one",
+   "detail": "No firebase.json yet, and the deploy is unverified.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-02-26",
+   "precision": "day",
+   "lane": "products",
+   "category": "product",
+   "title": "Cleanup Ranger created; first scripted demo narration ships",
+   "detail": "The Scripted Demo Automator, with captions and narration, arrives the same day.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-03-03",
+   "precision": "day",
+   "lane": "making",
+   "category": "video",
+   "title": "Veo 3.1 demo-video generator is the first generative-video experiment",
+   "detail": "It lives in the dashboard project and predates the ffmpeg and ElevenLabs pipeline.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-03-13",
+   "precision": "day",
+   "lane": "products",
+   "category": "product",
+   "title": "Celestia3, Anote-That and Reel-Battles seeded the same day",
+   "detail": "Celestia3 runs as project celestia3 on Firebase, served at celestia.626labs.dev. This is the restart that became Celestia3.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-03-16",
+   "precision": "day",
+   "lane": "droplet",
+   "category": "droplet",
+   "title": "The Droplet becomes a deployment target",
+   "detail": "Agent OS deploy target manager and server-access tools.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-03-30",
+   "precision": "day",
+   "lane": "making",
+   "category": "publishing",
+   "title": "WriterStudio starts with an ElevenLabs audiobook pipeline, docs only",
+   "detail": "No audiobook exists yet.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-04-02",
+   "precision": "day",
+   "lane": "firebase",
+   "category": "firebase",
+   "title": "Tag That Line deploys to Firebase Hosting with an api function",
+   "detail": "Hackathon build, project tagthatline.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-04-03",
+   "precision": "day",
+   "lane": "activity",
+   "category": "plugin",
+   "title": "Vibe Cartographer first commit",
+   "detail": "It started life as App Project Readiness Plugin. Oldest Vibe repo.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-04-07",
+   "precision": "day",
+   "lane": "decisions",
+   "category": "origin",
+   "title": "Earliest recoverable dashboard decisions set a nine-item roadmap in a day",
+   "detail": "Media, Docs, Attachments, Types, Writing, The Wire, Portfolio, Universe Bridge, Autopilot.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-04-08",
+   "precision": "day",
+   "lane": "droplet",
+   "category": "droplet",
+   "title": "57 Cloud Functions, the MCP server, and Universe live with 43 projects",
+   "detail": "MCP on the Droplet at port 3626 (PM2), Functions on Firebase.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-04-13",
+   "precision": "day",
+   "lane": "decisions",
+   "category": "product",
+   "title": "Architect Galaxy ships with 27 commits and 689 tests",
+   "detail": "Canvas renderer reaches prod 04-15.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-04-15",
+   "precision": "day",
+   "lane": "products",
+   "category": "plugin",
+   "title": "The Vibe plugin family takes shape in one day",
+   "detail": "Vibe Cartographer 1.0.0 and Vibe Doc 0.3.0 ship. The vibe-plugins monorepo, vibe-sec and Sanduhr start.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-04-17",
+   "precision": "day",
+   "lane": "tools",
+   "category": "website",
+   "title": "626labs.dev exists with the hub's first commit and CNAME",
+   "detail": "11 commits that day. 1309 commits since.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-04-19",
+   "precision": "day",
+   "lane": "tools",
+   "category": "design",
+   "title": "Design system, admin and site.json renderer arrive in one day",
+   "detail": "Tokens committed, PAT-gated Control Room admin, render-hub.py and rebuild CI.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-04-20",
+   "precision": "day",
+   "lane": "store",
+   "category": "store",
+   "title": "Sanduhr for Claude goes live on the Microsoft Store",
+   "detail": "First Store app. Partner Center confirms first publish at 18:23 UTC.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-04-21",
+   "precision": "day",
+   "lane": "tools",
+   "category": "automation",
+   "title": "Daily traffic tracker becomes the first data bot",
+   "detail": "The date is inferred.",
+   "confidence": "inferred",
+   "headline": false
+  },
+  {
+   "date": "2026-04-21",
+   "precision": "day",
+   "title": "RBX15 Classic Shirt and Pants Maker goes live on the Store",
+   "category": "store",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "Partner Center first publish, the day after Sanduhr."
+  },
+  {
+   "date": "2026-04-22",
+   "precision": "day",
+   "lane": "products",
+   "category": "store",
+   "title": "Right Click to PNG hits the Store one day after its first commit",
+   "detail": "Partner Center first publish: 20:11 UTC.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-04-23",
+   "precision": "day",
+   "lane": "products",
+   "category": "product",
+   "title": "Bacon Trail widget scaffolded, logPlay Cloud Function bootstrapped",
+   "detail": "The hub's first backend, on guestbuzz-cineperks.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-04-26",
+   "precision": "day",
+   "lane": "making",
+   "category": "publishing",
+   "title": "ThesisStudio, BlogStudio and vibe-thesis start",
+   "detail": "All three the same day.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-04-28",
+   "precision": "day",
+   "lane": "making",
+   "category": "publishing",
+   "title": "From Legitimate to Sustainable and The Second User go out first",
+   "detail": "On Medium and X, a builder guide to vibe-coded software that lasts on 04-28, and how seven Claude Code plugins stabilized the workflow on 04-29.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-05-03",
+   "precision": "day",
+   "lane": "activity",
+   "category": "product",
+   "title": "ROROROblox first commit from a Cart spike",
+   "detail": "1,147 commits and 35 releases by 09-24.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-05-04",
+   "precision": "day",
+   "title": "SnapSnip goes live on the Store",
+   "category": "store",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "Partner Center first publish. A certification fix shipped the same day."
+  },
+  {
+   "date": "2026-05-06",
+   "precision": "day",
+   "lane": "store",
+   "category": "store",
+   "title": "RoRoRo goes live on the Store as v1.1.2.0 after a naming rejection",
+   "detail": "Rejection 10.1.1.1 forced ROROROblox to become RORORO. Partner Center first publish: 22:06 UTC.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-05-06",
+   "precision": "day",
+   "title": "Three Pipelines on Medium",
+   "category": "publishing",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "A 13-minute read, approved by the Artificial Intelligence publication."
+  },
+  {
+   "date": "2026-05-11",
+   "precision": "day",
+   "lane": "products",
+   "category": "plugin",
+   "title": "RoRoRo 1.4.0.0 ships the plugin system and Ur Task",
+   "detail": "Seed of the Ur family.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-05-17",
+   "precision": "day",
+   "title": "RoRoRo article one, the multi-launcher you can recommend on camera",
+   "category": "publishing",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "Medium on 05-17, X on 05-19."
+  },
+  {
+   "date": "2026-05-21",
+   "precision": "day",
+   "lane": "tools",
+   "category": "publishing",
+   "title": "/announce launch skill written; Celestia3 Stripe paywall live",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-05-22",
+   "precision": "day",
+   "lane": "droplet",
+   "category": "droplet",
+   "title": "Local MCP traffic moves off the Droplet to a Firebase Cloud Function",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-05-23",
+   "precision": "day",
+   "lane": "tools",
+   "category": "automation",
+   "title": "Site management plane lands in a 42-commit day",
+   "detail": "site-doctor, site.py agent CLI, portfolio MCP, Atom feed. The Field Notes feed and first stories arrive the same day.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-05-26",
+   "precision": "day",
+   "lane": "decisions",
+   "category": "publishing",
+   "title": "Containment after Mythos becomes a work; spine locked in one evening",
+   "detail": "A citation pass caught five framing errors.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-05-30",
+   "precision": "day",
+   "lane": "making",
+   "category": "publishing",
+   "title": "Same code, 3x the thinking: first eight hours with Opus 4.8",
+   "detail": "Published on Medium and X on 05-30.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-06-09",
+   "precision": "day",
+   "lane": "decisions",
+   "category": "agent",
+   "title": "Fable 5 window opens with five plugins promoted and the sprint ratified",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-06-13",
+   "precision": "day",
+   "lane": "making",
+   "category": "voice",
+   "title": "Publishing and design skills go global; Oscar voice mode arrives",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-06-14",
+   "precision": "day",
+   "lane": "products",
+   "category": "product",
+   "title": "Celestia3 replaces its GPL Swiss Ephemeris engine",
+   "detail": "Swiss Ephemeris is copyleft, which a closed-source paywalled app cannot ship. The web engine becomes MIT astronomy-engine at about one arcminute, shedding 12.5 MB per page load. Sub-arcsecond stays a native-app goal.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-06-15",
+   "precision": "day",
+   "lane": "decisions",
+   "category": "product",
+   "title": "Celestia3 engine swap proven against Swiss Ephemeris",
+   "detail": "52 of 52 parity checks pass. A timezone audit adds 1,152 conversion cases and 11 real birth charts checked against published sources, with zero bugs found.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-06-20",
+   "precision": "day",
+   "lane": "store",
+   "category": "store",
+   "title": "626 Mod Launcher goes live as the sixth Store app",
+   "detail": "Partner Center first publish: 22:27 UTC.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-06-26",
+   "precision": "day",
+   "lane": "tools",
+   "category": "community",
+   "title": "The first 626 Day arrives with 14 plugins and 6 Store apps",
+   "detail": "Annual beat from now on.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-07-03",
+   "precision": "day",
+   "lane": "making",
+   "category": "community",
+   "title": "Discord server and 6deux6 release bot built in a day",
+   "detail": "The server exists and waits, closed to the public until there is an audience to host. RoRoRo article two runs on X the same day.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-07-04",
+   "precision": "day",
+   "lane": "decisions",
+   "category": "agent",
+   "title": "RoRoRo's next focus is an AI connector so Claude drives the launcher",
+   "detail": "Plus a Pet Sim 99 knowledge base. Origin of Claude playing Roblox.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-07-06",
+   "precision": "day",
+   "lane": "tools",
+   "category": "automation",
+   "title": "Version-truth bot and RoRoRo plugin marketplace go live",
+   "detail": "Operating doctrine v1.0.0 lands the same day.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-07-07",
+   "precision": "day",
+   "lane": "tools",
+   "category": "design",
+   "title": "Phosphor Blueprint adopted as first brand treatment",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-07-11",
+   "precision": "day",
+   "lane": "products",
+   "category": "product",
+   "title": "Conundrum Etsy shop and POD pipeline go public",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-07-13",
+   "precision": "day",
+   "lane": "making",
+   "category": "video",
+   "title": "tiktok-video-maker skill created",
+   "detail": "The date is the directory's birth date.",
+   "confidence": "inferred",
+   "headline": false
+  },
+  {
+   "date": "2026-07-15",
+   "precision": "day",
+   "title": "Celestia3 public copy softened to what the tests prove",
+   "category": "product",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "The about page drops \"NASA-JPL-calibrated\" for \"high-precision, professionally-validated\"."
+  },
+  {
+   "date": "2026-07-19",
+   "precision": "day",
+   "lane": "decisions",
+   "category": "product",
+   "title": "Sanduhr 3.3.0 cut within hours to beat the Fable entitlement flip",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-08-03",
+   "precision": "day",
+   "lane": "tools",
+   "category": "automation",
+   "title": "Theme rotation machinery built and gated in one day",
+   "detail": "Registry, theme-doctor, freeze, rotate-theme.yml; 10 commits in a 32-commit day.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-08-11",
+   "precision": "day",
+   "lane": "firebase",
+   "category": "firebase",
+   "title": "Etsy connector gets its own Firebase project; first Blaze deploy 08-12",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-08-22",
+   "precision": "day",
+   "lane": "products",
+   "category": "agent",
+   "title": "RoRoRo Ur MCP 0.1.0 gives Claude thirteen consent-gated tools",
+   "detail": "The tools drive Roblox. No pet-simulator-specific release; the ore-finder macro follows 09-28.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-08-30",
+   "precision": "day",
+   "lane": "making",
+   "category": "video",
+   "title": "RoRoRo and 626 Mod Launcher launch videos land in four cuts",
+   "detail": "They use the loop-seam tagline pattern.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-09-03",
+   "precision": "day",
+   "lane": "tools",
+   "category": "website",
+   "title": "Slate Broadsheet queued; two movie games embedded on the hub",
+   "detail": "43-commit day.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-09-04",
+   "precision": "day",
+   "lane": "tools",
+   "category": "design",
+   "title": "Theme-aware rasters make brand exports and OG cards follow the active theme",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-09-06",
+   "precision": "day",
+   "lane": "firebase",
+   "category": "firebase",
+   "title": "Translation Verification deploys under project-626labs",
+   "detail": "It gets its own hosting target.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-09-09",
+   "precision": "day",
+   "lane": "making",
+   "category": "video",
+   "title": "RoRoRo ships six localized trailers and Publishing Console",
+   "detail": "Built in a day. RoRoRo article three, The words were the easy part, goes to X on 09-09 and Medium on 09-14.",
+   "confidence": "verified",
+   "headline": true
+  },
+  {
+   "date": "2026-09-11",
+   "precision": "day",
+   "lane": "store",
+   "category": "automation",
+   "title": "Microsoft Store analytics becomes the twelfth push bot",
+   "detail": "Reach map follows 09-21.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-09-15",
+   "precision": "day",
+   "lane": "decisions",
+   "category": "other",
+   "title": "Legal entity ruled 626Labs LLC; 33 references fixed",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-09-19",
+   "precision": "day",
+   "lane": "store",
+   "category": "store",
+   "title": "RoRoRo Store single-day peak hits 71 installs and 63 acquisitions",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-09-26",
+   "precision": "day",
+   "lane": "store",
+   "category": "store",
+   "title": "RoRoRo reaches 167 daily active users, up from 88 a month earlier",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-09-28",
+   "precision": "day",
+   "lane": "tools",
+   "category": "publishing",
+   "title": "Containment for Frontier AI goes out",
+   "detail": "Live on X. On Medium it awaits review by the Artificial Intelligence publication, which has accepted every earlier submission.",
+   "confidence": "verified",
+   "headline": false
+  },
+  {
+   "date": "2026-09-29",
+   "precision": "day",
+   "lane": "decisions",
+   "category": "infra",
+   "title": "Firebase Data Connect retired; macro-maker repo for event-day loop",
+   "detail": "",
+   "confidence": "verified",
+   "headline": false
+  }
+ ],
+ "stats": {
+  "hubCommits": 1309,
+  "roroCommits": 1147,
+  "roroReleases": 35,
+  "modLauncherCommits": 1189,
+  "dashboardProjects": 103,
+  "decisionsLowerBound": 1115,
+  "storeApps": 6,
+  "claudePlugins": 14,
+  "storeInstalls30d": 1423,
+  "storeAcquisitions30d": 978,
+  "roroDau": 167,
+  "commitsPerDayPeaks": {
+   "2026-05-23": 42,
+   "2026-05-24": 43,
+   "2026-08-03": 32,
+   "2026-09-03": 43,
+   "2026-09-04": 37
+  },
+  "roroReviews": {
+   "count": 14,
+   "avg": 4.29
+  },
+  "marketsCount": 165,
+  "nonUsShare": "about 75%"
+ }
+}
