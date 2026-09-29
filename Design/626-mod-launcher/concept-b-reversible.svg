@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- 626 Mod Launcher concept B — reversible launch. Play forward, undo everything. -->
+  <rect width="256" height="256" rx="52" fill="#0f1f31"/>
+  <!-- play -->
+  <path d="M 102,92 L 164,128 L 102,164 Z" fill="#17d4fa" stroke="#17d4fa" stroke-width="14" stroke-linejoin="round"/>
+  <!-- the reverse orbit -->
+  <path d="M 194,166 A 76,76 0 1 1 194,90" fill="none" stroke="#f22f89" stroke-width="12" stroke-linecap="round"/>
+  <path d="M 194,90 L 174,72 L 212,68 Z" fill="#f22f89"/>
+</svg>
