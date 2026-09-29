@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T13:10:52.408Z",
+  "generatedAt": "2026-09-29T12:19:39.729Z",
   "count": 57,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-09-28T13:00:43Z",
+      "pushed_at": "2026-09-29T11:38:25Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -325,7 +325,7 @@
       "description": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't bound. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "language": "C#",
-      "pushed_at": "2026-09-28T04:34:26Z",
+      "pushed_at": "2026-09-29T06:28:09Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -565,7 +565,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-09-28T08:27:07Z",
+      "pushed_at": "2026-09-28T14:08:20Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
