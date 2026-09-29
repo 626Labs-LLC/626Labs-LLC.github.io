@@ -21,11 +21,11 @@
   {
    "date": "2025-08-07",
    "precision": "day",
-   "title": "Galaxy Genesis goes on GitHub",
+   "title": "Galaxy Genesis is the first thing put on GitHub",
    "category": "origin",
    "headline": false,
    "confidence": "verified",
-   "detail": "The first personal repo, pushed the day before PriceScout. Its last commit lands on PriceScout day and reads \"Just trying to get it right this time.\""
+   "detail": "The first project ever tracked there, pushed the day before PriceScout. Its last commit lands on PriceScout day and reads \"Just trying to get it right this time.\""
   },
   {
    "date": "2025-08-08",
@@ -176,7 +176,7 @@
    "lane": "droplet",
    "category": "droplet",
    "title": "The Droplet becomes a deployment target",
-   "detail": "Agent OS gains a deploy target manager and server-access tools.",
+   "detail": "Agent OS is the dashboard agent meant to reach every project from one desktop conversation, keeping the whole system unified. It gains a deploy target manager and server-access tools.",
    "confidence": "verified",
    "headline": false
   },
@@ -442,7 +442,7 @@
    "lane": "decisions",
    "category": "agent",
    "title": "Fable 5 window opens with five plugins promoted and the sprint ratified",
-   "detail": "",
+   "detail": "The first big model hype that made the lab perk up and listen.",
    "confidence": "verified",
    "headline": false
   },
@@ -532,7 +532,7 @@
    "lane": "tools",
    "category": "design",
    "title": "Phosphor Blueprint becomes the first brand treatment",
-   "detail": "",
+   "detail": "Chosen because it was clean and distinctive, and felt like the right slate to start building on.",
    "confidence": "verified",
    "headline": false
   },
@@ -561,7 +561,7 @@
    "lane": "decisions",
    "category": "product",
    "title": "Sanduhr 3.3.0 ships within hours, ahead of the Fable access change",
-   "detail": "",
+   "detail": "Anthropic was testing Fable with a short window of access, and it was unclear whether it would stay on regular or premium plans. Sanduhr 3.3.0 shipped within hours.",
    "confidence": "verified",
    "headline": false
   },
@@ -700,8 +700,8 @@
    "precision": "day",
    "lane": "decisions",
    "category": "infra",
-   "title": "Data Connect retires, and a macro-maker repo starts for the event-day loop",
-   "detail": "",
+   "title": "Data Connect retires, and a Pet Sim macro maker starts for the event-day loop",
+   "detail": "The macro-maker repo is built for the Pet Sim event-day loop.",
    "confidence": "verified",
    "headline": false
   }
