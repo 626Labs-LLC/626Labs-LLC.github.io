@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- 626 Mod Launcher concept A — the switchboard. On, off, on: 6-2-6. -->
+  <rect width="256" height="256" rx="52" fill="#0f1f31"/>
+  <!-- row 1: on -->
+  <rect x="48" y="56" width="160" height="40" rx="20" fill="#17d4fa"/>
+  <circle cx="188" cy="76" r="13" fill="#eef7ff"/>
+  <!-- row 2: off — held, not deleted -->
+  <rect x="48" y="108" width="160" height="40" rx="20" fill="#22405e"/>
+  <circle cx="68" cy="128" r="13" fill="#f22f89"/>
+  <!-- row 3: on -->
+  <rect x="48" y="160" width="160" height="40" rx="20" fill="#17d4fa"/>
+  <circle cx="188" cy="180" r="13" fill="#eef7ff"/>
+</svg>
