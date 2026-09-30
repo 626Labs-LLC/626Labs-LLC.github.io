@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phosphor Terminal — 626 Labs treatment exploration</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+/* ---------- specimen chrome — identical across all sheets ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { padding: var(--s-16) var(--s-6); }
+.sheet { max-width: 1240px; margin: 0 auto; display: grid; gap: var(--s-16); }
+.spec-label {
+  font-family: var(--font-mono); font-size: var(--t-micro); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .12em; color: var(--fg-muted);
+  margin-bottom: var(--s-4);
+}
+.thesis { color: var(--fg-3); max-width: 60ch; margin-top: var(--s-2); }
+
+.hero { padding: var(--s-12); border-radius: var(--r-lg); background: var(--bg-1); border: 1px solid var(--border-1); }
+.hero-title { font-family: var(--font-display); font-size: var(--t-h1); letter-spacing: -0.02em; line-height: var(--lh-tight); margin: var(--s-3) 0; }
+.hero-sub { color: var(--fg-2); max-width: 52ch; margin-bottom: var(--s-6); }
+.hero-actions { display: flex; gap: var(--s-3); flex-wrap: wrap; }
+
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.card { background: var(--bg-2); border: 1px solid var(--border-1); border-radius: var(--r-md); padding: var(--s-6); box-shadow: var(--inner-stroke); }
+.card-title { font-family: var(--font-display); font-size: var(--t-h4); font-weight: 600; margin: var(--s-2) 0; }
+.card-body { font-size: var(--t-body-sm); color: var(--fg-2); }
+
+.btnrow, .chiprow { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; }
+.btn { font: 600 var(--t-body-sm)/1 var(--font-body); padding: 12px 20px; border-radius: var(--r-md); border: 1px solid transparent; text-decoration: none; display: inline-block; }
+.btn-primary { background: var(--brand-cyan); color: var(--fg-on-brand); }
+.btn-primary.hover { filter: brightness(1.08); box-shadow: var(--glow-cyan); }
+.btn-secondary { border-color: var(--border-2); color: var(--fg-1); }
+.btn-secondary.hover { background: rgba(255,255,255,.06); border-color: var(--border-strong); }
+.btn-ghost { color: var(--fg-2); }
+.btn-ghost.hover { background: rgba(255,255,255,.06); color: var(--fg-1); }
+
+.chip { border-radius: var(--r-pill); padding: 5px 14px; font-size: var(--t-caption); border: 1px solid var(--border-2); color: var(--fg-2); }
+.chip-active { border-color: var(--border-accent); color: var(--brand-cyan-bright); background: rgba(23,212,250,.08); }
+.chip-success { border-color: rgba(43,217,154,.4); color: var(--success); background: var(--success-bg); }
+.chip-warning { border-color: rgba(255,180,84,.4); color: var(--warning); background: var(--warning-bg); }
+.chip-danger { border-color: rgba(255,84,114,.4); color: var(--danger); background: var(--danger-bg); }
+
+.codeblock { background: var(--ink-900); border: 1px solid var(--border-1); border-radius: var(--r-md); padding: var(--s-5); overflow-x: auto; color: var(--fg-2); }
+.code-accent { color: var(--brand-cyan-bright); }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.stat { background: var(--bg-2); border: 1px solid var(--border-1); border-radius: var(--r-md); padding: var(--s-6); }
+.stat-value { font-family: var(--font-display); font-size: var(--t-h2); font-weight: 700; }
+.stat-label { font-family: var(--font-mono); font-size: var(--t-micro); text-transform: uppercase; letter-spacing: .12em; color: var(--fg-muted); margin-top: var(--s-2); }
+
+.swatch { height: 280px; border-radius: var(--r-lg); border: 1px solid var(--border-1); background: var(--bg-1); }
+
+@media (max-width: 800px) {
+  .cards, .stats { grid-template-columns: 1fr; }
+  body { padding: var(--s-8) var(--s-4); }
+}
+</style>
+<style id="treatment">
+/* Phosphor Terminal — late-night studio monitors, made literal */
+body { background: var(--ink-950); }
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 9;
+  background: repeating-linear-gradient(0deg, rgba(5,12,24,.4) 0 1px, transparent 1px 3px);
+}
+h1, .hero-title, .stat-value { text-shadow: 0 0 14px rgba(23,212,250,.5); }
+.hero, .card, .stat, .codeblock { background: var(--ink-900); border-color: rgba(23,212,250,.22); }
+/* terminal titlebar on cards */
+.card { padding-top: calc(var(--s-6) + 26px); position: relative; overflow: hidden; }
+.card::before {
+  content: "626 // session"; position: absolute; top: 0; left: 0; right: 0; height: 26px;
+  font: 500 10px/26px var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
+  color: var(--brand-cyan-dim); padding-left: var(--s-4);
+  border-bottom: 1px solid rgba(23,212,250,.22); background: rgba(23,212,250,.05);
+}
+/* phosphor persistence: hover leaves a trail (rendered on static hover variants) */
+.btn-primary.hover {
+  box-shadow: 0 0 6px rgba(23,212,250,.9), 0 0 28px rgba(23,212,250,.5), 12px 0 24px rgba(23,212,250,.25);
+  filter: brightness(1.1);
+}
+.chip-active { text-shadow: 0 0 8px rgba(23,212,250,.7); }
+.code-accent { color: var(--brand-magenta-bright); text-shadow: 0 0 8px rgba(242,47,137,.6); }
+.swatch {
+  background:
+    radial-gradient(70% 90% at 50% 50%, rgba(23,212,250,.16), transparent 70%),
+    repeating-linear-gradient(0deg, rgba(5,12,24,.5) 0 1px, transparent 1px 3px),
+    var(--ink-950);
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header>
+    <p class="spec-label">Treatment exploration · 2026-07-07 · Direction 3 of 6</p>
+    <h1>Phosphor Terminal</h1>
+    <p class="thesis">CRT depth: scanlines, glow bloom, phosphor-persistence hover states, terminal chrome framing. Late-night studio monitors, made literal.</p>
+  </header>
+
+  <section>
+    <p class="spec-label">01 · Hero</p>
+    <div class="hero">
+      <p class="micro">626 Labs</p>
+      <h2 class="hero-title">Imagine something else.</h2>
+      <p class="hero-sub">Native apps &amp; Claude Code plugins — vibe-coded, shipped, iterated in the open.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#">Start building</a>
+        <a class="btn btn-secondary" href="#">Browse the lab</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="spec-label">02 · Cards</p>
+    <div class="cards">
+      <article class="card">
+        <p class="micro">Plugin</p>
+        <h3 class="card-title">Vibe Cartographer</h3>
+        <p class="card-body">Idea to shipped app. Spec-driven development for solo builders.</p>
+      </article>
+      <article class="card">
+        <p class="micro">Widget</p>
+        <h3 class="card-title">Sanduhr</h3>
+        <p class="card-body">Claude usage at a glance — floating, always on, out of the way.</p>
+      </article>
+      <article class="card">
+        <p class="micro">Platform</p>
+        <h3 class="card-title">Agent OS</h3>
+        <p class="card-body">The Lab Dashboard. Projects, decisions, agents — one operating surface.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <p class="spec-label">03 · Buttons — rest / hover rendered side-by-side</p>
+    <div class="btnrow">
+      <a class="btn btn-primary" href="#">Primary</a>
+      <a class="btn btn-primary hover" href="#">Primary · hover</a>
+      <a class="btn btn-secondary" href="#">Secondary</a>
+      <a class="btn btn-secondary hover" href="#">Secondary · hover</a>
+      <a class="btn btn-ghost" href="#">Ghost</a>
+      <a class="btn btn-ghost hover" href="#">Ghost · hover</a>
+    </div>
+  </section>
+
+  <section>
+    <p class="spec-label">04 · Chips</p>
+    <div class="chiprow">
+      <span class="chip">Default</span>
+      <span class="chip chip-active">Active</span>
+      <span class="chip chip-success">Shipped</span>
+      <span class="chip chip-warning">In review</span>
+      <span class="chip chip-danger">Blocked</span>
+    </div>
+  </section>
+
+  <section>
+    <p class="spec-label">05 · Code</p>
+    <pre class="codeblock"><code>$ claude /announce sanduhr
+Reading content/site.json ... done.
+Drafts written: field-note, x-post, discord.
+<span class="code-accent">Review before you ship.</span></code></pre>
+  </section>
+
+  <section>
+    <p class="spec-label">06 · Stat tiles</p>
+    <div class="stats">
+      <div class="stat"><p class="stat-value">13</p><p class="stat-label">Plugins live</p></div>
+      <div class="stat"><p class="stat-value">149</p><p class="stat-label">Games in manifest</p></div>
+      <div class="stat"><p class="stat-value">6/26</p><p class="stat-label">626 Day</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="spec-label">07 · Texture swatch — the treatment, full bleed</p>
+    <div class="swatch"></div>
+  </section>
+
+</main>
+</body>
+</html>
