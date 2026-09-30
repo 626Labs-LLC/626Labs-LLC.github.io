@@ -1,42 +1,41 @@
 {
-  "$comment": "Lifetime release-asset download counts (drafts excluded, prereleases flagged). Snapshot only — daily history lives in downloads.csv.",
+  "$comment": "Lifetime release-asset download counts (drafts excluded, prereleases flagged). `total` includes installed apps polling manifests; `installers` is people getting the app. Snapshot only — daily history lives in downloads.csv.",
   "products": {
     "estevanhernandez-stack-ed/626-mod-launcher": {
-      "total": 371,
+      "total": 382,
+      "installers": 27,
+      "updates": 37,
+      "polling": 318,
+      "other": 0,
       "releases": [
         {
           "tag": "v0.23.0",
           "published": "2026-09-15",
-          "total": 4,
+          "total": 6,
+          "installer": 3,
+          "update": 1,
+          "polling": 2,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.23.0-delta.nupkg": 1,
             "626ModLauncher-0.23.0-full.nupkg": 0,
             "626ModLauncher-win-Portable.zip": 2,
-            "626ModLauncher-win-Setup.exe": 0,
+            "626ModLauncher-win-Setup.exe": 1,
             "RELEASES": 0,
-            "releases.win.json": 1
+            "releases.win.json": 2
           }
         },
         {
           "tag": "v0.20.0",
           "published": "2026-08-30",
-          "total": 6,
+          "total": 7,
+          "installer": 0,
+          "update": 2,
+          "polling": 5,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.20.0-delta.nupkg": 0,
             "626ModLauncher-0.20.0-full.nupkg": 2,
-            "626ModLauncher-win-Portable.zip": 0,
-            "626ModLauncher-win-Setup.exe": 0,
-            "RELEASES": 0,
-            "releases.win.json": 4
-          }
-        },
-        {
-          "tag": "v0.19.0",
-          "published": "2026-08-19",
-          "total": 6,
-          "assets": {
-            "626ModLauncher-0.19.0-delta.nupkg": 0,
-            "626ModLauncher-0.19.0-full.nupkg": 1,
             "626ModLauncher-win-Portable.zip": 0,
             "626ModLauncher-win-Setup.exe": 0,
             "RELEASES": 0,
@@ -44,77 +43,101 @@
           }
         },
         {
+          "tag": "v0.19.0",
+          "published": "2026-08-19",
+          "total": 7,
+          "installer": 0,
+          "update": 1,
+          "polling": 6,
+          "other": 0,
+          "assets": {
+            "626ModLauncher-0.19.0-delta.nupkg": 0,
+            "626ModLauncher-0.19.0-full.nupkg": 1,
+            "626ModLauncher-win-Portable.zip": 0,
+            "626ModLauncher-win-Setup.exe": 0,
+            "RELEASES": 0,
+            "releases.win.json": 6
+          }
+        },
+        {
           "tag": "v0.18.1",
           "published": "2026-08-17",
-          "total": 8,
+          "total": 9,
+          "installer": 1,
+          "update": 1,
+          "polling": 7,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.18.1-delta.nupkg": 0,
             "626ModLauncher-0.18.1-full.nupkg": 1,
             "626ModLauncher-win-Portable.zip": 0,
             "626ModLauncher-win-Setup.exe": 1,
             "RELEASES": 0,
-            "releases.win.json": 6
+            "releases.win.json": 7
           }
         },
         {
           "tag": "v0.18.0",
           "published": "2026-08-17",
-          "total": 10,
+          "total": 11,
+          "installer": 1,
+          "update": 1,
+          "polling": 9,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.18.0-delta.nupkg": 0,
             "626ModLauncher-0.18.0-full.nupkg": 1,
             "626ModLauncher-win-Portable.zip": 0,
             "626ModLauncher-win-Setup.exe": 1,
             "RELEASES": 0,
-            "releases.win.json": 8
+            "releases.win.json": 9
           }
         },
         {
           "tag": "v0.17.0",
           "published": "2026-08-04",
-          "total": 11,
+          "total": 12,
+          "installer": 0,
+          "update": 1,
+          "polling": 11,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.17.0-delta.nupkg": 0,
             "626ModLauncher-0.17.0-full.nupkg": 1,
             "626ModLauncher-win-Portable.zip": 0,
             "626ModLauncher-win-Setup.exe": 0,
             "RELEASES": 1,
-            "releases.win.json": 9
+            "releases.win.json": 10
           }
         },
         {
           "tag": "v0.16.0",
           "published": "2026-08-04",
-          "total": 11,
+          "total": 12,
+          "installer": 0,
+          "update": 1,
+          "polling": 11,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.16.0-delta.nupkg": 0,
             "626ModLauncher-0.16.0-full.nupkg": 1,
             "626ModLauncher-win-Portable.zip": 0,
             "626ModLauncher-win-Setup.exe": 0,
             "RELEASES": 0,
-            "releases.win.json": 10
+            "releases.win.json": 11
           }
         },
         {
           "tag": "v0.15.0",
           "published": "2026-08-03",
-          "total": 13,
+          "total": 14,
+          "installer": 1,
+          "update": 1,
+          "polling": 12,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.15.0-delta.nupkg": 0,
             "626ModLauncher-0.15.0-full.nupkg": 1,
-            "626ModLauncher-win-Portable.zip": 0,
-            "626ModLauncher-win-Setup.exe": 1,
-            "RELEASES": 0,
-            "releases.win.json": 11
-          }
-        },
-        {
-          "tag": "v0.14.0",
-          "published": "2026-08-03",
-          "total": 14,
-          "assets": {
-            "626ModLauncher-0.14.0-delta.nupkg": 0,
-            "626ModLauncher-0.14.0-full.nupkg": 1,
             "626ModLauncher-win-Portable.zip": 0,
             "626ModLauncher-win-Setup.exe": 1,
             "RELEASES": 0,
@@ -122,22 +145,47 @@
           }
         },
         {
+          "tag": "v0.14.0",
+          "published": "2026-08-03",
+          "total": 15,
+          "installer": 1,
+          "update": 1,
+          "polling": 13,
+          "other": 0,
+          "assets": {
+            "626ModLauncher-0.14.0-delta.nupkg": 0,
+            "626ModLauncher-0.14.0-full.nupkg": 1,
+            "626ModLauncher-win-Portable.zip": 0,
+            "626ModLauncher-win-Setup.exe": 1,
+            "RELEASES": 0,
+            "releases.win.json": 13
+          }
+        },
+        {
           "tag": "v0.13.1",
           "published": "2026-08-19",
-          "total": 12,
+          "total": 13,
+          "installer": 0,
+          "update": 1,
+          "polling": 12,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.13.1-delta.nupkg": 0,
             "626ModLauncher-0.13.1-full.nupkg": 1,
             "626ModLauncher-win-Portable.zip": 0,
             "626ModLauncher-win-Setup.exe": 0,
             "RELEASES": 0,
-            "releases.win.json": 11
+            "releases.win.json": 12
           }
         },
         {
           "tag": "v0.13.0",
           "published": "2026-08-03",
           "total": 14,
+          "installer": 1,
+          "update": 1,
+          "polling": 12,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.13.0-delta.nupkg": 0,
             "626ModLauncher-0.13.0-full.nupkg": 1,
@@ -151,6 +199,10 @@
           "tag": "v0.12.1",
           "published": "2026-08-02",
           "total": 12,
+          "installer": 1,
+          "update": 1,
+          "polling": 10,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.12.1-delta.nupkg": 0,
             "626ModLauncher-0.12.1-full.nupkg": 1,
@@ -164,6 +216,10 @@
           "tag": "v0.12.0",
           "published": "2026-08-02",
           "total": 11,
+          "installer": 1,
+          "update": 1,
+          "polling": 9,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.12.0-delta.nupkg": 0,
             "626ModLauncher-0.12.0-full.nupkg": 1,
@@ -177,6 +233,10 @@
           "tag": "v0.11.2",
           "published": "2026-08-02",
           "total": 10,
+          "installer": 0,
+          "update": 1,
+          "polling": 9,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.11.2-delta.nupkg": 0,
             "626ModLauncher-0.11.2-full.nupkg": 1,
@@ -190,6 +250,10 @@
           "tag": "v0.11.1",
           "published": "2026-08-02",
           "total": 10,
+          "installer": 0,
+          "update": 1,
+          "polling": 9,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.11.1-delta.nupkg": 0,
             "626ModLauncher-0.11.1-full.nupkg": 1,
@@ -203,6 +267,10 @@
           "tag": "v0.11.0",
           "published": "2026-07-24",
           "total": 11,
+          "installer": 1,
+          "update": 1,
+          "polling": 9,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.11.0-delta.nupkg": 0,
             "626ModLauncher-0.11.0-full.nupkg": 1,
@@ -216,6 +284,10 @@
           "tag": "v0.10.0",
           "published": "2026-07-08",
           "total": 10,
+          "installer": 0,
+          "update": 1,
+          "polling": 9,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.10.0-delta.nupkg": 0,
             "626ModLauncher-0.10.0-full.nupkg": 1,
@@ -229,6 +301,10 @@
           "tag": "v0.9.0",
           "published": "2026-06-26",
           "total": 10,
+          "installer": 0,
+          "update": 1,
+          "polling": 9,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.9.0-delta.nupkg": 0,
             "626ModLauncher-0.9.0-full.nupkg": 1,
@@ -242,6 +318,10 @@
           "tag": "v0.8.1",
           "published": "2026-06-19",
           "total": 10,
+          "installer": 0,
+          "update": 1,
+          "polling": 9,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.8.1-delta.nupkg": 0,
             "626ModLauncher-0.8.1-full.nupkg": 1,
@@ -255,6 +335,10 @@
           "tag": "v0.8.0",
           "published": "2026-06-19",
           "total": 12,
+          "installer": 1,
+          "update": 1,
+          "polling": 10,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.8.0-delta.nupkg": 0,
             "626ModLauncher-0.8.0-full.nupkg": 1,
@@ -268,6 +352,10 @@
           "tag": "v0.6.1",
           "published": "2026-06-14",
           "total": 13,
+          "installer": 1,
+          "update": 1,
+          "polling": 11,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.6.1-delta.nupkg": 0,
             "626ModLauncher-0.6.1-full.nupkg": 1,
@@ -281,6 +369,10 @@
           "tag": "v0.6.0",
           "published": "2026-06-14",
           "total": 14,
+          "installer": 1,
+          "update": 1,
+          "polling": 12,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.6.0-delta.nupkg": 0,
             "626ModLauncher-0.6.0-full.nupkg": 1,
@@ -294,6 +386,10 @@
           "tag": "v0.5.1",
           "published": "2026-06-08",
           "total": 16,
+          "installer": 1,
+          "update": 1,
+          "polling": 14,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.5.1-delta.nupkg": 0,
             "626ModLauncher-0.5.1-full.nupkg": 1,
@@ -307,6 +403,10 @@
           "tag": "v0.5.0",
           "published": "2026-06-04",
           "total": 17,
+          "installer": 1,
+          "update": 1,
+          "polling": 15,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.5.0-delta.nupkg": 0,
             "626ModLauncher-0.5.0-full.nupkg": 1,
@@ -320,6 +420,10 @@
           "tag": "v0.4.4",
           "published": "2026-06-02",
           "total": 17,
+          "installer": 1,
+          "update": 1,
+          "polling": 15,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.4.4-delta.nupkg": 0,
             "626ModLauncher-0.4.4-full.nupkg": 1,
@@ -333,6 +437,10 @@
           "tag": "v0.4.3",
           "published": "2026-05-31",
           "total": 17,
+          "installer": 1,
+          "update": 1,
+          "polling": 15,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.4.3-delta.nupkg": 0,
             "626ModLauncher-0.4.3-full.nupkg": 1,
@@ -347,6 +455,10 @@
           "published": "2026-05-31",
           "prerelease": true,
           "total": 1,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.4.2-delta.nupkg": 0,
             "626ModLauncher-0.4.2-full.nupkg": 0,
@@ -360,6 +472,10 @@
           "tag": "v0.4.1",
           "published": "2026-05-31",
           "total": 18,
+          "installer": 0,
+          "update": 2,
+          "polling": 16,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.4.1-delta.nupkg": 0,
             "626ModLauncher-0.4.1-full.nupkg": 2,
@@ -373,6 +489,10 @@
           "tag": "v0.4.0",
           "published": "2026-05-31",
           "total": 36,
+          "installer": 8,
+          "update": 7,
+          "polling": 21,
+          "other": 0,
           "assets": {
             "626ModLauncher-0.4.0-delta.nupkg": 3,
             "626ModLauncher-0.4.0-full.nupkg": 4,
@@ -386,6 +506,10 @@
           "tag": "v0.3.0",
           "published": "2026-05-27",
           "total": 17,
+          "installer": 0,
+          "update": 1,
+          "polling": 16,
+          "other": 0,
           "assets": {
             "626-Mod-Launcher-portable-win-x64.zip": 0,
             "626ModLauncher-0.3.0-delta.nupkg": 0,
@@ -400,11 +524,19 @@
     },
     "estevanhernandez-stack-ed/626-mod-plugins": {
       "total": 75,
+      "installers": 0,
+      "updates": 0,
+      "polling": 35,
+      "other": 40,
       "releases": [
         {
           "tag": "nexus-v0.14.0",
           "published": "2026-08-03",
           "total": 20,
+          "installer": 0,
+          "update": 0,
+          "polling": 10,
+          "other": 10,
           "assets": {
             "ModManager.Plugin.Nexus.dll": 1,
             "ModManager.Plugin.Nexus.dll.sig": 1,
@@ -416,6 +548,10 @@
           "tag": "nexus-v0.13.0",
           "published": "2026-08-03",
           "total": 6,
+          "installer": 0,
+          "update": 0,
+          "polling": 2,
+          "other": 4,
           "assets": {
             "ModManager.Plugin.Nexus.dll": 1,
             "ModManager.Plugin.Nexus.dll.sig": 1,
@@ -427,6 +563,10 @@
           "tag": "nexus-v0.12.1",
           "published": "2026-08-02",
           "total": 10,
+          "installer": 0,
+          "update": 0,
+          "polling": 4,
+          "other": 6,
           "assets": {
             "ModManager.Plugin.Nexus.dll": 1,
             "ModManager.Plugin.Nexus.dll.sig": 1,
@@ -438,6 +578,10 @@
           "tag": "nexus-v0.12.0",
           "published": "2026-08-02",
           "total": 4,
+          "installer": 0,
+          "update": 0,
+          "polling": 2,
+          "other": 2,
           "assets": {
             "ModManager.Plugin.Nexus.dll": 1,
             "ModManager.Plugin.Nexus.dll.sig": 1,
@@ -449,6 +593,10 @@
           "tag": "nexus-v0.11.0",
           "published": "2026-08-02",
           "total": 4,
+          "installer": 0,
+          "update": 0,
+          "polling": 2,
+          "other": 2,
           "assets": {
             "ModManager.Plugin.Nexus.dll": 1,
             "ModManager.Plugin.Nexus.dll.sig": 1,
@@ -460,6 +608,10 @@
           "tag": "nexus-v0.10.0",
           "published": "2026-07-08",
           "total": 5,
+          "installer": 0,
+          "update": 0,
+          "polling": 2,
+          "other": 3,
           "assets": {
             "ModManager.Plugin.Nexus.dll": 1,
             "ModManager.Plugin.Nexus.dll.sig": 1,
@@ -471,6 +623,10 @@
           "tag": "nexus-v0.8.0",
           "published": "2026-06-19",
           "total": 26,
+          "installer": 0,
+          "update": 0,
+          "polling": 13,
+          "other": 13,
           "assets": {
             "ModManager.Plugin.Nexus.dll": 4,
             "ModManager.Plugin.Nexus.dll.sig": 4,
@@ -482,11 +638,19 @@
     },
     "estevanhernandez-stack-ed/RBX15-Shirt-and-Pants": {
       "total": 14,
+      "installers": 14,
+      "updates": 0,
+      "polling": 0,
+      "other": 0,
       "releases": [
         {
           "tag": "v4.1.0",
           "published": "2026-07-21",
           "total": 1,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RBX15-Maker-v4.1.0.0.msix": 1,
             "RBX15.Classic.Shirt.and.Pants.Maker.Setup.4.1.0.exe": 0
@@ -496,6 +660,10 @@
           "tag": "v4.0.1",
           "published": "2026-04-20",
           "total": 4,
+          "installer": 4,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RBX15-Maker-v4.0.1.0.msix": 1,
             "RBX15.Classic.Shirt.and.Pants.Maker.Setup.4.0.1.exe": 3
@@ -505,6 +673,10 @@
           "tag": "v4.0.0",
           "published": "2026-04-20",
           "total": 9,
+          "installer": 9,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RBX15-Maker-v4.0.0.0.msix": 8,
             "RBX15.Classic.Shirt.and.Pants.Maker.Setup.4.0.0.exe": 1
@@ -513,39 +685,51 @@
       ]
     },
     "estevanhernandez-stack-ed/ROROROblox": {
-      "total": 49511,
+      "total": 52471,
+      "installers": 387,
+      "updates": 108,
+      "polling": 51962,
+      "other": 14,
       "releases": [
         {
           "tag": "v1.31.0.0",
           "published": "2026-09-24",
-          "total": 12560,
+          "total": 15474,
+          "installer": 21,
+          "update": 12,
+          "polling": 15439,
+          "other": 2,
           "assets": {
-            "dev-cert.cer": 1,
-            "known-issues.json": 3521,
-            "known-issues.json.sig": 3483,
-            "plugins-catalog.json": 13,
-            "RELEASES": 2,
-            "releases.win.json": 43,
-            "roblox-compat.json": 2798,
-            "roblox-compat.json.sig": 2671,
+            "dev-cert.cer": 2,
+            "known-issues.json": 4499,
+            "known-issues.json.sig": 4456,
+            "plugins-catalog.json": 2,
+            "RELEASES": 3,
+            "releases.win.json": 48,
+            "roblox-compat.json": 3287,
+            "roblox-compat.json.sig": 3144,
             "RORORO-1.31.0-delta.nupkg": 9,
-            "RORORO-1.31.0-full.nupkg": 2,
+            "RORORO-1.31.0-full.nupkg": 3,
             "RORORO-Sideload-x64-1.31.0.0.msix": 0,
             "RORORO-win-Portable.zip": 1,
-            "RORORO-win-Setup.exe": 16
+            "RORORO-win-Setup.exe": 20
           }
         },
         {
           "tag": "v1.30.0.0",
           "published": "2026-09-21",
-          "total": 271,
+          "total": 276,
+          "installer": 5,
+          "update": 12,
+          "polling": 258,
+          "other": 1,
           "assets": {
             "dev-cert.cer": 1,
             "known-issues.json": 2,
             "known-issues.json.sig": 1,
             "plugins-catalog.json": 2,
             "RELEASES": 1,
-            "releases.win.json": 63,
+            "releases.win.json": 68,
             "roblox-compat.json": 92,
             "roblox-compat.json.sig": 92,
             "RORORO-1.30.0-delta.nupkg": 9,
@@ -558,11 +742,15 @@
         {
           "tag": "v1.29.0.0",
           "published": "2026-09-16",
-          "total": 5179,
+          "total": 5184,
+          "installer": 20,
+          "update": 10,
+          "polling": 5154,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 26,
             "RELEASES": 1,
-            "releases.win.json": 113,
+            "releases.win.json": 118,
             "roblox-compat.json": 2573,
             "roblox-compat.json.sig": 2436,
             "RORORO-1.29.0-delta.nupkg": 7,
@@ -574,12 +762,16 @@
         {
           "tag": "v1.28.0.0",
           "published": "2026-09-12",
-          "total": 2802,
+          "total": 2807,
+          "installer": 22,
+          "update": 12,
+          "polling": 2771,
+          "other": 2,
           "assets": {
             "dev-cert.cer": 2,
             "plugins-catalog.json": 19,
             "RELEASES": 3,
-            "releases.win.json": 151,
+            "releases.win.json": 156,
             "roblox-compat.json": 1331,
             "roblox-compat.json.sig": 1262,
             "RORORO-1.28.0-delta.nupkg": 8,
@@ -592,12 +784,16 @@
         {
           "tag": "v1.27.0.0",
           "published": "2026-09-08",
-          "total": 3411,
+          "total": 3416,
+          "installer": 18,
+          "update": 5,
+          "polling": 3392,
+          "other": 1,
           "assets": {
             "dev-cert.cer": 1,
             "plugins-catalog.json": 42,
             "RELEASES": 1,
-            "releases.win.json": 209,
+            "releases.win.json": 214,
             "roblox-compat.json": 1610,
             "roblox-compat.json.sig": 1525,
             "RORORO-1.27.0-delta.nupkg": 3,
@@ -610,12 +806,16 @@
         {
           "tag": "v1.26.0.0",
           "published": "2026-09-07",
-          "total": 1184,
+          "total": 1189,
+          "installer": 6,
+          "update": 2,
+          "polling": 1181,
+          "other": 0,
           "assets": {
             "dev-cert.cer": 0,
             "plugins-catalog.json": 9,
             "RELEASES": 0,
-            "releases.win.json": 220,
+            "releases.win.json": 225,
             "roblox-compat.json": 484,
             "roblox-compat.json.sig": 463,
             "RORORO-1.26.0-delta.nupkg": 0,
@@ -628,12 +828,16 @@
         {
           "tag": "v1.25.0.0",
           "published": "2026-09-05",
-          "total": 1601,
+          "total": 1606,
+          "installer": 11,
+          "update": 7,
+          "polling": 1585,
+          "other": 3,
           "assets": {
             "dev-cert.cer": 3,
             "plugins-catalog.json": 6,
             "RELEASES": 3,
-            "releases.win.json": 238,
+            "releases.win.json": 243,
             "roblox-compat.json": 687,
             "roblox-compat.json.sig": 646,
             "RORORO-1.25.0-delta.nupkg": 3,
@@ -646,12 +850,16 @@
         {
           "tag": "v1.24.0.0",
           "published": "2026-08-30",
-          "total": 4037,
+          "total": 4042,
+          "installer": 26,
+          "update": 6,
+          "polling": 4009,
+          "other": 1,
           "assets": {
             "dev-cert.cer": 1,
             "plugins-catalog.json": 34,
             "RELEASES": 2,
-            "releases.win.json": 293,
+            "releases.win.json": 298,
             "roblox-compat.json": 1908,
             "roblox-compat.json.sig": 1767,
             "RORORO-1.24.0-delta.nupkg": 2,
@@ -664,12 +872,16 @@
         {
           "tag": "v1.23.0.0",
           "published": "2026-08-23",
-          "total": 534,
+          "total": 539,
+          "installer": 29,
+          "update": 5,
+          "polling": 504,
+          "other": 1,
           "assets": {
             "dev-cert.cer": 1,
             "plugins-catalog.json": 49,
             "RELEASES": 4,
-            "releases.win.json": 356,
+            "releases.win.json": 361,
             "roblox-compat.json": 46,
             "roblox-compat.json.sig": 44,
             "RORORO-1.23.0-delta.nupkg": 1,
@@ -682,12 +894,16 @@
         {
           "tag": "v1.22.0.0",
           "published": "2026-08-22",
-          "total": 943,
+          "total": 948,
+          "installer": 4,
+          "update": 2,
+          "polling": 942,
+          "other": 0,
           "assets": {
             "dev-cert.cer": 0,
             "plugins-catalog.json": 2,
             "RELEASES": 0,
-            "releases.win.json": 364,
+            "releases.win.json": 369,
             "roblox-compat.json": 303,
             "roblox-compat.json.sig": 268,
             "RORORO-1.22.0-delta.nupkg": 0,
@@ -701,6 +917,10 @@
           "tag": "v1.21.0.0",
           "published": "2026-08-13",
           "total": 5219,
+          "installer": 40,
+          "update": 2,
+          "polling": 5177,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 52,
             "RELEASES": 2,
@@ -718,6 +938,10 @@
           "published": "2026-08-10",
           "prerelease": true,
           "total": 2,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 0,
             "RELEASES": 0,
@@ -734,6 +958,10 @@
           "tag": "v1.16.0.0",
           "published": "2026-08-06",
           "total": 3384,
+          "installer": 14,
+          "update": 2,
+          "polling": 3368,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 51,
             "RELEASES": 0,
@@ -750,6 +978,10 @@
           "tag": "v1.15.0.0",
           "published": "2026-08-04",
           "total": 802,
+          "installer": 3,
+          "update": 1,
+          "polling": 798,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 7,
             "RELEASES": 1,
@@ -766,6 +998,10 @@
           "tag": "v1.14.1.0",
           "published": "2026-08-03",
           "total": 459,
+          "installer": 1,
+          "update": 1,
+          "polling": 457,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 1,
             "RELEASES": 0,
@@ -782,6 +1018,10 @@
           "tag": "v1.14.0.0",
           "published": "2026-08-03",
           "total": 357,
+          "installer": 1,
+          "update": 1,
+          "polling": 355,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 2,
             "RELEASES": 0,
@@ -797,6 +1037,10 @@
           "tag": "v1.12.0.0",
           "published": "2026-08-02",
           "total": 483,
+          "installer": 2,
+          "update": 1,
+          "polling": 480,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 3,
             "RELEASES": 0,
@@ -812,6 +1056,10 @@
           "tag": "v1.11.1.0",
           "published": "2026-07-11",
           "total": 3878,
+          "installer": 32,
+          "update": 3,
+          "polling": 3843,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 67,
             "RELEASES": 7,
@@ -828,6 +1076,10 @@
           "published": "2026-07-11",
           "prerelease": true,
           "total": 6,
+          "installer": 1,
+          "update": 1,
+          "polling": 4,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 0,
             "RELEASES": 0,
@@ -844,6 +1096,10 @@
           "published": "2026-07-10",
           "prerelease": true,
           "total": 3,
+          "installer": 2,
+          "update": 0,
+          "polling": 1,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 0,
             "RELEASES": 0,
@@ -860,6 +1116,10 @@
           "published": "2026-07-07",
           "prerelease": true,
           "total": 4,
+          "installer": 4,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 0,
             "RELEASES": 0,
@@ -875,7 +1135,11 @@
           "tag": "v1.9.0.0",
           "published": "2026-07-06",
           "prerelease": true,
-          "total": 32,
+          "total": 33,
+          "installer": 33,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 0,
             "RELEASES": 0,
@@ -884,13 +1148,17 @@
             "RORORO-1.9.0-delta.nupkg": 0,
             "RORORO-1.9.0-full.nupkg": 0,
             "RORORO-win-Portable.zip": 0,
-            "RORORO-win-Setup.exe": 32
+            "RORORO-win-Setup.exe": 33
           }
         },
         {
           "tag": "v1.8.0.0",
           "published": "2026-07-02",
           "total": 261,
+          "installer": 7,
+          "update": 6,
+          "polling": 248,
+          "other": 0,
           "assets": {
             "plugins-catalog.json": 10,
             "RELEASES": 0,
@@ -906,6 +1174,10 @@
           "tag": "untagged-c68c6274cb58fbbfbb95",
           "published": "2026-06-13",
           "total": 240,
+          "installer": 33,
+          "update": 3,
+          "polling": 204,
+          "other": 0,
           "assets": {
             "RELEASES": 1,
             "releases.win.json": 203,
@@ -919,6 +1191,10 @@
           "tag": "v1.7.0.0",
           "published": "2026-05-29",
           "total": 712,
+          "installer": 16,
+          "update": 3,
+          "polling": 692,
+          "other": 1,
           "assets": {
             "dev-cert.cer": 1,
             "RELEASES": 1,
@@ -935,6 +1211,10 @@
           "tag": "v1.6.0.0",
           "published": "2026-05-21",
           "total": 223,
+          "installer": 5,
+          "update": 1,
+          "polling": 217,
+          "other": 0,
           "assets": {
             "dev-cert.cer": 0,
             "RELEASES": 0,
@@ -951,6 +1231,10 @@
           "tag": "v1.5.0.0",
           "published": "2026-05-21",
           "total": 213,
+          "installer": 0,
+          "update": 1,
+          "polling": 212,
+          "other": 0,
           "assets": {
             "dev-cert.cer": 0,
             "RELEASES": 0,
@@ -966,6 +1250,10 @@
           "tag": "v1.4.2.0",
           "published": "2026-05-14",
           "total": 138,
+          "installer": 16,
+          "update": 1,
+          "polling": 121,
+          "other": 0,
           "assets": {
             "assets.win.json": 0,
             "dev-cert.cer": 0,
@@ -982,6 +1270,10 @@
           "tag": "v1.4.1.0",
           "published": "2026-05-12",
           "total": 130,
+          "installer": 3,
+          "update": 3,
+          "polling": 124,
+          "other": 0,
           "assets": {
             "dev-cert.cer": 0,
             "RELEASES": 0,
@@ -997,6 +1289,10 @@
           "tag": "v1.4.0.0",
           "published": "2026-05-11",
           "total": 123,
+          "installer": 0,
+          "update": 2,
+          "polling": 121,
+          "other": 0,
           "assets": {
             "dev-cert.cer": 0,
             "RELEASES": 0,
@@ -1012,6 +1308,10 @@
           "tag": "v1.3.4.0",
           "published": "2026-05-09",
           "total": 105,
+          "installer": 0,
+          "update": 1,
+          "polling": 104,
+          "other": 0,
           "assets": {
             "dev-cert.cer": 0,
             "RELEASES": 0,
@@ -1027,6 +1327,10 @@
           "tag": "v1.3.1.0",
           "published": "2026-05-09",
           "total": 107,
+          "installer": 0,
+          "update": 1,
+          "polling": 106,
+          "other": 0,
           "assets": {
             "dev-cert.cer": 0,
             "RELEASES": 0,
@@ -1042,6 +1346,10 @@
           "tag": "v1.1.2.0",
           "published": "2026-05-09",
           "total": 108,
+          "installer": 10,
+          "update": 1,
+          "polling": 95,
+          "other": 2,
           "assets": {
             "dev-cert.cer": 2,
             "RELEASES": 0,
@@ -1056,11 +1364,19 @@
     },
     "estevanhernandez-stack-ed/RTClickPng": {
       "total": 0,
+      "installers": 0,
+      "updates": 0,
+      "polling": 0,
+      "other": 0,
       "releases": [
         {
           "tag": "v0.1.0",
           "published": "2026-04-22",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RightClickPNG_0.1.1.0_x64.msix": 0,
             "RightClickPNG_0.1.1.0_x64.msix.sha256": 0
@@ -1071,6 +1387,10 @@
           "published": "2026-04-22",
           "prerelease": true,
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RightClickPNG_0.1.1.0_x64.msix": 0,
             "RightClickPNG_0.1.1.0_x64.msix.sha256": 0
@@ -1080,11 +1400,19 @@
     },
     "estevanhernandez-stack-ed/Sanduhr_f-r_Claude": {
       "total": 56,
+      "installers": 40,
+      "updates": 5,
+      "polling": 11,
+      "other": 0,
       "releases": [
         {
           "tag": "v3.4.2",
           "published": "2026-09-14",
           "total": 2,
+          "installer": 1,
+          "update": 0,
+          "polling": 1,
+          "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.2.0-full.nupkg": 0,
             "626Labs.Sanduhr-3.3.0-delta.nupkg": 0,
@@ -1107,6 +1435,10 @@
           "tag": "v3.4.1",
           "published": "2026-09-13",
           "total": 1,
+          "installer": 0,
+          "update": 0,
+          "polling": 1,
+          "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.2.0-full.nupkg": 0,
             "626Labs.Sanduhr-3.3.0-delta.nupkg": 0,
@@ -1127,6 +1459,10 @@
           "tag": "v3.4.0",
           "published": "2026-09-13",
           "total": 13,
+          "installer": 4,
+          "update": 5,
+          "polling": 4,
+          "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.2.0-full.nupkg": 1,
             "626Labs.Sanduhr-3.3.0-delta.nupkg": 1,
@@ -1145,6 +1481,10 @@
           "tag": "v3.3.0.0",
           "published": "2026-07-19",
           "total": 5,
+          "installer": 2,
+          "update": 0,
+          "polling": 3,
+          "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.3.0-delta.nupkg": 0,
             "626Labs.Sanduhr-3.3.0-full.nupkg": 0,
@@ -1159,6 +1499,10 @@
           "tag": "v3.2.0.0",
           "published": "2026-07-14",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 2,
+          "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.2.0-full.nupkg": 0,
             "626Labs.Sanduhr-win-Portable.zip": 0,
@@ -1172,6 +1516,10 @@
           "tag": "v2.3.0-windows",
           "published": "2026-05-06",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "Sanduhr-Setup-v2.3.0.exe": 0,
             "Sanduhr-v2.3.0.0.msix": 0
@@ -1181,6 +1529,10 @@
           "tag": "v2.0.4-mac",
           "published": "2026-04-21",
           "total": 8,
+          "installer": 8,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "Sanduhr-2.0.4.dmg": 8
           }
@@ -1189,6 +1541,10 @@
           "tag": "v2.0.4-windows",
           "published": "2026-04-19",
           "total": 4,
+          "installer": 4,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "Sanduhr-Setup-v2.0.4.exe": 3,
             "Sanduhr-v2.0.4.0.msix": 1
@@ -1198,6 +1554,10 @@
           "tag": "v2.0.3-windows",
           "published": "2026-04-17",
           "total": 3,
+          "installer": 3,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "Sanduhr-Setup-v2.0.3.exe": 2,
             "Sanduhr-v2.0.3.0.msix": 1
@@ -1207,6 +1567,10 @@
           "tag": "v2.0.2-windows",
           "published": "2026-04-17",
           "total": 2,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "Sanduhr-Setup-v2.0.2.exe": 1,
             "Sanduhr-v2.0.2.0.msix": 1
@@ -1216,6 +1580,10 @@
           "tag": "v2.0.1-windows",
           "published": "2026-04-17",
           "total": 12,
+          "installer": 12,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "Sanduhr-Setup-v2.0.1.exe": 4,
             "Sanduhr-v2.0.1.0.msix": 8
@@ -1225,6 +1593,10 @@
           "tag": "v2.0.0-windows",
           "published": "2026-04-17",
           "total": 3,
+          "installer": 3,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "Sanduhr-Setup-v2.0.0.exe": 3
           }
@@ -1233,11 +1605,19 @@
     },
     "estevanhernandez-stack-ed/Thesis-Engine": {
       "total": 8,
+      "installers": 0,
+      "updates": 0,
+      "polling": 0,
+      "other": 8,
       "releases": [
         {
           "tag": "v0.2.1",
           "published": "2026-04-27",
           "total": 7,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 7,
           "assets": {
             "thesis-engine.plugin": 7
           }
@@ -1246,6 +1626,10 @@
           "tag": "v0.2.0",
           "published": "2026-04-27",
           "total": 1,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 1,
           "assets": {
             "thesis-engine.plugin": 1
           }
@@ -1254,11 +1638,19 @@
     },
     "estevanhernandez-stack-ed/Ur-OCR": {
       "total": 112,
+      "installers": 42,
+      "updates": 0,
+      "polling": 0,
+      "other": 70,
       "releases": [
         {
           "tag": "v0.4.0",
           "published": "2026-07-03",
           "total": 78,
+          "installer": 28,
+          "update": 0,
+          "polling": 0,
+          "other": 50,
           "assets": {
             "manifest.json": 26,
             "manifest.sha256": 24,
@@ -1270,6 +1662,10 @@
           "published": "2026-07-03",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1281,6 +1677,10 @@
           "published": "2026-07-03",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1292,6 +1692,10 @@
           "published": "2026-07-03",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1303,6 +1707,10 @@
           "published": "2026-07-03",
           "prerelease": true,
           "total": 6,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 4,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 2,
@@ -1314,6 +1722,10 @@
           "published": "2026-06-30",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1324,6 +1736,10 @@
           "tag": "v0.2.0",
           "published": "2026-06-29",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -1334,6 +1750,10 @@
           "tag": "v0.1.3",
           "published": "2026-05-16",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -1344,6 +1764,10 @@
           "tag": "v0.1.2",
           "published": "2026-05-16",
           "total": 5,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 4,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 2,
@@ -1354,6 +1778,10 @@
           "tag": "v0.1.1",
           "published": "2026-05-16",
           "total": 8,
+          "installer": 6,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1364,6 +1792,10 @@
           "tag": "v0.1.0",
           "published": "2026-05-16",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1374,11 +1806,19 @@
     },
     "estevanhernandez-stack-ed/Ur-Score": {
       "total": 116,
+      "installers": 35,
+      "updates": 0,
+      "polling": 0,
+      "other": 81,
       "releases": [
         {
           "tag": "v0.6.3",
           "published": "2026-09-27",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "install.ps1": 0,
             "manifest.json": 0,
@@ -1393,6 +1833,10 @@
           "tag": "v0.6.2",
           "published": "2026-09-23",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "install.ps1": 0,
             "manifest.json": 0,
@@ -1407,6 +1851,10 @@
           "tag": "v0.5.9",
           "published": "2026-09-23",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "install.ps1": 0,
             "manifest.json": 0,
@@ -1421,6 +1869,10 @@
           "tag": "v0.5.8",
           "published": "2026-09-23",
           "total": 9,
+          "installer": 4,
+          "update": 0,
+          "polling": 0,
+          "other": 5,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 3,
@@ -1434,6 +1886,10 @@
           "tag": "v0.5.7",
           "published": "2026-09-23",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -1447,6 +1903,10 @@
           "tag": "v0.5.6",
           "published": "2026-09-23",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1460,6 +1920,10 @@
           "tag": "v0.5.5",
           "published": "2026-09-22",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -1473,6 +1937,10 @@
           "tag": "v0.5.4",
           "published": "2026-09-20",
           "total": 6,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 4,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 2,
@@ -1486,6 +1954,10 @@
           "tag": "v0.5.3",
           "published": "2026-09-20",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1499,6 +1971,10 @@
           "tag": "v0.5.2",
           "published": "2026-09-20",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1512,6 +1988,10 @@
           "tag": "v0.5.1",
           "published": "2026-09-20",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1525,6 +2005,10 @@
           "tag": "v0.5.0",
           "published": "2026-09-20",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1538,6 +2022,10 @@
           "tag": "v0.4.2",
           "published": "2026-09-20",
           "total": 2,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 1,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 1,
@@ -1551,6 +2039,10 @@
           "tag": "v0.4.1",
           "published": "2026-09-20",
           "total": 2,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 1,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 1,
@@ -1564,6 +2056,10 @@
           "tag": "v0.4.0",
           "published": "2026-09-20",
           "total": 1,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 1,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 0,
@@ -1577,6 +2073,10 @@
           "tag": "v0.3.12",
           "published": "2026-09-20",
           "total": 2,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 1,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 1,
@@ -1590,6 +2090,10 @@
           "tag": "v0.3.11",
           "published": "2026-09-20",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1603,6 +2107,10 @@
           "tag": "v0.3.10",
           "published": "2026-09-20",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1616,6 +2124,10 @@
           "tag": "v0.3.9",
           "published": "2026-09-19",
           "total": 6,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 4,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 2,
@@ -1629,6 +2141,10 @@
           "tag": "v0.3.8",
           "published": "2026-09-19",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1642,6 +2158,10 @@
           "tag": "v0.3.7",
           "published": "2026-09-19",
           "total": 4,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 3,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1655,6 +2175,10 @@
           "tag": "v0.3.6",
           "published": "2026-09-19",
           "total": 2,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 0,
@@ -1668,6 +2192,10 @@
           "tag": "v0.3.5",
           "published": "2026-09-17",
           "total": 14,
+          "installer": 4,
+          "update": 0,
+          "polling": 0,
+          "other": 10,
           "assets": {
             "manifest.json": 4,
             "manifest.sha256": 4,
@@ -1680,6 +2208,10 @@
           "tag": "v0.3.4",
           "published": "2026-09-17",
           "total": 13,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 12,
           "assets": {
             "manifest.json": 5,
             "manifest.sha256": 1,
@@ -1692,6 +2224,10 @@
           "tag": "v0.3.3",
           "published": "2026-09-16",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 0,
@@ -1704,6 +2240,10 @@
           "tag": "v0.3.2",
           "published": "2026-09-16",
           "total": 10,
+          "installer": 3,
+          "update": 0,
+          "polling": 0,
+          "other": 7,
           "assets": {
             "manifest.json": 4,
             "manifest.sha256": 2,
@@ -1716,6 +2256,10 @@
           "tag": "v0.3.1",
           "published": "2026-09-15",
           "total": 9,
+          "installer": 3,
+          "update": 0,
+          "polling": 0,
+          "other": 6,
           "assets": {
             "manifest.json": 3,
             "manifest.sha256": 3,
@@ -1726,6 +2270,10 @@
           "tag": "v0.3.0",
           "published": "2026-09-15",
           "total": 6,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 4,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 2,
@@ -1736,6 +2284,10 @@
           "tag": "v0.2.0",
           "published": "2026-09-15",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -1746,11 +2298,19 @@
     },
     "estevanhernandez-stack-ed/Vibe-Doc": {
       "total": 0,
+      "installers": 0,
+      "updates": 0,
+      "polling": 0,
+      "other": 0,
       "releases": [
         {
           "tag": "v0.5.0",
           "published": "2026-04-17",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "vibe-doc-0.5.0.plugin": 0
           }
@@ -1759,6 +2319,10 @@
           "tag": "v0.4.0",
           "published": "2026-04-16",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "vibe-doc-0.4.0.plugin": 0
           }
@@ -1767,6 +2331,10 @@
           "tag": "v0.3.0",
           "published": "2026-04-15",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "vibe-doc-0.3.0.plugin": 0
           }
@@ -1774,20 +2342,32 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-mac": {
-      "total": 431,
+      "total": 432,
+      "installers": 432,
+      "updates": 0,
+      "polling": 0,
+      "other": 0,
       "releases": [
         {
           "tag": "v0.8.0",
           "published": "2026-09-13",
-          "total": 54,
+          "total": 55,
+          "installer": 55,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
-            "RORORO.pkg": 54
+            "RORORO.pkg": 55
           }
         },
         {
           "tag": "v0.7.0",
           "published": "2026-05-13",
           "total": 105,
+          "installer": 105,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.pkg": 105
           }
@@ -1796,6 +2376,10 @@
           "tag": "v0.6.1",
           "published": "2026-05-11",
           "total": 7,
+          "installer": 7,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.pkg": 7
           }
@@ -1804,6 +2388,10 @@
           "tag": "v0.6.0",
           "published": "2026-05-11",
           "total": 5,
+          "installer": 5,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.pkg": 5
           }
@@ -1812,6 +2400,10 @@
           "tag": "v0.5.2",
           "published": "2026-05-10",
           "total": 6,
+          "installer": 6,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.pkg": 6
           }
@@ -1820,6 +2412,10 @@
           "tag": "v0.5.1",
           "published": "2026-05-10",
           "total": 7,
+          "installer": 7,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.pkg": 7
           }
@@ -1828,6 +2424,10 @@
           "tag": "v0.5.0",
           "published": "2026-05-09",
           "total": 10,
+          "installer": 10,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.pkg": 10
           }
@@ -1836,6 +2436,10 @@
           "tag": "v0.4.0",
           "published": "2026-05-08",
           "total": 11,
+          "installer": 11,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.pkg": 11
           }
@@ -1844,6 +2448,10 @@
           "tag": "v0.3.0",
           "published": "2026-05-08",
           "total": 10,
+          "installer": 10,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.pkg": 10
           }
@@ -1852,6 +2460,10 @@
           "tag": "v0.2.5",
           "published": "2026-05-08",
           "total": 14,
+          "installer": 14,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.pkg": 14
           }
@@ -1860,6 +2472,10 @@
           "tag": "v0.2.4",
           "published": "2026-05-08",
           "total": 14,
+          "installer": 14,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 14
           }
@@ -1868,6 +2484,10 @@
           "tag": "v0.2.3",
           "published": "2026-05-08",
           "total": 15,
+          "installer": 15,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 15
           }
@@ -1876,6 +2496,10 @@
           "tag": "v0.2.2",
           "published": "2026-05-08",
           "total": 15,
+          "installer": 15,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 15
           }
@@ -1884,6 +2508,10 @@
           "tag": "v0.2.1",
           "published": "2026-05-08",
           "total": 20,
+          "installer": 20,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 20
           }
@@ -1892,6 +2520,10 @@
           "tag": "v0.2.0",
           "published": "2026-05-08",
           "total": 17,
+          "installer": 17,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 17
           }
@@ -1900,6 +2532,10 @@
           "tag": "v0.1.5",
           "published": "2026-05-07",
           "total": 18,
+          "installer": 18,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 18
           }
@@ -1908,6 +2544,10 @@
           "tag": "v0.1.4",
           "published": "2026-05-07",
           "total": 18,
+          "installer": 18,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 18
           }
@@ -1916,6 +2556,10 @@
           "tag": "v0.1.3",
           "published": "2026-05-07",
           "total": 19,
+          "installer": 19,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 19
           }
@@ -1924,6 +2568,10 @@
           "tag": "v0.1.2",
           "published": "2026-05-07",
           "total": 20,
+          "installer": 20,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 20
           }
@@ -1932,6 +2580,10 @@
           "tag": "v0.1.1",
           "published": "2026-05-07",
           "total": 21,
+          "installer": 21,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 21
           }
@@ -1940,6 +2592,10 @@
           "tag": "v0.1.0",
           "published": "2026-05-07",
           "total": 25,
+          "installer": 25,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "RORORO.dmg": 25
           }
@@ -1947,22 +2603,34 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-afk": {
-      "total": 371,
+      "total": 374,
+      "installers": 122,
+      "updates": 0,
+      "polling": 0,
+      "other": 252,
       "releases": [
         {
           "tag": "v0.5.2",
           "published": "2026-07-07",
-          "total": 334,
+          "total": 337,
+          "installer": 112,
+          "update": 0,
+          "polling": 0,
+          "other": 225,
           "assets": {
-            "manifest.json": 113,
-            "manifest.sha256": 110,
-            "plugin.zip": 111
+            "manifest.json": 114,
+            "manifest.sha256": 111,
+            "plugin.zip": 112
           }
         },
         {
           "tag": "v0.5.1",
           "published": "2026-07-06",
           "total": 4,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 3,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 1,
@@ -1973,6 +2641,10 @@
           "tag": "v0.5.0",
           "published": "2026-07-06",
           "total": 5,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 4,
           "assets": {
             "manifest.json": 3,
             "manifest.sha256": 1,
@@ -1983,6 +2655,10 @@
           "tag": "v0.4.1",
           "published": "2026-07-06",
           "total": 1,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 1,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 0,
@@ -1993,6 +2669,10 @@
           "tag": "v0.4.0",
           "published": "2026-07-06",
           "total": 4,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 3,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 1,
@@ -2003,6 +2683,10 @@
           "tag": "v0.3.0",
           "published": "2026-07-06",
           "total": 4,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 3,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 1,
@@ -2013,6 +2697,10 @@
           "tag": "v0.2.0",
           "published": "2026-07-06",
           "total": 4,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 3,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 1,
@@ -2023,6 +2711,10 @@
           "tag": "v0.1.1",
           "published": "2026-07-03",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2033,6 +2725,10 @@
           "tag": "v0.1.0",
           "published": "2026-07-03",
           "total": 15,
+          "installer": 5,
+          "update": 0,
+          "polling": 0,
+          "other": 10,
           "assets": {
             "manifest.json": 5,
             "manifest.sha256": 5,
@@ -2043,11 +2739,19 @@
     },
     "estevanhernandez-stack-ed/rororo-ur-mcp": {
       "total": 32,
+      "installers": 11,
+      "updates": 0,
+      "polling": 0,
+      "other": 21,
       "releases": [
         {
           "tag": "v0.2.0",
           "published": "2026-09-28",
           "total": 1,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 1,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 0,
@@ -2058,6 +2762,10 @@
           "tag": "v0.1.0",
           "published": "2026-08-22",
           "total": 31,
+          "installer": 11,
+          "update": 0,
+          "polling": 0,
+          "other": 20,
           "assets": {
             "manifest.json": 10,
             "manifest.sha256": 10,
@@ -2067,22 +2775,48 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-task": {
-      "total": 505,
+      "total": 512,
+      "installers": 186,
+      "updates": 0,
+      "polling": 0,
+      "other": 326,
       "releases": [
+        {
+          "tag": "v0.9.1",
+          "published": "2026-09-30",
+          "total": 4,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 3,
+          "assets": {
+            "manifest.json": 2,
+            "manifest.sha256": 1,
+            "plugin.zip": 1
+          }
+        },
         {
           "tag": "v0.9.0",
           "published": "2026-09-28",
-          "total": 0,
+          "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
-            "manifest.json": 0,
-            "manifest.sha256": 0,
-            "plugin.zip": 0
+            "manifest.json": 1,
+            "manifest.sha256": 1,
+            "plugin.zip": 1
           }
         },
         {
           "tag": "v0.8.0",
           "published": "2026-08-22",
           "total": 150,
+          "installer": 52,
+          "update": 0,
+          "polling": 0,
+          "other": 98,
           "assets": {
             "manifest.json": 50,
             "manifest.sha256": 48,
@@ -2093,6 +2827,10 @@
           "tag": "v0.7.0",
           "published": "2026-08-12",
           "total": 44,
+          "installer": 14,
+          "update": 0,
+          "polling": 0,
+          "other": 30,
           "assets": {
             "manifest.json": 18,
             "manifest.sha256": 12,
@@ -2104,6 +2842,10 @@
           "published": "2026-07-13",
           "prerelease": true,
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2114,6 +2856,10 @@
           "tag": "v0.6.0",
           "published": "2026-07-12",
           "total": 89,
+          "installer": 33,
+          "update": 0,
+          "polling": 0,
+          "other": 56,
           "assets": {
             "manifest.json": 28,
             "manifest.sha256": 28,
@@ -2125,6 +2871,10 @@
           "published": "2026-07-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2136,6 +2886,10 @@
           "published": "2026-07-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2147,6 +2901,10 @@
           "published": "2026-07-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2158,6 +2916,10 @@
           "published": "2026-07-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2169,6 +2931,10 @@
           "published": "2026-07-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2180,6 +2946,10 @@
           "published": "2026-07-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2191,6 +2961,10 @@
           "published": "2026-07-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2202,6 +2976,10 @@
           "published": "2026-07-11",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2213,6 +2991,10 @@
           "published": "2026-07-11",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2224,6 +3006,10 @@
           "published": "2026-07-11",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2235,6 +3021,10 @@
           "published": "2026-07-11",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2245,6 +3035,10 @@
           "tag": "v0.5.0",
           "published": "2026-07-03",
           "total": 44,
+          "installer": 15,
+          "update": 0,
+          "polling": 0,
+          "other": 29,
           "assets": {
             "manifest.json": 16,
             "manifest.sha256": 13,
@@ -2255,6 +3049,10 @@
           "tag": "v0.4.1",
           "published": "2026-07-03",
           "total": 3,
+          "installer": 3,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2265,6 +3063,10 @@
           "tag": "v0.4.0",
           "published": "2026-07-03",
           "total": 28,
+          "installer": 9,
+          "update": 0,
+          "polling": 0,
+          "other": 19,
           "assets": {
             "manifest.json": 10,
             "manifest.sha256": 9,
@@ -2276,6 +3078,10 @@
           "published": "2026-07-03",
           "prerelease": true,
           "total": 4,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 3,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 1,
@@ -2287,6 +3093,10 @@
           "published": "2026-07-02",
           "prerelease": true,
           "total": 4,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 3,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 1,
@@ -2297,6 +3107,10 @@
           "tag": "v0.3.1",
           "published": "2026-06-30",
           "total": 14,
+          "installer": 4,
+          "update": 0,
+          "polling": 0,
+          "other": 10,
           "assets": {
             "manifest.json": 6,
             "manifest.sha256": 4,
@@ -2308,6 +3122,10 @@
           "published": "2026-06-30",
           "prerelease": true,
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2318,6 +3136,10 @@
           "tag": "v0.2.3",
           "published": "2026-06-29",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2328,6 +3150,10 @@
           "tag": "v0.2.2",
           "published": "2026-05-16",
           "total": 9,
+          "installer": 3,
+          "update": 0,
+          "polling": 0,
+          "other": 6,
           "assets": {
             "manifest.json": 3,
             "manifest.sha256": 3,
@@ -2338,6 +3164,10 @@
           "tag": "v0.2.1",
           "published": "2026-05-15",
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2348,6 +3178,10 @@
           "tag": "v0.2.0",
           "published": "2026-05-13",
           "total": 18,
+          "installer": 6,
+          "update": 0,
+          "polling": 0,
+          "other": 12,
           "assets": {
             "manifest.json": 6,
             "manifest.sha256": 6,
@@ -2359,6 +3193,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 6,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 4,
           "assets": {
             "manifest.json": 2,
             "manifest.sha256": 2,
@@ -2370,6 +3208,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2381,6 +3223,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2392,6 +3238,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 2,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2403,6 +3253,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 2,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2414,6 +3268,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 5,
+          "installer": 3,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2425,6 +3283,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2436,6 +3298,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2447,6 +3313,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 4,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2458,6 +3328,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2469,6 +3343,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2480,6 +3358,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2491,6 +3373,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 10,
+          "installer": 8,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2502,6 +3388,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2513,6 +3403,10 @@
           "published": "2026-05-12",
           "prerelease": true,
           "total": 7,
+          "installer": 2,
+          "update": 0,
+          "polling": 0,
+          "other": 5,
           "assets": {
             "manifest.json": 3,
             "manifest.sha256": 2,
@@ -2523,6 +3417,10 @@
           "tag": "v0.1.0",
           "published": "2026-05-11",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "manifest.json": 0,
             "manifest.sha256": 0,
@@ -2534,6 +3432,10 @@
           "published": "2026-05-11",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2545,6 +3447,10 @@
           "published": "2026-05-11",
           "prerelease": true,
           "total": 3,
+          "installer": 1,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2556,6 +3462,10 @@
           "published": "2026-05-11",
           "prerelease": true,
           "total": 5,
+          "installer": 3,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "manifest.json": 1,
             "manifest.sha256": 1,
@@ -2566,11 +3476,19 @@
     },
     "estevanhernandez-stack-ed/vibe-cartographer": {
       "total": 2,
+      "installers": 0,
+      "updates": 0,
+      "polling": 0,
+      "other": 2,
       "releases": [
         {
           "tag": "v1.8.0",
           "published": "2026-05-01",
           "total": 2,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "vibe-cartographer-1.8.0.plugin": 2
           }
@@ -2579,6 +3497,10 @@
           "tag": "v1.5.0",
           "published": "2026-04-17",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "vibe-cartographer-1.5.0.plugin": 0
           }
@@ -2587,6 +3509,10 @@
           "tag": "v1.4.0",
           "published": "2026-04-17",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "vibe-cartographer-1.4.0.plugin": 0
           }
@@ -2595,6 +3521,10 @@
           "tag": "v1.3.0",
           "published": "2026-04-16",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "vibe-cartographer-1.3.0.plugin": 0
           }
@@ -2603,6 +3533,10 @@
           "tag": "v1.2.0",
           "published": "2026-04-16",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "vibe-cartographer-1.2.0.plugin": 0
           }
@@ -2611,6 +3545,10 @@
           "tag": "v1.0.0",
           "published": "2026-04-15",
           "total": 0,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
           "assets": {
             "vibe-cartographer-1.0.0.plugin": 0
           }
@@ -2619,11 +3557,19 @@
     },
     "estevanhernandez-stack-ed/vibe-plugins": {
       "total": 8,
+      "installers": 0,
+      "updates": 0,
+      "polling": 0,
+      "other": 8,
       "releases": [
         {
           "tag": "vibe-test-v0.2.3",
           "published": "2026-04-18",
           "total": 4,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 4,
           "assets": {
             "vibe-test-0.2.3.plugin": 4
           }
@@ -2632,6 +3578,10 @@
           "tag": "vibe-test-v0.2.2",
           "published": "2026-04-18",
           "total": 2,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 2,
           "assets": {
             "vibe-test-0.2.2.plugin": 2
           }
@@ -2640,6 +3590,10 @@
           "tag": "vibe-test-v0.2.1",
           "published": "2026-04-18",
           "total": 1,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 1,
           "assets": {
             "vibe-test-0.2.1.plugin": 1
           }
@@ -2648,6 +3602,10 @@
           "tag": "vibe-test-v0.2.0",
           "published": "2026-04-18",
           "total": 1,
+          "installer": 0,
+          "update": 0,
+          "polling": 0,
+          "other": 1,
           "assets": {
             "vibe-test-0.2.0.plugin": 1
           }
