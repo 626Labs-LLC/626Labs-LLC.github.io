@@ -649,6 +649,15 @@
    "headline": false
   },
   {
+   "date": "2026-08-21",
+   "precision": "day",
+   "title": "The ElevenLabs narration pipeline becomes part of the video skill",
+   "category": "tool",
+   "headline": false,
+   "confidence": "inferred",
+   "detail": "Cloned-voice narration with a tuned baseline (speed 0.93, stability 0.45), timed to the slides and built into tiktok-video-maker."
+  },
+  {
    "date": "2026-08-22",
    "precision": "day",
    "lane": "products",
@@ -728,6 +737,15 @@
    "headline": false
   },
   {
+   "date": "2026-09-11",
+   "precision": "day",
+   "title": "Baby Watch starts as a Wear OS app for the Pixel Watch",
+   "category": "product",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "A locked, sensory touch playground for babies and toddlers, with a child lock, curved text, animations and sound."
+  },
+  {
    "date": "2026-09-15",
    "precision": "day",
    "lane": "decisions",
@@ -755,6 +773,15 @@
    "headline": false,
    "confidence": "inferred",
    "detail": "It fixes the halo, the focus, the white balance and the contact shadow, so a subject stops looking pasted on."
+  },
+  {
+   "date": "2026-09-24",
+   "precision": "day",
+   "title": "A baby app gives the estate its live audio recorder",
+   "category": "tool",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "ElevenLabs in a cloned voice kept missing short emotional lines, so all 22 clips were recorded live in about ten minutes instead. The tool then moved into the video skill."
   },
   {
    "date": "2026-09-26",
