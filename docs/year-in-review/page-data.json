@@ -34,7 +34,7 @@
    "category": "origin",
    "headline": true,
    "confidence": "verified",
-   "detail": "Started at 3:45 pm. By 10:45 pm it had a command line and a Google Colab scrape. By 11:45 it broke, because the business day was over and the scraper never knew to roll forward. The lesson was that you still have to know more than the AI. The repo history bookends the day, created at 3:04 pm, last upload at 11:59 pm."
+   "detail": "Started at 3:45 pm. By 10:45 pm it had a command line and a Google Colab scrape. By 11:45 it broke, because the business day was over and the scraper never knew to roll forward. The lesson was that you still have to know more than the AI. The records bookend the day: repo created at 3:04 pm, Colab notebook at 3:12 pm, last upload at 11:59 pm."
   },
   {
    "date": "2025-08-15",
@@ -186,9 +186,18 @@
    "lane": "making",
    "category": "publishing",
    "title": "WriterStudio starts with an audiobook pipeline on paper",
-   "detail": "The pipeline uses ElevenLabs and exists only as documentation. No audiobook exists yet.",
+   "detail": "The pipeline uses ElevenLabs and starts life as documentation. The first two chapters of The Beat That Shook the Void later become its first audiobook.",
    "confidence": "verified",
    "headline": false
+  },
+  {
+   "date": "2026-03-30",
+   "precision": "day",
+   "title": "The Beat That Shook the Void is the first published fiction",
+   "category": "publishing",
+   "headline": true,
+   "confidence": "verified",
+   "detail": "A Doctor Who special written in a single evening: first a screenplay, then a short story, posted on Wattpad as eight parts before the night was out. The first two chapters also exist as an audiobook."
   },
   {
    "date": "2026-04-02",
@@ -318,6 +327,15 @@
    "detail": "",
    "confidence": "verified",
    "headline": false
+  },
+  {
+   "date": "2026-04-27",
+   "precision": "day",
+   "title": "The background remover ships with a Claude vision loop",
+   "category": "tool",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "A classical-CV cutter with six modes, from color-key to matting, plus an agent that looks at each cut and retries until it is clean."
   },
   {
    "date": "2026-04-28",
@@ -457,6 +475,15 @@
    "headline": false
   },
   {
+   "date": "2026-06-13",
+   "precision": "day",
+   "title": "The Dragon's Hoard skill puts an agent on side hustles",
+   "category": "tool",
+   "headline": false,
+   "confidence": "inferred",
+   "detail": "Print-on-demand designs and other passive-income experiments, run by an agent."
+  },
+  {
    "date": "2026-06-14",
    "precision": "day",
    "lane": "products",
@@ -517,6 +544,15 @@
    "headline": false
   },
   {
+   "date": "2026-07-04",
+   "precision": "day",
+   "title": "cut-release makes every release ship with real notes",
+   "category": "tool",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "Written after the Discord release feed showed an empty release in public. It refuses to ship a release with an empty or link-only body."
+  },
+  {
    "date": "2026-07-06",
    "precision": "day",
    "lane": "tools",
@@ -525,6 +561,15 @@
    "detail": "Operating doctrine v1.0.0 lands the same day.",
    "confidence": "verified",
    "headline": false
+  },
+  {
+   "date": "2026-07-06",
+   "precision": "day",
+   "title": "Model windows and task meditation become skills",
+   "category": "tool",
+   "headline": false,
+   "confidence": "inferred",
+   "detail": "One playbook for spending a scarce frontier model well, and one ritual for grooming the task backlog against the repo."
   },
   {
    "date": "2026-07-07",
@@ -547,6 +592,15 @@
    "headline": false
   },
   {
+   "date": "2026-07-13",
+   "precision": "day",
+   "title": "tiktok-video-maker turns screenshots into vertical video",
+   "category": "tool",
+   "headline": false,
+   "confidence": "inferred",
+   "detail": "A slideshow with light effects, optional ElevenLabs voiceover timed to the slides, and a posting script to go with it."
+  },
+  {
    "date": "2026-07-15",
    "precision": "day",
    "title": "Celestia3 public copy softened to what the tests prove",
@@ -554,6 +608,15 @@
    "headline": false,
    "confidence": "verified",
    "detail": "The about page trades \"NASA-JPL-calibrated\" for \"high-precision, professionally-validated\"."
+  },
+  {
+   "date": "2026-07-18",
+   "precision": "day",
+   "title": "The demo-video skill films a running app and narrates it",
+   "category": "tool",
+   "headline": false,
+   "confidence": "inferred",
+   "detail": "A scripted capture becomes a two-pass ffmpeg render with cached narration. It stops instead of filming an empty or broken state."
   },
   {
    "date": "2026-07-19",
@@ -584,6 +647,15 @@
    "detail": "It first deploys on August 12.",
    "confidence": "verified",
    "headline": false
+  },
+  {
+   "date": "2026-08-21",
+   "precision": "day",
+   "title": "The ElevenLabs narration pipeline becomes part of the video skill",
+   "category": "tool",
+   "headline": false,
+   "confidence": "inferred",
+   "detail": "Cloned-voice narration with a tuned baseline (speed 0.93, stability 0.45), timed to the slides and built into tiktok-video-maker."
   },
   {
    "date": "2026-08-22",
@@ -646,6 +718,15 @@
    "headline": true
   },
   {
+   "date": "2026-09-10",
+   "precision": "day",
+   "title": "The cross-pollinator agent starts sweeping projects for shared ideas",
+   "category": "tool",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "It reads decisions across the dashboard and briefs four lanes: ports, patterns, collisions and seeds."
+  },
+  {
    "date": "2026-09-11",
    "precision": "day",
    "lane": "store",
@@ -654,6 +735,15 @@
    "detail": "The reach map follows on September 21.",
    "confidence": "verified",
    "headline": false
+  },
+  {
+   "date": "2026-09-11",
+   "precision": "day",
+   "title": "Baby Watch starts as a Wear OS app for the Pixel Watch",
+   "category": "product",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "A locked, sensory touch playground for babies and toddlers, with a child lock, curved text, animations and sound."
   },
   {
    "date": "2026-09-15",
@@ -674,6 +764,24 @@
    "detail": "",
    "confidence": "verified",
    "headline": false
+  },
+  {
+   "date": "2026-09-20",
+   "precision": "day",
+   "title": "propic makes a cutout look like it was standing in the scene",
+   "category": "tool",
+   "headline": false,
+   "confidence": "inferred",
+   "detail": "It fixes the halo, the focus, the white balance and the contact shadow, so a subject stops looking pasted on."
+  },
+  {
+   "date": "2026-09-24",
+   "precision": "day",
+   "title": "A baby app gives the estate its live audio recorder",
+   "category": "tool",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "ElevenLabs in a cloned voice kept missing short emotional lines, so all 22 clips were recorded live in about ten minutes instead. The tool then moved into the video skill."
   },
   {
    "date": "2026-09-26",
