@@ -1,6 +1,6 @@
 # 626 Labs year in review
 
-An interactive timeline of the estate, July 2025 to 2026-09-29: 85 dated events in five eras, an estate-wide commit heatmap, and a Microsoft Store install map. It was built as a private page first; nothing here links from the site.
+An interactive timeline of the estate, July 2025 to 2026-09-29: 89 dated events in five eras, an estate-wide commit heatmap, and a Microsoft Store install map. It was built as a private page first; nothing here links from the site.
 
 ## Files
 
