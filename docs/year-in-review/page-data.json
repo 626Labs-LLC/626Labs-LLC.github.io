@@ -303,8 +303,8 @@
    "precision": "day",
    "lane": "products",
    "category": "store",
-   "title": "Right Click to PNG hits the Store one day after its first commit",
-   "detail": "First publish at 20:11 UTC.",
+   "title": "Right Click to PNG is built and live on the Store in about a day",
+   "detail": "All 33 commits, the shell extension, the WPF settings app, MSIX packaging and CI, landed in one sitting on 04-21, 1:16 pm to 10:17 pm. Partner Center first publish the next day: 20:11 UTC.",
    "confidence": "verified",
    "headline": true
   },
@@ -346,6 +346,15 @@
    "detail": "Both ran on Medium and X. From Legitimate to Sustainable, a builder guide to vibe-coded software that lasts, went out April 28. The Second User, on how seven Claude Code plugins stabilized the workflow, followed April 29.",
    "confidence": "verified",
    "headline": false
+  },
+  {
+   "date": "2026-04-29",
+   "precision": "day",
+   "title": "SnapSnip is built in one evening",
+   "category": "product",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "Eight steps, schema, redaction, capture, keyboard hooks, UI and a standalone host, in 2 hours 14 minutes, 9:40 to 11:54 pm. The Store approval that followed took five more days."
   },
   {
    "date": "2026-05-03",
