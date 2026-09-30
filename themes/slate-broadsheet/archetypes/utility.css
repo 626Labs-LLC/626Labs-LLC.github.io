@@ -75,7 +75,7 @@
    --ed-link #0FA8C9 3.56:1; --ink-950 and the navy trio are field
    constants for the brand and are not inks on this theme.
    ============================================================ */
-/* 626 Labs Design System — see ~/.claude/skills/626labs-design + /Design */
+/* 626 Labs Design System — see ~/.claude-personal/skills/626labs-design + /Design */
 @import url('/fonts/fonts.css');
 
 :root {

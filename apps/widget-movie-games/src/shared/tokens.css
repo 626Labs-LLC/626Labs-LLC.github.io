@@ -1,7 +1,7 @@
 /* Subset of 626 Labs tokens, scoped to both game-widget roots. Mirrors
  * widget-bacon-trail/src/styles/tokens.css so all three play-section
  * widgets read as one family. Full system:
- * ~/.claude/skills/626labs-design/colors_and_type.css */
+ * ~/.claude-personal/skills/626labs-design/colors_and_type.css */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
 
 .box-office-widget,
