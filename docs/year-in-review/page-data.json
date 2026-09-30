@@ -375,6 +375,15 @@
    "detail": "Eight steps, schema, redaction, capture, keyboard hooks, UI and a standalone host, in 2 hours 14 minutes, 9:40 to 11:54 pm. The Store approval that followed took five more days."
   },
   {
+   "date": "2026-04-30",
+   "precision": "day",
+   "title": "Level 3 Proficient Builder on Replit",
+   "category": "tool",
+   "headline": false,
+   "confidence": "user-stated",
+   "detail": "Alongside a LinkedIn ranking in the top 1% of Replit Agent users, undated on its own."
+  },
+  {
    "date": "2026-05-03",
    "precision": "day",
    "lane": "activity",
@@ -497,7 +506,7 @@
    "category": "tool",
    "headline": false,
    "confidence": "verified",
-   "detail": "Anthropic Education, credential ec8z294eizmw. Verifiable, alongside a Replit Level 3 Proficient Builder badge and a top-1%-of-Replit-Agent-users ranking, both undated."
+   "detail": "Anthropic Education, credential ec8z294eizmw."
   },
   {
    "date": "2026-06-09",
