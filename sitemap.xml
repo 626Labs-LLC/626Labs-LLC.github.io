@@ -151,6 +151,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://626labs.dev/year-in-review.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://626labs.dev/editorial/2026-05-24-vibe-walk-launch/</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>monthly</changefreq>

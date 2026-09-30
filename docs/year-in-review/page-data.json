@@ -73,6 +73,15 @@
    "detail": "Two months after the scrape, the tool gets a screen recording of its own."
   },
   {
+   "date": "2025-10-25",
+   "precision": "day",
+   "title": "Google AI Essentials, three days before the first line of code",
+   "category": "tool",
+   "headline": true,
+   "confidence": "verified",
+   "detail": "Five modules on integrating AI into real work: prompt engineering, evaluating AI tools, and using it responsibly. Google Career Certificates, then straight into building."
+  },
+  {
    "date": "2025-10-28",
    "precision": "day",
    "lane": "activity",
@@ -139,6 +148,15 @@
    "detail": "",
    "confidence": "verified",
    "headline": false
+  },
+  {
+   "date": "2026-02",
+   "precision": "month",
+   "title": "A Google Cloud Cybersecurity Certificate lands",
+   "category": "tool",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "Compliance lifecycle, cloud backup and one more skill, formal proof next to a year of building it live."
   },
   {
    "date": "2026-02-26",
@@ -357,6 +375,15 @@
    "detail": "Eight steps, schema, redaction, capture, keyboard hooks, UI and a standalone host, in 2 hours 14 minutes, 9:40 to 11:54 pm. The Store approval that followed took five more days."
   },
   {
+   "date": "2026-04-30",
+   "precision": "day",
+   "title": "Level 3 Proficient Builder on Replit",
+   "category": "tool",
+   "headline": false,
+   "confidence": "user-stated",
+   "detail": "Alongside a LinkedIn ranking in the top 1% of Replit Agent users, undated on its own."
+  },
+  {
    "date": "2026-05-03",
    "precision": "day",
    "lane": "activity",
@@ -393,6 +420,15 @@
    "headline": false,
    "confidence": "verified",
    "detail": "A 13-minute read, approved by the Artificial Intelligence publication."
+  },
+  {
+   "date": "2026-05-08",
+   "precision": "day",
+   "title": "Four Anthropic courses enrolled in one day",
+   "category": "tool",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "Building with the Claude API, Claude Code in Action, Introduction to Model Context Protocol, and Introduction to Agent Skills, all started 2026-05-08. Agent Skills finishes the same day; the other three finish together a month later."
   },
   {
    "date": "2026-05-11",
@@ -462,6 +498,15 @@
    "detail": "Out on Medium and X the same day.",
    "confidence": "verified",
    "headline": false
+  },
+  {
+   "date": "2026-06-06",
+   "precision": "day",
+   "title": "Three more Anthropic certificates land in one day",
+   "category": "tool",
+   "headline": false,
+   "confidence": "verified",
+   "detail": "Building with the Claude API, Claude Code in Action, and Introduction to Model Context Protocol, all completed 2026-06-06, a month after enrolling."
   },
   {
    "date": "2026-06-09",
