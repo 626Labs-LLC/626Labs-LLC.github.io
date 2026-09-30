@@ -72,6 +72,7 @@ ETSYMCP_HTML = ROOT / "etsy-mcp.html"
 NOTFOUND_HTML = ROOT / "404.html"
 BACONTRAIL_HTML = ROOT / "bacon-trail" / "index.html"
 SANDUHR_HTML = ROOT / "sanduhr" / "index.html"
+YEARONE_HTML = ROOT / "year-in-review.html"
 STORIES_DIR = ROOT / "content" / "stories"
 # Local Field Notes render to on-site reading pages under here:
 # editorial/<slug>/index.html, served at /editorial/<slug>/.
@@ -947,6 +948,9 @@ THEME_CSS_HREFS = {
     # same base layer themes.html takes, for its palette alone.
     BACONTRAIL_HTML: "archetypes/product-tokens.css",
     SANDUHR_HTML: "archetypes/product-tokens.css",
+    # Hand-authored, self-dressed like themes.html: takes the base token file
+    # directly, no archetype dress of its own to inherit.
+    YEARONE_HTML: "tokens.css",
     NOTFOUND_HTML: "tokens.css",
 }
 
@@ -966,7 +970,7 @@ THEME_CSS_MULTI_ZONE_PAGES = (THEMES_HTML, CONUNDRUM_HTML)
 THEME_CSS_ONLY_PAGES = (
     PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML, ROROROPLUGINS_HTML,
     RORORO_HTML, MODLAUNCHERGAMES_HTML, ETSYMCP_HTML,
-    BACONTRAIL_HTML, SANDUHR_HTML, NOTFOUND_HTML,
+    BACONTRAIL_HTML, SANDUHR_HTML, NOTFOUND_HTML, YEARONE_HTML,
 )
 
 # What `--theme <slug> --out <dir>` writes beside index.html, so a QUEUED

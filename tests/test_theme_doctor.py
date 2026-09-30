@@ -998,11 +998,15 @@ def test_browser_checks_open_every_hand_authored_product_page():
     # 404.html, bacon-trail/index.html and sanduhr/index.html joined in
     # October needs (piece 2), as repo-relative paths: two are named
     # index.html, and a name-keyed set collapses them onto the home page.
+    # year-in-review.html joined the same way: hand-authored, self-dressed,
+    # takes only the base token file, same shape as themes.html minus the
+    # gallery zone that keeps themes.html itself out of this list.
     assert td.BROWSER_CHECK_LIVE_PAGES == (
         "conundrum.html", "rororo-plugins.html", "rororo.html",
         "mod-launcher-games.html", "thesis.html", "workflow.html",
         "press.html", "privacy.html", "etsy-mcp.html",
         "404.html", "bacon-trail/index.html", "sanduhr/index.html",
+        "year-in-review.html",
     )
     previewable = _render_hub_previewable_pages()
     for name in td.BROWSER_CHECK_LIVE_PAGES:

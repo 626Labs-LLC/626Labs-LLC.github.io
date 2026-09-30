@@ -48,7 +48,25 @@ if theme:
         "--y-f-display:var(--font-display);--y-f-body:var(--font-body);"
         "--y-f-mono:var(--font-mono)}",
     )
-    # The artifact viewer supplies the document shell; a hosted page needs its own.
+    # The artifact viewer supplies the document shell, title and meta; a hosted
+    # page needs its own, matching what the other hand-authored pages carry
+    # (conundrum.html is the reference).
+    tpl = tpl.replace(
+        "<title>626 Labs Year One</title>",
+        '<title>The Year in Review · From a Roblox game to 165 markets · 626 Labs</title>\n'
+        '<meta name="description" content="Where 626 Labs actually came from: a dated timeline '
+        'from the first Roblox game through Store reach in 165 markets, with a commit heatmap and '
+        'an install map.">\n'
+        '<meta property="og:title" content="626 Labs, the Year in Review">\n'
+        '<meta property="og:description" content="From a Roblox game to 165 markets '
+        '— the dated timeline.">\n'
+        '<meta property="og:type" content="website">\n'
+        '<meta property="og:url" content="https://626labs.dev/year-in-review.html">\n'
+        '<meta property="og:image" content="https://626labs.dev/assets/brand/medium-header-1500x600.png">\n'
+        '<meta name="twitter:card" content="summary_large_image">\n'
+        '<link rel="icon" type="image/png" href="favicon-626.png">\n'
+        '<link rel="canonical" href="https://626labs.dev/year-in-review.html">',
+    )
     head, rest = tpl.split("</style>", 1)
     shell_open = (
         "<!doctype html>\n"
