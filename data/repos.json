@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T12:05:11.350Z",
+  "generatedAt": "2026-10-01T12:38:32.899Z",
   "count": 57,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-09-30T11:25:56Z",
+      "pushed_at": "2026-10-01T11:53:34Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -109,7 +109,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-09-30T01:39:34Z",
+      "pushed_at": "2026-10-01T05:23:30Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -325,7 +325,7 @@
       "description": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't bound. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "language": "C#",
-      "pushed_at": "2026-09-30T11:42:36Z",
+      "pushed_at": "2026-09-30T20:02:42Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -337,7 +337,7 @@
       "description": "Multiroblox as current as possible",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
-      "pushed_at": "2026-09-30T02:56:57Z",
+      "pushed_at": "2026-09-30T17:49:11Z",
       "stargazers_count": 6,
       "archived": false,
       "fork": false
@@ -445,7 +445,7 @@
       "description": "RoRoRo plugin — watches user-defined screen regions for OCR text or color triggers and fires keybinds when they match. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Ur-OCR",
       "language": "C#",
-      "pushed_at": "2026-09-27T17:38:52Z",
+      "pushed_at": "2026-09-30T19:22:14Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -481,7 +481,7 @@
       "description": "Plot your course from idea to shipped app — spec-driven development as a Claude Code plugin, delivered as 8 slash commands (onboard, scope, prd, spec, checklist, build, iterate, reflect). 626Labs LLC.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer",
       "language": "JavaScript",
-      "pushed_at": "2026-09-11T20:08:57Z",
+      "pushed_at": "2026-10-01T04:30:32Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -565,7 +565,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-09-30T08:21:14Z",
+      "pushed_at": "2026-10-01T12:16:16Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -577,7 +577,7 @@
       "description": null,
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Prompt",
       "language": "Python",
-      "pushed_at": "2026-09-23T04:46:52Z",
+      "pushed_at": "2026-10-01T04:39:03Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -589,7 +589,7 @@
       "description": "Surface prior art from your own repos while you spec the next one. Indexes your estate, ranks what you already built, and verifies the hit at current HEAD before it claims anything.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Recall",
       "language": "JavaScript",
-      "pushed_at": "2026-08-12T18:02:39Z",
+      "pushed_at": "2026-10-01T05:13:50Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
