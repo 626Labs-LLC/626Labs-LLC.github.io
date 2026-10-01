@@ -1342,6 +1342,21 @@ def _run_browser_checks(
         def log_message(self, fmt, *args):  # quiet — the doctor has its own output
             pass
 
+    # Threaded, not plain TCPServer: a single page load opens several
+    # concurrent connections (CSS, JS, images, and — on rororo.html and
+    # mod-launcher-games.html — an 8-9MB launch video), and a one-request-
+    # at-a-time server makes every connection but the first queue behind
+    # however long the slowest one takes to transfer. Reproduced twice on
+    # GitHub's runners (2026-10-01 rotation, both attempts): those two pages
+    # alone timed out navigating at all three widths, never locally on a
+    # lightly-loaded dev machine. ThreadingMixIn answers each connection on
+    # its own thread, same handler, same repo root, nothing isolated or
+    # mocked — the video still loads for real, just no longer serialized
+    # behind whatever else the page asked for first. daemon_threads=True so
+    # a slow in-flight transfer can't block httpd.shutdown() below.
+    class _ThreadingServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+        daemon_threads = True
+
     # The document answers at its own path and at the directory form of it
     # (/bacon-trail/ for /bacon-trail/index.html; / for /index.html), the
     # two URLs a live visitor could arrive by.
@@ -1353,7 +1368,7 @@ def _run_browser_checks(
 
     errors: list[str] = []
     try:
-        httpd = socketserver.TCPServer(("127.0.0.1", 0), _Handler)
+        httpd = _ThreadingServer(("127.0.0.1", 0), _Handler)
     except OSError as e:
         # Environment degradation — says nothing about the theme, UNLESS the
         # caller required the browser path to run (then it's a gate failure).
