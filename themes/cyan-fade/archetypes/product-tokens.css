@@ -1,0 +1,191 @@
+/* ============================================================
+   Theme: cyan-fade — product archetype, TOKEN VOCABULARY.
+
+   This file is custom-property definitions and nothing else. No element
+   selectors, no class selectors, no media queries, no @import. That is a
+   contract, enforced by scripts/theme-doctor.py's
+   check_token_css_declares_only_tokens(), not a convention.
+
+   Who reads it: conundrum.html, rororo-plugins.html, rororo.html,
+   mod-launcher-games.html and etsy-mcp.html LINK it for their palette and
+   keep their own layout; scripts/render-plugin-pages.py CONCATENATES it
+   after archetypes/product.css into the 15 generated plugin pages. Names
+   this file shares with product.css's own :root must carry the same
+   values (tests/test_render_plugin_pages.py asserts it on the active
+   theme), so the Cyan Fade dress reads these rather than restating them.
+
+   COMPLETE against archetypes.REQUIRED_TOKENS (47 names), plus the --cf-*
+   treatment block, both :root blocks copied verbatim from tokens.css. The
+   radius scale is offered at zero and the spacing scale is present and
+   unspent: the theme OFFERS them; the linking pages decline them.
+
+   THE FIRST PAPER THEME. The accent names are ACCENT INKS here, tones
+   that clear AA on paper; --ink-950, the type that sits on an accent
+   fill, is paper. See tokens.css's header for the full re-reading.
+
+   AA CONTRAST, computed with scripts/theme-doctor.py's own WCAG 2.1 math
+   (the numbers the gate will grade). The 4.5:1 body floor applies to every
+   pair, including sizes that would qualify as large text. No texture, no
+   grain: the raw tone is the rendered tone.
+
+   ink / surface             --bg-0 #FFFFFF  --bg-1 #F4FBFD  --bg-2 #E9F7FB
+   --fg-1 #0F1F31                   16.66:1         15.92:1         15.20:1
+   --fg-2 #2A3649                   12.19:1         11.65:1         11.13:1
+   --fg-3 #5E6B7F                    5.40:1          5.16:1          4.93:1
+   --fg-muted #627089                5.00:1          4.78:1          4.56:1
+   --cyan #087088                    5.70:1          5.45:1          5.20:1
+   --cyan-pale #065A6B               7.83:1          7.48:1          7.14:1
+   --magenta #C21F6C                 5.67:1          5.41:1          5.17:1
+   --magenta-pale #A8195D            7.09:1          6.77:1          6.47:1
+   --ok #107A4E                      5.36:1          5.12:1          4.89:1
+   --warn #8A5200                    6.39:1          6.10:1          5.83:1
+
+   THE PRODUCT PAGE'S ONE ACCENT FIELD. The 15 generated pages are flat
+   paper with ONE flat field of --cf-cyan (#17D4FA) under the masthead and
+   the hero. On that field the only inks are --cf-ink 9.39:1 and
+   --cf-ink-2 6.87:1. --cf-ink-3 is 3.05:1 there and the accent inks
+   (--cyan, --magenta, --ok) are worse: none of them is spent on the field.
+   The band (--cf-band, the one magenta surface): --cf-band-ink 5.67:1,
+   --cf-band-ink-2 5.28:1. The screens (--cf-screen): --cf-screen-ink, the
+   brand cyan, 9.39:1.
+
+   NEVER TEXT on paper: --cf-cyan 1.84:1, --cf-top 2.94:1, the brand's
+   full magenta 3.79:1; --ink-0 and --ink-950 are fills' type.
+
+   SHORTHANDS: --cf-hair and --cf-heavy are BORDER SHORTHANDS (width +
+   style + color). Spend them on border-* and column-rule only. The bare
+   color is --cf-hair-color, which --border-1 and --border-2 read.
+   ============================================================ */
+:root {
+  /* Brand constants. The navy trio and --ink-0 are the 626 Labs field
+     colors every theme carries; on paper the navy IS the ink, and the
+     brand cyan and magenta are the sweep and the band, never type. */
+  --navy-deep: #0f1f31;
+  --navy-mid:  #192e44;
+  --navy-hi:   #223a54;
+  --navy-line: #2a3a5c;
+  --ink-0:     #ffffff;
+
+  /* The accent inks: the contract's accent names as tones that clear AA on
+     paper. --ink-950 is the type that sits on an accent fill: paper. */
+  --cyan:      var(--cf-cyan-ink);
+  --cyan-pale: var(--cf-cyan-ink-hover);
+  --cyan-dim:  var(--cf-cyan-ink-hover);
+  --magenta:   var(--cf-band);
+  --magenta-pale: var(--cf-magenta-ink-hover);
+  --ink-950:   var(--cf-band-ink-2);
+  --ok:        #107a4e;
+  --warn:      #8a5200;
+
+  /* The ink ramp: the editorial inks, on paper. */
+  --text:      #0F1F31;
+  --text-sec:  #2A3649;
+  --text-dim:  #5E6B7F;
+  --text-mute: #627089;
+
+  /* The paper. One ground, two steps of cold tint for mats and rails. */
+  --bg-0: var(--cf-ground);
+  --bg-1: #F4FBFD;
+  --bg-2: #E9F7FB;
+  --fg-1: var(--text);
+  --fg-2: var(--text-sec);
+  --fg-3: var(--text-dim);
+  --fg-muted: var(--text-mute);
+
+  /* Rules are ink at low alpha: the hairline between rows, and the heavy
+     rule a dress draws in ink itself. A deep-cyan hairline for the accent. */
+  --border-1: var(--cf-hair-color);
+  --border-2: var(--cf-hair-color);
+  --border-strong: rgba(15,31,49,.6);
+  --border-accent: rgba(8,112,136,.45);
+
+  /* The brand pair as a swatch recipe, in the paper inks, never a text fill. */
+  --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+  --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
+  --inner-stroke: inset 0 0 0 1px rgba(15,31,49,.08);
+
+  /* Flat drop shadows for anything lifted off the page. No glow tokens:
+     this theme defines none, so a dress cannot spend one by accident. */
+  --shadow-2: 0 4px 16px rgba(15,31,49,.10);
+  --shadow-3: 0 12px 32px rgba(15,31,49,.14);
+
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  --dur-fast: 120ms;
+  --dur-med: 220ms;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  /* No radius anywhere on this theme. The scale is offered at zero so a
+     consumer that reads --r-md gets a square corner, not an unresolved var. */
+  --r-xs: 0; --r-sm: 0; --r-md: 0; --r-lg: 0; --r-xl: 0;
+  --r-pill: 0;
+
+  /* One face. Archivo on every head and every line of text; the mono for
+     code only. Archivo is self-hosted in /fonts/fonts.css (roman + italic,
+     wght 100-900, wdth 62-125). */
+  --font-display: 'Archivo', 'Arial Black', Arial, sans-serif;
+  --font-body:    'Archivo', Arial, Helvetica, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* Cyan Fade — treatment layer (--cf-*). Same block as tokens.css. */
+:root {
+  /* The paper and the inks. --cf-ground is the ONLY place the ground is
+     declared; --bg-0 reads it. */
+  --cf-ground:      #FFFFFF;
+  --cf-ink:         #0F1F31;   /* primary ink: heads, body, links, the only ink on the sweep's top */
+  --cf-ink-2:       #2A3649;   /* secondary ink: decks, descriptions, dates */
+  --cf-ink-3:       #5E6B7F;   /* caption ink: 5.40:1 on paper, never on the sweep */
+  --cf-ink-muted:   #627089;   /* the fourth step the contract's --fg-muted needs */
+
+  /* The sweep. --cf-top is bluer than the brand (brand cyan 70 / brand
+     navy 30, in sRGB); --cf-cyan is the brand cyan itself. The home shell
+     paints them as one gradient; no other page paints either. */
+  --cf-top:         #159EBE;
+  --cf-cyan:        #17D4FA;
+  --cf-sweep:       linear-gradient(180deg, var(--cf-top) 0, var(--cf-cyan) 22%, var(--cf-ground) 100%);
+  --cf-sweep-height: 3200px;
+
+  /* The accent inks: a deep cyan the pages may set type in, and its
+     hover; the dim magenta and its hover. The contract's --cyan,
+     --cyan-pale, --magenta and --magenta-pale read these. */
+  --cf-cyan-ink:        #087088;   /* 5.70:1 on paper */
+  --cf-cyan-ink-hover:  #065A6B;   /* 7.83:1 on paper */
+  --cf-magenta-ink-hover: #A8195D; /* 7.09:1 on paper */
+
+  /* The band: the one magenta surface, and the type that sits on it. */
+  --cf-band:        #C21F6C;   /* the brand's dim magenta; 5.67:1 under white */
+  --cf-band-ink:    #FFFFFF;   /* heads and links on the band */
+  --cf-band-ink-2:  #F5F7FB;   /* body on the band, 5.28:1 */
+
+  /* The screens: the dark rasters (thumbs, previews, the star map, the
+     widgets' own chrome) and the caption printed inside one. */
+  --cf-screen:      #0F1F31;   /* brand navy */
+  --cf-screen-ink:  #17D4FA;   /* the brand cyan, 9.39:1 on the screen */
+
+  /* Rule colors: ink at low alpha. Decorative, never text. */
+  --cf-hair-color:  rgba(15,31,49,.28);  /* hairlines between rows */
+
+  /* The two rules, as the sheet declares them: BORDER SHORTHANDS, width +
+     style + color. Spend them on border-* and column-rule ONLY
+     (`border-bottom: var(--cf-hair)`, `border-top: var(--cf-heavy)`);
+     never as a color. For a color, read --cf-hair-color. */
+  --cf-hair:        1px solid var(--cf-hair-color);
+  --cf-heavy:       2px solid var(--cf-ink);
+
+  /* Links: ink, underlined; hover thickens the underline. Nothing else
+     on the sweep passes as a second color, so the theme has no link color. */
+  --cf-underline:   1.5px;
+  --cf-underline-hover: 3px;
+
+  /* Page measures. */
+  --cf-page:        1240px;
+  --cf-gutter:      32px;
+
+  /* Role aliases the sheet's rules read. */
+  --cf-face:        var(--font-body);
+  --cf-mono:        var(--font-mono);
+  --cf-display-stretch: 125%;
+  --cf-display-weight:  900;
+}

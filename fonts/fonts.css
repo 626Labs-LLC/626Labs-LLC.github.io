@@ -49,3 +49,23 @@
   font-display: swap;
   src: url('/fonts/SourceSerif4-Italic-Variable.woff2') format('woff2');
 }
+/* Archivo (Omnibus-Type, SIL OFL): the Cyan Fade's one face (2026-11).
+   Two axes, wght 100-900 and wdth 62-125; the theme's display cut is the
+   expanded black (font-stretch: 125%, font-weight: 900), so the width range
+   is declared here or the browser clamps the stretch to 100. */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url('/fonts/Archivo-Variable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url('/fonts/Archivo-Italic-Variable.woff2') format('woff2');
+}

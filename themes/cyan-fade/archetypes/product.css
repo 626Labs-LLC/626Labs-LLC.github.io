@@ -1,0 +1,704 @@
+
+    /* ============================================================
+       Theme: cyan-fade — product archetype, ELEMENT DRESS.
+
+       One product per page, on paper, with the brand as the ground at the
+       top. The masthead and the hero sit on ONE flat field of the brand
+       cyan (--cf-cyan) that runs full-bleed; the rest of the page reads on
+       white. That field is the page's one accent moment. The home shell
+       paints the same cyan as a sweep that fades to paper; a product page
+       is one screen tall at the top and has no room for the fade, so it
+       takes the sweep's second stop flat and stops.
+
+       ONE FACE. Archivo: the expanded black (font-stretch 125%, weight
+       900) on every head, the normal width at 400/500/700 for every line
+       of text. JetBrains Mono for code only: the install commands, the
+       slash commands, the terminal. No tracked uppercase eyebrows, no mono
+       folios, no mono small data. Section labels are plain 17px weight
+       500 sentence case, set on the heavy rule.
+
+       FLAT AND MATTE. No border-radius anywhere (the --r-* scale is zero),
+       no fills on cards, no glow, no texture, no gradient field: the
+       printer's color bar, the halftone screen, the pale mat, the grain
+       and the reversed folio tabs of the slate dress are all gone. Rows
+       are separated by hairlines (--cf-hair), section labels and the
+       footer sit on the heavy rule (--cf-heavy, 2px ink). Links are ink,
+       underlined; hover thickens the underline. Every call to action is a
+       link in that dress: the gradient-underline door is gone.
+
+       WHERE EACH INK MAY SIT. On the cyan field: --cf-ink and --cf-ink-2
+       only (9.39:1, 6.87:1); --cf-ink-3 is 3.05:1 there and the accent
+       inks are worse, so the hero's Validated tag, which slate set in
+       --ok, is --cf-ink here. On the screens (the terminal, the marks, the
+       listing thumbs): --cf-screen-ink, --cf-band-ink-2, --ink-0. On the
+       band (the brain section's callout; the thesis pull quote on
+       /plugins/), the one magenta surface on any page: --cf-band-ink and
+       --cf-band-ink-2. On paper: the whole ramp, plus --ok, --magenta and
+       --cyan as plain-text status inks.
+
+       The dress only. Its token vocabulary lives beside it in
+       archetypes/product-tokens.css, which render-plugin-pages.py
+       concatenates AFTER this file before inlining the pair into the 15
+       generated product pages. After, not before, because the @import
+       below has to stay the first rule in the combined sheet or the
+       browser drops it and the whole type stack falls back. Every --cf-*,
+       --fg-*, --bg-* and --font-* name this file reads resolves inside
+       that {product.css + product-tokens.css} group. --cf-hair and
+       --cf-heavy are BORDER SHORTHANDS, spent on border-* only; the color
+       is --cf-hair-color.
+
+       This file is deliberately NOT what the hand-authored product pages
+       (conundrum.html, rororo.html, rororo-plugins.html,
+       mod-launcher-games.html, etsy-mcp.html) link. It styles bare element
+       and generic class selectors (`body`, `a`, `a:hover`, `h1, h2, h3`,
+       `section.hero`, `.card`, `.btn`, `.brand img`, `footer`) written for
+       markup render-plugin-pages.py owns. Those pages link
+       product-tokens.css instead; see its header.
+
+       The selector set is the slate dress's, kept whole: it was derived
+       from the real rendered pages, and a dropped selector is an undressed
+       element. Where slate drew a treatment this theme refuses (the ear
+       row, the color bars, the halftone, the drop caps), the selector
+       stays and states the refusal.
+       ============================================================ */
+    @import url('/fonts/fonts.css');
+
+    :root {
+      /* The palette names this dress spends by name. Every one is ALSO
+         declared in archetypes/product-tokens.css, and
+         tests/test_render_plugin_pages.py asserts the two files agree on
+         every shared name, so these are byte-for-byte the token file's
+         values. Everything else the dress reads it reads from the token
+         file and does not restate. */
+      --cf-ink:         #0F1F31;
+      --cf-cyan:        #17D4FA;
+      --cf-band:        #C21F6C;
+      --cf-screen:      #0F1F31;
+      --cf-screen-ink:  #17D4FA;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--bg-0); }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg-0);
+      color: var(--cf-ink);
+      font-family: var(--cf-face);
+      font-size: 17px;
+      line-height: 1.5;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: "kern", "liga";
+    }
+    /* No texture: the raw tone is the rendered tone. */
+    body::before { content: none; }
+    p { margin: 0; }
+    img, svg { max-width: 100%; }
+    a {
+      color: var(--cf-ink);
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
+    }
+    a:hover, a:focus-visible { color: var(--cf-ink); text-decoration-thickness: var(--cf-underline-hover); }
+    a:focus-visible { outline: 2px solid var(--cf-ink); outline-offset: 3px; }
+
+    /* The skip link is a screen: navy, the caption in brand cyan. */
+    .skip-link {
+      position: absolute; left: -9999px; top: 8px; z-index: 200;
+      background: var(--cf-screen); color: var(--cf-screen-ink);
+      padding: 8px 12px;
+      font-family: var(--cf-face); font-size: 15px; font-weight: 500;
+    }
+    .skip-link:focus { left: 8px; color: var(--cf-screen-ink); outline: 2px solid var(--cf-ink); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    .container { max-width: var(--cf-page); margin: 0 auto; padding: 0 var(--cf-gutter); min-width: 0; }
+
+    /* Section label: plain text, sentence case, weight 500. Not tracked,
+       not uppercase, not mono. */
+    .eyebrow {
+      font-family: var(--cf-face);
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.35;
+      color: var(--cf-ink-2);
+    }
+
+    /* Heads: the expanded black cut. */
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      margin: 0;
+    }
+    h1 {
+      font-size: clamp(44px, 6.2vw, 96px);
+      line-height: .92;
+      overflow-wrap: break-word;
+      text-wrap: balance;
+    }
+    h2 {
+      font-size: clamp(30px, 3.8vw, 54px);
+      line-height: .95;
+      overflow-wrap: break-word;
+      text-wrap: balance;
+    }
+    h3 { font-size: 24px; line-height: 1; overflow-wrap: break-word; }
+
+    /* Calls to action are links: ink, underlined, weight 500. No fill, no
+       border, no gradient rule. */
+    .btn {
+      display: inline-block;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      font-family: var(--cf-face);
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--cf-ink);
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
+    }
+    .btn-primary,
+    section.thesis .thesis-link a,
+    section.thesis .artifact-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--cf-face);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--cf-ink);
+      background: none;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
+    }
+    .btn-primary:hover,
+    section.thesis .thesis-link a:hover,
+    section.thesis .artifact-links a:hover { color: var(--cf-ink); text-decoration-thickness: var(--cf-underline-hover); }
+    .btn-ghost { color: var(--cf-ink); border-bottom: 0; }
+    .btn-ghost:hover { color: var(--cf-ink); text-decoration-thickness: var(--cf-underline-hover); }
+
+    /* ================= MASTHEAD, on the field =================
+       The wordmark at left with the plugin's name after it, the Install
+       link at right, all on the brand cyan the hero continues. One row,
+       no ear, no color bar, no rule: the field is the masthead's edge. */
+    nav.top { position: relative; background: var(--cf-cyan); border-bottom: 0; margin-bottom: 0; }
+    nav.top::after { content: none; }
+    nav.top .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px 32px;
+      padding-top: 24px;
+    }
+    nav.top .row::before { content: none; }
+    nav.top .row::after { content: none; }
+    nav.top .brand-row, nav.top .row > .brand { min-width: 0; }
+    nav.top .brand-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; padding: 0; }
+    nav.top .row > .brand { padding: 0; }
+    nav.top .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--cf-ink);
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 28px; letter-spacing: -0.015em; line-height: 1;
+      text-decoration: none;
+    }
+    nav.top .brand:hover { color: var(--cf-ink); text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); }
+    /* The mark is a raster: it sits on a screen, never on the cyan, where
+       its own cyan would vanish into the field. */
+    nav.top .brand img { height: 30px; width: 30px; padding: 4px; background: var(--cf-screen); display: block; }
+    nav.top .brand-sep { color: var(--cf-ink-2); font-family: var(--cf-face); font-size: 20px; font-weight: 400; }
+    nav.top .brand-current {
+      display: inline-flex; align-items: center; gap: 10px; min-width: 0;
+      font-family: var(--cf-face); font-size: 17px; font-weight: 500;
+      color: var(--cf-ink);
+    }
+    nav.top .brand-current span { min-width: 0; overflow-wrap: anywhere; }
+    nav.top .vibe-mark {
+      width: 30px; height: 30px; flex-shrink: 0;
+      border: 0; background: var(--cf-screen);
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    nav.top .vibe-mark img { width: 20px; height: 20px; display: block; }
+    nav.top .row > .btn {
+      padding: 0;
+      border-left: 0;
+      border-bottom: 0;
+      color: var(--cf-ink);
+    }
+    nav.top .row > .btn:hover { color: var(--cf-ink); }
+
+    /* ================= HERO: the field continues =================
+       Flat brand cyan, full-bleed (the section spans the page; the
+       container holds the measure). Every string on it is --cf-ink or
+       --cf-ink-2. */
+    section.hero { padding: 64px 0 72px; background: var(--cf-cyan); }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: 0 48px;
+      align-items: start;
+    }
+    .hero-grid.solo { grid-template-columns: 1fr; max-width: 820px; }
+    .hero-left { min-width: 0; padding-right: 0; border-right: 0; }
+    .hero-grid.solo .hero-left { padding-right: 0; border-right: 0; }
+    .hero-left .eyebrow { display: block; margin-bottom: 22px; color: var(--cf-ink); }
+    .hero-subhead {
+      margin: 24px 0 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+      font-family: var(--cf-face);
+      font-style: normal;
+      font-size: clamp(19px, 1.6vw, 23px);
+      line-height: 1.45;
+      color: var(--cf-ink);
+      max-width: 30em;
+      text-wrap: pretty;
+    }
+    .hero-ctas { display: flex; gap: 12px 28px; flex-wrap: wrap; margin: 28px 0 26px; }
+    /* The dateline: plain text, weight 500, the version first. */
+    .hero-meta {
+      display: flex; align-items: center; gap: 4px 10px; flex-wrap: wrap;
+      padding-top: 12px;
+      border-top: var(--cf-heavy);
+      font-family: var(--cf-face);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--cf-ink);
+      font-variant-numeric: tabular-nums;
+    }
+    /* The FIRST meta span is the version on every page (render_hero()
+       overwrites heroMeta[0] with the live tag); it takes the bold weight,
+       nothing more. */
+    .hero-meta span:first-child { font-weight: 700; }
+    .hero-validated { margin-top: 14px; max-width: 34em; font-size: 16px; line-height: 1.45; color: var(--cf-ink); }
+    .hero-validated .vtag {
+      font-family: var(--cf-face); font-size: 16px; font-weight: 700;
+      color: var(--cf-ink); margin-right: 8px;
+    }
+    .hero-caps { margin-top: 12px; font-family: var(--cf-face); font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); }
+    .hero-caps .captag { font-weight: 700; color: var(--cf-ink); margin-right: 8px; }
+
+    /* The terminal is a screen: a flat navy block on the field, no mat, no
+       border, no shadow. Its caption sits under it on the cyan in
+       --cf-ink-2. */
+    .hero-right { min-width: 0; }
+    .hero-right::after {
+      content: 'A session in Claude Code.';
+      display: block;
+      margin-top: 10px;
+      font-family: var(--cf-face);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--cf-ink-2);
+    }
+    .term { position: relative; border: 0; background: var(--cf-screen); overflow: hidden; }
+    .term::before { content: none; }
+    .term-bar, .term-body { position: relative; }
+    .term-bar { display: flex; align-items: center; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--navy-line); }
+    .term-dot { width: 9px; height: 9px; border-radius: 0; background: var(--navy-line); }
+    .term-dot.r { background: var(--navy-line); }
+    .term-dot.y { background: var(--navy-line); }
+    .term-dot.g { background: var(--navy-line); }
+    .term-label { margin-left: 10px; font-family: var(--cf-face); font-size: 14px; font-weight: 500; color: var(--cf-screen-ink); }
+    .term-body { padding: 20px; font-family: var(--cf-mono); font-size: 13px; line-height: 1.65; color: var(--cf-band-ink-2); max-height: 460px; overflow: hidden; }
+    .term-body .prompt, .term-body .agent { color: var(--cf-screen-ink); }
+    .term-body .cmd { color: var(--ink-0); font-weight: 600; }
+    .term-body .path { color: var(--cf-screen-ink); }
+    .term-body .key { color: var(--ink-0); }
+    .term-body .ok { color: var(--cf-screen-ink); }
+    .term-body .muted { color: var(--cf-band-ink-2); opacity: .72; }
+    /* The cursor: a flat block, no blink. */
+    .term-cursor { display: inline-block; width: 8px; height: 14px; background: var(--cf-screen-ink); vertical-align: -2px; }
+
+    /* /plugins/ only: the family mark, on a screen. */
+    .hero-mark { display: block; }
+    .hero-mark img {
+      display: block;
+      width: 100%;
+      height: auto;
+      padding: 14%;
+      border: 0;
+      background: var(--cf-screen);
+    }
+    .hero-mark::after { content: 'The family mark.'; }
+
+    /* ================= SECTIONS, on paper =================
+       Every section opens on its label over the heavy rule, then the
+       headline in the expanded black, then the deck in --cf-ink-2. */
+    section.work, section.brain, section.install, section.family, section.thesis { padding: 64px 0 24px; }
+    main > section + section { border-top: 0; }
+    .section-head { margin-bottom: 32px; }
+    .section-head .eyebrow {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 26px;
+      padding-bottom: 10px;
+      border-bottom: var(--cf-heavy);
+      color: var(--cf-ink-2);
+    }
+    .section-head h2 {
+      position: relative;
+      margin: 0 0 14px;
+      padding-top: 0;
+      border-top: 0;
+    }
+    .section-head h2::before { content: none; }
+    .section-head .lead {
+      font-family: var(--cf-face);
+      font-size: 19px;
+      line-height: 1.5;
+      color: var(--cf-ink-2);
+      max-width: 38em;
+      margin: 14px 0 0;
+      text-wrap: pretty;
+    }
+
+    /* ================= WORK: rows under hairlines, two up ================= */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 48px;
+      border-top: var(--cf-hair);
+    }
+    .cards-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; }
+    .card {
+      padding: 22px 0 24px;
+      margin-bottom: 0;
+      border-bottom: var(--cf-hair);
+      min-width: 0;
+    }
+    .cards-grid .card:last-child { margin-bottom: 0; }
+    .card .cmd {
+      display: block;
+      margin-bottom: 10px;
+      font-family: var(--cf-mono);
+      font-size: 13px;
+      color: var(--cf-ink-2);
+      overflow-wrap: anywhere;
+    }
+    .card h3 { margin: 0 0 10px; font-size: clamp(22px, 2vw, 28px); text-wrap: balance; }
+    .card .desc { font-family: var(--cf-face); font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); margin: 0; text-wrap: pretty; }
+    .card .reach { margin: 12px 0 0; padding-top: 10px; border-top: var(--cf-hair); font-size: 15px; line-height: 1.45; color: var(--cf-ink-3); }
+    .card .reach em { color: var(--cf-ink); }
+
+    /* The sub-head is the section-title row: label left, the hint right,
+       the heavy rule under. */
+    .sub-head {
+      margin: 56px 0 0;
+      padding: 0 0 10px;
+      border-top: 0;
+      border-bottom: var(--cf-heavy);
+      display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px;
+    }
+    .sub-head h3 {
+      margin: 0;
+      font-family: var(--cf-face);
+      font-stretch: 100%;
+      font-size: 17px;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 1.35;
+      color: var(--cf-ink-2);
+    }
+    .sub-head .hint {
+      font-family: var(--cf-face); font-size: 17px; font-weight: 400;
+      color: var(--cf-ink-2);
+    }
+    .mini-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; }
+    .mini { padding: 16px 0 18px; margin-bottom: 0; border-bottom: var(--cf-hair); min-width: 0; }
+    .mini-grid .mini:last-child { margin-bottom: 0; }
+    .mini .name { display: block; margin-bottom: 6px; font-family: var(--cf-mono); font-size: 13px; font-weight: 600; color: var(--cf-ink); overflow-wrap: anywhere; }
+    .mini .desc { font-family: var(--cf-face); font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); margin: 0; }
+
+    /* ================= BRAIN: the read, and the band =================
+       The prose runs one column at a reading measure; the callout beside
+       it is the page's one magenta surface. */
+    .brain-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: 32px 56px;
+      align-items: start;
+    }
+    .brain-grid > div:first-child { order: 1; }
+    .brain-grid > div:last-child { order: 2; }
+    section.brain .section-head + div > div:first-child {
+      min-width: 0;
+      max-width: 38em;
+      font-family: var(--cf-face);
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--cf-ink);
+    }
+    section.brain .section-head + div > div:first-child p { margin: 0 0 1em; color: var(--cf-ink); text-wrap: pretty; }
+    /* No drop cap: one face, one size of body. */
+    section.brain .section-head + div > div:first-child p:first-child::first-letter {
+      float: none;
+      font-size: inherit;
+      line-height: inherit;
+      padding: 0;
+      font-weight: inherit;
+      color: inherit;
+    }
+    .brain-grid strong { color: var(--cf-ink); font-weight: 700; }
+    .callout {
+      margin: 0;
+      padding: 30px 28px 34px;
+      border: 0;
+      background: var(--cf-band);
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-style: normal;
+      font-size: clamp(22px, 2.1vw, 30px);
+      line-height: 1.04;
+      letter-spacing: -0.015em;
+      color: var(--cf-band-ink);
+      overflow-wrap: break-word;
+      text-wrap: pretty;
+    }
+
+    /* ================= INSTALL: the command on a tinted slip ================= */
+    .install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 48px; }
+    .install-grid.solo { grid-template-columns: 1fr; max-width: 680px; }
+    .card.install-card { border: 0; border-top: var(--cf-hair); padding: 22px 0 0; margin: 0; }
+    .install-card h3 { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 10px; font-size: 28px; }
+    /* Status tags: plain text in a paper-safe accent ink, set off by a
+       middle dot. Not chips. */
+    .install-card .badge {
+      font-family: var(--cf-face); font-stretch: 100%; font-size: 17px; font-weight: 500; letter-spacing: 0;
+      line-height: 1.35;
+      color: var(--cyan);
+    }
+    .install-card .badge::before { content: "·"; margin-right: 10px; color: var(--cf-ink-3); }
+    .install-card .badge.magenta { color: var(--magenta); }
+    .install-card .blurb { font-family: var(--cf-face); font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); margin: 0 0 16px; }
+    .codeblock {
+      position: relative;
+      margin: 0;
+      padding: 14px 72px 14px 16px;
+      background: var(--bg-1);
+      border: var(--cf-hair);
+      font-family: var(--cf-mono);
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--cf-ink);
+      overflow-x: auto;
+    }
+    .codeblock .copybtn {
+      position: absolute; top: 12px; right: 14px;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      color: var(--cf-ink);
+      font-family: var(--cf-face); font-size: 15px; font-weight: 500;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
+    }
+    .codeblock .copybtn:hover { color: var(--cf-ink); text-decoration-thickness: var(--cf-underline-hover); }
+    .codeblock .copybtn.ok { color: var(--ok); text-decoration: none; }
+    .install-note { margin-top: 24px; font-size: 15px; line-height: 1.45; color: var(--cf-ink-3); }
+
+    /* ================= FAMILY: rows, three up ================= */
+    .family-lead { font-family: var(--cf-face); font-size: 19px; line-height: 1.5; color: var(--cf-ink-2); margin: 0 0 28px; max-width: 38em; }
+    .family-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; border-top: var(--cf-hair); }
+    /* On a plugin page (the one with a "You are here" row) the strip is
+       the rest of the section; on /plugins/ it IS the section and gets no
+       label. */
+    .family-grid:has(.family-card.here)::before {
+      content: 'Also in the family';
+      grid-column: 1 / -1;
+      display: block;
+      padding: 14px 0 12px;
+      border-bottom: var(--cf-hair);
+      font-family: var(--cf-face);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
+    }
+    .family-card {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 18px 0 20px;
+      border-bottom: var(--cf-hair);
+      color: var(--cf-ink);
+      text-decoration: none;
+      min-width: 0;
+    }
+    .family-grid .family-card:last-child { border-bottom: var(--cf-hair); }
+    .family-card:hover { text-decoration: none; }
+    .family-card:hover .name { color: var(--cf-ink); text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); text-underline-offset: .14em; }
+    .family-card > div { min-width: 0; }
+    /* The listing thumb: the icon on a flat screen. */
+    .family-card .fc-mark {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border: 0; background: var(--cf-screen);
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .family-card .fc-mark img { width: 30px; height: 30px; display: block; }
+    .family-card .name {
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 20px; letter-spacing: -0.015em; line-height: 1.02;
+      color: var(--cf-ink);
+      margin-bottom: 6px;
+      overflow-wrap: anywhere;
+    }
+    .family-card .role { font-family: var(--cf-face); font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); }
+    .family-card .fc-caps { margin-top: 6px; font-family: var(--cf-face); font-size: 15px; font-weight: 500; color: var(--cf-ink-3); }
+    .family-card .fc-beat { margin-top: 8px; font-family: var(--cf-face); font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); text-wrap: pretty; }
+    .family-card .you {
+      display: inline-block;
+      margin-top: 8px;
+      font-family: var(--cf-face); font-size: 16px; font-weight: 500;
+      color: var(--cyan);
+    }
+
+    /* ================= THESIS (/plugins/ only): the pull on the band ================= */
+    section.thesis blockquote {
+      margin: 0 0 36px;
+      padding: 34px 32px 38px;
+      border: 0;
+      background: var(--cf-band);
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-style: normal;
+      font-size: clamp(26px, 3.4vw, 50px);
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-band-ink);
+      max-width: none;
+      overflow-wrap: break-word;
+      text-wrap: balance;
+    }
+    section.thesis blockquote::before { content: '\201C'; color: var(--cf-band-ink-2); margin-right: 2px; }
+    section.thesis blockquote::after { content: '\201D'; color: var(--cf-band-ink-2); margin-left: 2px; }
+    section.thesis .container > p {
+      font-family: var(--cf-face);
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--cf-ink);
+      max-width: 38em;
+      margin: 0 0 1em;
+      text-wrap: pretty;
+    }
+    /* No drop cap. */
+    section.thesis blockquote + p::first-letter {
+      float: none;
+      font-size: inherit;
+      line-height: inherit;
+      padding: 0;
+      font-weight: inherit;
+      color: inherit;
+    }
+    section.thesis strong { color: var(--cf-ink); font-weight: 700; }
+    section.thesis .thesis-link { margin: 10px 0 40px; }
+    section.thesis .thesis-link svg, section.thesis .artifact-links svg { width: 16px; height: 16px; }
+    section.thesis .thesis-artifacts {
+      margin-top: 16px;
+      padding-top: 0;
+      border-top: var(--cf-heavy);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 48px;
+    }
+    section.thesis .thesis-artifact { max-width: none; }
+    section.thesis .artifact-eyebrow {
+      margin-bottom: 10px;
+      font-family: var(--cf-face); font-size: 17px; font-weight: 500;
+      color: var(--cf-ink-2);
+    }
+    section.thesis .artifact-title { margin: 0 0 10px; font-size: clamp(22px, 2vw, 28px); }
+    section.thesis .artifact-blurb { font-family: var(--cf-face); font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); margin: 0 0 14px; }
+    section.thesis .artifact-links { display: flex; gap: 12px 28px; flex-wrap: wrap; }
+
+    /* ================= FOOTER: the heavy rule and the imprint =================
+       render-plugin-pages.py emits the row (entity, tagline, links) and
+       the imprint line (the active theme's name and a real link to
+       /themes.html); this dress only sets them. */
+    footer { margin-top: 72px; position: relative; border-top: var(--cf-heavy); }
+    footer::before { content: none; }
+    footer .row {
+      display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap;
+      gap: 10px 32px;
+      padding: 22px 0 14px;
+      font-family: var(--cf-face);
+      font-size: 17px;
+      color: var(--cf-ink);
+    }
+    footer .tagline { font-family: var(--cf-face); font-style: normal; font-size: 17px; font-weight: 500; color: var(--cf-ink); }
+    footer .links { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 28px; font-size: 17px; font-weight: 500; }
+    footer .links a { color: var(--cf-ink); }
+    footer .links a:hover { color: var(--cf-ink); }
+    footer .links::after { content: none; }
+    footer .imprint {
+      margin-top: 0;
+      padding: 0 0 56px;
+      border-top: 0;
+    }
+    footer .imprint p {
+      font-family: var(--cf-face);
+      font-size: 17px;
+      line-height: 1.5;
+      color: var(--cf-ink-2);
+    }
+    footer .imprint a {
+      color: var(--cf-ink);
+      white-space: nowrap;
+    }
+    footer .imprint a:hover { color: var(--cf-ink); }
+
+    /* ================= 768 ================= */
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 40px 0; }
+      .hero-left { padding-right: 0; border-right: 0; }
+      .hero-mark { display: none; }
+      .cards-grid, .cards-grid.cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .brain-grid { grid-template-columns: 1fr; gap: 28px 0; }
+      .family-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 720px) {
+      nav.top .brand-row { flex-wrap: wrap; row-gap: 6px; }
+      nav.top .brand-sep { display: none; }
+      .install-grid { grid-template-columns: 1fr; }
+      section.brain .section-head + div > div:first-child { max-width: none; }
+    }
+    /* ================= 390 ================= */
+    @media (max-width: 600px) {
+      .container { padding: 0 20px; }
+      nav.top .row { padding-top: 20px; }
+      section.hero { padding: 40px 0 52px; }
+      h1 { font-size: clamp(34px, 10vw, 52px); }
+      section.work, section.brain, section.install, section.family, section.thesis { padding: 48px 0 16px; }
+      .cards-grid, .cards-grid.cols-3, .mini-grid, .family-grid, section.thesis .thesis-artifacts { grid-template-columns: minmax(0, 1fr); }
+      .callout { padding: 24px 20px 28px; }
+      section.thesis blockquote { padding: 26px 20px 30px; }
+      footer .row { padding: 18px 0 12px; }
+      footer .imprint { padding: 0 0 44px; }
+    }
