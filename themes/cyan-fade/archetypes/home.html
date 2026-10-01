@@ -1059,9 +1059,10 @@
       .wrap { padding: 0 20px; }
       .masthead { padding-top: 20px; }
       .hero { padding: 48px 0 56px; }
-      /* the expanded cut is wide: "streetwear." must fit the 350px column on
-         its own line, which it does at 48px and not at 58 */
-      .lead h1 { font-size: clamp(40px, 12.3vw, 72px); overflow-wrap: break-word; }
+      /* the expanded cut is wide: "streetwear." must fit the 335px column
+         on its own line. The sheet fit it at 48px; this h1 carries the
+         tagline block inside it and the period fell off at 48, so 42. */
+      .lead h1 { font-size: clamp(36px, 11.2vw, 72px); overflow-wrap: break-word; }
       .hero-meta { grid-template-columns: 1fr; }
       article.product { grid-template-columns: 2.4em minmax(0, 1fr); padding: 16px 0 18px; gap: 6px 14px; }
       article.product::before { grid-row: 1; }
