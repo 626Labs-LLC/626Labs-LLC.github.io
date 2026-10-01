@@ -443,6 +443,14 @@
     margin: 0;
   }
   .lnt-artifact-meta .k { color: var(--ed-ink-3); margin-right: 6px; }
+  .lnt-artifact-link {
+    color: var(--ed-ink);
+    text-decoration-color: var(--at-lnt-cyan-ink);
+    text-decoration-thickness: 1px;
+    text-underline-offset: .18em;
+  }
+  .lnt-artifact-link:hover,
+  .lnt-artifact-link:focus-visible { color: var(--at-lnt-cyan-ink); }
 
   /* ---------- Footer colophon ---------- */
   .lnt-footer {
@@ -782,6 +790,12 @@
         <p class="lnt-artifact-file">PriceScoutalpha.ipynb</p>
         <p class="lnt-artifact-body">The founding night's notebook. August 8th, 3:45 pm to 10:45 pm. 300 KB. <span class="lnt-status">Preserved.</span></p>
         <p class="lnt-artifact-meta"><span class="k">Window</span> 3:45 pm to 10:45 pm <span class="lnt-rail-sep">/</span> <span class="k">Size</span> 300 KB <span class="lnt-rail-sep">/</span> <span class="k">Hosting</span> not public</p>
+      </div>
+
+      <div class="lnt-artifact-card lnt-frame">
+        <p class="lnt-artifact-file"><a href="year-in-review.html" class="lnt-artifact-link">The Year in Review</a></p>
+        <p class="lnt-artifact-body">From that notebook to a dashboard, fourteen plugins, and six Store apps in 165 markets. Every date checked against a commit, a release, or a timestamp, laid out as a running record instead of a summary. <span class="lnt-status">Live.</span></p>
+        <p class="lnt-artifact-meta"><span class="k">Span</span> Jul 2025 to present <span class="lnt-rail-sep">/</span> <span class="k">Form</span> dated timeline <span class="lnt-rail-sep">/</span> <span class="k">Hosting</span> /year-in-review.html</p>
       </div>
     </div>
   </section>
