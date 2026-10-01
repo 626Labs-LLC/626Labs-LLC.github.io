@@ -23,25 +23,29 @@
   texture, no tracked eyebrows, no mono for small data, no centered hero.
 
   THE PALETTE IS STILL THE BRAND TOKENS plus one declared tone:
-    top      --pi-cyan-fade-top  15b0d2  the brand cyan at 80 over navy at 20
+    top      --pi-cyan-fade-top  159ebe  the brand cyan at 70 over navy at 30
     ground   --brand-cyan        17d4fa  the gradient's second stop
     paper    --ink-0             ffffff  the gradient's last stop
     ink      --ed-ink            0F1F31  (= --brand-navy-deep)
     band     --brand-magenta-dim c21f6c  the ONE magenta surface
     screens  --ed-ink            0F1F31  the dark rasters
   The top tone is the ONLY new color on this sheet. It is a mix, not a new
-  pick: 80% brand cyan, 20% brand navy, in sRGB, so it stays on the brand
-  axis rather than drifting toward a stock blue.
+  pick: 70% brand cyan, 30% brand navy, in sRGB, so it stays on the brand
+  axis rather than drifting toward a stock blue. Was 80/20 (15b0d2) on the
+  first cut; Este asked for slightly darker on 2026-10-01.
 
   AA CONTRAST. Computed 2026-10-01, WCAG 2.1 relative luminance. The
   gradient's darkest stop is the tone every pair is given against; every
   tone below it on the page is lighter, so contrast only improves down the
   sweep.
 
-    on --pi-cyan-fade-top 15b0d2 (L .389), the darkest ground:
-      --ed-ink    0F1F31   6.48:1  PASS   wordmark, nav, h1, accent, subhead
-      --ed-ink-2  2A3649   4.75:1  PASS   kicker, wayfinding; the floor pair
-      --ink-0     ffffff   2.57:1  FAIL   never text on the ground
+    on --pi-cyan-fade-top 159ebe (L .308), the darkest ground:
+      --ed-ink    0F1F31   5.29:1  PASS   everything in the top strip and hero
+      --ed-ink-2  2A3649   3.87:1  FAIL   so the kicker and the wayfinding line,
+                                          the two --ed-ink-2 strings that sat on
+                                          the top of the sweep at 80/20, are now
+                                          --ed-ink. Nothing else is up there.
+      --ink-0     ffffff   3.15:1  FAIL   never text on the ground
     on --brand-cyan 17d4fa (L .542):
       --ed-ink    0F1F31   9.39:1  PASS
       --ed-ink-2  2A3649   6.87:1  PASS
@@ -54,9 +58,10 @@
     on --ed-ink 0F1F31 (the screens):
       --brand-cyan 17d4fa  9.39:1  PASS   figure captions inside the screen
 
-  Floor 4.5:1. Lowest text pair on the page is --ed-ink-2 at the very top
-  of the sweep, 4.75:1, and it is only ever the kicker and the wayfinding
-  line. Everything in the hero proper is --ed-ink. Links are navy
+  Floor 4.5:1. Lowest text pair on the page is --ed-ink at the very top of
+  the sweep, 5.29:1. The first --ed-ink-2 string down the page is the Work
+  section title, which sits past the brand-cyan stop where the pair is
+  already above 6.87:1 and climbing. Links are navy
   underlined; hover thickens the underline.
 
   THE SWEEP: 2400px tall, top-anchored, scroll-attached, on a white html.
@@ -78,7 +83,7 @@
 <link rel="stylesheet" href="/Design/editorial.css">
 <style>
   :root {
-    --pi-cyan-fade-top:  #15b0d2;           /* the top of the sweep: brand cyan 80 / brand navy 20. The ONLY new tone. */
+    --pi-cyan-fade-top:  #159ebe;           /* the top of the sweep: brand cyan 70 / brand navy 30. The ONLY new tone. */
     --pi-cyan-fade-rule: rgba(15,31,49,.28); /* hairlines between list rows. Decorative. */
   }
 
@@ -142,16 +147,18 @@
   .nav { display: flex; flex-wrap: wrap; gap: 4px 28px; font-size: 17px; font-weight: 500; }
   .nav a { text-decoration: none; }
   .nav a:hover { text-decoration: underline; text-decoration-thickness: 3px; }
+  /* --ed-ink, not --ed-ink-2: both of these sit on the darkest stop, where
+     ink-2 is 3.87:1 */
   .wayfinding {
     font-size: 17px;
-    color: var(--ed-ink-2);
+    color: var(--ed-ink);
     padding: 14px 0 0;
   }
   .wayfinding a { color: var(--ed-ink); }
 
   /* ---------- Hero: left, not centered ---------- */
   .hero { padding: 72px 0 80px; }
-  .hero .kicker { font-size: 17px; font-weight: 500; color: var(--ed-ink-2); margin: 0 0 22px; }
+  .hero .kicker { font-size: 17px; font-weight: 500; color: var(--ed-ink); margin: 0 0 22px; }
   .hero h1 {
     font-size: clamp(56px, 11.5vw, 176px);
     max-width: 9.2em;
