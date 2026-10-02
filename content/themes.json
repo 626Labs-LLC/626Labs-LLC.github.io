@@ -1,7 +1,9 @@
 {
   "$comment": "Presentation state for 626labs.dev. active = live theme; queue = approved themes awaiting rotation (FIFO); archive = frozen past themes. Content lives in site.json and stays theme-agnostic.",
   "active": "slate-broadsheet",
-  "queue": [],
+  "queue": [
+    "cyan-fade"
+  ],
   "archive": [
     {
       "slug": "phosphor-blueprint",
