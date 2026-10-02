@@ -28,7 +28,7 @@
     var q1 = q(0.25), q2 = q(0.5), q3 = q(0.75);
     return function (n) { return n <= 0 ? 0 : n <= q1 ? 1 : n <= q2 ? 2 : n <= q3 ? 3 : 4; };
   }
-  function render(el, rec, missing) {
+  function render(el, rec) {
     var now = new Date();
     var end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
     // The last column ends on today; the first column starts on a Sunday.
@@ -41,9 +41,7 @@
       if (!off) total += n;
       html += '<i class="rm-d l' + lv(n) + (off ? " off" : "") + '" title="' + pretty(k) + ": " + n + " commit" + (n === 1 ? "" : "s") + '"></i>';
     }
-    var sum = missing || !rec
-      ? "no public activity in " + WEEKS + " weeks"
-      : "<b>" + total.toLocaleString() + "</b> commit" + (total === 1 ? "" : "s") + " in " + WEEKS + " weeks" + (rec.lastCommit ? ", last " + pretty(rec.lastCommit) : "");
+    var sum = "<b>" + total.toLocaleString() + "</b> commit" + (total === 1 ? "" : "s") + " in " + WEEKS + " weeks" + (rec.lastCommit ? ", last " + pretty(rec.lastCommit) : "");
     el.innerHTML = '<div class="rm-grid" style="--rm-weeks:' + WEEKS + '" aria-hidden="true">' + html + '</div><p class="rm-sum">' + sum + "</p>";
     var label = el.getAttribute("data-label") || el.getAttribute("aria-label") || "Commit activity";
     el.setAttribute("data-label", label);
@@ -63,12 +61,18 @@
     if (!els.length) return;
     load().then(function (data) {
       if (!data) return; /* the meters stay empty and take no height */
-      var missing = {};
-      (data.missing || []).forEach(function (r) { missing[r] = true; });
       els.forEach(function (el) {
         if (el.hasAttribute("data-filled")) return;
         var repo = el.getAttribute("data-repo");
-        render(el, data.repos && data.repos[repo], !!missing[repo]);
+        var rec = data.repos && data.repos[repo];
+        if (!rec) {
+          /* A repo the bot could not read (private, moved, gone) stays an
+             empty element and takes no height. "No public activity" would
+             read as dead, and the flagship's repo is private by design. */
+          el.setAttribute("data-filled", "skip");
+          return;
+        }
+        render(el, rec, false);
       });
     });
   }
