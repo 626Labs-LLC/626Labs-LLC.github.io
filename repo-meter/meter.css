@@ -1,0 +1,42 @@
+/* The repo meter: a 26-week commit grid on every showcased project.
+   Spec: docs/superpowers/specs/2026-10-01-repo-meter-design.md.
+
+   Reads CONTRACT TOKENS ONLY (archetypes.REQUIRED_TOKENS), so every theme
+   dresses it without knowing it exists: --cyan for the cells, --border-1
+   for an empty day, --fg-3 and --font-body for the summary. A theme may
+   override .repo-meter in its own dress; none has to.
+
+   Before /repo-meter/meter.js fills it, and if the fetch fails, the element
+   is empty and takes no height. */
+.repo-meter { display: block; margin: 10px 0 0; }
+.repo-meter:empty { display: none; }
+.repo-meter .rm-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--rm-weeks, 26), 8px);
+  grid-template-rows: repeat(7, 8px);
+  grid-auto-flow: column;
+  gap: 2px;
+  width: max-content;
+  max-width: 100%;
+  overflow: hidden;
+}
+.repo-meter .rm-d {
+  width: 8px;
+  height: 8px;
+  background: var(--cyan);
+  opacity: 1;
+}
+.repo-meter .rm-d.l0 { background: transparent; box-shadow: inset 0 0 0 1px var(--border-1); }
+.repo-meter .rm-d.l1 { opacity: .3; }
+.repo-meter .rm-d.l2 { opacity: .55; }
+.repo-meter .rm-d.l3 { opacity: .8; }
+.repo-meter .rm-d.l4 { opacity: 1; }
+.repo-meter .rm-d.off { visibility: hidden; }
+.repo-meter .rm-sum {
+  margin: 6px 0 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--fg-3);
+}
+.repo-meter .rm-sum b { font-weight: 600; color: var(--fg-2); }

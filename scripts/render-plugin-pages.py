@@ -150,6 +150,43 @@ if _val_path.exists():
 # .github/workflows/refresh-plugin-versions.yml (id -> {commands, skills, agents}).
 # These mirror Claude Code's pre-install preview — the literal install footprint —
 # counted from each repo's file tree. Missing entries render no chip.
+# Which repo each plugin's meter reads. site.json's product `repo` wins (for
+# vibe-keystone / vibe-thesis / thesis-engine that is the vibe-plugins
+# monorepo, where their commits land); plugin-repos.json's solo repo is the
+# fallback. Spec: docs/superpowers/specs/2026-10-01-repo-meter-design.md.
+PLUGIN_METER_REPOS: dict = {}
+_pr_path = ROOT / "content" / "plugin-repos.json"
+if _pr_path.exists():
+    PLUGIN_METER_REPOS.update(json.loads(_pr_path.read_text(encoding="utf-8")).get("repos", {}))
+_site_path = ROOT / "content" / "site.json"
+if _site_path.exists():
+    _site_products = json.loads(_site_path.read_text(encoding="utf-8")).get("products") or []
+    if isinstance(_site_products, dict):
+        _site_products = _site_products.get("items") or list(_site_products.values())
+    for _sp in _site_products:
+        if isinstance(_sp, dict) and _sp.get("id") and _sp.get("repo"):
+            PLUGIN_METER_REPOS[_sp["id"]] = _sp["repo"]
+
+REPO_METER_ASSETS = (
+    '  <link rel="stylesheet" href="/repo-meter/meter.css" />' + chr(10)
+    + '  <script src="/repo-meter/meter.js" defer></script>' + chr(10)
+)
+
+
+def render_repo_meter(plugin_id, name):
+    """The empty meter element; /repo-meter/meter.js fills it in the browser
+    from data/repo-activity.json, so the daily bot write never touches a
+    rendered page. Empty string when no repo is known for the id."""
+    repo = PLUGIN_METER_REPOS.get(plugin_id)
+    if not repo:
+        return ""
+    return (
+        chr(10)
+        + f'            <div class="repo-meter" data-repo="{e(repo)}" '
+        + f'aria-label="Commit activity for {e(name)}"></div>'
+    )
+
+
 PLUGIN_STATS: dict = {}
 _ps_path = ROOT / "data" / "plugin-stats.json"
 if _ps_path.exists():
@@ -258,7 +295,7 @@ def render_head(p):
 
 {software_jsonld(p)}
   <style>{STYLE}  </style>
-</head>
+{REPO_METER_ASSETS}</head>
 <body>
   <div class="pb-scanlines" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -339,7 +376,7 @@ def render_hero(p):
             </div>
             <div class="hero-meta">
               {meta}
-            </div>{caps_html}{validated_html}
+            </div>{caps_html}{validated_html}{render_repo_meter(p['id'], p['name'])}
           </div>
 {right}
         </div>

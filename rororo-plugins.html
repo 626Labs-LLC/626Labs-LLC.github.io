@@ -16,6 +16,8 @@
 <!-- SITE_JSON:theme-css:start -->
 <link rel="stylesheet" href="/themes/slate-broadsheet/archetypes/product-tokens.css">
 <!-- SITE_JSON:theme-css:end -->
+<link rel="stylesheet" href="/repo-meter/meter.css" />
+<script src="/repo-meter/meter.js" defer></script>
 
 <style>
   /* ---------- Web fonts ---------- */
@@ -268,6 +270,7 @@
     <a class="btn primary" id="host-store" href="https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product">Microsoft Store</a>
     <a class="btn" id="host-setup" href="https://github.com/estevanhernandez-stack-ed/ROROROblox/releases">Direct download</a>
   </div>
+  <div class="repo-meter" data-repo="estevanhernandez-stack-ed/ROROROblox" aria-label="Commit activity for RoRoRo"></div>
 
   <div class="cards" id="cards"></div>
   <div class="cards-fallback" id="cards-fallback" hidden>
@@ -352,6 +355,23 @@
     return el('div', 'avatar', monogram(p.name));
   }
 
+  // Hand-authored meters, one per family plugin, keyed by catalog id. The
+  // literal data-repo attributes live here so refresh-repo-activity.mjs finds them.
+  var METERS = {
+    '626labs.ur-afk': '<div class="repo-meter" data-repo="estevanhernandez-stack-ed/rororo-ur-afk" aria-label="Commit activity for Ur AFK"></div>',
+    '626labs.ur-ocr': '<div class="repo-meter" data-repo="estevanhernandez-stack-ed/Ur-OCR" aria-label="Commit activity for Ur OCR"></div>',
+    '626labs.ur-score': '<div class="repo-meter" data-repo="estevanhernandez-stack-ed/Ur-Score" aria-label="Commit activity for Ur Score"></div>',
+    '626labs.ur-task': '<div class="repo-meter" data-repo="estevanhernandez-stack-ed/rororo-ur-task" aria-label="Commit activity for Ur Task"></div>'
+  };
+
+  // The cards are built after the catalog fetch, long after meter.js has run
+  // once and found nothing; load it again now that the meters exist.
+  function fillMeters() {
+    var s = document.createElement('script');
+    s.src = '/repo-meter/meter.js';
+    document.body.appendChild(s);
+  }
+
   function render(data) {
     if (data.host) {
       document.getElementById('host-ver').textContent = 'v' + data.host.version + ' current';
@@ -389,6 +409,8 @@
       }
       card.appendChild(meta);
 
+      if (METERS[p.id]) card.insertAdjacentHTML('beforeend', METERS[p.id]);
+
       var actions = el('div', 'actions');
       var copyBtn = el('button', 'btn primary', 'Copy install URL');
       copyBtn.addEventListener('click', function () {
@@ -409,6 +431,7 @@
 
       cards.appendChild(card);
     });
+    fillMeters();
   }
 
   fetch('data/rororo-plugins.json')
