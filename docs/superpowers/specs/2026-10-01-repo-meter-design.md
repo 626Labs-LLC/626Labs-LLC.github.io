@@ -44,7 +44,7 @@ A daily bot, `refresh-repo-activity.yml` (06:40 UTC, implicit `GITHUB_TOKEN`, pu
 }
 ```
 
-Repos that 404 or 403 land in `missing` and render as "no public activity". The push uses the same retry+rebase loop every bot in this repo uses. `GET /stats/commit_activity` was rejected: it counts bots, and the hub repo alone commits by bot every day.
+Repos that 404 or 403 land in `missing` and render NOTHING: the element stays empty and takes no height. (The first cut said "no public activity"; Celestia3 is private, the runner's token 404s it, and a dead-looking line on the flagship was worse than no line.) The push uses the same retry+rebase loop every bot in this repo uses. `GET /stats/commit_activity` was rejected: it counts bots, and the hub repo alone commits by bot every day.
 
 ## Rendering
 
@@ -52,7 +52,7 @@ Repos that 404 or 403 land in `missing` and render as "no public activity". The 
 
 **One stylesheet, contract tokens only.** `/repo-meter/meter.css` colors cells with the theme's own names (`--cyan` at four opacities for levels one to four, a `--border-1` inset for empty days, `--fg-3` and `--font-body` for the summary), so every theme dresses the meter without knowing it exists. Slate shows brand-cyan cells on slate; Cyan Fade shows deep-cyan cells on paper and on the sweep. A theme may override `.repo-meter` in its dress; none has to.
 
-**The grid.** 26 columns (weeks, oldest left), 7 rows (Sunday to Saturday), 8px cells, 2px gap: 258 by 68px. Levels are per repo, by quartile of that repo's non-zero days, so a quiet repo still shows its own rhythm. Each cell carries a `title` ("Sep 30, 2026: 4 commits"). The summary line reads "212 commits in 26 weeks, last Sep 30" or "no public activity in 26 weeks". The meter's container is `aria-label`ed with the summary once it fills; before the fetch resolves, and if it fails, the element stays empty and takes no height.
+**The grid.** 26 columns (weeks, oldest left), 7 rows (Sunday to Saturday), 8px cells, 2px gap: 258 by 68px. Levels are per repo, by quartile of that repo's non-zero days, so a quiet repo still shows its own rhythm. Each cell carries a `title` ("Sep 30, 2026: 4 commits"). The summary line reads "212 commits in 26 weeks, last Sep 30"; a repo with no record in the file renders no meter at all. The meter's container is `aria-label`ed with the summary once it fills; before the fetch resolves, and if it fails, the element stays empty and takes no height.
 
 **Where on the row.** Home: after the tags, before the CTA row. Plugin page: under the version chip in the hero. Hand-authored pages: wherever the repo link already sits.
 

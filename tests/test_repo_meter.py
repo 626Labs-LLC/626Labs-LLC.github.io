@@ -130,6 +130,16 @@ def test_meter_js_fetches_the_data_file_and_fills_the_element():
     assert "rm-grid" in js and "rm-sum" in js
 
 
+def test_meter_js_leaves_an_unreadable_repo_empty():
+    """Celestia3 is private: the runner's token 404s it and the bot lists it
+    under `missing`. The first cut rendered 'no public activity in 26
+    weeks' for it, which reads as a dead flagship. A repo the bot could not
+    read renders NOTHING (the :empty element takes no height)."""
+    js = METER_JS.read_text(encoding="utf-8")
+    assert "no public activity" not in js
+    assert 'setAttribute("data-filled", "skip")' in js
+
+
 # ── the data file and the bot ─────────────────────────────────────────────
 
 def test_activity_data_has_the_shape_meter_js_reads():
