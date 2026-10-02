@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T12:38:32.899Z",
+  "generatedAt": "2026-10-02T12:02:45.579Z",
   "count": 57,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-10-01T11:53:34Z",
+      "pushed_at": "2026-10-02T11:25:24Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -37,7 +37,7 @@
       "description": "626 Mod Launcher Games",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-game-manifest",
       "language": "Python",
-      "pushed_at": "2026-09-28T06:05:00Z",
+      "pushed_at": "2026-10-02T03:36:42Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -49,7 +49,7 @@
       "description": "Native Windows (.NET 10 / WinUI 3) rewrite of the 626 Labs Mod Launcher. Phase 1 (ModManager.Core) complete: 157 tests green.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher",
       "language": "C#",
-      "pushed_at": "2026-09-15T03:29:35Z",
+      "pushed_at": "2026-10-02T05:38:11Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -109,7 +109,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-10-01T05:23:30Z",
+      "pushed_at": "2026-10-01T19:19:49Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -338,7 +338,7 @@
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
       "pushed_at": "2026-09-30T17:49:11Z",
-      "stargazers_count": 6,
+      "stargazers_count": 7,
       "archived": false,
       "fork": false
     },
@@ -385,7 +385,7 @@
       "description": "Native Windows 11 + macOS glass widget that projects when you'll hit your Claude usage cap — burn-rate, pace markers, live token-burn from local Claude Code sessions, and five glass themes. Independent third-party tool. MIT.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
       "language": "C#",
-      "pushed_at": "2026-09-15T18:00:52Z",
+      "pushed_at": "2026-10-02T11:59:11Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -469,7 +469,7 @@
       "description": null,
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-access",
       "language": "JavaScript",
-      "pushed_at": "2026-07-19T16:54:08Z",
+      "pushed_at": "2026-10-01T18:28:55Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -493,7 +493,7 @@
       "description": "AI-powered documentation gap analyzer for modern codebases — scans your project, classifies what you've built, identifies missing technical docs, and generates them from your existing artifacts. Drop it on any codebase. 626Labs LLC.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Doc",
       "language": "TypeScript",
-      "pushed_at": "2026-09-11T20:05:22Z",
+      "pushed_at": "2026-10-01T18:28:38Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -541,7 +541,7 @@
       "description": "If your Claude.md surface is weak, your entire architecture could crumble down.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-Keystone",
       "language": null,
-      "pushed_at": "2026-07-25T18:30:59Z",
+      "pushed_at": "2026-10-01T18:28:45Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -553,7 +553,7 @@
       "description": "Localize your app's UI without corrupting its logic — the i18n member of the Vibe plugin family. Deep on next-intl + App Router; honest about the rest.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Lingual",
       "language": "JavaScript",
-      "pushed_at": "2026-09-11T20:07:54Z",
+      "pushed_at": "2026-10-01T18:28:58Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -565,7 +565,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-10-01T12:16:16Z",
+      "pushed_at": "2026-10-02T08:20:11Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -577,7 +577,7 @@
       "description": null,
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Prompt",
       "language": "Python",
-      "pushed_at": "2026-10-01T04:39:03Z",
+      "pushed_at": "2026-10-01T18:34:48Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -601,7 +601,7 @@
       "description": "A runbook says do X and you will see W. Nothing checks whether that is still true. vibe-runbook writes one by inspecting your app, then verifies its claims against a running system — read-only, never spends, and honest about what it could not check.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Runbook",
       "language": "JavaScript",
-      "pushed_at": "2026-09-11T20:04:04Z",
+      "pushed_at": "2026-10-01T18:34:45Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -613,7 +613,7 @@
       "description": "Vibe Sec — security gap finder for vibe-coded apps. Secret-leak scanner CLI shipping now; full plugin in development. Canary channel; stable channel via @626labs vibe-plugins marketplace.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-sec",
       "language": "TypeScript",
-      "pushed_at": "2026-07-10T03:34:02Z",
+      "pushed_at": "2026-10-01T18:29:05Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -649,7 +649,7 @@
       "description": "Start with a strong stance before you even ask for a line of code",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Thesis",
       "language": "JavaScript",
-      "pushed_at": "2026-09-11T20:05:26Z",
+      "pushed_at": "2026-10-01T18:28:49Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -661,7 +661,7 @@
       "description": "Vibe-Walk — generate user onboarding for your app, but only when it earns one. A 626Labs vibe-* plugin.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Walk",
       "language": "Python",
-      "pushed_at": "2026-07-10T03:34:14Z",
+      "pushed_at": "2026-10-01T18:28:42Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
