@@ -1,0 +1,533 @@
+/* ============================================================
+   Theme: cyan-fade — utility archetype stylesheet.
+
+   press.html and privacy.html borrow 100 percent of their chrome from this
+   file (the pages' own <style> dresses their content and overlaps this
+   file's selectors by exactly zero), so it carries the full token
+   vocabulary AND the element dress. Consumed via a <link>
+   scripts/render-hub.py keeps pointed at the ACTIVE theme.
+
+   Token half: both :root blocks of tokens.css, verbatim (all 47
+   archetypes.REQUIRED_TOKENS plus the --cf-* treatment block), values
+   identical. This file is its own resolution group, so nothing here may
+   read a name tokens.css alone defines. One extra name rides below them,
+   --pb-field, which nothing here reads: press.html's .asset-preview paints
+   `var(--pb-field, var(--bg-0))` behind the transparent brand marks, and
+   on paper that fallback is white under white line art. Defining it as
+   --cf-screen makes the previews the theme's dark screens.
+
+   Dress half: Cyan Fade's inside page, the paper edition of the bake-off
+   sheet. The ONE accent moment: nav.nav and header.page-hero sit on a flat
+   full-bleed field of the brand cyan (--cf-cyan), and the page reads on
+   paper below it. No sweep here; the sweep is the home shell's alone.
+   One face, Archivo: the expanded black (125% / 900) for the wordmark,
+   the page title and section heads, the normal width at 400/500 for every
+   line of text. Links are ink, underlined, and the hover thickens the
+   underline; the theme has no link color. Rules: hairlines in
+   --cf-hair, the heavy 2px ink rule over the footer. What slate carried
+   and this dress removed: the stone grain on body::before, the double
+   rules, the reversed folio tab, the serif italic accent, the drop cap,
+   the mono tracked eyebrow, nav and footer, the printer's color bar, and
+   the nav mark's gradient hexagon (the wordmark stands alone, as on the
+   sheet). Every slate selector is kept; the ones whose job is gone are
+   kept as explicit no-ops so the shape stays diffable month to month.
+
+   AA CONTRAST, computed with scripts/theme-doctor.py's own WCAG 2.1 math.
+   On paper (--bg-0 #FFFFFF): --cf-ink 16.66:1, --cf-ink-2 12.19:1. On the
+   cyan field (--cf-cyan #17D4FA): --cf-ink 9.39:1, --cf-ink-2 6.87:1.
+   THE RULE THAT FOLLOWS: on the field, every string is --cf-ink or
+   --cf-ink-2. Never --cf-ink-3 there (3.05:1), never the accent inks
+   (--cyan, --magenta, --ok) and never paper. Below the field the full
+   tokens.css table applies.
+
+   SPENT AS TEXT by the pages' own <style>, all on paper: --cyan (the h2
+   .num, .copy-btn, .dl-btn, .type-role), --cyan-pale (their hovers),
+   --fg-3 (labels, specs), --ok and --magenta-pale (press.html's do/don't
+   heads). tokens.css already makes every one an AA ink on paper; this
+   dress puts none of them on the cyan field.
+
+   THE IMPRINT is generated content on .footer-inner::after, so it names
+   the gallery in prose and cannot carry a link: these pages own their
+   footer markup and a theme cannot add an anchor to them.
+   ============================================================ */
+/* 626 Labs Design System — see ~/.claude-personal/skills/626labs-design + /Design */
+@import url('/fonts/fonts.css');
+
+:root {
+  /* Brand constants. The navy trio and --ink-0 are the 626 Labs field
+     colors every theme carries; on paper the navy IS the ink, and the
+     brand cyan and magenta are the sweep and the band, never type. */
+  --navy-deep: #0f1f31;
+  --navy-mid:  #192e44;
+  --navy-hi:   #223a54;
+  --navy-line: #2a3a5c;
+  --ink-0:     #ffffff;
+
+  /* The accent inks: the contract's accent names as tones that clear AA on
+     paper. --ink-950 is the type that sits on an accent fill: paper. */
+  --cyan:      var(--cf-cyan-ink);
+  --cyan-pale: var(--cf-cyan-ink-hover);
+  --cyan-dim:  var(--cf-cyan-ink-hover);
+  --magenta:   var(--cf-band);
+  --magenta-pale: var(--cf-magenta-ink-hover);
+  --ink-950:   var(--cf-band-ink-2);
+  --ok:        #107a4e;
+  --warn:      #8a5200;
+
+  /* The ink ramp: the editorial inks, on paper. */
+  --text:      #0F1F31;
+  --text-sec:  #2A3649;
+  --text-dim:  #5E6B7F;
+  --text-mute: #627089;
+
+  /* The paper. One ground, two steps of cold tint for mats and rails. */
+  --bg-0: var(--cf-ground);
+  --bg-1: #F4FBFD;
+  --bg-2: #E9F7FB;
+  --fg-1: var(--text);
+  --fg-2: var(--text-sec);
+  --fg-3: var(--text-dim);
+  --fg-muted: var(--text-mute);
+
+  /* Rules are ink at low alpha: the hairline between rows, and the heavy
+     rule a dress draws in ink itself. A deep-cyan hairline for the accent. */
+  --border-1: var(--cf-hair-color);
+  --border-2: var(--cf-hair-color);
+  --border-strong: rgba(15,31,49,.6);
+  --border-accent: rgba(8,112,136,.45);
+
+  /* The brand pair as a swatch recipe, in the paper inks, never a text fill. */
+  --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
+  --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
+  --inner-stroke: inset 0 0 0 1px rgba(15,31,49,.08);
+
+  /* Flat drop shadows for anything lifted off the page. No glow tokens:
+     this theme defines none, so a dress cannot spend one by accident. */
+  --shadow-2: 0 4px 16px rgba(15,31,49,.10);
+  --shadow-3: 0 12px 32px rgba(15,31,49,.14);
+
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  --dur-fast: 120ms;
+  --dur-med: 220ms;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  /* No radius anywhere on this theme. The scale is offered at zero so a
+     consumer that reads --r-md gets a square corner, not an unresolved var. */
+  --r-xs: 0; --r-sm: 0; --r-md: 0; --r-lg: 0; --r-xl: 0;
+  --r-pill: 0;
+
+  /* One face. Archivo on every head and every line of text; the mono for
+     code only. Archivo is self-hosted in /fonts/fonts.css (roman + italic,
+     wght 100-900, wdth 62-125). */
+  --font-display: 'Archivo', 'Arial Black', Arial, sans-serif;
+  --font-body:    'Archivo', Arial, Helvetica, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* ============================================================
+   Cyan Fade — treatment layer (--cf-*).
+   The sweep, the inks, the band, the screens. Read by the archetype
+   dresses; defined again in each token file so every resolution group
+   resolves on its own.
+   ============================================================ */
+:root {
+  /* The paper and the inks. --cf-ground is the ONLY place the ground is
+     declared; --bg-0 reads it. */
+  --cf-ground:      #FFFFFF;
+  --cf-ink:         #0F1F31;   /* primary ink: heads, body, links, the only ink on the sweep's top */
+  --cf-ink-2:       #2A3649;   /* secondary ink: decks, descriptions, dates */
+  --cf-ink-3:       #5E6B7F;   /* caption ink: 5.40:1 on paper, never on the sweep */
+  --cf-ink-muted:   #627089;   /* the fourth step the contract's --fg-muted needs */
+
+  /* The sweep. --cf-top is bluer than the brand (brand cyan 70 / brand
+     navy 30, in sRGB); --cf-cyan is the brand cyan itself. The home shell
+     paints them as one gradient; no other page paints either. */
+  --cf-top:         #159EBE;
+  --cf-cyan:        #17D4FA;
+  --cf-sweep:       linear-gradient(180deg, var(--cf-top) 0, var(--cf-cyan) 22%, var(--cf-ground) 100%);
+  --cf-sweep-height: 3200px;
+
+  /* The accent inks: a deep cyan the pages may set type in, and its
+     hover; the dim magenta and its hover. The contract's --cyan,
+     --cyan-pale, --magenta and --magenta-pale read these. */
+  --cf-cyan-ink:        #087088;   /* 5.70:1 on paper */
+  --cf-cyan-ink-hover:  #065A6B;   /* 7.83:1 on paper */
+  --cf-magenta-ink-hover: #A8195D; /* 7.09:1 on paper */
+
+  /* The band: the one magenta surface, and the type that sits on it. */
+  --cf-band:        #C21F6C;   /* the brand's dim magenta; 5.67:1 under white */
+  --cf-band-ink:    #FFFFFF;   /* heads and links on the band */
+  --cf-band-ink-2:  #F5F7FB;   /* body on the band, 5.28:1 */
+
+  /* The screens: the dark rasters (thumbs, previews, the star map, the
+     widgets' own chrome) and the caption printed inside one. */
+  --cf-screen:      #0F1F31;   /* brand navy */
+  --cf-screen-ink:  #17D4FA;   /* the brand cyan, 9.39:1 on the screen */
+
+  /* Rule colors: ink at low alpha. Decorative, never text. */
+  --cf-hair-color:  rgba(15,31,49,.28);  /* hairlines between rows */
+
+  /* The two rules, as the sheet declares them: BORDER SHORTHANDS, width +
+     style + color. Spend them on border-* and column-rule ONLY
+     (`border-bottom: var(--cf-hair)`, `border-top: var(--cf-heavy)`);
+     never as a color. For a color, read --cf-hair-color. */
+  --cf-hair:        1px solid var(--cf-hair-color);
+  --cf-heavy:       2px solid var(--cf-ink);
+
+  /* Links: ink, underlined; hover thickens the underline. Nothing else
+     on the sweep passes as a second color, so the theme has no link color. */
+  --cf-underline:   1.5px;
+  --cf-underline-hover: 3px;
+
+  /* Page measures. */
+  --cf-page:        1240px;
+  --cf-gutter:      32px;
+
+  /* Role aliases the sheet's rules read. */
+  --cf-face:        var(--font-body);
+  --cf-mono:        var(--font-mono);
+  --cf-display-stretch: 125%;
+  --cf-display-weight:  900;
+}
+
+/* press.html's asset previews: the dark screen, not white paper under
+   white line art. Defined, never read here. */
+:root {
+  --pb-field: var(--cf-screen);
+}
+
+/* ============================================================
+   THE DRESS: press.html and privacy.html as Cyan Fade's inside pages.
+
+   Everything below spends only names the token block above defines.
+   Flat and matte: no radius, no glow, no texture, no gradient anywhere,
+   no tracked uppercase, no mono outside code. The brand cyan is spent in
+   exactly one place, the field under nav.nav and header.page-hero.
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg-0); }
+body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  background: var(--bg-0);
+  color: var(--cf-ink);
+  font-family: var(--cf-face);
+  font-size: 17px;
+  font-weight: 400;
+  font-stretch: 100%;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern", "liga";
+}
+/* No texture on this theme. Kept as an explicit no-op. */
+body::before { content: none; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--cf-ink);
+}
+p { color: inherit; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible { outline: 2px solid var(--cf-ink); outline-offset: 2px; }
+img, svg { max-width: 100%; }
+.ic { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Links in the running text: ink, underlined; hover thickens. */
+a.inline-link {
+  color: var(--cf-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--cf-ink);
+  text-decoration-thickness: var(--cf-underline);
+  text-underline-offset: .14em;
+}
+a.inline-link:hover, a.inline-link:focus-visible {
+  color: var(--cf-ink);
+  text-decoration-thickness: var(--cf-underline-hover);
+}
+
+/* The page measure, shared by nav, hero, body and footer so every left
+   edge lines up, as on the sheet. Prose inside it is held to 68ch below. */
+.wrap {
+  width: 100%;
+  max-width: var(--cf-page);
+  margin: 0 auto;
+  padding: 0 var(--cf-gutter);
+  min-width: 0;
+}
+.wrap p, .wrap li { max-width: 68ch; }
+
+/* ========== Nav: the wordmark and the index, on the cyan field ========== */
+nav.nav {
+  position: relative;
+  background: var(--cf-cyan);
+  color: var(--cf-ink);
+}
+/* Slate's second rule. Nothing to draw here: the field is one surface
+   from the nav through the hero. */
+nav.nav::after { content: none; }
+.nav-inner {
+  width: 100%;
+  max-width: var(--cf-page);
+  margin: 0 auto;
+  padding: 26px var(--cf-gutter) 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+}
+/* The wordmark: the expanded black, 28px, ink. press.html ships the
+   gradient hexagon mark in here; the sheet's wordmark stands alone. */
+.nav-brand {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-display);
+  font-stretch: var(--cf-display-stretch);
+  font-weight: var(--cf-display-weight);
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: var(--cf-ink);
+  text-decoration: none;
+}
+.nav-brand svg { display: none; }
+.nav-brand:hover, .nav-brand:focus-visible {
+  text-decoration: underline;
+  text-decoration-thickness: var(--cf-underline-hover);
+  text-underline-offset: .14em;
+}
+.nav-brand .brand-626 { font-weight: inherit; color: var(--cf-ink); }
+.nav-brand .brand-labs { font-weight: inherit; color: var(--cf-ink); margin-left: 0.24em; }
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 28px;
+  margin-left: auto;
+}
+.nav-links a {
+  position: relative;
+  display: inline-block;
+  font-family: var(--cf-face);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--cf-ink);
+  text-decoration: none;
+}
+/* Slate's column-rule separators. Plain links here, spaced by the gap. */
+.nav-links a + a::before { content: none; }
+.nav-links a:hover, .nav-links a:focus-visible {
+  color: var(--cf-ink);
+  text-decoration: underline;
+  text-decoration-thickness: var(--cf-underline-hover);
+  text-underline-offset: .14em;
+}
+/* The door is just another link. */
+.nav-cta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--cf-face);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--cf-ink);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  text-decoration: none;
+}
+.nav-cta .ic { align-self: center; }
+.nav-cta:hover, .nav-cta:focus-visible {
+  color: var(--cf-ink);
+  text-decoration: underline;
+  text-decoration-thickness: var(--cf-underline-hover);
+  text-underline-offset: .14em;
+}
+
+/* ========== Page header: the title, on the cyan field ========== */
+header.page-hero {
+  position: relative;
+  background: var(--cf-cyan);
+  color: var(--cf-ink);
+  padding: 64px 0 40px;
+}
+header.page-hero::after { content: none; }
+/* The page ships .grid and .glow inside this wrapper. Nothing on this
+   theme paints them. */
+.page-hero-bg { display: none; }
+.page-hero-inner { position: relative; }
+/* The kicker: plain sentence-weight text, not a tracked label. */
+.eyebrow {
+  display: block;
+  margin: 0 0 22px;
+  font-family: var(--cf-face);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--cf-ink-2);
+}
+.eyebrow .pulse { display: none; }
+h1.page-title {
+  margin: 0 0 24px;
+  font-family: var(--font-display);
+  font-stretch: var(--cf-display-stretch);
+  font-weight: var(--cf-display-weight);
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: 0.96;
+  letter-spacing: -0.015em;
+  color: var(--cf-ink);
+  max-width: 12em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+/* Slate's folio tab. No furniture on the head here. */
+h1.page-title::before { content: none; }
+/* The accent words: the same expanded cut at book weight, ink. */
+h1.page-title .accent {
+  font-family: inherit;
+  font-stretch: inherit;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--cf-ink);
+  background: none;
+}
+.page-lead {
+  margin: 0 0 28px;
+  font-family: var(--cf-face);
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.5;
+  color: var(--cf-ink-2);
+  max-width: 36em;
+  text-wrap: pretty;
+}
+/* Slate's drop cap. The deck opens like any other line here. */
+.page-lead::first-letter { float: none; font-size: inherit; color: inherit; }
+.page-meta {
+  margin: 0;
+  padding: 14px 0 0;
+  border-top: var(--cf-hair);
+  font-family: var(--cf-face);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--cf-ink-2);
+  max-width: none;
+}
+.page-meta .sep { margin: 0 8px; color: var(--cf-ink-2); }
+
+/* ========== Main: the page's own content, on paper ========== */
+main {
+  display: block;
+  font-family: var(--cf-face);
+  color: var(--cf-ink);
+}
+main h2 {
+  font-family: var(--font-display);
+  font-stretch: var(--cf-display-stretch);
+  font-weight: var(--cf-display-weight);
+  letter-spacing: -0.015em;
+  padding-bottom: 10px;
+  border-bottom: var(--cf-hair);
+  text-wrap: balance;
+}
+
+/* ========== Footer: the heavy rule, the imprint ========== */
+footer {
+  position: relative;
+  margin-top: 24px;
+  background: var(--bg-0);
+  color: var(--cf-ink);
+  border-top: var(--cf-heavy);
+}
+footer::before { content: none; }
+.footer-inner {
+  width: 100%;
+  max-width: var(--cf-page);
+  margin: 0 auto;
+  padding: 28px var(--cf-gutter) 44px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+}
+.footer-meta {
+  font-family: var(--cf-face);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--cf-ink);
+  max-width: 44em;
+}
+.footer-meta .brand-tagline {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--cf-ink);
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 24px;
+}
+.footer-links a {
+  position: relative;
+  display: inline-block;
+  font-family: var(--cf-face);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--cf-ink);
+  text-decoration: none;
+}
+.footer-links a:first-child { padding-left: 0; }
+.footer-links a + a::before { content: none; }
+.footer-links a:hover, .footer-links a:focus-visible {
+  color: var(--cf-ink);
+  text-decoration: underline;
+  text-decoration-thickness: var(--cf-underline-hover);
+  text-underline-offset: .14em;
+}
+/* Slate's color bar. Nothing closes the link row here. */
+.footer-links::after { content: none; }
+/* The wayfinding imprint, under the meta and the links. Prose only:
+   generated content cannot carry a link. */
+.footer-inner::after {
+  content: "Theme: Cyan Fade \00B7  this site changes monthly \00B7  see all themes";
+  flex-basis: 100%;
+  padding-top: 14px;
+  border-top: var(--cf-hair);
+  font-family: var(--cf-face);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--cf-ink-2);
+}
+
+/* ========== 960 ========== */
+@media (max-width: 960px) {
+  .nav-links { margin-left: 0; flex-basis: 100%; }
+  header.page-hero { padding-top: 48px; }
+}
+/* ========== 390 ========== */
+@media (max-width: 600px) {
+  .wrap { padding: 0 20px; }
+  .nav-inner { padding: 20px 20px 0; gap: 8px 20px; }
+  .nav-links { gap: 2px 20px; }
+  header.page-hero { padding: 40px 0 32px; }
+  .footer-inner { padding: 24px 20px 36px; }
+  .footer-links { gap: 4px 18px; }
+}

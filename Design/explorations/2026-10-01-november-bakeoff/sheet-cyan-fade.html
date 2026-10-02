@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Cyan Fade: November bake-off sheet (626 Labs)</title>
+<!--
+  CYAN FADE. Cyan Ground's structure and face, Cold Ground's field. Este's
+  read on the first three sheets (2026-10-01): Cyan Ground is the one he
+  likes most, and it is too much cyan; Cold Ground's top-to-white gradient
+  is the part of that sheet worth keeping, if it starts darker. So: the
+  Archivo expanded-black display, the left hero, the numbered contents page,
+  the dark screens, the single dim-magenta band, all of it unchanged. The
+  ground is now a gradient that starts a step bluer than the brand cyan,
+  passes through the brand cyan under the hero, and is white by the time
+  the contents list ends. One sweep down the page, not fixed to the
+  viewport: the hero is the saturated moment and the rest of the page
+  reads on paper.
+
+  WHAT IT REFUSES is Cyan Ground's list, minus one item: there is now one
+  gradient, the ground itself. Still no cards, no radius, no glow, no
+  texture, no tracked eyebrows, no mono for small data, no centered hero.
+
+  THE PALETTE IS STILL THE BRAND TOKENS plus one declared tone:
+    top      --pi-cyan-fade-top  159ebe  the brand cyan at 70 over navy at 30
+    ground   --brand-cyan        17d4fa  the gradient's second stop
+    paper    --ink-0             ffffff  the gradient's last stop
+    ink      --ed-ink            0F1F31  (= --brand-navy-deep)
+    band     --brand-magenta-dim c21f6c  the ONE magenta surface
+    screens  --ed-ink            0F1F31  the dark rasters
+  The top tone is the ONLY new color on this sheet. It is a mix, not a new
+  pick: 70% brand cyan, 30% brand navy, in sRGB, so it stays on the brand
+  axis rather than drifting toward a stock blue. Was 80/20 (15b0d2) on the
+  first cut; Este asked for slightly darker on 2026-10-01.
+
+  AA CONTRAST. Computed 2026-10-01, WCAG 2.1 relative luminance. The
+  gradient's darkest stop is the tone every pair is given against; every
+  tone below it on the page is lighter, so contrast only improves down the
+  sweep.
+
+    on --pi-cyan-fade-top 159ebe (L .308), the darkest ground:
+      --ed-ink    0F1F31   5.29:1  PASS   everything in the top strip and hero
+      --ed-ink-2  2A3649   3.87:1  FAIL   so the kicker and the wayfinding line,
+                                          the two --ed-ink-2 strings that sat on
+                                          the top of the sweep at 80/20, are now
+                                          --ed-ink. Nothing else is up there.
+      --ink-0     ffffff   3.15:1  FAIL   never text on the ground
+    on --brand-cyan 17d4fa (L .542):
+      --ed-ink    0F1F31   9.39:1  PASS
+      --ed-ink-2  2A3649   6.87:1  PASS
+    on --ink-0 ffffff (the paper the list fades onto):
+      --ed-ink    0F1F31  16.6:1   PASS
+      --ed-ink-2  2A3649  12.5:1   PASS
+    on --brand-magenta-dim c21f6c (the band, L .135):
+      --ink-0     ffffff   5.67:1  PASS   all text on the band
+      --ink-50    f5f7fb   5.28:1  PASS   secondary text on the band
+    on --ed-ink 0F1F31 (the screens):
+      --brand-cyan 17d4fa  9.39:1  PASS   figure captions inside the screen
+
+  Floor 4.5:1. Lowest text pair on the page is --ed-ink at the very top of
+  the sweep, 5.29:1. The first --ed-ink-2 string down the page is the Work
+  section title, which sits past the brand-cyan stop where the pair is
+  already above 6.87:1 and climbing. Links are navy
+  underlined; hover thickens the underline.
+
+  THE SWEEP: 2400px tall, top-anchored, scroll-attached, on a white html.
+  At 1440 the hero sits on the blue, the contents list rides the fade, and
+  the screens and the band land on paper. At 390 the same, compressed. Not
+  `fixed`: a fixed gradient keeps the blue at the top of every scroll
+  position, which is Cold Ground's move and the wrong one here.
+
+  Stylesheets are root-absolute: serve the repo root (python -m http.server)
+  and browse /Design/explorations/2026-10-01-november-bakeoff/sheet-cyan-fade.html.
+  Body is NOT class ed-page; it declares body.cg and re-inks every text
+  element, because colors_and_type.css paints h1 white for the dark site.
+
+  Specimen: specimen.md in this directory. Every string verbatim.
+-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/Design/colors_and_type.css">
+<link rel="stylesheet" href="/Design/editorial.css">
+<style>
+  :root {
+    --pi-cyan-fade-top:  #159ebe;           /* the top of the sweep: brand cyan 70 / brand navy 30. The ONLY new tone. */
+    --pi-cyan-fade-rule: rgba(15,31,49,.28); /* hairlines between list rows. Decorative. */
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  html { background: var(--ink-0); }
+
+  body.cg {
+    /* one sweep down the page: bluer than the brand at the top, the brand
+       cyan under the hero, paper by the end of the contents list */
+    background:
+      linear-gradient(180deg, var(--pi-cyan-fade-top) 0, var(--brand-cyan) 22%, var(--ink-0) 100%)
+      top center / 100% 2400px no-repeat var(--ink-0);
+    color: var(--ed-ink);
+    font-family: 'Archivo', 'Arial Black', Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    font-stretch: 100%;
+  }
+  .cg p, .cg h1, .cg h2, .cg h3, .cg li, .cg time, .cg figcaption, .cg blockquote, .cg a {
+    color: var(--ed-ink);
+    margin: 0;
+  }
+  /* colors_and_type.css sets font-family on bare h1/h2/h3 at element
+     specificity, which beats inheritance from body: without this, the
+     section titles, the founding h2 and the note titles fall through to
+     Space Grotesk. */
+  .cg h1, .cg h2, .cg h3, .cg blockquote { font-family: 'Archivo', 'Arial Black', Arial, sans-serif; }
+  .cg a { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .14em; }
+  .cg a:hover { text-decoration-thickness: 3px; }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+
+  /* Display: the expanded black cut. */
+  .disp {
+    font-family: 'Archivo', 'Arial Black', Arial, sans-serif;
+    font-stretch: 125%;
+    font-weight: 900;
+    letter-spacing: -0.015em;
+    line-height: .92;
+  }
+
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    font-size: 14px; background: var(--ed-ink); color: var(--brand-cyan);
+    padding: 8px 12px;
+  }
+  .skip-link:focus { left: 12px; top: 12px; z-index: 60; }
+
+  /* ---------- Top strip ---------- */
+  .top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px 32px;
+    flex-wrap: wrap;
+    padding: 26px 0 0;
+  }
+  .wordmark { font-size: 28px; text-decoration: none; }
+  .wordmark:hover { text-decoration: underline; }
+  .nav { display: flex; flex-wrap: wrap; gap: 4px 28px; font-size: 17px; font-weight: 500; }
+  .nav a { text-decoration: none; }
+  .nav a:hover { text-decoration: underline; text-decoration-thickness: 3px; }
+  /* --ed-ink, not --ed-ink-2: both of these sit on the darkest stop, where
+     ink-2 is 3.87:1 */
+  .wayfinding {
+    font-size: 17px;
+    color: var(--ed-ink);
+    padding: 14px 0 0;
+  }
+  .wayfinding a { color: var(--ed-ink); }
+
+  /* ---------- Hero: left, not centered ---------- */
+  .hero { padding: 72px 0 80px; }
+  .hero .kicker { font-size: 17px; font-weight: 500; color: var(--ed-ink); margin: 0 0 22px; }
+  .hero h1 {
+    font-size: clamp(56px, 11.5vw, 176px);
+    max-width: 9.2em;
+    text-wrap: balance;
+    margin: 0 0 20px;
+  }
+  .hero .accent {
+    font-stretch: 125%;
+    font-weight: 400;
+    font-size: clamp(30px, 4.6vw, 68px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 0 0 30px;
+  }
+  .hero .subhead {
+    font-size: clamp(19px, 1.6vw, 23px);
+    line-height: 1.5;
+    max-width: 30em;
+    text-wrap: pretty;
+  }
+
+  /* ---------- Sections ---------- */
+  .section { padding: 56px 0 0; }
+  .section-title {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ed-ink-2);
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ed-ink);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* The contents page: ten products as a numbered list in display type. */
+  .contents { list-style: none; margin: 0; padding: 0; }
+  .contents li {
+    display: grid;
+    grid-template-columns: 3.2em minmax(0, 1fr);
+    gap: 6px 20px;
+    align-items: baseline;
+    padding: 22px 0 24px;
+    border-bottom: 1px solid var(--pi-cyan-fade-rule);
+  }
+  .contents li:last-child { border-bottom: 2px solid var(--ed-ink); }
+  .contents .no {
+    font-stretch: 125%;
+    font-weight: 900;
+    font-size: clamp(22px, 2.2vw, 30px);
+    line-height: 1;
+    color: var(--ed-ink-2);
+    padding-top: .18em;
+  }
+  /* name, then the line under it, on every row; beside-the-name wrapped
+     unevenly once two taglines ran long */
+  .contents .row { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .contents .name {
+    font-stretch: 125%;
+    font-weight: 900;
+    font-size: clamp(26px, 3.4vw, 48px);
+    line-height: .96;
+    letter-spacing: -0.015em;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+  .contents .name:hover { text-decoration: underline; text-decoration-thickness: 4px; }
+  .contents .tag {
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.45;
+    color: var(--ed-ink-2);
+    max-width: 42em;
+    text-wrap: pretty;
+  }
+
+  /* Screens: the dark rasters as a strip of screens on the cyan, the figure
+     caption printed inside each one in cyan. */
+  .screens {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 44px;
+  }
+  .screen {
+    margin: 0;
+    min-width: 0;
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: var(--brand-gradient-soft), var(--ed-ink);
+  }
+  .screen figcaption {
+    position: absolute;
+    left: 12px; right: 12px; bottom: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--brand-cyan);
+  }
+  .screen figcaption b { font-stretch: 125%; font-weight: 900; margin-right: .5em; }
+
+  /* ---------- The founding: the one magenta surface ---------- */
+  .founding {
+    margin-top: 80px;
+    padding: 64px 0 72px;
+    background: var(--brand-magenta-dim);
+  }
+  .founding .section-title { color: var(--ink-50); border-color: var(--ink-0); }
+  .founding p, .founding h2, .founding blockquote, .founding a { color: var(--ink-0); }
+  .founding blockquote {
+    font-size: clamp(34px, 5.2vw, 88px);
+    max-width: 11em;
+    text-wrap: balance;
+    margin: 0 0 40px;
+  }
+  .founding .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px 48px;
+    align-items: start;
+  }
+  .founding .grid p { font-size: 18px; line-height: 1.55; color: var(--ink-50); text-wrap: pretty; max-width: 36em; }
+  .founding h2 {
+    grid-column: 1 / -1;
+    font-stretch: 125%;
+    font-weight: 400;
+    font-size: clamp(22px, 2.4vw, 34px);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .founding .door { grid-column: 1 / -1; font-size: 17px; font-weight: 500; }
+
+  /* ---------- Field Notes: four rows, no cards ---------- */
+  .notes { list-style: none; margin: 0; padding: 0; }
+  .note {
+    display: grid;
+    grid-template-columns: 7.5em minmax(0, 1fr);
+    gap: 6px 20px;
+    padding: 22px 0 24px;
+    border-bottom: 1px solid var(--pi-cyan-fade-rule);
+  }
+  .note:last-child { border-bottom: 2px solid var(--ed-ink); }
+  .note time { font-size: 16px; font-weight: 500; color: var(--ed-ink-2); padding-top: .35em; }
+  .note h3 {
+    font-stretch: 125%;
+    font-weight: 900;
+    font-size: clamp(22px, 2.6vw, 36px);
+    line-height: 1;
+    letter-spacing: -0.015em;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  .note h3 a { text-decoration: none; }
+  .note h3 a:hover { text-decoration: underline; text-decoration-thickness: 4px; }
+  .note p { grid-column: 2; font-size: 17px; line-height: 1.5; color: var(--ed-ink-2); max-width: 44em; text-wrap: pretty; }
+
+  /* ---------- Footer ---------- */
+  .footer { margin-top: 88px; border-top: 2px solid var(--ed-ink); padding: 22px 0 56px; }
+  .footer p { font-size: 17px; }
+  .footer .wf { color: var(--ed-ink-2); margin-top: 8px; }
+  .footer .wf a { color: var(--ed-ink); }
+
+  /* ---------- Breakpoints ---------- */
+  @media (max-width: 960px) {
+    .screens { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    /* ten screens three-up leave the tenth alone; it closes the strip wide */
+    .screens .screen:last-child:nth-child(3n + 1) { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
+    .founding .grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 20px; }
+    .top { padding-top: 20px; }
+    .hero { padding: 48px 0 56px; }
+    /* the expanded cut is wide: "streetwear." must fit the 350px column
+       on its own line, which it does at 48px and not at 58 */
+    .hero h1 { font-size: clamp(40px, 12.3vw, 72px); overflow-wrap: break-word; }
+    .contents li { grid-template-columns: 2.4em minmax(0, 1fr); padding: 16px 0 18px; }
+    .contents .row { flex-direction: column; gap: 6px; }
+    .screens { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    /* nine screens two-up leave the ninth alone; it closes the strip wide */
+    .screens .screen:last-child:nth-child(odd) { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
+    .founding { margin-top: 56px; padding: 44px 0 52px; }
+    .note { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 18px 0 20px; }
+    .note p { grid-column: 1; }
+  }
+</style>
+</head>
+<body class="cg">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="wrap" id="top">
+  <div class="top">
+    <a class="wordmark disp" href="/">626 Labs</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#field-notes">Field Notes</a>
+      <a href="/#lab">Lab</a>
+      <a href="/about.html">About</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </div>
+  <p class="wayfinding">Theme: November 2026 &middot; this site changes monthly &middot; <a href="/themes.html">see all themes</a></p>
+</header>
+
+<main id="main">
+
+  <section class="hero wrap" aria-labelledby="hed">
+    <p class="kicker">626Labs LLC &middot; Fort Worth, TX</p>
+    <h1 class="disp" id="hed">Astrology engines, dev tools, streetwear.</h1>
+    <p class="accent">Imagine Something Else.</p>
+    <p class="subhead">A NASA-grade astrology app, Claude Code plugins for builders who ship for real, and merch designed by its own AI pipeline. Three shelves, one lab.</p>
+  </section>
+
+  <section class="section wrap" id="work" aria-labelledby="work-hed">
+    <h2 class="section-title" id="work-hed"><span>Work</span><span>Ten of twenty-four</span></h2>
+    <ol class="contents">
+      <li><span class="no">1</span><div class="row"><a class="name" href="#s-1">Celestia 3</a><span class="tag">NASA-grade astrology AI.</span></div></li>
+      <li><span class="no">2</span><div class="row"><a class="name" href="#s-2">Conundrum by Este</a><span class="tag">The 626 Labs merch shop &mdash; streetwear-grade prints designed by an AI pipeline and sold print-on-demand on Etsy.</span></div></li>
+      <li><span class="no">3</span><div class="row"><a class="name" href="#s-3">Vibe Cartographer</a><span class="tag">Vibe coding with a map.</span></div></li>
+      <li><span class="no">4</span><div class="row"><a class="name" href="#s-4">Vibe Iterate</a><span class="tag">Maintain your Atlas.</span></div></li>
+      <li><span class="no">5</span><div class="row"><a class="name" href="#s-5">Vibe Insights</a><span class="tag">The /insights you wish you had.</span></div></li>
+      <li><span class="no">6</span><div class="row"><a class="name" href="#s-6">Vibe Keystone</a><span class="tag">Map the repo before the agent starts.</span></div></li>
+      <li><span class="no">7</span><div class="row"><a class="name" href="#s-7">Vibe Doc</a><span class="tag">Point it at your codebase and it finds the docs you're missing &mdash; ADRs, runbooks, threat models, specs.</span></div></li>
+      <li><span class="no">8</span><div class="row"><a class="name" href="#s-8">Vibe Test</a><span class="tag">Put your code to the test before somebody else does.</span></div></li>
+      <li><span class="no">9</span><div class="row"><a class="name" href="#s-9">Vibe Thesis</a><span class="tag">Long-form research, drafted with discipline.</span></div></li>
+      <li><span class="no">10</span><div class="row"><a class="name" href="#s-10">Thesis Engine</a><span class="tag">Surface topics. Gather sources. Seed the thesis.</span></div></li>
+    </ol>
+
+    <div class="screens">
+      <figure class="screen" id="s-1"><figcaption><b>1</b>Celestia 3</figcaption></figure>
+      <figure class="screen" id="s-2"><figcaption><b>2</b>Conundrum by Este</figcaption></figure>
+      <figure class="screen" id="s-3"><figcaption><b>3</b>Vibe Cartographer</figcaption></figure>
+      <figure class="screen" id="s-4"><figcaption><b>4</b>Vibe Iterate</figcaption></figure>
+      <figure class="screen" id="s-5"><figcaption><b>5</b>Vibe Insights</figcaption></figure>
+      <figure class="screen" id="s-6"><figcaption><b>6</b>Vibe Keystone</figcaption></figure>
+      <figure class="screen" id="s-7"><figcaption><b>7</b>Vibe Doc</figcaption></figure>
+      <figure class="screen" id="s-8"><figcaption><b>8</b>Vibe Test</figcaption></figure>
+      <figure class="screen" id="s-9"><figcaption><b>9</b>Vibe Thesis</figcaption></figure>
+      <figure class="screen" id="s-10"><figcaption><b>10</b>Thesis Engine</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="founding" id="founding" aria-labelledby="founding-hed">
+    <div class="wrap">
+      <h2 class="section-title" id="founding-hed"><span>The founding</span><span>02</span></h2>
+      <blockquote class="disp">I build tools, because care doesn't always scale.</blockquote>
+      <div class="grid">
+        <h2>626 Labs builds exact-fit software.</h2>
+        <p>626 Labs builds exact-fit software. The founding argument is simple: it has never been easier to have the exact tools we need, and too much money has been going to too many companies for tools that only half fit. So we build and maintain our own, at a quality that rivals enterprise software, made to enhance the work people do instead of taking their jobs. We are here to make great products, even if only a handful of people need them. That's ok.</p>
+        <p>The line the lab was built on belongs to its founder: "I build tools, because care doesn't always scale." It is translation: take the care a person already has and build it into something that keeps working after their attention has to move on.</p>
+        <a class="door" href="/about.html">Read the whole story</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="field-notes" aria-labelledby="notes-hed">
+    <h2 class="section-title" id="notes-hed"><span>Field Notes</span><span>Newest first</span></h2>
+    <ol class="notes">
+      <li class="note">
+        <time datetime="2026-09-28">2026-09-28</time>
+        <h3><a href="/editorial/2026-09-28-containment-for-frontier-ai/">Containment for Frontier AI</a></h3>
+        <p>Containment is an architecture, not a sandbox setting. Revised after a summer of real escapes.</p>
+      </li>
+      <li class="note">
+        <time datetime="2026-09-09">2026-09-09</time>
+        <h3><a href="/editorial/2026-09-09-the-words-were-the-easy-part/">The words were the easy part</a></h3>
+        <p>RoRoRo shipped in six languages. The translating took an afternoon; finding every place the product speaks took the rest.</p>
+      </li>
+      <li class="note">
+        <time datetime="2026-07-03">2026-07-03</time>
+        <h3><a href="/editorial/2026-07-03-rororo-grew-a-family/">RoRoRo grew eyes, hands, and a heartbeat</a></h3>
+        <p>The Roblox multi-launcher you could recommend on camera now has three plugins (perception, action, and a keep-alive), wired together by a consent-gated bridge that never leaves your machine.</p>
+      </li>
+      <li class="note">
+        <time datetime="2026-06-26">2026-06-26</time>
+        <h3><a href="/editorial/2026-06-26-the-first-626-day/">The first 626 Labs Day</a></h3>
+        <p>Today is 6/26/26, the first 626 Day since 626 Labs existed. The whole surface is shipped and live in one window: 14 Claude Code plugins and 6 Microsoft Store apps, one new and two with major updates this week.</p>
+      </li>
+    </ol>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p>626 Labs LLC &middot; Fort Worth, TX &middot; Imagine Something Else.</p>
+    <p class="wf">Theme: November 2026 &middot; this site changes monthly &middot; <a href="/themes.html">see all themes</a></p>
+  </div>
+</footer>
+</body>
+</html>

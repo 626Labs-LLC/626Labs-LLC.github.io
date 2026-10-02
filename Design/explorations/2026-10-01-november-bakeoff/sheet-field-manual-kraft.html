@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Field Manual on kraft: November remix sheet (626 Labs)</title>
+<!--
+  THE FIELD MANUAL ON KRAFT. The remix the 2026-09-03 judging packet put on
+  the table and nobody picked up: "the Field Manual's structure (table,
+  plates, stamp, record of changes) with the Broadsheet's masthead and front
+  rail carried in." Judged in September as the strongest fit for a lab with
+  twenty-four products and killed only because October wanted the
+  Broadsheet's first screen. Rebuilt here for November on a decision made
+  2026-10-01: darker paper, kraft or manila, and a real second studio, not a
+  sibling of the slate.
+
+  Four changes to sheet-field-manual.html, and one correction:
+
+  1. THE GROUND IS MANILA, with a kraft band. One token decides the ground
+     (--pi-field-manual-kraft-ground, D9C29A, L .5567), the folder stock a
+     document-control stamp actually belongs on. The founding section sits
+     on a full-bleed band one step darker (C9AE7C, L .4414): the one thing
+     worth taking from the killed Monograph, whose "founding band on deep
+     paper" the packet called a real beat. The two neighbours of the ground
+     were computed alongside it so a second opinion is a one-line edit:
+       one step lighter  E2CFAE  (L .6385)  primary ink 10.92:1, caption ink 7.67:1
+       one step darker   C9AE7C  (L .4414)  the band itself; see its column
+
+  2. THE DISPLAY FACE IS JETBRAINS MONO. October's Slate Broadsheet took the
+     Field Manual's type system (Space Grotesk heads, serif body, mono
+     furniture), so a November sheet in that system reads as October with a
+     spec table. The masthead title, every head, the item names in Table 1,
+     the figure captions and the record-of-changes titles are set in the
+     mono, weight 700 for display: a cover sheet typed on the machine that
+     typed the manual. Zero new fonts; it is already self-hosted. The serif
+     keeps the prose and the pull quote, because a manual's paragraphs are
+     book-set, and because the serif on manila is the warmth that keeps a
+     1962 document from reading cold. The one-line alternative, if the
+     serif echoes October too loudly: body in Inter, swap --font-serif for
+     --font-body on body.fmk, nothing else moves.
+
+  3. THE BROADSHEET'S MASTHEAD AND FRONT RAIL ARE CARRIED IN. The plain
+     lockup nav is gone. The page opens with the Broadsheet's ears row (the
+     site name left; the document-control STAMP right, where a manual's
+     control block lives), the big centered title between the double rules,
+     and the section-index strip. The hero takes the Broadsheet's lead-plus-
+     rail split: the lead carries the eyebrow, title, accent and subhead with
+     the flagship plate (Fig. 1) under it, and the right column is the Field
+     Notes front rail, styled as the Field Manual's record of changes. One
+     element, not two: the September sheet rendered Field Notes twice (rail
+     and a bottom section); here the rail IS the record of changes, numbered
+     3.1 to 3.4, under the rail's heavy rule and reversed label.
+
+  4. THE WAYFINDING SENTENCE IS THE STAMP, AND THE IMPRINT. The stamp keeps
+     the first viewport at every width (measured, below) because it was the
+     most distinctive dateline in the September round and the packet said
+     so. The footer repeats the sentence as an imprint line in mono, so the
+     relaxed contract ("present on every page") holds on pages that have no
+     stamp.
+
+  CORRECTION to the September header: Source Serif 4 is self-hosted now.
+  The prose is Source Serif 4 on every platform; the Georgia fallback is
+  the fallback stack, not the rendered face.
+
+  Stylesheets are root-absolute: serve the repo root (python -m http.server)
+  and browse /Design/explorations/2026-10-01-november-bakeoff/sheet-field-manual-kraft.html.
+  Body is NOT class ed-page: that class paints paper and navy ink at class
+  specificity; this sheet paints manila and declares body.fmk.
+
+  AA CONTRAST. Computed 2026-10-01, WCAG 2.1 relative luminance
+  (L = .2126R + .7152G + .0722B on linearized sRGB; ratio = (Lmax + .05) /
+  (Lmin + .05)). The paper grain (black fractal noise, multiply, opacity .16,
+  matrix alpha .55) darkens any ground by up to 8.8 percent at its peaks, so
+  every pair is given against the composited tone too; that is what a
+  visitor sees. Every text/ground pair this sheet uses:
+
+    GROUNDS                       hex     L        composited  L
+    --pi-field-manual-kraft-ground  D9C29A  .5567   C6B18C      .4534
+    zebra (ink at .04 over ground)  D1BB96  .5130   BFAB89      .4201
+    --pi-field-manual-kraft-band    C9AE7C  .4414   B79F71      .3606
+
+    TEXT INKS                   ground / +grain   zebra / +grain   band / +grain
+    --ed-ink        0F1F31     9.62  /  7.99      8.93  /  7.46    7.80  /  6.51   PASS all
+    --ed-ink-2      2A3649     7.04  /  5.85      6.54  /  5.46    5.71  /  4.77   PASS all
+    --pi-..-ink-3   2F3845     6.85  /  5.68      6.35  /  5.30    5.55  /  4.63   PASS all
+    --pi-..-link    05394A     7.18  /  5.96      6.66  /  5.56    5.81  /  4.86   PASS all
+    --pi-..-revision 5F0C34    7.64  /  6.34      7.09  /  5.92    6.19  /  5.17   PASS all
+
+  Floor is 4.5:1 everywhere. The lowest pair on the page is caption ink on
+  the composited band, 4.63:1, and nothing on the band is set smaller than
+  the paragraph numerals at 12px/600. The caption ink passes on the band,
+  which September's --ed-ink-3 could not do on paper-deep; the band can
+  carry text without a rule against it.
+
+  The three new text inks are the September inks re-derived darker, same
+  hue families, because the September set fails on manila: --ed-ink-3
+  (5E6B7F) 3.12:1, --pi-field-manual-link (0A6478) 3.91:1,
+  --pi-field-manual-revision (9E1A58) 4.42:1. A darker ground needs a
+  darker pair, and the pair still has to be cyan and magenta.
+
+  NOT USED AS TEXT, anywhere in this sheet: --ed-ink-3 (3.12:1 on the
+  ground), --ed-ink-muted (1.99:1), --ed-link (1.96:1), --ed-link-hover
+  (3.21:1). Every anchor and every caption sets its own ink from the list
+  above.
+
+  Decorative-only tokens (never a text color, so no pair applies):
+      --pi-field-manual-kraft-rule    ink at alpha .32    table hairlines, plate mats
+      --pi-field-manual-kraft-tint    ink at alpha .04    zebra rows
+      --pi-field-manual-kraft-emboss  white at alpha .35  letterpress highlight under
+                                                          display type, lighter than
+                                                          September's .6 because the
+                                                          ground is darker
+      --pi-field-manual-kraft-scan    white at alpha .045 scanlines inside the plates
+
+  Plates: unchanged from September. Every product screenshot on this site is
+  a dark raster; each plate is a --ed-ink block with the brand's soft
+  duotone wash and scanlines, inside a hairline mat with registration ticks
+  and a numbered figure caption. On manila the dark block reads as mounted
+  work, which is the Monograph's plate-mat argument arriving by a different
+  road. The real build swaps the placeholder for the screenshot and keeps
+  the mat.
+
+  Specimen: specimen.md in this directory, refreshed 2026-10-01. Every
+  string verbatim.
+-->
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/Design/colors_and_type.css">
+<link rel="stylesheet" href="/Design/editorial.css">
+<style>
+  :root {
+    --pi-field-manual-kraft-ground:   #D9C29A;               /* manila. The ONLY place the ground is declared. */
+    --pi-field-manual-kraft-band:     #C9AE7C;               /* kraft, one step darker; the founding band. */
+    --pi-field-manual-kraft-ink-3:    #2F3845;               /* caption ink. Ratios in the header comment. */
+    --pi-field-manual-kraft-link:     #05394A;               /* link and numeral ink, cyan family. */
+    --pi-field-manual-kraft-revision: #5F0C34;               /* revision-mark ink, magenta family. */
+    --pi-field-manual-kraft-rule:     rgba(15,31,49,.32);    /* hairlines, plate mats. Decorative. */
+    --pi-field-manual-kraft-tint:     rgba(15,31,49,.04);    /* zebra rows. Decorative. */
+    --pi-field-manual-kraft-emboss:   rgba(255,255,255,.35); /* letterpress highlight. Decorative. */
+    --pi-field-manual-kraft-scan:     rgba(255,255,255,.045);/* scanlines inside plates. Decorative. */
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+
+  /* colors_and_type.css sets a dark body plus light p/h colors for the
+     product surface. Manila is a light ground, so every text element re-inks. */
+  body.fmk {
+    background: var(--pi-field-manual-kraft-ground);
+    color: var(--ed-ink);
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.6;
+    position: relative;
+  }
+  .fmk p, .fmk h1, .fmk h2, .fmk h3, .fmk li, .fmk td, .fmk th, .fmk figcaption, .fmk blockquote, .fmk time {
+    color: var(--ed-ink);
+    margin: 0;
+  }
+
+  /* Paper grain: a fixed fractal-noise sheet multiplied over the page.
+     No color in the SVG; it is black noise at low alpha. */
+  body.fmk::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    opacity: .16;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- Shared manual furniture ---------- */
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    display: flex;
+    align-items: baseline;
+    gap: .6em;
+  }
+  .eyebrow .num { color: var(--pi-field-manual-kraft-link); }
+  .eyebrow .sep { color: var(--pi-field-manual-kraft-ink-3); font-weight: 400; }
+
+  .press {
+    /* the letterpress impression: ink sits in a shallow well, so a hairline
+       of lighter stock catches light just below each stroke */
+    text-shadow: 0 1px 0 var(--pi-field-manual-kraft-emboss);
+  }
+
+  a { color: var(--pi-field-manual-kraft-link); text-decoration: underline; text-underline-offset: .18em; text-decoration-thickness: 1px; }
+  a:hover { color: var(--pi-field-manual-kraft-revision); }
+
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    font-family: var(--font-mono); font-size: 13px;
+    background: var(--pi-field-manual-kraft-band); color: var(--ed-ink);
+    padding: 8px 12px; border: 1px solid var(--ed-ink);
+  }
+  .skip-link:focus { left: 12px; top: 12px; z-index: 60; }
+
+  /* ---------- Masthead: the Broadsheet's, set in the manual's mono ---------- */
+  .masthead { padding-top: 14px; }
+  .ears {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    padding: 6px 0 10px;
+    border-bottom: 1px solid var(--pi-field-manual-kraft-rule);
+  }
+  .ears .site {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .08em;
+    color: var(--pi-field-manual-kraft-ink-3);
+  }
+  .masthead-title {
+    margin: 0;
+    padding: 26px 0 16px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(44px, 8vw, 104px);
+    letter-spacing: -0.04em;
+    line-height: .92;
+    color: var(--ed-ink);
+    border-bottom: 3px solid var(--ed-ink);
+    position: relative;
+  }
+  .masthead-title::after {
+    /* the second line of the double rule, hairline under the heavy one */
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    bottom: -6px;
+    border-bottom: 1px solid var(--ed-ink);
+  }
+  .masthead-title a { color: inherit; text-decoration: none; }
+  .masthead-title a:hover { color: inherit; }
+  .masthead-title .lab { font-weight: 400; letter-spacing: -0.02em; }
+
+  /* The section-index strip. */
+  .nav {
+    margin-top: 6px;
+    border-bottom: 1px solid var(--ed-ink);
+  }
+  .nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .nav li { position: relative; }
+  .nav li + li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 11px;
+    bottom: 11px;
+    border-left: 1px solid var(--pi-field-manual-kraft-rule);
+  }
+  .nav a {
+    display: block;
+    padding: 12px 22px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    text-decoration: none;
+  }
+  .nav a:hover { color: var(--pi-field-manual-kraft-link); text-decoration: underline; }
+
+  /* The document-control stamp. This is the wayfinding sentence, in the
+     ears row where a manual's control block lives. */
+  .dateline {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.65;
+    letter-spacing: .04em;
+    color: var(--pi-field-manual-kraft-revision);
+    border: 2px solid var(--pi-field-manual-kraft-revision);
+    box-shadow: 0 0 0 3px var(--pi-field-manual-kraft-ground), 0 0 0 4px var(--pi-field-manual-kraft-revision);
+    padding: 9px 14px;
+    max-width: 320px;
+    transform: rotate(-1.5deg);
+    transform-origin: center;
+    background: var(--pi-field-manual-kraft-ground);
+    margin: 4px 6px 4px 0;
+  }
+  .dateline .k { font-weight: 700; text-transform: uppercase; letter-spacing: .12em; }
+  .dateline .sep { padding: 0 .25em; }
+  .dateline a {
+    color: var(--pi-field-manual-kraft-revision);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .dateline a:hover { color: var(--pi-field-manual-kraft-link); }
+  .dateline a::after { content: ' \2192'; }
+
+  /* ---------- Hero: the lead and the front rail ---------- */
+  .hero { padding: 48px 0 40px; }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 0 56px;
+    align-items: start;
+  }
+  .lead {
+    min-width: 0;
+    padding-right: 56px;
+    border-right: 1px solid var(--pi-field-manual-kraft-rule);
+  }
+  .lead h1 {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(34px, 4.6vw, 62px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    margin: 22px 0 18px;
+    text-wrap: balance;
+  }
+  .lead .accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.3;
+    color: var(--ed-ink-2);
+    margin: 0 0 24px;
+  }
+  .lead .accent::before {
+    /* a short revision mark ahead of the accent line: cyan and magenta,
+       always together, as a callout, never a flood */
+    content: '';
+    display: block;
+    width: 72px;
+    height: 2px;
+    margin-bottom: 18px;
+    background: var(--ed-accent-rule);
+  }
+  .lead .subhead {
+    font-size: 19px;
+    line-height: 1.55;
+    max-width: 34em;
+    color: var(--ed-ink);
+    text-wrap: pretty;
+  }
+  .lead .plate { margin-top: 32px; }
+
+  /* The front rail: Field Notes as the record of changes. The Broadsheet's
+     heavy top rule and reversed label; the Field Manual's numbering. */
+  .rail {
+    min-width: 0;
+    border-top: 3px solid var(--ed-ink);
+    padding-top: 10px;
+  }
+  .rail-label {
+    margin: 0 0 2px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--ed-ink);
+  }
+  .rail-label .folio {
+    font-weight: 400;
+    letter-spacing: .06em;
+    text-transform: none;
+    color: var(--pi-field-manual-kraft-ink-3);
+  }
+  .notes { list-style: none; margin: 0; padding: 0; }
+  .field-note {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 4px 14px;
+    padding: 18px 0 20px;
+    border-bottom: 1px solid var(--pi-field-manual-kraft-rule);
+  }
+  .field-note:last-child { border-bottom: 2px solid var(--ed-ink); }
+  .field-note-no, .field-note-date {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+  .field-note-no { color: var(--pi-field-manual-kraft-link); font-weight: 600; padding-top: 4px; }
+  .field-note-date { grid-column: 2; color: var(--pi-field-manual-kraft-ink-3); }
+  .field-note-title {
+    grid-column: 2;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 4px 0 6px;
+    text-wrap: balance;
+  }
+  .field-note-title a { color: var(--ed-ink); text-decoration: none; }
+  .field-note-title a:hover { color: var(--pi-field-manual-kraft-link); text-decoration: underline; }
+  .field-note-subtitle {
+    grid-column: 2;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ed-ink-2);
+    text-wrap: pretty;
+  }
+
+  /* ---------- Sections ---------- */
+  .section { padding: 56px 0 0; }
+  .section-head {
+    border-top: 2px solid var(--ed-ink);
+    padding-top: 12px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .section-head .ref {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--pi-field-manual-kraft-ink-3);
+  }
+
+  /* ---------- Products: Table 1 and the plates ---------- */
+  .spec-table-wrap {
+    /* h-scroll is solved by reflow below 640px; this is only a fence so a
+       future column can never push the page. */
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 0 0 56px;
+  }
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 17px;
+    line-height: 1.45;
+  }
+  .spec-table caption {
+    caption-side: top;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink);
+    padding: 0 0 10px;
+  }
+  .spec-table caption .cnt {
+    color: var(--pi-field-manual-kraft-ink-3);
+    font-weight: 400;
+    letter-spacing: .06em;
+    text-transform: none;
+  }
+  .spec-table thead th {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ed-ink-2);
+    text-align: left;
+    padding: 10px 12px 8px;
+    border-top: 3px double var(--ed-ink);
+    border-bottom: 1px solid var(--ed-ink);
+    white-space: nowrap;
+  }
+  .spec-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--pi-field-manual-kraft-rule);
+    vertical-align: baseline;
+  }
+  .spec-table tbody tr:nth-child(even) td { background: var(--pi-field-manual-kraft-tint); }
+  .spec-table tbody tr:last-child td { border-bottom: 2px solid var(--ed-ink); }
+  .spec-table .no {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 14px;
+    color: var(--pi-field-manual-kraft-link);
+    width: 64px;
+    white-space: nowrap;
+  }
+  .spec-table .item {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 15.5px;
+    letter-spacing: -0.02em;
+    width: 24%;
+    color: var(--ed-ink);
+  }
+  .spec-table .desc {
+    color: var(--ed-ink-2);
+    overflow-wrap: anywhere;
+  }
+  .spec-table .fig {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-align: right;
+    width: 72px;
+    white-space: nowrap;
+  }
+  .spec-table .fig a { color: var(--pi-field-manual-kraft-revision); text-decoration: none; }
+  .spec-table .fig a:hover { text-decoration: underline; }
+  .spec-table th.fig { text-align: right; }
+
+  /* Plates */
+  .plates {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 36px 28px;
+  }
+  .plate {
+    margin: 0;
+    min-width: 0;
+    position: relative;
+  }
+  .plate .mat {
+    position: relative;
+    padding: 10px;
+    border: 1px solid var(--pi-field-manual-kraft-rule);
+  }
+  /* registration ticks, two corners */
+  .plate .mat::before, .plate .mat::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    border-color: var(--ed-ink);
+    border-style: solid;
+    border-width: 0;
+  }
+  .plate .mat::before { left: -1px; top: -1px; border-top-width: 1px; border-left-width: 1px; }
+  .plate .mat::after  { right: -1px; bottom: -1px; border-bottom-width: 1px; border-right-width: 1px; }
+  .plate .raster {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background:
+      repeating-linear-gradient(0deg, var(--pi-field-manual-kraft-scan) 0 1px, transparent 1px 3px),
+      var(--brand-gradient-soft),
+      var(--ed-ink);
+    border: 1px solid var(--ed-ink);
+  }
+  .plate.plate-lg .raster { aspect-ratio: 16 / 9; }
+  .plate figcaption {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--ed-ink);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 14.5px;
+    letter-spacing: -0.02em;
+  }
+  .plate.plate-lg figcaption { font-size: 17px; }
+  .plate .fig-no {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--pi-field-manual-kraft-revision);
+    white-space: nowrap;
+  }
+  .plate .fig-tag {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 17px;
+    color: var(--ed-ink-2);
+    margin-left: auto;
+    text-align: right;
+  }
+
+  /* ---------- Founding: on the kraft band ---------- */
+  .founding {
+    margin-top: 64px;
+    padding: 48px 0 56px;
+    background: var(--pi-field-manual-kraft-band);
+    border-top: 1px solid var(--ed-ink);
+    border-bottom: 1px solid var(--ed-ink);
+  }
+  .founding .section-head { border-top: 0; padding-top: 0; }
+  .founding h2 {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(26px, 3.2vw, 40px);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    margin: 0 0 36px;
+    max-width: 24em;
+    text-wrap: balance;
+  }
+  .founding-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 32px 64px;
+    align-items: start;
+  }
+  .paras { min-width: 0; max-width: 62ch; }
+  .para {
+    position: relative;
+    padding-left: 3.4em;
+    margin: 0 0 1.3em;
+    font-size: 18px;
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+  .para .pno {
+    position: absolute;
+    left: 0;
+    top: .35em;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: var(--pi-field-manual-kraft-link);
+  }
+  .door {
+    display: inline-block;
+    margin: 8px 0 0 3.4em;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--pi-field-manual-kraft-revision);
+    text-decoration: none;
+    border-bottom: 1px solid var(--pi-field-manual-kraft-revision);
+    padding-bottom: 3px;
+  }
+  .door::after { content: ' \2192'; }
+  .door:hover { color: var(--pi-field-manual-kraft-link); border-color: var(--pi-field-manual-kraft-link); }
+
+  .pull {
+    position: sticky;
+    top: 24px;
+    border: 1px solid var(--pi-field-manual-kraft-rule);
+    border-left: 3px solid var(--pi-field-manual-kraft-revision);
+    padding: 22px 24px 20px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.35;
+    color: var(--ed-ink);
+    text-wrap: pretty;
+    background: var(--pi-field-manual-kraft-ground);
+  }
+  .pull::before {
+    content: 'Note';
+    display: block;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--pi-field-manual-kraft-revision);
+    margin-bottom: 10px;
+  }
+
+  /* ---------- Footer: the imprint and the printer's strip ---------- */
+  .footer { margin-top: 72px; border-top: 1px solid var(--ed-ink); }
+  .footer::before {
+    content: '';
+    display: block;
+    border-top: 3px solid var(--ed-ink);
+    margin-top: 2px;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 32px;
+    flex-wrap: wrap;
+    padding-top: 22px;
+    padding-bottom: 12px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: .04em;
+    color: var(--ed-ink-2);
+  }
+  .footer-inner p { color: var(--ed-ink-2); }
+  .footer-inner em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 15px;
+    letter-spacing: 0;
+    color: var(--ed-ink);
+  }
+  .imprint {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .04em;
+    color: var(--pi-field-manual-kraft-ink-3);
+    padding-bottom: 40px;
+  }
+  .imprint a { color: var(--pi-field-manual-kraft-link); }
+  /* printer's color-control strip: the only place the brand pair prints at
+     full strength, and it prints as a swatch, not a surface */
+  .control-strip {
+    display: inline-flex;
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid var(--pi-field-manual-kraft-rule);
+  }
+  .control-strip i { display: block; width: 14px; height: 14px; }
+  .control-strip .c { background: var(--brand-cyan); }
+  .control-strip .m { background: var(--brand-magenta); }
+  .control-strip .k { background: var(--ed-ink); }
+  .control-strip .p { background: var(--pi-field-manual-kraft-band); }
+
+  /* ---------- Breakpoints ---------- */
+  @media (max-width: 960px) {
+    .hero-inner { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .lead { padding-right: 0; border-right: 0; }
+    .plates { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    /* nine plates two-up leave the ninth alone in its row; it closes the
+       grid as a wide plate instead. September's sheet had the orphan. */
+    .plates .plate:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .plates .plate:last-child:nth-child(odd) .raster { aspect-ratio: 16 / 9; }
+    .founding-grid { grid-template-columns: minmax(0, 1fr); }
+    .pull { position: static; max-width: 34em; }
+    .dateline { transform: rotate(-1deg); }
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 0 18px; }
+    .masthead-title { padding: 20px 0 12px; }
+    .ears { flex-direction: column; align-items: stretch; gap: 10px; }
+    .dateline { transform: none; max-width: 100%; margin: 0; font-size: 12px; padding: 9px 12px; }
+    .nav a { padding: 10px 12px; font-size: 11px; }
+    .hero { padding: 32px 0 24px; }
+    .lead h1 { margin-top: 16px; }
+
+    /* Table 1 reflows to a stacked ledger: the header row is hidden from
+       sight (kept for readers), each row becomes a small grid. The page
+       never scrolls sideways for it. */
+    .spec-table, .spec-table tbody { display: block; width: 100%; }
+    .spec-table caption { display: block; }
+    .spec-table thead {
+      position: absolute; width: 1px; height: 1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap;
+    }
+    .spec-table tr {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas: "no item fig" "no desc desc";
+      column-gap: 12px;
+      padding: 12px 8px;
+      border-bottom: 1px solid var(--pi-field-manual-kraft-rule);
+    }
+    .spec-table tbody tr:first-child { border-top: 3px double var(--ed-ink); }
+    .spec-table tbody tr:last-child { border-bottom: 2px solid var(--ed-ink); }
+    .spec-table td, .spec-table .no, .spec-table .item, .spec-table .fig { display: block; padding: 0; border: 0; width: auto; }
+    .spec-table tbody tr:nth-child(even) td { background: transparent; }
+    .spec-table tbody tr:nth-child(even) { background: var(--pi-field-manual-kraft-tint); }
+    .spec-table .no { grid-area: no; padding-top: 3px; }
+    .spec-table .item { grid-area: item; font-size: 15px; }
+    .spec-table .fig { grid-area: fig; padding-top: 2px; }
+    .spec-table .desc { grid-area: desc; font-size: 16px; margin-top: 3px; }
+
+    .plates { gap: 28px 16px; }
+    .plate figcaption { flex-wrap: wrap; gap: 4px 10px; font-size: 14px; }
+    .plate .fig-tag { margin-left: 0; text-align: left; width: 100%; font-size: 15px; }
+
+    .founding { padding: 36px 0 44px; }
+    .para { padding-left: 0; font-size: 17px; }
+    .para .pno { position: static; display: block; margin-bottom: 4px; }
+    .door { margin-left: 0; }
+
+    .field-note { grid-template-columns: 40px minmax(0, 1fr); gap: 2px 12px; padding: 14px 0 16px; }
+    .footer-inner { padding-bottom: 8px; }
+    .imprint { padding-bottom: 32px; }
+  }
+</style>
+</head>
+<body class="fmk">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="masthead" id="top">
+  <div class="wrap">
+    <div class="ears">
+      <span class="site">626labs.dev</span>
+      <p class="dateline"><span class="k">Theme:</span> November 2026 <span class="sep">&middot;</span> this site changes monthly <span class="sep">&middot;</span> <a href="/themes.html">see all themes</a></p>
+    </div>
+    <h1 class="masthead-title press"><a href="/">626 <span class="lab">Labs</span></a></h1>
+    <nav class="nav" aria-label="Sections">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#field-notes">Field Notes</a></li>
+        <li><a href="/#lab">Lab</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" aria-labelledby="lead-hed">
+    <div class="wrap hero-inner">
+      <article class="lead">
+        <p class="eyebrow">626Labs LLC <span class="sep">&middot;</span> Fort Worth, TX</p>
+        <h1 class="press" id="lead-hed">Astrology engines, dev tools, streetwear.</h1>
+        <p class="accent">Imagine Something Else.</p>
+        <p class="subhead">A NASA-grade astrology app, Claude Code plugins for builders who ship for real, and merch designed by its own AI pipeline. Three shelves, one lab.</p>
+        <figure class="plate plate-lg" id="fig-1">
+          <div class="mat"><span class="raster" role="img" aria-label="Celestia 3"></span></div>
+          <figcaption><span class="fig-no">Fig. 1</span> Celestia 3 <span class="fig-tag">NASA-grade astrology AI.</span></figcaption>
+        </figure>
+      </article>
+
+      <aside class="rail" id="field-notes" aria-labelledby="rail-label">
+        <h2 class="rail-label" id="rail-label"><span>03 &middot; Record of changes</span><span class="folio">Field Notes, front rail</span></h2>
+        <ol class="notes">
+          <li class="field-note">
+            <span class="field-note-no">3.1</span>
+            <time class="field-note-date" datetime="2026-09-28">2026-09-28</time>
+            <h3 class="field-note-title"><a href="/editorial/2026-09-28-containment-for-frontier-ai/">Containment for Frontier AI</a></h3>
+            <p class="field-note-subtitle">Containment is an architecture, not a sandbox setting. Revised after a summer of real escapes.</p>
+          </li>
+          <li class="field-note">
+            <span class="field-note-no">3.2</span>
+            <time class="field-note-date" datetime="2026-09-09">2026-09-09</time>
+            <h3 class="field-note-title"><a href="/editorial/2026-09-09-the-words-were-the-easy-part/">The words were the easy part</a></h3>
+            <p class="field-note-subtitle">RoRoRo shipped in six languages. The translating took an afternoon; finding every place the product speaks took the rest.</p>
+          </li>
+          <li class="field-note">
+            <span class="field-note-no">3.3</span>
+            <time class="field-note-date" datetime="2026-07-03">2026-07-03</time>
+            <h3 class="field-note-title"><a href="/editorial/2026-07-03-rororo-grew-a-family/">RoRoRo grew eyes, hands, and a heartbeat</a></h3>
+            <p class="field-note-subtitle">The Roblox multi-launcher you could recommend on camera now has three plugins (perception, action, and a keep-alive), wired together by a consent-gated bridge that never leaves your machine.</p>
+          </li>
+          <li class="field-note">
+            <span class="field-note-no">3.4</span>
+            <time class="field-note-date" datetime="2026-06-26">2026-06-26</time>
+            <h3 class="field-note-title"><a href="/editorial/2026-06-26-the-first-626-day/">The first 626 Labs Day</a></h3>
+            <p class="field-note-subtitle">Today is 6/26/26, the first 626 Day since 626 Labs existed. The whole surface is shipped and live in one window: 14 Claude Code plugins and 6 Microsoft Store apps, one new and two with major updates this week.</p>
+          </li>
+        </ol>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section products" id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow"><span class="num">01</span> <span class="sep">&middot;</span> Work</p>
+        <span class="ref">Table 1 &middot; Figs. 1 to 10</span>
+      </div>
+
+      <div class="spec-table-wrap">
+        <table class="spec-table">
+          <caption>Table 1 <span class="cnt">&middot; ten of twenty-four</span></caption>
+          <thead>
+            <tr>
+              <th class="no">No.</th>
+              <th class="item">Item</th>
+              <th class="desc">Description</th>
+              <th class="fig">Fig.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="product">
+              <td class="no">1.1</td>
+              <td class="item">Celestia 3</td>
+              <td class="desc">NASA-grade astrology AI.</td>
+              <td class="fig"><a href="#fig-1">1</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.2</td>
+              <td class="item">Conundrum by Este</td>
+              <td class="desc">The 626 Labs merch shop &mdash; streetwear-grade prints designed by an AI pipeline and sold print-on-demand on Etsy.</td>
+              <td class="fig"><a href="#fig-2">2</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.3</td>
+              <td class="item">Vibe Cartographer</td>
+              <td class="desc">Vibe coding with a map.</td>
+              <td class="fig"><a href="#fig-3">3</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.4</td>
+              <td class="item">Vibe Iterate</td>
+              <td class="desc">Maintain your Atlas.</td>
+              <td class="fig"><a href="#fig-4">4</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.5</td>
+              <td class="item">Vibe Insights</td>
+              <td class="desc">The /insights you wish you had.</td>
+              <td class="fig"><a href="#fig-5">5</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.6</td>
+              <td class="item">Vibe Keystone</td>
+              <td class="desc">Map the repo before the agent starts.</td>
+              <td class="fig"><a href="#fig-6">6</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.7</td>
+              <td class="item">Vibe Doc</td>
+              <td class="desc">Point it at your codebase and it finds the docs you're missing &mdash; ADRs, runbooks, threat models, specs.</td>
+              <td class="fig"><a href="#fig-7">7</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.8</td>
+              <td class="item">Vibe Test</td>
+              <td class="desc">Put your code to the test before somebody else does.</td>
+              <td class="fig"><a href="#fig-8">8</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.9</td>
+              <td class="item">Vibe Thesis</td>
+              <td class="desc">Long-form research, drafted with discipline.</td>
+              <td class="fig"><a href="#fig-9">9</a></td>
+            </tr>
+            <tr class="product">
+              <td class="no">1.10</td>
+              <td class="item">Thesis Engine</td>
+              <td class="desc">Surface topics. Gather sources. Seed the thesis.</td>
+              <td class="fig"><a href="#fig-10">10</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="plates">
+        <figure class="plate" id="fig-2">
+          <div class="mat"><span class="raster" role="img" aria-label="Conundrum by Este"></span></div>
+          <figcaption><span class="fig-no">Fig. 2</span> Conundrum by Este</figcaption>
+        </figure>
+        <figure class="plate" id="fig-3">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Cartographer"></span></div>
+          <figcaption><span class="fig-no">Fig. 3</span> Vibe Cartographer</figcaption>
+        </figure>
+        <figure class="plate" id="fig-4">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Iterate"></span></div>
+          <figcaption><span class="fig-no">Fig. 4</span> Vibe Iterate</figcaption>
+        </figure>
+        <figure class="plate" id="fig-5">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Insights"></span></div>
+          <figcaption><span class="fig-no">Fig. 5</span> Vibe Insights</figcaption>
+        </figure>
+        <figure class="plate" id="fig-6">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Keystone"></span></div>
+          <figcaption><span class="fig-no">Fig. 6</span> Vibe Keystone</figcaption>
+        </figure>
+        <figure class="plate" id="fig-7">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Doc"></span></div>
+          <figcaption><span class="fig-no">Fig. 7</span> Vibe Doc</figcaption>
+        </figure>
+        <figure class="plate" id="fig-8">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Test"></span></div>
+          <figcaption><span class="fig-no">Fig. 8</span> Vibe Test</figcaption>
+        </figure>
+        <figure class="plate" id="fig-9">
+          <div class="mat"><span class="raster" role="img" aria-label="Vibe Thesis"></span></div>
+          <figcaption><span class="fig-no">Fig. 9</span> Vibe Thesis</figcaption>
+        </figure>
+        <figure class="plate" id="fig-10">
+          <div class="mat"><span class="raster" role="img" aria-label="Thesis Engine"></span></div>
+          <figcaption><span class="fig-no">Fig. 10</span> Thesis Engine</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="founding" id="founding">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow"><span class="num">02</span> <span class="sep">&middot;</span> The founding</p>
+        <span class="ref">Paras. 2.1 to 2.2</span>
+      </div>
+      <h2 class="press">626 Labs builds exact-fit software.</h2>
+      <div class="founding-grid">
+        <div class="paras">
+          <p class="para"><span class="pno">2.1</span>626 Labs builds exact-fit software. The founding argument is simple: it has never been easier to have the exact tools we need, and too much money has been going to too many companies for tools that only half fit. So we build and maintain our own, at a quality that rivals enterprise software, made to enhance the work people do instead of taking their jobs. We are here to make great products, even if only a handful of people need them. That's ok.</p>
+          <p class="para"><span class="pno">2.2</span>The line the lab was built on belongs to its founder: "I build tools, because care doesn't always scale." It is translation: take the care a person already has and build it into something that keeps working after their attention has to move on.</p>
+          <a class="door" href="/about.html">Read the whole story</a>
+        </div>
+        <blockquote class="pull">I build tools, because care doesn't always scale.</blockquote>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <p>626 Labs LLC &middot; Fort Worth, TX &middot; <em>Imagine Something Else.</em></p>
+      <span class="control-strip" aria-hidden="true"><i class="c"></i><i class="m"></i><i class="k"></i><i class="p"></i></span>
+    </div>
+    <p class="imprint">Theme: November 2026 &middot; this site changes monthly &middot; <a href="/themes.html">see all themes</a></p>
+  </div>
+</footer>
+</body>
+</html>

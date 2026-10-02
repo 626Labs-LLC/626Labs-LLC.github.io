@@ -1,0 +1,39 @@
+{
+  "name": "Cyan Fade",
+  "slug": "cyan-fade",
+  "thesis": "The brand is the ground, and the ground fades to paper.",
+  "month": "2026-11",
+  "status": "queued",
+  "railLimit": 4,
+  "foundingBody": true,
+  "contrastPairs": [
+    ["--fg-1", "--bg-0"],
+    ["--fg-2", "--bg-0"],
+    ["--fg-3", "--bg-1"],
+    ["--fg-3", "--bg-2"],
+    ["--fg-muted", "--bg-2"],
+    ["--cyan", "--bg-0"],
+    ["--cyan", "--bg-2"],
+    ["--cyan-pale", "--bg-0"],
+    ["--magenta", "--bg-0"],
+    ["--magenta-pale", "--bg-0"],
+    ["--ok", "--bg-2"],
+    ["--ink-950", "--cyan"],
+    ["--ink-950", "--magenta"],
+    ["--cf-ink", "--cf-top"],
+    ["--cf-ink", "--cf-cyan"],
+    ["--cf-ink-2", "--cf-cyan"],
+    ["--cf-band-ink", "--cf-band"],
+    ["--cf-band-ink-2", "--cf-band"],
+    ["--cf-screen-ink", "--cf-screen"]
+  ],
+  "raster": {
+    "field": "#0F1F31",
+    "ink": "#F5F7FB",
+    "dim": "#17D4FA",
+    "texture": "none",
+    "glow": false,
+    "colorBar": false,
+    "bodyFace": "sans"
+  }
+}

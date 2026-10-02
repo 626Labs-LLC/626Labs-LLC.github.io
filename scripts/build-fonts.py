@@ -42,12 +42,24 @@ SOURCE_SERIF_ITALIC_URL = "https://github.com/adobe-fonts/source-serif/raw/4.005
 SOURCE_SERIF_ROMAN_TTF = FONTS / "SourceSerif4-Variable.ttf"
 SOURCE_SERIF_ITALIC_TTF = FONTS / "SourceSerif4-Italic-Variable.ttf"
 
+# Archivo (Omnibus-Type, SIL OFL), roman and italic, the two-axis variable
+# cut (wght 100-900, wdth 62-125) as google/fonts ships it. The Cyan Fade
+# (2026-11) sets every head in the expanded black and every line of text in
+# the normal width, so the wdth axis is the whole point: a static or
+# wght-only Archivo would clamp the display cut to 100 width.
+ARCHIVO_ROMAN_URL = "https://github.com/google/fonts/raw/main/ofl/archivo/Archivo%5Bwdth%2Cwght%5D.ttf"
+ARCHIVO_ITALIC_URL = "https://github.com/google/fonts/raw/main/ofl/archivo/Archivo-Italic%5Bwdth%2Cwght%5D.ttf"
+ARCHIVO_ROMAN_TTF = FONTS / "Archivo-Variable.ttf"
+ARCHIVO_ITALIC_TTF = FONTS / "Archivo-Italic-Variable.ttf"
+
 # (upstream URL, local TTF) — fetched once, then treated like any vendored
 # source. Each is sanity-checked for a wght axis before it is trusted.
 UPSTREAM = [
     (JBMONO_URL, JBMONO_TTF),
     (SOURCE_SERIF_ROMAN_URL, SOURCE_SERIF_ROMAN_TTF),
     (SOURCE_SERIF_ITALIC_URL, SOURCE_SERIF_ITALIC_TTF),
+    (ARCHIVO_ROMAN_URL, ARCHIVO_ROMAN_TTF),
+    (ARCHIVO_ITALIC_URL, ARCHIVO_ITALIC_TTF),
 ]
 
 # (source TTF, output woff2) — every source must carry the full weight range
@@ -59,6 +71,8 @@ JOBS = [
     ("JetBrainsMono-Variable.ttf", "JetBrainsMono-Variable.woff2"),
     ("SourceSerif4-Variable.ttf", "SourceSerif4-Variable.woff2"),
     ("SourceSerif4-Italic-Variable.ttf", "SourceSerif4-Italic-Variable.woff2"),
+    ("Archivo-Variable.ttf", "Archivo-Variable.woff2"),
+    ("Archivo-Italic-Variable.ttf", "Archivo-Italic-Variable.woff2"),
 ]
 
 

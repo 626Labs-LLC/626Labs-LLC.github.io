@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/Archivo-Variable.woff2" crossorigin />
+  <title>626 Labs — Imagine Something Else</title>
+  <meta name="description" content="626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins. Enterprise grade, reached for via vibe coding." />
+  <meta name="theme-color" content="#159EBE" />
+  <link rel="canonical" href="https://626labs.dev/" />
+  <link rel="icon" type="image/png" href="favicon-626.png" />
+  <link rel="alternate" type="application/atom+xml" title="626 Labs — Field Notes" href="/feed.xml" />
+
+  <meta property="og:site_name" content="626 Labs" />
+  <meta property="og:title" content="626 Labs — Imagine Something Else" />
+  <meta property="og:description" content="626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins. Enterprise grade, reached for via vibe coding." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://626labs.dev/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="626Labs LLC — Imagine Something Else" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="626 Labs — Imagine Something Else" />
+  <meta name="twitter:description" content="626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins. Enterprise grade, reached for via vibe coding." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/banner-1200x630.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://626labs.dev/#website",
+        "url": "https://626labs.dev/",
+        "name": "626 Labs",
+        "description": "626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins.",
+        "publisher": { "@id": "https://626labs.dev/#org" },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://626labs.dev/#org",
+        "name": "626 Labs",
+        "legalName": "626Labs LLC",
+        "url": "https://626labs.dev/",
+        "logo": "https://626labs.dev/assets/brand/icon-transparent-512.png",
+        "description": "Builder studio shipping vibe-coded SaaS, native apps, and Claude Code plugins.",
+        "founder": { "@id": "https://626labs.dev/#estevan" },
+        "sameAs": [
+          "https://github.com/626Labs-LLC",
+          "https://github.com/estevanhernandez-stack-ed",
+          "https://www.etsy.com/shop/ConundrumByEste",
+          "https://apps.microsoft.com/search/publisher?name=626Labs+LLC",
+          "https://x.com/626Labs"
+        ]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://626labs.dev/#estevan",
+        "name": "Estevan Hernandez",
+        "url": "https://626labs.dev/",
+        "jobTitle": "Founder",
+        "worksFor": { "@id": "https://626labs.dev/#org" },
+        "sameAs": [
+          "https://github.com/estevanhernandez-stack-ed"
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    /* ==================================================================
+       Cyan Fade — home shell (November 2026).
+       The brand is the ground, and the ground fades to paper. Every color,
+       rule and measure below is a token /themes/cyan-fade/tokens.css
+       defines (the 47-name contract plus the --cf-* block); nothing is
+       declared here. Design source: Design/explorations/
+       2026-10-01-november-bakeoff/sheet-cyan-fade.html.
+
+       THE SWEEP. body carries one 3200px scroll-attached gradient:
+       --cf-top at the top, the brand cyan at 22%, paper at the end. The
+       masthead and the hero sit on the blue; the contents list rides the
+       fade; everything from the band down lands on paper. It is the ONLY
+       gradient on the page and the only page that paints one.
+
+       THE INK RULE ON THE SWEEP. --cf-ink is 5.29:1 on --cf-top and
+       --cf-ink-2 is 3.87:1, so every string in the masthead and the hero
+       is --cf-ink, no exceptions. The Work section begins past the
+       brand-cyan stop, where --cf-ink-2 is already 6.87:1 and climbing, so
+       the contents list may use --cf-ink-2 for its taglines and tags; it
+       uses NO accent ink (--cyan, --magenta, --ok are paper inks and fail
+       on cyan). Accent inks first appear in the band and below.
+
+       ONE FACE. Archivo: the expanded black (.disp, or the same three
+       declarations inline) on every head, the normal width on every line
+       of text. The mono is spent on code only: the install command and
+       the flagship's preview screen. No tracked uppercase labels, no mono
+       folios, no cards, no radius, no glow, no texture, no arrows on links.
+       Links are ink, underlined; hover thickens the underline.
+
+       THE BAND. section.thinking (the founding today; the thinking zone if
+       it ever renders) is the one magenta surface, with --cf-band-ink and
+       --cf-band-ink-2 type. THE SCREENS: every raster (thumb, preview,
+       star map, lab thumb, lab-runs frame) is a flat --cf-screen block;
+       the one caption printed inside one is --cf-screen-ink.
+
+       Rule tokens are BORDER SHORTHANDS: --cf-hair / --cf-heavy are spent
+       on border-* and column-rule only. The color is --cf-hair-color.
+       ================================================================== */
+    @import url('/fonts/fonts.css');
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--bg-0); }
+    /* `html > body`, not `body`: tokens.css is linked AFTER this block and
+       pins `body { background: var(--bg-0) }` at the same specificity, which
+       would win the cascade and erase the sweep. */
+    html > body {
+      margin: 0;
+      background: var(--cf-sweep) top center / 100% var(--cf-sweep-height) no-repeat var(--bg-0);
+      color: var(--cf-ink);
+      font-family: var(--cf-face);
+      font-size: 18px;
+      line-height: 1.5;
+      font-stretch: 100%;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: "kern", "liga";
+    }
+    /* The August archive's div. Nothing is painted on it. */
+    .pb-scanlines { display: none; }
+    /* Design/colors_and_type.css sets bare h1/h2/h3 in Space Grotesk at
+       element specificity, which beats inheritance from body; pin the face
+       and the ink here so every head is Archivo and navy. */
+    h1, h2, h3, h4, p, li, blockquote, figcaption { color: inherit; font-family: inherit; }
+    p { margin: 0; }
+    blockquote { margin: 0; }
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
+    }
+    a:hover, a:focus-visible { text-decoration-thickness: var(--cf-underline-hover); }
+    a:focus-visible { outline: 2px solid var(--cf-ink); outline-offset: 2px; }
+    img, svg { max-width: 100%; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* The expanded black: the one display cut. */
+    .disp {
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      letter-spacing: -0.015em;
+      line-height: .92;
+    }
+
+    .wrap {
+      max-width: var(--cf-page);
+      margin: 0 auto;
+      padding: 0 var(--cf-gutter);
+      min-width: 0;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--cf-ink);
+      color: var(--cf-cyan);
+      padding: 8px 12px;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      z-index: 60;
+    }
+    .skip-link:focus { left: 12px; top: 12px; outline: 2px solid var(--cf-cyan); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    .ic { width: 14px; height: 14px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; vertical-align: -2px; }
+    .ic-lg { width: 16px; height: 16px; }
+    .ic-xl { width: 18px; height: 18px; }
+
+    /* ---------- Furniture: the section label, the eyebrow, the button ---------- */
+    /* The renderer emits every section label as `.eyebrow > span`, with
+       `.pulse` first in the hero and `.line` last everywhere; the text span
+       is the label. Plain, sentence case, weight 500. The dot and the line
+       are not drawn. */
+    .eyebrow { display: flex; align-items: baseline; gap: 10px; margin: 0; font-size: 17px; font-weight: 500; color: var(--cf-ink-2); }
+    .eyebrow .pulse, .eyebrow .line { display: none; }
+    .meta { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    .folio { font-size: 17px; font-weight: 500; color: var(--cf-ink-2); font-variant-numeric: tabular-nums; }
+
+    /* Every renderer-emitted button is a link: ink, underlined, weight 500. */
+    .btn, .door, .product-link, .play-link, .sponsor-cta, .thinking-link a,
+    .field-notes-subscribe, .field-notes-more > summary, .field-note-link a, .artifact-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 500;
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    .btn:hover, .door:hover, .product-link:hover, .play-link:hover, .sponsor-cta:hover,
+    .thinking-link a:hover, .field-notes-subscribe:hover, .field-notes-more > summary:hover, .field-note-link a:hover, .artifact-links a:hover {
+      text-decoration-thickness: var(--cf-underline-hover);
+    }
+
+    /* ================= MASTHEAD: the top strip and the wayfinding line ================= */
+    .masthead { padding-top: 26px; color: var(--cf-ink); }
+    .masthead .top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px var(--cf-gutter);
+      flex-wrap: wrap;
+    }
+    .wordmark { font-size: 28px; text-decoration: none; color: var(--cf-ink); }
+    .wordmark:hover { text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); }
+    .nav-links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 28px;
+    }
+    .nav-links a { font-size: 17px; font-weight: 500; text-decoration: none; color: var(--cf-ink); }
+    .nav-links a:hover, .nav-links a.active { text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); }
+    /* On the sweep's top: ink, not ink-2 (3.87:1 there). */
+    .wayfinding { padding: 14px 0 0; font-size: 17px; color: var(--cf-ink); }
+
+    /* ================= HERO: left, not centered, and every string in ink ================= */
+    .hero { padding: 72px 0 80px; color: var(--cf-ink); }
+    .hero-inner { display: block; }
+    .lead { min-width: 0; }
+    .lead .eyebrow { margin: 0 0 22px; color: var(--cf-ink); }
+    .lead h1 {
+      margin: 0 0 20px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      /* 10.4vw, not the sheet's 11.5: the renderer's h1 carries the
+         tagline as a block inside it, and at 165px "streetwear." ran
+         one period past the measure, which `anywhere` then broke onto
+         its own line. 150px fits with room; `pretty`, not `balance`,
+         so the balancer cannot shrink the measure under the last word. */
+      font-size: clamp(56px, 10.4vw, 150px);
+      line-height: .92;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      max-width: 9.2em;
+      text-wrap: pretty;
+      overflow-wrap: anywhere;
+    }
+    .lead h1 br { display: none; }
+    .lead h1 .accent {
+      /* the headline's second line: the tagline in the expanded regular */
+      display: block;
+      margin-top: 24px;
+      font-stretch: var(--cf-display-stretch);
+      font-weight: 400;
+      font-size: clamp(30px, 4.6vw, 68px);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    .lead .hero-sub {
+      margin-top: 30px;
+      font-size: clamp(19px, 1.6vw, 23px);
+      line-height: 1.5;
+      max-width: 30em;
+      text-wrap: pretty;
+      color: var(--cf-ink);
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 28px;
+      margin-top: 30px;
+    }
+    /* By the numbers: three columns under a heavy rule. */
+    .hero-meta {
+      margin-top: 44px;
+      padding-top: 14px;
+      border-top: var(--cf-heavy);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px var(--cf-gutter);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink);
+    }
+    .hero-meta > div { min-width: 0; overflow-wrap: anywhere; }
+    .hero-meta > div b { display: block; margin-top: 4px; font-weight: 700; font-size: 17px; }
+    /* The chips: one plain line of what is in print this month. */
+    .mark-chips {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4px 0;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: var(--cf-hair);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink);
+    }
+    .mark-chips::before { content: 'In this edition'; font-weight: 700; margin-right: 14px; }
+    .mark-chip { display: inline-flex; align-items: baseline; }
+    .mark-chip + .mark-chip::before { content: '·'; margin: 0 10px; }
+    .mark-chip .dot { display: none; }
+    /* .magenta and .success chips stay ink: no accent ink passes on the sweep. */
+
+    /* ================= SECTION FRONTS ================= */
+    .section { padding: 56px 0 0; }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px var(--cf-gutter);
+      flex-wrap: wrap;
+      padding-bottom: 12px;
+      margin-bottom: 8px;
+      border-bottom: var(--cf-heavy);
+    }
+    .section-head > div { min-width: 0; flex: 1 1 24em; }
+    .section-head h2 {
+      margin: 8px 0 0;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: clamp(28px, 3.4vw, 48px);
+      line-height: .96;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      text-wrap: balance;
+      overflow-wrap: anywhere;
+    }
+    .section-head > p {
+      margin: 0;
+      flex: 1 1 20em;
+      max-width: 34em;
+      font-size: 17px;
+      line-height: 1.45;
+      color: var(--cf-ink-2);
+      text-wrap: pretty;
+    }
+    section[id] { scroll-margin-top: 16px; }
+
+    /* ================= 01 WORK: the contents page ================= */
+    /* Ten products as a numbered list in display type: the number, the name
+       and its line, the screen beside. No cards. */
+    .products { counter-reset: listing; }
+    article.product {
+      counter-increment: listing;
+      position: relative;
+      display: grid;
+      grid-template-columns: 3.2em minmax(0, 1fr) minmax(200px, 28%);
+      gap: 8px 24px;
+      align-items: start;
+      padding: 24px 0 26px;
+      border-bottom: var(--cf-hair);
+      min-width: 0;
+    }
+    article.product:last-child { border-bottom: var(--cf-heavy); }
+    article.product::before {
+      content: counter(listing);
+      grid-column: 1;
+      grid-row: 1 / span 24;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: clamp(22px, 2.2vw, 30px);
+      line-height: 1;
+      color: var(--cf-ink-2);
+      padding-top: .18em;
+    }
+    article.product > * { grid-column: 2; min-width: 0; }
+    /* The cover anchor the renderer emits has no content; the name and
+       the links below it are the ways in. */
+    .product-cover { display: none; }
+    /* Name first, its line second, the tags under them. */
+    article.product h3 { order: -2; }
+    .product-desc { order: -1; }
+    article.product h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: clamp(26px, 3.4vw, 48px);
+      line-height: .96;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      overflow-wrap: anywhere;
+    }
+    .product-desc {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.45;
+      color: var(--cf-ink-2);
+      max-width: 42em;
+      text-wrap: pretty;
+    }
+    .product-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px 12px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
+    }
+    .product-sigil { display: none; }
+    .product-tags { display: flex; flex-wrap: wrap; align-items: baseline; }
+    /* Tags in ink-2 only. The list rides the sweep, where no accent ink
+       passes; "Live" reads as a word. */
+    .tag { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    .tag + .tag::before { content: '·'; margin: 0 8px; }
+    /* The flagship's inline-styled meta line (mono, --fg-muted, tracked)
+       is renderer markup this theme cannot edit; --fg-muted is 2.73:1 on
+       the cyan. Override the inline declarations so it reads as a tag. */
+    article.product.flagship .product-head div[style] {
+      color: var(--cf-ink-2) !important;
+      font-family: inherit !important;
+      font-size: 15px !important;
+      font-weight: 500;
+      letter-spacing: 0 !important;
+      text-transform: none;
+    }
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; }
+    .badges img { display: block; height: 18px; }
+    .install {
+      margin: 6px 0 0;
+      padding: 10px 0;
+      border-top: var(--cf-hair);
+      border-bottom: var(--cf-hair);
+    }
+    .install .label { display: block; margin-bottom: 4px; font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    .install code {
+      display: block;
+      font-family: var(--cf-mono);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--cf-ink);
+      overflow-wrap: anywhere;
+    }
+    .install code .prompt { color: var(--cf-ink-2); margin-right: 6px; }
+    .product-cta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 6px 0 0; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 0; }
+    .store-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--cf-ink);
+      color: var(--cf-ink);
+      text-decoration: none;
+    }
+    .store-badge svg { width: 18px; height: 18px; fill: currentColor; }
+    .store-badge-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .store-badge-top { font-size: 12px; font-weight: 500; color: var(--cf-ink-2); }
+    .store-badge-bottom { font-size: 15px; font-weight: 700; }
+    .store-badge:hover .store-badge-bottom { text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); text-underline-offset: .14em; }
+    .product-foot {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px 16px;
+      margin-top: 6px;
+    }
+    .product-meta { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); overflow-wrap: anywhere; }
+    /* The screen beside the listing: a flat navy block carrying the thumb.
+       `article.product > .product-visual` outranks the `> *` column rule. */
+    article.product > .product-visual {
+      grid-column: 3;
+      grid-row: 1 / span 24;
+      align-self: start;
+      margin: 0;
+      aspect-ratio: 16 / 10;
+      background: var(--cf-screen);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .product-visual img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    /* The flagship: the same row, its preview as the screen beside it. */
+    article.product.flagship .product-preview {
+      grid-column: 3;
+      grid-row: 1 / span 24;
+      align-self: start;
+      min-width: 0;
+    }
+    .preview-frame { background: var(--cf-screen); }
+    .preview-dots { display: none; }
+    .preview-body {
+      padding: 14px 16px;
+      color: var(--ink-0);
+      font-family: var(--cf-mono);
+      font-size: 12px;
+      line-height: 1.7;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+    }
+    /* On the screen only two inks pass: the brand cyan and paper. */
+    .preview-body .k { color: var(--cf-screen-ink); }
+    .preview-body .s { color: var(--ink-0); }
+    .preview-body .m { color: var(--cf-screen-ink); }
+    .preview-body .muted { color: var(--cf-screen-ink); }
+    .preview-bullets { margin-top: 10px; display: grid; gap: 0; }
+    .preview-bullet {
+      display: flex;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: var(--cf-hair);
+    }
+    .preview-bullet:last-child { border-bottom: 0; }
+    .preview-bullet .num { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); font-variant-numeric: tabular-nums; padding-top: 1px; }
+    .preview-bullet .txt { font-size: 15px; line-height: 1.45; color: var(--cf-ink-2); text-wrap: pretty; }
+    .preview-bullet .txt b { color: var(--cf-ink); font-weight: 700; }
+
+    /* ================= 02 THE FOUNDING / 03 THINKING: the band ================= */
+    section.thinking {
+      margin-top: 80px;
+      padding: 64px 0 72px;
+      background: var(--cf-band);
+      color: var(--cf-band-ink);
+    }
+    section.thinking .section-head { border-bottom: 2px solid var(--cf-band-ink); margin-bottom: 0; }
+    section.thinking .section-head .eyebrow, section.thinking .section-head > p { color: var(--cf-band-ink-2); }
+    section.thinking .section-head h2 {
+      /* the line under the label, in the expanded regular */
+      font-weight: 400;
+      font-size: clamp(22px, 2.4vw, 34px);
+      line-height: 1.1;
+      color: var(--cf-band-ink);
+    }
+    section.thinking blockquote {
+      margin: 28px 0 40px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: clamp(34px, 5.2vw, 88px);
+      line-height: .92;
+      letter-spacing: -0.015em;
+      max-width: 11em;
+      text-wrap: balance;
+      color: var(--cf-band-ink);
+    }
+    section.thinking .wrap > p {
+      margin: 0 0 1em;
+      max-width: 36em;
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--cf-band-ink-2);
+      text-wrap: pretty;
+    }
+    section.thinking .wrap > p strong { color: var(--cf-band-ink); font-weight: 700; }
+    /* The founding body (render-hub wraps it when theme.json sets
+       foundingBody) runs in two columns on the band. */
+    section.thinking .founding-body {
+      columns: 2;
+      column-gap: 48px;
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--cf-band-ink-2);
+      min-width: 0;
+    }
+    section.thinking .founding-body p { margin: 0 0 1em; text-wrap: pretty; break-inside: avoid; }
+    section.thinking .founding-body p strong { color: var(--cf-band-ink); font-weight: 700; }
+    section.thinking .thinking-link { margin-top: 6px; }
+    section.thinking .thinking-link a, section.thinking a { color: var(--cf-band-ink); }
+    section.thinking .thinking-artifacts {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0 var(--cf-gutter);
+    }
+    .thinking-artifact { min-width: 0; padding: 12px 0 16px; border-top: 1px solid var(--cf-band-ink); }
+    .artifact-eyebrow { margin-bottom: 6px; font-size: 15px; font-weight: 500; color: var(--cf-band-ink-2); }
+    .artifact-title {
+      margin: 0 0 6px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-band-ink);
+      overflow-wrap: anywhere;
+    }
+    .artifact-blurb { margin-bottom: 8px; font-size: 16px; line-height: 1.45; color: var(--cf-band-ink-2); }
+    .artifact-links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+
+    /* ================= FIELD NOTES: rows, newest first ================= */
+    section.field-notes .section-head > p { align-self: end; }
+    .field-notes-grid { display: block; }
+    .field-note {
+      display: grid;
+      grid-template-columns: 7.5em minmax(0, 1fr);
+      gap: 6px 20px;
+      padding: 22px 0 24px;
+      border-bottom: var(--cf-hair);
+      min-width: 0;
+    }
+    .field-note > * { grid-column: 2; min-width: 0; }
+    .field-note-eyebrow {
+      grid-column: 1;
+      grid-row: 1 / span 6;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
+      padding-top: .35em;
+      font-variant-numeric: tabular-nums;
+    }
+    .field-note-title {
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: clamp(22px, 2.6vw, 36px);
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      text-wrap: balance;
+      overflow-wrap: anywhere;
+    }
+    .field-note-subtitle { font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); max-width: 44em; text-wrap: pretty; }
+    .field-note-tagline { margin-top: 4px; font-size: 16px; font-style: italic; line-height: 1.5; color: var(--cf-ink-2); max-width: 44em; text-wrap: pretty; }
+    .field-note-link { margin-top: 8px; }
+    .field-notes-subscribe { margin-top: 18px; }
+    /* The notes past railLimit fold into a <details>; its summary is a row
+       in the same list, and the notes it reveals wear the same dress. */
+    .field-notes-more { margin: 0; }
+    .field-notes-more > summary {
+      list-style: none;
+      display: inline-flex;
+      margin: 18px 0 0;
+      cursor: pointer;
+      user-select: none;
+    }
+    .field-notes-more > summary::-webkit-details-marker { display: none; }
+    .field-notes-more[open] > summary { margin-bottom: 4px; }
+    .field-notes-more > summary:focus-visible { outline: 2px solid var(--cf-ink); outline-offset: 2px; }
+
+    /* ================= HOW THE LAB RUNS: three screens and a caption ================= */
+    section.lab-runs .frames {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px var(--cf-gutter);
+      margin-top: 36px;
+    }
+    section.lab-runs .frame { display: flex; flex-direction: column; min-width: 0; }
+    section.lab-runs .frame img {
+      order: -1;
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      background: var(--cf-screen);
+    }
+    section.lab-runs .frame-tag { margin-top: 10px; font-size: 15px; font-weight: 500; line-height: 1.45; color: var(--cf-ink-2); }
+    section.lab-runs .caption {
+      margin-top: 28px;
+      columns: 2;
+      column-gap: var(--cf-gutter);
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--cf-ink-2);
+    }
+    section.lab-runs .caption p { margin: 0 0 1em; text-wrap: pretty; break-inside: avoid; }
+
+    /* ================= PLAY: the widgets, each on its own screen ================= */
+    section.play .section-head .play-aside {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      flex: 1 1 20em;
+      max-width: 34em;
+      min-width: 0;
+    }
+    section.play .play-aside p, section.play .section-head > p {
+      font-size: 17px;
+      line-height: 1.45;
+      color: var(--cf-ink-2);
+      text-wrap: pretty;
+    }
+    .play-grid, .play-grid.two-up {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 0 var(--cf-gutter);
+      justify-items: center;
+      max-width: none;
+      margin: 36px 0 0;
+      counter-reset: puzzle;
+    }
+    /* The widgets keep their own dark chrome: they are screens already. */
+    .play-widget {
+      position: relative;
+      align-self: start;
+      width: 100%;
+      max-width: 432px;
+      margin-bottom: 48px;
+      counter-increment: puzzle;
+    }
+    .play-widget::after {
+      content: 'Puzzle ' counter(puzzle);
+      position: absolute;
+      left: 0;
+      top: 100%;
+      margin-top: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
+    }
+    .play-widget > .bacon-trail-widget,
+    .play-widget > .box-office-widget,
+    .play-widget > .tag-that-line-widget { max-width: none; }
+    @media (min-width: 640px) and (max-width: 1011px) {
+      .play-grid > .play-widget:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    }
+    .play-games {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 var(--cf-gutter);
+      max-width: none;
+      margin: 8px 0 0;
+    }
+    .play-game-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 16px 0 18px;
+      border-top: var(--cf-hair);
+      color: var(--cf-ink);
+      text-decoration: none;
+      min-width: 0;
+    }
+    .play-game-meta { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    .play-game-note { color: var(--magenta); }
+    .play-game-card h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: -0.015em;
+    }
+    .play-game-card p { font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); }
+    .play-game-cta { margin-top: auto; font-size: 17px; font-weight: 500; text-decoration: underline; text-decoration-thickness: var(--cf-underline); text-underline-offset: .14em; }
+    .play-game-card:hover .play-game-cta { text-decoration-thickness: var(--cf-underline-hover); }
+
+    /* ================= ABOUT: the manifesto, the star map as a screen, the principles ================= */
+    .manifesto-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 24px 48px;
+      padding-top: 56px;
+    }
+    .manifesto-inner > div:first-child { min-width: 0; }
+    section.manifesto h2 {
+      margin: 8px 0 0;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: clamp(32px, 3.8vw, 52px);
+      line-height: .96;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      text-wrap: balance;
+      overflow-wrap: anywhere;
+    }
+    section.manifesto h2 em { font-style: normal; font-weight: 400; letter-spacing: -0.01em; }
+    .stack {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: var(--cf-hair);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
+    }
+    .stack-chip + .stack-chip::before { content: '·'; margin: 0 8px; }
+    .manifesto-body { min-width: 0; font-size: 18px; line-height: 1.55; color: var(--cf-ink); }
+    .manifesto-body p { margin: 0 0 1em; text-wrap: pretty; }
+    .manifesto-body p:last-child { margin-bottom: 0; }
+    .manifesto-body p strong { font-weight: 700; }
+
+    /* The star map: the canvas draws its own sky, on the screen navy. The
+       canvas's client box is untouched (a border would shift the JS
+       hit-test); the caption sits on the paper under it. */
+    .starmap { margin: 44px 0 0; position: relative; }
+    .starmap-sky { display: block; width: 100%; height: 340px; background: var(--cf-screen); }
+    .starmap-caption {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px 16px;
+      margin-top: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
+    }
+    .starmap-label { font-weight: 700; color: var(--cf-ink); }
+    .starmap-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+    .starmap-legend .lg { display: inline-flex; align-items: center; gap: 6px; }
+    .starmap-legend .lg::before { content: ''; width: 8px; height: 8px; }
+    .starmap-legend .lg-plugin::before   { background: var(--cf-cyan); }
+    .starmap-legend .lg-flagship::before { background: var(--cf-band); }
+    .starmap-legend .lg-product::before  { background: var(--cf-ink); }
+    .starmap-tooltip {
+      position: absolute;
+      z-index: 2;
+      pointer-events: none;
+      padding: 5px 9px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--cf-screen-ink);
+      background: var(--cf-screen);
+      white-space: nowrap;
+      max-width: calc(100% - 12px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .principles {
+      margin-top: 44px;
+      padding-top: 14px;
+      border-top: var(--cf-heavy);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0 var(--cf-gutter);
+    }
+    .principle { min-width: 0; padding-bottom: 14px; }
+    .principle .num { margin-bottom: 8px; font-size: 15px; font-weight: 500; color: var(--cf-ink-2); font-variant-numeric: tabular-nums; }
+    .principle h4 {
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+    }
+    .principle p { font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); text-wrap: pretty; }
+
+    /* ================= THE BACK PAGE: also from the lab, support, contact ================= */
+    .backpage { padding: 56px 0 0; }
+    .backpage section { padding: 0; }
+    .backpage .wrap .wrap { padding: 0; max-width: none; }
+    .notice-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      padding-bottom: 10px;
+      margin-bottom: 8px;
+      border-bottom: var(--cf-heavy);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
+    }
+    section.lab { margin-top: 36px; }
+    section.lab .shelf {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0 var(--cf-gutter);
+    }
+    section.lab .lab-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 18px 0 20px;
+      border-bottom: var(--cf-hair);
+    }
+    section.lab .lab-card .thumb {
+      position: relative;
+      display: block;
+      margin: 0 0 12px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: var(--cf-screen);
+    }
+    section.lab .lab-card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    section.lab .lab-card .thumb.video::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 40px; height: 40px;
+      margin: -20px 0 0 -20px;
+      background: var(--cf-screen) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%2317D4FA' d='M5.5 3.5v9l7-4.5z'/></svg>") center/16px no-repeat;
+      border: 1px solid var(--cf-screen-ink);
+      pointer-events: none;
+    }
+    section.lab .lab-card .thumb.static { cursor: default; }
+    section.lab .lab-card .thumb.static img { object-fit: contain; }
+    section.lab .lab-card h4 {
+      margin: 0 0 4px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 18px;
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      overflow-wrap: anywhere;
+    }
+    section.lab .lab-card .meta { flex: 0 0 auto; margin: 0 0 8px; font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    section.lab .lab-card p { flex: 1; margin: 0 0 10px; font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); text-wrap: pretty; }
+    section.lab .lab-card .links { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); overflow-wrap: anywhere; }
+    section.lab .lab-card .links a { color: var(--cf-ink); }
+    section.lab .shuffle-note { margin-top: 14px; text-align: right; }
+    section.lab .shuffle-note button {
+      background: none;
+      border: 0;
+      padding: 0;
+      color: var(--cf-ink);
+      font: inherit;
+      font-size: 17px;
+      font-weight: 500;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
+      cursor: pointer;
+    }
+    section.lab .shuffle-note button:hover { text-decoration-thickness: var(--cf-underline-hover); }
+
+    /* Support and contact: two columns under their own heavy rules. */
+    .notices {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 24px var(--cf-gutter);
+      margin-top: 48px;
+      align-items: start;
+    }
+    .backpage section.support, .backpage section.contact {
+      min-width: 0;
+      padding-top: 14px;
+      border-top: var(--cf-heavy);
+    }
+    .support-box { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+    .support-copy h3 {
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+    }
+    .support-copy p { font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); text-wrap: pretty; }
+    .sponsor-cta svg { width: 14px; height: 14px; fill: currentColor; }
+    .contact-inner { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .contact-inner > div { min-width: 0; }
+    section.contact .eyebrow { margin-bottom: 8px; font-size: 15px; }
+    section.contact h2 {
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      text-wrap: balance;
+      overflow-wrap: anywhere;
+    }
+    .contact-sub { margin-bottom: 12px; font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); text-wrap: pretty; }
+    .contact-inner .btn { overflow-wrap: anywhere; }
+    .contact-list { border-top: var(--cf-hair); }
+    .contact-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: var(--cf-hair);
+      color: var(--cf-ink);
+      text-decoration: none;
+      min-width: 0;
+    }
+    .contact-row > div { min-width: 0; }
+    .contact-row .label { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    .contact-row .value { font-size: 17px; overflow-wrap: anywhere; }
+    .contact-row .arrow { color: var(--cf-ink-2); }
+    .contact-row:hover .value { text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); text-underline-offset: .14em; }
+
+    /* ================= FOOTER: the heavy rule, the index, the imprint ================= */
+    footer.footer { margin-top: 88px; border-top: var(--cf-heavy); }
+    .footer-inner {
+      padding: 22px var(--cf-gutter) 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 16px 24px;
+    }
+    .footer-meta { font-size: 17px; line-height: 1.6; color: var(--cf-ink); min-width: 0; }
+    .footer-meta .brand-tagline { font-weight: 500; }
+    .footer-links {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 22px;
+      padding-top: 12px;
+      border-top: var(--cf-hair);
+      font-size: 17px;
+      font-weight: 500;
+    }
+    .footer-links a { color: var(--cf-ink); text-decoration: none; }
+    .footer-links a:hover { text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); }
+    /* The imprint: the wayfinding sentence again, at the foot. */
+    .imprint { padding: 14px var(--cf-gutter) 56px; }
+    .imprint p { font-size: 17px; line-height: 1.6; color: var(--cf-ink-2); }
+    .imprint .k { font-weight: 700; color: var(--cf-ink); }
+    .imprint .sep { padding: 0 4px; }
+    .imprint a { color: var(--cf-ink); white-space: nowrap; }
+
+    /* ================= 768 ================= */
+    @media (max-width: 960px) {
+      .nav-links { gap: 4px 20px; }
+      .section-head { align-items: start; }
+      section.thinking .thinking-artifacts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      section.lab-runs .frames { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      section.lab-runs .frames .frame:last-child:nth-child(odd) { grid-column: 1 / -1; }
+      .manifesto-inner { grid-template-columns: 1fr; }
+      .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      section.lab .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .notices { grid-template-columns: 1fr; }
+    }
+    /* ================= 390 ================= */
+    @media (max-width: 600px) {
+      .wrap { padding: 0 20px; }
+      .masthead { padding-top: 20px; }
+      .hero { padding: 48px 0 56px; }
+      /* the expanded cut is wide: "streetwear." must fit the 335px column
+         on its own line. The sheet fit it at 48px; this h1 carries the
+         tagline block inside it and the period fell off at 48, so 42. */
+      .lead h1 { font-size: clamp(36px, 11.2vw, 72px); overflow-wrap: break-word; }
+      .hero-meta { grid-template-columns: 1fr; }
+      article.product { grid-template-columns: 2.4em minmax(0, 1fr); padding: 16px 0 18px; gap: 6px 14px; }
+      article.product::before { grid-row: 1; }
+      .product-visual, article.product.flagship .product-preview {
+        grid-column: 2;
+        grid-row: auto;
+        margin-top: 8px;
+      }
+      section.thinking { margin-top: 56px; padding: 44px 0 52px; }
+      section.thinking .founding-body { columns: 1; }
+      section.thinking .thinking-artifacts { grid-template-columns: 1fr; }
+      .field-note { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 18px 0 20px; }
+      .field-note > *, .field-note-eyebrow { grid-column: 1; grid-row: auto; }
+      section.lab-runs .frames { grid-template-columns: 1fr; }
+      section.lab-runs .caption { columns: 1; }
+      .play-grid, .play-grid.two-up { grid-template-columns: 1fr; }
+      .play-games { grid-template-columns: 1fr; }
+      .starmap-sky { height: 260px; }
+      .starmap-caption { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .principles { grid-template-columns: 1fr; }
+      section.lab .shelf { grid-template-columns: 1fr; }
+      .footer-inner { padding: 22px 20px 0; }
+      .imprint { padding: 12px 20px 40px; }
+    }
+  </style>
+  <!-- Token layer: the theme registry (content/themes.json) decides the active
+       theme; this shell belongs to themes/cyan-fade/theme.json. -->
+  <link rel="stylesheet" href="/themes/cyan-fade/tokens.css">
+</head>
+<body>
+<div class="pb-scanlines" aria-hidden="true"></div>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- =============== MASTHEAD: the top strip =============== -->
+<header class="masthead" id="top">
+  <div class="wrap">
+    <div class="top">
+      <a class="wordmark disp" href="#top">626 Labs</a>
+      <nav class="nav" aria-label="Sections">
+        <ul class="nav-links">
+          <li><a href="#work">Work</a></li>
+          <li><a href="/plugins/">Plugins</a></li>
+          <li><a href="plugins/#thesis">Thinking</a></li>
+          <li><a href="#field-notes">Field Notes</a></li>
+          <li><a href="#lab">Lab</a></li>
+          <li><a href="#play">Play</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="https://github.com/sponsors/estevanhernandez-stack-ed">Sponsor</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="wayfinding">Theme: Cyan Fade &middot; this site changes monthly &middot; <a href="/themes.html">see all themes</a></p>
+  </div>
+</header>
+
+<main id="main">
+<!-- =============== THE HERO: left, on the blue =============== -->
+<section class="hero" id="lead">
+  <div class="wrap hero-inner">
+    <article class="lead">
+      <!-- SITE_JSON:hero:start -->
+      <!-- SITE_JSON:hero:end -->
+      <!-- SITE_JSON:hero-chips:start -->
+      <!-- SITE_JSON:hero-chips:end -->
+    </article>
+  </div>
+</section>
+
+<!-- =============== 01 WORK: the contents page =============== -->
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>01 · Portfolio</span><span class="line"></span></div>
+        <h2>The work, shipping.</h2>
+      </div>
+      <p>Fourteen plugins shipped plus native Windows and macOS apps. All open source. The plugins built on a shared spine: an opinionated agent that reads the code before it touches it.</p>
+    </div>
+
+    <div class="products">
+      <!-- SITE_JSON:products:start -->
+      <!-- SITE_JSON:products:end -->
+    </div>
+  </div>
+</section>
+
+<!-- =============== 03 THINKING (the band; the zone is empty while content/site.json carries no `thinking` block) =============== -->
+<!-- SITE_JSON:thinking:start -->
+<!-- SITE_JSON:thinking:end -->
+
+<!-- =============== 02 THE FOUNDING: the band =============== -->
+<!-- SITE_JSON:founding:start -->
+<!-- SITE_JSON:founding:end -->
+
+<!-- =============== FIELD NOTES: rows on paper, newest first. Auto-discovered from content/stories/*.md (frontmatter, draft: false); the section collapses entirely when zero published stories exist. =============== -->
+<!-- SITE_JSON:stories:start -->
+<!-- SITE_JSON:stories:end -->
+
+<!-- =============== HOW THE LAB RUNS =============== -->
+<!-- SITE_JSON:lab-runs:start -->
+<!-- SITE_JSON:lab-runs:end -->
+
+<!-- =============== PLAY =============== -->
+<!-- SITE_JSON:play:start -->
+<!-- SITE_JSON:play:end -->
+
+<!-- =============== ABOUT =============== -->
+<!-- SITE_JSON:about:start -->
+<!-- SITE_JSON:about:end -->
+
+<!-- =============== THE BACK PAGE: also from the lab, support, contact =============== -->
+<section class="backpage" id="notices">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <!-- Unnumbered on purpose: the renderer's own folios (05 Play, 06 About,
+             07 Contact) precede and nest here, so a "04" would read as a
+             misprint. -->
+        <div class="eyebrow"><span>Notices</span><span class="line"></span></div>
+        <h2>The back page.</h2>
+      </div>
+      <p>Other things the lab has shipped, how to keep it running, and where to write. Eight notices per load, reshuffled from a larger pool; hit shuffle for a fresh slate.</p>
+    </div>
+
+    <section class="lab" id="lab">
+      <div class="notice-head">
+        <span>Also from the lab</span>
+        <span class="folio">Eight per load</span>
+      </div>
+      <div class="shelf" id="lab-shelf"></div>
+      <div class="shuffle-note">
+        <button type="button" id="shuffle-btn">Shuffle</button>
+      </div>
+    </section>
+
+    <div class="notices">
+      <!-- SITE_JSON:support:start -->
+      <!-- SITE_JSON:support:end -->
+
+      <!-- SITE_JSON:contact:start -->
+      <!-- SITE_JSON:contact:end -->
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- =============== FOOTER =============== -->
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div class="footer-meta">
+      © 2026 626Labs LLC · Fort Worth, TX · <span class="brand-tagline">Imagine Something Else.</span><br/>
+      &ldquo;Claude&rdquo; and &ldquo;claude.ai&rdquo; are trademarks of Anthropic PBC, used nominatively.
+    </div>
+    <div class="footer-links">
+      <a href="#work">Work</a>
+      <a href="plugins/#thesis">Thinking</a>
+      <a href="#field-notes">Field Notes</a>
+      <a href="#play">Play</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="thesis.html">Thesis</a>
+      <a href="workflow.html">Workflow</a>
+      <a href="editorial/">Editorial</a>
+      <a href="press.html">Press</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+  <div class="wrap imprint">
+    <p id="imprint"><span class="k">Theme:</span> Cyan Fade <span class="sep">·</span> this site changes monthly <span class="sep">·</span> <a href="/themes.html">see all themes</a></p>
+  </div>
+</footer>
+<script>
+  // ============================================================
+  //  LAB_POOL — JS-shuffled "Also from the lab" shelf
+  // ============================================================
+  const LAB_POOL = [
+    // SITE_JSON:lab-pool:start
+    // SITE_JSON:lab-pool:end
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function el(tag, opts) {
+    const node = document.createElement(tag);
+    if (opts && opts.className) node.className = opts.className;
+    if (opts && opts.text != null) node.textContent = opts.text;
+    if (opts && opts.href) node.setAttribute('href', opts.href);
+    return node;
+  }
+
+  function renderLabShelf() {
+    const shelf = document.getElementById('lab-shelf');
+    if (!shelf) return;
+    shelf.textContent = '';
+    const picks = shuffle(LAB_POOL).slice(0, 8);
+    picks.forEach(p => {
+      const card = el('article', { className: 'lab-card' });
+      if (p.video) {
+        const thumb = el('a', {
+          className: 'thumb video',
+          href: 'https://www.youtube.com/watch?v=' + p.video
+        });
+        thumb.setAttribute('target', '_blank');
+        thumb.setAttribute('rel', 'noopener');
+        thumb.setAttribute('aria-label', 'Watch ' + p.name + ' demo on YouTube');
+        const img = document.createElement('img');
+        img.src = 'https://img.youtube.com/vi/' + encodeURIComponent(p.video) + '/hqdefault.jpg';
+        img.alt = p.name + ' demo thumbnail';
+        img.loading = 'lazy';
+        thumb.appendChild(img);
+        card.appendChild(thumb);
+      } else if (p.image) {
+        const thumb = el('div', { className: 'thumb static' });
+        const img = document.createElement('img');
+        img.src = p.image;
+        img.alt = p.name + ' thumbnail';
+        img.loading = 'lazy';
+        thumb.appendChild(img);
+        card.appendChild(thumb);
+      }
+      card.appendChild(el('h4', { text: p.name }));
+      card.appendChild(el('p', { className: 'meta', text: p.meta }));
+      card.appendChild(el('p', { text: p.desc }));
+      const links = el('div', { className: 'links' });
+      p.links.forEach((l, i) => {
+        if (i > 0) links.appendChild(document.createTextNode(' · '));
+        links.appendChild(el('a', { href: l.href, text: l.label }));
+      });
+      card.appendChild(links);
+      shelf.appendChild(card);
+    });
+  }
+
+  // ============================================================
+  //  maskStaleBadges — hide download badges when shields.io
+  //  reports "package not found or too new"
+  // ============================================================
+  async function maskStaleBadges() {
+    const badges = document.querySelectorAll('img[data-maskable="true"]');
+    for (const img of badges) {
+      try {
+        const res = await fetch(img.src, { cache: 'no-cache' });
+        if (!res.ok) { img.remove(); continue; }
+        const text = await res.text();
+        if (/not found|too new|invalid|error/i.test(text)) {
+          img.remove();
+        }
+      } catch {
+        // Network / CORS — leave the badge rather than guess.
+      }
+    }
+  }
+
+  // ============================================================
+  //  Smooth scroll + active nav state via IntersectionObserver
+  // ============================================================
+  function wireNav() {
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        if (!id) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        window.scrollTo({
+          top: target.getBoundingClientRect().top + window.scrollY - 16,
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    const links = document.querySelectorAll('.nav-links a');
+    const sectionIds = ['work', 'thinking', 'lab-runs', 'lab', 'about', 'contact'];
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sectionIds.forEach(id => {
+      const elt = document.getElementById(id);
+      if (elt) observer.observe(elt);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderLabShelf();
+    const btn = document.getElementById('shuffle-btn');
+    if (btn) btn.addEventListener('click', renderLabShelf);
+    maskStaleBadges();
+    wireNav();
+  });
+</script>
+
+<script>
+  // ============================================================
+  //  STARMAP — the plugin constellation in #about
+  //  Data: #starmap-data blob (emitted by render-hub.py).
+  //  Versions: runtime fetch of data/plugin-versions.json —
+  //  never baked into the render (see spec: byte-stable --check).
+  //  Deterministic by construction: FNV-1a jitter + seeded dust.
+  //  Colors are canvas-side literals (canvas can't read CSS vars
+  //  without getComputedStyle); keep in sync with :root tokens.
+  // ============================================================
+  (function () {
+    "use strict";
+    var panel = document.getElementById("plugin-constellation");
+    var dataEl = document.getElementById("starmap-data");
+    if (!panel || !dataEl) return;
+    var canvas = panel.querySelector(".starmap-sky");
+    var tooltip = panel.querySelector(".starmap-tooltip");
+    if (!canvas || !canvas.getContext) return;
+    var data;
+    try { data = JSON.parse(dataEl.textContent); } catch (e) { return; }
+    var plugins = data.plugins || [];
+    var prodNames = (data.products || []).map(function (p) { return p.name; });
+    if (!plugins.length) return;
+
+    var CYAN = "#17d4fa", MAG = "#f22f89", DUST = "#cfe9f5", PROD = "#e8f6ff";
+    var ctx = canvas.getContext("2d");
+    var tooltipPad = 12;
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // ── deterministic helpers ─────────────────────
+    function fnv1a(str) {
+      var h = 0x811c9dc5;
+      for (var i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 0x01000193) >>> 0;
+      }
+      return h >>> 0;
+    }
+    function mulberry32(a) {
+      return function () {
+        a |= 0; a = (a + 0x6D2B79F5) | 0;
+        var t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    function jitter(id) {
+      var h = fnv1a(id);
+      return [
+        ((h & 0xffff) / 0xffff - 0.5) * 0.06,
+        (((h >>> 16) & 0xffff) / 0xffff - 0.5) * 0.06
+      ];
+    }
+
+    // ── the curated spine ─────────────────────────
+    // Hand-designed wave (normalized coords). Slots sample it
+    // arc-length-evenly, so any plugin count lays out sanely.
+    var SPINE = [[.07,.60],[.20,.36],[.36,.64],[.52,.32],[.68,.58],[.84,.38],[.94,.55]];
+    var PROD_ANCHORS = [[.07,.15],[.92,.12],[.12,.87],[.93,.83],[.50,.08]];
+
+    function spineAt(t) {
+      var segs = [], total = 0, i, dx, dy, len;
+      for (i = 0; i < SPINE.length - 1; i++) {
+        dx = SPINE[i+1][0] - SPINE[i][0];
+        dy = SPINE[i+1][1] - SPINE[i][1];
+        len = Math.sqrt(dx*dx + dy*dy);
+        segs.push(len); total += len;
+      }
+      var target = t * total, acc = 0;
+      for (i = 0; i < segs.length; i++) {
+        if (acc + segs[i] >= target) {
+          var k = segs[i] ? (target - acc) / segs[i] : 0;
+          return [
+            SPINE[i][0] + (SPINE[i+1][0] - SPINE[i][0]) * k,
+            SPINE[i][1] + (SPINE[i+1][1] - SPINE[i][1]) * k
+          ];
+        }
+        acc += segs[i];
+      }
+      return SPINE[SPINE.length - 1].slice();
+    }
+
+    // ── layout (recomputed on resize) ─────────────
+    var W = 0, H = 0, stars = [], prods = [], dust = [], edges = [];
+    function layout() {
+      var dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = canvas.clientWidth; H = canvas.clientHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var padX = 26, padY = 30;
+      function px(n) { return padX + n[0] * (W - 2 * padX); }
+      function py(n) { return padY + n[1] * (H - 2 * padY); }
+
+      stars = plugins.map(function (p, i) {
+        var slot = spineAt((i + 0.5) / plugins.length);
+        var j = jitter(p.id);
+        return {
+          kind: "plugin", id: p.id, name: p.name, flagship: !!p.flagship,
+          x: px([slot[0] + j[0], 0]), y: py([0, slot[1] + j[1]]),
+          r: p.flagship ? 3.6 : 2.7, i: i
+        };
+      });
+
+      // edges: chain along the spine + up to two deterministic cross-links
+      edges = [];
+      var n = plugins.length, i;
+      for (i = 0; i < n - 1; i++) edges.push([i, i + 1]);
+      if (n >= 5) {
+        var c0 = fnv1a(plugins[0].id) % (n - 2);
+        edges.push([c0, c0 + 2]);
+      }
+      if (n >= 8) {
+        var c1 = fnv1a(plugins[n - 1].id) % (n - 2);
+        if (c1 !== edges[edges.length - 1][0]) edges.push([c1, c1 + 2]);
+      }
+
+      prods = prodNames.slice(0, PROD_ANCHORS.length).map(function (name, i) {
+        var j = jitter(name);
+        var a = PROD_ANCHORS[i];
+        return {
+          kind: "product", id: name, name: name,
+          x: px([a[0] + j[0], 0]), y: py([0, a[1] + j[1]]), r: 2.3, i: i
+        };
+      });
+
+      var rng = mulberry32(20260609);
+      dust = [];
+      for (i = 0; i < 50; i++) {
+        dust.push({
+          x: rng() * W, y: rng() * H,
+          r: rng() < 0.12 ? 1.5 : 0.9,
+          a: 0.12 + rng() * 0.35,
+          ph: rng() * 6.28, sp: 0.5 + rng()
+        });
+      }
+    }
+
+    // ── drawing ───────────────────────────────────
+    function bgFill() {
+      var g = ctx.createRadialGradient(W * .6, H * .4, 0, W * .6, H * .4, W * .7);
+      g.addColorStop(0, "#192e44"); g.addColorStop(1, "#0f1f31"); /* Cyan Fade: the screen navy (--cf-screen), navy-mid at the core */
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    }
+    function dot(x, y, r, color, alpha, blur) {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+      ctx.shadowBlur = blur; ctx.shadowColor = color;
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
+      ctx.restore();
+    }
+    var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
+    var easeOut = function (k) { return 1 - Math.pow(1 - k, 3); };
+    function easeOutBack(k) {
+      var c = 1.70158;
+      return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2);
+    }
+
+    // Reveal timeline (spec): dust 0-700, products from 200 (120 stagger,
+    // 500 each), stars from 400 (160 stagger, 380 each, overshoot),
+    // lines from 1900 (200 stagger, 450 each).
+    var revealStart = null;   // set on first 35%-visibility intersection
+    var revealT = function (now) {
+      return reduced ? Infinity : (revealStart === null ? 0 : now - revealStart);
+    };
+
+    function draw(now) {
+      var t = revealT(now);
+      var tt = now / 1000;
+      bgFill();
+      var ox = reduced ? 0 : 6 * Math.sin(tt * .05);
+      var oy = reduced ? 0 : 3 * Math.cos(tt * .04);
+
+      var dustK = easeOut(clamp(t / 700));
+      dust.forEach(function (s) {
+        var twk = reduced ? 1 : (0.7 + 0.3 * Math.sin(tt * s.sp + s.ph));
+        dot(s.x + ox * .5, s.y + oy * .5, s.r, DUST, s.a * twk * dustK, 0);
+      });
+
+      prods.forEach(function (p) {
+        var k = easeOut(clamp((t - 200 - p.i * 120) / 500));
+        var twk = reduced ? .85 : (0.7 + 0.25 * Math.sin(tt * .7 + p.i * 2));
+        dot(p.x + ox, p.y + oy, p.r, PROD, twk * k, 8 * k);
+      });
+
+      ctx.save();
+      ctx.strokeStyle = CYAN; ctx.lineWidth = 1;
+      var pulse = reduced ? 0.32 : (0.28 + 0.08 * Math.sin(tt * .8));
+      edges.forEach(function (e, j) {
+        var k = easeOut(clamp((t - 1900 - j * 200) / 450));
+        if (k <= 0) return;
+        var a = stars[e[0]], b = stars[e[1]];
+        var x1 = a.x + (b.x - a.x) * k, y1 = a.y + (b.y - a.y) * k;
+        ctx.globalAlpha = pulse * k;
+        ctx.beginPath();
+        ctx.moveTo(a.x + ox, a.y + oy);
+        ctx.lineTo(x1 + ox, y1 + oy);
+        ctx.stroke();
+      });
+      ctx.restore();
+
+      stars.forEach(function (s) {
+        var k = clamp((t - 400 - s.i * 160) / 380);
+        if (k <= 0) return;
+        var sc = k >= 1 ? 1 : easeOutBack(k);
+        var twk = reduced ? .9 : (0.75 + 0.25 * Math.sin(tt * 1.3 + s.i * 1.7));
+        dot(s.x + ox, s.y + oy, s.r * sc, s.flagship ? MAG : CYAN, twk * k, 10 * k);
+      });
+    }
+
+    // ── lifecycle: draw only while visible ────────
+    var rafId = null;
+    function loop(now) { draw(now); rafId = requestAnimationFrame(loop); }
+    function start() { if (rafId === null && !reduced) rafId = requestAnimationFrame(loop); }
+    function stop() { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } }
+
+    layout();
+    if (reduced) draw(performance.now());
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        // Last record wins — a coalesced enter+leave batch must not
+        // leave the RAF running while the panel is off-viewport.
+        var vis = entries[entries.length - 1].isIntersecting;
+        if (vis) {
+          if (reduced) { draw(performance.now()); return; }
+          if (revealStart === null) revealStart = performance.now();
+          start();
+        } else {
+          stop();
+        }
+      }, { threshold: 0.35 });
+      io.observe(panel);
+    } else {
+      // Ancient-browser fallback: settled sky, no reveal, no RAF.
+      revealStart = -1e12;
+      draw(performance.now());
+    }
+
+    window.addEventListener("resize", function () {
+      layout();
+      if (reduced || rafId === null) draw(performance.now());
+    });
+
+    // ── versions: runtime join, progressive ───────
+    var versions = {};
+    fetch("data/plugin-versions.json")
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (v) { if (v) versions = v; })
+      .catch(function () { /* tooltips degrade to name-only */ });
+
+    // ── tooltip: nearest star within 14px ─────────
+    function hit(mx, my) {
+      var best = null, bestD = 14;
+      stars.concat(prods).forEach(function (s) {
+        var d = Math.hypot(mx - s.x, my - s.y);
+        if (d < bestD) { bestD = d; best = s; }
+      });
+      return best;
+    }
+    function showTip(s) {
+      var v = s.kind === "plugin" ? versions[s.id] : null;
+      tooltip.textContent = s.id.toUpperCase() + (v ? " · " + v : "");
+      tooltip.hidden = false;
+      var tx = Math.min(s.x + tooltipPad, W - 10 - tooltip.offsetWidth);
+      var ty = Math.max(8, s.y - 10 - tooltip.offsetHeight);
+      tooltip.style.left = tx + "px";
+      tooltip.style.top = ty + "px";
+    }
+    function onPoint(e) {
+      var rect = canvas.getBoundingClientRect();
+      var s = hit(e.clientX - rect.left, e.clientY - rect.top);
+      if (s) showTip(s); else tooltip.hidden = true;
+    }
+    canvas.addEventListener("pointermove", onPoint);
+    canvas.addEventListener("pointerdown", onPoint);
+    canvas.addEventListener("pointerleave", function (e) {
+      // Touch fires pointerleave right after pointerup — hiding here
+      // would kill tap-tooltips. Touch dismissal = tap on empty sky.
+      if (e.pointerType === "mouse") tooltip.hidden = true;
+    });
+    canvas.addEventListener("pointercancel", function () { tooltip.hidden = true; });
+  })();
+</script>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
