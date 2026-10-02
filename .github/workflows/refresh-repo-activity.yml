@@ -1,0 +1,56 @@
+name: Refresh Repo Activity
+
+on:
+  schedule:
+    # 06:40 UTC daily — between the 06:30 site-stats and 06:45 rororo-plugins jobs.
+    - cron: '40 6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: refresh-repo-activity
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    # Don't re-trigger on our own bot commit. Same guard as the other push jobs.
+    if: github.actor != 'github-actions[bot]'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Refresh per-repo commit activity from GitHub
+        env:
+          # Default token reads public-repo commits fine (no new secret needed).
+          # Private repos 404 and land in the file's `missing` list by design.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/refresh-repo-activity.mjs
+
+      # No render step: the repo meters fetch data/repo-activity.json in the
+      # browser, so nothing here touches a rendered page or its --check.
+      - name: Commit + push if changed
+        run: |
+          if [[ -z "$(git status --porcelain data/repo-activity.json)" ]]; then
+            echo "No activity drift."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/repo-activity.json
+          git commit -m "chore(repo-activity): refresh $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; rebasing onto remote main and retrying..."
+            git pull --rebase origin main
+            sleep $((attempt * 3))
+          done
+          echo "::error::Failed to push after 5 attempts."
+          exit 1

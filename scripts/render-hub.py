@@ -1122,6 +1122,8 @@ def render_product(p: dict) -> str:
         parts.append(visual_html)
     parts.extend([head, f"        <h3>{title}</h3>"])
     parts.append(f'        <p class="product-desc">{description}</p>')
+    if p.get("repo"):
+        parts.append(render_repo_meter(p["repo"], p.get("title", "")))
     if badges_html:
         parts.append(badges_html)
     if install_html:
@@ -1138,6 +1140,31 @@ def render_product(p: dict) -> str:
     return "\n".join(parts)
 
 
+REPO_METER_ASSETS = (
+    '      <!-- repo meters: filled in the browser from data/repo-activity.json -->\n'
+    '      <link rel="stylesheet" href="/repo-meter/meter.css" />\n'
+    '      <script src="/repo-meter/meter.js" defer></script>'
+)
+
+
+def render_repo_meter(repo: str, name: str) -> str:
+    """The empty repo-meter element; /repo-meter/meter.js fills it at runtime
+    from data/repo-activity.json (the daily refresh-repo-activity.yml job),
+    so nothing from that file is ever rendered here and the bot's write never
+    dirties --check. Spec: docs/superpowers/specs/2026-10-01-repo-meter-design.md."""
+    return (
+        f'        <div class="repo-meter" data-repo="{attr(repo)}" '
+        f'aria-label="Commit activity for {attr(name)}"></div>'
+    )
+
+
+def _with_repo_meter_assets(cards_html: str, products: list[dict]) -> str:
+    """Append the meter stylesheet + script once, only when a row carries one."""
+    if any(p.get("repo") for p in products):
+        return cards_html + "\n\n" + REPO_METER_ASSETS
+    return cards_html
+
+
 def render_products(products: list[dict], plugin_family: dict | None = None) -> str:
     """Product cards, with an optional presentation-level family collapse.
 
@@ -1146,7 +1173,7 @@ def render_products(products: list[dict], plugin_family: dict | None = None) -> 
     data is never mutated — facts, star map, and plugin pages keep deriving.
     """
     if not plugin_family:
-        return "\n\n".join(render_product(p) for p in products)
+        return _with_repo_meter_assets("\n\n".join(render_product(p) for p in products), products)
     members = set(plugin_family.get("memberIds") or [])
     out, family_emitted = [], False
     for p in products:
@@ -1156,7 +1183,7 @@ def render_products(products: list[dict], plugin_family: dict | None = None) -> 
                 family_emitted = True
             continue
         out.append(render_product(p))
-    return "\n\n".join(out)
+    return _with_repo_meter_assets("\n\n".join(out), products + [plugin_family["card"]])
 
 
 # ─── lab pool ───────────────────────────────────────────────────────

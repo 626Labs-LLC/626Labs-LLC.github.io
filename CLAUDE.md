@@ -56,8 +56,9 @@ references and one-off design artifacts.
 | `Design/` | Brand reference + the design skill's UI kit. |
 | `scripts/` | Site pipeline. `.py` for the renderer + image work (render-hub, build-thumbnails, export-brand, build-admin-favicon); `.mjs` for the bot data jobs (refresh-bacon-shards, track-traffic). |
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
+| `repo-meter/` | The repo meter: `meter.css` + `meter.js`, a 26-week commit grid on every showcased project (home rows, the 15 plugin pages, the hand-authored product pages). Renderers emit an empty `<div class="repo-meter" data-repo="owner/repo">`; the script fills it from `data/repo-activity.json` at runtime. The stylesheet reads contract tokens only, so every theme dresses it. Spec: `docs/superpowers/specs/2026-10-01-repo-meter-design.md`. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 16 files: 12 bot workflows that push to main, plus 4 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
+| `.github/workflows/` | 17 files: 13 bot workflows that push to main, plus 4 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 | `themes/`, `content/themes.json`, `themes.html` | The monthly theme rotation: theme source dirs, the active/queue/archive registry, and the gallery page rendered from it. See **Theme rotation** below. |
 
@@ -72,7 +73,7 @@ references and one-off design artifacts.
 
 ## CI workflows
 
-The 12 bot workflows that push to main:
+The 13 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
@@ -86,12 +87,13 @@ The 12 bot workflows that push to main:
 | `fetch-site-stats.yml` | Daily 06:30 UTC | Pulls GoatCounter visit stats for `626labs.dev` and writes `data/site-stats.json` (uses `GOATCOUNTER_TOKEN` secret). |
 | `track-store-analytics.yml` | Daily 06:53 UTC | Pulls Microsoft Store analytics (usagedaily, installs, acquisitions, ratings, failurehits) for all six Store apps via the legacy Dev Center API → `data/store-analytics.json`. Uses the `STORE_TENANT_ID`/`STORE_CLIENT_ID`/`STORE_CLIENT_SECRET` secrets (the Store Listing Console's Entra app, Manager role). v1 auth (`resource=`, not `scope=`); requests paced because the API 429s readily; deliberately no pull_request trigger (credential exfil guard). Store data lags ~2-3 days — empty latest dates are the API, not a failure. |
 | `refresh-rororo-plugins.yml` | Daily 06:45 UTC | Reads the same `plugins-catalog.json` the RoRoRo app reads (off ROROROblox's latest release), enriches each entry with live release version/date/installs → `data/rororo-plugins.json`. `rororo-plugins.html` and the plugins section of `rororo.html` render from it client-side; warns on catalog-vs-release drift. |
+| `refresh-repo-activity.yml` | Daily 06:40 UTC | Per-repo commit activity for the **repo meters**: every `repo` in `site.json` products, every entry in `plugin-repos.json`, and every `data-repo=` attribute in the root HTML, via `GET /repos/{r}/commits?since=<182 days>`, bots excluded → `data/repo-activity.json`. No render step: the meters (`repo-meter/meter.js`) fetch the file in the browser, so the write never dirties a `--check`. Private repos 404 into the file's `missing` list. Implicit `GITHUB_TOKEN` only. |
 | `refresh-plugin-versions.yml` | Daily 07:00 UTC | Reads each plugin repo's latest tag (`content/plugin-repos.json` → GitHub API), writes `data/plugin-versions.json`, re-renders plugin pages so version chips can't drift. Default `GITHUB_TOKEN` reads public tags — no extra secret. |
 | `rotate-theme.yml` | Monthly, 09:00 UTC on the 1st + `workflow_dispatch` | Promotes `content/themes.json`'s `queue[0]` to active, unattended. See **Theme rotation** below for the full contract — this row is just the CI-table entry. No extra secret beyond the implicit `GITHUB_TOKEN`. |
 
 **Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`, `MCP_VERSION_TRUTH_KEY`, `STORE_TENANT_ID`, `STORE_CLIENT_ID`, `STORE_CLIENT_SECRET`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
-All twelve use a retry+rebase loop on `git push` to handle the race where two
+All thirteen use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
 Plus four that never commit to this repo:
