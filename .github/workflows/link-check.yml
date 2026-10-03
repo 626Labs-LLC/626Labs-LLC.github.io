@@ -42,10 +42,11 @@ jobs:
             --verbose
             --no-progress
             --root-dir ${{ github.workspace }}
-            --exclude-path Design/uploads
             --exclude-path apps/widget-bacon-trail/docs/qa-item7
             --exclude-path scripts/notes
-            --exclude-path themes/archive
+            --exclude-path themes
+            --exclude-path assets/roundup
+            --exclude-path Design
             --exclude '^https?://img\.shields\.io/'
             --exclude '^https?://img\.youtube\.com/'
             --exclude '^https?://apps\.microsoft\.com/'
@@ -53,6 +54,8 @@ jobs:
             --exclude '^https?://github\.com/.*/settings/?$'
             --exclude '^https?://(www\.)?themoviedb\.org/settings/'
             --exclude '^https?://www\.etsy\.com/'
+            --exclude '^https?://ai\.plainenglish\.io/'
+            --exclude '^https?://(www\.)?(x|twitter)\.com/'
             --accept '200,204,301,302,307,308,429'
             './**/*.html'
             './**/*.md'

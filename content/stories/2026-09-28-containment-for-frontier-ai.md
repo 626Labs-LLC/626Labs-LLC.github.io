@@ -453,7 +453,7 @@ What §4 specified operationally for Layer 4, and what §3 specified architectur
 
 <span id="ref-hernandez2026decisionlog"></span>Hernandez, Estevan. 2026a. *Engineering Decision Log, 626 Labs*. Unpublished engineering records, May–September 2026.
 
-<span id="ref-hernandez2026priorresearch"></span>Hernandez, Estevan. 2026b. *Forensic AI-Vs-Human Detection Methodology for Incident Response*. Unpublished hackathon research. Submission to the FIND_EVIL hackathon (<a href="findevil.devpost.com" class="uri">findevil.devpost.com</a>).
+<span id="ref-hernandez2026priorresearch"></span>Hernandez, Estevan. 2026b. *Forensic AI-Vs-Human Detection Methodology for Incident Response*. Unpublished hackathon research. Submission to the FIND_EVIL hackathon (<a href="https://findevil.devpost.com/" class="uri">findevil.devpost.com</a>).
 
 <span id="ref-hernandez2026sanduhr"></span>Hernandez, Estevan. 2026c. *Sanduhr Für Claude: Agentic Theming via a Lint-First MCP Tool*. <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude" class="uri">https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude</a>.
 
