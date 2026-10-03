@@ -1250,3 +1250,26 @@ def test_committed_field_note_pages_carry_goatcounter():
     missing = [p.parent.name for p in pages
                if "data-goatcounter" not in p.read_text(encoding="utf-8")]
     assert not missing, f"Field Note pages without analytics: {missing}"
+
+
+def test_flagship_head_carries_classes_not_inline_styles():
+    """The flagship head's lead, tags and category line were inline styles
+    until 2026-10-03, so a light theme (cyan-fade) could only restyle them with
+    a `div[style]` selector and `!important`. They are classes now, and every
+    registered theme's home shell styles them."""
+    import json
+    import re
+    html = render_hub.render_product({
+        "id": "vibe-family", "title": "Family", "description": "d", "tags": [],
+        "flagship": True, "productPage": "plugins/", "status": "live",
+    })
+    head = html.split('<div class="product-head">', 1)[1].split("<h3>", 1)[0]
+    assert "style=" not in head
+    for cls in ("product-head-lead", "product-category"):
+        assert f'class="{cls}"' in head
+    reg = json.loads((ROOT / "content" / "themes.json").read_text(encoding="utf-8"))
+    for slug in [reg["active"], *reg.get("queue", [])]:
+        shell = (ROOT / "themes" / slug / "archetypes" / "home.html").read_text(encoding="utf-8")
+        for cls in ("product-head-lead", "product-category"):
+            assert re.search(r"\." + cls + r"\b", shell), f"{slug} home shell never styles .{cls}"
+        assert "div[style]" not in shell, f"{slug} still targets the old inline-styled divs"

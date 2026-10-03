@@ -1073,15 +1073,15 @@ def render_product(p: dict) -> str:
             )
         head = f"""\
         <div class="product-head">
-          <div style="display:flex;align-items:center;gap:16px">
+          <div class="product-head-lead">
             <div class="product-sigil">
               {sigil}
             </div>
             <div>
-              <div class="product-tags" style="margin-bottom:4px">
+              <div class="product-tags">
                 {tags_html}
               </div>
-              <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-muted);letter-spacing:.08em">{esc(category)}</div>
+              <div class="product-category">{esc(category)}</div>
             </div>
           </div>
           {head_link}
