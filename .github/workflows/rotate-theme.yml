@@ -170,8 +170,10 @@ jobs:
         if: steps.queue.outputs.empty == 'false'
         # The off-site rasters follow the theme (docs/superpowers/specs/
         # 2026-09-04-slate-rasters-design.md): the X/Discord banners, the
-        # Medium and Vibe Plugins headers, the Discord server icon, the
-        # browser-tab favicon and the per-story OG cards. Every generator
+        # Medium and Vibe Plugins headers, the per-plugin banners and squares
+        # under assets/brand/plugins/ (each plugin page's og:image), the
+        # Discord server icon, the browser-tab favicon and the per-story OG
+        # cards. Every generator
         # reads the ACTIVE theme's `raster` block, and the registry flipped
         # above, so these draw the incoming month. After the render and
         # BEFORE the gates, so a drawing failure aborts the rotation instead
@@ -185,6 +187,7 @@ jobs:
           python scripts/export-brand.py
           python scripts/export-medium-header.py
           python scripts/export-vibe-plugins-logo.py
+          python scripts/export-plugin-icons.py
           python scripts/build-og-cards.py
 
       - name: 'Gate: theme doctor (new active theme, browser checks)'

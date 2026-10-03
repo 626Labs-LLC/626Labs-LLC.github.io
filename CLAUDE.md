@@ -281,6 +281,16 @@ icons, the lockup, the portrait) are byte-identical across themes. The
 grain is seeded, so a rebuild is byte-stable on one platform.
 `assets/favicon-admin.png` (`build-admin-favicon.py`) is never themed.
 
+`export-plugin-icons.py` follows the theme too (since 2026-10-03): each
+plugin's two banners and square in `assets/brand/plugins/` take the active
+theme's field, texture, glow, ink and color bar, and the rotation rebuilds
+them after the flip. The 1280x640 banner is each plugin page's `og:image`,
+so it is what a shared plugin link shows. The glyphs and the transparent
+512 icon are theme-invariant. A run on Windows re-encodes every file it
+touches, so after adding one plugin, stage only that plugin's files.
+`export-app-icons.py` (`assets/brand/apps/`) still draws the old navy field
+and can't run in CI: it loads icons from sibling repos on Este's machine.
+
 ### Field Note social cards — `scripts/build-og-cards.py`
 
 Generates a branded 1200x630 OG/social card per local Field Note into
