@@ -192,20 +192,15 @@
      a page the rotation cannot reach, which is the same defect as the
      private :root it replaced, one indirection deeper. */
   :root {
-    --page-field: var(--pb-field, var(--bg-0));
-    --page-hairline: var(--pb-hairline, var(--border-1));
-    --page-panel-border: var(--pb-panel-border, var(--border-2));
-    --page-panel: var(--pb-panel, var(--bg-2));
-    --page-grid-fine: var(--pb-grid-fine, transparent);
-    --page-grid-coarse: var(--pb-grid-coarse, transparent);
-    --page-scanline: var(--pb-scanline, transparent);
-    --page-bloom: var(--pb-bloom-cyan, none);
-    --page-trail: var(--pb-trail, none);
-  }
-
-  .pb-scanlines {
-    position: fixed; inset: 0; pointer-events: none; z-index: 60;
-    background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
+    --page-field: var(--bg-0);
+    --page-hairline: var(--border-1);
+    --page-panel-border: var(--border-2);
+    --page-panel: var(--bg-2);
+    --page-grid-fine: transparent;
+    --page-grid-coarse: transparent;
+    --page-scanline: transparent;
+    --page-bloom: none;
+    --page-trail: none;
   }
 
   body {
@@ -238,7 +233,6 @@
 </head>
 <body>
 
-<div class="pb-scanlines" aria-hidden="true"></div>
 <div class="grid-bg" aria-hidden="true"></div>
 
 <nav class="topnav">

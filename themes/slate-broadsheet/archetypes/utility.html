@@ -7,9 +7,8 @@
      utility.css has to fit press.html and privacy.html AS THEY SHIP: the
      pages own their markup and a theme cannot add an element to them.
      That is why the shell still carries the empty .page-hero-bg .grid /
-     .glow divs, the .pulse span and the .pb-scanlines div: on this theme
-     the wrapper is display:none, the pulse becomes the printer's color
-     bar, and nothing is painted on the scanlines div. The nameplate sits
+     .glow divs and the .pulse span: on this theme the wrapper is
+     display:none and the pulse becomes the printer's color bar. The nameplate sits
      small in the nav with the section index; the page title is a section
      head with a reversed folio tab and the accent word in the serif
      italic; the footer carries the heavy rule, the color bar, and the
@@ -63,7 +62,6 @@
 <link rel="stylesheet" href="/themes/slate-broadsheet/archetypes/utility.css">
 </head>
 <body>
-<div class="pb-scanlines" aria-hidden="true"></div>
 
 <nav class="nav">
   <div class="nav-inner">

@@ -14,9 +14,8 @@
      in the sibling utility.css has to fit press.html and privacy.html AS
      THEY SHIP: the pages own their markup and a theme cannot add an
      element to them. That is why the shell still carries the empty
-     .page-hero-bg .grid / .glow divs, the .pulse span, the .pb-scanlines
-     div: on this theme the wrapper is display:none, the pulse is
-     display:none, and nothing paints the scanlines div. press.html also
+     .page-hero-bg .grid / .glow divs and the .pulse span: on this theme
+     the wrapper is display:none and the pulse is display:none. press.html also
      ships a gradient hexagon <svg> inside .nav-brand; utility.css hides
      it so the wordmark stands alone, as on the sheet.
      The wayfinding imprint is generated content on .footer-inner::after,
@@ -55,7 +54,6 @@
 <link rel="stylesheet" href="/themes/cyan-fade/archetypes/utility.css">
 </head>
 <body>
-<div class="pb-scanlines" aria-hidden="true"></div>
 
 <nav class="nav">
   <div class="nav-inner">

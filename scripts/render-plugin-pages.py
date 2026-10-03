@@ -304,7 +304,6 @@ def render_head(p):
   <style>{STYLE}  </style>
 {REPO_METER_ASSETS}</head>
 <body>
-  <div class="pb-scanlines" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 """
 
@@ -694,7 +693,6 @@ def render_index(data):
   <style>{STYLE}  </style>
 </head>
 <body>
-  <div class="pb-scanlines" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 """
     nav = """

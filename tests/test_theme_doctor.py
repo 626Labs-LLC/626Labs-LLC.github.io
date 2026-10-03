@@ -1925,9 +1925,12 @@ def test_the_field_region_reaches_the_pages_own_full_bleed_overlay():
     # background on the nav alone satisfy "the page has a field" — nav, hero,
     # main and footer each already have a region of their own.
     assert "body > *" not in selector
-    for name in td.DRESS_OUTCOME_PAGES:
-        html = (ROOT / name).read_text(encoding="utf-8")
-        assert '<div class="pb-scanlines"' in html, name
+    # press.html and privacy.html no longer ship that div: it was Phosphor
+    # Blueprint's scanline overlay, removed in the October cleanup because no
+    # registered theme paints it. `body > div` stays in the selector so the
+    # gate reaches any overlay div a page ships again; until then the field
+    # surfaces are html, body and their pseudos, which every measured design
+    # above except (d) already uses.
 
 
 def test_every_element_level_reading_happens_BEFORE_the_stylesheet_toggle():
