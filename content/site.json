@@ -627,7 +627,7 @@
           "tone": "cyan"
         },
         {
-          "label": "native",
+          "label": "desktop",
           "tone": "magenta"
         },
         {
@@ -804,7 +804,7 @@
       "install": null,
       "storeUrl": null,
       "productPage": null,
-      "banner": null,
+      "banner": "assets/screenshots/pod-pipeline/1791006259511-buy-a-boat-hat-panel.png",
       "meta": "Open source · Python · Gemini + Printify",
       "screenshots": []
     },
