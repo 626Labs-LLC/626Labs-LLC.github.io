@@ -13,6 +13,10 @@ Checks:
                        contradict the derived/supplemented facts.
   2. asset existence — local /assets/... references that don't exist on disk.
   3. render drift    — render-hub.py --check and render-plugin-pages.py --check.
+  4. asset roundup   — assets/roundup/index.json names only files that exist,
+                       every image under assets/roundup is in it, and the tree
+                       holds no non-image but README.md and index.json (it is
+                       served publicly). scripts/refresh-roundup.py writes it.
 """
 from __future__ import annotations
 
@@ -81,6 +85,63 @@ def check_assets(obj, root: Path = ROOT) -> list[str]:
     return failures
 
 
+ROUNDUP_IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".ico"}
+ROUNDUP_ALLOWED = {"README.md", "index.json"}  # top level of assets/roundup only
+
+
+def _roundup_paths(entry: dict) -> list[str]:
+    paths = [entry.get(k) for k in ("icon", "logo", "hero")]
+    paths += list(entry.get("screenshots") or []) + list(entry.get("other") or [])
+    return [p for p in paths if p]
+
+
+def check_roundup(root: Path = ROOT) -> list[str]:
+    ru = root / "assets" / "roundup"
+    if not ru.is_dir():
+        return []
+    failures: list[str] = []
+    index_path = ru / "index.json"
+    named: set[str] = set()
+    if not index_path.exists():
+        failures.append("roundup: assets/roundup/index.json is missing "
+                        "(python scripts/refresh-roundup.py --index-only)")
+    else:
+        try:
+            index = json.loads(index_path.read_text(encoding="utf-8"))
+        except ValueError as e:
+            return [f"roundup: index.json does not parse: {e}"]
+        for entry in index.get("products", []):
+            for p in _roundup_paths(entry):
+                named.add(p)
+                if not (root / p).is_file():
+                    failures.append(f"roundup: index.json names a missing file: {p}")
+    for f in sorted(ru.rglob("*")):
+        if not f.is_file():
+            continue
+        rel = f.relative_to(root).as_posix()
+        if f.parent == ru and f.name in ROUNDUP_ALLOWED:
+            continue
+        if f.suffix.lower() not in ROUNDUP_IMAGE_EXTS:
+            failures.append(f"roundup: non-image file in a public image tree: {rel}")
+        elif index_path.exists() and rel not in named:
+            failures.append(f"roundup: image not in index.json: {rel}")
+    return failures
+
+
+def roundup_summary(root: Path = ROOT) -> str:
+    try:
+        index = json.loads((root / "assets" / "roundup" / "index.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return "roundup: no readable index.json"
+    prods = index.get("products", [])
+    n = sum(len(_roundup_paths(e)) for e in prods)
+    gaps = index.get("gaps", {})
+    return (
+        f"roundup: {len(prods)} products, {n} images indexed, harvested <= "
+        f"{index.get('generated')}; no icon: {', '.join(gaps.get('roundupWithoutIcon', [])) or 'none'}"
+    )
+
+
 def check_render_drift() -> list[str]:
     failures = []
     for script in ("render-hub.py", "render-plugin-pages.py"):
@@ -107,6 +168,7 @@ def run() -> list[str]:
         for s in _walk_strings(obj):
             failures += check_prose(s, fcts, source=name)
         failures += check_assets(obj)
+    failures += check_roundup()
     failures += check_render_drift()
     return failures
 
@@ -132,6 +194,7 @@ def main(argv) -> int:
             "supplement (re-confirm periodically): "
             f"ms_store_releases={fcts.get('ms_store_releases')}"
         )
+        print(roundup_summary())
         print(f"checks: {'PASS' if not failures else str(len(failures)) + ' FAILURE(S)'}")
         for f in failures:
             print(f"  - {f}")
