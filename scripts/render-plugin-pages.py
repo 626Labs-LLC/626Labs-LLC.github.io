@@ -98,6 +98,13 @@ STYLE = (
     + _PRODUCT_TOKENS_CSS.read_text(encoding="utf-8")
 )
 
+GOATCOUNTER = """
+  <!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+  <script data-goatcounter="https://626labs.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+"""
+
+
 COPY_SCRIPT = """
   <script>
     document.querySelectorAll('.copybtn').forEach(function(btn) {
@@ -574,6 +581,7 @@ def render_page(p, family):
     parts.append("\n  </main>\n")
     parts.append(render_footer())
     parts.append(COPY_SCRIPT)
+    parts.append(GOATCOUNTER)
     parts.append("\n</body>\n</html>\n")
     return "".join(parts)
 
@@ -734,7 +742,7 @@ def render_index(data):
     </section>
 """
     thesis_html = render_thesis(data.get("thesis"))
-    return head + nav + "\n  <main id=\"main\">\n" + hero + grid + thesis_html + "\n  </main>\n" + render_footer() + "\n</body>\n</html>\n"
+    return head + nav + "\n  <main id=\"main\">\n" + hero + grid + thesis_html + "\n  </main>\n" + render_footer() + GOATCOUNTER + "\n</body>\n</html>\n"
 
 
 def build():

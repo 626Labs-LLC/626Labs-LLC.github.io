@@ -348,7 +348,7 @@ def browser_documents(
 # against vibe-cartographer/index.html, press.html/privacy.html, about.html).
 ARCHETYPE_CHROME = {
     "home":    dict(skip_link=True,  nav=True, footer=True, analytics=True),
-    "product": dict(skip_link=True,  nav=True, footer=True, analytics=False),
+    "product": dict(skip_link=True,  nav=True, footer=True, analytics=True),
     "reading": dict(skip_link=False, nav=True, footer=True, analytics=True),
     "utility": dict(skip_link=False, nav=True, footer=True, analytics=True),
 }
@@ -2168,10 +2168,10 @@ def _check_viewport(
     `_archetype_source` swaps in because the Field Note shell carries only 3
     of that archetype's 10 required classes — served with the theme's
     archetypes/reading.css linked the way About's picker links it, never
-    bare (see dress_about_html). TWELVE of the thirteen carry
+    bare (see dress_about_html). All thirteen carry
     `<script async src="//gc.zgo.at/count.js">`, which over `http://127.0.0.1`
-    resolves to a real third-party host. (The thirteenth is the `product`
-    archetype's own shell, which ARCHETYPE_CHROME marks `analytics=False`.)
+    resolves to a real third-party host. (The `product` shell joined them on
+    2026-10-03, when ARCHETYPE_CHROME flipped it to `analytics=True`.)
     Counted by grep against the shipped files, not incremented.
     So this gate ALREADY depended on gc.zgo.at being up at 09:00 UTC on the
     1st, through two channels: a failed load logs a console error (reported
