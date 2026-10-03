@@ -1,5 +1,5 @@
 {
- "generated": "2026-07-08",
+ "generated": "2026-10-03",
  "note": "Raw brand material harvested from the 626 Labs repos, one folder per product. Paths are repo-root-relative; prefix with / for a URL on 626labs.dev. icon/logo/hero are picked by name and dimensions. Regenerate with: python scripts/refresh-roundup.py --index-only",
  "products": [
   {
@@ -23,12 +23,27 @@
    "siteId": "mod-launcher",
    "repo": "estevanhernandez-stack-ed/626-mod-launcher",
    "sourceDir": "assets/release",
-   "harvested": "2026-07-08",
-   "icon": "assets/roundup/626-mod-launcher/icon.ico",
+   "harvested": "2026-10-03",
+   "icon": "assets/roundup/626-mod-launcher/store-assets/app-icon-512.png",
    "logo": null,
-   "hero": "assets/roundup/626-mod-launcher/hero.png",
-   "screenshots": [],
-   "other": []
+   "hero": "assets/roundup/626-mod-launcher/store-assets/store-hero-3840x2160.png",
+   "screenshots": [
+    "assets/roundup/626-mod-launcher/screenshots/01-library-home.png",
+    "assets/roundup/626-mod-launcher/screenshots/02-game-mods-view.png",
+    "assets/roundup/626-mod-launcher/screenshots/03-browse-nexus.png",
+    "assets/roundup/626-mod-launcher/screenshots/04-updates-view.png",
+    "assets/roundup/626-mod-launcher/screenshots/05-add-game.png",
+    "assets/roundup/626-mod-launcher/screenshots/06-settings.png",
+    "assets/roundup/626-mod-launcher/screenshots/07-saves-snapshots.png"
+   ],
+   "other": [
+    "assets/roundup/626-mod-launcher/hero.png",
+    "assets/roundup/626-mod-launcher/icon.ico",
+    "assets/roundup/626-mod-launcher/store-assets/store-apptile-300x300.png",
+    "assets/roundup/626-mod-launcher/store-assets/store-boxart-1x1-1080x1080.png",
+    "assets/roundup/626-mod-launcher/store-assets/store-display-150x150.png",
+    "assets/roundup/626-mod-launcher/store-assets/store-poster-9x16-720x1080.png"
+   ]
   },
   {
    "id": "626labs-dashboard",
@@ -288,8 +303,8 @@
    "siteId": "rbx15-shirt-pants",
    "repo": "estevanhernandez-stack-ed/RBX15-Shirt-and-Pants",
    "sourceDir": "docs/store-assets",
-   "harvested": "2026-07-08",
-   "icon": "assets/roundup/rbx15-shirt-and-pants/Square310x310Logo.png",
+   "harvested": "2026-10-03",
+   "icon": "assets/roundup/rbx15-shirt-and-pants/store-box-2160x2160.png",
    "logo": "assets/roundup/rbx15-shirt-and-pants/logo-square-1080x1080.png",
    "hero": null,
    "screenshots": [
@@ -302,8 +317,11 @@
     "assets/roundup/rbx15-shirt-and-pants/screenshots/app-wordart.png"
    ],
    "other": [
+    "assets/roundup/rbx15-shirt-and-pants/Square310x310Logo.png",
     "assets/roundup/rbx15-shirt-and-pants/StoreLogo.png",
-    "assets/roundup/rbx15-shirt-and-pants/logo-portrait-720x1080.png"
+    "assets/roundup/rbx15-shirt-and-pants/app-tile-300x300.png",
+    "assets/roundup/rbx15-shirt-and-pants/logo-portrait-720x1080.png",
+    "assets/roundup/rbx15-shirt-and-pants/store-poster-1440x2160.png"
    ]
   },
   {
@@ -355,7 +373,7 @@
    "siteId": null,
    "repo": "estevanhernandez-stack-ed/rororo-ur-afk",
    "sourceDir": ".",
-   "harvested": "2026-07-08",
+   "harvested": "2026-10-03",
    "icon": "assets/roundup/rororo-ur-afk/icon.png",
    "logo": null,
    "hero": null,
@@ -368,7 +386,7 @@
    "siteId": null,
    "repo": "estevanhernandez-stack-ed/rororo-ur-task",
    "sourceDir": ".",
-   "harvested": "2026-07-08",
+   "harvested": "2026-10-03",
    "icon": "assets/roundup/rororo-ur-task/icon.png",
    "logo": null,
    "hero": null,
@@ -381,7 +399,7 @@
    "siteId": "rororo",
    "repo": "estevanhernandez-stack-ed/ROROROblox",
    "sourceDir": "docs/images",
-   "harvested": "2026-07-08",
+   "harvested": "2026-10-03",
    "icon": "assets/roundup/rororoblox/store/graphics/store-boxart-2160x2160.png",
    "logo": null,
    "hero": "assets/roundup/rororoblox/store/graphics/store-hero-3840x2160.png",
@@ -394,11 +412,26 @@
     "assets/roundup/rororoblox/screenshots/settings.png",
     "assets/roundup/rororoblox/screenshots/squad-launch.png",
     "assets/roundup/rororoblox/screenshots/theme.png",
-    "assets/roundup/rororoblox/screenshots/welcome.png"
+    "assets/roundup/rororoblox/screenshots/welcome.png",
+    "assets/roundup/rororoblox/store-screenshots/01-accounts-running.png",
+    "assets/roundup/rororoblox/store-screenshots/02-themes.png",
+    "assets/roundup/rororoblox/store-screenshots/03-about.png",
+    "assets/roundup/rororoblox/store-screenshots/04-games.png",
+    "assets/roundup/rororoblox/store-screenshots/05-diagnostics.png",
+    "assets/roundup/rororoblox/store-screenshots/06-history.png",
+    "assets/roundup/rororoblox/store-screenshots/07-plugins.png",
+    "assets/roundup/rororoblox/store-screenshots/08-theme-builder.png",
+    "assets/roundup/rororoblox/store-screenshots/09-compact.png",
+    "assets/roundup/rororoblox/store-screenshots/10-multi-instance.png"
    ],
    "other": [
+    "assets/roundup/rororoblox/AppIcon.ico",
     "assets/roundup/rororoblox/hero-wide.png",
     "assets/roundup/rororoblox/hero.png",
+    "assets/roundup/rororoblox/store-graphics/store-boxart-2160x2160.png",
+    "assets/roundup/rororoblox/store-graphics/store-display-300x300.png",
+    "assets/roundup/rororoblox/store-graphics/store-hero-3840x2160.png",
+    "assets/roundup/rororoblox/store-graphics/store-poster-1440x2160.png",
     "assets/roundup/rororoblox/store/graphics/store-boxart-1080x1080.png",
     "assets/roundup/rororoblox/store/graphics/store-display-150x150.png",
     "assets/roundup/rororoblox/store/graphics/store-display-300x300.png",
@@ -459,7 +492,7 @@
    "siteId": "sanduhr",
    "repo": "estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
    "sourceDir": "docs/store-assets",
-   "harvested": "2026-07-08",
+   "harvested": "2026-10-03",
    "icon": "assets/roundup/sanduhr/icon-1024-rgb.png",
    "logo": "assets/roundup/sanduhr/logo-square-1080x1080.png",
    "hero": null,
@@ -480,6 +513,7 @@
    ],
    "other": [
     "assets/roundup/sanduhr/StoreLogo.png",
+    "assets/roundup/sanduhr/app-tile-300x300.png",
     "assets/roundup/sanduhr/logo-portrait-720x1080.png"
    ]
   },
@@ -489,7 +523,7 @@
    "siteId": "snapsnip",
    "repo": "estevanhernandez-stack-ed/SnipSnap",
    "sourceDir": "docs/screenshots",
-   "harvested": "2026-07-08",
+   "harvested": "2026-10-03",
    "icon": "assets/roundup/snipsnap/logo-1240.png",
    "logo": null,
    "hero": null,
@@ -547,7 +581,7 @@
    "siteId": null,
    "repo": "estevanhernandez-stack-ed/Ur-OCR",
    "sourceDir": ".",
-   "harvested": "2026-07-08",
+   "harvested": "2026-10-03",
    "icon": "assets/roundup/ur-ocr/icon.png",
    "logo": null,
    "hero": null,
