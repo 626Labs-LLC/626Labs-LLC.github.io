@@ -451,6 +451,36 @@ remote.origin.url`. The Architect handles this without ceremony.
 - Don't edit the widget bundle at `widget-bacon-trail/` directly — edit
   `apps/widget-bacon-trail/src/`, push, and let `build-widget.yml` rebuild.
 
+## Gotchas
+
+Each of these cost real measurement time to find, and would again.
+
+- **Edit `content/site.json` surgically, never through `json.dumps`.** The
+  file is CRLF and carries hand-compacted regions (etsy-mcp's tags, one
+  object per line) that no `json.dumps` setting reproduces. A round-trip
+  rewrites 1,172 lines and buries the real change; the PR #134 products
+  reorder, done right, came out at 63 insertions and 62 deletions. Move text
+  blocks verbatim, and gate any single block you re-serialize on a byte-exact
+  round-trip first. `site.py set-status` already edits this way; copy it.
+- **Zone-marker order is not vertical order.** A theme decides where each
+  `SITE_JSON` zone sits in its layout, and can nest one inside another. The
+  Slate Broadsheet nests the whole stories zone inside the hero's `.rail`,
+  which reads as a front page at desktop and stacks into a ~1,750px block
+  ahead of the portfolio on phones: at 390px the products started at y=3015
+  under slate against y=1737 under Phosphor Blueprint. Measure vertical
+  position in a browser at 390px, per theme, before assuming marker order is
+  layout order. (The fix there was capping the rail to a two-note teaser
+  under 960px; moving the marker pulled the products into the hero.)
+- **Only four hero chips ever render.** `render_chips` slices to `[:4]`, so a
+  fifth chip in `site.json`'s `hero` block has never shown, and nothing warns.
+- **`site.json` and `data/plugin-versions.json` have a reader outside this
+  repo.** The page-pane Claude Code mod (in Este's `~/.claude-personal/mods/`)
+  reads both from raw GitHub `main`: `products[]`'s `id`, `title`, `tagline`,
+  `description`, `status`, `tags[].label`, `meta`, the link from
+  `productPage` then `liveUrl` then `storeUrl`, `banner` (else
+  `assets/brand/plugins/<id>-banner-1280x640.png`), and the versions file as
+  `{ id: "vX.Y.Z" }`. Renaming any of those breaks it with no signal here.
+
 <!-- gitnexus:start -->
 
 ## GitNexus index
