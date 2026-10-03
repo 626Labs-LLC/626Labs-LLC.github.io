@@ -708,6 +708,12 @@
     }
     .product-sigil { display: inline-flex; color: var(--sb-ink-3); }
     .product-sigil svg { width: 16px; height: 16px; }
+    /* The flagship head's lead: sigil beside the tags and the category line.
+       These were inline styles render-hub emitted until 2026-10-03; a class
+       lets a theme restyle them without fighting an inline declaration. */
+    .product-head-lead { display: flex; align-items: center; gap: 16px; }
+    .product-head-lead .product-tags { margin-bottom: 4px; }
+    .product-category { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); letter-spacing: .08em; }
     .product-tags { display: flex; flex-wrap: wrap; align-items: baseline; }
     .tag {
       font-family: var(--sb-mono);
@@ -1966,15 +1972,15 @@
       <article class="product flagship">
         <a class="product-cover" href="plugins/" aria-label="Open The Vibe Plugin Family"></a>
         <div class="product-head">
-          <div style="display:flex;align-items:center;gap:16px">
+          <div class="product-head-lead">
             <div class="product-sigil">
               <svg class="ic-lg ic" viewBox="0 0 24 24"><path d="M5 19l6-8 4 3 4-9"/><path d="M5 19h.01M11 11h.01M15 14h.01M19 5h.01"/></svg>
             </div>
             <div>
-              <div class="product-tags" style="margin-bottom:4px">
+              <div class="product-tags">
                 <span class="tag cyan">Claude Code</span><span class="tag magenta">plugin family</span><span class="tag cyan">self-evolving</span><span class="tag live">Live</span>
               </div>
-              <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-muted);letter-spacing:.08em">SPEC-DRIVEN · SELF-EVOLVING · ONE PLAYBOOK</div>
+              <div class="product-category">SPEC-DRIVEN · SELF-EVOLVING · ONE PLAYBOOK</div>
             </div>
           </div>
           <a class="product-link" href="plugins/">Meet the family <svg class="ic arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></a>

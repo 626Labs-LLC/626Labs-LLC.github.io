@@ -669,6 +669,12 @@
       box-shadow: 0 0 24px rgba(23,212,250,.4);
       border-color: transparent;
     }
+    /* The flagship head's lead: sigil beside the tags and the category line.
+       These were inline styles render-hub emitted until 2026-10-03; a class
+       lets a theme restyle them without fighting an inline declaration. */
+    .product-head-lead { display: flex; align-items: center; gap: 16px; }
+    .product-head-lead .product-tags { margin-bottom: 4px; }
+    .product-category { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); letter-spacing: .08em; }
     .product-tags {
       display: flex;
       gap: 6px;
