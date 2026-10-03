@@ -416,6 +416,80 @@ def test_generator_args_parse_theme_and_out():
     assert rt.parse_args([]) == (None, None, [])
 
 
+# ─── the per-plugin rasters (export-plugin-icons.py) ─────────────────────
+@pytest.fixture(scope="module")
+def epi():
+    return _load("export-plugin-icons.py", "export_plugin_icons_for_tests")
+
+
+def test_plugin_transparent_icon_is_theme_invariant(epi, tmp_path, monkeypatch):
+    """The glyph-only icon carries no field, so it carries no theme: the
+    builder takes no raster (structural), and a full build under two
+    different themes writes the same icon bytes. The banners, which do
+    carry the field, must differ."""
+    import inspect
+    assert "look" not in inspect.signature(epi.build_icon).parameters
+    assert "raster" not in inspect.signature(epi.build_icon).parameters
+    monkeypatch.setattr(epi, "PLUGINS", epi.PLUGINS[:1])
+    pid = epi.PLUGINS[0]["id"]
+    for slug in ("slate-broadsheet", "cyan-fade"):
+        d = tmp_path / slug
+        epi.build_all(rt.load(slug), out=d, mark_out=d)
+    a, b = tmp_path / "slate-broadsheet", tmp_path / "cyan-fade"
+    for name in (f"{pid}-icon-transparent-512.png", "vibe-plugins-mark-transparent-512.png"):
+        assert _sha(a / name) == _sha(b / name), name
+    for name in (f"{pid}-banner-1280x640.png", f"{pid}-square-1024.png"):
+        assert _sha(a / name) != _sha(b / name), name
+
+
+def test_plugin_banner_and_square_field_follow_the_theme(epi, tmp_path):
+    """A texture:none, glow:false theme paints its field flat: the corners
+    of the banner and the square are exactly the field color."""
+    flat = _raster(field="#123456", texture="none", glow=False, colorBar=False)
+    look = epi.Look(flat)
+    assert not look.legacy
+    plugin = epi.PLUGINS[0]
+    epi.build_banner(plugin, tmp_path / "b.png", size=(640, 320), look=look)
+    epi.build_square(plugin, tmp_path / "s.png", look=look)
+    b = Image.open(tmp_path / "b.png").convert("RGB")
+    s = Image.open(tmp_path / "s.png").convert("RGB")
+    for img in (b, s):
+        W, H = img.size
+        assert img.getpixel((0, 0)) == (0x12, 0x34, 0x56)
+        assert img.getpixel((0, H - 1)) == (0x12, 0x34, 0x56)
+    # A themed field draws the name in the theme's ink, never the accent.
+    assert look.name(plugin) == flat.ink
+
+
+def test_plugin_color_bar_only_when_the_theme_carries_one(epi, tmp_path):
+    plugin = epi.PLUGINS[0]
+    for bar in (True, False):
+        r = _raster(texture="none", glow=False, colorBar=bar)
+        epi.build_banner(plugin, tmp_path / f"b{bar}.png", size=(640, 320), look=epi.Look(r))
+        arr = np.asarray(Image.open(tmp_path / f"b{bar}.png").convert("RGB"))
+        # The paper swatch (the ink, exact) only appears with the bar.
+        bottom = arr[int(320 * 0.75):]
+        has_paper = (bottom.reshape(-1, 3) == np.array(r.ink)).all(axis=1).any()
+        assert has_paper == bar
+
+
+def test_plugin_rasters_keep_the_original_navy_under_phosphor_blueprint(epi, tmp_path):
+    """PB, and a theme with no block, draw the plugin set's ORIGINAL look
+    (flat navy, plugin-pair glows, accent-colored name) and agree by digest.
+    The old-script-vs-new-script byte identity was proven by hand (57/57
+    files); this holds the two ways of asking for PB to the same bytes."""
+    pb = epi.Look(rt.load("phosphor-blueprint"))
+    bare = epi.Look(rt.from_block("bare", rt.RASTER_DEFAULTS))
+    assert pb.legacy and bare.legacy and pb.field is epi.LEGACY_FIELD
+    assert epi.LEGACY_FIELD.field == epi.NAVY and epi.LEGACY_FIELD.texture == "none"
+    plugin = epi.PLUGINS[0]
+    assert pb.name(plugin) == plugin["primary"]
+    for look, d in ((pb, "pb"), (bare, "bare")):
+        (tmp_path / d).mkdir()
+        epi.build_banner(plugin, tmp_path / d / "b.png", size=(640, 320), look=look)
+    assert _sha(tmp_path / "pb" / "b.png") == _sha(tmp_path / "bare" / "b.png")
+
+
 # ─── the rotation ────────────────────────────────────────────────────────
 def test_rotation_regenerates_the_rasters_after_the_render_and_before_the_gates():
     wf = yaml.safe_load((ROOT / ".github" / "workflows" / "rotate-theme.yml").read_text(encoding="utf-8"))
@@ -426,7 +500,8 @@ def test_rotation_regenerates_the_rasters_after_the_render_and_before_the_gates(
     first_gate = next(i for i, n in enumerate(names) if n.startswith("Gate:"))
     assert render < regen < first_gate, names
     run = steps[regen]["run"]
-    for script in ("export-brand.py", "export-medium-header.py", "export-vibe-plugins-logo.py", "build-og-cards.py"):
+    for script in ("export-brand.py", "export-medium-header.py", "export-vibe-plugins-logo.py",
+                   "export-plugin-icons.py", "build-og-cards.py"):
         assert f"scripts/{script}" in run, script
     assert run.index("export-brand.py") < run.index("export-medium-header.py")
     assert "set -euo pipefail" in run

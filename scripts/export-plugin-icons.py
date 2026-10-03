@@ -18,21 +18,47 @@ Plugins:
   vibe-wrap          → breadcrumb trail into a wrapped summary card
 
 Outputs (under assets/brand/plugins/):
-  <id>-banner-1500x500.png — repo README banner
-  <id>-square-1024.png     — repo avatar / marketplace tile
+  <id>-banner-1500x500.png        — repo README banner
+  <id>-banner-1280x640.png        — GitHub social preview; also each plugin
+                                    page's og:image (content/plugin-pages.json)
+  <id>-square-1024.png            — repo avatar / marketplace tile
+  <id>-icon-transparent-512.png   — glyph only, no field
+plus assets/brand/vibe-plugins-mark-transparent-512.png (the family mark).
+
+The banners and squares follow the theme, the way export-brand.py's do: the
+field, texture, glows, text inks and color bar come from the ACTIVE theme's
+`raster` block (scripts/raster_theme.py), so the rotation regenerates them
+on the 1st. The mark is the brand, the field is the month: the glyphs and
+their cyan/magenta pair never change, and the glyph-only transparent icons
+carry no field, so they are byte-identical across themes.
+
+Phosphor Blueprint (and any theme with no block, which draws PB's) keeps
+this set's ORIGINAL treatment byte for byte: the navy field with no grid,
+glows in the plugin's own pair, the name in its primary accent. That look
+predates the raster block and is what the plugin set shipped in under PB,
+so it is the PB path here (LEGACY_FIELD), not PB's black drafting grid.
+
+Usage:
+  python scripts/export-plugin-icons.py                            # active theme, into the tree
+  python scripts/export-plugin-icons.py --theme <slug> --out <dir> # a queued theme, elsewhere
 """
+import sys
 from pathlib import Path
 import math
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageChops
 
 ROOT = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR = ROOT / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+import raster_theme as rt  # noqa: E402 — sibling module in scripts/
+
 ASSETS = ROOT / "assets"
 OUT = ASSETS / "brand" / "plugins"
+MARK_OUT = ASSETS / "brand"
 FONTS = ROOT / "fonts"
 CLAUDE_SPARKLE_SRC = ASSETS / "anthropic" / "claude-sparkle.png"
-
-OUT.mkdir(parents=True, exist_ok=True)
 
 CYAN = (23, 212, 250)
 CYAN_DIM = (15, 168, 201)
@@ -42,6 +68,37 @@ NAVY = (15, 31, 49)
 INK = (231, 237, 245)
 DIM = (138, 153, 174)
 DIM2 = (94, 107, 127)
+
+# The plugin set's original field, drawn under Phosphor Blueprint (and any
+# block-less theme): flat navy, no texture, the plugin's glows. Expressed as
+# a Raster so the PB path and the themed path share rt.paint_field, which
+# draws flat color then each glow in order, exactly what this script did.
+LEGACY_FIELD = rt.from_block("plugins-legacy", {
+    "field": "#0F1F31", "ink": "#E7EDF5", "dim": "#8A99AE",
+    "texture": "none", "glow": True, "colorBar": False,
+})
+
+
+class Look:
+    """Everything a banner or square paints that is not the glyph: the field
+    raster plus the text and card inks. PB keeps the original inks (name in
+    the plugin's primary accent, DIM tagline, DIM2 lockup); a themed field
+    takes the theme's ink for the name and its dim for the small type, so a
+    magenta name never sits on a ground it can't be read on."""
+
+    def __init__(self, raster: rt.Raster):
+        self.raster = raster
+        self.legacy = raster.is_default
+        self.field = LEGACY_FIELD if self.legacy else raster
+        self.tag = DIM if self.legacy else raster.dim
+        self.sub = DIM2 if self.legacy else raster.dim
+        self.card_outline = DIM2 + (180,) if self.legacy else raster.dim + (110,)
+
+    def name(self, plugin):
+        return plugin["primary"] if self.legacy else self.raster.ink
+
+    def paint(self, W, H, glows):
+        return rt.paint_field(W, H, self.field, glows=glows)
 
 # ──────────────────────────────────────────────────────────────────
 # Backdrop primitives (shared with export-brand.py / -medium-header)
@@ -628,7 +685,7 @@ def load_claude_sparkle(target_height):
     return spk.resize((int(spk.width * scale), target_height), Image.LANCZOS)
 
 
-def build_banner(plugin, out_path, size=(1500, 500)):
+def build_banner(plugin, out_path, size=(1500, 500), look=None):
     """Render a plugin banner at the requested size.
 
     All layout values are derived from H (banner height) so the same
@@ -637,10 +694,13 @@ def build_banner(plugin, out_path, size=(1500, 500)):
     GitHub's social-preview spec asks for a 40pt safe border around
     the important content — the percentage offsets below honor that.
     """
+    look = look or Look(rt.from_block("default", rt.RASTER_DEFAULTS))
     W, H = size
-    canvas = Image.new("RGBA", (W, H), NAVY + (255,))
-    canvas.alpha_composite(radial_glow(W, H, 0.16, 0.28, plugin["primary"], 70, 0.50))
-    canvas.alpha_composite(radial_glow(W, H, 0.86, 0.78, plugin["secondary"], 60, 0.55))
+    # The theme's field; the glows (in the plugin's own pair) only when it glows.
+    canvas = look.paint(W, H, glows=(
+        (0.16, 0.28, plugin["primary"], 70, 0.50),
+        (0.86, 0.78, plugin["secondary"], 60, 0.55),
+    ))
 
     # Glyph card on the left — square tile sized to ~56% of banner height.
     card_side = int(H * 0.56)
@@ -650,7 +710,7 @@ def build_banner(plugin, out_path, size=(1500, 500)):
     cdraw = ImageDraw.Draw(card_layer)
     cdraw.rounded_rectangle([0, 0, card_side - 1, card_side - 1],
                             radius=max(8, int(H * 0.028)),
-                            outline=DIM2 + (180,), width=1,
+                            outline=look.card_outline, width=1,
                             fill=(0, 0, 0, 60))
     # Render glyph centered in the card — glyph is ~71% of card_side.
     glyph_size = int(card_side * 0.71)
@@ -694,30 +754,38 @@ def build_banner(plugin, out_path, size=(1500, 500)):
     gap = max(10, int(H * 0.036))
     block_h = name_h + gap + tag_h
     block_top = (H - block_h) // 2
-    draw.text((text_x, block_top), spaced, font=name_font, fill=plugin["primary"] + (255,))
-    draw.text((text_x, block_top + name_h + gap), tagline, font=tag_font, fill=DIM + (255,))
+    draw.text((text_x, block_top), spaced, font=name_font, fill=look.name(plugin) + (255,))
+    draw.text((text_x, block_top + name_h + gap), tagline, font=tag_font, fill=look.tag + (255,))
 
     # 626 Labs lockup top-right (tiny)
     sub_font = ImageFont.truetype(str(FONTS / "JetBrainsMono-Variable.ttf"), max(11, int(H * 0.026)))
     lockup = "626 LABS  ·  for Claude Code"
     lk_bbox = draw.textbbox((0, 0), lockup, font=sub_font)
     lk_w = lk_bbox[2] - lk_bbox[0]
-    draw.text((W - lk_w - int(W * 0.04), int(H * 0.08)), lockup, font=sub_font, fill=DIM2 + (255,))
+    draw.text((W - lk_w - int(W * 0.04), int(H * 0.08)), lockup, font=sub_font, fill=look.sub + (255,))
 
     # Claude sparkle anchored bottom-right corner — small, attribution-only
     spk = load_claude_sparkle(sparkle_target_h)
     if spk is not None:
         canvas.alpha_composite(spk, dest=(W - spk.width - int(W * 0.04), H - spk.height - int(H * 0.10)))
 
+    # The printer's color bar, bottom-left under the glyph card (the sparkle
+    # holds bottom-right), when the theme carries one.
+    if look.field.color_bar:
+        bar = rt.color_bar(look.field, rt.color_bar_size(H))
+        canvas.alpha_composite(bar, dest=(card_x, H - int(H * 0.07) - bar.height))
+
     canvas.convert("RGB").save(out_path, "PNG", optimize=True)
     print(f"  banner  {plugin['id']:24s}  {size[0]}x{size[1]}  {out_path}")
 
 
-def build_square(plugin, out_path):
+def build_square(plugin, out_path, look=None):
+    look = look or Look(rt.from_block("default", rt.RASTER_DEFAULTS))
     W = H = 1024
-    canvas = Image.new("RGBA", (W, H), NAVY + (255,))
-    canvas.alpha_composite(radial_glow(W, H, 0.18, 0.22, plugin["primary"], 96, 0.60))
-    canvas.alpha_composite(radial_glow(W, H, 0.82, 0.82, plugin["secondary"], 84, 0.60))
+    canvas = look.paint(W, H, glows=(
+        (0.18, 0.22, plugin["primary"], 96, 0.60),
+        (0.82, 0.82, plugin["secondary"], 84, 0.60),
+    ))
 
     # Glyph centered upper-third
     glyph_size = int(H * 0.42)
@@ -754,18 +822,21 @@ def build_square(plugin, out_path):
     tag_h = tag_bbox[3] - tag_bbox[1]
 
     name_y = int(H * 0.66)
-    draw.text(((W - name_w) // 2, name_y), spaced, font=name_font, fill=plugin["primary"] + (255,))
-    draw.text(((W - tag_w) // 2, name_y + name_h + 18), tagline, font=tag_font, fill=DIM + (255,))
+    draw.text(((W - name_w) // 2, name_y), spaced, font=name_font, fill=look.name(plugin) + (255,))
+    draw.text(((W - tag_w) // 2, name_y + name_h + 18), tagline, font=tag_font, fill=look.tag + (255,))
 
     sub = "626 LABS  ·  FOR CLAUDE CODE"
     sub_bbox = draw.textbbox((0, 0), sub, font=sub_font)
     sub_w = sub_bbox[2] - sub_bbox[0]
-    draw.text(((W - sub_w) // 2, int(H * 0.92)), sub, font=sub_font, fill=DIM2 + (255,))
+    draw.text(((W - sub_w) // 2, int(H * 0.92)), sub, font=sub_font, fill=look.sub + (255,))
 
     # Tiny Claude sparkle bottom-right corner
     spk = load_claude_sparkle(56)
     if spk is not None:
         canvas.alpha_composite(spk, dest=(W - spk.width - int(W * 0.05), int(H * 0.05)))
+
+    # The printer's color bar, bottom-right (the sparkle holds top-right).
+    rt.place_color_bar(canvas, look.field, right=W - int(W * 0.05), bottom=H - int(H * 0.05))
 
     canvas.convert("RGB").save(out_path, "PNG", optimize=True)
     print(f"  square  {plugin['id']:24s}  {out_path}")
@@ -783,21 +854,38 @@ def build_icon(plugin, out_path, size=512):
     print(f"  icon    {plugin['id']:24s}  {out_path}")
 
 
-def main():
-    print(f"Building plugin icons -> {OUT}")
+def build_all(raster: rt.Raster, out: Path = OUT, mark_out: Path = MARK_OUT) -> None:
+    out.mkdir(parents=True, exist_ok=True)
+    mark_out.mkdir(parents=True, exist_ok=True)
+    look = Look(raster)
+    print(f"Building plugin icons -> {out}  ({raster.slug}"
+          f"{', original navy field' if look.legacy else ''})")
     for p in PLUGINS:
         # 3:1 — Twitter classic / OG / generic README banner
-        build_banner(p, OUT / f"{p['id']}-banner-1500x500.png", size=(1500, 500))
+        build_banner(p, out / f"{p['id']}-banner-1500x500.png", size=(1500, 500), look=look)
         # 2:1 — GitHub social preview (Settings → Social preview, 1280x640 "best display")
-        build_banner(p, OUT / f"{p['id']}-banner-1280x640.png", size=(1280, 640))
+        build_banner(p, out / f"{p['id']}-banner-1280x640.png", size=(1280, 640), look=look)
         # Square — repo avatar, marketplace tile
-        build_square(p, OUT / f"{p['id']}-square-1024.png")
-        # Glyph-only transparent icon — nav marks, favicons
-        build_icon(p, OUT / f"{p['id']}-icon-transparent-512.png")
+        build_square(p, out / f"{p['id']}-square-1024.png", look=look)
+        # Glyph-only transparent icon — nav marks, favicons. Field-free: no theme.
+        build_icon(p, out / f"{p['id']}-icon-transparent-512.png")
     # Family mark — the hero logo for the /plugins/ index (lives in brand/)
     build_icon({"id": "vibe-plugins-mark", "glyph": "family", "primary": CYAN, "secondary": MAGENTA},
-               ASSETS / "brand" / "vibe-plugins-mark-transparent-512.png")
+               mark_out / "vibe-plugins-mark-transparent-512.png")
+
+
+def main(argv: list[str]) -> int:
+    slug, out_dir, rest = rt.parse_args(argv)
+    if rest:
+        print(f"usage: export-plugin-icons.py [--theme <slug>] [--out <dir>]  (unknown: {rest})", file=sys.stderr)
+        return 2
+    raster = rt.load(slug)
+    if out_dir is None:
+        build_all(raster)
+    else:
+        build_all(raster, out=out_dir, mark_out=out_dir)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main(sys.argv[1:]))
