@@ -20,6 +20,7 @@
  */
 
 import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
+import { SERIES_PATH, mergeSeries, serializeSeries } from "./store-series.mjs";
 
 const APPS = {
   "9NMJCS390KWB": "RoRoRo",
@@ -297,8 +298,31 @@ const main = async () => {
    }
   }
 
-  if (errors.length) snapshot.errors = errors;
   mkdirSync("data", { recursive: true });
+
+  // Accumulate installs/acquisitions into the long-running series BEFORE the
+  // window file is overwritten. The window slides and forgets; the series does
+  // not. Merge rules live in store-series.mjs. A missing file starts fresh; an
+  // unreadable one is left alone (overwriting it would erase the history the
+  // file exists to keep) and the window file still gets written.
+  let prevSeries = null;
+  let seriesOk = true;
+  try {
+    prevSeries = JSON.parse(readFileSync(SERIES_PATH, "utf8"));
+  } catch (e) {
+    if (e.code !== "ENOENT") {
+      seriesOk = false;
+      errors.push(`series: ${SERIES_PATH} unreadable (${e.message}); not rewritten`);
+      console.error(`series: ${SERIES_PATH} unreadable, leaving it untouched`);
+    }
+  }
+  if (seriesOk) {
+    const series = mergeSeries(prevSeries, snapshot.apps, snapshot.fetchedAt.slice(0, 10), snapshot.fetchedAt);
+    writeFileSync(SERIES_PATH, serializeSeries(series));
+    console.log(`wrote ${SERIES_PATH} (${Object.keys(series.apps).length} apps)`);
+  }
+  if (errors.length) snapshot.errors = errors;
+
   writeFileSync("data/store-analytics.json", JSON.stringify(snapshot, null, 1) + "\n");
   console.log(`wrote data/store-analytics.json (${Object.keys(snapshot.apps).length}/${Object.keys(APPS).length} apps${errors.length ? ", " + errors.length + " soft errors" : ""})`);
   // Exit non-zero only if NOTHING came back, so CI notices a total failure but tolerates
