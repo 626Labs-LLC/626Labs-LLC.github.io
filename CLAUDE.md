@@ -315,6 +315,17 @@ The agent equivalent of the admin dashboard. `facts`/`get`/`doctor`/`render`/`op
 to inspect; `set-status` to mutate with validate-before-commit guardrails (the
 edit auto-reverts if it would fail the doctor). See `AGENTS.md`.
 
+Field Notes: `story new <slug>` scaffolds a draft; `story publish <slug>` flips
+it live AND maps its page (`editorial/<slug>/index.html` → `reading`) in
+`content/page-archetypes.json`, as a text edit that keeps the file's CRLF.
+Publish that way, never by hand-flipping `draft:`: an unmapped page fails
+`archetypes.validate()`, and `rebuild-hub.yml` re-runs on the map.
+
+Analytics: every public page carries the GoatCounter snippet, and every
+archetype's chrome profile in `theme-doctor.py` (`ARCHETYPE_CHROME`) requires
+it. A new hand-authored page copies the snippet from a sibling;
+`tests/test_analytics.py` fails on any public page without it.
+
 ### Content health — `scripts/site-doctor.py`
 
 The checkup + CI gate. `--report` for an on-demand health printout (derived
