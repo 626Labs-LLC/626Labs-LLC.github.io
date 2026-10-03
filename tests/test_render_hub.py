@@ -505,7 +505,7 @@ CONVERTED_PAGES = (
     render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML,
     render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML,
     render_hub.RORORO_HTML, render_hub.MODLAUNCHERGAMES_HTML,
-    render_hub.ETSYMCP_HTML,
+    render_hub.ETSYMCP_HTML, render_hub.RTCLICKPNG_HTML,
     # October needs, piece 2: the three pages that never took a theme.
     render_hub.NOTFOUND_HTML, render_hub.BACONTRAIL_HTML, render_hub.SANDUHR_HTML,
 )
@@ -695,6 +695,7 @@ PRODUCT_TOKEN_PAGES = (
     render_hub.ROROROPLUGINS_HTML,
     render_hub.RORORO_HTML,
     render_hub.MODLAUNCHERGAMES_HTML,
+    render_hub.RTCLICKPNG_HTML,
     # October needs, piece 2: the two product pages that never took a theme.
     render_hub.BACONTRAIL_HTML,
     render_hub.SANDUHR_HTML,

@@ -63,6 +63,7 @@ ROROROPLUGINS_HTML = ROOT / "rororo-plugins.html"
 RORORO_HTML = ROOT / "rororo.html"
 MODLAUNCHERGAMES_HTML = ROOT / "mod-launcher-games.html"
 ETSYMCP_HTML = ROOT / "etsy-mcp.html"
+RTCLICKPNG_HTML = ROOT / "rtclickpng.html"
 # The three pages that never took a theme (October needs, piece 2): each
 # carried a private --pb-* block and painted its own field, grid, scanlines
 # and bloom, so under any future theme it stayed Phosphor Blueprint. Two
@@ -907,9 +908,9 @@ def render_themes_gallery(reg: dict, root: Path = ROOT) -> str:
 # tokens.css's `header.hero h1` never matched `.page-hero` either, so
 # themes.html's h1 currently has no bloom at all; and press.html's
 # `.page-lead` is `max-width: 60ch` where themes.html's own copy is
-# `62ch`). All five bespoke product pages — conundrum.html,
+# `62ch`). All six bespoke product pages — conundrum.html,
 # rororo-plugins.html, rororo.html, mod-launcher-games.html,
-# etsy-mcp.html — link
+# etsy-mcp.html, rtclickpng.html — link
 # archetypes/product-tokens.css, the TOKEN half of the product
 # archetype, where THEIR private :root copies went. Deliberately not
 # archetypes/product.css: that file is the element dress
@@ -938,6 +939,7 @@ THEME_CSS_HREFS = {
     RORORO_HTML: "archetypes/product-tokens.css",
     MODLAUNCHERGAMES_HTML: "archetypes/product-tokens.css",
     ETSYMCP_HTML: "archetypes/product-tokens.css",
+    RTCLICKPNG_HTML: "archetypes/product-tokens.css",
     # October needs, piece 2. bacon-trail/ and sanduhr/ are product pages
     # (content/page-archetypes.json) and take the product TOKEN half for the
     # same reason the five above do. 404.html is the utility archetype but
@@ -969,7 +971,7 @@ THEME_CSS_MULTI_ZONE_PAGES = (THEMES_HTML, CONUNDRUM_HTML)
 #     == set(THEME_CSS_ONLY_PAGES)
 THEME_CSS_ONLY_PAGES = (
     PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML, ROROROPLUGINS_HTML,
-    RORORO_HTML, MODLAUNCHERGAMES_HTML, ETSYMCP_HTML,
+    RORORO_HTML, MODLAUNCHERGAMES_HTML, ETSYMCP_HTML, RTCLICKPNG_HTML,
     BACONTRAIL_HTML, SANDUHR_HTML, NOTFOUND_HTML, YEARONE_HTML,
 )
 
@@ -2502,7 +2504,8 @@ def main(argv: list[str]) -> int:
 
     # press.html / privacy.html / thesis.html / workflow.html /
     # rororo-plugins.html / rororo.html / mod-launcher-games.html /
-    # etsy-mcp.html / bacon-trail/index.html / sanduhr/index.html / 404.html
+    # etsy-mcp.html / rtclickpng.html / bacon-trail/index.html /
+    # sanduhr/index.html / 404.html
     # — no other zones, just the "theme-css" link (see THEME_CSS_HREFS above).
     # conundrum.html has the same link but is rendered in its own block
     # above, beside its gallery zones.

@@ -232,7 +232,7 @@ BROWSER_CHECK_LIVE_PAGES = (
     "mod-launcher-games.html", "thesis.html", "workflow.html",
     "press.html", "privacy.html", "etsy-mcp.html",
     "404.html", "bacon-trail/index.html", "sanduhr/index.html",
-    "year-in-review.html",
+    "year-in-review.html", "rtclickpng.html",
 )
 
 

@@ -1006,7 +1006,7 @@ def test_browser_checks_open_every_hand_authored_product_page():
         "mod-launcher-games.html", "thesis.html", "workflow.html",
         "press.html", "privacy.html", "etsy-mcp.html",
         "404.html", "bacon-trail/index.html", "sanduhr/index.html",
-        "year-in-review.html",
+        "year-in-review.html", "rtclickpng.html",
     )
     previewable = _render_hub_previewable_pages()
     for name in td.BROWSER_CHECK_LIVE_PAGES:

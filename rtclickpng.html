@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Right Click PNG · Convert to PNG from the right-click menu · 626 Labs</title>
+<meta name="description" content="Right Click PNG adds Convert to PNG and Copy as PNG to the Windows 11 File Explorer right-click menu. WebP, AVIF, HEIC and more, decoded locally. No network calls, no telemetry, original never modified." />
+<meta property="og:title" content="Right Click PNG: the online converter detour, replaced with a right-click" />
+<meta property="og:description" content="Convert to PNG and Copy as PNG in the File Explorer context menu. Offline by design. Free on the Microsoft Store, MIT on GitHub." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://626labs.dev/rtclickpng.html" />
+<meta property="og:image" content="https://626labs.dev/assets/thumb-rtclickpng.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="favicon-626.png" />
+
+<!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/slate-broadsheet/archetypes/product-tokens.css">
+<!-- SITE_JSON:theme-css:end -->
+<link rel="stylesheet" href="/repo-meter/meter.css" />
+<script src="/repo-meter/meter.js" defer></script>
+
+<style>
+  @import url('/fonts/fonts.css');
+
+  /* ---------- Theme tokens ----------
+     Every color, border, radius and face on this page is a theme custom
+     property from the ACTIVE theme's archetypes/product-tokens.css, linked
+     above and repointed by scripts/render-hub.py on every render. No color
+     literals live here, so the monthly rotation recolors the whole page.
+     Like mod-launcher-games.html, it links the token half, not
+     archetypes/product.css: the layout below is this page's own. */
+
+  html, body { margin:0; padding:0; min-height:100vh; }
+  body{
+    background: var(--bg-0);
+    color: var(--fg-1);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *{ box-sizing:border-box; }
+  a{ color: var(--cyan); }
+  a:hover{ color: var(--cyan-pale); }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position: sticky; top: 0; z-index: 70;
+    background: var(--bg-0);
+    border-bottom: 1px solid var(--border-2);
+  }
+  .topnav-inner{
+    max-width: 1180px; margin: 0 auto; padding: 14px 32px;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
+  }
+  .brand{
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--fg-1); text-decoration: none;
+    text-transform: uppercase; font-weight: 600; letter-spacing: .18em;
+  }
+  .brand .mark{ width: 20px; height: 20px; border-radius: var(--r-xs); display: block; }
+  .topnav .links{ display: flex; gap: 22px; color: var(--fg-3); text-transform: uppercase; align-items: center; }
+  .topnav .links a{ color: var(--fg-3); text-decoration: none; transition: color var(--dur-fast); }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
+
+  /* ---------- Layout ---------- */
+  .wrap{ position: relative; max-width: 1180px; margin: 0 auto; padding: 56px 32px 72px; }
+
+  .eyebrow{
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--fg-muted); margin: 0 0 14px;
+  }
+  .hero h1{
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(34px, 5vw, 52px); line-height: 1.05; margin: 0 0 16px;
+  }
+  .hero h1 em{ font-style: normal; color: var(--cyan); }
+  .hero p.dek{ max-width: 720px; color: var(--fg-2); font-size: 17px; line-height: 1.6; margin: 0 0 12px; }
+  .hero p.sub{ max-width: 720px; color: var(--fg-3); font-size: 15px; line-height: 1.6; margin: 0; }
+
+  .specs{
+    margin: 26px 0 0; padding: 0; list-style: none;
+    display: flex; flex-wrap: wrap; gap: 8px 22px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .specs b{ color: var(--fg-1); font-weight: 500; }
+
+  /* ---------- Get-it strip ---------- */
+  .get-strip{
+    margin: 30px 0 0;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px;
+    background: var(--bg-1);
+    border: 1px solid var(--border-1); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke);
+    padding: 16px 20px;
+  }
+  .get-strip .gs-key{
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .get-strip .spacer{ flex: 1; }
+  .btn{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em;
+    padding: 9px 16px; border-radius: var(--r-sm); text-decoration: none; cursor: pointer;
+    border: 1px solid var(--border-2); color: var(--fg-2); background: transparent;
+    transition: border-color var(--dur-fast), color var(--dur-fast);
+  }
+  .btn:hover{ border-color: var(--border-accent); color: var(--fg-1); }
+  .btn.primary{
+    border: 1px solid var(--cyan); color: var(--ink-950); font-weight: 600;
+    background: var(--cyan);
+  }
+  .btn.primary:hover{ background: var(--cyan-pale); border-color: var(--cyan-pale); color: var(--ink-950); }
+  .btn svg{ flex: none; }
+
+  /* ---------- Section headers ---------- */
+  .section-hd{ margin: 60px 0 18px; display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+  .section-hd h2{ font-family: var(--font-display); font-size: 26px; font-weight: 600; margin: 0; }
+  .section-hd .r{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-muted); }
+  .section-hd p{ margin: 8px 0 0; color: var(--fg-3); font-size: 14px; line-height: 1.6; max-width: 720px; }
+
+  .prose{ max-width: 720px; color: var(--fg-2); font-size: 16px; line-height: 1.7; }
+  .prose p{ margin: 0 0 14px; }
+  .prose code, .feature code, .slot-cap code, .trust-item code{
+    font-family: var(--font-mono); font-size: .9em; color: var(--fg-1);
+  }
+  .pullquote{
+    margin: 22px 0 0; padding: 4px 0 4px 18px; max-width: 720px;
+    border-left: 2px solid var(--magenta);
+    font-family: var(--font-display); font-size: 20px; line-height: 1.4; color: var(--fg-1);
+  }
+
+  /* ---------- Feature grid ---------- */
+  .feature-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+  .feature{
+    background: var(--bg-1);
+    border: 1px solid var(--border-1); border-radius: var(--r-md);
+    box-shadow: var(--inner-stroke);
+    padding: 18px 18px 16px;
+  }
+  .feature h3{ font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 0 0 8px; }
+  .feature p{ margin: 0; color: var(--fg-3); font-size: 14px; line-height: 1.6; }
+  .feature .tag{
+    display: inline-block; margin: 0 0 10px;
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--magenta); border: 1px solid var(--magenta); border-radius: var(--r-xs); padding: 1px 6px;
+  }
+
+  /* ---------- Screenshot slots ----------
+     Staged for captures that don't exist yet (see the plan's five shots).
+     Each slot is a fixed-aspect, quiet bordered frame in theme tokens, never
+     an <img>, so an empty slot reads as a reserved place and not a broken
+     image. When a capture lands, put an <img> inside .slot-frame. */
+  .shots{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .shot{ margin: 0; }
+  .shot.lead{ grid-column: 1 / -1; }
+  .slot-frame{
+    position: relative; aspect-ratio: 16 / 10; width: 100%;
+    background: var(--bg-1);
+    border: 1px dashed var(--border-2); border-radius: var(--r-md);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .shot.lead .slot-frame{ aspect-ratio: 16 / 9; }
+  .slot-frame img{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
+  .slot-num{
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .slot-cap{ margin: 10px 2px 0; font-size: 14px; line-height: 1.55; color: var(--fg-3); }
+  .slot-cap b{ color: var(--fg-1); font-weight: 600; font-family: var(--font-display); }
+
+  /* ---------- How it's built ---------- */
+  .stats{
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;
+    margin: 0 0 26px;
+  }
+  .stat{
+    border-top: 2px solid var(--cyan);
+    padding: 12px 2px 0;
+  }
+  .stat .n{ font-family: var(--font-display); font-size: 30px; font-weight: 700; line-height: 1; }
+  .stat .l{
+    margin-top: 6px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .pieces{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0 0 26px; }
+
+  /* ---------- Trust ---------- */
+  .trust-box{
+    background: var(--bg-1);
+    border: 1px solid var(--border-1); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke);
+    padding: 8px 22px;
+  }
+  .trust-item{
+    display: grid; grid-template-columns: 220px 1fr; gap: 6px 22px;
+    padding: 14px 0; border-bottom: 1px solid var(--border-1);
+  }
+  .trust-item:last-child{ border-bottom: none; }
+  .trust-item .k{ font-family: var(--font-display); font-size: 15px; font-weight: 600; }
+  .trust-item .v{ color: var(--fg-3); font-size: 14px; line-height: 1.6; }
+
+  .footnote{
+    margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border-1);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--fg-muted);
+  }
+  .footnote a{ color: var(--fg-3); text-decoration: none; }
+  .footnote a:hover{ color: var(--cyan); }
+
+  @media (max-width: 760px){
+    .wrap{ padding: 40px 20px 56px; }
+    .topnav-inner{ padding: 12px 20px; }
+    .topnav .links{ gap: 14px; }
+    .topnav .links .hide-sm{ display: none; }
+    .shots{ grid-template-columns: minmax(0, 1fr); }
+    .stats{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pieces{ grid-template-columns: minmax(0, 1fr); }
+    .trust-item{ grid-template-columns: minmax(0, 1fr); }
+    .get-strip .spacer{ display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html"><img class="mark" src="favicon-626.png" alt="" />626 Labs</a>
+    <div class="links">
+      <a class="hide-sm" href="index.html">The lab</a>
+      <a href="https://github.com/estevanhernandez-stack-ed/RTClickPng">Source</a>
+      <a class="cta" href="#get-it">Get it</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ===== Hero ===== -->
+  <div class="hero">
+    <p class="eyebrow">Windows 11 &middot; File Explorer shell extension</p>
+    <h1>Right Click <em>PNG</em></h1>
+    <p class="dek">
+      Convert images to PNG from the right-click menu. No network calls, no detours.
+    </p>
+    <p class="sub">
+      Adds <b>Convert to PNG</b> and <b>Copy as PNG</b> to the File Explorer context menu, so the
+      round-trip through an online converter stops happening.
+    </p>
+    <ul class="specs">
+      <li>Latest <b>v0.1.0</b></li>
+      <li>Windows 11 <b>x64</b></li>
+      <li>License <b>MIT</b></li>
+      <li>Price <b>Free</b></li>
+    </ul>
+  </div>
+
+  <div class="get-strip" id="get-it">
+    <span class="gs-key">Get Right Click PNG</span>
+    <span class="spacer"></span>
+    <a class="btn primary" href="https://apps.microsoft.com/detail/9PKKLK6R5WFL?cid=site-product">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zM12.5 3H21v8.5h-8.5zM3 12.5h8.5V21H3zM12.5 12.5H21V21h-8.5z"/></svg>
+      Get it from Microsoft Store
+    </a>
+    <a class="btn" href="https://github.com/estevanhernandez-stack-ed/RTClickPng">Source on GitHub</a>
+  </div>
+  <div class="repo-meter" data-repo="estevanhernandez-stack-ed/RTClickPng" aria-label="Commit activity for Right Click PNG"></div>
+
+  <!-- ===== The problem ===== -->
+  <div class="section-hd">
+    <h2>The .webp that won't paste</h2>
+  </div>
+  <div class="prose">
+    <p>
+      Some images just don't download and paste. You save a <code>.webp</code> from the web, try to
+      drop it into Teams or Figma, and the app rejects it. You save a <code>.heic</code> from your
+      phone, and your image editor refuses to open it.
+    </p>
+    <p>
+      The workaround is always the same: find an online converter, upload the file, download a PNG,
+      move it to where you actually needed it.
+    </p>
+  </div>
+  <p class="pullquote">Right Click PNG replaces that detour with a right-click.</p>
+
+  <!-- ===== What it does ===== -->
+  <div class="section-hd">
+    <div>
+      <h2>Two verbs where you already are</h2>
+      <p>Right-click any <code>.webp</code>, <code>.avif</code>, <code>.heic</code>, <code>.heif</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.bmp</code>, <code>.tif</code>, <code>.tiff</code> or <code>.gif</code> in File Explorer.</p>
+    </div>
+    <div class="r">No separate app to open</div>
+  </div>
+  <div class="feature-grid">
+    <div class="feature">
+      <h3>Convert to PNG</h3>
+      <p>Saves a PNG next to the original, same base name, new extension.</p>
+    </div>
+    <div class="feature">
+      <h3>Copy as PNG</h3>
+      <p>Sends PNG bytes to the clipboard, ready to paste into Teams, Slack, Discord, Figma, Photoshop, Outlook, Word, PowerPoint, OneNote, Paint or Snipping Tool. Works on a <code>.png</code> too, for the paste without opening the file.</p>
+    </div>
+    <div class="feature">
+      <h3>The whole selection at once</h3>
+      <p>Multi-select files and the right-click action runs against the whole selection in one shot, with a single summary toast when the batch completes.</p>
+    </div>
+    <div class="feature">
+      <h3>Two toggles, one window</h3>
+      <p>A branded settings window with a dark title bar, opened from the Start menu or from the right-click menu itself. Confirm-before-overwrite lives here. Changes apply on the next right-click, no reboot.</p>
+    </div>
+    <div class="feature">
+      <span class="tag">Off by default</span>
+      <h3>JPEG when you need it</h3>
+      <p>Convert to JPEG and Copy as JPEG are both there, hidden behind a settings toggle for anyone who needs them.</p>
+    </div>
+  </div>
+
+  <!-- ===== See it work ===== -->
+  <div class="section-hd">
+    <h2>See it work</h2>
+    <div class="r">Windows 11 &middot; File Explorer</div>
+  </div>
+  <div class="shots">
+    <!-- SHOT 1: Context menu on a .webp (hero). Explorer with a .webp selected, the Right Click to PNG group open, Convert to PNG and Copy as PNG visible. -->
+    <figure class="shot lead" data-shot="1">
+      <div class="slot-frame" role="img" aria-label="Screenshot coming: the right-click menu on a .webp file">
+        <span class="slot-num" aria-hidden="true">Shot 1 &middot; 16:9</span>
+      </div>
+      <figcaption class="slot-cap"><b>Right there in the menu.</b> Right-click a <code>.webp</code> in File Explorer: Convert to PNG and Copy as PNG, no app to open first.</figcaption>
+    </figure>
+
+    <!-- SHOT 2: The toast after Convert. The summary toast plus the new .png next to the original in the same folder. -->
+    <figure class="shot" data-shot="2">
+      <div class="slot-frame" role="img" aria-label="Screenshot coming: the toast after Convert to PNG">
+        <span class="slot-num" aria-hidden="true">Shot 2</span>
+      </div>
+      <figcaption class="slot-cap"><b>Converted, in place.</b> The toast confirms it, and the new <code>.png</code> sits next to the original in the same folder.</figcaption>
+    </figure>
+
+    <!-- SHOT 3: The paste landing. A Copy as PNG result pasted into Teams, Slack, Discord or Figma, ideally the app that rejected the .webp. -->
+    <figure class="shot" data-shot="3">
+      <div class="slot-frame" role="img" aria-label="Screenshot coming: a Copy as PNG result pasted into a chat app">
+        <span class="slot-num" aria-hidden="true">Shot 3</span>
+      </div>
+      <figcaption class="slot-cap"><b>The paste that used to fail.</b> Copy as PNG, then paste straight into the app that rejected the <code>.webp</code>.</figcaption>
+    </figure>
+
+    <!-- SHOT 4: Settings window. Both toggles (JPEG variants, confirm before overwriting), branded title bar; settings path cropped out or showing a neutral user. -->
+    <figure class="shot" data-shot="4">
+      <div class="slot-frame" role="img" aria-label="Screenshot coming: the settings window">
+        <span class="slot-num" aria-hidden="true">Shot 4</span>
+      </div>
+      <figcaption class="slot-cap"><b>Two toggles.</b> Show JPEG variants, and confirm before overwriting. That's the whole settings surface.</figcaption>
+    </figure>
+
+    <!-- SHOT 5: Batch. A multi-selection (mixed .heic, .avif, .webp) with the menu open, then the single summary toast. -->
+    <figure class="shot" data-shot="5">
+      <div class="slot-frame" role="img" aria-label="Screenshot coming: converting a mixed selection in one right-click">
+        <span class="slot-num" aria-hidden="true">Shot 5</span>
+      </div>
+      <figcaption class="slot-cap"><b>One right-click, the whole batch.</b> A mixed selection of <code>.heic</code>, <code>.avif</code> and <code>.webp</code>, one summary toast at the end.</figcaption>
+    </figure>
+  </div>
+
+  <!-- ===== How it's built ===== -->
+  <div class="section-hd">
+    <div>
+      <h2>Idea to Microsoft Store in 24 hours</h2>
+      <p>Built end to end with <a href="/vibe-cartographer/">Vibe Cartographer</a>, from the first scoping question to a signed MSIX approved on the Store.</p>
+    </div>
+    <div class="r">Shipped 2026-04-22</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">24h</div><div class="l">Idea to Store listing</div></div>
+    <div class="stat"><div class="n">7</div><div class="l">Bundled decoders</div></div>
+    <div class="stat"><div class="n">85</div><div class="l">Tests green</div></div>
+    <div class="stat"><div class="n">~1 MB</div><div class="l">AOT engine</div></div>
+  </div>
+  <div class="pieces">
+    <div class="feature">
+      <span class="tag">C++/WinRT</span>
+      <h3>The shell extension</h3>
+      <p>A Win32 COM server that File Explorer hosts directly, the same way it hosts Windows' own right-click verbs. It stays minimal on purpose: read the selection, read settings, launch the engine, show the toast.</p>
+    </div>
+    <div class="feature">
+      <span class="tag">.NET 9 Native AOT</span>
+      <h3>The engine</h3>
+      <p>A standalone converter, called once per invocation. No runtime warm-up. Decoding runs on bundled libwebp, libavif, libheif, libspng and libjpeg-turbo; BMP, GIF and TIFF are read by hand-rolled C#.</p>
+    </div>
+    <div class="feature">
+      <span class="tag">MSIX</span>
+      <h3>One package</h3>
+      <p>Signs and packages both, and registers the COM classes and file-type associations. The Store install auto-updates and uninstalls cleanly.</p>
+    </div>
+  </div>
+  <div class="prose">
+    <p>
+      The engine and the shell extension are split across a process boundary on purpose. Explorer
+      loads the extension as a DLL, so a decoder that crashes on a malformed file takes down a
+      short-lived engine process, never Explorer. The extension sees a non-zero exit code and shows an
+      error toast.
+    </p>
+  </div>
+
+  <!-- ===== Trust ===== -->
+  <div class="section-hd">
+    <h2>Offline by design</h2>
+    <div class="r">Disconnect, and it all still works</div>
+  </div>
+  <div class="trust-box">
+    <div class="trust-item">
+      <div class="k">No network</div>
+      <div class="v">No network calls of any kind. No update checks, no phone-home. The engine's P/Invoke bindings carry no HTTP, because there's no HTTP. Read the source and check.</div>
+    </div>
+    <div class="trust-item">
+      <div class="k">No telemetry</div>
+      <div class="v">No telemetry, no crash reports, no analytics. No account, no sign-in, no cloud sync. Install it, use it, that's the whole surface.</div>
+    </div>
+    <div class="trust-item">
+      <div class="k">Original never touched</div>
+      <div class="v">The original file is never modified, moved or deleted. Convert writes a new file beside it.</div>
+    </div>
+    <div class="trust-item">
+      <div class="k">Color kept</div>
+      <div class="v">ICC color profiles are preserved when the source has one. No profile in, no profile out.</div>
+    </div>
+    <div class="trust-item">
+      <div class="k">Rotation kept</div>
+      <div class="v">EXIF orientation is baked into the pixel data before the metadata is stripped, so rotated photos stay rotated.</div>
+    </div>
+  </div>
+
+  <!-- ===== Reach ===== -->
+  <div class="section-hd">
+    <div>
+      <h2>Where it ended up</h2>
+      <p>Every Microsoft Store install since launch, plotted by country. Dot area is proportional to install count.</p>
+    </div>
+    <div class="r">Lifetime installs</div>
+  </div>
+
+  <!-- Renders itself from data/store-analytics.json; stays hidden until the
+       geography pull has run. See assets/reach-map.js. -->
+  <div class="reach-map" data-app="9PKKLK6R5WFL" data-label="Right Click PNG"></div>
+
+  <div class="footnote">
+    <span>Windows 11 build 22621 or later, x64. Animated GIFs convert as first frame only.</span>
+    <span>626Labs LLC &middot; Imagine Something Else. &middot; <a href="index.html">Lab</a> &middot; <a href="privacy.html">Privacy</a></span>
+  </div>
+
+</main>
+
+<script src="/assets/reach-map.js" defer></script>
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
