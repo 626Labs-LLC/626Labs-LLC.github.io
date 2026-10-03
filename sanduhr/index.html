@@ -479,17 +479,12 @@
        private :root this replaced, one indirection deeper.
        ============================================================ */
     :root {
-      --page-field: var(--pb-field, var(--bg-0));
-      --page-panel-fill: var(--pb-panel, var(--bg-1));
-      --page-panel-border: var(--pb-panel-border, var(--border-2));
-      --page-grid-fine: var(--pb-grid-fine, transparent);
-      --page-grid-coarse: var(--pb-grid-coarse, transparent);
-      --page-scanline: var(--pb-scanline, transparent);
-      --page-bloom: var(--pb-bloom-cyan, none);
-    }
-    .pb-scanlines {
-      position: fixed; inset: 0; pointer-events: none; z-index: 60;
-      background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
+      --page-field: var(--bg-0);
+      --page-panel-fill: var(--bg-1);
+      --page-panel-border: var(--border-2);
+      --page-grid-fine: transparent;
+      --page-grid-coarse: transparent;
+      --page-bloom: none;
     }
     header.site { background: var(--page-panel-fill); border-bottom-color: var(--page-panel-border); }
 
@@ -534,7 +529,6 @@
   </style>
 </head>
 <body>
-  <div class="pb-scanlines" aria-hidden="true"></div>
   <header class="site">
     <div class="container inner">
       <div class="crumb">

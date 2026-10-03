@@ -97,16 +97,10 @@
        private :root this replaced, one indirection deeper.
        ============================================================ */
     :root {
-      --page-field: var(--pb-field, var(--bg-0));
-      --page-grid-coarse: var(--pb-grid-coarse, transparent);
-      --page-scanline: var(--pb-scanline, transparent);
-      --page-bloom: var(--pb-bloom-cyan, none);
+      --page-field: var(--bg-0);
+      --page-grid-coarse: transparent;
+      --page-bloom: none;
     }
-    .pb-scanlines {
-      position: fixed; inset: 0; pointer-events: none; z-index: 60;
-      background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
-    }
-
     body {
       background:
         radial-gradient(60% 50% at 30% 20%, rgba(23,212,250,.16) 0%, transparent 60%),
@@ -120,7 +114,6 @@
   </style>
 </head>
 <body>
-  <div class="pb-scanlines" aria-hidden="true"></div>
   <main id="main">
     <div class="eyebrow">626 Labs · page not found</div>
     <p class="code">404</p>

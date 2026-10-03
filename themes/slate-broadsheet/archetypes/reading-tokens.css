@@ -12,9 +12,7 @@
    dress), never this file.
 
    COMPLETE against archetypes.REQUIRED_TOKENS (47 names), plus the --sb-*
-   treatment block, identical to tokens.css. `.pb-scanlines` is NOT here
-   and no theme paints it: it is a class rule the pages that carry the
-   element declare themselves.
+   treatment block, identical to tokens.css.
 
    AA CONTRAST, computed with scripts/theme-doctor.py's own WCAG 2.1 math
    (the numbers the gate will grade). The 4.5:1 body floor applies to every

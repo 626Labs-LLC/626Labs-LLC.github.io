@@ -467,6 +467,13 @@ def test_theme_css_map_covers_the_converted_reading_pages():
     assert m[render_hub.THEMES_HTML] == "tokens.css"
 
 
+# Values a page's --page-* alias may hold as a literal. Phosphor Blueprint's
+# decorative treatment names (grid, scanline, bloom, trail) fell back to
+# these; once the dead --pb-* reads were unwrapped they are what remains.
+# Neither is a palette value, so neither can be a photocopy of a token.
+INERT_ALIAS_VALUES = {"transparent", "none"}
+
+
 def _page_style(page):
     """Every <style> block on `page`, joined. Reading only the first one is a
     silent hole: three of these pages declare their treatment in a later
@@ -821,27 +828,49 @@ def test_reading_pages_define_no_tokens_of_their_own():
         assert not re.search(r":root\s*\{", style), f"{page.name} re-grew a :root block"
 
 
-def test_reading_pages_own_their_scanline_overlay_rule():
-    # The one rule the reading split handed back to the pages. Both carry a
-    # .pb-scanlines element; the rule used to live in reading.css, which
-    # they no longer link. A page with the element and no rule renders no
-    # overlay at all — invisible to a token-completeness gate, and a real
-    # pixel change. conundrum.html has always had it this way.
+def test_no_public_page_carries_the_scanline_overlay():
+    # History: Phosphor Blueprint (August/September) painted CRT scanlines on
+    # a `<div class="pb-scanlines">` every page shipped, and each page that
+    # stopped linking the dress had to declare the overlay rule itself. Slate
+    # Broadsheet and Cyan Fade paint nothing on it, so the element and its
+    # page-local rules were removed in the October cleanup (zero pixels
+    # moved). themes/archive/2026-09/ keeps its frozen copy, and
+    # themes/phosphor-blueprint/ stays as that archive's source; nothing else
+    # may regrow it. Pinned on every mapped public page AND on the registered
+    # themes' archetype shells, which are where index.html and the generated
+    # product pages get their markup.
     #
-    # Scanned as a RULE, not as a substring of raw markup — the same two
-    # holes its product twin had: a plain substring check passes on
-    # `/* .pb-scanlines lives in the theme now */`, which is exactly the
-    # comment someone leaves while deleting the rule, and reading only the
-    # first <style> block misses a rule declared in a later one.
+    # Three deliberate exceptions, where the transparent fixed overlay still
+    # changes paint because it is a z-index 60 compositing layer. Removing it
+    # moved pixels reproducibly, under both themes: bacon-trail/ (87 / 63
+    # antialiased pixels on the widget's card corners, which a z-index 61
+    # lift composites over it) and the <video> frames on rororo.html and
+    # mod-launcher-games.html (up to 49,641 pixels, max delta 110). Each one
+    # goes when its page's stacking and video layers are reworked and
+    # re-measured in the same change.
     import re
 
-    for page in (render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML):
-        html = page.read_text(encoding="utf-8")
-        assert 'class="pb-scanlines"' in html, f"{page.name} lost the element"
-        style = re.sub(r"/\*.*?\*/", "", _page_style(page), flags=re.S)
-        assert re.search(r"(^|[\s,}])\.pb-scanlines\s*[,{]", style), (
-            f"{page.name} carries a .pb-scanlines element but declares no rule "
-            "for it — the theme no longer supplies one"
+    kept = {"bacon-trail/index.html", "rororo.html", "mod-launcher-games.html"}
+
+    reg = render_hub.theme_registry.load()
+    slugs = [render_hub.theme_registry.active_slug(reg), *reg.get("queue", [])]
+    pages = [
+        p for p in json.loads(
+            (ROOT / "content" / "page-archetypes.json").read_text(encoding="utf-8")
+        ) if not p.startswith("$")
+    ]
+    shells = [
+        f"themes/{s}/archetypes/{a}.html"
+        for s in slugs for a in ("home", "product", "reading", "utility")
+    ]
+    for rel in pages + shells:
+        path = ROOT / rel
+        if not path.exists() or rel in kept:
+            continue
+        html = path.read_text(encoding="utf-8")
+        assert not re.search(r'class="[^"]*\bpb-scanlines\b', html), (
+            f"{rel} carries a pb-scanlines element; no registered theme paints "
+            "it, and only the frozen archive may keep one"
         )
 
 
@@ -980,7 +1009,7 @@ def test_product_pages_define_no_token_of_their_own():
     for page in (render_hub.CONUNDRUM_HTML, render_hub.RORORO_HTML,
                  render_hub.MODLAUNCHERGAMES_HTML, render_hub.BACONTRAIL_HTML):
         for name, value in declarations(page):
-            assert value.strip().startswith("var(--"), (
+            assert value.strip().startswith("var(--") or value.strip() in INERT_ALIAS_VALUES, (
                 f"{page.name} defines {name} as the literal {value.strip()!r} — "
                 "a private copy the rotation cannot reach"
             )
@@ -996,38 +1025,41 @@ def test_product_pages_define_no_token_of_their_own():
     for name, value in declarations(render_hub.SANDUHR_HTML):
         if name.startswith("--sd-"):
             continue
-        assert name.startswith("--page-") and value.strip().startswith("var(--"), (
+        assert name.startswith("--page-") and (
+            value.strip().startswith("var(--") or value.strip() in INERT_ALIAS_VALUES
+        ), (
             f"sanduhr/index.html defines {name} as {value.strip()!r} — only "
             "--sd-* product colors may be literals here, and only --page-* "
             "aliases may read the theme"
         )
 
 
-def test_product_pages_own_their_scanline_overlay_rule():
-    # The trap a token-completeness gate cannot see. archetypes/product.css
-    # carries a `.pb-scanlines` rule, and every page here that shows the
-    # overlay has an element with that class. None of them links the dress,
-    # so the rule has to be the page's own — a page with the element and no
-    # rule renders no overlay at all, and no token is missing to say so.
-    # Same check the reading pair got after the split nearly deleted theirs.
-    #
-    # Scanned as a RULE, not as a substring of raw markup. A substring check
-    # over un-stripped text passes on `/* .pb-scanlines lives in the theme
-    # now */` — the exact comment someone would leave behind while deleting
-    # the rule, which is the mutation this test exists to fail. It also has
-    # to read every <style> block, not just the first: three of these four
-    # pages declare the rule in a treatment section, and nothing guarantees
-    # that section shares a block with the base styles forever.
+def test_hand_authored_pages_read_no_dead_pb_name():
+    # History: these pages wrote their treatment as `var(--pb-x, fallback)`
+    # so Phosphor Blueprint's --pb-* names drove them in August/September and
+    # any other theme fell through to the fallback. With Phosphor Blueprint
+    # archived, a --pb-* read that neither registered theme (active + queue)
+    # defines in the stylesheet the page loads is dead weight, so the October
+    # cleanup unwrapped every one to its fallback. press.html keeps its
+    # `--pb-field` read because cyan-fade's archetypes/utility.css defines it.
     import re
 
-    for page in PRODUCT_TOKEN_PAGES:
-        html = page.read_text(encoding="utf-8")
-        if 'class="pb-scanlines"' not in html:
-            continue  # rororo-plugins.html is still on the pre-treatment dress
+    reg = render_hub.theme_registry.load()
+    slugs = [render_hub.theme_registry.active_slug(reg), *reg.get("queue", [])]
+    for page, href in render_hub.THEME_CSS_HREFS.items():
         style = re.sub(r"/\*.*?\*/", "", _page_style(page), flags=re.S)
-        assert re.search(r"(^|[\s,}])\.pb-scanlines\s*[,{]", style), (
-            f"{page.name} carries a .pb-scanlines element but declares no rule "
-            "for it — the theme supplies tokens to these pages, not rules"
+        reads = set(re.findall(r"var\(\s*(--pb-[\w-]+)", style))
+        if not reads:
+            continue
+        defined = set()
+        for slug in slugs:
+            css = ROOT / "themes" / slug / href
+            if css.exists():
+                defined |= set(re.findall(
+                    r"(--pb-[\w-]+)\s*:", css.read_text(encoding="utf-8")))
+        assert not reads - defined, (
+            f"{page.name} reads {sorted(reads - defined)}, which no registered "
+            f"theme defines in {href} — unwrap to the fallback"
         )
 
 
@@ -1086,21 +1118,12 @@ def test_404_page_defines_no_token_of_its_own():
 
     style = re.sub(r"/\*.*?\*/", "", _page_style(render_hub.NOTFOUND_HTML), flags=re.S)
     for name, value in re.findall(r"(--[\w-]+)\s*:\s*([^;{}]+)", style):
-        assert name.startswith("--page-") and value.strip().startswith("var(--"), (
+        assert name.startswith("--page-") and (
+            value.strip().startswith("var(--") or value.strip() in INERT_ALIAS_VALUES
+        ), (
             f"404.html defines {name} as {value.strip()!r} — a private copy "
             "the rotation cannot reach"
         )
-
-
-def test_404_page_owns_its_scanline_overlay_rule():
-    import re
-
-    html = render_hub.NOTFOUND_HTML.read_text(encoding="utf-8")
-    assert 'class="pb-scanlines"' in html, "404.html lost the element"
-    style = re.sub(r"/\*.*?\*/", "", _page_style(render_hub.NOTFOUND_HTML), flags=re.S)
-    assert re.search(r"(^|[\s,}])\.pb-scanlines\s*[,{]", style), (
-        "404.html carries a .pb-scanlines element but declares no rule for it"
-    )
 
 
 def test_404_page_resolves_every_var_it_reads():

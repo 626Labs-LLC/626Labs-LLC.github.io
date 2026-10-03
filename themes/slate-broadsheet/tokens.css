@@ -16,8 +16,7 @@
    so read the registry, never this field, for what is live.
 
    Matte throughout. No glow, no bloom, no scanlines, no grid, no gradient
-   field. The page markup keeps its `.pb-scanlines` div for the August
-   archive's sake; this theme paints nothing on it. Cyan is the link ink;
+   field. Cyan is the link ink;
    magenta is never text on slate and lives in the color bar only.
 
    AA CONTRAST, computed with scripts/theme-doctor.py's own WCAG 2.1 math
@@ -201,7 +200,7 @@
    bake-off's Monograph shipped an invisible headline for exactly this).
    The ground is painted on html and body so the field differential the
    doctor runs on press.html/privacy.html sees the theme arrive through
-   the page itself, never through the unpainted `.pb-scanlines` div.
+   the page itself.
    ============================================================ */
 html { background: var(--bg-0); }
 body { background: var(--bg-0); color: var(--fg-1); }
