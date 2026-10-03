@@ -75,7 +75,13 @@ if theme:
         '<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
     )
-    tpl = shell_open + head + "</style>\n</head>\n<body>" + rest + "\n</body>\n</html>\n"
+    # Hosted only: the standalone build is a private file, never counted.
+    GOATCOUNTER = (
+        "<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->\n"
+        '<script data-goatcounter="https://626labs.goatcounter.com/count"\n'
+        '        async src="//gc.zgo.at/count.js"></script>\n'
+    )
+    tpl = shell_open + head + "</style>\n</head>\n<body>" + rest + "\n" + GOATCOUNTER + "</body>\n</html>\n"
 else:
     tpl = tpl.replace("<!--__THEME_LINK__-->", "").replace("/*__THEME_MAP__*/", "")
 
