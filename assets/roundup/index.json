@@ -1,0 +1,594 @@
+{
+ "generated": "2026-07-08",
+ "note": "Raw brand material harvested from the 626 Labs repos, one folder per product. Paths are repo-root-relative; prefix with / for a URL on 626labs.dev. icon/logo/hero are picked by name and dimensions. Regenerate with: python scripts/refresh-roundup.py --index-only",
+ "products": [
+  {
+   "id": "626-labs-mod-manager",
+   "name": "626 Labs Mod Manager",
+   "siteId": null,
+   "repo": null,
+   "sourceDir": "shell/assets",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/626-labs-mod-manager/icon-512.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/626-labs-mod-manager/icon.ico"
+   ]
+  },
+  {
+   "id": "626-mod-launcher",
+   "name": "626 Mod Launcher",
+   "siteId": "mod-launcher",
+   "repo": "estevanhernandez-stack-ed/626-mod-launcher",
+   "sourceDir": "assets/release",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/626-mod-launcher/icon.ico",
+   "logo": null,
+   "hero": "assets/roundup/626-mod-launcher/hero.png",
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "626labs-dashboard",
+   "name": "626 Labs Dashboard",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/Project-626Labs",
+   "sourceDir": "public",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/626labs-dashboard/vscode-icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/626labs-dashboard/favicon.ico",
+    "assets/roundup/626labs-dashboard/vscode-icon.svg"
+   ]
+  },
+  {
+   "id": "626labs-design",
+   "name": "626 Labs Design System",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/626labs-design",
+   "sourceDir": "assets",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/626labs-design/626Labs-logo.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "626labs-themes",
+   "name": "626 Labs Themes",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/626labs-themes",
+   "sourceDir": ".",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/626labs-themes/icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "626mcp-vscode-extension",
+   "name": "626MCP VS Code Extension",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/626MCP-VsCodeExtension",
+   "sourceDir": "vscode-extension/resources",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/626mcp-vscode-extension/icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/626mcp-vscode-extension/icon.svg"
+   ]
+  },
+  {
+   "id": "6deux6",
+   "name": "6deux6",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/6deux6",
+   "sourceDir": "assets",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/6deux6/icon-1024.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "beatsmasher",
+   "name": "BeatsMasher",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/BeatsMasher",
+   "sourceDir": "artifacts/beats-masher/public",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/beatsmasher/favicon.svg",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "build-party",
+   "name": "Build Party",
+   "siteId": null,
+   "repo": null,
+   "sourceDir": "vscode-extension/resources",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/build-party/toy-icon.svg",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "celestia3",
+   "name": "Celestia 3",
+   "siteId": "celestia-3",
+   "repo": "estevanhernandez-stack-ed/Celestia3",
+   "sourceDir": "assets",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/celestia3/icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/celestia3/celestia_logo_icon.png",
+    "assets/roundup/celestia3/icon-512.png"
+   ]
+  },
+  {
+   "id": "chef-is",
+   "name": "Chef I's",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/Chef-I-s",
+   "sourceDir": "static",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/chef-is/chef-inspection-icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/chef-is/chef-icon.png"
+   ]
+  },
+  {
+   "id": "cleanup-ranger",
+   "name": "Cleanup Ranger",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/Cleanup-Ranger",
+   "sourceDir": "public",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/cleanup-ranger/favicon.png",
+   "logo": null,
+   "hero": "assets/roundup/cleanup-ranger/hero.png",
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "estessistant",
+   "name": "Estessistant",
+   "siteId": null,
+   "repo": null,
+   "sourceDir": ".",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/estessistant/notepad_icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "koii-tracker",
+   "name": "Koii Tracker",
+   "siteId": null,
+   "repo": null,
+   "sourceDir": null,
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/koii-tracker/favicon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "ladder",
+   "name": "LADDER",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/LADDER",
+   "sourceDir": "public",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/ladder/favicon.svg",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "opsgen",
+   "name": "OPsGen",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/OPsGen",
+   "sourceDir": "QR_Generator/static",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/opsgen/qr-generator-logo.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "pod-pipeline",
+   "name": "626 POD Pipeline",
+   "siteId": "pod-pipeline",
+   "repo": "626Labs-LLC/626labs-pod-pipeline",
+   "sourceDir": ".",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/pod-pipeline/conundrum_logo_transparent.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/pod-pipeline/626labs_logo_transparent.png"
+   ]
+  },
+  {
+   "id": "poster-colorizer",
+   "name": "Poster Colorizer",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/Poster-Colorizer",
+   "sourceDir": "assets/images",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/poster-colorizer/icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/poster-colorizer/splash-icon.png"
+   ]
+  },
+  {
+   "id": "powertoys-snipsnap",
+   "name": "SnapSnip",
+   "siteId": "snapsnip",
+   "repo": "estevanhernandez-stack-ed/PowerToys",
+   "sourceDir": "installer/PowerToysSetupVNext/Images",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/powertoys-snipsnap/installer-logo.png",
+   "logo": null,
+   "hero": "assets/roundup/powertoys-snipsnap/Release-Banner.png",
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "quizshow",
+   "name": "QuizShow",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/QuizShow",
+   "sourceDir": "apps/cinema/public",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/quizshow/favicon-cinema.svg",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/quizshow/favicon-bacon-trail.svg",
+    "assets/roundup/quizshow/favicon-reel-battles.svg",
+    "assets/roundup/quizshow/favicon-reel-words.svg"
+   ]
+  },
+  {
+   "id": "rbx15-shirt-and-pants",
+   "name": "RBX15 Classic Shirt and Pants Maker",
+   "siteId": "rbx15-shirt-pants",
+   "repo": "estevanhernandez-stack-ed/RBX15-Shirt-and-Pants",
+   "sourceDir": "docs/store-assets",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/rbx15-shirt-and-pants/Square310x310Logo.png",
+   "logo": "assets/roundup/rbx15-shirt-and-pants/logo-square-1080x1080.png",
+   "hero": null,
+   "screenshots": [
+    "assets/roundup/rbx15-shirt-and-pants/screenshots/app-adjustments-rgb.png",
+    "assets/roundup/rbx15-shirt-and-pants/screenshots/app-adjustments.png",
+    "assets/roundup/rbx15-shirt-and-pants/screenshots/app-details.png",
+    "assets/roundup/rbx15-shirt-and-pants/screenshots/app-home.png",
+    "assets/roundup/rbx15-shirt-and-pants/screenshots/app-layers.png",
+    "assets/roundup/rbx15-shirt-and-pants/screenshots/app-layout.png",
+    "assets/roundup/rbx15-shirt-and-pants/screenshots/app-wordart.png"
+   ],
+   "other": [
+    "assets/roundup/rbx15-shirt-and-pants/StoreLogo.png",
+    "assets/roundup/rbx15-shirt-and-pants/logo-portrait-720x1080.png"
+   ]
+  },
+  {
+   "id": "reel-battles",
+   "name": "Reel Battles",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/Reel-Battles",
+   "sourceDir": "client/public",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/reel-battles/favicon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/reel-battles/generated-icon.png"
+   ]
+  },
+  {
+   "id": "reel-words",
+   "name": "Reel Words",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/QuizShow",
+   "sourceDir": "apps/reel-words/public",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/reel-words/favicon.svg",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "rororo-mac",
+   "name": "RORORO for Mac",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/rororo-mac",
+   "sourceDir": "docs/marketing",
+   "harvested": "2026-07-08",
+   "icon": null,
+   "logo": null,
+   "hero": "assets/roundup/rororo-mac/marketing/hero@2x.png",
+   "screenshots": [],
+   "other": [
+    "assets/roundup/rororo-mac/marketing/hero.png"
+   ]
+  },
+  {
+   "id": "rororo-ur-afk",
+   "name": "Ur AFK",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/rororo-ur-afk",
+   "sourceDir": ".",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/rororo-ur-afk/icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "rororo-ur-task",
+   "name": "Ur Task",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/rororo-ur-task",
+   "sourceDir": ".",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/rororo-ur-task/icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "rororoblox",
+   "name": "RORORO",
+   "siteId": "rororo",
+   "repo": "estevanhernandez-stack-ed/ROROROblox",
+   "sourceDir": "docs/images",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/rororoblox/store/graphics/store-boxart-2160x2160.png",
+   "logo": null,
+   "hero": "assets/roundup/rororoblox/store/graphics/store-hero-3840x2160.png",
+   "screenshots": [
+    "assets/roundup/rororoblox/screenshots/about.png",
+    "assets/roundup/rororoblox/screenshots/add-account.png",
+    "assets/roundup/rororoblox/screenshots/add-game.png",
+    "assets/roundup/rororoblox/screenshots/diagnostics.png",
+    "assets/roundup/rororoblox/screenshots/main.png",
+    "assets/roundup/rororoblox/screenshots/settings.png",
+    "assets/roundup/rororoblox/screenshots/squad-launch.png",
+    "assets/roundup/rororoblox/screenshots/theme.png",
+    "assets/roundup/rororoblox/screenshots/welcome.png"
+   ],
+   "other": [
+    "assets/roundup/rororoblox/hero-wide.png",
+    "assets/roundup/rororoblox/hero.png",
+    "assets/roundup/rororoblox/store/graphics/store-boxart-1080x1080.png",
+    "assets/roundup/rororoblox/store/graphics/store-display-150x150.png",
+    "assets/roundup/rororoblox/store/graphics/store-display-300x300.png",
+    "assets/roundup/rororoblox/store/graphics/store-display-71x71.png",
+    "assets/roundup/rororoblox/store/graphics/store-hero-1920x1080.png",
+    "assets/roundup/rororoblox/store/graphics/store-poster-1440x2160.png",
+    "assets/roundup/rororoblox/store/graphics/store-poster-720x1080.png"
+   ]
+  },
+  {
+   "id": "rotemplate",
+   "name": "RoTemplate",
+   "siteId": null,
+   "repo": null,
+   "sourceDir": null,
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/rotemplate/icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/rotemplate/splash-icon.png"
+   ]
+  },
+  {
+   "id": "rtclickpng",
+   "name": "Right Click PNG",
+   "siteId": "rtclickpng",
+   "repo": "estevanhernandez-stack-ed/RTClickPng",
+   "sourceDir": "src/Package/Assets",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/rtclickpng/Square310x310Logo.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/rtclickpng/StoreLogo.png"
+   ]
+  },
+  {
+   "id": "safety-assistant",
+   "name": "Safety Assistant",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/Safety_Assistant",
+   "sourceDir": ".",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/safety-assistant/icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/safety-assistant/icon.svg"
+   ]
+  },
+  {
+   "id": "sanduhr",
+   "name": "Sanduhr für Claude",
+   "siteId": "sanduhr",
+   "repo": "estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
+   "sourceDir": "docs/store-assets",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/sanduhr/icon-1024-rgb.png",
+   "logo": "assets/roundup/sanduhr/logo-square-1080x1080.png",
+   "hero": null,
+   "screenshots": [
+    "assets/roundup/sanduhr/images-screenshots/theme-626-labs.png",
+    "assets/roundup/sanduhr/images-screenshots/theme-aurora.png",
+    "assets/roundup/sanduhr/images-screenshots/theme-ember.png",
+    "assets/roundup/sanduhr/images-screenshots/theme-matrix.png",
+    "assets/roundup/sanduhr/images-screenshots/theme-mint.png",
+    "assets/roundup/sanduhr/images-screenshots/theme-obsidian.png",
+    "assets/roundup/sanduhr/images-screenshots/theme-sunset.png",
+    "assets/roundup/sanduhr/screenshots/windows/aurora.png",
+    "assets/roundup/sanduhr/screenshots/windows/ember.png",
+    "assets/roundup/sanduhr/screenshots/windows/matrix.png",
+    "assets/roundup/sanduhr/screenshots/windows/mint.png",
+    "assets/roundup/sanduhr/screenshots/windows/obsidian.png",
+    "assets/roundup/sanduhr/screenshots/windows/settings-themes.png"
+   ],
+   "other": [
+    "assets/roundup/sanduhr/StoreLogo.png",
+    "assets/roundup/sanduhr/logo-portrait-720x1080.png"
+   ]
+  },
+  {
+   "id": "snipsnap",
+   "name": "SnapSnip",
+   "siteId": "snapsnip",
+   "repo": "estevanhernandez-stack-ed/SnipSnap",
+   "sourceDir": "docs/screenshots",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/snipsnap/logo-1240.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [
+    "assets/roundup/snipsnap/screenshots/activity-log.png",
+    "assets/roundup/snipsnap/screenshots/collections-manager-dark.png",
+    "assets/roundup/snipsnap/screenshots/collections-manager-light.png",
+    "assets/roundup/snipsnap/screenshots/dashboard.png",
+    "assets/roundup/snipsnap/screenshots/library-dark.png",
+    "assets/roundup/snipsnap/screenshots/library-light.png",
+    "assets/roundup/snipsnap/screenshots/library-multiselect-dark.png",
+    "assets/roundup/snipsnap/screenshots/profiles.png",
+    "assets/roundup/snipsnap/screenshots/settings-general.png",
+    "assets/roundup/snipsnap/screenshots/settings-per-app-overrides.png",
+    "assets/roundup/snipsnap/screenshots/settings-preview.png",
+    "assets/roundup/snipsnap/screenshots/smart-rename-dark.png"
+   ],
+   "other": [
+    "assets/roundup/snipsnap/SnipSnapLogo.ico",
+    "assets/roundup/snipsnap/SnipSnapLogo.png",
+    "assets/roundup/snipsnap/store-logo-200.png"
+   ]
+  },
+  {
+   "id": "tagthatline",
+   "name": "Tag That Line",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/tagthatline",
+   "sourceDir": "docs",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/tagthatline/icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": [
+    "assets/roundup/tagthatline/icon.svg"
+   ]
+  },
+  {
+   "id": "the-lineup",
+   "name": "The Lineup",
+   "siteId": null,
+   "repo": null,
+   "sourceDir": "public",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/the-lineup/favicon.svg",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "ur-ocr",
+   "name": "Ur OCR",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/Ur-OCR",
+   "sourceDir": ".",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/ur-ocr/icon.png",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  },
+  {
+   "id": "weseeyouatthemovies",
+   "name": "We See You at the Movies",
+   "siteId": null,
+   "repo": "estevanhernandez-stack-ed/WeSeeYouAtTheMovies",
+   "sourceDir": "frontend/public",
+   "harvested": "2026-07-08",
+   "icon": "assets/roundup/weseeyouatthemovies/movie-icon.svg",
+   "logo": null,
+   "hero": null,
+   "screenshots": [],
+   "other": []
+  }
+ ],
+ "gaps": {
+  "siteProductsWithoutRoundup": [
+   "conundrum",
+   "etsy-mcp",
+   "thesis-engine",
+   "vibe-cartographer",
+   "vibe-doc",
+   "vibe-insights",
+   "vibe-iterate",
+   "vibe-keystone",
+   "vibe-lingual",
+   "vibe-prompt",
+   "vibe-sec",
+   "vibe-taker",
+   "vibe-test",
+   "vibe-thesis",
+   "vibe-walk",
+   "vibe-wrap"
+  ],
+  "roundupWithoutIcon": [
+   "rororo-mac"
+  ]
+ }
+}

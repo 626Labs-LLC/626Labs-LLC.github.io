@@ -346,6 +346,17 @@ that can't be derived locally (Microsoft Store releases, a plugin's command
 count) live in `content/facts-supplement.json` — re-confirm those periodically.
 The `content-health.yml` workflow runs the doctor on PRs and weekly.
 
+### Asset roundup — `scripts/refresh-roundup.py`
+
+Re-harvests `assets/roundup/` (raw icons, logos, screenshots from the sibling
+repos) and writes `assets/roundup/index.json`, the manifest consumers read
+instead of hand-typing paths. Default is a dry run (new / changed / gone per
+product); `--apply` copies, `--prune` deletes. Both read `C:\Users\estev\Projects`,
+so they are **this box only** and refuse in CI; `--index-only` is the CI-safe
+half. Sources per product are the script's `PRODUCTS` mapping, never Marcus\ or
+the work-adjacent repos. site-doctor fails on a stale index or a non-image in
+the tree. See `assets/roundup/README.md`.
+
 ### Two-tree visual diff — `scripts/visual-diff.py`
 
 Answers one question: **did this branch move anything a visitor can see?**
