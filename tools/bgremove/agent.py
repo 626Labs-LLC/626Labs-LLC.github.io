@@ -21,6 +21,12 @@ Disable the loop with --no-evaluate (single-shot, v3 behavior, lower cost).
 
 Requires `pip install anthropic` and ANTHROPIC_API_KEY in env.
 
+Model and effort come from one place (D-3 model consolidation): MODEL
+and EFFORT below, overridable with BGREMOVE_MODEL / BGREMOVE_EFFORT so an
+effort A/B is an env var, not a code edit:
+
+  BGREMOVE_EFFORT=low    bgremove-agent photo.jpg -v   # vs the medium default
+
 Examples:
   bgremove-agent logo.png                       # eval on, max 2 attempts
   bgremove-agent photo.jpg --max-attempts 3 -v
@@ -39,6 +45,20 @@ from typing import Literal, Optional
 import anthropic
 from PIL import Image
 from pydantic import BaseModel, Field
+
+# The one place the model id lives (vibe-prompt D-3). claude-opus-5-5: thinking is
+# always on, so effort is the cost/latency control; its API default is medium.
+MODEL = os.environ.get("BGREMOVE_MODEL", "claude-opus-5-5")
+EFFORT = os.environ.get("BGREMOVE_EFFORT", "medium")
+
+
+def _check_refusal(response, stage: str) -> None:
+    """A safety classifier can end a turn with stop_reason=refusal and no parsed
+    output. Say which stage and why instead of failing on a None later."""
+    if getattr(response, "stop_reason", None) == "refusal":
+        details = getattr(response, "stop_details", None)
+        category = getattr(details, "category", None) if details else None
+        raise RuntimeError(f"agent: {stage} refused by the model (category={category})")
 
 # System prompt is static across all calls — cache it via prompt caching
 # (top-level cache_control auto-places on the last cacheable block, so the
@@ -232,10 +252,10 @@ def pick_strategy(client: anthropic.Anthropic, path: Path, verbose: bool = False
         print(f"agent: image {path.name} ({w}x{h}, {media_type})", file=sys.stderr)
 
     response = client.messages.parse(
-        model="claude-opus-4-7",
+        model=MODEL,
         max_tokens=2000,
         thinking={"type": "adaptive"},
-        output_config={"effort": "medium"},
+        output_config={"effort": EFFORT},
         system=[
             {
                 "type": "text",
@@ -264,6 +284,7 @@ def pick_strategy(client: anthropic.Anthropic, path: Path, verbose: bool = False
         ],
         output_format=BgRemoveStrategy,
     )
+    _check_refusal(response, "strategy pick")
 
     if verbose and hasattr(response, "usage"):
         cache_read = getattr(response.usage, "cache_read_input_tokens", 0)
@@ -290,10 +311,10 @@ def evaluate_cut(
     cut_b64, cut_mt, _ = encode_image(cut_path)
 
     response = client.messages.parse(
-        model="claude-opus-4-7",
+        model=MODEL,
         max_tokens=2000,
         thinking={"type": "adaptive"},
-        output_config={"effort": "medium"},
+        output_config={"effort": EFFORT},
         system=[
             {
                 "type": "text",
@@ -329,6 +350,7 @@ def evaluate_cut(
         ],
         output_format=CutEvaluation,
     )
+    _check_refusal(response, "cut evaluation")
 
     if verbose and hasattr(response, "usage"):
         cache_read = getattr(response.usage, "cache_read_input_tokens", 0)
