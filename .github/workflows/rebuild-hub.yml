@@ -7,6 +7,10 @@ on:
       - 'content/site.json'
       - 'content/facts-supplement.json'
       - 'content/stories/**'
+      # Publishing a Field Note maps its page here (site.py story publish);
+      # a fix commit touching only this file used to render nowhere until a
+      # manual dispatch.
+      - 'content/page-archetypes.json'
       - 'content/themes.json'
       - 'themes/**'
       - 'scripts/render-hub.py'

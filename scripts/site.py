@@ -334,6 +334,65 @@ def _slugify(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-") or "untitled"
 
 
+PAGE_ARCHETYPES = ROOT / "content" / "page-archetypes.json"
+_FRONTMATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---\r?\n", re.S)
+
+
+def _frontmatter_field(md: str, key: str) -> str:
+    """One scalar frontmatter value, unquoted; "" when absent. The same
+    `key: value` shape story_scaffold writes and render-hub reads."""
+    m = _FRONTMATTER_RE.match(md)
+    if not m:
+        return ""
+    for line in m.group(1).splitlines():
+        k, sep, v = line.partition(":")
+        if sep and k.strip() == key:
+            return v.strip().strip('"').strip("'")
+    return ""
+
+
+def publish_story_text(md: str) -> str:
+    """Flip `draft: true` to `draft: false` inside the frontmatter only, the
+    one line, nothing else touched. Raises when there is no draft line to
+    flip, so a story that is already live is never "published" twice."""
+    m = _FRONTMATTER_RE.match(md)
+    if not m:
+        raise ValueError("no frontmatter block")
+    block = m.group(1)
+    new_block, n = re.subn(r"(?m)^draft:\s*true\s*$", "draft: false", block, count=1)
+    if n == 0:
+        raise ValueError("no `draft: true` line; the story is already published")
+    return md[:m.start(1)] + new_block + md[m.end(1):]
+
+
+def story_page_path(md: str, filename: str) -> str | None:
+    """The page render-hub writes for this story, repo-relative, or None for
+    an off-site (external_url) post, which gets no on-site page. Mirrors
+    render-hub's story_slug: explicit `slug` wins, else the filename stem."""
+    if _frontmatter_field(md, "external_url"):
+        return None
+    slug = _frontmatter_field(md, "slug") or filename.removesuffix(".md")
+    return f"editorial/{slug}/index.html"
+
+
+def add_reading_mapping(json_text: str, page: str) -> str:
+    """Insert `"<page>": "reading",` into content/page-archetypes.json as a
+    TEXT edit: after the last editorial/ entry, in the file's own indent and
+    line endings (it is CRLF). A json.dumps round-trip would rewrite the
+    whole file. Returns the text unchanged when the page is already mapped."""
+    if f'"{page}"' in json_text:
+        return json_text
+    nl = "\r\n" if "\r\n" in json_text else "\n"
+    lines = json_text.split(nl)
+    anchors = [i for i, ln in enumerate(lines) if ln.lstrip().startswith('"editorial/')]
+    if not anchors:
+        raise ValueError("no editorial/ entry to anchor the new mapping on")
+    at = anchors[-1]
+    indent = lines[at][: len(lines[at]) - len(lines[at].lstrip())]
+    lines.insert(at + 1, f'{indent}"{page}": "reading",')
+    return nl.join(lines)
+
+
 def cmd_story(args) -> int:
     if args.action == "list":
         if not STORIES.exists():
@@ -341,6 +400,35 @@ def cmd_story(args) -> int:
             return 0
         for p in sorted(STORIES.glob("*.md")):
             print(p.name)
+        return 0
+    if args.action == "publish":
+        # One step instead of two (2026-10-03): flip draft AND map the page
+        # render-hub is about to write, so archetypes.validate() stays green
+        # and the rebuild-hub gate does not go red on the publish commit.
+        if not args.slug:
+            print("story publish requires a <slug>.", file=sys.stderr)
+            return 2
+        src = STORIES / f"{_slugify(args.slug)}.md"
+        if not src.exists():
+            src = STORIES / f"{args.slug}.md"
+        if not src.exists():
+            print(f"no such story: {args.slug}", file=sys.stderr)
+            return 2
+        md = src.read_bytes().decode("utf-8")
+        try:
+            published = publish_story_text(md)
+        except ValueError as exc:
+            print(f"{src.name}: {exc}", file=sys.stderr)
+            return 2
+        src.write_bytes(published.encode("utf-8"))
+        page = story_page_path(published, src.name)
+        if page is None:
+            print(f"published {src.relative_to(ROOT)} (off-site post: no page to map).")
+            return 0
+        text = PAGE_ARCHETYPES.read_bytes().decode("utf-8")
+        PAGE_ARCHETYPES.write_bytes(add_reading_mapping(text, page).encode("utf-8"))
+        print(f"published {src.relative_to(ROOT)} and mapped {page} to reading in "
+              f"{PAGE_ARCHETYPES.relative_to(ROOT)}. Commit both, then render.")
         return 0
     # new
     if not args.slug:
@@ -355,8 +443,9 @@ def cmd_story(args) -> int:
     dest.write_text(
         story_scaffold(args.title or args.slug, slug), encoding="utf-8", newline="\n"
     )
-    print(f"created {dest.relative_to(ROOT)} (draft) — fill it in, then set "
-          f"draft: false to publish.")
+    print(f"created {dest.relative_to(ROOT)} (draft) — fill it in, then run "
+          f"`python scripts/site.py story publish {slug}` to publish (it flips "
+          f"draft and maps the page in content/page-archetypes.json).")
     return 0
 
 
@@ -424,7 +513,7 @@ def build_parser() -> argparse.ArgumentParser:
     us.add_argument("--commit", action="store_true")
     us.set_defaults(fn=cmd_upload_shot)
     st = sub.add_parser("story", help="manage Field Note stories")
-    st.add_argument("action", choices=["new", "list"])
+    st.add_argument("action", choices=["new", "list", "publish"])
     st.add_argument("slug", nargs="?")
     st.add_argument("--title", default="")
     st.set_defaults(fn=cmd_story)

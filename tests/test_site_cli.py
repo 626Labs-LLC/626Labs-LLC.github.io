@@ -137,3 +137,65 @@ def test_story_scaffold():
 def test_slugify():
     assert site_cli._slugify("My First Note!") == "my-first-note"
     assert site_cli._slugify("---") == "untitled"
+
+
+# ── story publish: one step, the draft flip AND the page mapping ─────────
+# Publishing used to be two files: the story's draft flip plus a hand-added
+# line in content/page-archetypes.json. Forgetting the second turned the
+# rebuild-hub gate red, and a fix commit touching only that file never
+# re-ran it (decision 3O5ye5iWRykMr0j4me9s, pollinator 2026-09-28).
+
+def test_publish_story_text_flips_only_the_frontmatter_draft_line():
+    md = site_cli.story_scaffold("Note", "note") + "\ndraft: true appears in the body too\n"
+    out = site_cli.publish_story_text(md)
+    head, _, body = out.partition("---\n\n")
+    assert "draft: false" in head and "draft: true" not in head
+    assert "draft: true appears in the body too" in body
+
+
+def test_publish_story_text_refuses_an_already_published_story():
+    import pytest
+    md = site_cli.publish_story_text(site_cli.story_scaffold("Note", "note"))
+    with pytest.raises(ValueError):
+        site_cli.publish_story_text(md)
+
+
+def test_story_page_path_mirrors_render_hubs_slug_rule():
+    md = site_cli.story_scaffold("Note", "note")
+    assert site_cli.story_page_path(md, "2026-10-03-note.md") == "editorial/2026-10-03-note/index.html"
+    with_slug = md.replace("id: note\n", "id: note\nslug: custom\n")
+    assert site_cli.story_page_path(with_slug, "x.md") == "editorial/custom/index.html"
+    offsite = md.replace("id: note\n", 'id: note\nexternal_url: "https://medium.com/x"\n')
+    assert site_cli.story_page_path(offsite, "x.md") is None
+
+
+def test_add_reading_mapping_is_a_text_edit_that_keeps_crlf_and_indent():
+    src = ('{\r\n "$comment": "c",\r\n "index.html": "home",\r\n'
+           ' "editorial/a/index.html": "reading",\r\n "conundrum.html": "product"\r\n}\r\n')
+    out = site_cli.add_reading_mapping(src, "editorial/b/index.html")
+    assert out == src.replace(
+        ' "editorial/a/index.html": "reading",\r\n',
+        ' "editorial/a/index.html": "reading",\r\n "editorial/b/index.html": "reading",\r\n')
+    assert site_cli.add_reading_mapping(out, "editorial/b/index.html") == out
+
+
+def test_publishing_every_draft_keeps_the_real_archetype_map_valid():
+    """The end-to-end promise against the repo's own files: map every story
+    that would get a page, and archetypes.validate() accepts the map."""
+    import json
+    import archetypes
+    text = site_cli.PAGE_ARCHETYPES.read_bytes().decode("utf-8")
+    for md_path in sorted(site_cli.STORIES.glob("*.md")):
+        page = site_cli.story_page_path(md_path.read_text(encoding="utf-8"), md_path.name)
+        if page:
+            text = site_cli.add_reading_mapping(text, page)
+    mapping = json.loads(text)
+    for md_path in sorted(site_cli.STORIES.glob("*.md")):
+        page = site_cli.story_page_path(md_path.read_text(encoding="utf-8"), md_path.name)
+        if page:
+            assert mapping[page] == "reading"
+
+
+def test_rebuild_hub_reruns_on_the_archetype_map():
+    yml = (ROOT / ".github" / "workflows" / "rebuild-hub.yml").read_text(encoding="utf-8")
+    assert "- 'content/page-archetypes.json'" in yml
