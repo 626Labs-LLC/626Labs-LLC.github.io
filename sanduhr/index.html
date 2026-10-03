@@ -573,22 +573,22 @@
   <section class="platforms">
     <div class="container">
       <h2>Pick your platform</h2>
-      <p class="lead">Three builds. Pick the one that matches your OS.</p>
+      <p class="lead">Two builds. Pick the one that matches your OS.</p>
 
       <div class="platform-grid">
         <article class="platform-card">
           <h3>macOS</h3>
-          <p>Native SwiftUI. Developer ID signed + Apple-notarized, so no Gatekeeper warnings. Sparkle auto-updates.</p>
+          <p>Native Mac app, signed with Developer ID and notarized by Apple. Install it once and it updates itself: it checks daily when automatic checks are on, or right away from Check for Updates&hellip; in any Sanduhr menu.</p>
           <ul>
-            <li>NSVisualEffectView vibrancy</li>
-            <li>Keychain credentials</li>
-            <li>Requires macOS 11 (Big Sur) or newer</li>
+            <li>Universal: Apple silicon and Intel, no Rosetta</li>
+            <li>Desk: your meters on the desktop and around the notch</li>
+            <li>Requires macOS 14 (Sonoma) or newer</li>
           </ul>
           <div class="badge-row">
-            <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases" rel="noopener">
+            <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases/tag/v2.3.2-mac" rel="noopener">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
               <div class="store-badge-text">
-                <span class="store-badge-top">Download from</span>
+                <span class="store-badge-top">Download 2.3.2 from</span>
                 <span class="store-badge-bottom">GitHub Releases</span>
               </div>
             </a>
@@ -597,11 +597,11 @@
 
         <article class="platform-card">
           <h3>Windows 11</h3>
-          <p>Native PySide6 with real Win11 Mica glass. Windows Credential Manager for the session cookie.</p>
+          <p>Native .NET and WPF with real Win11 Mica glass. Windows Credential Manager for the session cookie.</p>
           <ul>
             <li>Mica backdrop on Win11 (solid fallback on Win10)</li>
             <li>Free on the Microsoft Store — no SmartScreen warnings</li>
-            <li>Full source under /windows/</li>
+            <li>Full source under /windows-dotnet/</li>
           </ul>
           <div class="badge-row">
             <a class="store-badge" href="https://apps.microsoft.com/detail/9NH3NK2RGCF5" rel="noopener">
@@ -620,17 +620,40 @@
             </a>
           </div>
         </article>
+      </div>
+    </div>
+  </section>
 
-        <article class="platform-card">
-          <h3>Python (any OS)</h3>
-          <p>Single-file tkinter app with auto-installing <code>cloudscraper</code> dep. Runs on Mac, Windows, and Linux. For folks who prefer running from source.</p>
-          <ul>
-            <li>Just <code>python sanduhr.py</code></li>
-            <li>Requires Python 3.8+</li>
-            <li>MIT-licensed, audit the whole thing</li>
-          </ul>
-          <a class="platform-link" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/sanduhr.py">View sanduhr.py &rarr;</a>
-        </article>
+  <section class="features">
+    <div class="container">
+      <h2>On Mac, your meters live on the desktop.</h2>
+      <p class="lead">A fresh install starts with Desk on and your meters already there. The widget becomes the toolbox you open for the deep tools.</p>
+
+      <div class="feature-grid">
+        <div class="feature">
+          <h4>Meters on your desktop</h4>
+          <p>Your session and weekly limits drawn as bars under your windows, each with a pace tick and its reset time, in any corner. A limit that's nearly full with plenty of time left turns red, and you set how full and how far from a reset, per limit. Clicks go straight through to your apps.</p>
+        </div>
+        <div class="feature">
+          <h4>The rest of Desk</h4>
+          <p>The time, today's next meetings with one-click join, and a daily line of your own. Calendar access is asked for only if you turn meetings on, and nothing leaves your Mac.</p>
+        </div>
+        <div class="feature">
+          <h4>The notch, your way</h4>
+          <p>On MacBooks with a camera notch, pick what the left wing, the right wing and the strip under the camera show: your next meeting, the time, your meters, your message, or nothing. A camera light around the notch lights your face when any app turns the camera on. Off until you switch it on, no camera permission needed.</p>
+        </div>
+        <div class="feature">
+          <h4>The widget, when you want it</h4>
+          <p>Always shown, hidden while Desk is on, or only when you open it. Click the meters and it appears beside them. Deep Work, the Pacing Calculators and Cooldown Snake open from the Tools menu, even with the widget hidden.</p>
+        </div>
+        <div class="feature">
+          <h4>Themes you can see</h4>
+          <p>A gallery of every theme, yours included, with a preview of each and one click to apply. Match Desk draws the widget in your Desk font and ink, so it reads like part of the desktop.</p>
+        </div>
+        <div class="feature">
+          <h4>Smarter alerts, one Settings window</h4>
+          <p>A pace warning when a limit is on course to run out before it resets, quiet hours and a sound of your choice, all off until you turn them on. Every setting sits in one window, Updates and About included, and Option+S opens it while Desk is on.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -707,7 +730,7 @@
       <div class="privacy-card">
         <h3>✓ No data comes back to us.</h3>
         <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr — even in principle.</p>
-        <p>The app's only outbound network call is HTTPS to <code>claude.ai</code>, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers. Your cookie lives in your OS's native secure credential store (Keychain on macOS, Credential Manager on Windows) and is wiped on uninstall.</p>
+        <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Your cookie stays on your machine: in the macOS Keychain on Mac, in Credential Manager on Windows. Uninstalling on Windows doesn't clear Credential Manager, so sign out first if you're leaving.</p>
         <p><a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md">Security policy</a> &middot; <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md">Privacy policy</a></p>
       </div>
     </div>
