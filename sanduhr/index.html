@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sanduhr für Claude — native usage widget for claude.ai power users · 626 Labs</title>
   <meta name="description" content="Native desktop widget for pacing your claude.ai subscription usage. Burn-rate projection, pace markers, sparklines, five glass themes. Mac + Windows." />
-  <meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.3.4-mac" />
+  <meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.4.0-mac" />
   <link rel="icon" type="image/png" href="icon.png" />
 
   <meta property="og:title" content="Sanduhr für Claude" />
@@ -627,7 +627,15 @@
       <div class="feature-grid">
         <div class="feature">
           <h4>Meters on your desktop</h4>
-          <p>Your session and weekly limits drawn as bars under your windows, each with a pace tick and its reset time, in any corner. A limit that's nearly full with plenty of time left turns red, and you set how full and how far from a reset, per limit. Clicks go straight through to your apps.</p>
+          <p>Your session and weekly limits drawn as bars under your windows, each with a pace tick and its reset time, in any corner. A limit that's nearly full with plenty of time left turns red, and you set how full and how far from a reset, per limit. A two-finger click on a meter opens that limit's own menu.</p>
+        </div>
+        <div class="feature">
+          <h4>More than one account</h4>
+          <p>Add each Claude login under a name, like Work or Team, and switch from the widget's account chip, any Sanduhr menu, or the account name on Desk. Each account keeps its own history, so the sparklines never mix. Follow the account I'm using, off by default, switches for you when the signal is clear.</p>
+        </div>
+        <div class="feature">
+          <h4>Limits that come and go</h4>
+          <p>A limit that looks temporary, like a promotion, can be hidden from that limit's two-finger menu, and it comes back on its own when it resets or refills. Session, weekly and the model limits always show. The menu bar shows session, weekly, whichever is higher, or rotates between them.</p>
         </div>
         <div class="feature">
           <h4>The rest of Desk</h4>
@@ -694,6 +702,27 @@
         <div class="feature">
           <h4>Threshold alerts</h4>
           <p>A toast and a soft procedural chime when a pool crosses your warn or urgent line. Per-model meters stay politely silent by default.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="themes">
+    <div class="container">
+      <h2>New in 2.4 on Mac.</h2>
+      <p class="lead">Accounts, the menu bar and the meters, straight from Settings.</p>
+      <div class="theme-strip">
+        <div class="theme-shot">
+          <img src="screenshot-accounts.png" alt="Sanduhr Settings, Accounts: the account list with Work active, its session key field, Sign Out and Remove Account" loading="lazy">
+          <div class="caption"><strong>Accounts</strong> &middot; one key and one history each</div>
+        </div>
+        <div class="theme-shot">
+          <img src="screenshot-menu-bar.png" alt="Sanduhr Settings, General: the surfaces toggles and the menu bar's percent set to Whichever is higher" loading="lazy">
+          <div class="caption"><strong>Menu bar</strong> &middot; session, weekly, higher or rotate</div>
+        </div>
+        <div class="theme-shot">
+          <img src="screenshot-meters.png" alt="Sanduhr Settings, Desk Meters: per-limit warnings, and the note that temporary limits can be hidden and come back on their own" loading="lazy">
+          <div class="caption"><strong>Meters</strong> &middot; per-limit warnings, temporary limits hide</div>
         </div>
       </div>
     </div>
