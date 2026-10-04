@@ -719,6 +719,23 @@ def render_conundrum_products(conundrum: dict) -> str:
     return "\n".join(cards)
 
 
+def render_conundrum_shop_cta(conundrum: dict, where: str) -> str:
+    """The "Shop on Etsy" link for the conundrum-shop-nav / -hero zones.
+
+    The shop URL lives in site.json's conundrum.etsyUrl, so an admin edit
+    reaches both links. A missing URL fails the render by name: the CTA is
+    the page's whole point, and a blank href would ship silently.
+    """
+    url = (conundrum.get("etsyUrl") or "").strip()
+    if not url:
+        raise SystemExit('site.json conundrum has no "etsyUrl": the shop links need it.')
+    cls, el_id = {"nav": ("cta", "nav-shop"), "hero": ("shop-cta", "hero-shop")}[where]
+    return (
+        f'<a class="{cls}" href="{attr(url)}" target="_blank" rel="noopener" '
+        f'id="{el_id}" data-etsy="shop">Shop on Etsy</a>'
+    )
+
+
 def render_conundrum_repo(conundrum: dict) -> str:
     """Repo CTA for the SITE_JSON:conundrum-repo zone.
 
@@ -2488,6 +2505,11 @@ def main(argv: list[str]) -> int:
             conundrum_new, "conundrum-products",
             render_conundrum_products(content["conundrum"]),
         )
+        for where in ("nav", "hero"):
+            conundrum_new = substitute_zone(
+                conundrum_new, f"conundrum-shop-{where}",
+                render_conundrum_shop_cta(content["conundrum"], where),
+            )
         conundrum_new = substitute_zone(
             conundrum_new, "conundrum-repo",
             render_conundrum_repo(content["conundrum"]),
@@ -2572,8 +2594,9 @@ def main(argv: list[str]) -> int:
             )
             return 1
         print(
-            f"index.html, feed.xml, sitemap.xml and {len(story_pages)} "
-            "Field Note page(s) are up to date."
+            "index.html, feed.xml, sitemap.xml, conundrum.html, themes.html, "
+            f"about.html, {len(theme_css_pages)} theme-css page(s) and "
+            f"{len(story_pages)} Field Note page(s) are up to date."
         )
         return 0
 
@@ -2589,6 +2612,10 @@ def main(argv: list[str]) -> int:
         # Both sources, because both zones live on this page — and on a
         # rotation the themes.json half is the ONLY reason it changes.
         print("conundrum.html zones rebuilt from content/site.json + content/themes.json")
+    elif "conundrum" in content:
+        print("conundrum.html already matches content/site.json — no change.")
+    else:
+        print("conundrum.html: no conundrum key in content/site.json — gallery zones left as they are.")
 
     if themes_changed:
         THEMES_HTML.write_text(themes_new, encoding="utf-8")
