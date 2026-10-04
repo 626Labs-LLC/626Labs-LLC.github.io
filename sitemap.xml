@@ -31,12 +31,22 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://626labs.dev/vibe-access/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://626labs.dev/vibe-cartographer/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://626labs.dev/vibe-doc/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://626labs.dev/vibe-glow/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -62,6 +72,16 @@
   </url>
   <url>
     <loc>https://626labs.dev/vibe-prompt/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://626labs.dev/vibe-recall/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://626labs.dev/vibe-runbook/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

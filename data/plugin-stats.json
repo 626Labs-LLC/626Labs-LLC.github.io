@@ -4,6 +4,11 @@
     "skills": 1,
     "agents": 0
   },
+  "vibe-access": {
+    "commands": 8,
+    "skills": 13,
+    "agents": 0
+  },
   "vibe-cartographer": {
     "commands": 14,
     "skills": 18,
@@ -13,6 +18,11 @@
     "commands": 5,
     "skills": 7,
     "agents": 3
+  },
+  "vibe-glow": {
+    "commands": 6,
+    "skills": 0,
+    "agents": 0
   },
   "vibe-insights": {
     "commands": 0,
@@ -37,6 +47,16 @@
   "vibe-prompt": {
     "commands": 9,
     "skills": 13,
+    "agents": 0
+  },
+  "vibe-recall": {
+    "commands": 6,
+    "skills": 9,
+    "agents": 0
+  },
+  "vibe-runbook": {
+    "commands": 7,
+    "skills": 8,
     "agents": 0
   },
   "vibe-sec": {
