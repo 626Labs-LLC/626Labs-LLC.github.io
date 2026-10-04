@@ -9,7 +9,7 @@ const INITIAL_CONTENT = {
     subhead:
       "Claude Code plugins for builders who vibe-code fast and still ship for real. Planning, docs, tests, security — with a native Windows/macOS widget for pacing your usage.",
     primaryCta: { label: "See the work", href: "#work" },
-    secondaryCta: { label: "Read the thesis", href: "#thinking" },
+    secondaryCta: { label: "Read the thesis", href: "/plugins/#thesis" },
     meta: [
       { label: "Shipped", value: "3 plugins · 1 widget" },
       { label: "Stack", value: "TypeScript · Swift · Python" },
@@ -23,7 +23,6 @@ const INITIAL_CONTENT = {
     ],
   },
   sections: {
-    thinking: { enabled: true },
     labRuns: { enabled: true },
     lab: { enabled: true },
     play: { enabled: true },
@@ -52,14 +51,6 @@ const INITIAL_CONTENT = {
     stack: ["TypeScript", "Swift", "Python", "Claude Code", "React 19", "Fort Worth, TX"],
     paragraphs: [],
     principles: [],
-  },
-  thinking: {
-    eyebrow: "02 · The thesis",
-    headline: "The thinking behind it.",
-    lead: "",
-    quote: "",
-    paragraphs: [],
-    cta: { label: "", href: "" },
   },
   labRuns: {
     eyebrow: "03 · Behind the scenes",

@@ -1175,6 +1175,11 @@ def render_products(products: list[dict], plugin_family: dict | None = None) -> 
     if not plugin_family:
         return _with_repo_meter_assets("\n\n".join(render_product(p) for p in products), products)
     members = set(plugin_family.get("memberIds") or [])
+    if "card" not in plugin_family:
+        raise SystemExit(
+            'site.json pluginFamily has no "card": it needs the card object the '
+            "family folds into (id, title, tagline, ...), or remove pluginFamily."
+        )
     out, family_emitted = [], False
     for p in products:
         if p.get("id") in members:

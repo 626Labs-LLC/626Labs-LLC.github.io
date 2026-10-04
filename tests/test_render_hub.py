@@ -2,6 +2,7 @@ import importlib.util
 import json
 import sys
 from pathlib import Path
+import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -1296,3 +1297,20 @@ def test_flagship_head_carries_classes_not_inline_styles():
         for cls in ("product-head-lead", "product-category"):
             assert re.search(r"\." + cls + r"\b", shell), f"{slug} home shell never styles .{cls}"
         assert "div[style]" not in shell, f"{slug} still targets the old inline-styled divs"
+
+
+# ─── #84: the retired Thinking section stays retired ─────────────────
+def test_admin_no_longer_edits_the_removed_thinking_key():
+    """The admin's Thinking tab bound to content.thinking; one save from it
+    re-created the key site.json dropped, and render-hub renders the section
+    whenever the key exists. The tab is gone; keep it gone."""
+    app = (ROOT / "admin" / "app.jsx").read_text(encoding="utf-8")
+    assert "content.thinking" not in app
+    assert "ThinkingView" not in app
+    site = json.loads((ROOT / "content" / "site.json").read_text(encoding="utf-8"))
+    assert "thinking" not in site
+
+
+def test_plugin_family_without_a_card_fails_by_name():
+    with pytest.raises(SystemExit, match='pluginFamily has no "card"'):
+        render_hub.render_products([{"id": "a"}], {"memberIds": ["a"]})
