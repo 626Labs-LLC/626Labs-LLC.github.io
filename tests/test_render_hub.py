@@ -1314,3 +1314,21 @@ def test_admin_no_longer_edits_the_removed_thinking_key():
 def test_plugin_family_without_a_card_fails_by_name():
     with pytest.raises(SystemExit, match='pluginFamily has no "card"'):
         render_hub.render_products([{"id": "a"}], {"memberIds": ["a"]})
+
+
+# ─── #81: the Etsy shop URL is renderer-owned ────────────────────────
+def test_conundrum_shop_links_come_from_etsy_url():
+    page = (ROOT / "conundrum.html").read_text(encoding="utf-8")
+    site = json.loads((ROOT / "content" / "site.json").read_text(encoding="utf-8"))
+    url = site["conundrum"]["etsyUrl"]
+    for where, el_id in (("nav", "nav-shop"), ("hero", "hero-shop")):
+        zone = page.split(f"SITE_JSON:conundrum-shop-{where}:start")[1].split(
+            f"SITE_JSON:conundrum-shop-{where}:end")[0]
+        assert f'href="{url}"' in zone and f'id="{el_id}"' in zone
+    edited = render_hub.render_conundrum_shop_cta({"etsyUrl": "https://example.com/s"}, "hero")
+    assert 'href="https://example.com/s"' in edited
+
+
+def test_conundrum_without_etsy_url_fails_by_name():
+    with pytest.raises(SystemExit, match='"etsyUrl"'):
+        render_hub.render_conundrum_shop_cta({}, "nav")
