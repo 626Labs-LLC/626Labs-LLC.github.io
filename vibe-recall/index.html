@@ -5,33 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preload" as="font" type="font/woff2" href="/fonts/SpaceGrotesk-Variable.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-Variable.woff2" crossorigin />
-  <title>vibe-taker · Take it with you. · 626Labs</title>
-  <meta name="description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
-  <link rel="canonical" href="https://626labs.dev/vibe-taker/" />
+  <title>vibe-recall · Have you already built this? Check your own repos first. · 626Labs</title>
+  <meta name="description" content="Claude Code plugin that surfaces prior art from your own repos while you spec the next one. Indexes your estate into shallow cards, ranks them against a phrase or spec file, and verifies the hit at current HEAD before it claims anything. MIT. By 626Labs." />
+  <link rel="canonical" href="https://626labs.dev/vibe-recall/" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
-  <meta property="og:title" content="vibe-taker · Take it with you." />
-  <meta property="og:description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
-  <meta property="og:url" content="https://626labs.dev/vibe-taker/" />
-  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-taker-banner-1280x640.png" />
+  <meta property="og:title" content="vibe-recall · Have you already built this? Check your own repos first." />
+  <meta property="og:description" content="Claude Code plugin that surfaces prior art from your own repos while you spec the next one. Indexes your estate into shallow cards, ranks them against a phrase or spec file, and verifies the hit at current HEAD before it claims anything. MIT. By 626Labs." />
+  <meta property="og:url" content="https://626labs.dev/vibe-recall/" />
+  <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-recall-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="vibe-taker · Take it with you." />
-  <meta name="twitter:description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
-  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-taker-banner-1280x640.png" />
+  <meta name="twitter:title" content="vibe-recall · Have you already built this? Check your own repos first." />
+  <meta name="twitter:description" content="Claude Code plugin that surfaces prior art from your own repos while you spec the next one. Indexes your estate into shallow cards, ranks them against a phrase or spec file, and verifies the hit at current HEAD before it claims anything. MIT. By 626Labs." />
+  <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-recall-banner-1280x640.png" />
 
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "@id": "https://626labs.dev/vibe-taker/#software",
-  "name": "vibe-taker",
-  "description": "Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack.",
-  "url": "https://626labs.dev/vibe-taker/",
+  "@id": "https://626labs.dev/vibe-recall/#software",
+  "name": "vibe-recall",
+  "description": "Claude Code plugin that surfaces prior art from your own repos while you spec the next one. Indexes your estate into shallow cards, ranks them against a phrase or spec file, and verifies the hit at current HEAD before it claims anything. MIT. By 626Labs.",
+  "url": "https://626labs.dev/vibe-recall/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Claude Code",
-  "image": "https://626labs.dev/assets/brand/plugins/vibe-taker-banner-1280x640.png",
+  "image": "https://626labs.dev/assets/brand/plugins/vibe-recall-banner-1280x640.png",
   "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
@@ -44,7 +44,7 @@
     "name": "626 Labs",
     "url": "https://626labs.dev/"
   },
-  "softwareVersion": "0.2.0",
+  "softwareVersion": "0.1.2",
   "license": "https://opensource.org/licenses/MIT"
 }
   </script>
@@ -1005,8 +1005,8 @@
         </a>
         <span class="brand-sep" aria-hidden="true">/</span>
         <span class="brand-current">
-          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-taker-icon-transparent-512.png" alt="" /></span>
-          <span>vibe-taker</span>
+          <span class="vibe-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-recall-icon-transparent-512.png" alt="" /></span>
+          <span>vibe-recall</span>
         </span>
       </div>
       <a href="#install" class="btn btn-ghost">Install</a>
@@ -1020,17 +1020,16 @@
         <div class="hero-grid">
           <div class="hero-left">
             <span class="eyebrow">626Labs · Claude Code plugin</span>
-            <h1>Take it with you.</h1>
-            <p class="hero-subhead">Move a feature between repos without copy-paste archaeology. vibe-taker captures a feature out of one codebase as a portable bundle &mdash; architecture, contract surface, the prompts that built it, a verbatim source snapshot, and the gotchas &mdash; then plants it into another repo with stack-aware adaptation.</p>
+            <h1>Have you already built this? Check your own repos first.</h1>
+            <p class="hero-subhead">vibe-recall indexes the repos you've already written and answers one question while you spec the next feature: have I built something like this? It ranks shallow cards against your phrase or spec file, then re-reads the winning hit live at its current HEAD before it says anything about the source. A stale card can point. Only a live read can claim.</p>
             <div class="hero-ctas">
-              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-taker" class="btn btn-ghost">View on GitHub</a>
+              <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/Vibe-Recall" class="btn btn-ghost">View on GitHub</a>
             </div>
             <div class="hero-meta">
-              <span>v0.2.0</span><span>·</span><span>3 commands</span><span>·</span><span>local-only</span><span>·</span><span>MIT</span>
+              <span>v0.1.2</span><span>·</span><span>6 commands</span><span>·</span><span>Node</span><span>·</span><span>MIT</span>
             </div>
-            <p class="hero-caps"><span class="captag">Includes</span>3 commands &middot; 6 skills</p>
-            <p class="hero-validated"><span class="vtag">Validated</span>The bgremove + Sanduhr features.</p>
-            <div class="repo-meter" data-repo="estevanhernandez-stack-ed/vibe-taker" aria-label="Commit activity for vibe-taker"></div>
+            <p class="hero-caps"><span class="captag">Includes</span>6 commands &middot; 9 skills</p>
+            <div class="repo-meter" data-repo="estevanhernandez-stack-ed/Vibe-Recall" aria-label="Commit activity for vibe-recall"></div>
           </div>
 
           <div class="hero-right">
@@ -1039,21 +1038,18 @@
                 <span class="term-dot r"></span>
                 <span class="term-dot y"></span>
                 <span class="term-dot g"></span>
-                <span class="term-label">vibe-taker ~</span>
+                <span class="term-label">vibe-recall ~</span>
               </div>
               <div class="term-body">
-                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-taker:capture src/features/command-palette</span></div>
-                <div><span class="agent">[vibe-taker]</span> Reading source... <span class="ok">done</span> (14 files)</div>
-                <div>  &rarr; architecture + contract surface extracted</div>
-                <div>  &rarr; prompts that built it: <span class="key">6 captured</span></div>
-                <div>  &rarr; gotchas: <span class="key">2 flagged</span></div>
-                <div>  <span class="ok">✓</span> bundled to <span class="path">~/.vibe-taker/library/command-palette/</span></div>
+                <div><span class="prompt">$</span> <span class="cmd">/vibe-recall:sweep</span> stripe checkout</div>
+                <div><span class="agent">[vibe-recall]</span> Checking this repo's own source first... <span class="ok">done</span></div>
+                <div>  &rarr; ranking indexed cards &middot; code fields outrank prose</div>
+                <div>  &rarr; each hit carries a <span class="key">why</span> line: which fields and terms fired</div>
                 <div>&nbsp;</div>
-                <div><span class="prompt">&gt;</span> <span class="cmd">/vibe-taker:plant command-palette</span></div>
-                <div><span class="agent">[vibe-taker]</span> Target stack: <span class="path">React 19 + Vite</span> (match: <span class="ok">high</span>)</div>
-                <div>  &rarr; code-lift selected · adapting imports</div>
-                <div>  Review diff before write? [Y/n] <span class="cmd">y</span></div>
-                <div>  <span class="ok">✓</span> planted: 11 files, 0 conflicts<span class="term-cursor"></span></div>
+                <div><span class="prompt">$</span> <span class="cmd">/vibe-recall:brief</span> checkout-service</div>
+                <div><span class="agent">[vibe-recall]</span> Re-reading the hit at current HEAD...</div>
+                <div>  &rarr; cited paths opened live &middot; card treated as a lead, not a citation</div>
+                <div>  &rarr; handoff: <span class="key">vibe-taker</span> moves the code, you run it<span class="term-cursor"></span></div>
               </div>
             </div>
           </div>
@@ -1065,27 +1061,51 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">01 · What it does</span>
-          <h2>Capture here, plant there.</h2>
-          <p class="lead">Three commands move a feature across repos — reading source autonomously, asking only when the why can't be derived from the code.</p>
+          <h2>Six commands, from index to verified brief.</h2>
+          <p class="lead">Index the estate, sweep it for prior art, then verify one hit live. It never writes code and never edits anything inside a repo it indexes.</p>
         </div>
 
         <div class="cards-grid">
           <div class="card">
-            <span class="cmd">/vibe-taker:capture &amp;lt;path&amp;gt;</span>
-            <h3>Lift a feature into a bundle.</h3>
-            <p class="desc">Reads the source, snapshots reference code, extracts the architecture and contract surface, captures the prompts that built it, and flags the gotchas &mdash; into a portable shelf entry at ~/.vibe-taker/library/.</p>
+            <span class="cmd">/vibe-recall:index</span>
+            <h3>Map the estate.</h3>
+            <p class="desc">Walks your configured estate root and builds or refreshes a shallow card per in-scope repo. Duplicate clones collapse to one canonical card, and diverged pairs get named for you to resolve instead of picked silently.</p>
+            <p class="reach">Reach for it <em>on first run, and whenever your repos have moved since the last index</em>.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-taker:plant &amp;lt;name&amp;gt;</span>
-            <h3>Drop it into a new repo.</h3>
-            <p class="desc">Detects the target stack and picks code-lift on a high match or spec-driven re-implementation on a low one &mdash; declining a hard cross-language mismatch instead of producing broken code. Always shows the diff before any write.</p>
+            <span class="cmd">/vibe-recall:sweep</span>
+            <h3>Rank prior art against a phrase or spec.</h3>
+            <p class="desc">Takes a phrase or a spec file path, checks the current repo's own source first, then ranks indexed cards. Scoring is deterministic and explains itself. Forks and vendored checkouts are excluded by default, and zero hits comes back as a real answer.</p>
+            <p class="reach">Reach for it <em>before you write the spec for something that feels familiar</em>.</p>
           </div>
 
           <div class="card">
-            <span class="cmd">/vibe-taker:list</span>
-            <h3>See what&#x27;s on the shelf.</h3>
-            <p class="desc">Searches your cross-repo library and flags near-duplicate captures with Jaccard hints. Supports --search and --sort name|lang.</p>
+            <span class="cmd">/vibe-recall:brief</span>
+            <h3>Verify one hit at current HEAD.</h3>
+            <p class="desc">Re-reads the named repo live and writes up what is actually there. It is the only skill allowed to author a claim about source. Ends with a handoff to vibe-taker, which does the moving.</p>
+            <p class="reach">Reach for it <em>when a sweep hit looks real and you're about to lean on it</em>.</p>
+          </div>
+
+          <div class="card">
+            <span class="cmd">/vibe-recall:deepen</span>
+            <h3>Promote a card from shallow to deep.</h3>
+            <p class="desc">Reads a repo's actual source and records its real features on the card. With no argument it takes the top of the demand-ranked queue: non-deep cards ordered by recall hits, then last-commit recency.</p>
+            <p class="reach">Reach for it <em>when the same repo keeps surfacing and its card is still thin</em>.</p>
+          </div>
+
+          <div class="card">
+            <span class="cmd">/vibe-recall:vitals</span>
+            <h3>Check index coverage and hygiene.</h3>
+            <p class="desc">Reports repos indexed, deep cards, queue depth, diverged pairs, foreign repos by name, scan-truncated counts, and secret-file skips. Also flags a missing runtime dependency with the fix.</p>
+            <p class="reach">Reach for it <em>when a sweep feels thin and you want to know why</em>.</p>
+          </div>
+
+          <div class="card">
+            <span class="cmd">/vibe-recall</span>
+            <h3>State-aware router.</h3>
+            <p class="desc">Reads your config and index state and recommends one next command. It never fires index or anything mutating on its own.</p>
+            <p class="reach">Reach for it <em>when you're not sure what to run next</em>.</p>
           </div>
         </div>
       </div>
@@ -1094,16 +1114,17 @@
     <section class="brain">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">02 · How it&#x27;s different</span>
-          <h2>It reads the source, then asks the right questions.</h2>
+          <span class="eyebrow">02 · How it&#x27;s built</span>
+          <h2>The index suggests. Only a live read claims.</h2>
         </div>
         <div class="brain-grid">
           <div>
-            <p>Copy-paste between repos loses everything that isn't code &mdash; the contract, the reasoning, the prompts, the gotchas. vibe-taker captures all of it: an architecture sketch, the contract surface, the AI prompts that built the feature, a verbatim source snapshot, and the warnings. It derives the <strong>what</strong> and <strong>how</strong> autonomously from the code, and only asks you for the <strong>why</strong> when the code can't tell it.</p>
-            <p>On plant, it detects the destination stack and adapts &mdash; lifting code when the match is high, re-implementing from the spec when it's low, and declining outright on a hard cross-language mismatch rather than shipping something broken. Nothing is written until you confirm the diff.</p>
+            <p>A card holds <strong>shapes, never content</strong>: symbol names, dependency names, entrypoint paths, and short claim strings pulled from README and CLAUDE.md. No file bodies. Files that are <code>.env</code>-shaped by name, or that trip a secret-shape scan by content, are skipped. The index is a map of your estate, not a mirror of it.</p>
+            <p>Because a card is a snapshot from whenever <code>index</code> last ran, it is good enough to rank and point, never good enough to quote. <code>/vibe-recall:brief</code> opens the file again in the current session, at the repo's current HEAD, before it writes a word about the source. The fork filter reads authorship from git history and fails open: a repo it can't classify is never treated as foreign.</p>
+            <p><strong>Walls are refusals.</strong> You set tenant walls in first-run setup, nothing ships pre-seeded, and a path under a wall is never indexed, ranked, or named in the index. There is no override flag. A <code>UserPromptSubmit</code> hook can surface a banner when your prompt reads like you're about to build something. Cards and config live in the plugin's local data home, never inside an indexed repo, and there is no cross-machine sync.</p>
           </div>
           <div>
-            <div class="callout">Local-only by default. ~/.vibe-taker/library/ is the single source of truth — nothing leaves your machine.</div>
+            <div class="callout">Cards store shapes, never file bodies. Walls have no override flag. Zero hits is a real answer.</div>
           </div>
         </div>
       </div>
@@ -1119,24 +1140,24 @@
         <div class="install-grid">
           <div class="card install-card">
             <h3>Stable <span class="badge">marketplace</span></h3>
-            <p class="blurb">Tagged releases via the Vibe Plugins marketplace.</p>
+            <p class="blurb">Tagged releases, promoted via the Vibe Plugins marketplace.</p>
             <div class="codeblock">
               <button class="copybtn" data-target="copy-stable" aria-label="Copy stable install command">copy</button>
               <pre id="copy-stable" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
-/plugin install vibe-taker@vibe-plugins</pre>
+/plugin install vibe-recall@vibe-plugins</pre>
             </div>
           </div>
           <div class="card install-card">
             <h3>Canary <span class="badge magenta">bleeding edge</span></h3>
-            <p class="blurb">Tracks the solo repo&#x27;s main branch.</p>
+            <p class="blurb">Latest main from this repo.</p>
             <div class="codeblock">
               <button class="copybtn" data-target="copy-canary" aria-label="Copy canary install command">copy</button>
-              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/vibe-taker
-/plugin install vibe-taker</pre>
+              <pre id="copy-canary" style="margin:0;white-space:pre">/plugin marketplace add estevanhernandez-stack-ed/Vibe-Recall
+/plugin install vibe-recall@vibe-recall</pre>
             </div>
           </div>
         </div>
-        <p class="install-note">The library lives at ~/.vibe-taker/library/ — portable across every repo you work in.</p>
+        <p class="install-note">First use runs setup: estate root, tenant walls, optional GitHub accounts for remote-only listing. Needs Node; one runtime dependency (ajv) installs with the plugin, and vitals tells you if it didn&#x27;t. Indexes only your own estate root, no public code search.</p>
       </div>
     </section>
 
@@ -1191,12 +1212,11 @@
               <div class="role">security posture</div>
             </div>
           </a>
-          <a href="/vibe-taker/" class="family-card here">
+          <a href="/vibe-taker/" class="family-card">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-taker-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-taker</div>
               <div class="role">move features between repos</div>
-            <div class="you">You are here</div>
             </div>
           </a>
           <a href="/vibe-walk/" class="family-card">
@@ -1269,11 +1289,12 @@
               <div class="role">runbook author and verifier, read-only</div>
             </div>
           </a>
-          <a href="/vibe-recall/" class="family-card">
+          <a href="/vibe-recall/" class="family-card here">
             <span class="fc-mark" aria-hidden="true"><img src="/assets/brand/plugins/vibe-recall-icon-transparent-512.png" alt="" /></span>
             <div>
               <div class="name">vibe-recall</div>
               <div class="role">prior art from your own repos</div>
+            <div class="you">You are here</div>
             </div>
           </a>
         </div>

@@ -14,7 +14,11 @@
     { "id": "thesis-engine", "name": "thesis-engine", "role": "research feeder", "href": "/thesis-engine/", "beat": "Does the cold-start research before you can write &mdash; ranked topics, sourced notes, a ready bibliography. Feeds directly into vibe-thesis; the drafting stays there." },
     { "id": "vibe-thesis", "name": "vibe-thesis", "role": "thesis authoring", "href": "/vibe-thesis/", "beat": "Scaffolds and co-authors thesis-shaped writing toward a rendered PDF. The voice pipeline &mdash; capture, smooth, guard &mdash; keeps Claude in the loop without losing your voice." },
     { "id": "vibe-prompt", "name": "vibe-prompt", "role": "prompt audit + behavioral eval", "href": "/vibe-prompt/", "beat": "Closes the prompt loop for apps that ship LLM features &mdash; scan, audit, eval, grade, remediate. Hands injection findings straight to vibe-sec instead of guessing at severity." },
-    { "id": "vibe-lingual", "name": "vibe-lingual", "role": "i18n retrofit, codemod-safe", "href": "/vibe-lingual/", "beat": "Classifies every user-facing string, audits the stack for i18n gotchas, then localizes with per-file backups. Deep on next-intl and App Router, honest about the rest." }
+    { "id": "vibe-lingual", "name": "vibe-lingual", "role": "i18n retrofit, codemod-safe", "href": "/vibe-lingual/", "beat": "Classifies every user-facing string, audits the stack for i18n gotchas, then localizes with per-file backups. Deep on next-intl and App Router, honest about the rest." },
+    { "id": "vibe-access", "name": "vibe-access", "role": "agent access layer, manifest-first", "href": "/vibe-access/", "beat": "Scans your routes and auth, maps every callable surface into a manifest, scaffolds the missing affordances behind dev gates, then proves it with a cold-agent verify." },
+    { "id": "vibe-glow", "name": "vibe-glow", "role": "gated UI beautification campaigns", "href": "/vibe-glow/", "beat": "Invents a design language, audits every surface with a skeptic pass, ships fix batches, then reveals the flagship. One stage per yes." },
+    { "id": "vibe-runbook", "name": "vibe-runbook", "role": "runbook author and verifier, read-only", "href": "/vibe-runbook/", "beat": "Drafts an operations runbook from what your repo can prove, then walks its claims against a named environment. Read-only, never spends, says what it could not check." },
+    { "id": "vibe-recall", "name": "vibe-recall", "role": "prior art from your own repos", "href": "/vibe-recall/", "beat": "Indexes your estate into shallow cards, ranks them against what you're about to spec, then verifies the hit at current HEAD before it claims anything." }
   ],
   "thesis": {
     "eyebrow": "The playbook",
@@ -1014,6 +1018,427 @@
         "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-lingual@vibe-plugins",
         "canary": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Lingual\n/plugin install vibe-lingual",
         "note": "Read-only scan + audit by default; the localize codemod mutates only with per-file backups and idempotent re-runs. Deep on next-intl + App Router; honest not-yet-implemented for other stacks."
+      }
+    },
+    "vibe-access": {
+      "name": "vibe-access",
+      "metaTitle": "vibe-access · Give agents pipelines into your app. · 626Labs",
+      "ogTitle": "vibe-access · Give agents pipelines into your app.",
+      "metaDescription": "Claude Code plugin for agent access. Scans your routes and auth model, maps every callable surface into a schema-versioned agent-access.json manifest, scaffolds missing affordances behind hard dev gates, then proves it with a cold-agent verify. Deep on Firebase Cloud Functions. MIT. By 626Labs.",
+      "ogImage": "/assets/brand/plugins/vibe-access-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Give agents pipelines into your app.",
+      "subhead": "vibe-access scans your routes and auth model, maps every callable surface into a schema-versioned <code>agent-access.json</code> manifest with dev and prod-safe tiers, scaffolds the affordances your app is missing behind hard env gates, then proves the layer with a cold-agent verify &mdash; deep on Firebase Cloud Functions, honest about the rest.",
+      "heroMeta": [
+        "v0.2.0",
+        "8 commands",
+        "Firebase Functions",
+        "MIT"
+      ],
+      "ctas": {
+        "primary": {
+          "label": "Install plugin"
+        },
+        "secondary": {
+          "label": "View on GitHub",
+          "href": "https://github.com/estevanhernandez-stack-ed/vibe-access"
+        }
+      },
+      "terminal": {
+        "label": "vibe-access ~",
+        "lines": [
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-access:scan</span>",
+          "<span class=\"agent\">[vibe-access]</span> Walking routes, classifying auth... <span class=\"ok\">done</span>",
+          "  &rarr; auth per route: <span class=\"key\">none / session / token</span>",
+          "  &rarr; unmapped entries flagged as findings, read-only, nothing changed",
+          "&nbsp;",
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-access:map</span>",
+          "<span class=\"agent\">[vibe-access]</span> Writing <span class=\"path\">agent-access.json</span>...",
+          "  &rarr; tiers: <span class=\"key\">dev</span> &middot; <span class=\"key\">prod-safe</span> &middot; seed/reset/capture never prod-safe",
+          "&nbsp;",
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-access:verify</span>",
+          "<span class=\"agent\">[vibe-access]</span> Cold agent, manifest only... <span class=\"ok\">stamping pass/fail</span><span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "Eight commands from route scan to proven manifest.",
+          "lead": "Scan and map are read-only against your source. Scaffold is the only step that writes, and it is backup-wrapped, dev-gated, and shows every patch before it lands.",
+          "cards": [
+            {
+              "command": "/vibe-access:scan",
+              "title": "Inventory routes and auth.",
+              "desc": "Walks your routes, classifies auth as none, session, or token, and mines the input shape out of each handler. Every unmapped entry becomes a first-class finding. Read-only.",
+              "reach": "Reach for it <em>before you let an agent near the app, to see what is actually callable</em>."
+            },
+            {
+              "command": "/vibe-access:map",
+              "title": "Build the manifest.",
+              "desc": "Turns the scan into <code>agent-access.json</code>: each affordance carries a tier, a kind, an auth class, and a verified stamp. Re-runnable; overrides and verify stamps survive a re-map.",
+              "reach": "Reach for it <em>once the scan looks right and you want a contract an agent can read cold</em>."
+            },
+            {
+              "command": "/vibe-access:scaffold",
+              "title": "Fill the gaps you pick.",
+              "desc": "Adds the affordances your app is missing: seed, reset, read-state, capture, discovery. Backup-wrapped and dev-gated; patches are shown and applied via Edit, never blind.",
+              "reach": "Reach for it <em>when the manifest shows what an agent needs but the app does not expose</em>."
+            },
+            {
+              "command": "/vibe-access:verify",
+              "title": "Prove it with a cold agent.",
+              "desc": "Works from the manifest alone, with no reading of your source to work out a call. Local-only unless you force it. Stamps each affordance pass or fail. Never auto-probes anything marked destructive.",
+              "reach": "Reach for it <em>before anything counts as done</em>."
+            },
+            {
+              "command": "/vibe-access:visualize",
+              "title": "See what the agent sees.",
+              "desc": "Renders the agent-facing surface as one self-contained HTML page, from the manifest or a live MCP <code>tools/list</code> payload. Tool count is never graded.",
+              "reach": "Reach for it <em>when you want to read the surface the way an agent reads it</em>."
+            },
+            {
+              "command": "/vibe-access:describe",
+              "title": "Write descriptions an agent can choose from.",
+              "desc": "Reads the handler behind every affordance still carrying a machine-template description and drafts a real one. You approve per group before anything is written. Nothing lands unreviewed.",
+              "reach": "Reach for it <em>when the manifest is correct but the descriptions are not good enough to choose from</em>."
+            },
+            {
+              "command": "/vibe-access:vitals",
+              "title": "Self-test the install.",
+              "desc": "Structural health check of the plugin itself, not your app. Eight checks, banner report.",
+              "reach": "Reach for it <em>after an install or update, or when something behaves oddly</em>."
+            },
+            {
+              "command": "/vibe-access",
+              "title": "State-aware router.",
+              "desc": "Reads your <code>.vibe-access/</code> state and <code>agent-access.json</code>, then names the one next command and why. Never runs a mutating step on its own.",
+              "reach": "Reach for it <em>when you are not sure where in the sequence you are</em>."
+            }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it's built",
+          "heading": "Map, gate, prove. Refuse where it matters.",
+          "paragraphs": [
+            "The access work runs in three stages: <strong>agent affordances &rarr; agent-facing API &rarr; MCP server</strong>. vibe-access owns the middle. It maps what your app already exposes, scaffolds what is missing, and writes it into a manifest an agent can read cold. The manifest is the embryo of your eventual MCP server, not the server itself; graduating it stays a deliberate, manual step.",
+            "Affordances are <strong>dev</strong> (env-gated, never ships) or <strong>prod-safe</strong> (runs under the caller's own auth, no elevated access). <code>seed</code>, <code>reset</code>, and <code>capture</code> can never be tagged prod-safe, and that is a refusal enforced at three layers: the manifest schema rejects it, the engine throws if you route around it, and the scaffolder will not apply a dev-tier file missing the <code>vibe-access:dev-gate</code> marker. There is no flag that lets a seed endpoint into production.",
+            "It is <strong>deep on Firebase Cloud Functions</strong>: hosting-rewrite route detection and ID-token auth mapping. Next.js and Express report <em>not-yet-implemented</em> instead of guessing, and the agnostic path writes what you learned to an adapter-notes file that seeds the next real adapter. Dogfooded on WeSeeYouAtTheMovies: 84 routes scanned, 85 affordances, verify 76/85 with all 9 fails classified, and 7 plugin bugs surfaced and fixed in the same session with regression tests."
+          ],
+          "callout": "Seed, reset, and capture can never be prod-safe. A refusal, not a warning, enforced in the schema, the engine, and the scaffolder."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-access@vibe-plugins",
+        "note": "Scan and map are read-only against your source. Scaffold is backup-wrapped and dev-gated; verify is local-only unless you force it. Deep on Firebase Cloud Functions; honest not-yet-implemented for other stacks."
+      }
+    },
+    "vibe-glow": {
+      "name": "vibe-glow",
+      "metaTitle": "vibe-glow · Take an app from working to wanted. · 626Labs",
+      "ogTitle": "vibe-glow · Take an app from working to wanted.",
+      "metaDescription": "Claude Code plugin for UI and QOL beautification campaigns. Invents a design language, audits with Opus review lenses and a skeptic pass, ships fix batches re-reviewed until clean, then reveals the flagship. WinUI and web adapters. MIT. By 626Labs.",
+      "ogImage": "/assets/brand/plugins/vibe-glow-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Take an app from working to wanted.",
+      "subhead": "vibe-glow runs a repeatable, gated beautification campaign: a measuring stick first, a skeptic-verified findings register next, then fix batches re-reviewed until clean, then the flagship release. Go app-wide with an invented design language, or scoped to one area with a goal in your own words. Consent is per stage, so one yes runs one stage.",
+      "heroMeta": [
+        "v0.2.0",
+        "6 commands",
+        "WinUI + web",
+        "MIT"
+      ],
+      "ctas": {
+        "primary": {
+          "label": "Install plugin"
+        },
+        "secondary": {
+          "label": "View on GitHub",
+          "href": "https://github.com/estevanhernandez-stack-ed/vibe-glow"
+        }
+      },
+      "terminal": {
+        "label": "vibe-glow ~",
+        "lines": [
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-glow:vibe-glow</span>",
+          "<span class=\"agent\">[vibe-glow]</span> No campaign state here. Full glow-up, or a focused fix?",
+          "  &rarr; you: <span class=\"key\">focused</span>, the settings screen should feel calmer",
+          "  &rarr; Start now? <span class=\"cmd\">yes</span>",
+          "&nbsp;",
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-glow:status</span>",
+          "<span class=\"agent\">[vibe-glow]</span> stage: <span class=\"key\">identity</span> &middot; scope: settings screen",
+          "  &rarr; read-only &mdash; nothing captured, nothing written<span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "Six commands, one campaign.",
+          "lead": "Start with the concierge and it runs the next right stage after you say yes. Or call any stage directly. Nothing auto-advances.",
+          "cards": [
+            {
+              "command": "/vibe-glow:vibe-glow",
+              "title": "Start here.",
+              "desc": "The concierge and the bare entry point. Asks whether you want a full glow-up or a focused fix, gathers what it needs, and runs each stage only after an explicit yes. You never need to know a stage name.",
+              "reach": "Reach for it <em>when you want the whole campaign without learning the stages</em>."
+            },
+            {
+              "command": "/vibe-glow:identity",
+              "title": "Build the measuring stick.",
+              "desc": "Stage 0. Invents a design language for an app-wide campaign, or extracts a conventions brief for a scoped one. Captures the app's invariants, such as user theming, so reviewers know what they can't touch.",
+              "reach": "Reach for it <em>before anyone judges a screen as good or bad</em>."
+            },
+            {
+              "command": "/vibe-glow:audit",
+              "title": "Find what's actually wrong.",
+              "desc": "Stage 1. Five Opus review lenses produce a findings register, and a skeptic pass faces every finding before it becomes work. Scoped campaigns audit only their scope, weighted toward your goal.",
+              "reach": "Reach for it <em>when you want a ranked list you can defend, not a vibe</em>."
+            },
+            {
+              "command": "/vibe-glow:wave",
+              "title": "Ship one fix batch.",
+              "desc": "Stage 2, one wave per call. Branch, fix, review, re-capture, re-review until the surfaces measure clean. Every tally is re-derived from the register's rows, never carried forward from the last wave.",
+              "reach": "Reach for it <em>when the register is approved and it's time to change pixels</em>."
+            },
+            {
+              "command": "/vibe-glow:reveal",
+              "title": "Close the campaign.",
+              "desc": "Stage 3. The flagship release for an app-wide run, or a goal-check close-out for a scoped one. It re-derives the severity-4+ status from the register before it opens.",
+              "reach": "Reach for it <em>when every high-severity finding is clean or explicitly waived</em>."
+            },
+            {
+              "command": "/vibe-glow:status",
+              "title": "Where is the campaign.",
+              "desc": "Read-only. Stage, scope, adapter, invariants, findings tallies read from the register this invocation, and the wave ledger. No captures, no writes, no agents.",
+              "reach": "Reach for it <em>when you're coming back to a campaign cold</em>."
+            }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it's built",
+          "heading": "Measure first, skeptic second, ship third.",
+          "paragraphs": [
+            "The campaign runs <strong>identity &rarr; audit &rarr; wave &rarr; reveal</strong>. Identity produces the measuring stick. Audit runs five Opus review lenses, and a skeptic pass tries to refute each finding before it becomes work. Waves ship fix batches and re-review until the surface measures clean. Reveal closes it out. Consent is per stage: one yes runs one stage.",
+            "<strong>Per-app invariants outrank findings.</strong> If the app has user theming, color belongs to the user and identity lives in structure. Scoreboard claims re-derive from register rows every time they're written; the commands record that a carried-forward scoreboard once cost a campaign an extra wave. Evidence like screenshots stays out of git, while state, measuring sticks, and the findings register are committed.",
+            "Evidence comes from two adapters: <strong>winui-powershell</strong> (window capture, UIA route maps, UIA tree dumps, and pixel sampling) and <strong>web-playwright</strong>. The first dogfood target was 626 Mod Launcher. Loggers and an evolve pass are deliberately deferred until they're earned."
+          ],
+          "callout": "One yes runs one stage. Nothing auto-advances, and every finding faces a skeptic before it becomes work."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-glow@vibe-plugins",
+        "note": "Campaign state lives in .vibe-glow/state.json at your repo root. Evidence adapters cover WinUI (PowerShell capture) and web (Playwright)."
+      }
+    },
+    "vibe-runbook": {
+      "name": "vibe-runbook",
+      "metaTitle": "vibe-runbook · A runbook that checks itself against the running system. · 626Labs",
+      "ogTitle": "vibe-runbook · A runbook that checks itself against the running system.",
+      "metaDescription": "Claude Code plugin for runbooks. Drafts one from what your repo can prove, classifies every claim, then walks the machine-checkable ones against an environment you name. Read-only, never spends, honest about what it could not check. MIT. By 626Labs.",
+      "ogImage": "/assets/brand/plugins/vibe-runbook-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "A runbook that checks itself against the running system.",
+      "subhead": "A runbook says do X and you will see W. Nothing checks whether that is still true. vibe-runbook writes one by inspecting your app, then walks its claims against a running system &mdash; read-only, never spends, and honest about what it could not check. Every report says <em>checked N of M enumerated</em>.",
+      "heroMeta": [
+        "v0.2.1",
+        "7 commands",
+        "Node",
+        "MIT"
+      ],
+      "ctas": {
+        "primary": {
+          "label": "Install plugin"
+        },
+        "secondary": {
+          "label": "View on GitHub",
+          "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Runbook"
+        }
+      },
+      "terminal": {
+        "label": "vibe-runbook ~",
+        "lines": [
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-runbook:scan</span>",
+          "<span class=\"agent\">[vibe-runbook]</span> Classifying claims... <span class=\"ok\">done</span>",
+          "  &rarr; pins, status assertions, receipts, questions &middot; confidence reported",
+          "&nbsp;",
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-runbook:walk --env staging</span>",
+          "<span class=\"agent\">[vibe-runbook]</span> Credential preflight... <span class=\"ok\">ok</span>",
+          "  &rarr; <span class=\"ok\">PASS</span> &middot; <span class=\"key\">FAIL</span> &middot; BLOCKED &middot; SPENDS &middot; HUMAN &middot; QUESTION",
+          "  &rarr; receipts reported, never failed &middot; nothing written, nothing spent",
+          "  &rarr; checked <span class=\"key\">N of M</span> enumerated<span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "Seven commands, from drafting a runbook to keeping it true.",
+          "lead": "Scan reads, walk checks, remediate rewrites, author drafts. The walk is read-only and never spends; the rewrite diffs by default and backs up every file it touches.",
+          "cards": [
+            {
+              "command": "/vibe-runbook:scan",
+              "title": "Inventory every claim.",
+              "desc": "Reads a runbook and classifies each claim by shape: a pin, a status assertion, a past-tense receipt, a question. Ambiguity escalates to a question instead of a guess, and the extraction reports its own confidence.",
+              "reach": "Reach for it <em>before you trust a runbook, to see what in it a machine can actually check</em>."
+            },
+            {
+              "command": "/vibe-runbook:walk",
+              "title": "Check it against a named environment.",
+              "desc": "Walks the machine-checkable claims with six verdicts: PASS, FAIL, BLOCKED, SPENDS, HUMAN, QUESTION. Read-only, never spends, and <code>--env</code> is required. A missing credential hard-stops as BLOCKED with the exact ask instead of quietly walking your local machine.",
+              "reach": "Reach for it <em>when you want to know which lines of the runbook are still true today</em>."
+            },
+            {
+              "command": "/vibe-runbook:remediate",
+              "title": "Fix the stale pin.",
+              "desc": "Rewrites a stale pin as the command that answers it where the reader has a shell, or as the list it was summarizing where they do not. Diffs by default; <code>--apply</code> writes, with a backup beside every file it touches.",
+              "reach": "Reach for it <em>after a walk shows a pin that went stale</em>."
+            },
+            {
+              "command": "/vibe-runbook:author",
+              "title": "Draft the runbook from the repo.",
+              "desc": "Inspects the app and writes an operations runbook from what it can derive: a revision pin that answers itself, the run commands, deploy and rollback scripts where they exist, the names of the configuration keys. What a repo cannot tell you comes out as explicit questions. It proposes beside your runbook and never overwrites it.",
+              "reach": "Reach for it <em>when the runbook does not exist yet, or the one you have was written from memory</em>."
+            },
+            {
+              "command": "/vibe-runbook:vitals",
+              "title": "Health of the local state.",
+              "desc": "Checks the local vibe-runbook state.",
+              "reach": "Reach for it <em>when a run behaves oddly and you want to rule out the plugin's own state</em>."
+            },
+            {
+              "command": "/vibe-runbook:evolve-runbook",
+              "title": "Improve the plugin itself.",
+              "desc": "Reflects on past runs and proposes improvements to the plugin. Writes proposals; never edits a skill. Session logging is not wired yet, so it has little to draw from today.",
+              "reach": "Reach for it <em>once the plugin has real runs behind it</em>."
+            },
+            {
+              "command": "/vibe-runbook",
+              "title": "State-aware router.",
+              "desc": "Reads what exists (a cached scan, a config, a runbook) and recommends one next move. Never walks or writes on its own.",
+              "reach": "Reach for it <em>when you are not sure which step comes next</em>."
+            }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it's built",
+          "heading": "Honest about what it could not check.",
+          "paragraphs": [
+            "A document that says it tested 17 rooms is not lying when there are now 12. So <strong>a receipt is reported and never failed</strong>: past-tense coverage records drift because the world moved. Pins are different. A pin is a value that identifies the running system, and the walk checks it. Enumeration is mechanical and exhaustive, never sampled, and every report states <strong>checked N of M enumerated</strong>.",
+            "Four invariants hold on every walk. <strong>Credential preflight hard-stops.</strong> <strong>Nothing spends:</strong> a billable check is reported as SPENDS with what a full walk would cost, and never run. <strong>No secret is printed:</strong> shapes, statuses and counts only. <strong>The contract source beats the guess:</strong> when the runbook is ambiguous about an interface, it reads the route table or client definition.",
+            "It earned those on a real service. Walked read-only against a live Cloud Run service's hand-written smoke list, it returned 5 claims PASS, 3 FAIL, and 8 of 8 numbered steps unreachable. The write-guard probe sent a request that fails validation against a resource that does not exist, and found six routes answering 422 with the missing field name instead of 401. All six were fixed the same day and re-walked.",
+            "The author is just as plain about its limits. Run against two real applications that already carry hand-written runbooks, it fabricated nothing: it wrote only what it could verify, asked for the rest by name, and listed what it failed to gather. Expect questions, not a finished document. Most of a real operations runbook is not in the repository."
+          ],
+          "callout": "Read-only, never spends, never prints a secret. No telemetry, and no outbound calls beyond the walk you named."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-runbook@vibe-plugins",
+        "note": "Read-only walk, and <code>--env</code> is required. Remediate diffs by default and backs up before <code>--apply</code> writes. Node engine with no runtime dependencies."
+      }
+    },
+    "vibe-recall": {
+      "name": "vibe-recall",
+      "metaTitle": "vibe-recall · Have you already built this? Check your own repos first. · 626Labs",
+      "ogTitle": "vibe-recall · Have you already built this? Check your own repos first.",
+      "metaDescription": "Claude Code plugin that surfaces prior art from your own repos while you spec the next one. Indexes your estate into shallow cards, ranks them against a phrase or spec file, and verifies the hit at current HEAD before it claims anything. MIT. By 626Labs.",
+      "ogImage": "/assets/brand/plugins/vibe-recall-banner-1280x640.png",
+      "eyebrow": "626Labs · Claude Code plugin",
+      "h1": "Have you already built this? Check your own repos first.",
+      "subhead": "vibe-recall indexes the repos you've already written and answers one question while you spec the next feature: have I built something like this? It ranks shallow cards against your phrase or spec file, then re-reads the winning hit live at its current HEAD before it says anything about the source. A stale card can point. Only a live read can claim.",
+      "heroMeta": [
+        "v0.1.2",
+        "6 commands",
+        "Node",
+        "MIT"
+      ],
+      "ctas": {
+        "primary": {
+          "label": "Install plugin"
+        },
+        "secondary": {
+          "label": "View on GitHub",
+          "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Recall"
+        }
+      },
+      "terminal": {
+        "label": "vibe-recall ~",
+        "lines": [
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-recall:sweep</span> stripe checkout",
+          "<span class=\"agent\">[vibe-recall]</span> Checking this repo's own source first... <span class=\"ok\">done</span>",
+          "  &rarr; ranking indexed cards &middot; code fields outrank prose",
+          "  &rarr; each hit carries a <span class=\"key\">why</span> line: which fields and terms fired",
+          "&nbsp;",
+          "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-recall:brief</span> checkout-service",
+          "<span class=\"agent\">[vibe-recall]</span> Re-reading the hit at current HEAD...",
+          "  &rarr; cited paths opened live &middot; card treated as a lead, not a citation",
+          "  &rarr; handoff: <span class=\"key\">vibe-taker</span> moves the code, you run it<span class=\"term-cursor\"></span>"
+        ]
+      },
+      "sections": [
+        {
+          "type": "cards",
+          "eyebrow": "01 · What it does",
+          "heading": "Six commands, from index to verified brief.",
+          "lead": "Index the estate, sweep it for prior art, then verify one hit live. It never writes code and never edits anything inside a repo it indexes.",
+          "cards": [
+            {
+              "command": "/vibe-recall:index",
+              "title": "Map the estate.",
+              "desc": "Walks your configured estate root and builds or refreshes a shallow card per in-scope repo. Duplicate clones collapse to one canonical card, and diverged pairs get named for you to resolve instead of picked silently.",
+              "reach": "Reach for it <em>on first run, and whenever your repos have moved since the last index</em>."
+            },
+            {
+              "command": "/vibe-recall:sweep",
+              "title": "Rank prior art against a phrase or spec.",
+              "desc": "Takes a phrase or a spec file path, checks the current repo's own source first, then ranks indexed cards. Scoring is deterministic and explains itself. Forks and vendored checkouts are excluded by default, and zero hits comes back as a real answer.",
+              "reach": "Reach for it <em>before you write the spec for something that feels familiar</em>."
+            },
+            {
+              "command": "/vibe-recall:brief",
+              "title": "Verify one hit at current HEAD.",
+              "desc": "Re-reads the named repo live and writes up what is actually there. It is the only skill allowed to author a claim about source. Ends with a handoff to vibe-taker, which does the moving.",
+              "reach": "Reach for it <em>when a sweep hit looks real and you're about to lean on it</em>."
+            },
+            {
+              "command": "/vibe-recall:deepen",
+              "title": "Promote a card from shallow to deep.",
+              "desc": "Reads a repo's actual source and records its real features on the card. With no argument it takes the top of the demand-ranked queue: non-deep cards ordered by recall hits, then last-commit recency.",
+              "reach": "Reach for it <em>when the same repo keeps surfacing and its card is still thin</em>."
+            },
+            {
+              "command": "/vibe-recall:vitals",
+              "title": "Check index coverage and hygiene.",
+              "desc": "Reports repos indexed, deep cards, queue depth, diverged pairs, foreign repos by name, scan-truncated counts, and secret-file skips. Also flags a missing runtime dependency with the fix.",
+              "reach": "Reach for it <em>when a sweep feels thin and you want to know why</em>."
+            },
+            {
+              "command": "/vibe-recall",
+              "title": "State-aware router.",
+              "desc": "Reads your config and index state and recommends one next command. It never fires index or anything mutating on its own.",
+              "reach": "Reach for it <em>when you're not sure what to run next</em>."
+            }
+          ]
+        },
+        {
+          "type": "prose",
+          "eyebrow": "02 · How it's built",
+          "heading": "The index suggests. Only a live read claims.",
+          "paragraphs": [
+            "A card holds <strong>shapes, never content</strong>: symbol names, dependency names, entrypoint paths, and short claim strings pulled from README and CLAUDE.md. No file bodies. Files that are <code>.env</code>-shaped by name, or that trip a secret-shape scan by content, are skipped. The index is a map of your estate, not a mirror of it.",
+            "Because a card is a snapshot from whenever <code>index</code> last ran, it is good enough to rank and point, never good enough to quote. <code>/vibe-recall:brief</code> opens the file again in the current session, at the repo's current HEAD, before it writes a word about the source. The fork filter reads authorship from git history and fails open: a repo it can't classify is never treated as foreign.",
+            "<strong>Walls are refusals.</strong> You set tenant walls in first-run setup, nothing ships pre-seeded, and a path under a wall is never indexed, ranked, or named in the index. There is no override flag. A <code>UserPromptSubmit</code> hook can surface a banner when your prompt reads like you're about to build something. Cards and config live in the plugin's local data home, never inside an indexed repo, and there is no cross-machine sync."
+          ],
+          "callout": "Cards store shapes, never file bodies. Walls have no override flag. Zero hits is a real answer."
+        }
+      ],
+      "install": {
+        "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-recall@vibe-plugins",
+        "canary": "/plugin marketplace add estevanhernandez-stack-ed/Vibe-Recall\n/plugin install vibe-recall@vibe-recall",
+        "note": "First use runs setup: estate root, tenant walls, optional GitHub accounts for remote-only listing. Needs Node; one runtime dependency (ajv) installs with the plugin, and vitals tells you if it didn't. Indexes only your own estate root, no public code search."
       }
     }
   }

@@ -575,6 +575,67 @@ def glyph_lingual(primary, secondary):
 
     return img
 
+def glyph_access(primary, secondary):
+    """An app as a box with three agent pipelines plugged into its left side,
+    each ending in a connector node: vibe-access gives agents a way in.
+    Pipes in secondary, the app in primary."""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    # The app.
+    draw.rounded_rectangle([88, 40, 168, 160], radius=10, outline=primary + (255,), width=5)
+    for y in (70, 100, 130):
+        # Port on the app's edge, pipe, and the agent-side node.
+        draw.line([(40, y), (88, y)], fill=secondary + (255,), width=4)
+        draw.ellipse([28, y - 10, 48, y + 10], fill=NAVY + (255,), outline=secondary + (255,), width=4)
+        draw.rectangle([82, y - 6, 94, y + 6], fill=primary + (255,))
+    return img
+
+
+def glyph_glow(primary, secondary):
+    """A core with eight rays: the glow-up. Short rays alternate with long
+    ones so the mark reads as light, not a gear."""
+    import math
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    cx, cy = GLYPH_SIZE // 2, GLYPH_SIZE // 2
+    draw.ellipse([cx - 30, cy - 30, cx + 30, cy + 30], outline=primary + (255,), width=5)
+    draw.ellipse([cx - 10, cy - 10, cx + 10, cy + 10], fill=secondary + (255,))
+    for i in range(8):
+        a = math.pi / 4 * i
+        inner, outer = 44, (82 if i % 2 == 0 else 64)
+        color = primary if i % 2 == 0 else secondary
+        draw.line([(cx + inner * math.cos(a), cy + inner * math.sin(a)),
+                   (cx + outer * math.cos(a), cy + outer * math.sin(a))],
+                  fill=color + (255,), width=5)
+    return img
+
+
+def glyph_runbook(primary, secondary):
+    """A page of three checklist rows: two ticked, one left open. vibe-runbook
+    verifies a runbook's claims and says what it could not check."""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    draw.rounded_rectangle([46, 28, 154, 172], radius=8, outline=primary + (255,), width=5)
+    for i, y in enumerate((62, 100, 138)):
+        draw.rectangle([64, y - 11, 86, y + 11], outline=primary + (255,), width=4)
+        draw.line([(98, y), (138, y)], fill=primary + (200,), width=4)
+        if i < 2:
+            draw.line([(67, y), (74, y + 8), (90, y - 14)], fill=secondary + (255,), width=5)
+    return img
+
+
+def glyph_recall(primary, secondary):
+    """Three stacked repo layers with a lens over them: prior art found in
+    your own estate. Layers in primary, the lens in secondary."""
+    img = _new_glyph()
+    draw = ImageDraw.Draw(img)
+    for y in (52, 88, 124):
+        draw.rounded_rectangle([34, y, 134, y + 24], radius=6, outline=primary + (255,), width=4)
+    draw.ellipse([92, 74, 152, 134], fill=NAVY + (255,), outline=secondary + (255,), width=6)
+    draw.line([(144, 128), (172, 158)], fill=secondary + (255,), width=8)
+    return img
+
+
 
 GLYPHS = {
     "node_graph":   glyph_cartographer,
@@ -592,6 +653,10 @@ GLYPHS = {
     "lens":         glyph_insights,
     "prompt_glyph": glyph_prompt,
     "globe":        glyph_lingual,
+    "pipelines":    glyph_access,
+    "rays":         glyph_glow,
+    "checklist":    glyph_runbook,
+    "lens_layers":  glyph_recall,
 }
 
 
@@ -669,6 +734,26 @@ PLUGINS = [
         "id": "vibe-lingual", "name": "VIBE LINGUAL",
         "tagline": "localize without corrupting logic",
         "glyph": "globe", "primary": CYAN, "secondary": MAGENTA,
+    },
+    {
+        "id": "vibe-access", "name": "VIBE ACCESS",
+        "tagline": "give agents a way in",
+        "glyph": "pipelines", "primary": CYAN, "secondary": MAGENTA,
+    },
+    {
+        "id": "vibe-glow", "name": "VIBE GLOW",
+        "tagline": "from working to wanted",
+        "glyph": "rays", "primary": CYAN, "secondary": MAGENTA,
+    },
+    {
+        "id": "vibe-runbook", "name": "VIBE RUNBOOK",
+        "tagline": "runbooks that check themselves",
+        "glyph": "checklist", "primary": CYAN, "secondary": MAGENTA,
+    },
+    {
+        "id": "vibe-recall", "name": "VIBE RECALL",
+        "tagline": "you may have built this already",
+        "glyph": "lens_layers", "primary": CYAN, "secondary": MAGENTA,
     },
 ]
 

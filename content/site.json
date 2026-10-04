@@ -618,6 +618,118 @@
       "screenshots": []
     },
     {
+      "id": "vibe-access",
+      "title": "Vibe Access",
+      "tagline": "Give agents pipelines into your app.",
+      "description": "vibe-access scans your routes and auth model, maps every callable surface into a schema-versioned agent-access.json manifest with dev and prod-safe tiers, scaffolds the affordances your app is missing behind hard env gates, then proves the layer with a cold-agent verify that exercises every affordance before anything counts as done. Seed, reset, and capture can never be tagged prod-safe: a refusal, not a warning. Deep on Firebase Cloud Functions, with a real adapter seam that reports an honest not-yet-implemented for the rest. Validated against WeSeeYouAtTheMovies: 84 routes scanned, 85 affordances, verify 76/85.",
+      "tags": [
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "Agents",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-access",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "meta": "<code>/vibe-access</code> · agent access layer, manifest-first",
+      "productPage": "/vibe-access/",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-glow",
+      "title": "Vibe Glow",
+      "tagline": "Take an app from working to wanted.",
+      "description": "vibe-glow runs a repeatable, gated UI and QOL beautification campaign, app-wide with an invented design language or scoped to one area with a goal in your own words. Four stages (identity, audit, wave, reveal) each run only on your yes: a measuring stick first, then a skeptic-verified findings register, then fix batches re-reviewed until clean, then the flagship release. Review agents run on Opus, per-app invariants like user theming outrank findings, and evidence adapters cover WinUI (PowerShell capture) and web (Playwright).",
+      "tags": [
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "Design",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/vibe-glow",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "meta": "<code>/vibe-glow</code> · gated UI beautification campaigns",
+      "productPage": "/vibe-glow/",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-runbook",
+      "title": "Vibe Runbook",
+      "tagline": "A runbook that checks itself against the running system.",
+      "description": "A runbook says do X and you will see W. Nothing checks whether that is still true. vibe-runbook writes one by inspecting your app, then verifies its claims against a running system. It scans a runbook and classifies every claim by shape, walks the machine-checkable ones against an environment you name with six verdicts (PASS, FAIL, BLOCKED, SPENDS, HUMAN, QUESTION), and offers the fix when a pin has gone stale. Read-only, never spends, and honest about what it could not check: every report states how many of the enumerated claims it actually checked.",
+      "tags": [
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "Ops",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/Vibe-Runbook",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "meta": "<code>/vibe-runbook</code> · runbook author and verifier, read-only",
+      "productPage": "/vibe-runbook/",
+      "screenshots": []
+    },
+    {
+      "id": "vibe-recall",
+      "title": "Vibe Recall",
+      "tagline": "Have you already built this? Check your own repos first.",
+      "description": "vibe-recall indexes your own git repos and surfaces prior art while you spec the next feature. It builds a shallow card per repo (symbol names, dependency names, entrypoint paths, short claim strings, never a file body), ranks those cards against a phrase or spec file with scoring that explains itself, and hands real hits to a brief that re-reads the source live at current HEAD before claiming anything. Tenant walls you configure are refusals, not preferences. Zero hits is a real answer.",
+      "tags": [
+        {
+          "label": "Plugin",
+          "tone": "cyan"
+        },
+        {
+          "label": "Recall",
+          "tone": "magenta"
+        },
+        {
+          "label": "Live",
+          "tone": "live"
+        }
+      ],
+      "status": "live",
+      "repo": "estevanhernandez-stack-ed/Vibe-Recall",
+      "npm": null,
+      "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
+      "claudeCode": true,
+      "meta": "<code>/vibe-recall</code> · prior art from your own repos",
+      "productPage": "/vibe-recall/",
+      "screenshots": []
+    },
+    {
       "id": "rbx15-shirt-pants",
       "title": "RBX15 Classic Shirt and Pants Maker",
       "description": "Native desktop editor for Roblox Classic (R15) shirt and pants templates, built for the exact 585×559 template grid. Layer-based compositing with non-destructive adjustments — brightness, contrast, saturation, hue, and per-channel RGB shift, all real-time — plus drawing tools, fullbleed / mirror / meme-tee presets, and a word-art generator with 15 fonts. Built on Electron for Windows. Free on the Microsoft Store.",
@@ -834,11 +946,12 @@
   "pluginFamily": {
     "memberIds": ["vibe-cartographer", "vibe-iterate", "vibe-insights", "vibe-keystone",
                   "vibe-doc", "vibe-test", "vibe-thesis", "thesis-engine", "vibe-sec",
-                  "vibe-taker", "vibe-wrap", "vibe-walk", "vibe-prompt", "vibe-lingual"],
+                  "vibe-taker", "vibe-wrap", "vibe-walk", "vibe-prompt", "vibe-lingual",
+                  "vibe-access", "vibe-glow", "vibe-runbook", "vibe-recall"],
     "card": {
       "id": "vibe-family",
       "title": "The Vibe Plugin Family",
-      "description": "One coordinated family of Claude Code plugins — planning, iteration, docs, tests, security, research authoring — installed independently, composed when present. Every plugin follows the same Apache-licensed playbook: self-repair, self-teach, self-evolve, so the tenth run beats the first. {{fact:claude_plugins}} plugins, one spine.",
+      "description": "One coordinated family of Claude Code plugins — planning, iteration, docs, tests, security, research, agent access, runbooks and UI polish — installed independently, composed when present. Every plugin follows the same Apache-licensed playbook: self-repair, self-teach, self-evolve, so the tenth run beats the first. {{fact:claude_plugins}} plugins, one spine.",
       "tags": [
         {"label": "Claude Code", "tone": "cyan"},
         {"label": "plugin family", "tone": "magenta"},
