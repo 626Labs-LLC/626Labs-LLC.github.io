@@ -621,7 +621,7 @@
       "id": "vibe-access",
       "title": "Vibe Access",
       "tagline": "Give agents pipelines into your app.",
-      "description": "vibe-access scans your routes and auth model, maps every callable surface into a schema-versioned agent-access.json manifest with dev and prod-safe tiers, scaffolds the affordances your app is missing behind hard env gates, then proves the layer with a cold-agent verify that exercises every affordance before anything counts as done. Seed, reset, and capture can never be tagged prod-safe: a refusal, not a warning. Deep on Firebase Cloud Functions, with a real adapter seam that reports an honest not-yet-implemented for the rest. Validated against WeSeeYouAtTheMovies: 84 routes scanned, 85 affordances, verify 76/85.",
+      "description": "vibe-access scans your routes and auth model, maps every callable surface into a schema-versioned agent-access.json manifest with dev and prod-safe tiers, scaffolds the affordances your app is missing behind hard env gates, then proves the layer with a cold-agent verify that exercises every affordance before anything counts as done. Seed, reset, and capture can never be tagged prod-safe: a refusal, not a warning. Adapters for Firebase Cloud Functions and Streamlit, with a real adapter seam that reports an honest not-yet-implemented for the rest. Validated against WeSeeYouAtTheMovies: 84 routes scanned, 85 affordances, verify 76/85.",
       "tags": [
         {
           "label": "Plugin",
