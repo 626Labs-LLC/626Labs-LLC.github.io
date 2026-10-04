@@ -58,7 +58,7 @@ references and one-off design artifacts.
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
 | `repo-meter/` | The repo meter: `meter.css` + `meter.js`, a 26-week commit grid on every showcased project (home rows, the 15 plugin pages, the hand-authored product pages). Renderers emit an empty `<div class="repo-meter" data-repo="owner/repo">`; the script fills it from `data/repo-activity.json` at runtime. The stylesheet reads contract tokens only, so every theme dresses it. Spec: `docs/superpowers/specs/2026-10-01-repo-meter-design.md`. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 17 files: 13 bot workflows that push to main, plus 4 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
+| `.github/workflows/` | 18 files: 13 bot workflows that push to main, plus 5 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, 1 release review, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 | `themes/`, `content/themes.json`, `themes.html` | The monthly theme rotation: theme source dirs, the active/queue/archive registry, and the gallery page rendered from it. See **Theme rotation** below. |
 
@@ -96,13 +96,14 @@ The 13 bot workflows that push to main:
 All thirteen use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
-Plus four that never commit to this repo:
+Plus five that never commit to this repo:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
 | `version-truth-reconcile.yml` | Daily 08:00 UTC (~3am Chicago) | Corrects drifted 626 dashboard project versions to the latest shipped (non-prerelease) GitHub release per linked repo, via the MCP REST API with the scoped `version-truth-bot` agent key (`MCP_VERSION_TRUTH_KEY`, manage_projects only). Refuses to write past 8 drifts in one run (systemic-change fuse). Dispatch with `dry_run` to preview. |
 | `link-check.yml` | Push to `**/*.html` or `**/*.md`, weekly Mon 13:00 UTC | Lychee link-check. Opens an issue on broken links during scheduled runs only. Excludes `themes/archive` — frozen months aren't maintained pages. |
 | `content-health.yml` | PRs touching content, weekly | Runs `site-doctor.py` over prose-vs-facts, dangling local assets and render drift. Reports; never commits. |
+| `release-review.yml` | Daily 07:15 UTC + `workflow_dispatch` | Runs `scripts/release-review.py`: every hand-authored product page carries `<meta name="release-reviewed" content="owner/repo@tag">`, the release its claims were last read against, and every published non-prerelease release since then is listed in one rolling issue (label `release-review`, fixes-only releases flagged), closed automatically once nothing is behind. **The release notes are the feature log**; there is no separate one. To clear a page: read the notes, fix what changed, move the tag in the same commit. A marker naming a tag the repo lacks fails the run (exit 2). Store-only releases never appear. Implicit `GITHUB_TOKEN` only. |
 | `visual-diff.yml` | `workflow_dispatch`, or the `visual-diff` label on a PR | Runs `scripts/visual-diff.py` against a base ref. **Never on push, never inside `rotate-theme.yml`** — see *Two-tree visual diff* under **Tools**. Routes the harness's three exit codes to three different outcomes: 0 posts a summary and passes, 1 lists every finding and fails, 2 fails saying nothing was compared. Artifacts (`report.json`, base/head PNGs, console log) upload on a PASS too. |
 
 ---
@@ -433,6 +434,7 @@ hand-edit the bundle output at `widget-bacon-trail/`.
 | Check whether a branch moved any pixels | `python3 scripts/visual-diff.py origin/main` (base ref FIRST), or put the `visual-diff` label on the PR |
 | Queue a theme for the next rotation | Append its slug to `"queue"` in `content/themes.json` |
 | Roll back a bad rotation | `git revert` the `chore(themes): rotate to ...` commit |
+| Update a product page after a release | Open the `release-review` issue, read each listed release's notes, fix the page's claims, and move its `release-reviewed` marker to the newest tag in the same commit. A new product page tied to a repo gets a marker when it ships. |
 | Ship a new top-level page | Merge (the sitemap updates itself) → then GSC: URL Inspection → Request Indexing for the new URL at search.google.com/search-console. Agents: list the new public URL(s) in every ship report — this step is part of the workflow, not optional polish. Sitemap re-submission is never needed (same URL; Google re-reads it). |
 
 ---

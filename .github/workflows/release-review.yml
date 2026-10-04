@@ -1,0 +1,58 @@
+name: Release review
+
+# Which hand-authored product pages are behind their repo's releases?
+# scripts/release-review.py reads each page's `release-reviewed` marker and
+# lists every release published since. One rolling issue (label
+# `release-review`) carries the list; it closes itself when nothing is behind.
+# Never commits: moving a marker is a page edit, made by whoever read the notes.
+
+on:
+  schedule:
+    - cron: '15 7 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: release-review
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check pages against releases
+        id: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python scripts/release-review.py --out body.md | tee report.txt
+          echo "behind=$(grep -oP '^BEHIND=\K\d+' report.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Update the rolling issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BEHIND: ${{ steps.check.outputs.behind }}
+        run: |
+          set -euo pipefail
+          gh label create release-review --color 17D4FA \
+            --description "A product page is behind its repo's releases" --force
+          open=$(gh issue list --label release-review --state open --json number --jq '.[0].number // empty')
+          if [ "$BEHIND" -gt 0 ]; then
+            title="Product pages are $BEHIND release(s) behind"
+            if [ -n "$open" ]; then
+              gh issue edit "$open" --title "$title" --body-file body.md
+            else
+              gh issue create --title "$title" --label release-review --body-file body.md
+            fi
+          elif [ -n "$open" ]; then
+            gh issue close "$open" --comment "Every page is checked through its repo's latest release."
+          fi
