@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>RORORO — multi-launcher for Roblox · 626 Labs</title>
 <meta name="description" content="Run multiple Roblox clients side by side, each signed in as a different saved account. Native on Windows and macOS, plugin-extensible, free. An independent third-party tool — not affiliated with Roblox Corporation." />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/ROROROblox@v1.30.0.0" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/ROROROblox@v1.32.0.0" />
 <meta property="og:title" content="RORORO — multi-launcher for Roblox" />
 <meta property="og:description" content="Windows + macOS native multi-launcher. Run multiple Roblox clients side by side, each signed in as a saved account. Plugin-extensible. Free." />
 <meta property="og:type" content="website" />
@@ -661,7 +661,8 @@ brew install --cask rororo</code>
   </div>
 
   <!-- ============ WHAT IT DOES ============ -->
-  <!-- Feature grid refreshed 2026-09-11, current through v1.27 (localization tile added). Keep in
+  <!-- Feature grid refreshed 2026-10-03, current through v1.32 (auto-rejoin and known-issues tiles added,
+       Join via friend on every launch). Keep in
        step with ROROROblox docs/index.md's "What you get" list (plus
        docs/features.md + release notes for tiles the list abbreviates,
        e.g. Store-install startup and windowed launch) — their release
@@ -699,7 +700,7 @@ brew install --cask rororo</code>
     <div class="feature">
       <div class="key">05 &middot; SQUAD LAUNCH</div>
       <h4>Whole squad, one server</h4>
-      <p>Send a set of accounts into the same private server in three trust-aware phases &mdash; direct joins, an anchor, then followers. Careful mode waits for each alt to land before sending the next.</p>
+      <p>Send a set of accounts into the same private server in three trust-aware phases &mdash; direct joins, an anchor, then followers. Careful mode waits for each alt to land before sending the next. An alt set to Join via friend follows your main on every launch, and when your main isn't in a game RORORO asks instead of joining direct.</p>
     </div>
     <div class="feature">
       <div class="key">06 &middot; FRIEND FOLLOW</div>
@@ -770,6 +771,16 @@ brew install --cask rororo</code>
       <div class="key">19 &middot; LANGUAGES</div>
       <h4>Speaks your language</h4>
       <p>The whole app &mdash; screens and messages alike &mdash; in French, German, Russian, Portuguese (Brazil), Polish, or Spanish. Follows your Windows language, or pick one in Settings and it switches instantly. The launch trailer below speaks all six too.</p>
+    </div>
+    <div class="feature">
+      <div class="key">20 &middot; AUTO-REJOIN</div>
+      <h4>Alts that drop out come back</h4>
+      <p>Turn on Rejoin if it drops out for any alt. When its Roblox window is open but it has been out of the game for 3 minutes &mdash; an idle kick, a failed join, a verification page &mdash; RORORO closes it and joins again. At most 3 rejoins an hour, your Stop always wins, and it never answers Roblox's verification page for you.</p>
+    </div>
+    <div class="feature">
+      <div class="key">21 &middot; KNOWN ISSUES</div>
+      <h4>When it's Roblox, not RORORO</h4>
+      <p>Known Roblox issues lists problems in Roblox itself: what happens, what to do, and a button to the RORORO feature that helps. A serious one gets a single notice. The list is signed and updates without an app update, and nothing about you is sent to fetch it.</p>
     </div>
   </div>
 
@@ -880,7 +891,7 @@ brew install --cask rororo</code>
       <ul>
         <li><span class="tick">&#9656;</span><span>Multi-instance via a <b>singleton-mutex hold</b> &mdash; typed P/Invokes, no client touch.</span></li>
         <li><span class="tick">&#9656;</span><span><b>DPAPI-encrypted</b> account vault &mdash; cookies tied to your Windows user; a copied file won't decrypt elsewhere.</span></li>
-        <li><span class="tick">&#9656;</span><span>Squad Launch, Friend Follow, join-by-link, private servers, per-game routing, local renames.</span></li>
+        <li><span class="tick">&#9656;</span><span>Squad Launch, Friend Follow, join-by-link, private servers, per-game routing, local renames, and <b>auto-rejoin</b> for alts that drop out.</span></li>
         <li><span class="tick">&#9656;</span><span><b>Presence + idle awareness</b> per row, and <b>streamer mode</b> to disguise the roster on stream.</span></li>
         <li><span class="tick">&#9656;</span><span>The <b>plugin host</b> &mdash; the named-pipe extension surface behind the Ur plugin family (see below).</span></li>
         <li><span class="tick">&#9656;</span><span>Velopack auto-update &middot; Microsoft Store + GitHub Releases &middot; Windows 10 22H2 and up.</span></li>
