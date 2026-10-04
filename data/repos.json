@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03T11:15:22.351Z",
+  "generatedAt": "2026-10-04T11:55:13.808Z",
   "count": 57,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-10-03T10:42:17Z",
+      "pushed_at": "2026-10-04T11:22:48Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -325,7 +325,7 @@
       "description": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't bound. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "language": "C#",
-      "pushed_at": "2026-09-30T20:02:42Z",
+      "pushed_at": "2026-10-04T11:23:08Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -385,7 +385,7 @@
       "description": "Native Windows 11 + macOS glass widget that projects when you'll hit your Claude usage cap — burn-rate, pace markers, live token-burn from local Claude Code sessions, and five glass themes. Independent third-party tool. MIT.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
       "language": "C#",
-      "pushed_at": "2026-10-03T05:36:53Z",
+      "pushed_at": "2026-10-04T11:18:29Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -469,7 +469,7 @@
       "description": null,
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-access",
       "language": "JavaScript",
-      "pushed_at": "2026-10-01T18:28:55Z",
+      "pushed_at": "2026-10-04T06:05:36Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -505,7 +505,7 @@
       "description": null,
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-glow",
       "language": "PowerShell",
-      "pushed_at": "2026-08-04T21:20:57Z",
+      "pushed_at": "2026-10-04T06:01:00Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -565,7 +565,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-10-03T08:18:48Z",
+      "pushed_at": "2026-10-04T10:11:15Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -589,7 +589,7 @@
       "description": "Surface prior art from your own repos while you spec the next one. Indexes your estate, ranks what you already built, and verifies the hit at current HEAD before it claims anything.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Recall",
       "language": "JavaScript",
-      "pushed_at": "2026-10-02T20:57:11Z",
+      "pushed_at": "2026-10-04T06:01:15Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -601,7 +601,7 @@
       "description": "A runbook says do X and you will see W. Nothing checks whether that is still true. vibe-runbook writes one by inspecting your app, then verifies its claims against a running system — read-only, never spends, and honest about what it could not check.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Runbook",
       "language": "JavaScript",
-      "pushed_at": "2026-10-01T18:34:45Z",
+      "pushed_at": "2026-10-04T06:01:04Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
