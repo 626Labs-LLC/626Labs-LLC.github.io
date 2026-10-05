@@ -112,7 +112,11 @@
     "caption": [
       "The 626 Labs Dashboard is a private agent OS — Operation Center, decisions log, Architect AI, and Scanner / Voice / Whiteboard inputs — running as one surface across every active project. It watches the work, logs the decisions, and keeps the threads connected when we context-switch between a hotel app, a theater tool, and a plugin release in the same afternoon.",
       "The Dashboard itself isn't open source. The Vibe plugins are — they're the lessons the Dashboard taught us, refactored so any builder on Claude Code gets the same tailwind."
-    ]
+    ],
+    "cta": {
+      "label": "See what the dashboard does",
+      "href": "https://dash.626labs.dev/examples/"
+    }
   },
   "products": [
     {

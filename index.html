@@ -218,7 +218,7 @@
 
     /* A door: the mono, uppercase, cyan link with the brand pair ruled
        under it. Every renderer-emitted button becomes one. */
-    .btn, .door, .product-link, .play-link, .sponsor-cta, .thinking-link a,
+    .btn, .door, .product-link, .play-link, .sponsor-cta, .thinking-link a, .lab-runs-link a,
     .field-notes-subscribe, .field-notes-more > summary, .field-note-link a, .artifact-links a {
       display: inline-flex;
       align-items: center;
@@ -239,7 +239,7 @@
       cursor: pointer;
     }
     .btn:hover, .door:hover, .product-link:hover, .play-link:hover, .sponsor-cta:hover,
-    .thinking-link a:hover, .field-notes-subscribe:hover, .field-notes-more > summary:hover, .field-note-link a:hover, .artifact-links a:hover {
+    .thinking-link a:hover, .lab-runs-link a:hover, .field-notes-subscribe:hover, .field-notes-more > summary:hover, .field-note-link a:hover, .artifact-links a:hover {
       color: var(--sb-link-hover);
     }
     .btn-ghost, .field-note-link a {
@@ -1081,6 +1081,7 @@
       color: var(--sb-ink-2);
     }
     section.lab-runs .caption p { margin: 0 0 1em; text-wrap: pretty; break-inside: avoid; }
+    section.lab-runs .lab-runs-link { margin-top: 18px; }
 
     /* ================= THE GAMES PAGE: play ================= */
     section.play .section-head .play-aside {
@@ -2351,6 +2352,12 @@
     <div class="caption">
       <p>The 626 Labs Dashboard is a private agent OS — Operation Center, decisions log, Architect AI, and Scanner / Voice / Whiteboard inputs — running as one surface across every active project. It watches the work, logs the decisions, and keeps the threads connected when we context-switch between a hotel app, a theater tool, and a plugin release in the same afternoon.</p>
       <p>The Dashboard itself isn't open source. The Vibe plugins are — they're the lessons the Dashboard taught us, refactored so any builder on Claude Code gets the same tailwind.</p>
+    </div>
+    <div class="lab-runs-link">
+      <a href="https://dash.626labs.dev/examples/">
+        See what the dashboard does
+        <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
     </div>
   </div>
 </section>
