@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>626 Mod Launcher trailer: your files are yours · 626 Labs</title>
+<meta name="description" content="Watch the 626 Mod Launcher trailer: mods that move aside instead of being deleted, Steam games found automatically, save snapshots before you experiment, and your whole setup backed up to one file. Free on the Microsoft Store." />
+<link rel="canonical" href="https://626labs.dev/mod-launcher-trailer.html" />
+<meta property="og:title" content="626 Mod Launcher trailer: your files are yours" />
+<meta property="og:description" content="Watch the 626 Mod Launcher trailer: mods that move aside instead of being deleted, Steam games found automatically, save snapshots before you experiment, and your whole setup backed up to one file. Free on the Microsoft Store." />
+<meta property="og:type" content="video.other" />
+<meta property="og:url" content="https://626labs.dev/mod-launcher-trailer.html" />
+<meta property="og:image" content="https://626labs.dev/assets/video/mod-launcher/mod-launcher-launch-poster.jpg" />
+<meta property="og:video" content="https://626labs.dev/assets/video/mod-launcher/mod-launcher-launch-16x9.mp4" />
+<meta property="og:video:type" content="video/mp4" />
+<meta property="og:video:width" content="1920" />
+<meta property="og:video:height" content="1080" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="favicon-626.png" />
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "VideoObject",
+ "name": "626 Mod Launcher trailer: your files are yours",
+ "description": "626 Mod Launcher is a free Windows mod manager built on one rule: your files are yours. The trailer shows mods turned off by moving their files aside rather than deleting them, Steam games found automatically, a signed game feed that adds games without an app update, save snapshots before you experiment, and backing up every game's mods, saves and settings to one file. No ads, no telemetry, no account.",
+ "thumbnailUrl": [
+  "https://626labs.dev/assets/video/mod-launcher/mod-launcher-launch-poster.jpg"
+ ],
+ "uploadDate": "2026-08-30",
+ "duration": "PT53S",
+ "contentUrl": "https://626labs.dev/assets/video/mod-launcher/mod-launcher-launch-16x9.mp4",
+ "inLanguage": "en",
+ "publisher": {
+  "@type": "Organization",
+  "name": "626Labs LLC",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://626labs.dev/assets/brand/icon-transparent-512.png"
+  }
+ }
+}
+</script>
+
+<!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/slate-broadsheet/archetypes/product-tokens.css">
+<!-- SITE_JSON:theme-css:end -->
+
+<style>
+  /* ---------- Web fonts ---------- */
+  @import url('/fonts/fonts.css');
+
+  /* ---------- Theme tokens ----------
+     Brand tokens come from the ACTIVE theme's
+     archetypes/product-tokens.css, linked above and repointed by
+     scripts/render-hub.py on every render. This page used to carry a
+     private :root copy of them; a copy is something the monthly rotation
+     cannot reach.
+
+     What it links is the token file, NOT archetypes/product.css. That one
+     is the element dress for the pages render-plugin-pages.py generates.
+     It holds 158 style rules carrying 180 selectors; measured against this
+     page's real DOM, 31 of those selectors match here. One is `:root`,
+     which is the vocabulary this page wants. The other 30 are dress —
+     `body`, `a`, `a:hover`, `h1, h2, h3`, `.btn`, `.btn-primary`,
+     `.btn-ghost`, `.install-grid`, `.install-card`, `.install-card h3` —
+     all of them landing on markup shaped nothing like the archetype's
+     (this page's `.btn` is a 13.5px icon pill, its `.install-card` a
+     three-up platform card). This page is hand-authored and keeps its own
+     layout: it recolors monthly, it does not re-layout. Every rule below
+     this comment is this page's own and stays this page's own. */
+
+  html, body { margin:0; padding:0; min-height:100vh; }
+  body{
+    background:
+      radial-gradient(1200px 700px at 18% -10%, rgba(23,212,250,.10), transparent 60%),
+      radial-gradient(1100px 700px at 92% 110%, rgba(242,47,137,.10), transparent 60%),
+      var(--bg-0);
+    color:var(--fg-1);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *{ box-sizing:border-box; }
+  a{ color:var(--cyan); }
+
+  /* ---------- Subtle circuit grid backdrop ---------- */
+  .grid-bg{
+    position:fixed; inset:0; pointer-events:none; z-index:-1;
+    background-image:
+      linear-gradient(rgba(23,212,250,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23,212,250,.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:70;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    background: rgba(0,0,0,.65);
+    border-bottom: 1px solid var(--page-hairline);
+  }
+  .topnav-inner{
+    max-width: 1440px; margin: 0 auto; padding: 14px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em;
+  }
+  .brand{
+    display:inline-flex; align-items:center; gap:10px;
+    color: var(--fg-1); text-decoration:none;
+    text-transform: uppercase; font-weight:600; letter-spacing:.18em;
+  }
+  .brand .mark{
+    width:18px; height:18px; border-radius:50%;
+    background: var(--brand-gradient);
+    box-shadow: 0 0 12px rgba(23,212,250,.5);
+  }
+  .topnav .links{ display:flex; gap:22px; color: var(--fg-3); text-transform: uppercase; align-items:center; }
+  .topnav .links a{
+    color:var(--fg-3); text-decoration:none;
+    transition: color var(--dur-fast);
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
+  .topnav .links a svg{ flex-shrink: 0; }
+
+  .shell{ position:relative; max-width:1200px; margin:0 auto; padding:48px 56px 96px; }
+
+  /* ---------- Header ---------- */
+  .hd{ display:flex; align-items:flex-start; justify-content:space-between; gap:48px; margin-bottom:40px; }
+  .hd-l{ max-width:680px; }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--cyan); display:inline-flex; align-items:center; gap:10px; margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:""; width:24px; height:1px; background:linear-gradient(90deg, var(--cyan), transparent);
+  }
+  h1.title{
+    font-family:var(--font-display); font-weight:700; font-size:clamp(40px,5vw,60px);
+    line-height:1.04; letter-spacing:-0.025em; margin:0 0 18px;
+  }
+  h1.title .gt{
+    background: var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .lead{
+    font-size:18px; line-height:1.55; color:var(--fg-2); max-width:620px; margin:0;
+  }
+  .lead em{ color:var(--fg-1); font-style:normal; font-weight:500; }
+
+  /* CTA row under the lead */
+  .cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:26px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--font-body); font-size:13.5px; font-weight:600;
+    text-decoration:none; padding:11px 18px; border-radius:var(--r-md);
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-med), border-color var(--dur-med);
+  }
+  .btn svg{ flex-shrink:0; }
+  .btn-primary{
+    color:#08151f; background: var(--brand-gradient);
+    box-shadow: 0 6px 22px rgba(23,212,250,.28);
+  }
+  .btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 8px 28px rgba(23,212,250,.4); }
+  .btn-ghost{
+    color:var(--fg-1); background: rgba(255,255,255,.03);
+    border:1px solid var(--page-panel-border);
+  }
+  .btn-ghost:hover{ border-color: var(--border-accent); color:var(--cyan); }
+
+  /* meta on right */
+  .hd-r{
+    display:flex; flex-direction:column; gap:10px; padding-top:6px;
+    font-family:var(--font-mono); font-size:11px; color:var(--fg-3);
+    text-align:right; min-width:240px;
+  }
+  .hd-r .row{ display:flex; justify-content:space-between; gap:12px; border-top:1px solid var(--page-hairline); padding-top:8px; }
+  .hd-r .row:first-child{ border-top:0; padding-top:0; }
+  .hd-r .row b{ color:var(--fg-1); font-weight:500; }
+
+  /* ---------- Product banner ---------- */
+  .hero-visual{
+    border:1px solid var(--page-panel-border);
+    border-radius: var(--r-xl);
+    overflow:hidden;
+    box-shadow: var(--shadow-2, 0 0 0 0 transparent), var(--inner-stroke);
+    margin-bottom: 16px;
+    background: rgba(0,0,0,.5);
+  }
+  .hero-visual img{ display:block; width:100%; height:auto; }
+
+  /* ---------- Section heads ---------- */
+  .section-hd{
+    display:flex; align-items:baseline; justify-content:space-between; gap:32px;
+    margin: 80px 0 22px;
+  }
+  .section-hd .l h2{
+    font-family:var(--font-display); font-size:30px; font-weight:600;
+    letter-spacing:-0.015em; margin:0 0 6px;
+  }
+  .section-hd .l p{ font-size:14.5px; color:var(--fg-3); margin:0; max-width:62ch; }
+  .section-hd .r{
+    font-family:var(--font-mono); font-size:11px; color:var(--cyan); letter-spacing:.12em;
+    text-transform:uppercase; white-space:nowrap;
+  }
+
+  /* ---------- Install grid ---------- */
+  .install-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
+  .install-card{
+    position:relative;
+    border:1px solid var(--page-hairline);
+    border-radius: var(--r-lg);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.014), transparent 60%),
+      rgba(0,0,0,.55);
+    padding: 22px 20px 20px;
+    display:flex; flex-direction:column; gap:10px;
+    transition: border-color var(--dur-med) var(--ease-out), background var(--dur-med);
+  }
+  .install-card:hover{ border-color: var(--border-accent); }
+  .install-card.recommended{ border-color: var(--border-accent); }
+  .install-card .pill{
+    position:absolute; top:-9px; left:20px;
+    font-family:var(--font-mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:#08151f; background: var(--brand-gradient);
+    padding:3px 9px; border-radius:999px; font-weight:700;
+  }
+  .install-card .plat{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--cyan);
+  }
+  .install-card h3{
+    font-family:var(--font-display); font-size:19px; font-weight:600; margin:0; letter-spacing:-0.01em;
+  }
+  .install-card p{ font-size:13px; line-height:1.5; color:var(--fg-2); margin:0; flex:1; }
+  .install-card code{
+    font-family:var(--font-mono); font-size:11px; color:var(--cyan-pale);
+    background: rgba(23,212,250,.06); border:1px solid var(--page-hairline);
+    border-radius:6px; padding:8px 10px; display:block; line-height:1.5;
+    overflow-x:auto; white-space:pre;
+  }
+  .install-card .go{
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:.04em;
+    color:var(--cyan); text-decoration:none;
+    display:inline-flex; align-items:center; gap:6px; margin-top:2px;
+  }
+  .install-card .go:hover{ color:var(--cyan-pale); }
+
+  /* ---------- Feature grid ---------- */
+  .feature-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
+  .feature{
+    border:1px solid var(--page-hairline);
+    border-radius: var(--r-md);
+    padding: 18px 16px;
+    background: rgba(255,255,255,.02);
+    transition: border-color var(--dur-med) var(--ease-out), background var(--dur-med);
+  }
+  .feature:hover{ border-color: var(--border-accent); background: rgba(23,212,250,.035); }
+  .feature .key{
+    font-family:var(--font-mono); font-size:10px; color:var(--cyan);
+    letter-spacing:.1em; margin-bottom:8px;
+  }
+  .feature h4{ font-family:var(--font-display); font-size:15px; margin:0 0 5px; font-weight:600; }
+  .feature p{ font-size:12.5px; color:var(--fg-3); line-height:1.5; margin:0; }
+
+  /* ---------- Screenshot gallery ---------- */
+  /* The player rides above the CRT overlay (z 60) — video stays clean
+     while the page keeps the treatment. Same move as the theme's own
+     .play-widget lift. */
+  .video-frame{ margin: 0 0 18px; position: relative; z-index: 61; }
+  .video-frame video{
+    display:block; width:100%; height:auto; aspect-ratio: 16 / 9;
+    background: var(--bg-1);
+    border: 1px solid var(--border-1); border-radius: var(--r-lg);
+  }
+  .video-frame video:hover{ border-color: var(--border-accent); }
+  .video-cap{
+    margin: 8px 2px 0; font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--fg-muted);
+  }
+  .video-foot{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; flex-wrap:wrap;
+  }
+  .video-langs{ display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .lang-pill{
+    font-family: var(--font-mono); font-size: 11px; letter-spacing:.04em;
+    color: var(--fg-3); background: rgba(255,255,255,.03);
+    border: 1px solid var(--border-1); border-radius: 999px;
+    padding: 5px 12px; cursor: pointer;
+    transition: color var(--dur-fast), border-color var(--dur-fast);
+  }
+  .lang-pill:hover{ color: var(--cyan); border-color: var(--border-accent); }
+  .lang-pill.is-active{
+    color: var(--cyan); border-color: var(--border-accent);
+    background: rgba(23,212,250,.08);
+  }
+  .gallery{ display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; }
+  .gallery figure{
+    margin:0;
+    border:1px solid var(--page-hairline);
+    border-radius: var(--r-lg);
+    background: rgba(0,0,0,.5);
+    overflow:hidden;
+    transition: border-color var(--dur-med) var(--ease-out);
+  }
+  .gallery figure:hover{ border-color: var(--border-accent); }
+  .gallery img{ display:block; width:100%; height:auto; }
+  .gallery figcaption{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--fg-3);
+    padding: 10px 14px;
+    border-top:1px solid var(--page-hairline);
+  }
+
+  /* ---------- Platform split ---------- */
+  .platform-split{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+  .platform{
+    border:1px solid var(--page-panel-border);
+    border-radius: var(--r-lg);
+    padding: 24px 22px;
+    background:
+      radial-gradient(80% 100% at 0% 0%, rgba(23,212,250,.07), transparent 58%),
+      rgba(0,0,0,.5);
+  }
+  .platform.mac{
+    background:
+      radial-gradient(80% 100% at 0% 0%, rgba(242,47,137,.08), transparent 58%),
+      rgba(0,0,0,.5);
+  }
+  .platform .key{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--cyan); margin-bottom:8px;
+  }
+  .platform.mac .key{ color:var(--magenta); }
+  .platform h3{ font-family:var(--font-display); font-size:22px; font-weight:600; margin:0 0 4px; }
+  .platform .stack{
+    font-family:var(--font-mono); font-size:11px; color:var(--fg-3); margin-bottom:14px;
+  }
+  .platform ul{ list-style:none; margin:0 0 16px; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .platform li{
+    display:flex; gap:9px; align-items:flex-start;
+    font-size:13px; color:var(--fg-2); line-height:1.45;
+  }
+  .platform li .tick{ color:var(--cyan); flex-shrink:0; padding-top:2px; }
+  .platform.mac li .tick{ color:var(--magenta); }
+  .platform li b{ color:var(--fg-1); font-weight:500; }
+
+  /* ---------- Plugins ---------- */
+  .plugin-intro{
+    border:1px solid var(--page-hairline);
+    border-radius: var(--r-lg);
+    background: rgba(0,0,0,.5);
+    padding: 22px 24px;
+    font-size:14px; line-height:1.6; color:var(--fg-2);
+    margin-bottom: 14px;
+  }
+  .plugin-intro b{ color:var(--fg-1); font-weight:500; }
+  .plugin-list{ display:flex; flex-direction:column; gap:10px; }
+  .plugin{
+    display:grid; grid-template-columns: 1fr auto; gap:18px; align-items:center;
+    border:1px solid var(--page-hairline);
+    border-radius: var(--r-md);
+    padding: 16px 20px;
+    background: rgba(255,255,255,.02);
+    transition: border-color var(--dur-med) var(--ease-out);
+  }
+  .plugin:hover{ border-color: var(--border-accent); }
+  .plugin.live{ border-color: rgba(43,217,154,.35); }
+  .plugin .pl-l{ min-width:0; }
+  .plugin .pl-name{
+    display:flex; align-items:center; gap:10px; margin-bottom:4px;
+  }
+  .plugin h4{ font-family:var(--font-display); font-size:16px; font-weight:600; margin:0; }
+  .plugin .status{
+    font-family:var(--font-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
+    padding:2px 8px; border-radius:999px;
+  }
+  /* The success green is a theme token (--ok, #2bd99a) exactly; its two
+     alpha variants below are not, so they stay literals. */
+  .plugin .status.live{ color:var(--ok); background:rgba(43,217,154,.1); border:1px solid rgba(43,217,154,.3); }
+  .plugin .status.bench{ color:var(--fg-3); background:rgba(255,255,255,.03); border:1px solid var(--page-panel-border); }
+  .plugin p{ font-size:12.5px; color:var(--fg-3); line-height:1.5; margin:0; }
+  .plugin .pl-link{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.04em;
+    color:var(--cyan); text-decoration:none; white-space:nowrap;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .plugin .pl-link:hover{ color:var(--cyan-pale); }
+  .plugin .pl-link.muted{ color:var(--fg-muted); }
+
+  .plugin-howto{
+    margin-top:14px;
+    display:grid; grid-template-columns: 1.25fr 1fr; gap:14px;
+  }
+  .howto-col{
+    border:1px solid var(--page-hairline);
+    border-radius: var(--r-lg);
+    background: rgba(0,0,0,.5);
+    padding: 22px 24px;
+  }
+  .howto-col.publish{
+    border-style:dashed; border-color:var(--page-panel-border);
+    background:
+      radial-gradient(70% 120% at 100% 0%, rgba(242,47,137,.05), transparent 60%),
+      rgba(0,0,0,.5);
+  }
+  .howto-key{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--cyan); margin-bottom:16px;
+  }
+  .howto-col.publish .howto-key{ color:var(--magenta); }
+  ol.steps{
+    list-style:none; counter-reset: step; margin:0; padding:0;
+    display:flex; flex-direction:column; gap:13px;
+  }
+  ol.steps li{
+    counter-increment: step;
+    position:relative; padding-left:34px;
+    font-size:13px; line-height:1.55; color:var(--fg-2);
+  }
+  ol.steps li::before{
+    content: counter(step);
+    position:absolute; left:0; top:-1px;
+    width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:11px; font-weight:600;
+    color:var(--cyan); background:rgba(23,212,250,.08);
+    border:1px solid var(--border-accent);
+  }
+  ol.steps li b{ color:var(--fg-1); font-weight:500; }
+  ol.steps li code, .howto-col.publish p code{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--cyan-pale);
+    background:rgba(23,212,250,.06); border-radius:4px; padding:1px 5px;
+  }
+  .howto-col.publish p{
+    font-size:13px; line-height:1.55; color:var(--fg-2); margin:0 0 14px;
+  }
+  .howto-col.publish p b{ color:var(--fg-1); font-weight:500; }
+  .publish-links{ display:flex; flex-direction:column; gap:8px; }
+  .publish-links a{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:.02em;
+    text-decoration:none; color:var(--cyan);
+    border:1px solid var(--page-hairline); border-radius:var(--r-md);
+    padding:11px 13px; transition: border-color var(--dur-med), color var(--dur-fast);
+  }
+  .publish-links a:hover{ border-color:var(--border-accent); color:var(--cyan-pale); }
+  .publish-links a span{ color:var(--fg-3); text-align:right; }
+  .publish-links a:hover span{ color:var(--fg-2); }
+
+  /* ---------- Trust ---------- */
+  .trust-box{
+    border:1px solid var(--page-hairline);
+    border-radius: var(--r-xl);
+    background:
+      radial-gradient(70% 120% at 100% 0%, rgba(242,47,137,.06), transparent 60%),
+      rgba(0,0,0,.5);
+    padding: 32px 34px;
+  }
+  .trust-box .trust-item{ margin-bottom:20px; }
+  .trust-box .trust-item:last-child{ margin-bottom:0; }
+  .trust-box .key{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--magenta); margin-bottom:6px;
+  }
+  .trust-box h4{ font-family:var(--font-display); font-size:16px; font-weight:600; margin:0 0 5px; }
+  .trust-box p{ font-size:13.5px; line-height:1.6; color:var(--fg-2); margin:0; max-width:78ch; }
+  .trust-box p a{ text-decoration:none; }
+
+  /* ---------- Footer ---------- */
+  .footnote{
+    margin-top: 72px; padding-top: 24px;
+    border-top:1px solid var(--page-hairline);
+    display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap;
+    font-family:var(--font-mono); font-size:11px; color:var(--fg-3);
+    letter-spacing:.05em;
+  }
+  .footnote .axiom{ color:var(--fg-2); }
+  .footnote .axiom em{ color:var(--cyan); font-style:normal; }
+  .footnote a{ color:var(--cyan); text-decoration:none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1000px){
+    .install-grid{ grid-template-columns: 1fr; }
+    .feature-grid{ grid-template-columns: repeat(2, 1fr); }
+    .platform-split{ grid-template-columns: 1fr; }
+    .plugin-howto{ grid-template-columns: 1fr; }
+    .hd{ flex-direction:column; gap:24px; }
+    .hd-r{ text-align:left; min-width:0; align-self:stretch; }
+    .shell{ padding: 32px 32px 64px; }
+    .section-hd{ flex-direction:column; gap:6px; margin-top:64px; }
+  }
+  @media (max-width: 640px){
+    .shell{ padding: 28px 20px 56px; }
+    .topnav-inner{ padding: 12px 20px; }
+    .topnav .links{ gap:14px; font-size:10px; }
+    .feature-grid{ grid-template-columns: 1fr; }
+    .gallery{ grid-template-columns: 1fr; }
+    .plugin{ grid-template-columns: 1fr; gap:10px; }
+    .publish-links a{ flex-direction:column; align-items:flex-start; gap:4px; }
+    .publish-links a span{ text-align:left; }
+    .cta-row{ gap:10px; }
+  }
+
+    /* ============================================================
+       Phosphor Blueprint — treatment layer (adopted 2026-07-07)
+       Append-only override + in-place navy-glass swaps; matches the
+       homepage treatment (626labs.dev PR #73).
+
+       The --pb-* names spent below are DEFINED in the active theme's
+       archetypes/product-tokens.css, linked in <head>. This page used to
+       define them itself, which froze the treatment at July's values.
+       ============================================================ */
+    .pb-scanlines {
+      position: fixed; inset: 0; pointer-events: none; z-index: 60;
+      background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
+    }
+
+    /* The treatment REPOINTING base tokens — this page's own styling
+       decision, not a copy of the theme's palette. Every value resolves
+       through a theme-owned name, so the rotation reaches all of it. */
+    /* ── The treatment, expressed so it cannot strand this page ──────────
+       Each alias reads THIS theme's treatment name and falls back to the
+       contracted token behind it. Under phosphor-blueprint every one
+       resolves to the --pb-* value, exactly as before. Under a theme that
+       satisfies archetypes.REQUIRED_TOKENS and ships no treatment, the
+       structural aliases fall through to --bg-0/--border-1/--border-2 and
+       the decorative ones disappear, so the page rotates instead of
+       rendering on a white field with unresolved var()s.
+
+       Note what is NOT here: this block no longer redefines --bg-0,
+       --border-1 or --border-2. A page that overrides a contracted token is
+       a page the rotation cannot reach, which is the same defect as the
+       private :root it replaced, one indirection deeper. */
+    :root {
+      --page-field: var(--bg-0);
+      --page-hairline: var(--border-1);
+      --page-panel-border: var(--border-2);
+      --page-grid-fine: transparent;
+      --page-grid-coarse: transparent;
+      --page-scanline: transparent;
+      --page-bloom: none;
+    }
+
+    body {
+      background:
+        linear-gradient(90deg, var(--page-grid-fine) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--page-grid-fine) 1px, transparent 1px),
+        linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+        linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+        var(--page-field);
+      background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+    }
+    @media (max-width: 720px) {
+      body {
+        background:
+          linear-gradient(90deg, var(--page-grid-coarse) 1px, transparent 1px),
+          linear-gradient(0deg,  var(--page-grid-coarse) 1px, transparent 1px),
+          var(--page-field);
+        background-size: 120px 120px, 120px 120px;
+      }
+    }
+    h1 { text-shadow: var(--page-bloom); }
+    /* PB icon stabilizer — solid app/family icon tiles: compensate the
+       scanline dimming so the marks read bright and stable. */
+    img[src*="rororo-family"] { filter: brightness(1.3) saturate(1.08); }
+  
+/* Phone nudge: RORORO is a desktop app, so a phone visitor (QR scan, TikTok link)
+   gets a way to carry the page to the machine that can install it. */
+.phone-nudge{display:none;margin:0 0 1.25rem;padding:.9rem 1rem;border:1px solid var(--border-accent);border-radius:var(--r-lg);background:var(--page-panel-bg,transparent);font-size:.92rem;line-height:1.45;color:var(--fg-2)}
+.phone-nudge b{color:var(--fg-1)}
+.phone-nudge .acts{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap}
+.phone-nudge button{font:inherit;font-size:.85rem;padding:.45rem .8rem;border-radius:999px;border:1px solid var(--border-accent);background:transparent;color:var(--cyan);cursor:pointer}
+.phone-nudge .done{font-family:var(--font-mono);font-size:.75rem;color:var(--fg-3);align-self:center}
+@media (max-width:720px) and (hover:none){.phone-nudge{display:block}}
+</style>
+
+<style>
+  /* ---------- Watch page ----------
+     The video is the page's main content (Google indexes a video only
+     when it is), so it leads, full width, above the fold. */
+  .watch-hd{ margin-bottom:18px; }
+  .watch-hd h1.title{ margin-bottom:6px; }
+  .watch .video-frame{ margin-bottom:10px; }
+  .watch-body{ display:grid; grid-template-columns: minmax(0,1.6fr) minmax(0,1fr); gap:40px; margin-top:28px; }
+  .watch-body h2{ font-family:var(--font-display); font-size:20px; font-weight:600; margin:0 0 10px; }
+  .watch-body p{ font-size:14.5px; line-height:1.6; color:var(--fg-2); margin:0 0 14px; max-width:62ch; }
+  .beats{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .beats li{ font-size:13.5px; line-height:1.5; color:var(--fg-2); padding-left:18px; position:relative; }
+  .beats li::before{ content:""; position:absolute; left:0; top:.62em; width:8px; height:1px; background:var(--cyan); }
+  .beats li b{ color:var(--fg-1); font-weight:500; }
+  .watch-side .cta-row{ flex-direction:column; align-items:stretch; margin-top:0; }
+  .watch-side .btn{ justify-content:center; }
+  .watch-side .note{ font-size:12px; color:var(--fg-3); line-height:1.5; margin-top:14px; }
+  @media (max-width: 860px){ .watch-body{ grid-template-columns: 1fr; gap:24px; } }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="brand"><span class="mark"></span> 626 Labs</a>
+    <div class="links">
+      <a href="index.html">The lab</a>
+      <a href="mod-launcher-games.html">Supported games</a>
+      <a href="https://apps.microsoft.com/detail/9N53V6RRJK95?cid=site-trailer" class="cta">Get the launcher</a>
+    </div>
+  </div>
+</nav>
+
+<div class="shell watch">
+
+  <header class="watch-hd">
+    <div class="eyebrow">626 Labs &middot; Video &middot; 626 Mod Launcher trailer</div>
+    <h1 class="title">Every game, every mod. <span class="gt">Your files are yours.</span></h1>
+  </header>
+
+  <div class="video-frame">
+    <video id="launch-video" controls preload="metadata" playsinline
+           poster="assets/video/mod-launcher/mod-launcher-launch-poster.jpg">
+      <source src="assets/video/mod-launcher/mod-launcher-launch-16x9.mp4" type="video/mp4" />
+    </video>
+    <div class="video-foot">
+      <p class="video-cap" id="launch-cap">The launch cut &middot; 53 seconds, sound on</p>
+    </div>
+  </div>
+
+  <div class="watch-body">
+    <div>
+      <h2>What the trailer shows</h2>
+      <p><em>626 Mod Launcher</em> is a free mod manager for Windows, built on one rule: your files are yours.</p>
+      <ul class="beats">
+        <li><b>Off means moved aside,</b> never deleted. Flip a mod back on and it's where it was.</li>
+        <li><b>Steam games found automatically,</b> and a signed game feed adds new games without an app update.</li>
+        <li><b>Save snapshots</b> before you experiment, one click to go back.</li>
+        <li><b>Back up everything:</b> every game's mods, saves and settings in one file, and restore exactly what you choose.</li>
+        <li><b>No ads, no telemetry, no account.</b></li>
+      </ul>
+    </div>
+    <aside class="watch-side">
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://apps.microsoft.com/detail/9N53V6RRJK95?cid=site-trailer"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg> Get it on Microsoft Store</a>
+        <a class="btn btn-ghost" href="https://github.com/estevanhernandez-stack-ed/626-mod-launcher/releases">Direct download</a>
+        <a class="btn btn-ghost" href="mod-launcher-games.html">Every supported game</a>
+      </div>
+      <p class="note">Free on the Microsoft Store, with the full build on GitHub.</p>
+    </aside>
+  </div>
+
+  <div class="footnote">
+    <span>Game names and cover art belong to their publishers.</span>
+    <span>626Labs LLC &middot; Imagine Something Else. &middot; <a href="index.html">Lab</a> &middot; <a href="privacy.html">Privacy</a></span>
+  </div>
+</div>
+
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>

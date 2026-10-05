@@ -62,6 +62,8 @@ WORKFLOW_HTML = ROOT / "workflow.html"
 ROROROPLUGINS_HTML = ROOT / "rororo-plugins.html"
 RORORO_HTML = ROOT / "rororo.html"
 MODLAUNCHERGAMES_HTML = ROOT / "mod-launcher-games.html"
+RORORO_TRAILER_HTML = ROOT / "rororo-trailer.html"
+MODLAUNCHER_TRAILER_HTML = ROOT / "mod-launcher-trailer.html"
 ETSYMCP_HTML = ROOT / "etsy-mcp.html"
 # The three pages that never took a theme (October needs, piece 2): each
 # carried a private --pb-* block and painted its own field, grid, scanlines
@@ -954,6 +956,10 @@ THEME_CSS_HREFS = {
     ROROROPLUGINS_HTML: "archetypes/product-tokens.css",
     RORORO_HTML: "archetypes/product-tokens.css",
     MODLAUNCHERGAMES_HTML: "archetypes/product-tokens.css",
+    # Watch pages: the trailer is the page's main content so Google indexes
+    # it as a video result. Built from rororo.html's chrome.
+    RORORO_TRAILER_HTML: "archetypes/product-tokens.css",
+    MODLAUNCHER_TRAILER_HTML: "archetypes/product-tokens.css",
     ETSYMCP_HTML: "archetypes/product-tokens.css",
     # October needs, piece 2. bacon-trail/ and sanduhr/ are product pages
     # (content/page-archetypes.json) and take the product TOKEN half for the
@@ -986,7 +992,8 @@ THEME_CSS_MULTI_ZONE_PAGES = (THEMES_HTML, CONUNDRUM_HTML)
 #     == set(THEME_CSS_ONLY_PAGES)
 THEME_CSS_ONLY_PAGES = (
     PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML, ROROROPLUGINS_HTML,
-    RORORO_HTML, MODLAUNCHERGAMES_HTML, ETSYMCP_HTML,
+    RORORO_HTML, MODLAUNCHERGAMES_HTML, RORORO_TRAILER_HTML,
+    MODLAUNCHER_TRAILER_HTML, ETSYMCP_HTML,
     BACONTRAIL_HTML, SANDUHR_HTML, NOTFOUND_HTML, YEARONE_HTML,
 )
 
