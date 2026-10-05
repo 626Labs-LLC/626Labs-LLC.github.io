@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sanduhr für Claude — native usage widget for claude.ai power users · 626 Labs</title>
   <meta name="description" content="Native desktop widget for pacing your claude.ai subscription usage. Burn-rate projection, pace markers, sparklines, five glass themes. Mac + Windows." />
-  <meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.4.0-mac" />
+  <meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.6.0-mac" />
   <link rel="icon" type="image/png" href="icon.png" />
 
   <meta property="og:title" content="Sanduhr für Claude" />
@@ -407,6 +407,8 @@
       border-top: 1px solid var(--sd-navy-line);
     }
     .theme-shot .caption strong { color: var(--sd-text); font-weight: 600; }
+    .notch-shot { margin-top: 14px; }
+    .desk-strip { align-items: start; }
 
     /* ── privacy callout ───────────────────────────────── */
     section.privacy {
@@ -560,7 +562,7 @@
   <section class="showcase">
     <div class="container">
       <div class="showcase-frame">
-        <img src="screenshot-full-view.png" alt="Sanduhr expanded view: Session, Weekly All Models, Weekly Sonnet, and Weekly Routines trackers with pace markers and sparklines" />
+        <img src="screenshot-widget-mac.png" alt="The Sanduhr widget on Mac with the Personal account chip: Session, Weekly All Models and a temporary Weekly Special limit at 100%, each with a pace mark, reset time and sparkline" />
       </div>
     </div>
   </section>
@@ -639,11 +641,27 @@
         </div>
         <div class="feature">
           <h4>The rest of Desk</h4>
-          <p>The time, today's next meetings with one-click join, and a daily line of your own. Calendar access is asked for only if you turn meetings on, and nothing leaves your Mac.</p>
+          <p>The time, today's next meetings with one-click join, and a daily line of your own, in the handwritten EsteFont that ships with the app. Calendar access is asked for only if you turn meetings on, and nothing leaves your Mac. Corners on the Dock's side stay clear of it, and rise with a Dock that hides.</p>
         </div>
         <div class="feature">
           <h4>The notch, your way</h4>
-          <p>On MacBooks with a camera notch, pick what the left wing, the right wing and the strip under the camera show: your next meeting, the time, your meters, your message, or nothing. A camera light around the notch lights your face when any app turns the camera on. Off until you switch it on, no camera permission needed. Test Glow in Settings shows you the notch glow once before you turn any of it on.</p>
+          <p>On MacBooks with a camera notch, pick what the left wing, the right wing and the strip under the camera show: your next meeting, the time, your meters, your message, what's playing, or nothing. A camera light around the notch lights your face when any app turns the camera on. Off until you switch it on, no camera permission needed. Test Glow in Settings shows you the notch glow once before you turn any of it on. With the Claude Code integration, the notch can also glow when a Claude session is waiting on you.</p>
+        </div>
+        <div class="feature">
+          <h4>Now playing</h4>
+          <p>The song or video playing on your Mac, from Spotify, Apple Music, YouTube Music, Pandora or a browser tab, on a notch wing or a Desk corner with a moving position bar. Click it to play or pause. Titles never leave your Mac and are never saved.</p>
+        </div>
+        <div class="feature">
+          <h4>Claude Code, from Sanduhr</h4>
+          <p>Settings &rarr; Integrations installs your meters above Claude Code's prompt, a statusline, the notch glow when a session needs you, and an MCP server so Claude can ask about your usage. Remove puts every file back as it was.</p>
+        </div>
+        <div class="feature">
+          <h4>Claude writes your messages and themes</h4>
+          <p>With the MCP server installed, Claude Code can suggest Desk messages, with effects like a glow or a line written in by hand, and propose widget themes as a live preview. Nothing changes until you approve it.</p>
+        </div>
+        <div class="feature">
+          <h4>Your usage, per account</h4>
+          <p>Each account chooses what Sanduhr keeps: 30 days of meter history, a local record of its Claude Code sessions (tokens by day, model and project, never what was written), and what Claude may see, off by default. The Claude Usage page shows it as overview, trends and sessions, with CSV export.</p>
         </div>
         <div class="feature">
           <h4>The widget, when you want it</h4>
@@ -676,8 +694,8 @@
           <p>Colored ticks show where "on pace" is right now — pace by eye, not by math.</p>
         </div>
         <div class="feature">
-          <h4>2-hour sparkline history</h4>
-          <p>Per-tier velocity trends so you can see whether you're accelerating or cooling off.</p>
+          <h4>Sparkline history</h4>
+          <p>Per-tier velocity trends, 30 days per account on Mac, so you can see whether you're accelerating or cooling off.</p>
         </div>
         <div class="feature">
           <h4>Five hand-tuned themes</h4>
@@ -709,8 +727,33 @@
 
   <section class="themes">
     <div class="container">
-      <h2>New in 2.4 on Mac.</h2>
-      <p class="lead">Accounts, the menu bar and the meters, straight from Settings.</p>
+      <h2>Desk, on a real Mac.</h2>
+      <p class="lead">Captured from Sanduhr 2.6, with demo meetings.</p>
+      <div class="theme-strip desk-strip">
+        <div class="theme-shot">
+          <img src="screenshot-desk-corner.jpg" alt="A Desk corner: the clock, the date, Session and Weekly meters with a pace mark, a daily message drawn in glowing handwriting, the account line and three upcoming meetings" loading="lazy">
+          <div class="caption"><strong>Desk</strong> &middot; clock, meters, message, meetings</div>
+        </div>
+        <div class="theme-shot">
+          <img src="screenshot-desk-limit-menu.jpg" alt="A Desk meter's two-finger menu on a temporary Weekly Special limit at 100%: Show Widget, Accounts, Hide Weekly Special, Stop warnings, Meter Settings and the Tools" loading="lazy">
+          <div class="caption"><strong>A limit's menu</strong> &middot; hide a temporary limit, stop its warnings</div>
+        </div>
+        <div class="theme-shot">
+          <img src="screenshot-whats-new.png" alt="Sanduhr's What's New window for 2.4.0 to 2.6.0: now playing on the notch and the Desk, and Claude writing your messages and themes" loading="lazy">
+          <div class="caption"><strong>What's New</strong> &middot; opens after each update</div>
+        </div>
+      </div>
+      <div class="theme-shot notch-shot">
+        <img src="screenshot-notch-wings.png" alt="The notch on a MacBook: the next meeting on the left wing, Session and Weekly percentages on the right, and the time in the strip under the camera" loading="lazy">
+        <div class="caption"><strong>The notch</strong> &middot; next meeting left, meters right, the time underneath</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="themes">
+    <div class="container">
+      <h2>Settings, on Mac.</h2>
+      <p class="lead">Accounts, the menu bar and the meters.</p>
       <div class="theme-strip">
         <div class="theme-shot">
           <img src="screenshot-accounts.png" alt="Sanduhr Settings, Accounts: the account list with Work active, its session key field, Sign Out and Remove Account" loading="lazy">
@@ -754,7 +797,8 @@
       <div class="privacy-card">
         <h3>✓ No data comes back to us.</h3>
         <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr — even in principle.</p>
-        <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Your cookie stays on your machine: in the macOS Keychain on Mac, in Credential Manager on Windows. On Mac, Settings &rarr; Credentials &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain or Credential Manager, so sign out first if you're leaving.</p>
+        <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Your cookie stays on your machine: in the macOS Keychain on Mac, in Credential Manager on Windows. On Mac, Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain or Credential Manager, so sign out first if you're leaving.</p>
+        <p>On Mac, Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default, and what Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
         <p><a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md">Security policy</a> &middot; <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md">Privacy policy</a></p>
       </div>
     </div>
