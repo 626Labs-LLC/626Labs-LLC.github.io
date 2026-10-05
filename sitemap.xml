@@ -136,6 +136,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://626labs.dev/mod-launcher-trailer.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://626labs.dev/press.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -147,6 +152,11 @@
   </url>
   <url>
     <loc>https://626labs.dev/rororo-plugins.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://626labs.dev/rororo-trailer.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
