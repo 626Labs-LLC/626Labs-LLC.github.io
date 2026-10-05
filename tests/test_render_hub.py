@@ -1332,3 +1332,21 @@ def test_conundrum_shop_links_come_from_etsy_url():
 def test_conundrum_without_etsy_url_fails_by_name():
     with pytest.raises(SystemExit, match='"etsyUrl"'):
         render_hub.render_conundrum_shop_cta({}, "nav")
+
+
+def test_lab_runs_cta_renders_a_door_under_the_caption():
+    html = render_hub.render_lab_runs({
+        "headline": "How the lab runs.",
+        "caption": ["One paragraph."],
+        "cta": {"label": "See what the dashboard does", "href": "https://dash.626labs.dev/examples/"},
+    })
+    assert '<div class="lab-runs-link">' in html
+    assert 'href="https://dash.626labs.dev/examples/"' in html
+    assert html.index('class="caption"') < html.index('class="lab-runs-link"')
+
+
+def test_lab_runs_cta_is_omitted_when_incomplete_and_escapes_label():
+    assert "lab-runs-link" not in render_hub.render_lab_runs({"caption": []})
+    assert "lab-runs-link" not in render_hub.render_lab_runs({"cta": {"label": "x"}})
+    html = render_hub.render_lab_runs({"cta": {"label": "<b>x</b>", "href": "/e/"}})
+    assert "<b>x</b>" not in html and "&lt;b&gt;x&lt;/b&gt;" in html

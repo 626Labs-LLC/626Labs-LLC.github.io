@@ -200,7 +200,7 @@
     .folio { font-size: 17px; font-weight: 500; color: var(--cf-ink-2); font-variant-numeric: tabular-nums; }
 
     /* Every renderer-emitted button is a link: ink, underlined, weight 500. */
-    .btn, .door, .product-link, .play-link, .sponsor-cta, .thinking-link a,
+    .btn, .door, .product-link, .play-link, .sponsor-cta, .thinking-link a, .lab-runs-link a,
     .field-notes-subscribe, .field-notes-more > summary, .field-note-link a, .artifact-links a {
       display: inline-flex;
       align-items: center;
@@ -218,7 +218,7 @@
       cursor: pointer;
     }
     .btn:hover, .door:hover, .product-link:hover, .play-link:hover, .sponsor-cta:hover,
-    .thinking-link a:hover, .field-notes-subscribe:hover, .field-notes-more > summary:hover, .field-note-link a:hover, .artifact-links a:hover {
+    .thinking-link a:hover, .lab-runs-link a:hover, .field-notes-subscribe:hover, .field-notes-more > summary:hover, .field-note-link a:hover, .artifact-links a:hover {
       text-decoration-thickness: var(--cf-underline-hover);
     }
 
@@ -694,6 +694,7 @@
       color: var(--cf-ink-2);
     }
     section.lab-runs .caption p { margin: 0 0 1em; text-wrap: pretty; break-inside: avoid; }
+    section.lab-runs .lab-runs-link { margin-top: 18px; }
 
     /* ================= PLAY: the widgets, each on its own screen ================= */
     section.play .section-head .play-aside {

@@ -1360,13 +1360,26 @@ def render_lab_runs(lab_runs: dict) -> str:
 
     `frames` is a list of { tag, src, alt } — 1 to 4 images shown as the
     private-Dashboard montage. `caption` is a list of plain text paragraphs
-    shown below the frames.
+    shown below the frames. `cta` ({ label, href }) is optional: a door under
+    the caption, omitted entirely when either field is missing.
     """
     eyebrow = esc(lab_runs.get("eyebrow", ""))
     headline = esc(lab_runs.get("headline", ""))
     lead = esc(lab_runs.get("lead", ""))
     frames = lab_runs.get("frames") or []
     caption = lab_runs.get("caption") or []
+    cta = lab_runs.get("cta") or {}
+
+    cta_html = ""
+    if cta.get("label") and cta.get("href"):
+        cta_html = (
+            '\n    <div class="lab-runs-link">\n'
+            f'      <a href="{attr(cta["href"])}">\n'
+            f'        {esc(cta["label"])}\n'
+            '        <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>\n'
+            '      </a>\n'
+            '    </div>'
+        )
 
     frames_html = "\n".join(
         f"""      <div class="frame">
@@ -1393,7 +1406,7 @@ def render_lab_runs(lab_runs: dict) -> str:
     </div>
     <div class="caption">
 {caption_html}
-    </div>
+    </div>{cta_html}
   </div>
 </section>"""
 
