@@ -11,6 +11,9 @@
   max-width: 50vw;
   aspect-ratio: 346.9 / 69.3;
   margin: 28px auto 6px;
+  /* inherit, not the link color: outside a styled footer an <a> would
+     otherwise paint in the browser's default link blue */
+  color: inherit;
   background-color: currentColor;
   -webkit-mask: url('/assets/logos/626labs-signature-bold-dark.svg') center / contain no-repeat;
           mask: url('/assets/logos/626labs-signature-bold-dark.svg') center / contain no-repeat;
