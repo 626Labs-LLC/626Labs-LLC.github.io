@@ -1,0 +1,21 @@
+/* The static 626Labs signature at the foot of every themed page.
+   626labs.dev changes its look monthly; this mark is the one thing that
+   doesn't. It lives outside themes/ on purpose, so a rotation can't restyle
+   it. The shape is Este's hand (assets/logos/626labs-signature-bold-*.svg,
+   from the 626labs-design skill); a CSS mask paints it in the footer's own
+   text color, so it reads on light and dark grounds alike.
+   tests/test_brand_hand.py holds every live or queued theme to carrying it. */
+.site-signature {
+  display: block;
+  width: 168px;
+  max-width: 50vw;
+  aspect-ratio: 346.9 / 69.3;
+  margin: 28px auto 6px;
+  background-color: currentColor;
+  -webkit-mask: url('/assets/logos/626labs-signature-bold-dark.svg') center / contain no-repeat;
+          mask: url('/assets/logos/626labs-signature-bold-dark.svg') center / contain no-repeat;
+  opacity: .92;
+  transition: opacity .2s ease;
+}
+.site-signature:hover, .site-signature:focus-visible { opacity: 1; }
+.site-signature:focus-visible { outline: 2px solid currentColor; outline-offset: 6px; }

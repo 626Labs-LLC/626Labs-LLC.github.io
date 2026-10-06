@@ -57,3 +57,34 @@ def test_about_pull_quotes_are_in_his_hand(slug):
 def test_about_default_dress_is_in_his_hand():
     html = (ROOT / "about.html").read_text(encoding="utf-8")
     assert FACE in _rule(html, ".lnt-pull-quote p")
+
+
+# ---- The static footer signature --------------------------------------------
+# The site changes its look monthly; the 626Labs signature in Este's hand at
+# the foot of each page is the one thing that doesn't. It is styled by
+# /assets/logos/signature.css, outside themes/, so a rotation can't restyle it,
+# and every themed page must carry it.
+SIGNATURE = 'class="site-signature"'
+
+
+@pytest.mark.parametrize("slug", _registered_slugs())
+@pytest.mark.parametrize("archetype", ["home", "product", "utility"])
+def test_theme_shells_carry_the_signature(slug, archetype):
+    html = (ROOT / "themes" / slug / "archetypes" / f"{archetype}.html").read_text(encoding="utf-8")
+    assert SIGNATURE in html, f"{slug}/{archetype}: no footer signature"
+    assert "/assets/logos/signature.css" in html, f"{slug}/{archetype}: signature.css not loaded"
+
+
+@pytest.mark.parametrize("page", ["index.html", "press.html", "privacy.html",
+                                  "plugins/index.html", "vibe-doc/index.html"])
+def test_rendered_pages_carry_the_signature(page):
+    html = (ROOT / page).read_text(encoding="utf-8")
+    footer = html[html.rindex("<footer"):html.rindex("</footer>")]
+    assert SIGNATURE in footer, f"{page}: the signature must sit in the footer"
+    assert "/assets/logos/signature.css" in html
+
+
+def test_signature_asset_and_style_exist():
+    assert (ROOT / "assets" / "logos" / "626labs-signature-bold-dark.svg").is_file()
+    css = (ROOT / "assets" / "logos" / "signature.css").read_text(encoding="utf-8")
+    assert "626labs-signature-bold-dark.svg" in css and "currentColor" in css

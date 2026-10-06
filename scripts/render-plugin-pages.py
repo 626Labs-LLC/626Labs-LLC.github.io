@@ -302,7 +302,8 @@ def render_head(p):
 
 {software_jsonld(p)}
   <style>{STYLE}  </style>
-{REPO_METER_ASSETS}</head>
+{REPO_METER_ASSETS}  <link rel="stylesheet" href="/assets/logos/signature.css">
+</head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 """
@@ -563,7 +564,8 @@ def render_footer():
     </div>
 """
         + render_imprint()
-        + """  </footer>
+        + """    <a class="site-signature" href="/" aria-label="626Labs, home"></a>
+  </footer>
 """
     )
 
@@ -691,6 +693,7 @@ def render_index(data):
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="{og}" />
   <style>{STYLE}  </style>
+  <link rel="stylesheet" href="/assets/logos/signature.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
