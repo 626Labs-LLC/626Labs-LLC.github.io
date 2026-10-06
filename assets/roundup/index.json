@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-03",
+ "generated": "2026-10-06",
  "note": "Raw brand material harvested from the 626 Labs repos, one folder per product. Paths are repo-root-relative; prefix with / for a URL on 626labs.dev. icon/logo/hero are picked by name and dimensions. Regenerate with: python scripts/refresh-roundup.py --index-only",
  "products": [
   {
@@ -523,10 +523,10 @@
    "siteId": "snapsnip",
    "repo": "estevanhernandez-stack-ed/SnipSnap",
    "sourceDir": "docs/screenshots",
-   "harvested": "2026-10-03",
+   "harvested": "2026-10-06",
    "icon": "assets/roundup/snipsnap/logo-1240.png",
    "logo": null,
-   "hero": null,
+   "hero": "assets/roundup/snipsnap/marketing/Hero-1920x1080.png",
    "screenshots": [
     "assets/roundup/snipsnap/screenshots/activity-log.png",
     "assets/roundup/snipsnap/screenshots/collections-manager-dark.png",
@@ -538,12 +538,12 @@
     "assets/roundup/snipsnap/screenshots/profiles.png",
     "assets/roundup/snipsnap/screenshots/settings-general.png",
     "assets/roundup/snipsnap/screenshots/settings-per-app-overrides.png",
-    "assets/roundup/snipsnap/screenshots/settings-preview.png",
-    "assets/roundup/snipsnap/screenshots/smart-rename-dark.png"
+    "assets/roundup/snipsnap/screenshots/settings-preview.png"
    ],
    "other": [
     "assets/roundup/snipsnap/SnipSnapLogo.ico",
     "assets/roundup/snipsnap/SnipSnapLogo.png",
+    "assets/roundup/snipsnap/marketing/StoreLogo-300x300.png",
     "assets/roundup/snipsnap/store-logo-200.png"
    ]
   },
