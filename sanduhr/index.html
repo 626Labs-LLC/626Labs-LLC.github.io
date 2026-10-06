@@ -22,6 +22,8 @@
   <!-- SITE_JSON:theme-css:start -->
 <link rel="stylesheet" href="/themes/slate-broadsheet/archetypes/product-tokens.css">
   <!-- SITE_JSON:theme-css:end -->
+  <!-- Font faces only; nothing here renders until a rule names a face. -->
+  <link rel="stylesheet" href="/fonts/fonts.css" />
 
   <style>
     /* Sanduhr's own palette — the app's colors, not a copy of the 626 Labs
@@ -409,6 +411,14 @@
     .theme-shot .caption strong { color: var(--sd-text); font-weight: 600; }
     .notch-shot { margin-top: 14px; }
     .desk-strip { align-items: start; }
+    /* The Desk draws in Este's hand, so its gallery heading does too. */
+    section.themes h2.hand {
+      font-family: "EsteFont Pro", "Segoe Print", "Bradley Hand", cursive;
+      font-weight: 700;
+      font-size: 40px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
 
     /* ── privacy callout ───────────────────────────────── */
     section.privacy {
@@ -727,7 +737,7 @@
 
   <section class="themes">
     <div class="container">
-      <h2>Desk, on a real Mac.</h2>
+      <h2 class="hand">Desk, on a real Mac.</h2>
       <p class="lead">Captured from Sanduhr 2.6, with demo meetings.</p>
       <div class="theme-strip desk-strip">
         <div class="theme-shot">
