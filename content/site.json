@@ -798,7 +798,7 @@
     {
       "id": "snapsnip",
       "title": "SnapSnip",
-      "description": "Automatically renames full-window snips based on metadata. Reads the active app and window title at capture time, writes a context-rich filename, and embeds structured XMP — turns 'Screenshot 2026-04-29 142301.png' into 'Outlook — Q3 forecast — 2026-04-29 142301.png'. Three on-device redaction presets (Strict / Balanced / Permissive). Privacy by default — no network calls.",
+      "description": "Renames every Snipping Tool capture after the app and window it came from: Win+Shift+S or Print Screen, and “Screenshot 2026-04-29 142301.png” becomes “Outlook — Q3 forecast — 2026-04-29 142301.png”, with the same context embedded as XMP. Window titles are redacted on your machine first (Strict / Balanced / Permissive, per-app overrides, profiles). v0.3 adds a Library with Collections, and a Review clean-up for exact copies, near copies and blurry photos that never deletes and can be undone run by run. No network calls.",
       "tags": [
         {
           "label": "Windows",
@@ -824,7 +824,15 @@
       "storeUrl": "https://apps.microsoft.com/detail/9PBX8F5TR0VR?cid=site-home",
       "banner": "assets/thumb-snapsnip.png",
       "meta": "Windows native · context-aware screenshots",
-      "screenshots": []
+      "productPage": "snapsnip.html",
+      "screenshots": [
+        {"id": "shot-1791308486295-01-r", "path": "assets/screenshots/snapsnip/1791308486295-01-review-exact.png", "name": "01-review-exact.png", "size": 176717},
+        {"id": "shot-1791308486298-02-r", "path": "assets/screenshots/snapsnip/1791308486298-02-review-near.png", "name": "02-review-near.png", "size": 403111},
+        {"id": "shot-1791308486300-03-l", "path": "assets/screenshots/snapsnip/1791308486300-03-library.png", "name": "03-library.png", "size": 121906},
+        {"id": "shot-1791308486303-04-c", "path": "assets/screenshots/snapsnip/1791308486303-04-collections.png", "name": "04-collections.png", "size": 121203},
+        {"id": "shot-1791308486305-05-r", "path": "assets/screenshots/snapsnip/1791308486305-05-redaction-preview.png", "name": "05-redaction-preview.png", "size": 131322},
+        {"id": "shot-1791308486307-06-p", "path": "assets/screenshots/snapsnip/1791308486307-06-privacy-dashboard.png", "name": "06-privacy-dashboard.png", "size": 98654}
+      ]
     },
     {
       "id": "rororo",

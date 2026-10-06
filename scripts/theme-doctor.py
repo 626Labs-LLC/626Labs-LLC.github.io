@@ -233,6 +233,7 @@ BROWSER_CHECK_LIVE_PAGES = (
     "press.html", "privacy.html", "etsy-mcp.html",
     "404.html", "bacon-trail/index.html", "sanduhr/index.html",
     "year-in-review.html", "rororo-trailer.html", "mod-launcher-trailer.html",
+    "snapsnip.html",
 )
 
 
