@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SnapSnip · Screenshots named after the window they came from · 626 Labs</title>
+<meta name="description" content="SnapSnip renames every Snipping Tool capture after the app and window it came from, with on-device redaction first. Library, Collections and a careful duplicate clean-up. No network calls. Free on the Microsoft Store." />
+<meta property="og:title" content="SnapSnip: every screenshot named after the window it came from" />
+<meta property="og:description" content="Context-rich screenshot names, on-device redaction, a Library, and a clean-up that never deletes. Free on the Microsoft Store." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://626labs.dev/snapsnip.html" />
+<meta property="og:image" content="https://626labs.dev/assets/thumb-snapsnip.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="favicon-626.png" />
+
+<!-- SITE_JSON:theme-css:start -->
+<link rel="stylesheet" href="/themes/slate-broadsheet/archetypes/product-tokens.css">
+<!-- SITE_JSON:theme-css:end -->
+
+<style>
+  @import url('/fonts/fonts.css');
+
+  /* ---------- Theme tokens ----------
+     Every color, border, radius and face on this page is a theme custom
+     property from the ACTIVE theme's archetypes/product-tokens.css, linked
+     above and repointed by scripts/render-hub.py on every render. No color
+     literals live here, so the monthly rotation recolors the whole page.
+     Like mod-launcher-games.html, it links the token half, not
+     archetypes/product.css: the layout below is this page's own. */
+
+  html, body { margin:0; padding:0; min-height:100vh; }
+  body{
+    background: var(--bg-0);
+    color: var(--fg-1);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *{ box-sizing:border-box; }
+  a{ color: var(--cyan); }
+  a:hover{ color: var(--cyan-pale); }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position: sticky; top: 0; z-index: 70;
+    background: var(--bg-0);
+    border-bottom: 1px solid var(--border-2);
+  }
+  .topnav-inner{
+    max-width: 1180px; margin: 0 auto; padding: 14px 32px;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
+  }
+  .brand{
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--fg-1); text-decoration: none;
+    text-transform: uppercase; font-weight: 600; letter-spacing: .18em;
+  }
+  .brand .mark{ width: 20px; height: 20px; border-radius: var(--r-xs); display: block; }
+  .topnav .links{ display: flex; gap: 22px; color: var(--fg-3); text-transform: uppercase; align-items: center; }
+  .topnav .links a{ color: var(--fg-3); text-decoration: none; transition: color var(--dur-fast); }
+  .topnav .links a:hover{ color: var(--cyan); }
+  .topnav .links a.cta{ color: var(--cyan); }
+
+  /* ---------- Layout ---------- */
+  .wrap{ position: relative; max-width: 1180px; margin: 0 auto; padding: 56px 32px 72px; }
+
+  .eyebrow{
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--fg-muted); margin: 0 0 14px;
+  }
+  .hero h1{
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(34px, 5vw, 52px); line-height: 1.05; margin: 0 0 16px;
+  }
+  .hero h1 em{ font-style: normal; color: var(--cyan); }
+  .hero p.dek{ max-width: 720px; color: var(--fg-2); font-size: 17px; line-height: 1.6; margin: 0 0 12px; }
+  .hero p.sub{ max-width: 720px; color: var(--fg-3); font-size: 15px; line-height: 1.6; margin: 0; }
+
+  .specs{
+    margin: 26px 0 0; padding: 0; list-style: none;
+    display: flex; flex-wrap: wrap; gap: 8px 22px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .specs b{ color: var(--fg-1); font-weight: 500; }
+
+  /* ---------- Get-it strip ---------- */
+  .get-strip{
+    margin: 30px 0 0;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px;
+    background: var(--bg-1);
+    border: 1px solid var(--border-1); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke);
+    padding: 16px 20px;
+  }
+  .get-strip .gs-key{
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .get-strip .spacer{ flex: 1; }
+  .btn{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em;
+    padding: 9px 16px; border-radius: var(--r-sm); text-decoration: none; cursor: pointer;
+    border: 1px solid var(--border-2); color: var(--fg-2); background: transparent;
+    transition: border-color var(--dur-fast), color var(--dur-fast);
+  }
+  .btn:hover{ border-color: var(--border-accent); color: var(--fg-1); }
+  .btn.primary{
+    border: 1px solid var(--cyan); color: var(--ink-950); font-weight: 600;
+    background: var(--cyan);
+  }
+  .btn.primary:hover{ background: var(--cyan-pale); border-color: var(--cyan-pale); color: var(--ink-950); }
+  .btn svg{ flex: none; }
+
+  /* ---------- Section headers ---------- */
+  .section-hd{ margin: 60px 0 18px; display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+  .section-hd h2{ font-family: var(--font-display); font-size: 26px; font-weight: 600; margin: 0; }
+  .section-hd .r{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-muted); }
+  .section-hd p{ margin: 8px 0 0; color: var(--fg-3); font-size: 14px; line-height: 1.6; max-width: 720px; }
+
+  .prose{ max-width: 720px; color: var(--fg-2); font-size: 16px; line-height: 1.7; }
+  .prose p{ margin: 0 0 14px; }
+  .prose code, .feature code, .slot-cap code, .trust-item code{
+    font-family: var(--font-mono); font-size: .9em; color: var(--fg-1);
+  }
+  .pullquote{
+    margin: 22px 0 0; padding: 4px 0 4px 18px; max-width: 720px;
+    border-left: 2px solid var(--magenta);
+    font-family: var(--font-display); font-size: 20px; line-height: 1.4; color: var(--fg-1);
+  }
+
+  /* ---------- Feature grid ---------- */
+  .feature-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+  .feature{
+    background: var(--bg-1);
+    border: 1px solid var(--border-1); border-radius: var(--r-md);
+    box-shadow: var(--inner-stroke);
+    padding: 18px 18px 16px;
+  }
+  .feature h3{ font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 0 0 8px; }
+  .feature p{ margin: 0; color: var(--fg-3); font-size: 14px; line-height: 1.6; }
+  .feature .tag{
+    display: inline-block; margin: 0 0 10px;
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--magenta); border: 1px solid var(--magenta); border-radius: var(--r-xs); padding: 1px 6px;
+  }
+
+  /* ---------- Screenshot slots ----------
+     Staged for captures that don't exist yet (see the plan's five shots).
+     Each slot is a fixed-aspect, quiet bordered frame in theme tokens, never
+     an <img>, so an empty slot reads as a reserved place and not a broken
+     image. When a capture lands, put an <img> inside .slot-frame. */
+  .shots{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .shot{ margin: 0; }
+  .shot.lead{ grid-column: 1 / -1; }
+  .slot-frame{
+    position: relative; aspect-ratio: 16 / 10; width: 100%;
+    background: var(--bg-1);
+    border: 1px dashed var(--border-2); border-radius: var(--r-md);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .shot.lead .slot-frame{ aspect-ratio: 16 / 9; }
+  .slot-frame img{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
+  .slot-num{
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .slot-cap{ margin: 10px 2px 0; font-size: 14px; line-height: 1.55; color: var(--fg-3); }
+  .slot-cap b{ color: var(--fg-1); font-weight: 600; font-family: var(--font-display); }
+
+  /* ---------- How it's built ---------- */
+  .stats{
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;
+    margin: 0 0 26px;
+  }
+  .stat{
+    border-top: 2px solid var(--cyan);
+    padding: 12px 2px 0;
+  }
+  .stat .n{ font-family: var(--font-display); font-size: 30px; font-weight: 700; line-height: 1; }
+  .stat .l{
+    margin-top: 6px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .pieces{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0 0 26px; }
+
+  /* ---------- Trust ---------- */
+  .trust-box{
+    background: var(--bg-1);
+    border: 1px solid var(--border-1); border-radius: var(--r-lg);
+    box-shadow: var(--inner-stroke);
+    padding: 8px 22px;
+  }
+  .trust-item{
+    display: grid; grid-template-columns: 220px 1fr; gap: 6px 22px;
+    padding: 14px 0; border-bottom: 1px solid var(--border-1);
+  }
+  .trust-item:last-child{ border-bottom: none; }
+  .trust-item .k{ font-family: var(--font-display); font-size: 15px; font-weight: 600; }
+  .trust-item .v{ color: var(--fg-3); font-size: 14px; line-height: 1.6; }
+
+  .footnote{
+    margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border-1);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--fg-muted);
+  }
+  .footnote a{ color: var(--fg-3); text-decoration: none; }
+  .footnote a:hover{ color: var(--cyan); }
+
+  @media (max-width: 760px){
+    .wrap{ padding: 40px 20px 56px; }
+    .topnav-inner{ padding: 12px 20px; }
+    .topnav .links{ gap: 14px; }
+    .topnav .links .hide-sm{ display: none; }
+    .shots{ grid-template-columns: minmax(0, 1fr); }
+    .stats{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pieces{ grid-template-columns: minmax(0, 1fr); }
+    .trust-item{ grid-template-columns: minmax(0, 1fr); }
+    .get-strip .spacer{ display: none; }
+  }
+  /* Real captures, not staged slots: 16:9 frames with a solid edge
+     (the brand allows no dashed borders), and the six features in threes. */
+  .shots .slot-frame{ aspect-ratio: 16 / 9; border-style: solid; }
+  .feature-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pieces{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 760px){ .feature-grid{ grid-template-columns: minmax(0, 1fr); } }
+</style>
+<link rel="stylesheet" href="/assets/logos/signature.css">
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html"><img class="mark" src="favicon-626.png" alt="" />626 Labs</a>
+    <div class="links">
+      <a class="hide-sm" href="index.html">The lab</a>
+      <a class="hide-sm" href="#see-it">See it</a>
+      <a class="cta" href="#get-it">Get it</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ===== Hero ===== -->
+  <div class="hero">
+    <p class="eyebrow">Windows 11 &middot; Snipping Tool companion</p>
+    <h1>Snap<em>Snip</em></h1>
+    <p class="dek">
+      Every screenshot, named after the app and window it came from.
+    </p>
+    <p class="sub">
+      SnapSnip rides alongside Snipping Tool. Press <b>Win+Shift+S</b> or <b>Print Screen</b> as
+      always, and the capture is saved as something like
+      <code>Outlook — Q3 forecast — 2026-04-29 142301.png</code>, with window titles redacted on
+      your machine first.
+    </p>
+    <ul class="specs">
+      <li>Latest <b>v0.3.0</b></li>
+      <li>Windows 11 <b>22H2+</b></li>
+      <li>License <b>MIT</b></li>
+      <li>Price <b>Free</b></li>
+    </ul>
+  </div>
+
+  <div class="get-strip" id="get-it">
+    <span class="gs-key">Get SnapSnip</span>
+    <span class="spacer"></span>
+    <a class="btn primary" href="https://apps.microsoft.com/detail/9PBX8F5TR0VR?cid=site-product">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zM12.5 3H21v8.5h-8.5zM3 12.5h8.5V21H3zM12.5 12.5H21V21h-8.5z"/></svg>
+      Get it from Microsoft Store
+    </a>
+  </div>
+
+  <!-- ===== The problem ===== -->
+  <div class="section-hd">
+    <h2>A folder of Screenshot 2026-04-29 142301.png</h2>
+  </div>
+  <div class="prose">
+    <p>
+      Every capture Snipping Tool saves gets a name like <code>Screenshot 2026-04-29 142301.png</code>:
+      no app, no window, no context. A month later the folder is a few hundred files that all look
+      the same from the outside, and the one you need is somewhere in the middle.
+    </p>
+    <p>
+      SnapSnip reattaches that context at capture time, from the window's own metadata and never from
+      the image, and embeds it as structured XMP that file search, ExifTool and your own scripts can
+      read without parsing filenames.
+    </p>
+  </div>
+  <p class="pullquote">Your screenshot folder becomes something you can search, not a graveyard.</p>
+
+  <!-- ===== What it does ===== -->
+  <div class="section-hd">
+    <div>
+      <h2>Named, redacted, found, cleaned up</h2>
+      <p>Snipping Tool is unchanged. SnapSnip works on what it saves.</p>
+    </div>
+    <div class="r">Nothing leaves your PC</div>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature">
+      <h3>Named at capture</h3>
+      <p>Win+Shift+S or Print Screen, and the file is named for the app and window it came from. The same context is embedded as XMP metadata that any XMP-aware tool can read.</p>
+    </div>
+    <div class="feature">
+      <h3>Redaction comes first</h3>
+      <p>Window titles can carry customer names, ticket numbers and document titles. Three preset policies, Strict, Balanced and Permissive, plus per-app overrides: trust your code editor, lock down your password manager.</p>
+    </div>
+    <div class="feature">
+      <h3>Profiles and a preview</h3>
+      <p>One-click Redaction Profiles for how you work: Developer, Healthcare, Finance, Streamer. A side-by-side preview shows exactly what was redacted and what wasn't, before you rely on it.</p>
+    </div>
+    <div class="feature">
+      <span class="tag">New in 0.3</span>
+      <h3>Library and Collections</h3>
+      <p>Browse every screenshot by the app and window it came from, and gather the right ones into named Collections for a doc, a deck or a Store listing. Collections export copies; your originals stay where they are.</p>
+    </div>
+    <div class="feature">
+      <span class="tag">New in 0.3</span>
+      <h3>Review clean-up</h3>
+      <p>SnapSnip finds exact copies, near copies and blurry photos in a folder you choose. You decide each one, or keep a burst together as a set. Set-aside files move into a <code>_review</code> folder. Nothing is deleted, and every run can be undone.</p>
+    </div>
+    <div class="feature">
+      <h3>Fail-closed</h3>
+      <p>If redaction ever errors, the capture still saves, with a timestamp-only filename, never an unredacted title.</p>
+    </div>
+  </div>
+
+  <!-- ===== See it work ===== -->
+  <div class="section-hd" id="see-it">
+    <h2>See it work</h2>
+    <div class="r">Sample library, no real files</div>
+  </div>
+
+  <div class="shots">
+    <figure class="shot lead">
+      <div class="slot-frame"><img src="assets/screenshots/snapsnip/1791308486295-01-review-exact.png" alt="SnapSnip Review: four exact copies of a beach photo, the original marked Keep and the copies Set aside" width="1920" height="1080" loading="lazy" /></div>
+      <figcaption class="slot-cap"><b>Exact copies.</b> Four copies of the same beach photo. Keep the original, set the copies aside, and nothing moves until you apply.</figcaption>
+    </figure>
+    <figure class="shot">
+      <div class="slot-frame"><img src="assets/screenshots/snapsnip/1791308486298-02-review-near.png" alt="SnapSnip Review: a burst of near-identical kitten photos with Keep all as a set" width="1920" height="1080" loading="lazy" /></div>
+      <figcaption class="slot-cap"><b>Near copies.</b> A quick burst of your cat. Keep the one you like, keep them all as a set, or set the rest aside.</figcaption>
+    </figure>
+    <figure class="shot">
+      <div class="slot-frame"><img src="assets/screenshots/snapsnip/1791308486300-03-library.png" alt="SnapSnip Library: sample screenshots grouped by the app they came from" width="1920" height="1080" loading="lazy" /></div>
+      <figcaption class="slot-cap"><b>The Library.</b> Your screenshots grouped by the app they came from, with the window, monitor and site SnapSnip recorded at capture.</figcaption>
+    </figure>
+    <figure class="shot">
+      <div class="slot-frame"><img src="assets/screenshots/snapsnip/1791308486303-04-collections.png" alt="SnapSnip Collections for a doc, a deck and a Store listing" width="1920" height="1080" loading="lazy" /></div>
+      <figcaption class="slot-cap"><b>Collections.</b> Gather the shots for one destination, a doc, a deck or a Store listing, and export named copies.</figcaption>
+    </figure>
+    <figure class="shot">
+      <div class="slot-frame"><img src="assets/screenshots/snapsnip/1791308486305-05-redaction-preview.png" alt="SnapSnip redaction preview: original and redacted window titles side by side with the rule that fired" width="1920" height="1080" loading="lazy" /></div>
+      <figcaption class="slot-cap"><b>See what redaction changed.</b> The original title, the redacted one, and the rule that fired. Originals stay in memory only.</figcaption>
+    </figure>
+    <figure class="shot">
+      <div class="slot-frame"><img src="assets/screenshots/snapsnip/1791308486307-06-privacy-dashboard.png" alt="SnapSnip Privacy Dashboard showing redaction counts and median protection time" width="1920" height="1080" loading="lazy" /></div>
+      <figcaption class="slot-cap"><b>Counts, never content.</b> A counts-only privacy dashboard: how many of each kind were redacted and how fast, never the content itself.</figcaption>
+    </figure>
+  </div>
+
+  <!-- ===== How it's built ===== -->
+  <div class="section-hd">
+    <div>
+      <h2>How it's built</h2>
+      <p>A Windows tray app that listens for the capture keys, reads the window at that moment, and writes the name and the metadata before the file settles.</p>
+    </div>
+    <div class="r">Windows 11 22H2 or later</div>
+  </div>
+
+  <div class="pieces">
+    <div class="feature">
+      <span class="tag">.NET 10 &middot; WPF</span>
+      <h3>The tray app</h3>
+      <p>Settings, the Library, Review and the Privacy Dashboard, with dark and light themes that follow Windows. .NET 10 ships inside the package.</p>
+    </div>
+    <div class="feature">
+      <span class="tag">C++/WinRT</span>
+      <h3>The keyboard hook</h3>
+      <p>A low-level hook that notices Win+Shift+S and Print Screen and snapshots the foreground window's app and title at that instant.</p>
+    </div>
+    <div class="feature">
+      <span class="tag">XMP v1</span>
+      <h3>A frozen metadata schema</h3>
+      <p>The context is written as a published, frozen v1 XMP schema: a public contract, so any XMP-aware tool can read it.</p>
+    </div>
+    <div class="feature">
+      <span class="tag">SQLite</span>
+      <h3>The library index</h3>
+      <p>A local index of your screenshots that powers the Library, Collections and duplicate finding. It lives on your PC with everything else.</p>
+    </div>
+  </div>
+
+  <!-- ===== Trust ===== -->
+  <div class="section-hd">
+    <h2>What leaves your machine: nothing</h2>
+    <div class="r">No network calls</div>
+  </div>
+
+  <div class="trust-box">
+    <div class="trust-item">
+      <div class="k">No network</div>
+      <div class="v">SnapSnip makes no network calls. There is no cloud redaction: the rules are regular expressions, run locally.</div>
+    </div>
+    <div class="trust-item">
+      <div class="k">Counts, not content</div>
+      <div class="v">Its telemetry is rule counts only, and it stays on this PC: never window-title content, never URLs, never image content. The Privacy Dashboard shows a counts-only view, so you can check the promise without exposing what it protected.</div>
+    </div>
+    <div class="trust-item">
+      <div class="k">Originals in memory only</div>
+      <div class="v">The unredacted title lives in memory for one capture, then it's gone. There is no on-disk vault of originals, by design.</div>
+    </div>
+    <div class="trust-item">
+      <div class="k">Nothing deleted</div>
+      <div class="v">Review clean-up only moves files you approve, only into a <code>_review</code> folder, and every run can be undone. Collections export copies and never move the originals.</div>
+    </div>
+  </div>
+
+  <!-- ===== Reach ===== -->
+  <div class="section-hd">
+    <div>
+      <h2>Where it ended up</h2>
+      <p>Every Microsoft Store install since launch, plotted by country. Dot area is proportional to install count.</p>
+    </div>
+    <div class="r">Lifetime installs</div>
+  </div>
+
+  <!-- Renders itself from data/store-analytics.json; stays hidden until the
+       geography pull has run. See assets/reach-map.js. -->
+  <div class="reach-map" data-app="9PBX8F5TR0VR" data-label="SnapSnip"></div>
+
+  <div class="footnote">
+    <span>Requires Windows 11 22H2 or later. Windows and Snipping Tool are trademarks of Microsoft Corporation; SnapSnip is an independent 626 Labs product and does not modify Snipping Tool.</span>
+    <span>626Labs LLC &middot; Imagine Something Else. &middot; <a href="index.html">Lab</a> &middot; <a href="privacy.html">Privacy</a></span>
+  </div>
+
+</main>
+
+<script src="/assets/reach-map.js" defer></script>
+<a class="site-signature" href="/" aria-label="626Labs, home"></a>
+<!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
+<script data-goatcounter="https://626labs.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
