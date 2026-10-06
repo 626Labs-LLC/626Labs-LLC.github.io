@@ -88,3 +88,17 @@ def test_signature_asset_and_style_exist():
     assert (ROOT / "assets" / "logos" / "626labs-signature-bold-dark.svg").is_file()
     css = (ROOT / "assets" / "logos" / "signature.css").read_text(encoding="utf-8")
     assert "626labs-signature-bold-dark.svg" in css and "currentColor" in css
+
+
+def _public_pages() -> list[str]:
+    reg = json.loads((ROOT / "content" / "page-archetypes.json").read_text(encoding="utf-8"))
+    return [p for p in reg if not p.startswith("$")]
+
+
+@pytest.mark.parametrize("page", _public_pages())
+def test_every_public_page_carries_the_signature(page):
+    # Every page mapped to an archetype, hand-authored or generated. A new
+    # page joins this list the commit it is mapped, so it can't ship unsigned.
+    html = (ROOT / page).read_text(encoding="utf-8")
+    assert SIGNATURE in html, f"{page}: no footer signature"
+    assert "/assets/logos/signature.css" in html, f"{page}: signature.css not loaded"
