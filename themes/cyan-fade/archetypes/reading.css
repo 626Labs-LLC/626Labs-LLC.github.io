@@ -469,13 +469,13 @@ body { margin: 0; }
 .lnt-pull-quote { margin: 0; padding: 0; border: 0; }
 .lnt-pull-quote p {
   margin: 0;
-  font-family: var(--cf-display);
-  font-stretch: var(--cf-display-stretch);
-  font-weight: var(--cf-display-weight);
+  /* The one exception to Archivo: Este's own words, in his hand
+     (see /fonts/fonts.css). */
+  font-family: "EsteFont Pro", "Segoe Print", "Bradley Hand", cursive;
+  font-weight: 700;
   font-style: normal;
-  font-size: clamp(28px, 3.5vw, 48px);
-  line-height: 1;
-  letter-spacing: -0.015em;
+  font-size: clamp(32px, 4.2vw, 56px);
+  line-height: 1.12;
   color: var(--cf-ink);
   text-wrap: balance;
 }

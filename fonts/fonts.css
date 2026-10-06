@@ -69,3 +69,25 @@
   font-display: swap;
   src: url('/fonts/Archivo-Italic-Variable.woff2') format('woff2');
 }
+
+/* EsteFont Pro: Este's own handwriting (626Labs LLC, not OFL; used here by
+   its owner). Static Regular + Bold, shipped as built woff2 from the 3.000
+   release (2026-10-06), so scripts/build-fonts.py does not touch it.
+   The site's rule: Este's own words, in his hand. Pull quotes, the founding
+   line, sign-offs. The hand has a 0.45em x-height, so set it about 1.2x the
+   size the surrounding type would use, never below 24px, and never italic
+   or letter-spaced: the slant and spacing are already drawn in. */
+@font-face {
+  font-family: 'EsteFont Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/EsteFontPro-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'EsteFont Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/EsteFontPro-Bold.woff2') format('woff2');
+}

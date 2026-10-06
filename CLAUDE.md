@@ -25,6 +25,11 @@ around it.
 - **Brand:** Cyan `#17d4fa` + magenta `#f22f89` — always paired. Dark navy
   `#0f1f31` field. Space Grotesk display, Inter body, JetBrains Mono code
   + small UPPERCASE meta labels with +0.12em tracking.
+  **EsteFont Pro** (Este's handwriting, `/fonts/`) sets Este's own words
+  only: the homepage founding quote, About's pull quotes, Field Note
+  sign-offs, the Sanduhr Desk heading. Upright, never below 24px, about 1.2x
+  the surrounding size. Every live or queued theme must keep it on the
+  first two; `tests/test_brand_hand.py` fails one that drops it.
 - **Voice:** Builder-to-builder, second person, sentence case. Em-dashes
   minimal; commas, periods, colons by default. No emoji in UI copy or marketing
   surfaces. Tagline: *Imagine Something Else.* (with the period, it is part of

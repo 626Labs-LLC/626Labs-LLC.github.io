@@ -209,7 +209,7 @@ draft: false
 
 <p>The agent did not get faster. It got more careful, and careful turned out to be worth having. The triple was never the question, because for me the triple was nearly free. What is left is steering: the mode answers a plan you have already thought through and ignores the half-formed turn, so the work moves to the front, where the wheel still responds. Spend the thinking before the build. Let the long run be long.</p>
 
-<p style="font-family:'Space Grotesk',sans-serif;font-size:18px;color:var(--ed-ink);margin-top:8px;">&mdash; Este</p>
+<p style="font-family:'EsteFont Pro','Segoe Print',cursive;font-size:30px;line-height:1.2;color:var(--ed-ink);margin-top:8px;">&mdash; Este</p>
 
 <div class="ed-methods">
   <b>Method</b>
