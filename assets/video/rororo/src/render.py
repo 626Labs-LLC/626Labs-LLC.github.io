@@ -1,13 +1,14 @@
 """Render manifest.json at one canvas size via the tiktok-video-maker renderer.
 
-Usage: python render.py 9x16 | 4x5 | 1x1 | 16x9 [--lang fr|de|ru|pt-BR|pl|es]
+Usage: python render.py 9x16 | 4x5 | 1x1 | 16x9 [--lang fr|de|ru|pt-BR|pl|es|en-GB]
 The still frames are full-canvas at each size (built by make_frames.py); screenshots
 get the renderer's blurred fill. Output lands at ../rororo-launch-<size>.mp4, or
 ../rororo-launch-<lang>-<size>.mp4 for a localized cut.
 
 A localized cut swaps every input set: frames-<lang>/ (make_frames.py --lang),
 shots-<lang>/cropped/ (tools/prep_localized_shots.py), voiceover-<lang-lower>/
-(the approved VO tracks), with slide 4 pointing at the language's own cropped
+(the approved VO tracks). en-GB is VOICE-ONLY: the British (posh RP)
+voiceover-en-gb/ over the English frames and shots. Otherwise, with slide 4 pointing at the language's own cropped
 history capture. The English squad-launch panel is a deliberate reuse (owner
 accepted; the fleet did not capture it localized).
 """
@@ -55,11 +56,14 @@ if size != "9x16":
     src["audio"]["dir"] = f"vo-{lang or 'en'}-{size}"
 
 text = json.dumps(src).replace("{size}", size)
-if lang:
+# Voice-only languages swap the audio and keep the English visuals.
+VOICE_ONLY = {"en-GB"}
+vis = None if lang in VOICE_ONLY else lang
+if vis:
     text = text.replace("shots-remote/history-stats-v123.png",
-                        f"shots-{lang}/cropped/06-history.png")
-    text = text.replace("shots-remote/cropped/", f"shots-{lang}/cropped/")
-    text = text.replace("frames/", f"frames-{lang}/")
+                        f"shots-{vis}/cropped/06-history.png")
+    text = text.replace("shots-remote/cropped/", f"shots-{vis}/cropped/")
+    text = text.replace("frames/", f"frames-{vis}/")
 tmp = os.path.join(here, f"manifest-{lang + '-' if lang else ''}{size}.json")
 open(tmp, "w").write(text)
 
@@ -134,7 +138,7 @@ bv.main()
 # explorers and upload dialogs show the branded face instead of frame one.
 import subprocess
 out_mp4 = os.path.abspath(os.path.join(here, src["output"].replace("{size}", size)))
-frames_root = f"frames-{lang}" if lang else "frames"
+frames_root = f"frames-{vis}" if vis else "frames"
 card = os.path.join(here, frames_root, size, "01-title.png")
 if os.path.exists(out_mp4) and os.path.exists(card):
     cover = os.path.join(here, f"_cover-{lang or 'en'}-{size}.jpg")
