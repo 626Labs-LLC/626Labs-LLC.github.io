@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T12:56:21.995Z",
+  "generatedAt": "2026-10-07T12:50:55.176Z",
   "count": 57,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-10-06T12:16:29Z",
+      "pushed_at": "2026-10-07T12:07:46Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -72,8 +72,8 @@
       "name": "626labs-design",
       "description": "626 Labs design system — colors, type, brand assets, UI kit. Source of truth for ThesisStudio, BlogStudio, and other 626 Labs surfaces.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626labs-design",
-      "language": "CSS",
-      "pushed_at": "2026-09-11T20:04:26Z",
+      "language": "HTML",
+      "pushed_at": "2026-10-06T18:29:02Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -84,8 +84,8 @@
       "name": "626labs-plugin",
       "description": "Design",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626labs-plugin",
-      "language": "CSS",
-      "pushed_at": "2026-10-03T05:36:47Z",
+      "language": "HTML",
+      "pushed_at": "2026-10-06T16:54:10Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -109,7 +109,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-10-02T18:27:35Z",
+      "pushed_at": "2026-10-06T20:23:28Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -325,7 +325,7 @@
       "description": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't bound. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "language": "C#",
-      "pushed_at": "2026-10-04T11:23:08Z",
+      "pushed_at": "2026-10-07T03:11:21Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -337,7 +337,7 @@
       "description": "Multiroblox as current as possible",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
-      "pushed_at": "2026-10-06T03:56:02Z",
+      "pushed_at": "2026-10-06T20:59:32Z",
       "stargazers_count": 8,
       "archived": false,
       "fork": false
@@ -385,7 +385,7 @@
       "description": "Native Windows 11 + macOS glass widget that projects when you'll hit your Claude usage cap — burn-rate, pace markers, live token-burn from local Claude Code sessions, and five glass themes. Independent third-party tool. MIT.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
       "language": "Swift",
-      "pushed_at": "2026-10-06T12:40:46Z",
+      "pushed_at": "2026-10-07T12:04:05Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -565,7 +565,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-10-05T14:10:14Z",
+      "pushed_at": "2026-10-07T08:21:39Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
