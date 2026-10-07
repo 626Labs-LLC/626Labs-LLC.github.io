@@ -279,6 +279,13 @@
       border-bottom: var(--sb-hair);
     }
     .masthead-title a, .masthead-title a:hover { color: inherit; }
+    /* Pinned to the line height so the web font swapping in can't grow or
+       shrink the masthead: its inline boxes took the fallback face's taller
+       metrics and the whole page jumped when Space Grotesk arrived (CLS). */
+    .masthead-title a { display: block; height: 0.9em; }
+    /* The body sets old-style figures for the serif; "626" in the masthead is
+       the name, not a number in a sentence, so it keeps lining figures. */
+    .masthead-title { font-feature-settings: "kern", "liga", "lnum"; }
     .masthead-title .lab { font-weight: 300; letter-spacing: -0.02em; }
 
     /* The dateline row: two folios. The wayfinding sentence is the imprint. */
@@ -1769,7 +1776,7 @@
       <figure class="plate lead-plate">
         <div class="plate-mat">
           <div class="raster">
-            <img src="assets/brand/logo-lockup-transparent-1080.png" alt="626 Labs — Imagine Something Else" loading="eager"/>
+            <img src="assets/brand/logo-lockup-transparent-720.webp" alt="626 Labs — Imagine Something Else" width="720" height="720" decoding="async"/>
           </div>
         </div>
         <figcaption><b>Plate</b>The 626 Labs lockup, screened and mounted. Imagine Something Else.</figcaption>

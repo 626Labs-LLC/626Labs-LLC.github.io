@@ -17,7 +17,7 @@ Outputs (under assets/brand/, plus favicon-626.png at the repo root):
   discord-splash-1920x1080.png
   icon-animated-512.gif      — Discord server icon (pulses only when the
                                theme glows; a static tile otherwise)
-  logo-portrait-256.png, logo-lockup-transparent-1080.png
+  logo-portrait-256.png, logo-lockup-transparent-1080.png (+ a 720 WebP for the homepage)
   favicon-626.png            — the browser-tab icon every page links
 
 The field, texture, glows and color bar come from the active theme's
@@ -373,6 +373,12 @@ def build_transparent_lockup(out: Path = OUT):
     out_path = out / "logo-lockup-transparent-1080.png"
     keyed.save(out_path, "PNG", optimize=True)
     print(f"  wrote {out_path}  ({keyed.width}x{keyed.height})")
+    # The homepage plate shows the lockup at most ~560 CSS px wide, so it ships a
+    # 720 WebP (~97 KB) instead of the 1080 PNG (~466 KB) that was the heaviest
+    # request on a phone load. The PNG stays for press and downloads.
+    web_path = out / "logo-lockup-transparent-720.webp"
+    keyed.resize((720, 720), Image.LANCZOS).save(web_path, "WEBP", quality=90, method=6)
+    print(f"  wrote {web_path}  (720x720)")
 
 
 def build_press_portrait(out: Path = OUT):
