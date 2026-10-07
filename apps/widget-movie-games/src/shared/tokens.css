@@ -2,7 +2,9 @@
  * widget-bacon-trail/src/styles/tokens.css so all three play-section
  * widgets read as one family. Full system:
  * ~/.claude-personal/skills/626labs-design/colors_and_type.css */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+/* Fonts: every page that embeds this widget loads the self-hosted /fonts/fonts.css
+   (Space Grotesk, Inter, JetBrains Mono). A Google Fonts @import here downloaded
+   the same families a second time, render-blocking, and swapped them twice. */
 
 .box-office-widget,
 .tag-that-line-widget {
