@@ -35,18 +35,24 @@
   font-display: swap;
   src: url('/fonts/JetBrainsMono-Variable.woff2') format('woff2');
 }
+/* Source Serif 4 is font-display: optional (2026-10-07, Este's call): the
+   body and deck serif is ~750 KB of variable data, and on a slow phone a late
+   swap repainted the whole page. Now it is used only if it arrives within the
+   first moment (the homepage preloads the roman), else the fallback serif stays
+   for that visit and the cached font is used on the next. Display faces stay
+   swap, so headlines always get their real face. */
 @font-face {
   font-family: 'Source Serif 4';
   font-style: normal;
   font-weight: 200 900;
-  font-display: swap;
+  font-display: optional;
   src: url('/fonts/SourceSerif4-Variable.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Source Serif 4';
   font-style: italic;
   font-weight: 200 900;
-  font-display: swap;
+  font-display: optional;
   src: url('/fonts/SourceSerif4-Italic-Variable.woff2') format('woff2');
 }
 /* Archivo (Omnibus-Type, SIL OFL): the Cyan Fade's one face (2026-11).
