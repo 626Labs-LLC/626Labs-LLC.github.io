@@ -74,6 +74,7 @@ ETSYMCP_HTML = ROOT / "etsy-mcp.html"
 # and never on Path.name (both would collapse to "index.html").
 NOTFOUND_HTML = ROOT / "404.html"
 BACONTRAIL_HTML = ROOT / "bacon-trail" / "index.html"
+PLAY_HTML = ROOT / "play" / "index.html"
 SANDUHR_HTML = ROOT / "sanduhr" / "index.html"
 YEARONE_HTML = ROOT / "year-in-review.html"
 STORIES_DIR = ROOT / "content" / "stories"
@@ -972,6 +973,7 @@ THEME_CSS_HREFS = {
     # layout and no chrome for a dress to land on. It links tokens.css, the
     # same base layer themes.html takes, for its palette alone.
     BACONTRAIL_HTML: "archetypes/product-tokens.css",
+    PLAY_HTML: "archetypes/product-tokens.css",
     SANDUHR_HTML: "archetypes/product-tokens.css",
     # Hand-authored, self-dressed like themes.html: takes the base token file
     # directly, no archetype dress of its own to inherit.
@@ -996,7 +998,7 @@ THEME_CSS_ONLY_PAGES = (
     PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML, ROROROPLUGINS_HTML,
     RORORO_HTML, MODLAUNCHERGAMES_HTML, RORORO_TRAILER_HTML,
     MODLAUNCHER_TRAILER_HTML, SNAPSNIP_HTML, ETSYMCP_HTML,
-    BACONTRAIL_HTML, SANDUHR_HTML, NOTFOUND_HTML, YEARONE_HTML,
+    BACONTRAIL_HTML, PLAY_HTML, SANDUHR_HTML, NOTFOUND_HTML, YEARONE_HTML,
 )
 
 # What `--theme <slug> --out <dir>` writes beside index.html, so a QUEUED
@@ -1252,10 +1254,17 @@ def render_play_section(play: dict) -> str:
     `play.games` — each {id, title, tagline, href, meta, note?} renders
     as a link card in a `.play-games` row beneath the widget grid.
     """
+    # With `play.page` set, the widgets live on that page instead: the
+    # homepage renders each one as a link card to its anchor there and
+    # loads no widget script or stylesheet. Three React bundles, their
+    # CSS and Inter were the bulk of a phone's first-load bytes, for a
+    # section far below the fold (2026-10-07, PageSpeed mobile).
+    page = play.get("page")
     eyebrow = esc(play.get("eyebrow", "05 · Play"))
     headline = esc(play.get("headline", "Also, we make games."))
     lead = esc(play.get("lead", "Try one."))
     widgets = play.get("widgets") or []
+    embedded = [] if page else widgets
 
     # Optional standalone-page link, rendered beneath the lead in the
     # section head. Shape: play.link = {"href": "...", "label": "..."}.
@@ -1275,18 +1284,18 @@ def render_play_section(play: dict) -> str:
     # Widget mount-points (empty <div>s keyed by id).
     mounts = "\n        ".join(
         f'<div id="{attr(w.get("id", ""))}" class="play-widget"></div>'
-        for w in widgets
+        for w in embedded
     )
 
     # Stylesheets loaded first (before the script that mounts).
     stylesheets = "\n      ".join(
         f'<link rel="stylesheet" href="{attr(w.get("stylesheet", ""))}" />'
-        for w in widgets if w.get("stylesheet")
+        for w in embedded if w.get("stylesheet")
     )
 
     # Scripts + inline init calls, one per widget.
     script_blocks: list[str] = []
-    for w in widgets:
+    for w in embedded:
         src = w.get("script")
         init_fn = w.get("initFn")
         widget_id = w.get("id")
@@ -1308,11 +1317,24 @@ def render_play_section(play: dict) -> str:
         )
     scripts = "\n      ".join(script_blocks)
 
-    grid_class = "play-grid" + (" two-up" if len(widgets) >= 2 else "")
+    grid_class = "play-grid" + (" two-up" if len(embedded) >= 2 else "")
 
     # Externally-hosted game cards (play.games) — link out, no embed.
     games = play.get("games") or []
     game_cards: list[str] = []
+    if page:
+        for w in widgets:
+            if not (w.get("title") and w.get("id")):
+                continue
+            anchor = w["id"].removesuffix("-widget")
+            game_cards.append(
+                f'<a class="play-game-card" href="{attr(page)}#{attr(anchor)}">\n'
+                f'          <div class="play-game-meta"><span>{esc(w.get("meta", ""))}</span></div>\n'
+                f'          <h3>{esc(w["title"])}</h3>\n'
+                f'          <p>{esc(w.get("tagline", ""))}</p>\n'
+                f'          <span class="play-game-cta">Play →</span>\n'
+                f'        </a>'
+            )
     for g in games:
         title = g.get("title")
         href = g.get("href")
@@ -1336,6 +1358,11 @@ def render_play_section(play: dict) -> str:
         + "\n    </div>"
     ) if game_cards else ""
 
+    grid_open = (
+        f'<div class="{grid_class}">\n        {mounts}\n    </div>'
+        if embedded else ""
+    )
+
     return f"""\
 <section class="section play" id="play">
   <div class="wrap">
@@ -1346,9 +1373,7 @@ def render_play_section(play: dict) -> str:
       </div>
       {aside}
     </div>
-    <div class="{grid_class}">
-        {mounts}
-    </div>{games_block}
+    {grid_open}{games_block}
     <!-- widget assets -->
     {stylesheets}
     {scripts}

@@ -684,6 +684,15 @@
       column-rule: var(--sb-rule);
       counter-reset: listing;
     }
+    /* Whole-row click-through (restored 2026-10-07; Phosphor Blueprint had it,
+       #120): the renderer emits a stretched .product-cover link to each
+       row's primary destination. Real links lift above it and keep their
+       own targets; the install command stays selectable. */
+    article.product { position: relative; }
+    .product-cover { position: absolute; inset: 0; z-index: 1; }
+    article.product a:not(.product-cover),
+    article.product .product-cta,
+    article.product .install { position: relative; z-index: 2; }
     article.product {
       counter-increment: listing;
       break-inside: avoid;
@@ -2382,25 +2391,34 @@
         <h2>Also, we make games.</h2>
       </div>
       <div class="play-aside">
-        <p>A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).</p>
-        <a class="play-link" href="/bacon-trail/">Open full page ↗</a>
+        <p>Three quick movie games, each about a coffee break long. Pick one and play it in your browser.</p>
+        <a class="play-link" href="/play/">All the games →</a>
       </div>
     </div>
-    <div class="play-grid two-up">
-        <div id="bacon-widget" class="play-widget"></div>
-        <div id="box-office-widget" class="play-widget"></div>
-        <div id="tag-that-line-widget" class="play-widget"></div>
+    
+    <div class="play-games">
+        <a class="play-game-card" href="/play/#bacon">
+          <div class="play-game-meta"><span>Daily · Movies</span></div>
+          <h3>Birthday Bacon Trail</h3>
+          <p>Today's birthday actors, one film chain to Kevin Bacon.</p>
+          <span class="play-game-cta">Play →</span>
+        </a>
+        <a class="play-game-card" href="/play/#box-office">
+          <div class="play-game-meta"><span>Trivia · Movies</span></div>
+          <h3>Box Office Heads Up</h3>
+          <p>Two movies, one question: which earned more? Ten rounds.</p>
+          <span class="play-game-cta">Play →</span>
+        </a>
+        <a class="play-game-card" href="/play/#tag-that-line">
+          <div class="play-game-meta"><span>Word game · Movies</span></div>
+          <h3>Tag That Line</h3>
+          <p>Match the tagline to its poster. Eight rounds, fewer misses, more points.</p>
+          <span class="play-game-cta">Play →</span>
+        </a>
     </div>
     <!-- widget assets -->
-    <link rel="stylesheet" href="/widget-bacon-trail/widget.css" />
-      <link rel="stylesheet" href="/widget-box-office/widget.css" />
-      <link rel="stylesheet" href="/widget-tag-that-line/widget.css" />
-    <script src="/widget-bacon-trail/widget.js" defer></script>
-      <script>window.addEventListener("DOMContentLoaded", function(){if(window.BaconTrailWidget){BaconTrailWidget.init({container: document.getElementById("bacon-widget"), "ctaUrl": "#work", "ctaLabel": "See the full suite \u2192"});}});</script>
-      <script src="/widget-box-office/widget.js" defer></script>
-      <script>window.addEventListener("DOMContentLoaded", function(){if(window.BoxOfficeWidget){BoxOfficeWidget.init({container: document.getElementById("box-office-widget")});}});</script>
-      <script src="/widget-tag-that-line/widget.js" defer></script>
-      <script>window.addEventListener("DOMContentLoaded", function(){if(window.TagThatLineWidget){TagThatLineWidget.init({container: document.getElementById("tag-that-line-widget")});}});</script>
+    
+    
   </div>
 </section>
 <!-- SITE_JSON:play:end -->

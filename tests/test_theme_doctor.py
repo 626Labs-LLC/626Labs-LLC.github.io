@@ -1006,7 +1006,7 @@ def test_browser_checks_open_every_hand_authored_product_page():
         "conundrum.html", "rororo-plugins.html", "rororo.html",
         "mod-launcher-games.html", "thesis.html", "workflow.html",
         "press.html", "privacy.html", "etsy-mcp.html",
-        "404.html", "bacon-trail/index.html", "sanduhr/index.html",
+        "404.html", "bacon-trail/index.html", "play/index.html", "sanduhr/index.html",
         "year-in-review.html", "rororo-trailer.html", "mod-launcher-trailer.html",
         "snapsnip.html",
     )
