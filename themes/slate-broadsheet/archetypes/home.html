@@ -684,6 +684,15 @@
       column-rule: var(--sb-rule);
       counter-reset: listing;
     }
+    /* Whole-row click-through (restored 2026-10-07; Phosphor Blueprint had it,
+       #120): the renderer emits a stretched .product-cover link to each
+       row's primary destination. Real links lift above it and keep their
+       own targets; the install command stays selectable. */
+    article.product { position: relative; }
+    .product-cover { position: absolute; inset: 0; z-index: 1; }
+    article.product a:not(.product-cover),
+    article.product .product-cta,
+    article.product .install { position: relative; z-index: 2; }
     article.product {
       counter-increment: listing;
       break-inside: avoid;

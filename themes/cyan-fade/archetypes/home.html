@@ -392,9 +392,14 @@
       padding-top: .18em;
     }
     article.product > * { grid-column: 2; min-width: 0; }
-    /* The cover anchor the renderer emits has no content; the name and
-       the links below it are the ways in. */
-    .product-cover { display: none; }
+    /* Whole-row click-through (restored 2026-10-07; Phosphor Blueprint had it,
+       #120): the renderer emits a stretched .product-cover link to each
+       row's primary destination. Real links lift above it and keep their
+       own targets; the install command stays selectable. */
+    .product-cover { position: absolute; inset: 0; z-index: 1; }
+    article.product a:not(.product-cover),
+    article.product .product-cta,
+    article.product .install { position: relative; z-index: 2; }
     /* Name first, its line second, the tags under them. */
     article.product h3 { order: -2; }
     .product-desc { order: -1; }

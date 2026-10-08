@@ -1175,14 +1175,15 @@
   "play": {
     "eyebrow": "05 · Play",
     "headline": "Also, we make games.",
-    "lead": "A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him (or don't).",
-    "link": {
-      "href": "/bacon-trail/",
-      "label": "Open full page ↗"
-    },
+    "lead": "Three quick movie games, each about a coffee break long. Pick one and play it in your browser.",
+    "page": "/play/",
+    "link": {"href": "/play/", "label": "All the games →"},
     "widgets": [
       {
         "id": "bacon-widget",
+        "title": "Birthday Bacon Trail",
+        "tagline": "Today's birthday actors, one film chain to Kevin Bacon.",
+        "meta": "Daily · Movies",
         "script": "/widget-bacon-trail/widget.js",
         "stylesheet": "/widget-bacon-trail/widget.css",
         "initFn": "BaconTrailWidget.init",
@@ -1193,6 +1194,9 @@
       },
       {
         "id": "box-office-widget",
+        "title": "Box Office Heads Up",
+        "tagline": "Two movies, one question: which earned more? Ten rounds.",
+        "meta": "Trivia · Movies",
         "script": "/widget-box-office/widget.js",
         "stylesheet": "/widget-box-office/widget.css",
         "initFn": "BoxOfficeWidget.init",
@@ -1200,6 +1204,9 @@
       },
       {
         "id": "tag-that-line-widget",
+        "title": "Tag That Line",
+        "tagline": "Match the tagline to its poster. Eight rounds, fewer misses, more points.",
+        "meta": "Word game · Movies",
         "script": "/widget-tag-that-line/widget.js",
         "stylesheet": "/widget-tag-that-line/widget.css",
         "initFn": "TagThatLineWidget.init",
