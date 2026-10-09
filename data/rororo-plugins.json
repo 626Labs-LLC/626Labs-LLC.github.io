@@ -16,7 +16,7 @@
       "version": "0.5.2",
       "releasedAt": "2026-07-07",
       "minHostVersion": "1.8.0.0",
-      "installs": 129,
+      "installs": 132,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases/latest/download/plugin.zip"
@@ -67,7 +67,7 @@
       "version": "0.9.1",
       "releasedAt": "2026-09-30",
       "minHostVersion": "1.19.0",
-      "installs": 185,
+      "installs": 186,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/plugin.zip"
