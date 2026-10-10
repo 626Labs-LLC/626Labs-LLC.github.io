@@ -1,17 +1,10 @@
 {
- "fetchedAt": "2026-10-09T13:50:31.141Z",
+ "fetchedAt": "2026-10-10T13:05:55.268Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
    "name": "RoRoRo",
    "usageDaily": {
-    "2026-09-09": {
-     "dailyActiveUsers": 84,
-     "dailyActiveDevices": 84,
-     "dailyNewUsers": 3,
-     "dailySessionCount": 160,
-     "engagementDurationMinutes": 176.6
-    },
     "2026-09-10": {
      "dailyActiveUsers": 98,
      "dailyActiveDevices": 96,
@@ -214,12 +207,16 @@
      "dailyNewUsers": 13,
      "dailySessionCount": 314,
      "engagementDurationMinutes": 806
+    },
+    "2026-10-09": {
+     "dailyActiveUsers": 129,
+     "dailyActiveDevices": 129,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 240,
+     "engagementDurationMinutes": 188.2
     }
    },
    "installsDaily": {
-    "2026-09-09": {
-     "successfulInstallCount": 50
-    },
     "2026-09-10": {
      "successfulInstallCount": 41
     },
@@ -306,12 +303,12 @@
     },
     "2026-10-08": {
      "successfulInstallCount": 47
+    },
+    "2026-10-09": {
+     "successfulInstallCount": 46
     }
    },
    "acquisitionsDaily": {
-    "2026-09-09": {
-     "acquisitionQuantity": 29
-    },
     "2026-09-10": {
      "acquisitionQuantity": 22
     },
@@ -397,85 +394,88 @@
      "acquisitionQuantity": 30
     },
     "2026-10-08": {
-     "acquisitionQuantity": 1
+     "acquisitionQuantity": 24
     },
     "2026-10-09": {
-     "acquisitionQuantity": 8
+     "acquisitionQuantity": 2
+    },
+    "2026-10-10": {
+     "acquisitionQuantity": 18
     }
    },
    "installsByMarket": {
     "US": 770,
-    "PH": 308,
-    "BR": 143,
-    "GB": 140,
+    "PH": 310,
+    "BR": 144,
+    "GB": 144,
+    "FR": 113,
     "DE": 112,
-    "FR": 111,
-    "PL": 108,
-    "RU": 101,
-    "CA": 97,
-    "AU": 83,
-    "IN": 68,
+    "PL": 109,
+    "RU": 103,
+    "CA": 98,
+    "AU": 84,
+    "IN": 69,
     "ID": 52,
-    "NL": 49,
+    "NL": 51,
     "VN": 43,
+    "UA": 41,
     "JP": 40,
-    "UA": 40,
     "TH": 37,
     "DK": 34,
     "KR": 30,
-    "MY": 29,
+    "MY": 30,
     "TW": 28,
-    "BE": 26,
+    "BE": 28,
     "RO": 26,
     "CZ": 25,
     "SG": 25,
     "IT": 22,
-    "SE": 20,
+    "SE": 21,
+    "NO": 20,
+    "ZA": 19,
     "MX": 18,
     "AE": 18,
-    "ZA": 18,
-    "NO": 17,
     "ES": 17,
-    "PK": 16,
+    "PK": 17,
     "PT": 16,
+    "TR": 16,
     "NP": 15,
     "BD": 15,
-    "TR": 15,
-    "HK": 14,
+    "HK": 15,
+    "AR": 14,
     "PE": 13,
     "NZ": 13,
-    "AR": 13,
     "KZ": 12,
     "SA": 12,
     "CO": 10,
     "IL": 9,
-    "MA": 8,
+    "MA": 9,
     "SK": 8,
     "FI": 8,
     "CH": 8,
     "LT": 8,
     "BG": 8,
-    "LV": 7,
+    "LV": 8,
     "KE": 7,
     "KH": 7,
     "CN": 7,
     "IQ": 7,
+    "AT": 7,
     "MD": 6,
     "EG": 6,
     "HU": 6,
-    "AT": 6,
     "CL": 6,
     "MN": 6,
     "IE": 6,
     "HR": 6,
-    "DO": 5,
+    "DO": 6,
     "DZ": 5,
     "JM": 5,
     "UY": 5,
     "EC": 5,
     "NG": 5,
     "BY": 5,
-    "GR": 4,
+    "GR": 5,
     "VI": 4,
     "BH": 4,
     "GE": 4,
@@ -489,16 +489,16 @@
     "SI": 3,
     "PY": 3,
     "TN": 3,
+    "SV": 3,
+    "BA": 3,
     "GT": 2,
     "IS": 2,
     "KW": 2,
     "PR": 2,
-    "SV": 2,
     "CI": 2,
     "GA": 2,
     "TT": 2,
     "GY": 2,
-    "BA": 2,
     "UZ": 2,
     "HN": 2,
     "AM": 1,
@@ -712,20 +712,13 @@
    },
    "failuresWindow": [],
    "unclassifiedHits": {
-    "eventCount": 445,
-    "deviceCount": 308
+    "eventCount": 440,
+    "deviceCount": 307
    }
   },
   "9N53V6RRJK95": {
    "name": "626 Mod Launcher",
    "usageDaily": {
-    "2026-09-09": {
-     "dailyActiveUsers": 1,
-     "dailyActiveDevices": 1,
-     "dailyNewUsers": 1,
-     "dailySessionCount": 4,
-     "engagementDurationMinutes": 0.2
-    },
     "2026-09-12": {
      "dailyActiveUsers": 2,
      "dailyActiveDevices": 2,
@@ -872,12 +865,16 @@
      "dailyNewUsers": 2,
      "dailySessionCount": 10,
      "engagementDurationMinutes": 45.2
+    },
+    "2026-10-09": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 1.1
     }
    },
    "installsDaily": {
-    "2026-09-09": {
-     "successfulInstallCount": 3
-    },
     "2026-09-10": {
      "successfulInstallCount": 1
     },
@@ -955,12 +952,12 @@
     },
     "2026-10-07": {
      "successfulInstallCount": 4
+    },
+    "2026-10-09": {
+     "successfulInstallCount": 1
     }
    },
    "acquisitionsDaily": {
-    "2026-09-09": {
-     "acquisitionQuantity": 1
-    },
     "2026-09-11": {
      "acquisitionQuantity": 1
     },
@@ -1032,6 +1029,12 @@
     },
     "2026-10-07": {
      "acquisitionQuantity": 1
+    },
+    "2026-10-08": {
+     "acquisitionQuantity": 1
+    },
+    "2026-10-10": {
+     "acquisitionQuantity": 4
     }
    },
    "installsByMarket": {
@@ -1101,7 +1104,8 @@
     "BY": 1,
     "HK": 1,
     "MM": 1,
-    "UZ": 1
+    "UZ": 1,
+    "ZM": 1
    },
    "reviews": [],
    "ratingsLifetime": {
@@ -1136,9 +1140,6 @@
     }
    },
    "installsDaily": {
-    "2026-09-09": {
-     "successfulInstallCount": 1
-    },
     "2026-09-18": {
      "successfulInstallCount": 1
     },
@@ -1153,9 +1154,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-09-09": {
-     "acquisitionQuantity": 1
-    },
     "2026-09-15": {
      "acquisitionQuantity": 1
     },
@@ -1285,9 +1283,6 @@
     }
    },
    "installsDaily": {
-    "2026-09-09": {
-     "successfulInstallCount": 1
-    },
     "2026-09-13": {
      "successfulInstallCount": 1
     },
@@ -1332,9 +1327,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-09-09": {
-     "acquisitionQuantity": 2
-    },
     "2026-09-15": {
      "acquisitionQuantity": 1
     },
@@ -1366,6 +1358,9 @@
      "acquisitionQuantity": 2
     },
     "2026-10-06": {
+     "acquisitionQuantity": 1
+    },
+    "2026-10-08": {
      "acquisitionQuantity": 1
     }
    },
@@ -1438,13 +1433,6 @@
   "9MV9G4XFJ8S0": {
    "name": "RBX15 Classic Shirt and Pants Maker",
    "usageDaily": {
-    "2026-09-09": {
-     "dailyActiveUsers": 1,
-     "dailyActiveDevices": 1,
-     "dailyNewUsers": 1,
-     "dailySessionCount": 1,
-     "engagementDurationMinutes": 0.1
-    },
     "2026-09-10": {
      "dailyActiveUsers": 3,
      "dailyActiveDevices": 3,
@@ -1640,12 +1628,16 @@
      "dailyNewUsers": 1,
      "dailySessionCount": 5,
      "engagementDurationMinutes": 2
+    },
+    "2026-10-09": {
+     "dailyActiveUsers": 5,
+     "dailyActiveDevices": 5,
+     "dailyNewUsers": 3,
+     "dailySessionCount": 12,
+     "engagementDurationMinutes": 11.9
     }
    },
    "installsDaily": {
-    "2026-09-09": {
-     "successfulInstallCount": 2
-    },
     "2026-09-10": {
      "successfulInstallCount": 3
     },
@@ -1729,12 +1721,12 @@
     },
     "2026-10-08": {
      "successfulInstallCount": 2
+    },
+    "2026-10-09": {
+     "successfulInstallCount": 5
     }
    },
    "acquisitionsDaily": {
-    "2026-09-09": {
-     "acquisitionQuantity": 3
-    },
     "2026-09-10": {
      "acquisitionQuantity": 2
     },
@@ -1813,12 +1805,18 @@
     "2026-10-07": {
      "acquisitionQuantity": 3
     },
+    "2026-10-08": {
+     "acquisitionQuantity": 1
+    },
     "2026-10-09": {
+     "acquisitionQuantity": 1
+    },
+    "2026-10-10": {
      "acquisitionQuantity": 1
     }
    },
    "installsByMarket": {
-    "US": 139,
+    "US": 140,
     "IN": 52,
     "BR": 44,
     "PH": 29,
@@ -1827,8 +1825,8 @@
     "ZA": 23,
     "ID": 21,
     "NG": 20,
+    "CA": 18,
     "AU": 17,
-    "CA": 17,
     "PK": 15,
     "FR": 14,
     "SA": 12,
@@ -1855,6 +1853,7 @@
     "RO": 4,
     "GR": 4,
     "NP": 4,
+    "ES": 4,
     "AE": 3,
     "EG": 3,
     "GY": 3,
@@ -1864,7 +1863,6 @@
     "JP": 3,
     "PE": 3,
     "SE": 3,
-    "ES": 3,
     "MM": 3,
     "VC": 3,
     "AO": 2,
@@ -1929,7 +1927,9 @@
     "TW": 1,
     "UZ": 1,
     "VE": 1,
-    "SG": 1
+    "SG": 1,
+    "CL": 1,
+    "TR": 1
    },
    "reviews": [
     {
@@ -1960,13 +1960,6 @@
   "9NH3NK2RGCF5": {
    "name": "Sanduhr für Claude",
    "usageDaily": {
-    "2026-09-09": {
-     "dailyActiveUsers": 2,
-     "dailyActiveDevices": 2,
-     "dailyNewUsers": 0,
-     "dailySessionCount": 2,
-     "engagementDurationMinutes": 0.4
-    },
     "2026-09-10": {
      "dailyActiveUsers": 2,
      "dailyActiveDevices": 2,
@@ -2064,6 +2057,13 @@
      "dailyNewUsers": 0,
      "dailySessionCount": 1,
      "engagementDurationMinutes": 0.1
+    },
+    "2026-10-09": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 0.5
     }
    },
    "installsDaily": {
