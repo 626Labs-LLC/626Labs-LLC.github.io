@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T12:45:29.744Z",
+  "generatedAt": "2026-10-10T12:03:57.089Z",
   "count": 57,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-10-09T12:08:46Z",
+      "pushed_at": "2026-10-10T11:26:27Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -217,7 +217,7 @@
       "description": "Homebrew tap for Sanduhr and other Estevan Hernandez Mac apps",
       "html_url": "https://github.com/estevanhernandez-stack-ed/homebrew-tap",
       "language": "Ruby",
-      "pushed_at": "2026-04-21T03:15:59Z",
+      "pushed_at": "2026-10-09T23:00:19Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -385,7 +385,7 @@
       "description": "Native Windows 11 + macOS glass widget that projects when you'll hit your Claude usage cap — burn-rate, pace markers, live token-burn from local Claude Code sessions, and five glass themes. Independent third-party tool. MIT.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
       "language": "Swift",
-      "pushed_at": "2026-10-08T20:24:06Z",
+      "pushed_at": "2026-10-09T23:06:31Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -565,7 +565,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-10-09T08:22:32Z",
+      "pushed_at": "2026-10-10T08:18:43Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
