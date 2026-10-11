@@ -943,8 +943,24 @@ def compare_pixels(base_png: bytes, head_png: bytes) -> tuple[list[str], dict]:
     )
 
 
+# The two trees are served on two ports, so any computed value the browser
+# resolves to an ABSOLUTE url carries a different origin on each side:
+# `mask-image: url("http://127.0.0.1:59421/assets/logos/...svg")` vs `...:59422`.
+# The footer signature (signature.css) put one on every page in October, so
+# `--self-check` reported it on every page and no computed-channel run could
+# come back clean. Only the loopback origin is folded, never the path.
+_LOOPBACK_ORIGIN_RE = re.compile(r"https?://(?:127\.0\.0\.1|localhost):\d+")
+
+
+def _same_origin_value(value):
+    if isinstance(value, str):
+        return _LOOPBACK_ORIGIN_RE.sub("<origin>", value)
+    return value
+
+
 def compare_computed(base_rec, head_rec, props, limit: int) -> tuple[list[str], dict]:
-    """Named differences: element, pseudo, property, both values."""
+    """Named differences: element, pseudo, property, both values. Values are
+    compared with the serving origin folded out (see _LOOPBACK_ORIGIN_RE)."""
     findings: list[str] = []
     if len(base_rec) != len(head_rec):
         findings.append(f"element count {len(base_rec)} vs {len(head_rec)}")
@@ -958,7 +974,7 @@ def compare_computed(base_rec, head_rec, props, limit: int) -> tuple[list[str], 
             bv, hv = b[2 + pi], h[2 + pi]
             for j, prop in enumerate(props):
                 compared += 1
-                if bv[j] != hv[j]:
+                if _same_origin_value(bv[j]) != _same_origin_value(hv[j]):
                     differing += 1
                     if len(detail) < limit:
                         detail.append(f"{label}{pseudo} {prop}: {bv[j]!r} vs {hv[j]!r}")

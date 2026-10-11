@@ -12,7 +12,8 @@ Checks:
   1. prose-vs-facts  — a curated registry; literal counts in voice prose that
                        contradict the derived/supplemented facts.
   2. asset existence — local /assets/... references that don't exist on disk.
-  3. render drift    — render-hub.py --check and render-plugin-pages.py --check.
+  3. render drift    — render-product-pages.py, render-hub.py and
+                       render-plugin-pages.py, each with --check.
   4. asset roundup   — assets/roundup/index.json names only files that exist,
                        every image under assets/roundup is in it, and the tree
                        holds no non-image but README.md and index.json (it is
@@ -144,7 +145,7 @@ def roundup_summary(root: Path = ROOT) -> str:
 
 def check_render_drift() -> list[str]:
     failures = []
-    for script in ("render-hub.py", "render-plugin-pages.py"):
+    for script in ("render-product-pages.py", "render-hub.py", "render-plugin-pages.py"):
         r = subprocess.run(
             [sys.executable, str(ROOT / "scripts" / script), "--check"],
             capture_output=True,

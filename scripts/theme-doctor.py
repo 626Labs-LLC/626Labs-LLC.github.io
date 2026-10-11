@@ -125,7 +125,8 @@ REQUIRED_ARCHETYPE_CSS = {"product": "product.css", "utility": "utility.css", "r
 
 # The token half of the product archetype, split out of product.css so the
 # five bespoke product pages — conundrum.html, rororo-plugins.html,
-# rororo.html, mod-launcher-games.html, etsy-mcp.html — can link the
+# rororo.html, mod-launcher-games.html, and every generated product page
+# (render-product-pages.py) — can link the
 # VOCABULARY without
 # inheriting the DRESS (bare `body`/`a:hover`/`section.hero`/`.card`/`.btn`
 # rules written for render-plugin-pages.py's templates, not for their
@@ -157,7 +158,7 @@ READING_TOKENS_CSS = "reading-tokens.css"
 REQUIRED_TOKEN_CSS = (
     "tokens.css",                        # themes.html, index.html
     # conundrum.html, rororo-plugins.html, rororo.html,
-    # mod-launcher-games.html, etsy-mcp.html, +15 inlined
+    # mod-launcher-games.html, the generated product pages, +15 inlined
     f"archetypes/{PRODUCT_TOKENS_CSS}",
     f"archetypes/{READING_TOKENS_CSS}",  # thesis.html, workflow.html
     "archetypes/utility.css",            # press.html, privacy.html
@@ -230,11 +231,28 @@ TOKEN_ONLY_CSS = (
 BROWSER_CHECK_LIVE_PAGES = (
     "conundrum.html", "rororo-plugins.html", "rororo.html",
     "mod-launcher-games.html", "thesis.html", "workflow.html",
-    "press.html", "privacy.html", "etsy-mcp.html",
+    "press.html", "privacy.html",
     "404.html", "bacon-trail/index.html", "play/index.html", "sanduhr/index.html",
     "year-in-review.html", "rororo-trailer.html", "mod-launcher-trailer.html",
     "snapsnip.html",
 )
+
+
+def _load_product_page_renderer(root: Path = ROOT):
+    return _load_sibling_script("render-product-pages.py", "_theme_doctor_render_product_pages")
+
+
+def browser_check_live_pages(root: Path = ROOT) -> tuple[str, ...]:
+    """BROWSER_CHECK_LIVE_PAGES plus every page render-product-pages.py
+    generates. The generated half is read from the renderer, never listed:
+    etsy-mcp.html was the first page to leave the hand-written tuple for
+    it, and a product that gains a pageSpec joins this gate the same commit
+    it joins the site. render-hub.py's --theme/--out preview emits them, so
+    main()'s "did not emit" guard covers them too."""
+    generated = _load_product_page_renderer(root).generated_pages(root)
+    return BROWSER_CHECK_LIVE_PAGES + tuple(
+        p for p in generated if p not in BROWSER_CHECK_LIVE_PAGES
+    )
 
 
 def _served_path(document: str) -> str:
@@ -1027,6 +1045,12 @@ def resolution_groups(
     for page, href in render_hub.THEME_CSS_HREFS.items():
         rel = page.relative_to(render_hub.ROOT).as_posix()
         add(rel, (href,), _page_site_stylesheets(root / rel))
+    # The generated product pages: one theme link each, the renderer's own
+    # THEME_CSS_HREF, plus whatever site stylesheets the page on disk links
+    # (signature.css, the repo meter's meter.css).
+    product_pages = _load_product_page_renderer(root)
+    for rel in product_pages.generated_pages(root):
+        add(rel, (product_pages.THEME_CSS_HREF,), _page_site_stylesheets(root / rel))
     inline_source = theme_registry.theme_dir(
         theme_registry.active_slug(theme_registry.load(root)), root
     )
@@ -2570,7 +2594,7 @@ def main(argv: list[str]) -> int:
         # or scrolling sideways under the incoming theme.
         live_page_html: dict[str, str] = {}
         missing_previews: list[str] = []
-        for name in BROWSER_CHECK_LIVE_PAGES:
+        for name in browser_check_live_pages():
             src = Path(tmp) / name
             if src.exists():
                 live_page_html[name] = src.read_text(encoding="utf-8")

@@ -513,9 +513,13 @@ CONVERTED_PAGES = (
     render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML,
     render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML,
     render_hub.RORORO_HTML, render_hub.MODLAUNCHERGAMES_HTML,
-    render_hub.ETSYMCP_HTML,
     # October needs, piece 2: the three pages that never took a theme.
     render_hub.NOTFOUND_HTML, render_hub.BACONTRAIL_HTML, render_hub.SANDUHR_HTML,
+) + tuple(
+    # Every page render-product-pages.py generates (etsy-mcp.html first, #200).
+    # Their <style> is scripts/product-page.css, so the rule holds for the
+    # whole family at once, and a new pageSpec joins it the commit it lands.
+    ROOT / rel for rel in render_hub._load_product_page_renderer().generated_pages()
 )
 
 
