@@ -736,7 +736,7 @@
     {
       "id": "rbx15-shirt-pants",
       "title": "RBX15 Classic Shirt and Pants Maker",
-      "description": "Native desktop editor for Roblox Classic (R15) shirt and pants templates, built for the exact 585×559 template grid. Layer-based compositing with non-destructive adjustments — brightness, contrast, saturation, hue, and per-channel RGB shift, all real-time — plus drawing tools, fullbleed / mirror / meme-tee presets, and a word-art generator with 15 fonts. Built on Electron for Windows. Free on the Microsoft Store.",
+      "description": "Desktop editor for Roblox Classic (R15) shirt and pants templates, built for the exact 585×559 template grid. Layer-based compositing with non-destructive adjustments — brightness, contrast, saturation, hue, and per-channel RGB shift, all real-time — plus drawing tools, fullbleed / mirror / meme-tee presets, and a word-art generator with 15 fonts. Built on Electron for Windows. Free on the Microsoft Store.",
       "tags": [
         {
           "label": "Windows",
