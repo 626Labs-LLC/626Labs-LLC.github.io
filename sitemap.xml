@@ -156,6 +156,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://626labs.dev/rbx15.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://626labs.dev/rororo-plugins.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -167,6 +172,11 @@
   </url>
   <url>
     <loc>https://626labs.dev/rororo.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://626labs.dev/rtclickpng.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

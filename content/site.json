@@ -760,6 +760,214 @@
       "npm": null,
       "install": null,
       "storeUrl": "https://apps.microsoft.com/detail/9mv9g4xfj8s0?cid=site-home",
+      "productPage": "rbx15.html",
+      "pageSpec": {
+        "meta": {
+          "title": "RBX15 Classic Shirt and Pants Maker · Roblox Classic clothing editor for Windows · 626 Labs",
+          "description": "Paint Roblox Classic shirts and pants like you mean it. Layers, pattern fills that wrap the body, gradients that span it, word art, and undo for everything, in a Windows desktop app built for the exact 585×559 template grid.",
+          "ogTitle": "RBX15 Classic Shirt and Pants Maker: paint your Roblox Classic clothes, don't just place them",
+          "ogDescription": "Layers, fills that wrap the body, gradients that span it, and word art, on the exact 585×559 template grid. No account, no login. Free on the Microsoft Store.",
+          "ogImage": "/assets/thumb-rbx15.png"
+        },
+        "releaseReviewed": [
+          "estevanhernandez-stack-ed/RBX15-Shirt-and-Pants@v4.1.0"
+        ],
+        "nav": [
+          {
+            "label": "The lab",
+            "href": "/",
+            "hideSm": true
+          },
+          {
+            "label": "Source",
+            "href": "https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants"
+          },
+          {
+            "label": "Get it",
+            "href": "#get-it",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "eyebrow": "Windows desktop app · Roblox Classic (R15) clothing",
+            "title": "RBX15 Classic",
+            "titleAccent": "Shirt and Pants Maker",
+            "dek": "Paint your Roblox Classic clothes, don't just place them. A Windows desktop app for Roblox Classic (R15) shirt and pants templates: the 585×559 PNG panels creators upload to Roblox. Open the app and start making. No account, no login, no setup.",
+            "strip": [
+              {
+                "key": "Latest",
+                "value": "v4.1.0"
+              },
+              {
+                "key": "Platform",
+                "value": "Windows"
+              },
+              {
+                "key": "License",
+                "value": "MIT"
+              },
+              {
+                "key": "Price",
+                "value": "Free"
+              }
+            ],
+            "get": {
+              "label": "Get RBX15",
+              "links": [
+                {
+                  "label": "Get it from Microsoft Store",
+                  "href": "https://apps.microsoft.com/detail/9MV9G4XFJ8S0?cid=site-product",
+                  "primary": true,
+                  "store": true
+                },
+                {
+                  "label": "Source on GitHub",
+                  "href": "https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants"
+                }
+              ]
+            }
+          },
+          {
+            "type": "section",
+            "eyebrow": "What it does",
+            "heading": "Layers, fills that wrap, gradients that span",
+            "blocks": [
+              {
+                "type": "cards",
+                "items": [
+                  {
+                    "title": "Layers",
+                    "body": "Layers that stack, move, and adjust without wrecking the original. Change your mind whenever."
+                  },
+                  {
+                    "tag": "New in 4.1",
+                    "title": "Region fills with real style",
+                    "body": "Paint any panel with a solid color, a linear or radial gradient, or a pattern: stripes, checker, dots, or camo."
+                  },
+                  {
+                    "tag": "New in 4.1",
+                    "title": "Patterns wrap the body",
+                    "body": "The same fill on connected panels flows across the seams as one piece instead of restarting at every edge."
+                  },
+                  {
+                    "tag": "New in 4.1",
+                    "title": "Gradients span the whole area",
+                    "body": "One smooth ramp across connected panels, with no visible breaks."
+                  },
+                  {
+                    "tag": "New in 4.1",
+                    "title": "Live fill editing",
+                    "body": "Change the angle or colors after painting and every panel updates at once."
+                  },
+                  {
+                    "title": "Word art and drawing tools",
+                    "body": "Word art with styling, drawing tools, and an eraser with a cursor that shows your brush size."
+                  },
+                  {
+                    "title": "Undo everything",
+                    "body": "Undo everything, redo too (Ctrl+Y): fills, backgrounds, even switching between Shirt and Pants."
+                  },
+                  {
+                    "title": "Built for the template grid",
+                    "body": "A fullscreen canvas built for the exact 585×559 template grid, so what you export is what Roblox expects."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "id": "see-it-work",
+            "eyebrow": "See it work",
+            "heading": "From an empty template to a finished shirt",
+            "blocks": [
+              {
+                "type": "shots",
+                "captions": [
+                  "<b>Fills that wrap.</b> One gradient sweeping across every torso panel, or a pattern tiling unbroken across the seams.",
+                  "<b>Layers.</b> Stack, move and adjust without wrecking the original.",
+                  "<b>Live fill editing.</b> Change the angle or the colors after painting, and every connected panel updates at once.",
+                  "<b>Word art.</b> Style a word, then place it on the template.",
+                  "<b>Pants too.</b> A pattern running down both legs.",
+                  "<b>The export.</b> A 585×559 PNG, the file Roblox expects."
+                ],
+                "alts": [
+                  "A gradient fill sweeping across every torso panel of a Roblox Classic shirt template",
+                  "The RBX15 layer stack with several layers composed on the template",
+                  "A fill's angle and colors being edited, with every connected panel updating",
+                  "Styled word art placed on a shirt template",
+                  "The pants template with a pattern running down both legs",
+                  "The exported 585×559 PNG beside the template"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "eyebrow": "How it's built",
+            "heading": "A Windows desktop app on a fixed grid",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "RBX15 is a Windows desktop app built on Electron. Every layer composites onto a canvas locked to the 585×559 template grid Roblox Classic clothing uses, so the PNG you export is the file you upload. When you're done, export a PNG and upload it to Roblox yourself."
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "id": "trust",
+            "eyebrow": "Trust",
+            "heading": "Nothing to sign in to",
+            "blocks": [
+              {
+                "type": "trust",
+                "rows": [
+                  {
+                    "label": "No account",
+                    "body": "Open the app and start making: no account, no login, no setup."
+                  },
+                  {
+                    "label": "No Roblox connection",
+                    "body": "The app doesn't connect to Roblox and doesn't sign in to anything. You upload the PNG yourself."
+                  },
+                  {
+                    "label": "Nothing collected",
+                    "body": "It doesn't collect anything. The one thing it fetches from the internet is fonts for word art."
+                  },
+                  {
+                    "label": "Trademark",
+                    "body": "Independent third-party tool. \"Roblox\" is a trademark of Roblox Corporation, used nominatively to describe the template file format. RBX15 Classic Shirt and Pants Maker is not affiliated with or endorsed by Roblox Corporation."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "eyebrow": "Reach",
+            "heading": "Where it ended up",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Every Microsoft Store install since launch, plotted by country. Dot area is proportional to install count."
+                ]
+              },
+              {
+                "type": "reachMap"
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · RBX15 Classic Shirt and Pants Maker",
+          "disclaimer": "Not affiliated with or endorsed by Roblox Corporation."
+        }
+      },
       "banner": "assets/thumb-rbx15.png",
       "meta": "Windows · Roblox creator tooling",
       "screenshots": []
@@ -791,6 +999,278 @@
       "npm": null,
       "install": null,
       "storeUrl": "https://apps.microsoft.com/detail/9PKKLK6R5WFL?cid=site-home",
+      "productPage": "rtclickpng.html",
+      "pageSpec": {
+        "meta": {
+          "title": "Right Click PNG · Convert to PNG from the right-click menu · 626 Labs",
+          "description": "Right Click PNG adds Convert to PNG and Copy as PNG to the Windows 11 File Explorer right-click menu. WebP, AVIF, HEIC and more, decoded locally. No network calls, no telemetry, original never modified.",
+          "ogTitle": "Right Click PNG: the online converter detour, replaced with a right-click",
+          "ogDescription": "Convert to PNG and Copy as PNG in the File Explorer context menu. Offline by design. Free on the Microsoft Store, MIT on GitHub.",
+          "ogImage": "/assets/thumb-rtclickpng.png"
+        },
+        "releaseReviewed": [
+          "estevanhernandez-stack-ed/RTClickPng@v0.1.0"
+        ],
+        "nav": [
+          {
+            "label": "The lab",
+            "href": "/",
+            "hideSm": true
+          },
+          {
+            "label": "Source",
+            "href": "https://github.com/estevanhernandez-stack-ed/RTClickPng"
+          },
+          {
+            "label": "Get it",
+            "href": "#get-it",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "eyebrow": "Windows 11 · File Explorer shell extension",
+            "title": "Right Click",
+            "titleAccent": "PNG",
+            "dek": "Convert images to PNG from the right-click menu. No network calls, no detours. Adds <b>Convert to PNG</b> and <b>Copy as PNG</b> to the File Explorer context menu, so the round-trip through an online converter stops happening.",
+            "strip": [
+              {
+                "key": "Latest",
+                "value": "v0.1.0"
+              },
+              {
+                "key": "Platform",
+                "value": "Windows 11 x64"
+              },
+              {
+                "key": "License",
+                "value": "MIT"
+              },
+              {
+                "key": "Price",
+                "value": "Free"
+              }
+            ],
+            "get": {
+              "label": "Get Right Click PNG",
+              "links": [
+                {
+                  "label": "Get it from Microsoft Store",
+                  "href": "https://apps.microsoft.com/detail/9PKKLK6R5WFL?cid=site-product",
+                  "primary": true,
+                  "store": true
+                },
+                {
+                  "label": "Source on GitHub",
+                  "href": "https://github.com/estevanhernandez-stack-ed/RTClickPng"
+                }
+              ]
+            }
+          },
+          {
+            "type": "section",
+            "eyebrow": "The problem",
+            "heading": "The .webp that won't paste",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Some images just don't download and paste. You save a <code>.webp</code> from the web, try to drop it into Teams or Figma, and the app rejects it. You save a <code>.heic</code> from your phone, and your image editor refuses to open it.",
+                  "The workaround is always the same: find an online converter, upload the file, download a PNG, move it to where you actually needed it."
+                ]
+              },
+              {
+                "type": "callout",
+                "text": "Right Click PNG replaces that detour with a right-click."
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "eyebrow": "What it does",
+            "heading": "Two verbs where you already are",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Right-click any <code>.webp</code>, <code>.avif</code>, <code>.heic</code>, <code>.heif</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.bmp</code>, <code>.tif</code>, <code>.tiff</code> or <code>.gif</code> in File Explorer. No separate app to open."
+                ]
+              },
+              {
+                "type": "cards",
+                "items": [
+                  {
+                    "title": "Convert to PNG",
+                    "body": "Saves a PNG next to the original, same base name, new extension."
+                  },
+                  {
+                    "title": "Copy as PNG",
+                    "body": "Sends PNG bytes to the clipboard, ready to paste into Teams, Slack, Discord, Figma, Photoshop, Outlook, Word, PowerPoint, OneNote, Paint or Snipping Tool. Works on a <code>.png</code> too, for the paste without opening the file."
+                  },
+                  {
+                    "title": "The whole selection at once",
+                    "body": "Multi-select files and the right-click action runs against the whole selection in one shot, with a single summary toast when the batch completes."
+                  },
+                  {
+                    "title": "Two toggles, one window",
+                    "body": "A branded settings window with a dark title bar, opened from the Start menu or from the right-click menu itself. Confirm-before-overwrite lives here. Changes apply on the next right-click, no reboot."
+                  },
+                  {
+                    "tag": "Off by default",
+                    "title": "JPEG when you need it",
+                    "body": "Convert to JPEG and Copy as JPEG are both there, hidden behind a settings toggle for anyone who needs them."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "id": "see-it-work",
+            "eyebrow": "See it work",
+            "heading": "Right there in File Explorer",
+            "blocks": [
+              {
+                "type": "shots",
+                "captions": [
+                  "<b>Right there in the menu.</b> Right-click a <code>.webp</code> in File Explorer: Convert to PNG and Copy as PNG, no app to open first.",
+                  "<b>Converted, in place.</b> The toast confirms it, and the new <code>.png</code> sits next to the original in the same folder.",
+                  "<b>The paste that used to fail.</b> Copy as PNG, then paste straight into the app that rejected the <code>.webp</code>.",
+                  "<b>Two toggles.</b> Show JPEG variants, and confirm before overwriting. That's the whole settings surface.",
+                  "<b>One right-click, the whole batch.</b> A mixed selection of <code>.heic</code>, <code>.avif</code> and <code>.webp</code>, one summary toast at the end."
+                ],
+                "alts": [
+                  "The File Explorer right-click menu on a .webp file, showing Convert to PNG and Copy as PNG",
+                  "The toast after Convert to PNG, with the new .png beside the original",
+                  "A Copy as PNG result pasted into a chat app",
+                  "The Right Click PNG settings window with its two toggles",
+                  "A mixed selection of .heic, .avif and .webp files converted in one right-click"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "eyebrow": "How it's built",
+            "heading": "Idea to Microsoft Store in 24 hours",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Built end to end with <a href=\"/vibe-cartographer/\">Vibe Cartographer</a>, from the first scoping question to a signed MSIX approved on the Store. Shipped 2026-04-22."
+                ]
+              },
+              {
+                "type": "stats",
+                "items": [
+                  {
+                    "value": "24h",
+                    "label": "Idea to Store listing"
+                  },
+                  {
+                    "value": "7",
+                    "label": "Bundled decoders"
+                  },
+                  {
+                    "value": "85",
+                    "label": "Tests green"
+                  },
+                  {
+                    "value": "~1 MB",
+                    "label": "AOT engine"
+                  }
+                ]
+              },
+              {
+                "type": "cards",
+                "items": [
+                  {
+                    "tag": "C++/WinRT",
+                    "title": "The shell extension",
+                    "body": "A Win32 COM server that File Explorer hosts directly, the same way it hosts Windows' own right-click verbs. It stays minimal on purpose: read the selection, read settings, launch the engine, show the toast."
+                  },
+                  {
+                    "tag": ".NET 9 Native AOT",
+                    "title": "The engine",
+                    "body": "A standalone converter, called once per invocation. No runtime warm-up. Decoding runs on bundled libwebp, libavif, libheif, libspng and libjpeg-turbo; BMP, GIF and TIFF are read by hand-rolled C#."
+                  },
+                  {
+                    "tag": "MSIX",
+                    "title": "One package",
+                    "body": "Signs and packages both, and registers the COM classes and file-type associations. The Store install auto-updates and uninstalls cleanly."
+                  }
+                ]
+              },
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "The engine and the shell extension are split across a process boundary on purpose. Explorer loads the extension as a DLL, so a decoder that crashes on a malformed file takes down a short-lived engine process, never Explorer. The extension sees a non-zero exit code and shows an error toast."
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "id": "trust",
+            "eyebrow": "Trust",
+            "heading": "Offline by design",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Disconnect, and it all still works."
+                ]
+              },
+              {
+                "type": "trust",
+                "rows": [
+                  {
+                    "label": "No network",
+                    "body": "No network calls of any kind. No update checks, no phone-home. The engine's P/Invoke bindings carry no HTTP, because there's no HTTP. Read the source and check."
+                  },
+                  {
+                    "label": "No telemetry",
+                    "body": "No telemetry, no crash reports, no analytics. No account, no sign-in, no cloud sync. Install it, use it, that's the whole surface."
+                  },
+                  {
+                    "label": "Original never touched",
+                    "body": "The original file is never modified, moved or deleted. Convert writes a new file beside it."
+                  },
+                  {
+                    "label": "Color kept",
+                    "body": "ICC color profiles are preserved when the source has one. No profile in, no profile out."
+                  },
+                  {
+                    "label": "Rotation kept",
+                    "body": "EXIF orientation is baked into the pixel data before the metadata is stripped, so rotated photos stay rotated."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "eyebrow": "Reach",
+            "heading": "Where it ended up",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Every Microsoft Store install since launch, plotted by country. Dot area is proportional to install count."
+                ]
+              },
+              {
+                "type": "reachMap"
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · Right Click PNG",
+          "disclaimer": "Windows 11 build 22621 or later, x64. Animated GIFs convert as first frame only."
+        }
+      },
       "banner": "assets/thumb-rtclickpng.png",
       "meta": "Windows shell extension · 24h build",
       "screenshots": []
