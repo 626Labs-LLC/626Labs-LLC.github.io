@@ -161,8 +161,13 @@ jobs:
         # product.css (scripts/render-plugin-pages.py, wired in A5); without
         # this, a rotation promotes a new theme but leaves those 15 pages
         # dressed in whatever theme was active the last time this ran.
+        # render-product-pages.py runs FIRST: the generated product pages
+        # link the active theme's product-tokens.css, and render-hub.py
+        # builds sitemap.xml from the page tree, so a page has to exist
+        # before the sitemap is drawn.
         run: |
           set -euo pipefail
+          python scripts/render-product-pages.py
           python scripts/render-hub.py
           python scripts/render-plugin-pages.py
 
@@ -206,6 +211,10 @@ jobs:
       - name: 'Gate: plugin pages render drift'
         if: steps.queue.outputs.empty == 'false'
         run: python scripts/render-plugin-pages.py --check
+
+      - name: 'Gate: product pages render drift'
+        if: steps.queue.outputs.empty == 'false'
+        run: python scripts/render-product-pages.py --check
 
       - name: 'Gate: unit tests'
         if: steps.queue.outputs.empty == 'false'
@@ -256,7 +265,8 @@ jobs:
             editorial themes/archive assets/themes \
             assets/brand assets/og favicon-626.png \
             $(python3 scripts/render-hub.py --list-renderer-owned-pages) \
-            $(python3 scripts/render-plugin-pages.py --list-outputs)
+            $(python3 scripts/render-plugin-pages.py --list-outputs) \
+            $(python3 scripts/render-product-pages.py --list-outputs)
           git commit -m "chore(themes): rotate to ${{ steps.rotate.outputs.new_active }} for ${{ steps.month.outputs.month_name }}
 
           Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"

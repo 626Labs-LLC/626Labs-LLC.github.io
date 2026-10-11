@@ -55,6 +55,7 @@ references and one-off design artifacts.
 | `index.html` | The live site. Hand-written shell with `SITE_JSON:<zone>:start/end` markers that get filled by render-hub.py. The About star map's CSS + JS live in the static shell; its markup + data blob are emitted by `render_about()` (config: `about.starMap` in site.json — remove the block to disable the panel). Versions in star tooltips come from a runtime fetch of `data/plugin-versions.json`, never from the render. |
 | `content/site.json` | Source of truth for everything editorial — hero, products, pluginFamily, lab, play, about, support, contact, labRuns. |
 | `content/stories/*.md` | Long-form case studies. Edited via the admin's Stories tab. |
+| `products[].pageSpec` in `content/site.json` | A product page as data: ordered sections and blocks, copy included. `scripts/render-product-pages.py` renders it to the path the product's `productPage` URL names, dressed by `scripts/product-page.css` plus the active theme's `archetypes/product-tokens.css`. Generated pages (`render-product-pages.py --list-outputs`) are never hand-edited. `productPage` stays a URL string: the home row and the page-pane mod read it. Issue #200 tracks migrating the remaining hand-authored product pages. |
 | `admin/` + `admin-dashboard.html` | Babel-in-browser React admin. PAT-auth against this repo. Edits site.json, uploads to assets/, manages stories, surfaces bot run status. |
 | `apps/widget-bacon-trail/` | The embedded Birthday Bacon Trail widget. Bundle output lives at `widget-bacon-trail/` (root) so GH Pages serves it at `/widget-bacon-trail/`. The `functions/` subdir is a separate Firebase Cloud Functions project (`logPlay` endpoint, deployed to `guestbuzz-cineperks`) — see its own README. |
 | `assets/` | Screenshots, OG images, favicons, brand exports. `assets/brand/` has the canonical icon + banners (built by `scripts/export-brand.py`). `assets/screenshots/<product>/` is what the admin uploader writes to. |
@@ -72,7 +73,9 @@ references and one-off design artifacts.
 ## How the site rebuilds
 
 - Edit `content/site.json` (admin or by hand) → push.
-- `rebuild-hub.yml` runs `scripts/render-hub.py` → rewrites `index.html`.
+- `rebuild-hub.yml` runs `scripts/render-product-pages.py` (product pages
+  from `pageSpec` blocks; first, because the sitemap is drawn from the page
+  tree), then `scripts/render-hub.py` → rewrites `index.html`.
 - GitHub Pages redeploys.
 - `python3 scripts/render-hub.py --check` is idempotent; CI uses it to detect drift.
 
@@ -208,7 +211,7 @@ repointing a page's stylesheet moves its group in the same commit.
 
 1. Branch, create `themes/<slug>/` with all eleven files above — `tokens.css` and `theme.json` at the root, the nine archetype shells and stylesheets under `archetypes/`. Mirror `themes/phosphor-blueprint/` as the reference extraction; copying its directory and re-tokenizing is the intended path, and is also how a theme inherits the `--pb-*` treatment names the hand-authored pages fall back from.
 2. `python scripts/theme-doctor.py <slug>` must PASS before anything else. This is the ONLY gate standing between a theme and unattended monthly rotation, so it has to fail honestly: zone markers present, chrome intact (skip-link/nav/footer/analytics), every internal link resolves, and every declared `contrastPairs` clears AA (>= 4.5). Add `--browser` (needs `playwright` installed) for horizontal-scroll (1440/768/390px), zero-console-error/pageerror, and — on `press.html` and `privacy.html`, the two pages that own no chrome of their own — the dress differential (`check_page_renders_dressed`). Without playwright installed those checks skip with a one-line note, the local convenience path. The scheduled rotation installs playwright and runs `--browser --require-browser`, which turns that same skip into a gate FAILURE — the one unattended run of this gate can't be allowed to rubber-stamp a rotation because the browser path silently didn't run.
-3. Preview it against real content: `python scripts/render-hub.py --theme <slug> --out <dir>` renders that theme's shell to `<dir>/index.html`, plus copies of the eight hand-authored `theme-css` pages (`press.html`, `privacy.html`, `thesis.html`, `workflow.html`, `conundrum.html`, `rororo-plugins.html`, `rororo.html`, `mod-launcher-games.html`) with their stylesheet `<link>` repointed at `<slug>`. Everything lands in `<dir>` and nothing else is touched — no feed, sitemap, story pages, or `themes.html`, no `conundrum.html` gallery zones, and nothing is written back into the repo tree. Those eight keep root-relative asset paths, so serve them from the **repo root** with `<dir>`'s copies laid over the top; opening one straight off disk resolves no CSS. **Write the preview outside the tree**: a `<dir>` inside the repo root is a directory with an `index.html` in it, and the next `render-hub.py` run lists it in `sitemap.xml`.
+3. Preview it against real content: `python scripts/render-hub.py --theme <slug> --out <dir>` renders that theme's shell to `<dir>/index.html`, plus copies of the eight hand-authored `theme-css` pages (`press.html`, `privacy.html`, `thesis.html`, `workflow.html`, `conundrum.html`, `rororo-plugins.html`, `rororo.html`, `mod-launcher-games.html`) with their stylesheet `<link>` repointed at `<slug>`, plus every generated product page (`render-product-pages.py`) rendered for `<slug>`. Everything lands in `<dir>` and nothing else is touched — no feed, sitemap, story pages, or `themes.html`, no `conundrum.html` gallery zones, and nothing is written back into the repo tree. Those eight keep root-relative asset paths, so serve them from the **repo root** with `<dir>`'s copies laid over the top; opening one straight off disk resolves no CSS. **Write the preview outside the tree**: a `<dir>` inside the repo root is a directory with an `index.html` in it, and the next `render-hub.py` run lists it in `sitemap.xml`.
 4. PR the eleven files, `theme-doctor` output pasted in. **`theme-doctor` is not wired into a PR-triggered CI check** — run it locally before requesting review; the only automated run today is inside `rotate-theme.yml`, gating the theme that's about to go live.
 5. Merge. Merging changes NOTHING live — a theme only takes effect once its slug lands in `content/themes.json`'s `queue`.
 
@@ -220,7 +223,7 @@ repointing a page's stylesheet moves its group in the same commit.
 2. Freeze the outgoing theme (`scripts/freeze-theme.py <month>`) — see **Archives** below.
 3. `active = queue.shift()`; append the outgoing theme to `archive[]`.
 4. Re-render the site (`render-hub.py`, no flags) — this also re-renders `themes.html`'s gallery against the new registry state. Then regenerate the rasters in the new theme: `export-brand.py`, `export-medium-header.py`, `export-vibe-plugins-logo.py`, `build-og-cards.py` (they read the `raster` block from the now-active theme; see **Brand exports** under **Tools**). Before the gates, so a drawing failure aborts the rotation rather than shipping half a set.
-5. Gate stack, in order: `theme-doctor.py <new-active> --browser --require-browser` (the `--require-browser` half is load-bearing: without it an environment that cannot launch chromium SKIPS the browser checks and the gate rubber-stamps the rotation), `render-hub.py --check`, `render-plugin-pages.py --check`, `pytest tests/ -q`, `site-doctor.py --check`.
+5. Gate stack, in order: `theme-doctor.py <new-active> --browser --require-browser` (the `--require-browser` half is load-bearing: without it an environment that cannot launch chromium SKIPS the browser checks and the gate rubber-stamps the rotation), `render-hub.py --check`, `render-plugin-pages.py --check`, `render-product-pages.py --check`, `pytest tests/ -q`, `site-doctor.py --check`.
 6. Any gate failure → nothing committed. Every step downstream chains off the prior step's implicit success, so one failure stops the whole tail; an issue opens with the failed run's link. The site stays at its last verified state — **the site can only ever move from one verified state to another.**
 7. `dry_run: true` runs every gate and stages the diff (`git add -A && git diff --stat --cached`) but commits and pushes nothing — use it to sanity-check a queued theme before the 1st actually arrives.
 8. Success → one commit (`content/themes.json`, `index.html`, `feed.xml`, `sitemap.xml`, `conundrum.html`, `themes.html`, `editorial/`, `themes/archive/`, `assets/brand/`, `assets/og/`, `favicon-626.png`), pushed with the same retry+rebase loop every other bot workflow in this repo uses.
@@ -316,6 +319,24 @@ rasterizes a few bytes differently across platforms, so a local Windows
 `--check` will show a harmless diff against the ubuntu-committed cards. Let
 rebuild-hub regenerate them. (`--check` byte-compares and exits nonzero on
 any missing/stale card, like `render-hub.py --check`.)
+
+### Product page renderer — `scripts/render-product-pages.py`
+
+Renders every product that carries a `pageSpec` block in `content/site.json`
+(issue #200). `--check` for drift, `--list-outputs` for the workflows'
+commit lists, `--theme <slug> --out <dir>` for a preview. Sections are
+`hero` and `section`; a `section` holds ordered `blocks`, one partial each
+(the `BLOCKS` table in the script). Labels and headings are escaped, body
+copy is raw HTML. Every generated page gets the theme token link,
+GoatCounter, the footer signature, its `releaseReviewed` markers, and the
+repo meter whenever the product has a `repo`, with no per-page wiring:
+theme-doctor's browser list and resolution groups, render-hub's preview and
+the pinned tests all ask the renderer for its page list. A block with
+nothing to show (no screenshots yet) renders nothing, and a section left
+empty is dropped whole. The page still needs its line in
+`content/page-archetypes.json` (`product`); five readers parse that file
+directly. Run it BEFORE `render-hub.py`: the sitemap is drawn from the page
+tree.
 
 ### Site renderer — `scripts/render-hub.py`
 
@@ -433,6 +454,7 @@ hand-edit the bundle output at `widget-bacon-trail/`.
 | Update the brand palette / typography | Edit `Design/colors_and_type.css` (and the `626labs-design` skill if global), then `python3 scripts/export-brand.py` |
 | Regenerate a brand banner / icon | `python3 scripts/export-brand.py` |
 | Check why the site looks stale | `python3 scripts/render-hub.py --check` |
+| Edit a generated product page | Its product's `pageSpec` in `content/site.json`, then `python3 scripts/render-product-pages.py` |
 | See bot run status | Admin → Ops tab |
 | Preview a theme without touching the live site | `python3 scripts/render-hub.py --theme <slug> --out <dir>` |
 | Gate a theme before opening its PR | `python3 scripts/theme-doctor.py <slug> --browser` |

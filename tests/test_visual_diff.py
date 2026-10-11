@@ -1111,3 +1111,18 @@ def test_the_pr_label_trigger_fires_on_a_pr_opened_with_the_label_already_on():
     types = (wf.get("on", wf.get(True)))["pull_request"]["types"]
     assert {"opened", "labeled", "synchronize"} <= set(types), types
 
+
+
+def test_the_serving_origin_is_folded_out_of_computed_values():
+    # Base and head are served on two ports, so an absolute url() resolves to
+    # a different origin on each side. The footer signature's mask-image did
+    # exactly that on every page, so --self-check was never clean.
+    rec = lambda port: [["a", "site-signature",
+                         [f'url("http://127.0.0.1:{port}/assets/logos/sig.svg")'], [""], [""]]]
+    findings, stats = vd.compare_computed(rec(59421), rec(59422), ["mask-image"], 10)
+    assert findings == [] and stats["differing"] == 0
+    # ...but the PATH still counts.
+    other = [["a", "site-signature",
+              ['url("http://127.0.0.1:59422/assets/logos/other.svg")'], [""], [""]]]
+    findings, stats = vd.compare_computed(rec(59421), other, ["mask-image"], 10)
+    assert stats["differing"] == 1

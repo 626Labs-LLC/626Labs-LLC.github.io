@@ -23,6 +23,10 @@ on:
       # below), so ITS inputs belong here or an edit to either one renders
       # nowhere until the next daily refresh-plugin-versions.yml cron.
       - 'scripts/render-plugin-pages.py'
+      # render-product-pages.py renders the generated product pages from
+      # site.json; its dress is scripts/product-page.css.
+      - 'scripts/render-product-pages.py'
+      - 'scripts/product-page.css'
       - 'content/plugin-pages.json'
       - 'scripts/site_facts.py'
       - 'requirements.txt'
@@ -67,6 +71,11 @@ jobs:
       # story page's og:image at a card that exists this run.
       - name: Build Field Note social cards (assets/og)
         run: python3 scripts/build-og-cards.py
+
+      # Before render-hub: the sitemap is drawn from the page tree, so a
+      # product page that just gained a pageSpec has to exist first.
+      - name: Render product pages from site.json pageSpec blocks
+        run: python3 scripts/render-product-pages.py
 
       - name: Render hub from content (index, feed, sitemap, Field Note pages)
         run: python3 scripts/render-hub.py
@@ -135,7 +144,8 @@ jobs:
           CHANGED="$(git status --porcelain -- \
             index.html feed.xml sitemap.xml editorial assets/og \
             $(python3 scripts/render-hub.py --list-renderer-owned-pages) \
-            $(python3 scripts/render-plugin-pages.py --list-outputs))"
+            $(python3 scripts/render-plugin-pages.py --list-outputs) \
+            $(python3 scripts/render-product-pages.py --list-outputs))"
           if [ -n "$CHANGED" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
@@ -151,7 +161,8 @@ jobs:
           git add -A -- \
             index.html feed.xml sitemap.xml editorial assets/og \
             $(python3 scripts/render-hub.py --list-renderer-owned-pages) \
-            $(python3 scripts/render-plugin-pages.py --list-outputs)
+            $(python3 scripts/render-plugin-pages.py --list-outputs) \
+            $(python3 scripts/render-product-pages.py --list-outputs)
           git commit -m "hub: rebuild from site.json + stories
 
           Triggered by commit ${{ github.sha }}"

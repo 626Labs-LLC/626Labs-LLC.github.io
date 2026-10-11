@@ -323,7 +323,7 @@ def test_main_require_browser_implies_browser_and_fails_when_unavailable(monkeyp
 
     def _fake_run(*a, **kw):
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
-        for name in td.BROWSER_CHECK_LIVE_PAGES:
+        for name in td.browser_check_live_pages():
             # preview mode writes nested pages at their relative path
             (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
             (tmp_path / name).write_text(_good_html(), encoding="utf-8")
@@ -355,7 +355,7 @@ def test_main_browser_alone_is_still_ergonomic_when_playwright_missing(monkeypat
 
     def _fake_run(*a, **kw):
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
-        for name in td.BROWSER_CHECK_LIVE_PAGES:
+        for name in td.browser_check_live_pages():
             # preview mode writes nested pages at their relative path
             (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
             (tmp_path / name).write_text(_good_html(), encoding="utf-8")
@@ -1001,11 +1001,13 @@ def test_browser_checks_open_every_hand_authored_product_page():
     # year-in-review.html joined the same way: hand-authored, self-dressed,
     # takes only the base token file, same shape as themes.html minus the
     # gallery zone that keeps themes.html itself out of this list.
-    # The two trailer watch pages joined on arrival, like etsy-mcp.html.
+    # The two trailer watch pages joined on arrival, like etsy-mcp.html did
+    # before it left this tuple for the generated-page list (#200; see
+    # test_browser_checks_open_every_generated_product_page).
     assert td.BROWSER_CHECK_LIVE_PAGES == (
         "conundrum.html", "rororo-plugins.html", "rororo.html",
         "mod-launcher-games.html", "thesis.html", "workflow.html",
-        "press.html", "privacy.html", "etsy-mcp.html",
+        "press.html", "privacy.html",
         "404.html", "bacon-trail/index.html", "play/index.html", "sanduhr/index.html",
         "year-in-review.html", "rororo-trailer.html", "mod-launcher-trailer.html",
         "snapsnip.html",
@@ -1173,7 +1175,7 @@ def _stub_main_kwargs(tmp_path):
     """The subprocess.run/TemporaryDirectory monkeypatch shape every
     required-tokens main()-level test below shares: fake a successful
     render-hub.py --theme run producing what preview mode really produces —
-    index.html PLUS a copy of every BROWSER_CHECK_LIVE_PAGES member. main()
+    index.html PLUS a copy of every browser_check_live_pages() member. main()
     treats a missing preview copy as a hard failure (it means preview mode
     stopped emitting a page the browser gate is supposed to open), so a stub
     that writes only index.html would make every test below fail on that
@@ -1185,7 +1187,7 @@ def _stub_main_kwargs(tmp_path):
 
     def _fake_run(*a, **kw):
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
-        for name in td.BROWSER_CHECK_LIVE_PAGES:
+        for name in td.browser_check_live_pages():
             # preview mode writes nested pages at their relative path
             (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
             (tmp_path / name).write_text(_good_html(), encoding="utf-8")
@@ -1645,7 +1647,7 @@ def test_main_fails_when_preview_mode_stops_emitting_a_page_the_gate_opens(
 
     def _partial_run(*a, **kw):
         (tmp_path / "index.html").write_text(_good_html(), encoding="utf-8")
-        for name in td.BROWSER_CHECK_LIVE_PAGES:
+        for name in td.browser_check_live_pages():
             if name != dropped:
                 (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
                 (tmp_path / name).write_text(_good_html(), encoding="utf-8")
@@ -3017,3 +3019,24 @@ def test_the_reading_dress_probe_samples_every_lnt_element_and_the_links_inside(
     assert "[class*=\"lnt-\"]" in js
     assert "querySelectorAll('a')" in js
     assert td.ABOUT_DRESS_LINK_ID not in js, "the id is passed in, never baked into the probe"
+
+
+def test_browser_checks_open_every_generated_product_page():
+    # Pages render-product-pages.py generates are not listed by hand: the
+    # gate asks the renderer, so a product gaining a pageSpec is opened under
+    # the incoming theme the commit it ships. etsy-mcp.html is the first.
+    renderer = td._load_product_page_renderer()
+    generated = renderer.generated_pages()
+    assert "etsy-mcp.html" in generated
+    pages = td.browser_check_live_pages()
+    for rel in generated:
+        assert rel in pages, rel
+        assert rel not in td.BROWSER_CHECK_LIVE_PAGES, (
+            f"{rel} is generated; list it nowhere by hand")
+
+
+def test_generated_product_pages_are_graded_in_a_resolution_group():
+    groups = td.resolution_groups(td.theme_registry.theme_dir("slate-broadsheet"))
+    members = {m for key in groups for m in key.split(", ")}
+    for rel in td._load_product_page_renderer().generated_pages():
+        assert rel in members, rel

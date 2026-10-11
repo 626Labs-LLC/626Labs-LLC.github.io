@@ -950,6 +950,213 @@
       "storeUrl": null,
       "productPage": "etsy-mcp.html",
       "productPageLabel": "How it works",
+      "pageSpec": {
+        "meta": {
+          "title": "Agentic Sales Connector · Etsy · 626 Labs",
+          "description": "A hosted MCP connector that gives AI assistants read-only eyes on your Etsy shop — stats, listing performance, orders, and trends — without ever touching your credentials. Snapshots run in the cloud, so day-over-day movement exists as data. In active development, private testing.",
+          "ogTitle": "626Labs Agentic Sales Connector",
+          "ogDescription": "Read-focused Etsy shop analytics for AI assistants, over the official Open API. Sign-in happens on Etsy's own consent screen; zero tools modify your shop.",
+          "ogImage": "/assets/brand/banner-1200x630.png"
+        },
+        "nav": [
+          {
+            "label": "Products",
+            "href": "/#work"
+          },
+          {
+            "label": "Field Notes",
+            "href": "/#field-notes"
+          },
+          {
+            "label": "Trust model",
+            "href": "#trust",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "title": "626Labs",
+            "titleAccent": "Agentic Sales Connector",
+            "dek": "A trusted, hosted MCP connector that gives AI assistants read-only eyes on your Etsy shop — stats, listing performance, orders, and trends — without ever touching your credentials.",
+            "fine": "Status: <b>in active development</b> · private testing · not yet publicly available",
+            "strip": [
+              {
+                "key": "Access",
+                "value": "Read-only to Etsy"
+              },
+              {
+                "key": "Protocol",
+                "value": "MCP"
+              },
+              {
+                "key": "Data source",
+                "value": "Etsy Open API v3"
+              },
+              {
+                "key": "Sign-in",
+                "value": "etsy.com OAuth"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "eyebrow": "What it does",
+            "heading": "Your shop data, where your assistant already is",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "The connector links Claude — and any other MCP client — to an Etsy seller's shop data through Etsy's official Open API v3. You ask the questions in the assistant you already use; it reads the answers out of your shop.",
+                  "Version 1 is <b>read-focused</b>, which is a narrower word than read-only and the accurate one. Seven of its nine tools only fetch and summarize. The other two write, but never to Etsy: one parses a CSV you exported yourself into the connector's own store, and one deletes everything the connector holds about your shop.",
+                  "Etsy's API reports lifetime counters — total views, total favorites — so it cannot tell you what changed since yesterday. The connector takes a daily snapshot server-side and computes the difference, which is what makes movement exist as data at all. Because those snapshots run on a schedule in the cloud, <b>your computer does not need to be on</b>."
+                ]
+              },
+              {
+                "type": "cards",
+                "items": [
+                  {
+                    "title": "Shop snapshots",
+                    "body": "The state of the shop at a point in time — the baseline everything else is measured against."
+                  },
+                  {
+                    "title": "Listing performance",
+                    "body": "How individual listings are doing, so the question \"which of these is actually working\" has an answer."
+                  },
+                  {
+                    "title": "Orders",
+                    "body": "Order records, read from the same API the seller dashboard reads."
+                  },
+                  {
+                    "title": "Reviews",
+                    "body": "Feedback left on the shop, available to read alongside the listings it belongs to."
+                  },
+                  {
+                    "title": "Day-over-day movers",
+                    "body": "What changed since yesterday, computed from snapshot history rather than fetched — the trend line the API does not hand you directly."
+                  }
+                ]
+              },
+              {
+                "type": "callout",
+                "label": "Read-only, by construction",
+                "text": "Zero tools modify your Etsy shop."
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "id": "trust",
+            "eyebrow": "Trust",
+            "heading": "What it can reach, and what it can never do",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "A connector asking for access to a live storefront should be able to say precisely what it takes and where it puts it. This is that list."
+                ]
+              },
+              {
+                "type": "trust",
+                "rows": [
+                  {
+                    "label": "Credentials",
+                    "body": "Sign-in happens only on <b>etsy.com's own consent screen</b>. You are never asked to enter your Etsy credentials anywhere else — not in the connector, not on this site, not in your assistant."
+                  },
+                  {
+                    "label": "Scopes",
+                    "body": "Minimal, read-only, and named in full:",
+                    "codes": [
+                      {
+                        "code": "listings_r",
+                        "desc": "read your listings"
+                      },
+                      {
+                        "code": "shops_r",
+                        "desc": "read your shop profile and stats"
+                      },
+                      {
+                        "code": "transactions_r",
+                        "desc": "read your orders and receipts"
+                      },
+                      {
+                        "code": "feedback_r",
+                        "desc": "read reviews left on your shop"
+                      }
+                    ],
+                    "codesNote": "Every one ends in <b>_r</b>. There is no write scope in the set, so the grant itself is what makes the read-only promise, not just the code."
+                  },
+                  {
+                    "label": "Tokens at rest",
+                    "body": "Encrypted with <b>AES-256-GCM</b>."
+                  },
+                  {
+                    "label": "Your data, portable",
+                    "body": "Full <b>CSV export</b>, anytime. What the connector has collected is yours to take out in a format that opens in anything."
+                  },
+                  {
+                    "label": "Your data, deletable",
+                    "body": "<b>Immediate on request.</b> And automatic on disconnect, in two speeds: access tokens are destroyed <b>right away</b>, while stored history keeps a 30-day grace period so reconnecting does not cost you your snapshots. After that it purges whether you ask or not."
+                  },
+                  {
+                    "label": "Honest numbers",
+                    "body": "Every answer carries a timestamp and a source, so you always know whether you are reading a live pull, a cached value, or something derived from snapshots. A number that cannot be read comes back as <b>unknown, with a reason — never as a zero</b>. If the connection breaks, the tools say so and hand back a reconnect link instead of serving stale figures."
+                  },
+                  {
+                    "label": "No scraping",
+                    "body": "Data comes from the official API, plus optional CSV imports you provide yourself. Every figure is <b>labeled by source</b>, so API-derived and seller-supplied numbers never get quietly averaged together."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "eyebrow": "Status",
+            "heading": "In active development",
+            "blocks": [
+              {
+                "type": "status",
+                "paragraphs": [
+                  "Currently in private testing with our own shop, <a href=\"conundrum.html\">Conundrum by Este</a>. Public availability is planned after maturation and review through Etsy's Commercial Access and Anthropic's Connectors Directory."
+                ],
+                "gates": [
+                  "Private testing",
+                  "Etsy Commercial Access review",
+                  "Anthropic Connectors Directory review",
+                  "Public availability"
+                ]
+              },
+              {
+                "type": "contact",
+                "items": [
+                  {
+                    "label": "Questions",
+                    "text": "estevan@626labs.dev",
+                    "href": "mailto:estevan@626labs.dev"
+                  },
+                  {
+                    "label": "Privacy policy",
+                    "text": "What it reads, stores, and purges",
+                    "href": "https://etsy-agentic-connector.web.app/privacy.html",
+                    "external": true
+                  },
+                  {
+                    "label": "Docs",
+                    "text": "Tools, example prompts, known gaps",
+                    "href": "https://etsy-agentic-connector.web.app/docs.html",
+                    "external": true
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · Agentic Sales Connector",
+          "disclaimer": "Not affiliated with or endorsed by Etsy, Inc."
+        }
+      },
       "banner": null,
       "meta": "Private testing · read-focused · Etsy Open API v3",
       "screenshots": []
