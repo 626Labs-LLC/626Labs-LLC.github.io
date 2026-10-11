@@ -31,9 +31,13 @@ mod read; its type never changes. The page lives in a sibling block:
       "footer":   {label, disclaimer?}
     }
 
-Sections render in order. A `hero` section is the page header; a `section`
-section is `<section>` + its heading + an ordered list of `blocks`. Each
-block type is one partial below (BLOCKS). Field convention, same as
+Sections render in order. A `hero` section is the page header (eyebrow,
+title + titleAccent, dek, fine, a key/value `strip`, a `get` strip of Store
+and source links); a `section` section is `<section>` + its heading + an
+ordered list of `blocks`. Each block type is one partial below (BLOCKS):
+lead, cards (optional per-card tag), callout, trust (optional code list),
+status, contact, stats, shots, reachMap. `shots` reads the product's own
+uploader-managed `screenshots` list and renders nothing while it is empty. Field convention, same as
 plugin-pages.json: labels, headings, keys and titles are ESCAPED; body copy
 (dek, paragraphs, card and row bodies, captions) is RAW HTML, so inline
 <b>, <code> and <a> work. Copy keeps living in site.json.
@@ -236,6 +240,29 @@ def render_repo_meter(product: dict) -> str:
     )
 
 
+STORE_ICON = (
+    '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+    '<path d="M3 3h8.5v8.5H3zM12.5 3H21v8.5h-8.5zM3 12.5h8.5V21H3zM12.5 12.5H21V21h-8.5z"/></svg>'
+)
+
+
+def render_get_strip(g: dict) -> str:
+    """The get-it strip under the hero: a label, then the ways to get the
+    app. A link with `store: true` wears the Microsoft Store mark."""
+    links = []
+    for link in g["links"]:
+        cls = "btn primary" if link.get("primary") else "btn"
+        icon = STORE_ICON if link.get("store") else ""
+        links.append(f'      <a class="{cls}" href="{e(link["href"])}">{icon}{e(link["label"])}</a>\n')
+    return (
+        '\n    <div class="get-strip" id="get-it">\n'
+        f'      <span class="gs-key">{e(g["label"])}</span>\n'
+        '      <span class="spacer"></span>\n'
+        + "".join(links)
+        + "    </div>\n"
+    )
+
+
 def render_hero(product: dict, s: dict) -> str:
     accent = f" <em>{e(s['titleAccent'])}</em>" if s.get("titleAccent") else ""
     out = ['  <section class="hero">\n']
@@ -254,6 +281,8 @@ def render_hero(product: dict, s: dict) -> str:
             for c in s["strip"]
         )
         out.append(f'\n    <div class="strip">\n{cells}    </div>\n')
+    if s.get("get"):
+        out.append(render_get_strip(s["get"]))
     out.append(render_repo_meter(product))
     out.append("  </section>\n")
     return "".join(out)
@@ -266,7 +295,8 @@ def block_lead(b: dict, product: dict) -> str:
 def block_cards(b: dict, product: dict) -> str:
     cards = "".join(
         '      <div class="card">\n'
-        f"        <h3>{e(c['title'])}</h3>\n"
+        + (f'        <span class="tag">{e(c["tag"])}</span>\n' if c.get("tag") else "")
+        + f"        <h3>{e(c['title'])}</h3>\n"
         f"        <p>{c['body']}</p>\n"
         "      </div>\n"
         for c in b["items"]
@@ -275,12 +305,76 @@ def block_cards(b: dict, product: dict) -> str:
 
 
 def block_callout(b: dict, product: dict) -> str:
+    label = f'      <span class="k">{e(b["label"])}</span>\n' if b.get("label") else ""
     return (
         '    <div class="callout">\n'
-        f'      <span class="k">{e(b["label"])}</span>\n'
+        f"{label}"
         f"      <p>{b['text']}</p>\n"
         "    </div>\n"
     )
+
+
+def block_stats(b: dict, product: dict) -> str:
+    items = "".join(
+        f'      <div class="stat"><div class="n">{e(s["value"])}</div>'
+        f'<div class="l">{e(s["label"])}</div></div>\n'
+        for s in b["items"]
+    )
+    return f'    <div class="stats">\n{items}    </div>\n'
+
+
+def block_shots(b: dict, product: dict) -> str:
+    """The screenshot strip, from the product's own `screenshots` list: the
+    one the admin uploader writes (assets/screenshots/<product-id>/,
+    `<epoch-ms>-<slug>.png`). No shots, no strip: this returns "" and the
+    section around it drops whole, so a page never ships an empty frame or a
+    placeholder. The first shot runs full width.
+
+    Alt text and caption per shot: the screenshot entry's own `alt` /
+    `caption` win; otherwise `captions[i]` / `alts[i]` from this block, in
+    shot order, so the copy for a planned shot can be written before the
+    capture exists and the upload is the only edit left."""
+    shots = [s for s in (product.get("screenshots") or []) if s.get("path")]
+    if not shots:
+        return ""
+    captions = b.get("captions") or []
+    alts = b.get("alts") or []
+    figures = []
+    for i, shot in enumerate(shots):
+        caption = shot.get("caption") or (captions[i] if i < len(captions) else "")
+        alt = shot.get("alt") or (alts[i] if i < len(alts) else
+                                  f"{product.get('title', product['id'])} screenshot {i + 1}")
+        size = ""
+        if shot.get("width") and shot.get("height"):
+            size = f' width="{int(shot["width"])}" height="{int(shot["height"])}"'
+        cap = f'\n        <figcaption class="shot-cap">{caption}</figcaption>' if caption else ""
+        lead = " lead" if i == 0 else ""
+        src = "/" + shot["path"].lstrip("/")
+        figures.append(
+            f'      <figure class="shot{lead}">\n'
+            f'        <div class="shot-frame"><img src="{e(src)}" alt="{e(alt)}"{size} loading="lazy" /></div>'
+            f"{cap}\n"
+            "      </figure>\n"
+        )
+    return f'    <div class="shots">\n{"".join(figures)}    </div>\n'
+
+
+_STORE_ID_RE = re.compile(r"/detail/([A-Za-z0-9]{12})")
+
+
+def block_reach_map(b: dict, product: dict) -> str:
+    """The per-country Store reach map. /assets/reach-map.js fills it from
+    data/store-analytics.json and keeps it hidden until the geography pull
+    has data. The Store id comes from the product's storeUrl unless the
+    block names one; the data file keys ids in upper case."""
+    app = b.get("app")
+    if not app:
+        m = _STORE_ID_RE.search(product.get("storeUrl") or "")
+        if not m:
+            raise ValueError(f"{product['id']}: reachMap needs an app id or a Store storeUrl")
+        app = m.group(1)
+    label = b.get("label") or product.get("title", product["id"])
+    return f'    <div class="reach-map" data-app="{e(app.upper())}" data-label="{e(label)}"></div>\n'
 
 
 def _trust_row(r: dict) -> str:
@@ -337,6 +431,9 @@ BLOCKS = {
     "trust": block_trust,
     "status": block_status,
     "contact": block_contact,
+    "stats": block_stats,
+    "shots": block_shots,
+    "reachMap": block_reach_map,
 }
 
 

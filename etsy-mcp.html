@@ -292,6 +292,93 @@ body{
   background: repeating-linear-gradient(0deg, var(--page-scanline) 0 1px, transparent 1px 3px);
 }
 h1{ text-shadow: var(--page-bloom); }
+
+/* ==================================================================
+   Partials added for the app pages (Right Click PNG, RBX15). Each block
+   reads contract tokens and this file's --page-* aliases only. Appended
+   after the treatment block on purpose: none of them touches body or
+   .topnav, so a page that uses none of them (etsy-mcp.html) renders
+   exactly as before. visual-diff proves that per PR, not this comment.
+   ================================================================== */
+
+/* ---------- Hero eyebrow ---------- */
+.hero .eyebrow{
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--fg-muted); margin:0 0 12px;
+}
+/* A lead paragraph that follows a grid needs air above it. */
+.cards + p.lead, .stats + p.lead{ margin-top:24px; }
+
+/* ---------- Get-it strip (hero) ---------- */
+.get-strip{
+  margin: 18px 0 0;
+  display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px;
+  background: var(--page-panel-fill);
+  border:1px solid var(--page-hairline); border-radius: var(--r-lg);
+  box-shadow: var(--inner-stroke);
+  padding: 14px 20px;
+}
+.get-strip .gs-key{
+  font-family:var(--font-mono); font-size:10.5px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--fg-muted);
+}
+.get-strip .spacer{ flex:1; }
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
+  padding:9px 16px; border-radius:var(--r-sm); text-decoration:none;
+  border:1px solid var(--page-panel-border); color:var(--fg-2); background:transparent;
+  transition: border-color var(--dur-fast), color var(--dur-fast);
+}
+.btn:hover{ border-color:var(--border-accent); color:var(--fg-1); }
+.btn.primary{ border-color:var(--cyan); background:var(--cyan); color:var(--ink-950); font-weight:600; }
+.btn.primary:hover{ background:var(--cyan-pale); border-color:var(--cyan-pale); color:var(--ink-950); }
+.btn svg{ flex:none; }
+
+/* ---------- Card tag ---------- */
+.card .tag{
+  display:inline-block; margin:0 0 10px;
+  font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--magenta); border:1px solid var(--magenta); border-radius:var(--r-xs); padding:1px 6px;
+}
+.lead code, .card p code, .shot-cap code{
+  font-family:var(--font-mono); font-size:.9em; color:var(--fg-1);
+}
+
+/* ---------- Stats row ---------- */
+.stats{
+  display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:14px;
+  margin: 24px 0 8px;
+}
+.stat{ border-top:2px solid var(--cyan); padding:12px 2px 0; }
+.stat .n{ font-family:var(--font-display); font-size:30px; font-weight:700; line-height:1; }
+.stat .l{
+  margin-top:6px;
+  font-family:var(--font-mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--fg-muted);
+}
+
+/* ---------- Screenshot strip ----------
+   Rendered only when the product has shots; the frame takes the image's
+   own aspect, so a capture is never letterboxed or cropped. */
+.shots{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:22px; margin-top:24px; }
+.shot{ margin:0; }
+.shot.lead{ grid-column: 1 / -1; }
+.shot-frame{
+  background: var(--page-panel-fill);
+  border:1px solid var(--page-hairline); border-radius: var(--r-md);
+  overflow:hidden;
+}
+.shot-frame img{ display:block; width:100%; height:auto; }
+.shot-cap{ margin:10px 2px 0; font-size:14px; line-height:1.55; color:var(--fg-3); }
+.shot-cap b{ color:var(--fg-1); font-weight:600; font-family:var(--font-display); }
+
+@media (max-width: 760px){
+  .topnav .links .hide-sm{ display:none; }
+  .get-strip .spacer{ display:none; }
+  .stats{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shots{ grid-template-columns: minmax(0, 1fr); }
+}
 </style>
 <link rel="stylesheet" href="/assets/logos/signature.css">
 </head>

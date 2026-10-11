@@ -169,3 +169,75 @@ def test_the_workflows_render_and_commit_the_generated_pages():
 def test_site_doctor_runs_the_drift_check():
     doctor = (ROOT / "scripts" / "site-doctor.py").read_text(encoding="utf-8")
     assert '"render-product-pages.py"' in doctor
+
+
+def _with_shots_section(shots):
+    p = _minimal(screenshots=shots)
+    p["pageSpec"]["sections"].append({
+        "type": "section", "eyebrow": "See it work", "heading": "Zz shots heading",
+        "blocks": [{"type": "shots", "captions": ["<b>One.</b> planned", "two"],
+                    "alts": ["planned alt one"]}],
+    })
+    return rpp.render_page(p, "slate-broadsheet")
+
+
+def test_no_screenshots_means_no_strip_and_no_heading():
+    # Este's captures arrive later. Until then the section is absent, not a
+    # row of empty frames.
+    html = _with_shots_section([])
+    assert "Zz shots heading" not in html
+    assert 'class="shots"' not in html
+
+
+def test_screenshots_render_from_the_uploader_entries():
+    html = _with_shots_section([
+        {"id": "shot-1", "path": "assets/screenshots/demo/1791000000000-menu.png", "name": "menu.png"},
+        {"id": "shot-2", "path": "assets/screenshots/demo/1791000000001-toast.png", "name": "toast.png",
+         "caption": "own caption", "alt": "own alt"},
+        {"id": "shot-3", "path": "assets/screenshots/demo/1791000000002-x.png", "name": "x.png"},
+    ])
+    assert "Zz shots heading" in html
+    assert html.count('<figure class="shot') == 3
+    assert '<figure class="shot lead">' in html
+    assert 'src="/assets/screenshots/demo/1791000000000-menu.png" alt="planned alt one"' in html
+    assert "<b>One.</b> planned" in html  # planned caption fills shot 1
+    assert "own caption" in html and 'alt="own alt"' in html  # the entry wins
+    assert "Demo screenshot 3" in html  # no planned alt: a generic one, never empty
+
+
+@pytest.mark.parametrize("pid", ["rtclickpng", "rbx15-shirt-pants"])
+def test_the_new_app_pages_hold_their_shots_section_until_shots_exist(pid):
+    p = _product(pid)
+    html = (ROOT / rpp.output_rel(p)).read_text(encoding="utf-8")
+    if p.get("screenshots"):
+        assert 'class="shots"' in html
+    else:
+        assert 'class="shots"' not in html and "See it work" not in html
+
+
+def test_reach_map_takes_its_id_from_the_store_url_in_upper_case():
+    html = rpp.render_page(_product("rbx15-shirt-pants"), "slate-broadsheet")
+    assert 'data-app="9MV9G4XFJ8S0"' in html
+    assert '<script src="/assets/reach-map.js" defer></script>' in html
+    p = _minimal()
+    p["pageSpec"]["sections"].append(
+        {"type": "section", "heading": "x", "blocks": [{"type": "reachMap"}]})
+    with pytest.raises(ValueError, match="storeUrl"):
+        rpp.render_page(p, "slate-broadsheet")
+
+
+@pytest.mark.parametrize("pid", ["rtclickpng", "rbx15-shirt-pants"])
+def test_every_live_store_app_page_has_its_furniture(pid):
+    p = _product(pid)
+    html = (ROOT / rpp.output_rel(p)).read_text(encoding="utf-8")
+    assert f'data-repo="{p["repo"]}"' in html
+    assert 'class="reach-map"' in html
+    assert '<meta name="release-reviewed"' in html
+    assert 'id="get-it"' in html
+
+
+def test_rbx15_is_never_called_native():
+    # RBX15 is Electron. The page says "Windows desktop app".
+    html = (ROOT / "rbx15.html").read_text(encoding="utf-8").lower()
+    assert not re.search(r"\bnative\b", html)  # "nominatively" is fine
+    assert "windows desktop app" in html
