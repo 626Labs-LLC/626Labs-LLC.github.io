@@ -101,6 +101,23 @@ def test_set_field_in_text_scoped():
     assert out.count('"tagline"') == 2
 
 
+def test_product_span_survives_nested_ids():
+    import json
+    # A pageSpec nests objects with their own "id" keys; the span must run to
+    # the product's closing brace, not stop at the first nested id.
+    sample = ('{ "products": [\n'
+              '  { "id": "p1", "pageSpec": { "sections": [ { "id": "hero", "t": "a}b" } ] },\n'
+              '    "screenshots": [] },\n'
+              '  { "id": "p2", "screenshots": [] }\n] }\n')
+    start, end = site_cli._product_block_span(sample, "p1")
+    block = sample[start:end]
+    assert '"screenshots": []' in block and '"p2"' not in block
+    out = sample[:start] + site_cli.array_append_in_text(block, "screenshots", '{ "id": "s" }') + sample[end:]
+    data = json.loads(out)
+    assert data["products"][0]["screenshots"] == [{"id": "s"}]
+    assert data["products"][1]["screenshots"] == []
+
+
 def test_set_field_in_text_missing_field_raises():
     import pytest
     sample = '{ "products": [ { "id": "p1", "tagline": "x" } ] }\n'

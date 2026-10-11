@@ -59,14 +59,32 @@ def set_status_in_text(text: str, product_id: str, new_status: str) -> str:
 
 
 def _product_block_span(text: str, product_id: str) -> tuple[int, int]:
-    """(start, end) char span of a product object, bounded by the next id."""
+    """(start, end) char span of a product object: from just after its id to
+    its closing brace. Bounded by brace depth, not by the next "id" key: a
+    product's nested pageSpec carries ids of its own, and a next-id bound
+    cut the span off before fields that follow it (screenshots)."""
     m = re.search(r'"id":\s*"' + re.escape(product_id) + r'"', text)
     if not m:
         raise ValueError(f"product not found: {product_id}")
     start = m.end()
-    nxt = re.search(r'"id":\s*"', text[start:])
-    end = start + nxt.start() if nxt else len(text)
-    return start, end
+    depth, i, in_str = 1, start, False
+    while i < len(text):
+        c = text[i]
+        if in_str:
+            if c == "\\":
+                i += 1
+            elif c == '"':
+                in_str = False
+        elif c == '"':
+            in_str = True
+        elif c in "{[":
+            depth += 1
+        elif c in "}]":
+            depth -= 1
+            if depth == 0:
+                return start, i
+        i += 1
+    raise ValueError(f"unterminated product object: {product_id}")
 
 
 def set_field_in_text(text: str, product_id: str, field: str, new_value: str) -> str:
@@ -115,7 +133,8 @@ def array_append_in_text(text: str, array_key: str, element_text: str,
 
 
 def render_all() -> None:
-    for script in ("render-hub.py", "render-plugin-pages.py"):
+    # Product pages first: render-hub builds sitemap.xml from the page tree.
+    for script in ("render-product-pages.py", "render-hub.py", "render-plugin-pages.py"):
         subprocess.run(
             [sys.executable, str(SCRIPTS / script)],
             check=True, capture_output=True, text=True,
@@ -127,7 +146,15 @@ def doctor_validate() -> tuple[bool, str]:
         [sys.executable, str(SCRIPTS / "site-doctor.py"), "--check"],
         capture_output=True, text=True,
     )
-    return r.returncode == 0, r.stdout + r.stderr
+    detail = r.stdout + r.stderr
+    if r.returncode != 0 and not detail.strip():
+        # --check fails without saying why; --report names the failing check.
+        rep = subprocess.run(
+            [sys.executable, str(SCRIPTS / "site-doctor.py"), "--report"],
+            capture_output=True, text=True,
+        )
+        detail = rep.stdout + rep.stderr
+    return r.returncode == 0, detail
 
 
 def guarded_apply(source_path: Path, new_text: str, *,
@@ -291,8 +318,12 @@ def cmd_upload_shot(args) -> int:
         ensure_ascii=False,
     )
     text = SITE_JSON.read_text(encoding="utf-8")
-    start, end = _product_block_span(text, args.id)
-    new_block = array_append_in_text(text[start:end], "screenshots", element)
+    try:
+        start, end = _product_block_span(text, args.id)
+        new_block = array_append_in_text(text[start:end], "screenshots", element)
+    except ValueError:
+        dest.unlink(missing_ok=True)  # never leave an unregistered copy behind
+        raise
     new_text = text[:start] + new_block + text[end:]
     ok, detail = guarded_apply(SITE_JSON, new_text)
     if not ok:
