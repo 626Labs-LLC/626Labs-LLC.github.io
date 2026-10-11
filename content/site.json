@@ -970,7 +970,14 @@
       },
       "banner": "assets/thumb-rbx15.png",
       "meta": "Windows · Roblox creator tooling",
-      "screenshots": []
+      "screenshots": [
+        {"id": "shot-1791749694886", "path": "assets/screenshots/rbx15-shirt-pants/1791749694886-1-gradient-and-pattern.png", "name": "1-gradient-and-pattern.png", "alt": "A gradient sweeping across every torso panel of a Roblox Classic shirt template, with a dot pattern tiling across both arms", "size": 150166},
+        {"id": "shot-1791749696985", "path": "assets/screenshots/rbx15-shirt-pants/1791749696985-2-layers.png", "name": "2-layers.png", "size": 203200},
+        {"id": "shot-1791749699425", "path": "assets/screenshots/rbx15-shirt-pants/1791749699425-3-angle-live-edit-pair.png", "name": "3-angle-live-edit-pair.png", "alt": "Before and after: the same torso gradient with its angle changed, every connected panel updating at once", "size": 70502},
+        {"id": "shot-1791749701394", "path": "assets/screenshots/rbx15-shirt-pants/1791749701394-4-word-art.png", "name": "4-word-art.png", "size": 200586},
+        {"id": "shot-1791749703231", "path": "assets/screenshots/rbx15-shirt-pants/1791749703231-5-pants-camo.png", "name": "5-pants-camo.png", "size": 152596},
+        {"id": "shot-1791749704953", "path": "assets/screenshots/rbx15-shirt-pants/1791749704953-6-export-on-plate.png", "name": "6-export-on-plate.png", "alt": "The exported 585×559 PNG, ready to upload to Roblox", "size": 42978}
+      ]
     },
     {
       "id": "rtclickpng",
