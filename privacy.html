@@ -380,7 +380,7 @@
       <strong>What is collected.</strong> Nothing. The app has no accounts, no telemetry, and no analytics, and it ships with zero third-party packages, so no such SDK exists in it even indirectly.
     </p>
     <p>
-      <strong>Where data lives.</strong> Settings are three small preferences in <code>settings.json</code> inside the app's package folder at <code>%LOCALAPPDATA%\Packages\626LabsLLC.RightClicktoPNG_wz1chhb2h2v4a\LocalState\</code>. Converted images are written beside the source file; "Copy as PNG" and "Copy as JPEG" place the result on the clipboard and write no file at all. The settings app writes a small local crash log, type name and message only, never file contents, at <code>%LOCALAPPDATA%\RTClickPng.Settings.crash.log</code>.
+      <strong>Where data lives.</strong> Settings are three small preferences in <code>settings.json</code> inside the app's package folder at <code>%LOCALAPPDATA%\Packages\626LabsLLC.RightClicktoPNG_wz1chhb2h2v4a\LocalState\</code>. Converted images are written beside the source file; "Copy as PNG" and "Copy as JPEG" place the result on the clipboard and write no file at all. If the settings app fails, it writes a small crash log (where it failed, the error type, and its message; never file contents) to <code>settings-crash.log</code> in that same folder. Nothing is logged on a normal launch. Version 0.1.1.0 and earlier wrote a startup log to <code>%LOCALAPPDATA%\RTClickPng.Settings.crash.log</code> each time the settings app opened; version 0.1.2.0 and later deletes that file the first time the settings app runs.
     </p>
     <p>
       <strong>What touches the network.</strong> Nothing. The app links no networking libraries and declares no internet capability. There are no update checks; updates come through the Microsoft Store.
@@ -389,7 +389,7 @@
       <strong>Third parties.</strong> None.
     </p>
     <p>
-      <strong>Removal.</strong> Context-menu entries are registered declaratively through the app package, so Windows removes them at uninstall with no registry leftovers, and settings live in the package folder Windows deletes with the app. The crash log at <code>%LOCALAPPDATA%\RTClickPng.Settings.crash.log</code> may remain after uninstall; delete it manually if it is present.
+      <strong>Removal.</strong> Context-menu entries are registered declaratively through the app package, so Windows removes them at uninstall with no registry leftovers, and settings and the crash log both live in the package folder Windows deletes with the app. If you uninstalled version 0.1.1.0 or earlier without updating, <code>%LOCALAPPDATA%\RTClickPng.Settings.crash.log</code> may remain; delete it manually if it is present.
     </p>
 
     <h2><span class="num">06</span>Children's privacy</h2>
