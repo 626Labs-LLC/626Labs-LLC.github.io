@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-06T14:23:41.861Z",
+  "generated": "2026-10-13T15:12:42.778Z",
   "entries": [
     {
       "id": "m01",
@@ -666,6 +666,14 @@
       "source": "tmdb"
     },
     {
+      "id": "t1291595",
+      "title": "Insidious: Out of the Further",
+      "year": 2026,
+      "tagline": "Evil found a way out.",
+      "posterPath": "/4tTrW9dXCByS5wt2pXVWb58zNjz.jpg",
+      "source": "tmdb"
+    },
+    {
       "id": "t1368337",
       "title": "The Odyssey",
       "year": 2026,
@@ -674,19 +682,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t1377237",
-      "title": "Runner",
+      "id": "t1148365",
+      "title": "Matchbox the Movie",
       "year": 2026,
-      "tagline": "Next-day delivery isn't an option.",
-      "posterPath": "/yBKMAIj7clP42UkFejhGDBBoTpb.jpg",
+      "tagline": "Save the world, bring your friends.",
+      "posterPath": "/lFKA4GMz36dImEy3DQPdPF7G4V9.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1204680",
-      "title": "Coyote vs. Acme",
+      "id": "t1101412",
+      "title": "Fall 2: Deadpoint",
       "year": 2026,
-      "tagline": "The movie ACME doesn't want you to see.",
-      "posterPath": "/kYDCl2y0VPvhT5eYWbMRInPoB03.jpg",
+      "tagline": "Are you down?",
+      "posterPath": "/fgSm5ylwiXbIHn8UbUXDjk9RRu4.jpg",
       "source": "tmdb"
     },
     {
@@ -698,19 +706,27 @@
       "source": "tmdb"
     },
     {
-      "id": "t1101383",
-      "title": "The End of Oak Street",
+      "id": "t1377237",
+      "title": "Runner",
       "year": 2026,
-      "tagline": "Where goes the neighborhood.",
-      "posterPath": "/fYXqpgPmHMphSF2W30GbTeJVIa5.jpg",
+      "tagline": "Next-day delivery isn't an option.",
+      "posterPath": "/yBKMAIj7clP42UkFejhGDBBoTpb.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1248832",
-      "title": "Digger",
+      "id": "t1236045",
+      "title": "Animals",
       "year": 2026,
-      "tagline": "A man. A plan. A meltdown.",
-      "posterPath": "/1ATXKrIPJyKNwnJ6lcG088Sa6zi.jpg",
+      "tagline": "Power can't protect you.",
+      "posterPath": "/iISM36voS1E8gX9BM0DVK0kgi3E.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1712451",
+      "title": "Resident Dead",
+      "year": 2026,
+      "tagline": "You're next",
+      "posterPath": "/qKhMVWwFikSUzOpkhOl35GBLkGH.jpg",
       "source": "tmdb"
     },
     {
@@ -722,27 +738,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t1032863",
-      "title": "The Love Hypothesis",
+      "id": "t1204680",
+      "title": "Coyote vs. Acme",
       "year": 2026,
-      "tagline": "Fake dating. Real chemistry.",
-      "posterPath": "/vfZxVHextAGC70zrNhS8lsROqP1.jpg",
+      "tagline": "The movie ACME doesn't want you to see.",
+      "posterPath": "/kYDCl2y0VPvhT5eYWbMRInPoB03.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t977942",
-      "title": "The Uprising",
+      "id": "t1101383",
+      "title": "The End of Oak Street",
       "year": 2026,
-      "tagline": "Rise or die.",
-      "posterPath": "/7TUl15TOsIvndKlgMWTtLgtEzZP.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1375646",
-      "title": "Colony",
-      "year": 2026,
-      "tagline": "Survive the hive.",
-      "posterPath": "/tN799oUR0f1gUKDYdMNrDaY7I51.jpg",
+      "tagline": "Where goes the neighborhood.",
+      "posterPath": "/hkPxuAMEqIqo1HCtIi4sqx0GRuP.jpg",
       "source": "tmdb"
     },
     {
@@ -754,11 +762,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1288445",
-      "title": "Mutiny",
+      "id": "t1400837",
+      "title": "Other Mommy",
       "year": 2026,
-      "tagline": "There's blood in the water.",
-      "posterPath": "/pu2VxGlpGwffOx292w18b1tv96j.jpg",
+      "tagline": "Your mommy won't save you.",
+      "posterPath": "/fGRNCssTRrhYZxNzykGGCoMsAVq.jpg",
       "source": "tmdb"
     },
     {
@@ -778,19 +786,43 @@
       "source": "tmdb"
     },
     {
-      "id": "t1283515",
-      "title": "Verity",
+      "id": "t1284046",
+      "title": "Onslaught",
       "year": 2026,
-      "tagline": "There is no light where we're going.",
-      "posterPath": "/97y0RdzRIeZ2j6se98hRQpxz3eR.jpg",
+      "tagline": "They unleashed their deadliest weapon on us.",
+      "posterPath": "/cOGtvhc6Ij9KvzM6jZsfQyg0B0O.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1263337",
-      "title": "Heart of the Beast",
+      "id": "t1288445",
+      "title": "Mutiny",
       "year": 2026,
-      "tagline": "Survival depends on their bond.",
-      "posterPath": "/1ApfSA8JTqeha3GTFEY8syV4auq.jpg",
+      "tagline": "There's blood in the water.",
+      "posterPath": "/pu2VxGlpGwffOx292w18b1tv96j.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1248832",
+      "title": "Digger",
+      "year": 2026,
+      "tagline": "A man. A plan. A meltdown.",
+      "posterPath": "/1ATXKrIPJyKNwnJ6lcG088Sa6zi.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1032863",
+      "title": "The Love Hypothesis",
+      "year": 2026,
+      "tagline": "Fake dating. Real chemistry.",
+      "posterPath": "/vfZxVHextAGC70zrNhS8lsROqP1.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t977942",
+      "title": "The Uprising",
+      "year": 2026,
+      "tagline": "Rise or die.",
+      "posterPath": "/7TUl15TOsIvndKlgMWTtLgtEzZP.jpg",
       "source": "tmdb"
     },
     {
@@ -802,35 +834,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t30723",
-      "title": "Cavegirl",
-      "year": 1985,
-      "tagline": "Rex is taking his first big trip...back 25,000 years!",
-      "posterPath": "/kONbgktPKsm3EMj3MiES0IP8BRr.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1477712",
-      "title": "Ice Cream Man",
+      "id": "t1742441",
+      "title": "V/H/S/Mixtape",
       "year": 2026,
-      "tagline": "We all scream.",
-      "posterPath": "/lNBxToxHWrzmkqeFnf1XADUTxQq.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1291595",
-      "title": "Insidious: Out of the Further",
-      "year": 2026,
-      "tagline": "Evil found a way out.",
-      "posterPath": "/4tTrW9dXCByS5wt2pXVWb58zNjz.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1422011",
-      "title": "It Ends",
-      "year": 2026,
-      "tagline": "Some wrong turns last forever.",
-      "posterPath": "/6dfAGvZWbJnzWfSZ8gxFj63BNAH.jpg",
+      "tagline": "Low fidelity. High body count.",
+      "posterPath": "/uS8yoiA6NfsuYeOTbVfpem8Ib9.jpg",
       "source": "tmdb"
     },
     {
@@ -842,11 +850,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1712451",
-      "title": "Resident Dead",
+      "id": "t1389172",
+      "title": "Reporting Live",
       "year": 2026,
-      "tagline": "You're next",
-      "posterPath": "/yX8ziNTZ5aOszJ3l4R3BlT2gBIa.jpg",
+      "tagline": "Some stories refuse to be buried.",
+      "posterPath": "/7Ncfrt43mLLFB8yWcWON8imHr0Q.jpg",
       "source": "tmdb"
     },
     {
@@ -858,11 +866,35 @@
       "source": "tmdb"
     },
     {
-      "id": "t1492640",
-      "title": "UNABOMBER",
+      "id": "t1375646",
+      "title": "Colony",
       "year": 2026,
-      "tagline": "Where brilliance ends, the madness begins.",
-      "posterPath": "/39aMkR8Y5vhCG9dTkjiqRl8AVqp.jpg",
+      "tagline": "Survive the hive.",
+      "posterPath": "/tN799oUR0f1gUKDYdMNrDaY7I51.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1084242",
+      "title": "Zootopia 2",
+      "year": 2025,
+      "tagline": "They're back with a twissst.",
+      "posterPath": "/oJ7g2CifqpStmoYQyaLQgEU32qO.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t45722",
+      "title": "Don't Look Down",
+      "year": 2008,
+      "tagline": "When sexual fantasies come true.",
+      "posterPath": "/s7igxMxtKQKHdnDxnSAJej7RTGp.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1315772",
+      "title": "Minions & Monsters",
+      "year": 2026,
+      "tagline": "Hollywood has a monster problem.",
+      "posterPath": "/4LwvU9SZc8QQzW1X1FAPhNbXnEU.jpg",
       "source": "tmdb"
     },
     {
@@ -871,30 +903,6 @@
       "year": 2014,
       "tagline": "Who do you trust?",
       "posterPath": "/1sSWpTupVixOanIpZdLGzsKvcZS.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t755898",
-      "title": "War of the Worlds",
-      "year": 2025,
-      "tagline": "Your data is deadly.",
-      "posterPath": "/yvirUYrva23IudARHn3mMGVxWqM.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1607127",
-      "title": "One Last Shot",
-      "year": 2026,
-      "tagline": "One last traitor. One last mission. One last fight.",
-      "posterPath": "/niQ4NBh2jqAf1hDZP5m6ReWFAb7.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t687163",
-      "title": "Project Hail Mary",
-      "year": 2026,
-      "tagline": "Believe in the Hail Mary.",
-      "posterPath": "/iOb2fjXLbpJgyQXe46n1WtGCnaa.jpg",
       "source": "tmdb"
     },
     {
@@ -927,6 +935,14 @@
       "year": 1994,
       "tagline": "Fear can hold you prisoner. Hope can set you free.",
       "posterPath": "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t687163",
+      "title": "Project Hail Mary",
+      "year": 2026,
+      "tagline": "Believe in the Hail Mary.",
+      "posterPath": "/iOb2fjXLbpJgyQXe46n1WtGCnaa.jpg",
       "source": "tmdb"
     },
     {
@@ -981,8 +997,8 @@
       "id": "t129",
       "title": "Spirited Away",
       "year": 2001,
-      "tagline": "Beyond the tunnel was a mysterious town.",
-      "posterPath": "/jUo8cNmU400WtZiJss45HNXlQ2e.jpg",
+      "tagline": "Prepare to be spirited away.",
+      "posterPath": "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
       "source": "tmdb"
     },
     {
@@ -1034,14 +1050,6 @@
       "source": "tmdb"
     },
     {
-      "id": "t429",
-      "title": "The Good, the Bad and the Ugly",
-      "year": 1966,
-      "tagline": "For three men the Civil War wasn't hell. It was practice.",
-      "posterPath": "/bX2xnavhMYjWDoZp1VM6VnU1xwe.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t14537",
       "title": "Harakiri",
       "year": 1962,
@@ -1050,11 +1058,27 @@
       "source": "tmdb"
     },
     {
+      "id": "t429",
+      "title": "The Good, the Bad and the Ugly",
+      "year": 1966,
+      "tagline": "For three men the Civil War wasn't hell. It was practice.",
+      "posterPath": "/bX2xnavhMYjWDoZp1VM6VnU1xwe.jpg",
+      "source": "tmdb"
+    },
+    {
       "id": "t13",
       "title": "Forrest Gump",
       "year": 1994,
       "tagline": "The world will never be the same once you've seen it through the eyes of Forrest Gump.",
-      "posterPath": "/Cw4hIUIAmSYfK9QfaUW5igp9La.jpg",
+      "posterPath": "/saHP97rTPS5eLmrLQEcANmKrsFl.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t667257",
+      "title": "Impossible Things",
+      "year": 2021,
+      "tagline": "There are encounters that change your life",
+      "posterPath": "/t2Ew8NZ8Ci2kqmoecZUNQUFDJnQ.jpg",
       "source": "tmdb"
     },
     {
@@ -1079,14 +1103,6 @@
       "year": 1990,
       "tagline": "Three decades of life in the mafia.",
       "posterPath": "/9OkCLM73MIU2CrKZbqiT8Ln1wY2.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t667257",
-      "title": "Impossible Things",
-      "year": 2021,
-      "tagline": "There are encounters that change your life",
-      "posterPath": "/t2Ew8NZ8Ci2kqmoecZUNQUFDJnQ.jpg",
       "source": "tmdb"
     },
     {
@@ -1135,14 +1151,6 @@
       "year": 2002,
       "tagline": "If you run, the beast catches you; if you stay, the beast eats you.",
       "posterPath": "/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t40096",
-      "title": "A Dog's Will",
-      "year": 2000,
-      "tagline": "Lying with faith is not always a sin.",
-      "posterPath": "/z9Au9XtK0ARzkKGsZCzMkmKgMPf.jpg",
       "source": "tmdb"
     }
   ]
