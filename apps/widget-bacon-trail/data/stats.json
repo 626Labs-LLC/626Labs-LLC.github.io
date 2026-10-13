@@ -1,14 +1,14 @@
 {
-  "totalPlayed": 29,
-  "totalFound": 22,
+  "totalPlayed": 30,
+  "totalFound": 23,
   "totalOutOfFilms": 7,
   "winsByFilms": {
     "1": 1,
     "2": 4,
     "3": 8,
     "4": 5,
-    "5": 3,
+    "5": 4,
     "6": 1
   },
-  "updatedAt": "2026-10-12T13:37:33.917Z"
+  "updatedAt": "2026-10-13T13:00:22.067Z"
 }
