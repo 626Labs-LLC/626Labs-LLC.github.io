@@ -1,17 +1,10 @@
 {
- "fetchedAt": "2026-10-14T12:28:05.704Z",
+ "fetchedAt": "2026-10-15T12:10:14.263Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
    "name": "RoRoRo",
    "usageDaily": {
-    "2026-09-14": {
-     "dailyActiveUsers": 99,
-     "dailyActiveDevices": 98,
-     "dailyNewUsers": 20,
-     "dailySessionCount": 237,
-     "engagementDurationMinutes": 353.3
-    },
     "2026-09-15": {
      "dailyActiveUsers": 107,
      "dailyActiveDevices": 106,
@@ -214,12 +207,16 @@
      "dailyNewUsers": 58,
      "dailySessionCount": 374,
      "engagementDurationMinutes": 382.1
+    },
+    "2026-10-14": {
+     "dailyActiveUsers": 173,
+     "dailyActiveDevices": 173,
+     "dailyNewUsers": 32,
+     "dailySessionCount": 377,
+     "engagementDurationMinutes": 529
     }
    },
    "installsDaily": {
-    "2026-09-14": {
-     "successfulInstallCount": 28
-    },
     "2026-09-15": {
      "successfulInstallCount": 36
     },
@@ -306,9 +303,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-09-14": {
-     "acquisitionQuantity": 12
-    },
     "2026-09-15": {
      "acquisitionQuantity": 21
     },
@@ -339,14 +333,47 @@
     "2026-09-24": {
      "acquisitionQuantity": 57
     },
+    "2026-09-25": {
+     "acquisitionQuantity": 40
+    },
+    "2026-09-27": {
+     "acquisitionQuantity": 36
+    },
+    "2026-09-28": {
+     "acquisitionQuantity": 17
+    },
+    "2026-09-29": {
+     "acquisitionQuantity": 23
+    },
+    "2026-09-30": {
+     "acquisitionQuantity": 17
+    },
+    "2026-10-01": {
+     "acquisitionQuantity": 12
+    },
+    "2026-10-02": {
+     "acquisitionQuantity": 19
+    },
+    "2026-10-03": {
+     "acquisitionQuantity": 28
+    },
+    "2026-10-04": {
+     "acquisitionQuantity": 29
+    },
+    "2026-10-05": {
+     "acquisitionQuantity": 21
+    },
+    "2026-10-06": {
+     "acquisitionQuantity": 19
+    },
     "2026-10-07": {
      "acquisitionQuantity": 30
     },
     "2026-10-08": {
-     "acquisitionQuantity": 25
+     "acquisitionQuantity": 24
     },
     "2026-10-09": {
-     "acquisitionQuantity": 23
+     "acquisitionQuantity": 22
     },
     "2026-10-10": {
      "acquisitionQuantity": 36
@@ -360,8 +387,8 @@
     "2026-10-13": {
      "acquisitionQuantity": 31
     },
-    "2026-10-14": {
-     "acquisitionQuantity": 14
+    "2026-10-15": {
+     "acquisitionQuantity": 7
     }
    },
    "installsByMarket": {
@@ -677,20 +704,13 @@
    },
    "failuresWindow": [],
    "unclassifiedHits": {
-    "eventCount": 397,
-    "deviceCount": 291
+    "eventCount": 389,
+    "deviceCount": 285
    }
   },
   "9N53V6RRJK95": {
    "name": "626 Mod Launcher",
    "usageDaily": {
-    "2026-09-14": {
-     "dailyActiveUsers": 1,
-     "dailyActiveDevices": 1,
-     "dailyNewUsers": 1,
-     "dailySessionCount": 1,
-     "engagementDurationMinutes": 1.2
-    },
     "2026-09-16": {
      "dailyActiveUsers": 2,
      "dailyActiveDevices": 2,
@@ -851,12 +871,16 @@
      "dailyNewUsers": 2,
      "dailySessionCount": 3,
      "engagementDurationMinutes": 2
+    },
+    "2026-10-14": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 3.3
     }
    },
    "installsDaily": {
-    "2026-09-14": {
-     "successfulInstallCount": 4
-    },
     "2026-09-15": {
      "successfulInstallCount": 2
     },
@@ -940,9 +964,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-09-14": {
-     "acquisitionQuantity": 4
-    },
     "2026-09-15": {
      "acquisitionQuantity": 2
     },
@@ -972,6 +993,33 @@
     },
     "2026-09-24": {
      "acquisitionQuantity": 1
+    },
+    "2026-09-25": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-27": {
+     "acquisitionQuantity": 2
+    },
+    "2026-09-29": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-30": {
+     "acquisitionQuantity": 2
+    },
+    "2026-10-01": {
+     "acquisitionQuantity": 2
+    },
+    "2026-10-02": {
+     "acquisitionQuantity": 2
+    },
+    "2026-10-04": {
+     "acquisitionQuantity": 3
+    },
+    "2026-10-05": {
+     "acquisitionQuantity": 1
+    },
+    "2026-10-06": {
+     "acquisitionQuantity": 2
     },
     "2026-10-07": {
      "acquisitionQuantity": 1
@@ -1120,6 +1168,15 @@
      "acquisitionQuantity": 1
     },
     "2026-09-19": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-25": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-29": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-30": {
      "acquisitionQuantity": 1
     }
    },
@@ -1309,6 +1366,21 @@
     "2026-09-24": {
      "acquisitionQuantity": 3
     },
+    "2026-09-30": {
+     "acquisitionQuantity": 1
+    },
+    "2026-10-01": {
+     "acquisitionQuantity": 2
+    },
+    "2026-10-04": {
+     "acquisitionQuantity": 1
+    },
+    "2026-10-05": {
+     "acquisitionQuantity": 2
+    },
+    "2026-10-06": {
+     "acquisitionQuantity": 1
+    },
     "2026-10-08": {
      "acquisitionQuantity": 1
     },
@@ -1317,6 +1389,9 @@
     },
     "2026-10-13": {
      "acquisitionQuantity": 2
+    },
+    "2026-10-15": {
+     "acquisitionQuantity": 1
     }
    },
    "installsByMarket": {
@@ -1388,13 +1463,6 @@
   "9MV9G4XFJ8S0": {
    "name": "RBX15 Classic Shirt and Pants Maker",
    "usageDaily": {
-    "2026-09-14": {
-     "dailyActiveUsers": 3,
-     "dailyActiveDevices": 3,
-     "dailyNewUsers": 2,
-     "dailySessionCount": 9,
-     "engagementDurationMinutes": 13
-    },
     "2026-09-15": {
      "dailyActiveUsers": 3,
      "dailyActiveDevices": 3,
@@ -1590,12 +1658,16 @@
      "dailyNewUsers": 1,
      "dailySessionCount": 3,
      "engagementDurationMinutes": 7
+    },
+    "2026-10-14": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 6.3
     }
    },
    "installsDaily": {
-    "2026-09-14": {
-     "successfulInstallCount": 3
-    },
     "2026-09-15": {
      "successfulInstallCount": 2
     },
@@ -1679,9 +1751,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-09-14": {
-     "acquisitionQuantity": 3
-    },
     "2026-09-15": {
      "acquisitionQuantity": 3
     },
@@ -1712,6 +1781,33 @@
     "2026-09-24": {
      "acquisitionQuantity": 3
     },
+    "2026-09-25": {
+     "acquisitionQuantity": 7
+    },
+    "2026-09-27": {
+     "acquisitionQuantity": 5
+    },
+    "2026-09-28": {
+     "acquisitionQuantity": 2
+    },
+    "2026-09-29": {
+     "acquisitionQuantity": 1
+    },
+    "2026-09-30": {
+     "acquisitionQuantity": 2
+    },
+    "2026-10-03": {
+     "acquisitionQuantity": 2
+    },
+    "2026-10-04": {
+     "acquisitionQuantity": 2
+    },
+    "2026-10-05": {
+     "acquisitionQuantity": 3
+    },
+    "2026-10-06": {
+     "acquisitionQuantity": 3
+    },
     "2026-10-07": {
      "acquisitionQuantity": 3
     },
@@ -1733,7 +1829,7 @@
     "2026-10-13": {
      "acquisitionQuantity": 3
     },
-    "2026-10-14": {
+    "2026-10-15": {
      "acquisitionQuantity": 1
     }
    },
@@ -1882,13 +1978,6 @@
   "9NH3NK2RGCF5": {
    "name": "Sanduhr für Claude",
    "usageDaily": {
-    "2026-09-14": {
-     "dailyActiveUsers": 1,
-     "dailyActiveDevices": 1,
-     "dailyNewUsers": 0,
-     "dailySessionCount": 1,
-     "engagementDurationMinutes": 0.1
-    },
     "2026-09-15": {
      "dailyActiveUsers": 2,
      "dailyActiveDevices": 2,
@@ -1986,12 +2075,16 @@
      "dailyNewUsers": 0,
      "dailySessionCount": 3,
      "engagementDurationMinutes": 2
+    },
+    "2026-10-14": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 1.3
     }
    },
    "installsDaily": {
-    "2026-09-14": {
-     "successfulInstallCount": 1
-    },
     "2026-09-16": {
      "successfulInstallCount": 1
     },
@@ -2012,9 +2105,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-09-14": {
-     "acquisitionQuantity": 1
-    },
     "2026-09-16": {
      "acquisitionQuantity": 1
     },
@@ -2028,6 +2118,9 @@
      "acquisitionQuantity": 1
     },
     "2026-09-24": {
+     "acquisitionQuantity": 1
+    },
+    "2026-10-02": {
      "acquisitionQuantity": 1
     }
    },
