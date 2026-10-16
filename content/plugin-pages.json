@@ -269,7 +269,7 @@
       ],
       "install": {
         "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer\n/plugin install vibe-cartographer@vibe-cartographer",
-        "stableBlurb": "Tagged releases. Also on npm: @esthernandez/vibe-cartographer.",
+        "stableBlurb": "Tagged releases via the Vibe Plugins marketplace.",
         "note": "Main is the canary channel; tagged versions are stable."
       }
     },
@@ -393,7 +393,7 @@
       ],
       "install": {
         "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins\n/plugin install vibe-doc@vibe-plugins",
-        "stableBlurb": "Tagged releases via the Vibe Plugins marketplace. Also on npm: @esthernandez/vibe-doc."
+        "stableBlurb": "Tagged releases via the Vibe Plugins marketplace. The standalone CLI is on npm as @esthernandez/vibe-doc-cli."
       }
     },
 
