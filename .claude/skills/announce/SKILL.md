@@ -43,8 +43,9 @@ order:
 1. If the product `id` is a key in `SHIELDS_RELEASE`:
    - if that entry has `hide: true` (e.g. `vibe-sec`), there is no release —
      go straight to degrade (2c).
-   - else use its `repo` + `filter` (e.g. `vibe-test` → repo
-     `estevanhernandez-stack-ed/vibe-plugins`, filter `vibe-test-v*`).
+   - else use its `repo` + `filter` (a package whose Releases live in the
+     vibe-plugins monorepo: repo `estevanhernandez-stack-ed/vibe-plugins`,
+     filter `<id>-v*`).
 2. Else if the product's `repo` is `estevanhernandez-stack-ed/vibe-plugins`,
    use that repo with filter `<id>-v*`.
 3. Else use the product's own `repo`, latest release.
