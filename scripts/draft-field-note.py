@@ -142,7 +142,8 @@ def build_prompt(product: dict, release: dict | None) -> tuple[str, str]:
         "- Fold release highlights in as prose, never a changelog dump.\n"
         "- Em-dashes minimal: commas, periods and colons by default. No emoji. No ellipses for drama.\n"
         "- No self-reference (\"this post\", \"this article\"). Just say the thing.\n"
-        "- Close with how to get it: the install command or link from the product entry.\n"
+        "- Close with how to get it: the install command or link from the product entry. "
+        "No sign-off or tagline line after it; the author adds their own.\n"
         "- 300 to 700 words. Body as HTML: <p>, <h2>, <strong>, <em>, <code>, <a href>.",
         "## Field Note template (from the /announce skill)\n" + _template_section(),
         "## Voice per channel (from the /announce skill)\n" + (ANNOUNCE_REFS / "voice.md").read_text(encoding="utf-8"),
@@ -208,9 +209,17 @@ def render(fields: dict, release: dict | None, today: str) -> str:
         "---\n\n"
         f"<!-- First draft by scripts/draft-field-note.py from {source}. Edit, then: "
         "python scripts/site.py story publish <slug> -->\n\n"
-        + fields["body_html"].strip()
+        + _one_block_per_line(fields["body_html"])
         + "\n"
     )
+
+
+def _one_block_per_line(body: str) -> str:
+    """The model tends to return the body as a single line. A blank line
+    between block elements makes the draft editable by hand; markdown passes
+    the blocks through unchanged."""
+    body = re.sub(r"(</(?:p|h2|h3|ul|ol|blockquote)>)\s*(?=<)", r"\1\n\n", body.strip())
+    return re.sub(r"\n{3,}", "\n\n", body)
 
 
 def main(argv: list[str]) -> int:

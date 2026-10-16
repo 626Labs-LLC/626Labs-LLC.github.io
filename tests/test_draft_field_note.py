@@ -50,6 +50,12 @@ def test_the_source_release_is_recorded_in_the_draft():
     assert "site.json only" in drafter.render(FIELDS, None, "2026-10-16")
 
 
+def test_body_is_one_block_per_paragraph():
+    fields = dict(FIELDS, body_html="<p>One.</p><h2>Two</h2>\n<p>Three <em>x</em>.</p>")
+    _, body = render_hub.parse_story_frontmatter(drafter.render(fields, RELEASE, "2026-10-16"))
+    assert "<p>One.</p>\n\n<h2>Two</h2>\n\n<p>Three <em>x</em>.</p>" in body
+
+
 def test_template_section_is_the_field_note_only():
     section = drafter._template_section()
     assert section.startswith("## 1.")
