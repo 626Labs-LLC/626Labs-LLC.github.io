@@ -249,7 +249,11 @@ Two entry points:
   grabcut, matting, ai (rembg), auto. Batch mode via directory input.
 - **`tools/bgremove/agent.py`** — Claude vision wraps the CLI. Picks the
   best mode, runs it, evaluates the result, retries up to N attempts,
-  returns the best one. Needs `ANTHROPIC_API_KEY` in env.
+  returns the best one. Needs `ANTHROPIC_API_KEY_SCRIPTS` in env (plain
+  `ANTHROPIC_API_KEY` also works). **Never set `ANTHROPIC_API_KEY`
+  machine-wide:** Claude Code reads that name too and can switch from the
+  Max plan login to billing the key per use. The Field Note drafter reads
+  the same `_SCRIPTS` name.
 
 For most work, use the agent:
 
@@ -504,7 +508,8 @@ remote.origin.url`. The Architect handles this without ceremony.
   the note under **Theme rotation**.) Either way, render-hub.py rewrites
   `index.html` and silently reverts a direct edit.
 - Don't put secrets in the system prompt or any committed file. Tools use
-  `os.environ` (`ANTHROPIC_API_KEY` for the bgremove agent, repo PATs for
+  `os.environ` (`ANTHROPIC_API_KEY_SCRIPTS` for the bgremove agent and the
+  Field Note drafter, repo PATs for
   bot workflows via `secrets.*`).
 - Don't `git push --force` to main — bot workflows assume linear history.
 - Don't write a new file under `assets/brand/` — that directory is

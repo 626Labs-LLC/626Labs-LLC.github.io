@@ -18,8 +18,10 @@ Two differences from /announce, both on purpose:
   The script writes the frontmatter itself, so the publishing fence and the
   date can't come back malformed.
 
-Credentials: the SDK's own resolution (ANTHROPIC_API_KEY locally; Workload
-Identity Federation variables in CI). Needs `pip install anthropic` (not in
+Credentials: ANTHROPIC_API_KEY_SCRIPTS locally, a name Claude Code doesn't
+read, so a machine-wide key can't switch Claude Code from the Max plan login
+to per-use API billing. Without it, the SDK's own resolution (ANTHROPIC_API_KEY,
+or Workload Identity Federation variables in CI). Needs `pip install anthropic` (not in
 requirements.txt: CI never runs this). Prints no credential.
 """
 from __future__ import annotations
@@ -27,6 +29,7 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import os
 import re
 import subprocess
 import sys
@@ -170,7 +173,10 @@ def build_prompt(product: dict, release: dict | None) -> tuple[str, str]:
 def draft(system: str, user: str, model: str, effort: str) -> dict:
     import anthropic
 
-    client = anthropic.Anthropic()
+    # ANTHROPIC_API_KEY_SCRIPTS first (see the module docstring). With no key
+    # at all, the SDK's own resolution runs, which is how CI federates.
+    key = os.environ.get("ANTHROPIC_API_KEY_SCRIPTS")
+    client = anthropic.Anthropic(api_key=key) if key else anthropic.Anthropic()
     resp = client.beta.messages.create(
         model=model,
         max_tokens=16000,

@@ -19,7 +19,8 @@ the loop on output quality.
 
 Disable the loop with --no-evaluate (single-shot, v3 behavior, lower cost).
 
-Requires `pip install anthropic` and ANTHROPIC_API_KEY in env.
+Requires `pip install anthropic` and ANTHROPIC_API_KEY_SCRIPTS (or
+ANTHROPIC_API_KEY) in env.
 
 Model and effort come from one place (D-3 model consolidation): MODEL
 and EFFORT below, overridable with BGREMOVE_MODEL / BGREMOVE_EFFORT so an
@@ -533,11 +534,15 @@ def main(argv: list[str] | None = None) -> int:
         print(f"input not found: {args.input}", file=sys.stderr)
         return 2
 
-    if "ANTHROPIC_API_KEY" not in os.environ:
-        print("ANTHROPIC_API_KEY not set in environment", file=sys.stderr)
+    # ANTHROPIC_API_KEY_SCRIPTS first: a machine-wide ANTHROPIC_API_KEY is
+    # also read by Claude Code, which can then bill the key instead of the
+    # Max plan login. The plain name still works for a one-off shell.
+    key = os.environ.get("ANTHROPIC_API_KEY_SCRIPTS") or os.environ.get("ANTHROPIC_API_KEY")
+    if not key:
+        print("set ANTHROPIC_API_KEY_SCRIPTS (or ANTHROPIC_API_KEY) in the environment", file=sys.stderr)
         return 2
 
-    client = anthropic.Anthropic()
+    client = anthropic.Anthropic(api_key=key)
 
     if args.input.is_dir():
         out_dir = args.output or args.input.with_name(f"{args.input.name}-cut")
