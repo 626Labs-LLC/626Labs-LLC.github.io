@@ -422,8 +422,10 @@ BADGE_LABEL_BG = "0f1f31"
 #   2. No Release yet (WIP): suppress the badge with `hide` rather than let
 #      shields render "no matching releases found".
 # Plugins not listed here resolve against their own `repo` with no filter.
+# Remove an entry once its case stops applying: vibe-test sat under case 1
+# until 2026-10-16, three months after its own repo started publishing
+# Releases, and the badge showed the monorepo's April v0.2.3 the whole time.
 SHIELDS_RELEASE = {
-    "vibe-test": {"repo": "estevanhernandez-stack-ed/vibe-plugins", "filter": "vibe-test-v*"},
     "vibe-sec": {"hide": True},
 }
 
