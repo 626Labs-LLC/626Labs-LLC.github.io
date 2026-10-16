@@ -24,7 +24,7 @@ draft: false
 lead with what shipped and why it matters. If release notes exist, fold the
 1–3 highlights in as prose, not a changelog dump. Close with the install or
 "Start free" line and the link. On-brand: no "empower / leverage /
-seamlessly / unlock". Em-dashes welcome.>
+seamlessly / unlock". Em-dashes minimal: commas, periods, colons by default.>
 ```
 
 ## 2. X / Twitter → `docs/announcements/<YYYY-MM-DD>-<id>/x.md`

@@ -42,6 +42,10 @@ ON_DEMAND_ONLY = {
     ("build-fonts.py", "fontTools"):
         "builds woff2 from source TTFs; run by hand after changing a TTF, "
         "never by CI. The script's own docstring names the install line.",
+    ("draft-field-note.py", "anthropic"):
+        "drafts a Field Note through the Claude API; run by hand, never by CI. "
+        "The import sits inside draft(), which tests/test_draft_field_note.py "
+        "never calls, so CI loads the script without the SDK.",
 }
 
 
