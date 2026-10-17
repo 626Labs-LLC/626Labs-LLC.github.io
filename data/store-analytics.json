@@ -1,17 +1,10 @@
 {
- "fetchedAt": "2026-10-16T11:56:34.966Z",
+ "fetchedAt": "2026-10-17T11:12:24.134Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
    "name": "RoRoRo",
    "usageDaily": {
-    "2026-09-16": {
-     "dailyActiveUsers": 91,
-     "dailyActiveDevices": 87,
-     "dailyNewUsers": 10,
-     "dailySessionCount": 228,
-     "engagementDurationMinutes": 188.2
-    },
     "2026-09-17": {
      "dailyActiveUsers": 108,
      "dailyActiveDevices": 107,
@@ -214,12 +207,16 @@
      "dailyNewUsers": 24,
      "dailySessionCount": 395,
      "engagementDurationMinutes": 362.4
+    },
+    "2026-10-16": {
+     "dailyActiveUsers": 194,
+     "dailyActiveDevices": 192,
+     "dailyNewUsers": 34,
+     "dailySessionCount": 407,
+     "engagementDurationMinutes": 346.7
     }
    },
    "installsDaily": {
-    "2026-09-16": {
-     "successfulInstallCount": 38
-    },
     "2026-09-17": {
      "successfulInstallCount": 41
     },
@@ -300,12 +297,18 @@
     },
     "2026-10-13": {
      "successfulInstallCount": 59
+    },
+    "2026-10-14": {
+     "successfulInstallCount": 51
+    },
+    "2026-10-15": {
+     "successfulInstallCount": 54
+    },
+    "2026-10-16": {
+     "successfulInstallCount": 75
     }
    },
    "acquisitionsDaily": {
-    "2026-09-16": {
-     "acquisitionQuantity": 24
-    },
     "2026-09-17": {
      "acquisitionQuantity": 31
     },
@@ -388,89 +391,92 @@
      "acquisitionQuantity": 20
     },
     "2026-10-15": {
-     "acquisitionQuantity": 3
+     "acquisitionQuantity": 22
     },
     "2026-10-16": {
-     "acquisitionQuantity": 12
+     "acquisitionQuantity": 3
+    },
+    "2026-10-17": {
+     "acquisitionQuantity": 16
     }
    },
    "installsByMarket": {
     "US": 770,
-    "PH": 340,
-    "BR": 161,
-    "GB": 158,
-    "RU": 121,
-    "DE": 121,
-    "PL": 118,
-    "FR": 117,
-    "CA": 108,
-    "AU": 87,
-    "IN": 71,
-    "ID": 59,
-    "NL": 54,
-    "VN": 48,
-    "JP": 47,
-    "UA": 45,
-    "TH": 38,
-    "DK": 36,
+    "PH": 361,
+    "BR": 173,
+    "GB": 161,
+    "DE": 134,
+    "RU": 131,
+    "PL": 128,
+    "FR": 122,
+    "CA": 112,
+    "AU": 91,
+    "IN": 78,
+    "ID": 63,
+    "NL": 59,
+    "VN": 49,
+    "JP": 48,
+    "UA": 46,
+    "TH": 39,
+    "DK": 37,
     "KR": 35,
-    "MY": 33,
-    "BE": 33,
-    "TW": 29,
-    "RO": 28,
-    "CZ": 27,
-    "SG": 27,
-    "IT": 23,
+    "MY": 34,
+    "BE": 34,
+    "TW": 30,
+    "RO": 29,
+    "CZ": 29,
+    "SG": 28,
+    "IT": 27,
+    "ES": 22,
     "SE": 21,
-    "ES": 21,
+    "TR": 21,
     "NO": 20,
     "ZA": 20,
-    "TR": 19,
+    "PK": 19,
     "MX": 18,
     "AE": 18,
-    "PK": 18,
     "PT": 18,
     "AR": 18,
-    "HK": 17,
+    "HK": 18,
+    "SA": 16,
     "NP": 15,
     "BD": 15,
+    "CO": 14,
     "PE": 13,
     "NZ": 13,
-    "CO": 13,
-    "SA": 13,
     "KZ": 12,
+    "MA": 11,
     "IL": 10,
-    "MA": 10,
-    "CH": 9,
+    "CH": 10,
+    "BG": 10,
+    "FI": 9,
+    "KE": 9,
+    "KH": 9,
     "SK": 8,
-    "FI": 8,
     "LT": 8,
-    "BG": 8,
     "LV": 8,
-    "KE": 8,
-    "KH": 8,
+    "IQ": 8,
+    "AT": 8,
     "CN": 7,
-    "IQ": 7,
-    "AT": 7,
-    "MD": 6,
+    "MD": 7,
+    "IE": 7,
+    "BY": 7,
     "EG": 6,
     "HU": 6,
     "CL": 6,
     "MN": 6,
-    "IE": 6,
     "HR": 6,
     "DO": 6,
     "NG": 6,
-    "BY": 6,
     "GR": 6,
     "DZ": 5,
     "JM": 5,
     "UY": 5,
     "EC": 5,
     "GE": 5,
+    "EE": 5,
     "VI": 4,
     "BH": 4,
-    "EE": 4,
     "MV": 4,
     "SI": 4,
     "CG": 3,
@@ -496,6 +502,8 @@
     "LY": 2,
     "MM": 2,
     "LK": 2,
+    "VE": 2,
+    "ME": 2,
     "AM": 1,
     "AW": 1,
     "BB": 1,
@@ -507,7 +515,6 @@
     "RW": 1,
     "SM": 1,
     "SN": 1,
-    "VE": 1,
     "AS": 1,
     "QA": 1,
     "AQ": 1,
@@ -525,8 +532,8 @@
     "NI": 1,
     "AL": 1,
     "BF": 1,
-    "ME": 1,
-    "MZ": 1
+    "MZ": 1,
+    "BN": 1
    },
    "reviews": [
     {
@@ -707,20 +714,13 @@
    },
    "failuresWindow": [],
    "unclassifiedHits": {
-    "eventCount": 399,
-    "deviceCount": 294
+    "eventCount": 425,
+    "deviceCount": 315
    }
   },
   "9N53V6RRJK95": {
    "name": "626 Mod Launcher",
    "usageDaily": {
-    "2026-09-16": {
-     "dailyActiveUsers": 2,
-     "dailyActiveDevices": 2,
-     "dailyNewUsers": 2,
-     "dailySessionCount": 4,
-     "engagementDurationMinutes": 2.2
-    },
     "2026-09-17": {
      "dailyActiveUsers": 2,
      "dailyActiveDevices": 2,
@@ -888,12 +888,16 @@
      "dailyNewUsers": 1,
      "dailySessionCount": 1,
      "engagementDurationMinutes": 4.9
+    },
+    "2026-10-16": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 2,
+     "engagementDurationMinutes": 2.9
     }
    },
    "installsDaily": {
-    "2026-09-16": {
-     "successfulInstallCount": 3
-    },
     "2026-09-17": {
      "successfulInstallCount": 2
     },
@@ -971,12 +975,18 @@
     },
     "2026-10-13": {
      "successfulInstallCount": 4
+    },
+    "2026-10-14": {
+     "successfulInstallCount": 2
+    },
+    "2026-10-15": {
+     "successfulInstallCount": 2
+    },
+    "2026-10-16": {
+     "successfulInstallCount": 2
     }
    },
    "acquisitionsDaily": {
-    "2026-09-16": {
-     "acquisitionQuantity": 3
-    },
     "2026-09-17": {
      "acquisitionQuantity": 1
     },
@@ -1049,21 +1059,21 @@
    },
    "installsByMarket": {
     "US": 40,
-    "IN": 24,
+    "IN": 25,
     "NL": 8,
-    "DE": 7,
+    "DE": 8,
     "RU": 7,
     "AU": 6,
+    "PL": 6,
     "GB": 5,
     "NG": 5,
     "ID": 4,
-    "PL": 4,
     "DZ": 3,
     "KE": 3,
     "UG": 3,
     "TW": 3,
     "PH": 3,
-    "BE": 2,
+    "BE": 3,
     "CG": 2,
     "CN": 2,
     "IT": 2,
@@ -1119,7 +1129,8 @@
     "CZ": 1,
     "EE": 1,
     "GH": 1,
-    "LK": 1
+    "LK": 1,
+    "SA": 1
    },
    "reviews": [],
    "ratingsLifetime": {
@@ -1165,6 +1176,12 @@
     },
     "2026-09-30": {
      "successfulInstallCount": 1
+    },
+    "2026-10-15": {
+     "successfulInstallCount": 1
+    },
+    "2026-10-16": {
+     "successfulInstallCount": 1
     }
    },
    "acquisitionsDaily": {
@@ -1182,14 +1199,17 @@
     },
     "2026-09-30": {
      "acquisitionQuantity": 1
+    },
+    "2026-10-17": {
+     "acquisitionQuantity": 1
     }
    },
    "installsByMarket": {
     "US": 7,
     "CN": 4,
+    "CA": 3,
     "CO": 2,
     "PK": 2,
-    "CA": 2,
     "AU": 1,
     "DE": 1,
     "ES": 1,
@@ -1200,7 +1220,8 @@
     "KR": 1,
     "RU": 1,
     "TG": 1,
-    "TL": 1
+    "TL": 1,
+    "HR": 1
    },
    "reviews": [],
    "ratingsLifetime": {
@@ -1342,6 +1363,12 @@
     },
     "2026-10-13": {
      "successfulInstallCount": 2
+    },
+    "2026-10-14": {
+     "successfulInstallCount": 1
+    },
+    "2026-10-15": {
+     "successfulInstallCount": 2
     }
    },
    "acquisitionsDaily": {
@@ -1386,13 +1413,16 @@
     },
     "2026-10-14": {
      "acquisitionQuantity": 1
+    },
+    "2026-10-15": {
+     "acquisitionQuantity": 2
     }
    },
    "installsByMarket": {
-    "US": 26,
-    "CN": 7,
+    "US": 27,
+    "CN": 8,
     "ES": 6,
-    "BR": 5,
+    "BR": 6,
     "IT": 4,
     "AR": 3,
     "CL": 3,
@@ -1457,13 +1487,6 @@
   "9MV9G4XFJ8S0": {
    "name": "RBX15 Classic Shirt and Pants Maker",
    "usageDaily": {
-    "2026-09-16": {
-     "dailyActiveUsers": 2,
-     "dailyActiveDevices": 2,
-     "dailyNewUsers": 2,
-     "dailySessionCount": 6,
-     "engagementDurationMinutes": 9.3
-    },
     "2026-09-17": {
      "dailyActiveUsers": 3,
      "dailyActiveDevices": 3,
@@ -1659,12 +1682,16 @@
      "dailyNewUsers": 1,
      "dailySessionCount": 8,
      "engagementDurationMinutes": 20.3
+    },
+    "2026-10-16": {
+     "dailyActiveUsers": 3,
+     "dailyActiveDevices": 3,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 14,
+     "engagementDurationMinutes": 47.2
     }
    },
    "installsDaily": {
-    "2026-09-16": {
-     "successfulInstallCount": 1
-    },
     "2026-09-17": {
      "successfulInstallCount": 4
     },
@@ -1742,12 +1769,18 @@
     },
     "2026-10-13": {
      "successfulInstallCount": 2
+    },
+    "2026-10-14": {
+     "successfulInstallCount": 2
+    },
+    "2026-10-15": {
+     "successfulInstallCount": 3
+    },
+    "2026-10-16": {
+     "successfulInstallCount": 7
     }
    },
    "acquisitionsDaily": {
-    "2026-09-16": {
-     "acquisitionQuantity": 1
-    },
     "2026-09-17": {
      "acquisitionQuantity": 4
     },
@@ -1823,27 +1856,27 @@
     "2026-10-14": {
      "acquisitionQuantity": 1
     },
-    "2026-10-16": {
-     "acquisitionQuantity": 3
+    "2026-10-15": {
+     "acquisitionQuantity": 1
     }
    },
    "installsByMarket": {
-    "US": 142,
-    "IN": 52,
-    "BR": 44,
-    "DE": 30,
+    "US": 145,
+    "IN": 53,
+    "BR": 45,
+    "DE": 31,
     "PH": 29,
-    "GB": 25,
+    "GB": 26,
     "ZA": 23,
-    "ID": 21,
+    "ID": 22,
     "NG": 20,
     "CA": 18,
     "AU": 17,
     "PK": 15,
     "FR": 14,
     "SA": 12,
-    "NL": 11,
-    "RU": 10,
+    "NL": 12,
+    "RU": 11,
     "IT": 10,
     "KE": 9,
     "PL": 9,
@@ -1866,6 +1899,7 @@
     "GR": 4,
     "NP": 4,
     "ES": 4,
+    "SE": 4,
     "AE": 3,
     "EG": 3,
     "GY": 3,
@@ -1874,9 +1908,9 @@
     "JO": 3,
     "JP": 3,
     "PE": 3,
-    "SE": 3,
     "MM": 3,
     "VC": 3,
+    "TH": 3,
     "AO": 2,
     "BB": 2,
     "BW": 2,
@@ -1894,7 +1928,6 @@
     "UG": 2,
     "ZM": 2,
     "ZW": 2,
-    "TH": 2,
     "EE": 2,
     "UA": 2,
     "AG": 1,
@@ -2079,9 +2112,6 @@
     }
    },
    "installsDaily": {
-    "2026-09-16": {
-     "successfulInstallCount": 1
-    },
     "2026-09-19": {
      "successfulInstallCount": 2
     },
@@ -2096,12 +2126,12 @@
     },
     "2026-10-02": {
      "successfulInstallCount": 1
+    },
+    "2026-10-15": {
+     "successfulInstallCount": 1
     }
    },
    "acquisitionsDaily": {
-    "2026-09-16": {
-     "acquisitionQuantity": 1
-    },
     "2026-09-17": {
      "acquisitionQuantity": 1
     },
@@ -2116,6 +2146,9 @@
     },
     "2026-10-02": {
      "acquisitionQuantity": 1
+    },
+    "2026-10-15": {
+     "acquisitionQuantity": 1
     }
    },
    "installsByMarket": {
@@ -2129,12 +2162,12 @@
     "BF": 7,
     "FR": 6,
     "PK": 6,
+    "BR": 6,
     "AU": 5,
     "SA": 5,
     "SL": 5,
     "TG": 5,
     "NE": 5,
-    "BR": 5,
     "AT": 4,
     "CN": 4,
     "GA": 4,
