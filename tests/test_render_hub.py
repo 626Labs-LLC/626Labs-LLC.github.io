@@ -147,7 +147,9 @@ def _family():
         "card": {"id": "vibe-family", "title": "The Vibe Plugin Family",
                  "description": "One playbook.", "tags": [], "status": "live",
                  "flagship": True, "repo": "estevanhernandez-stack-ed/vibe-plugins",
-                 "productPage": "plugins/", "productPageLabel": "Meet the family"},
+                 "productPage": "plugins/", "productPageLabel": "Meet the family",
+                 # The family preview renders its bullets from content (#228); none fails the render.
+                 "previewBullets": [{"label": "Plan.", "text": "One chain."}]},
     }
 
 
@@ -1290,6 +1292,7 @@ def test_flagship_head_carries_classes_not_inline_styles():
     html = render_hub.render_product({
         "id": "vibe-family", "title": "Family", "description": "d", "tags": [],
         "flagship": True, "productPage": "plugins/", "status": "live",
+        "previewBullets": [{"label": "Plan.", "text": "One chain."}],
     })
     head = html.split('<div class="product-head">', 1)[1].split("<h3>", 1)[0]
     assert "style=" not in head
@@ -1354,3 +1357,30 @@ def test_lab_runs_cta_is_omitted_when_incomplete_and_escapes_label():
     assert "lab-runs-link" not in render_hub.render_lab_runs({"cta": {"label": "x"}})
     html = render_hub.render_lab_runs({"cta": {"label": "<b>x</b>", "href": "/e/"}})
     assert "<b>x</b>" not in html and "&lt;b&gt;x&lt;/b&gt;" in html
+
+
+# Issue #228: the family card's bullets live in site.json, not the renderer.
+def _family_card():
+    site = json.loads((Path(__file__).resolve().parent.parent / "content" / "site.json").read_text(encoding="utf-8"))
+    return site["pluginFamily"]["card"]
+
+
+def test_family_preview_bullets_come_from_site_json():
+    card = _family_card()
+    html = render_hub.render_flagship_preview(card)
+    assert render_hub.PREVIEW_BULLETS_MARKER not in html
+    for i, b in enumerate(card["previewBullets"], 1):
+        assert f'<div class="num">{i:02d}</div>' in html
+        assert f"<b>{b['label']}</b> {b['text']}" in html
+
+
+def test_family_preview_escapes_labels_and_fails_without_bullets():
+    card = dict(_family_card(), previewBullets=[{"label": "A<b>", "text": "<code>x</code>"}])
+    html = render_hub.render_flagship_preview(card)
+    assert "<b>A&lt;b&gt;</b> <code>x</code>" in html
+    with pytest.raises(SystemExit, match="previewBullets"):
+        render_hub.render_flagship_preview(dict(card, previewBullets=[]))
+
+
+def test_preview_without_marker_is_returned_verbatim():
+    assert render_hub.render_flagship_preview({"id": "vibe-cartographer"}) == render_hub.FLAGSHIP_PREVIEWS["vibe-cartographer"]

@@ -376,7 +376,7 @@ FLAGSHIP_PREVIEWS = {
             <div class="preview-dots"><span></span><span></span><span></span></div>
             <div class="preview-body">
               <div><span class="muted">/</span><span class="k">vibe-family</span> <span class="muted">// one playbook, across the family</span></div>
-              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> /plan · idea in, spec out</div>
+              <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> /plan · any start in, a plan out</div>
               <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> /build · spec in, shipped code out</div>
               <div><span class="s"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><polyline points="20 6 9 17 4 12"/></svg></span> /wrap · session closed, memory updated</div>
               <div><span class="muted"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> /vibe-test:gate · /vibe-sec:scan · /vibe-doc:generate</span></div>
@@ -384,26 +384,7 @@ FLAGSHIP_PREVIEWS = {
             </div>
           </div>
           <div class="preview-bullets">
-            <div class="preview-bullet">
-              <div class="num">01</div>
-              <div class="txt"><b>Plan.</b> Idea to shipped-app blueprint, one command chain, no lost thread.</div>
-            </div>
-            <div class="preview-bullet">
-              <div class="num">02</div>
-              <div class="txt"><b>Iterate.</b> Competitor scans, feature adds, and UX passes land as one PR and one Atlas entry.</div>
-            </div>
-            <div class="preview-bullet">
-              <div class="num">03</div>
-              <div class="txt"><b>Document.</b> Docs generate from the diff and drift-check themselves against it.</div>
-            </div>
-            <div class="preview-bullet">
-              <div class="num">04</div>
-              <div class="txt"><b>Test.</b> Coverage gates and regression checks run before the merge, not after.</div>
-            </div>
-            <div class="preview-bullet">
-              <div class="num">05</div>
-              <div class="txt"><b>Secure.</b> Secret scans and dependency audits ride the same loop, not a separate ask.</div>
-            </div>
+<!--PREVIEW_BULLETS-->
           </div>
         </div>""",
 }
@@ -614,6 +595,33 @@ def render_store_badges(p: dict) -> str:
         ])
     parts.append('        </div>')
     return "\n".join(parts)
+
+
+PREVIEW_BULLETS_MARKER = "<!--PREVIEW_BULLETS-->"
+
+
+def render_flagship_preview(p: dict) -> str:
+    """A flagship's preview panel from FLAGSHIP_PREVIEWS. A template carrying
+    PREVIEW_BULLETS_MARKER takes its numbered bullets from the card's
+    `previewBullets` in site.json ({label, text}; label escaped, text raw
+    HTML), so copy changes need no renderer edit: the family card's "Plan."
+    line went stale for a release because it lived here (issue #228). A
+    marker with no bullets fails the render loudly rather than shipping an
+    empty panel."""
+    html = FLAGSHIP_PREVIEWS.get(p.get("id", ""), "")
+    if PREVIEW_BULLETS_MARKER not in html:
+        return html
+    bullets = p.get("previewBullets") or []
+    if not bullets:
+        raise SystemExit(f'site.json card "{p.get("id")}" has no "previewBullets": its preview panel needs them.')
+    rows = "\n".join(
+        f"""            <div class="preview-bullet">
+              <div class="num">{i:02d}</div>
+              <div class="txt"><b>{esc(b.get("label", ""))}</b> {b.get("text", "")}</div>
+            </div>"""
+        for i, b in enumerate(bullets, 1)
+    )
+    return html.replace(PREVIEW_BULLETS_MARKER, rows)
 
 
 def render_product_cta(p: dict) -> str:
@@ -1094,7 +1102,7 @@ def render_product(p: dict) -> str:
     visual_html = render_product_visual(p)
     store_badges_html = render_store_badges(p)
     cta_html = render_product_cta(p)
-    preview_html = FLAGSHIP_PREVIEWS.get(pid, "") if flagship else ""
+    preview_html = render_flagship_preview(p) if flagship else ""
     foot_html = "" if flagship else render_product_foot(p)
 
     # Flagship cards get a heavier head with a category label.

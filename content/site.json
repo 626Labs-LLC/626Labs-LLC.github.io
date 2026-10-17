@@ -1677,6 +1677,13 @@
       "productPageLabel": "Meet the family",
       "banner": null,
       "meta": "Claude Code · Apache-2.0 spec · one playbook",
+      "previewBullets": [
+        {"label": "Plan.", "text": "From any start: an idea, a backlog or a findings report. One command chain, or /take runs it overnight."},
+        {"label": "Iterate.", "text": "Competitor scans, feature adds, and UX passes land as one PR and one Atlas entry."},
+        {"label": "Document.", "text": "Docs generate from the diff and drift-check themselves against it."},
+        {"label": "Test.", "text": "Coverage gates and regression checks run before the merge, not after."},
+        {"label": "Secure.", "text": "Secret scans and dependency audits ride the same loop, not a separate ask."}
+      ],
       "screenshots": []
     }
   },
