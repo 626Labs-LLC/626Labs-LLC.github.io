@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-06",
+ "generated": "2026-10-16",
  "note": "Raw brand material harvested from the 626 Labs repos, one folder per product. Paths are repo-root-relative; prefix with / for a URL on 626labs.dev. icon/logo/hero are picked by name and dimensions. Regenerate with: python scripts/refresh-roundup.py --index-only",
  "products": [
   {
@@ -462,13 +462,23 @@
    "siteId": "rtclickpng",
    "repo": "estevanhernandez-stack-ed/RTClickPng",
    "sourceDir": "src/Package/Assets",
-   "harvested": "2026-07-08",
-   "icon": "assets/roundup/rtclickpng/Square310x310Logo.png",
+   "harvested": "2026-10-16",
+   "icon": "assets/roundup/rtclickpng/store-boxart-2160x2160.png",
    "logo": null,
    "hero": null,
-   "screenshots": [],
+   "screenshots": [
+    "assets/roundup/rtclickpng/screenshots/01-right-click-menu.png",
+    "assets/roundup/rtclickpng/screenshots/02-converted-in-place.png",
+    "assets/roundup/rtclickpng/screenshots/03-copy-as-png-paste.png",
+    "assets/roundup/rtclickpng/screenshots/04-settings.png",
+    "assets/roundup/rtclickpng/screenshots/05-batch-selection.png",
+    "assets/roundup/rtclickpng/screenshots/06-batch-done.png"
+   ],
    "other": [
-    "assets/roundup/rtclickpng/StoreLogo.png"
+    "assets/roundup/rtclickpng/RightClickPng-menu-icon.ico",
+    "assets/roundup/rtclickpng/Square310x310Logo.png",
+    "assets/roundup/rtclickpng/StoreLogo.png",
+    "assets/roundup/rtclickpng/store-poster-1440x2160.png"
    ]
   },
   {
