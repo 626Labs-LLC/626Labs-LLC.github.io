@@ -5,8 +5,26 @@
   <link href="https://626labs.dev/#field-notes"/>
   <link rel="self" type="application/atom+xml" href="https://626labs.dev/feed.xml"/>
   <id>https://626labs.dev/feed.xml</id>
-  <updated>2026-09-28T00:00:00Z</updated>
+  <updated>2026-10-16T00:00:00Z</updated>
   <author><name>626 Labs</name></author>
+  <entry>
+    <title>Right Click PNG 0.1.2 gets one tidy menu entry and stops overwriting your originals</title>
+    <link href="https://626labs.dev/editorial/2026-10-16-right-click-png-0-1-2/"/>
+    <id>https://626labs.dev/editorial/2026-10-16-right-click-png-0-1-2/</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <published>2026-10-16T00:00:00Z</published>
+    <author><name>Este Hernandez</name></author>
+    <summary>Right Click PNG adds Convert to PNG and Copy as PNG to the Windows File Explorer right-click menu, and 0.1.2 cleans up that menu and protects the files you already have.</summary>
+  </entry>
+  <entry>
+    <title>Sanduhr for Mac now reads your Claude Code folders, not just your Claude limits</title>
+    <link href="https://626labs.dev/editorial/2026-10-16-sanduhr-for-mac-in-october/"/>
+    <id>https://626labs.dev/editorial/2026-10-16-sanduhr-for-mac-in-october/</id>
+    <updated>2026-10-16T00:00:00Z</updated>
+    <published>2026-10-16T00:00:00Z</published>
+    <author><name>Este Hernandez</name></author>
+    <summary>Thirty-two Mac releases took Sanduhr für Claude from a burn-rate widget to a desktop, statusline and config desk for Claude.ai and Claude Code users.</summary>
+  </entry>
   <entry>
     <title>Containment for Frontier AI</title>
     <link href="https://626labs.dev/editorial/2026-09-28-containment-for-frontier-ai/"/>
