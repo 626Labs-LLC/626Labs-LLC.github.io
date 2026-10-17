@@ -1014,7 +1014,7 @@
           "ogImage": "/assets/thumb-rtclickpng.png"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/RTClickPng@v0.1.0"
+          "estevanhernandez-stack-ed/RTClickPng@v0.1.2"
         ],
         "nav": [
           {
@@ -1042,7 +1042,7 @@
             "strip": [
               {
                 "key": "Latest",
-                "value": "v0.1.0"
+                "value": "v0.1.2"
               },
               {
                 "key": "Platform",

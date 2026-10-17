@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sanduhr für Claude — native usage widget for claude.ai power users · 626 Labs</title>
   <meta name="description" content="Native desktop widget for pacing your claude.ai subscription usage. Burn-rate projection, pace markers, sparklines, five glass themes. Mac + Windows." />
-  <meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.8.0-mac" />
+  <meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.25.1-mac" />
   <link rel="icon" type="image/png" href="icon.png" />
 
   <meta property="og:title" content="Sanduhr für Claude" />
@@ -640,7 +640,7 @@
       <div class="feature-grid">
         <div class="feature">
           <h4>Meters on your desktop</h4>
-          <p>Your session and weekly limits drawn as bars under your windows, each with a pace tick and its reset time, in any corner. A limit that's nearly full with plenty of time left turns red, and you set how full and how far from a reset, per limit. A two-finger click on a meter opens that limit's own menu.</p>
+          <p>Your session and weekly limits drawn as bars under your windows, each with a pace tick and its reset time, in any of eight places you arrange right on the desktop. A limit that's nearly full with plenty of time left turns red, and you set how full and how far from a reset, per limit. A two-finger click on a meter opens that limit's own menu.</p>
         </div>
         <div class="feature">
           <h4>Sign in inside the app</h4>
@@ -668,7 +668,7 @@
         </div>
         <div class="feature">
           <h4>Claude Code, from Sanduhr</h4>
-          <p>Settings &rarr; Integrations installs your meters above Claude Code's prompt, a statusline, the notch glow when a session needs you, and an MCP server so Claude can ask about your usage. Already have a statusline? Sanduhr can combine its meters with yours, keeping the segments you pick, instead of replacing it. Remove takes out only what Sanduhr added and restores anything it replaced.</p>
+          <p>Settings &rarr; Claude Code installs your meters above Claude Code's prompt, a statusline, the notch glow when a session needs you, and an MCP server so Claude can ask about your usage. Already have a statusline? Sanduhr can combine its meters with yours, keeping the segments you pick, instead of replacing it. Remove takes out only what Sanduhr added and restores anything it replaced. Link an account to a Claude Code folder and that folder's sessions show its meters, with the statusline naming the account.</p>
         </div>
         <div class="feature">
           <h4>Watchers</h4>
@@ -692,7 +692,7 @@
         </div>
         <div class="feature">
           <h4>Smarter alerts, one Settings window</h4>
-          <p>A pace warning when a limit is on course to run out before it resets, quiet hours and a sound of your choice, all off until you turn them on. Every setting sits in one window, Updates and About included, and Option+S opens it while Desk is on.</p>
+          <p>A pace warning when a limit is on course to run out before it resets, quiet hours and a sound of your choice, all off until you turn them on. Every setting sits in one window, Updates and About included, and a shortcut you pick, Option+S by default, opens it while Desk is on.</p>
         </div>
       </div>
     </div>
@@ -816,7 +816,7 @@
       <div class="privacy-card">
         <h3>✓ No data comes back to us.</h3>
         <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr — even in principle.</p>
-        <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Your cookie stays on your machine: in the macOS Keychain on Mac, in Credential Manager on Windows. On Mac, Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain or Credential Manager, so sign out first if you're leaving.</p>
+        <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. Your cookie stays on your machine: in the macOS Keychain on Mac, in Credential Manager on Windows. On Mac, Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain or Credential Manager. On Mac, Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote. On Windows, sign out first, then delete <code>%APPDATA%\Sanduhr</code> and <code>%LOCALAPPDATA%\Sanduhr</code> after uninstalling.</p>
         <p>On Mac, Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default, and what Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
         <p><a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md">Security policy</a> &middot; <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md">Privacy policy</a></p>
       </div>
