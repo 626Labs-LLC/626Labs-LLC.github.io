@@ -600,7 +600,7 @@
           "ogImage": "/sanduhr/icon.png"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.25.1-mac"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.26.0-mac"
         ],
         "nav": [
           {
@@ -758,6 +758,10 @@
                   {
                     "title": "Claude writes your messages and themes",
                     "body": "With the MCP server installed, Claude Code can suggest Desk messages, with effects like a glow or a line written in by hand, and propose widget themes as a live preview. Nothing changes until you approve it."
+                  },
+                  {
+                    "title": "Your Claude Code setup, portable",
+                    "body": "Export a Claude Code folder's agents, skills, commands, settings and MCP servers as one config pack, and open it into any other folder: only what that folder lacks comes over, and Undo Import takes it back. Secrets and paths only your Mac has stay home, and <code>CARRY.md</code> lists what to set by hand. Claude can propose mods and config too; nothing lands until you review it."
                   },
                   {
                     "title": "Your usage, per account",
