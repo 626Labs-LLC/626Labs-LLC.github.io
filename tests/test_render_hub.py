@@ -451,8 +451,7 @@ def _var_reads(css):
 CONVERTED_PAGES = (
     render_hub.PRESS_HTML, render_hub.PRIVACY_HTML,
     render_hub.THESIS_HTML, render_hub.WORKFLOW_HTML,
-    render_hub.CONUNDRUM_HTML, render_hub.ROROROPLUGINS_HTML,
-    render_hub.RORORO_HTML, render_hub.MODLAUNCHERGAMES_HTML,
+    render_hub.CONUNDRUM_HTML,
     # October needs, piece 2: the three pages that never took a theme.
     render_hub.NOTFOUND_HTML, render_hub.BACONTRAIL_HTML, render_hub.SANDUHR_HTML,
 ) + tuple(
@@ -638,21 +637,14 @@ def test_every_stylesheet_a_page_links_is_one_the_doctor_token_checks():
     )
 
 
-# The bespoke product pages: hand-authored, each keeping its own layout,
-# each linking the theme's product TOKEN file for its palette and nothing
-# else. Kept as one list so a fifth page joins every test below at once
-# instead of joining whichever ones someone remembered.
-PRODUCT_TOKEN_PAGES = (
-    render_hub.ROROROPLUGINS_HTML,
-    render_hub.RORORO_HTML,
-    render_hub.MODLAUNCHERGAMES_HTML,
-    # October needs, piece 2 added bacon-trail/ and sanduhr/ here; both have
-    # been generated since 2026-10-17 (render-product-pages), so
-    # test_render_product_pages.py pins their theme links now.
-)
+# The bespoke product pages used to be listed here, each linking the theme's
+# product TOKEN file through a theme-css zone. Every one of them is generated
+# since 2026-10-17 (render-product-pages.py, issue #200), and
+# test_render_product_pages.py pins their theme links. What stays is the rule
+# below: no page links the product DRESS.
 
 
-def test_theme_css_map_covers_the_converted_product_pages():
+def test_no_page_links_the_product_dress():
     m = render_hub.THEME_CSS_HREFS
     # The TOKEN half, never archetypes/product.css. That file is the element
     # dress render-plugin-pages.py inlines into its own 15 generated pages;
@@ -664,8 +656,6 @@ def test_theme_css_map_covers_the_converted_product_pages():
     # carrying 180 selectors, of which 31 match rororo.html and 20 match
     # mod-launcher-games.html — one `:root` (the vocabulary they want) plus
     # 30 and 19 dress selectors they do not.
-    for page in PRODUCT_TOKEN_PAGES:
-        assert m[page] == "archetypes/product-tokens.css"
     assert "archetypes/product.css" not in m.values(), (
         "no page may link the product DRESS; the dress is inlined by "
         "render-plugin-pages.py into markup it was written for"
@@ -779,7 +769,9 @@ def test_no_public_page_carries_the_scanline_overlay():
     # re-measured in the same change.
     import re
 
-    kept = {"bacon-trail/index.html", "rororo.html", "mod-launcher-games.html"}
+    # rororo.html and mod-launcher-games.html left this set on 2026-10-17:
+    # generated now, re-dressed by product-page.css with no overlay at all.
+    kept = {"bacon-trail/index.html"}
 
     reg = render_hub.theme_registry.load()
     slugs = [render_hub.theme_registry.active_slug(reg), *reg.get("queue", [])]
@@ -880,35 +872,11 @@ def test_reading_pages_resolve_every_var_they_read():
         )
 
 
-def test_product_pages_href_follows_the_active_slug_not_a_hardcoded_theme():
-    for slug in ("phosphor-blueprint", "some-future-theme"):
-        for page in PRODUCT_TOKEN_PAGES:
-            link = render_hub.render_theme_css_link(
-                slug, render_hub.THEME_CSS_HREFS[page]
-            )
-            assert link == (
-                f'<link rel="stylesheet" '
-                f'href="/themes/{slug}/archetypes/product-tokens.css">'
-            )
-
-
-def test_product_pages_carry_the_zone_and_track_the_registry_on_disk():
-    slug = render_hub.theme_registry.load()["active"]
-    expected = render_hub.render_theme_css_link(slug, "archetypes/product-tokens.css")
-    for page in PRODUCT_TOKEN_PAGES:
-        html = page.read_text(encoding="utf-8")
-        assert "<!-- SITE_JSON:theme-css:start -->" in html
-        assert "<!-- SITE_JSON:theme-css:end -->" in html
-        assert expected in html
-        assert render_hub.substitute_zone(html, "theme-css", expected) == html
-
-
 def test_product_pages_define_no_token_of_their_own():
-    # Same point as the reading pair, one shade weaker by necessity.
-    # rororo-plugins.html defines no token at all. conundrum.html defines
-    # three — the base tokens the Phosphor Blueprint treatment REPOINTS —
-    # but every value has to resolve through a theme-owned name, never a
-    # literal. A literal is a photocopy re-growing, and a photocopy is what
+    # Same point as the reading pair, one shade weaker by necessity. A
+    # product page may declare --page-* aliases (the Phosphor Blueprint
+    # treatment REPOINTS base tokens through them), but every value has to
+    # resolve through a theme-owned name, never a literal. A literal is a photocopy re-growing, and a photocopy is what
     # no rotation can reach.
     #
     # Scanned by DECLARATION, not by `:root {`. An earlier cut of this test
@@ -925,18 +893,12 @@ def test_product_pages_define_no_token_of_their_own():
         style = re.sub(r"/\*.*?\*/", "", style, flags=re.S)
         return re.findall(r"(--[\w-]+)\s*:\s*([^;{}]+)", style)
 
-    regrown = declarations(render_hub.ROROROPLUGINS_HTML)
-    assert not regrown, (
-        f"rororo-plugins.html re-grew page-local tokens: "
-        f"{sorted(n for n, _ in regrown)}"
-    )
-
-    # The other three wear the Phosphor Blueprint treatment, so each keeps a
-    # :root that REPOINTS --bg-0/--border-1/--border-2 at treatment names.
-    # That is the page's own styling decision; a literal there would be the
-    # photocopy growing back.
-    for page in (render_hub.CONUNDRUM_HTML, render_hub.RORORO_HTML,
-                 render_hub.MODLAUNCHERGAMES_HTML, render_hub.BACONTRAIL_HTML):
+    # Each keeps a :root that REPOINTS --bg-0/--border-1/--border-2 at
+    # treatment names; a literal there would be the photocopy growing back.
+    # Every generated page shares scripts/product-page.css, so the whole
+    # family is checked at once.
+    generated = [ROOT / rel for rel in render_hub._load_product_page_renderer().generated_pages()]
+    for page in (render_hub.CONUNDRUM_HTML, render_hub.BACONTRAIL_HTML, *generated):
         for name, value in declarations(page):
             assert value.strip().startswith("var(--") or value.strip() in INERT_ALIAS_VALUES, (
                 f"{page.name} defines {name} as the literal {value.strip()!r} — "
@@ -1005,7 +967,8 @@ def test_product_pages_resolve_every_var_they_read():
         render_hub.ROOT / "themes" / slug / "archetypes" / "product-tokens.css"
     ).read_text(encoding="utf-8")
     defined = set(re.findall(r"(--[\w-]+)\s*:", css))
-    for page in PRODUCT_TOKEN_PAGES:
+    # Every generated product page (all of them since 2026-10-17, #200).
+    for page in [ROOT / rel for rel in render_hub._load_product_page_renderer().generated_pages()]:
         html = page.read_text(encoding="utf-8")
         used = _unguarded_reads(html)
         # A page may declare its own --page-* aliases (see the C1 fix); those

@@ -59,12 +59,6 @@ PRIVACY_HTML = ROOT / "privacy.html"
 ABOUT_HTML = ROOT / "about.html"
 THESIS_HTML = ROOT / "thesis.html"
 WORKFLOW_HTML = ROOT / "workflow.html"
-ROROROPLUGINS_HTML = ROOT / "rororo-plugins.html"
-RORORO_HTML = ROOT / "rororo.html"
-MODLAUNCHERGAMES_HTML = ROOT / "mod-launcher-games.html"
-RORORO_TRAILER_HTML = ROOT / "rororo-trailer.html"
-MODLAUNCHER_TRAILER_HTML = ROOT / "mod-launcher-trailer.html"
-SNAPSNIP_HTML = ROOT / "snapsnip.html"
 # The three pages that never took a theme (October needs, piece 2): each
 # carried a private --pb-* block and painted its own field, grid, scanlines
 # and bloom, so under any future theme it stayed Phosphor Blueprint. Two
@@ -901,17 +895,12 @@ THEME_CSS_HREFS = {
     THEMES_HTML: "tokens.css",
     THESIS_HTML: "archetypes/reading-tokens.css",
     WORKFLOW_HTML: "archetypes/reading-tokens.css",
-    ROROROPLUGINS_HTML: "archetypes/product-tokens.css",
-    RORORO_HTML: "archetypes/product-tokens.css",
-    MODLAUNCHERGAMES_HTML: "archetypes/product-tokens.css",
-    # Watch pages: the trailer is the page's main content so Google indexes
-    # it as a video result. Built from rororo.html's chrome.
-    RORORO_TRAILER_HTML: "archetypes/product-tokens.css",
-    MODLAUNCHER_TRAILER_HTML: "archetypes/product-tokens.css",
-    SNAPSNIP_HTML: "archetypes/product-tokens.css",
-    # October needs, piece 2. bacon-trail/ and sanduhr/ are product pages
-    # (content/page-archetypes.json) and take the product TOKEN half for the
-    # same reason the five above do. 404.html is the utility archetype but
+    # rororo.html, rororo-plugins.html, mod-launcher-games.html, the two
+    # trailer watch pages and snapsnip.html left this map on 2026-10-17:
+    # generated now (render-product-pages.py), theme link included.
+    # October needs, piece 2. play/ is a product page
+    # (content/page-archetypes.json) and takes the product TOKEN half for the
+    # same reason the generated pages do. 404.html is the utility archetype but
     # deliberately NOT archetypes/utility.css: that file is press.html's and
     # privacy.html's whole chrome (nav.nav, header.page-hero, footer), and
     # the 404 page is structurally bare — a centered <main> with its own
@@ -940,9 +929,7 @@ THEME_CSS_MULTI_ZONE_PAGES = (THEMES_HTML,)
 #   set(THEME_CSS_HREFS) - set(THEME_CSS_MULTI_ZONE_PAGES)
 #     == set(THEME_CSS_ONLY_PAGES)
 THEME_CSS_ONLY_PAGES = (
-    PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML, ROROROPLUGINS_HTML,
-    RORORO_HTML, MODLAUNCHERGAMES_HTML, RORORO_TRAILER_HTML,
-    MODLAUNCHER_TRAILER_HTML, SNAPSNIP_HTML,
+    PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML,
     PLAY_HTML, NOTFOUND_HTML, YEARONE_HTML,
 )
 
