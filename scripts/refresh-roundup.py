@@ -306,6 +306,9 @@ PRODUCTS: dict[str, dict] = {
         "rules": [
             (FILE, "src/Package/Assets/Square310x310Logo.png", "Square310x310Logo.png"),
             (FILE, "src/Package/Assets/StoreLogo.png", "StoreLogo.png"),
+            (DIR, "docs/store-assets", "", VARIANTS),  # Store poster + box art, both sizes (RTClickPng #8)
+            (DIR, "docs/screenshots", "screenshots", SHOTS),  # the six 0.1.2.0 Store screenshots
+            (FILE, "src/ShellExtension/RightClickPng.ico", "RightClickPng-menu-icon.ico"),  # context-menu glyph
         ],
     },
     "safety-assistant": {
