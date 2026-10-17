@@ -1008,14 +1008,15 @@ def test_browser_checks_open_every_hand_authored_product_page():
         "conundrum.html", "rororo-plugins.html", "rororo.html",
         "mod-launcher-games.html", "thesis.html", "workflow.html",
         "press.html", "privacy.html",
-        "404.html", "play/index.html", "sanduhr/index.html",
+        "404.html", "play/index.html",
         "year-in-review.html", "rororo-trailer.html", "mod-launcher-trailer.html",
         "snapsnip.html",
     )
-    # bacon-trail/index.html left this tuple on 2026-10-17, the way
-    # etsy-mcp.html did: it is generated now, so the generated-page list
-    # carries it into the browser gate.
+    # bacon-trail/index.html and sanduhr/index.html left this tuple on
+    # 2026-10-17, the way etsy-mcp.html did: they are generated now, so the
+    # generated-page list carries them into the browser gate.
     assert "bacon-trail/index.html" in td.browser_check_live_pages()
+    assert "sanduhr/index.html" in td.browser_check_live_pages()
     previewable = _render_hub_previewable_pages()
     for name in td.BROWSER_CHECK_LIVE_PAGES:
         assert (ROOT / name).exists()
@@ -1349,8 +1350,10 @@ def test_run_browser_checks_all_serves_each_live_page_at_its_own_path(monkeypatc
 
     monkeypatch.setattr(td, "_import_sync_playwright", lambda: object())
     monkeypatch.setattr(td, "_run_browser_checks", fake)
+    # The full list, hand-authored and generated: sanduhr/ is generated
+    # since 2026-10-17 and still has to be served at its nested path.
     docs = {name: name for name in ("home", "product", "reading", "utility",
-                                    *td.BROWSER_CHECK_LIVE_PAGES)}
+                                    *td.browser_check_live_pages())}
     assert td._run_browser_checks_all(docs) == []
     assert seen == {name: td._served_path(name) for name in docs}
     assert seen["sanduhr/index.html"] == "/sanduhr/index.html"
