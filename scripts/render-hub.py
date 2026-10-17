@@ -979,7 +979,9 @@ THEME_CSS_HREFS = {
     # the 404 page is structurally bare — a centered <main> with its own
     # layout and no chrome for a dress to land on. It links tokens.css, the
     # same base layer themes.html takes, for its palette alone.
-    BACONTRAIL_HTML: "archetypes/product-tokens.css",
+    # bacon-trail/ left this map on 2026-10-17: it is generated now
+    # (render-product-pages.py, from its play.widgets entry), theme link
+    # included.
     PLAY_HTML: "archetypes/product-tokens.css",
     SANDUHR_HTML: "archetypes/product-tokens.css",
     # Hand-authored, self-dressed like themes.html: takes the base token file
@@ -1005,7 +1007,7 @@ THEME_CSS_ONLY_PAGES = (
     PRESS_HTML, PRIVACY_HTML, THESIS_HTML, WORKFLOW_HTML, ROROROPLUGINS_HTML,
     RORORO_HTML, MODLAUNCHERGAMES_HTML, RORORO_TRAILER_HTML,
     MODLAUNCHER_TRAILER_HTML, SNAPSNIP_HTML,
-    BACONTRAIL_HTML, PLAY_HTML, SANDUHR_HTML, NOTFOUND_HTML, YEARONE_HTML,
+    PLAY_HTML, SANDUHR_HTML, NOTFOUND_HTML, YEARONE_HTML,
 )
 
 # What `--theme <slug> --out <dir>` writes beside index.html, so a QUEUED

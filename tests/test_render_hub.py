@@ -710,7 +710,8 @@ PRODUCT_TOKEN_PAGES = (
     render_hub.RORORO_HTML,
     render_hub.MODLAUNCHERGAMES_HTML,
     # October needs, piece 2: the two product pages that never took a theme.
-    render_hub.BACONTRAIL_HTML,
+    # bacon-trail/ has been generated since 2026-10-17 (render-product-pages),
+    # so test_render_product_pages.py pins its theme link now.
     render_hub.SANDUHR_HTML,
 )
 

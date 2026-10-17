@@ -33,14 +33,26 @@ mod read; its type never changes. The page lives in a sibling block:
 
 Sections render in order. A `hero` section is the page header (eyebrow,
 title + titleAccent, dek, fine, a key/value `strip`, a `get` strip of Store
-and source links); a `section` section is `<section>` + its heading + an
-ordered list of `blocks`. Each block type is one partial below (BLOCKS):
-lead, cards (optional per-card tag), callout, trust (optional code list),
-status, contact, stats, shots, reachMap. `shots` reads the product's own
+and source links; `"align": "center"` for a game's splash); a `section`
+section is `<section>` + its heading (optional: a section without one renders
+its blocks alone) + an ordered list of `blocks`. Each block type is one
+partial below (BLOCKS): widget (games only), lead, cards (optional per-card
+tag), callout, trust (optional code list), status, contact, stats, shots,
+reachMap. `shots` reads the product's own
 uploader-managed `screenshots` list and renders nothing while it is empty. Field convention, same as
 plugin-pages.json: labels, headings, keys and titles are ESCAPED; body copy
 (dek, paragraphs, card and row bodies, captions) is RAW HTML, so inline
 <b>, <code> and <a> work. Copy keeps living in site.json.
+
+GAMES. An entry in `play.widgets` that carries a `pageSpec` (and a
+`productPage` URL) is rendered the same way: games are pages too, not
+products, so they keep living where the home Play row reads them. A game's
+`widget` block mounts the game from the entry's own `script`, `stylesheet`,
+`initFn` and `config` (the block's `config` overrides keys), so the page and
+the home row can never disagree about which build plays. `pageSpec.aliases`
+lists extra local paths that render the same page with the canonical
+pointing at `productPage` (play/bacon/ is the legacy duplicate of
+/bacon-trail/).
 
 Every generated page carries, without per-page wiring: the theme's token
 link, GoatCounter, the footer signature, the release-reviewed markers its
@@ -91,6 +103,37 @@ def _products(content: dict) -> list[dict]:
     return [p for p in products if isinstance(p, dict)]
 
 
+def _games(content: dict) -> list[dict]:
+    widgets = (content.get("play") or {}).get("widgets") or []
+    return [w for w in widgets if isinstance(w, dict)]
+
+
+def _page_sources(content: dict) -> list[tuple[str, dict]]:
+    """(source label, entry) for every entry that renders a page: products
+    first, then games. The label names where the copy lives, for the
+    generated-file banner."""
+    return ([("products", p) for p in _products(content) if p.get("pageSpec")]
+            + [("play.widgets", w) for w in _games(content) if w.get("pageSpec")])
+
+
+def _local_rel(url: str, pid: str, what: str) -> str:
+    if "://" in url or url.startswith("//") or ".." in url or "?" in url or "#" in url:
+        raise ValueError(f"{pid}: {what} {url!r} is not a local page path")
+    rel = url.lstrip("/")
+    if rel.endswith("/"):
+        rel += "index.html"
+    if not rel.endswith(".html"):
+        raise ValueError(f"{pid}: {what} {url!r} must end in .html or /")
+    return rel
+
+
+def alias_rels(product: dict) -> list[str]:
+    """Extra paths the same page renders to; the canonical stays productPage."""
+    pid = product.get("id", "?")
+    aliases = (product.get("pageSpec") or {}).get("aliases") or []
+    return [_local_rel(a, pid, "pageSpec.aliases entry") for a in aliases]
+
+
 def output_rel(product: dict) -> str:
     """The repo-relative file a product's page renders to, from its
     `productPage` URL. Same-origin and local only: `x.html` or `/x.html`
@@ -101,14 +144,7 @@ def output_rel(product: dict) -> str:
     pid = product.get("id", "?")
     if not isinstance(url, str) or not url:
         raise ValueError(f"{pid}: pageSpec needs a productPage URL to render to")
-    if "://" in url or url.startswith("//") or ".." in url or "?" in url or "#" in url:
-        raise ValueError(f"{pid}: productPage {url!r} is not a local page path")
-    rel = url.lstrip("/")
-    if rel.endswith("/"):
-        rel += "index.html"
-    if not rel.endswith(".html"):
-        raise ValueError(f"{pid}: productPage {url!r} must end in .html or /")
-    return rel
+    return _local_rel(url, pid, "productPage")
 
 
 def page_url(rel: str) -> str:
@@ -126,7 +162,11 @@ def generated_pages(root: Path = ROOT) -> list[str]:
     render-hub.py and the tests can ask cheaply. This is the "every generated
     product page" list the per-page registrations were replaced with."""
     content = json.loads((root / "content" / "site.json").read_text(encoding="utf-8"))
-    return sorted(output_rel(p) for p in _products(content) if p.get("pageSpec"))
+    rels = []
+    for _, p in _page_sources(content):
+        rels.append(output_rel(p))
+        rels.extend(alias_rels(p))
+    return sorted(rels)
 
 
 # ─── head, chrome, footer ─────────────────────────────────────────────────
@@ -144,7 +184,7 @@ def _uses(spec: dict, block_type: str) -> bool:
     return False
 
 
-def render_head(product: dict, spec: dict, rel: str, slug: str) -> str:
+def render_head(product: dict, spec: dict, rel: str, slug: str, source: str = "products") -> str:
     meta = spec["meta"]
     url = page_url(rel)
     og_image = meta["ogImage"]
@@ -177,7 +217,7 @@ def render_head(product: dict, spec: dict, rel: str, slug: str) -> str:
         '<link rel="icon" type="image/png" href="/favicon-626.png" />\n'
         "\n"
         "<!-- Generated by scripts/render-product-pages.py from content/site.json "
-        f"(products[id={e(product['id'])}].pageSpec). Do not hand-edit. -->\n"
+        f"({e(source)}[id={e(product['id'])}].pageSpec). Do not hand-edit. -->\n"
         f'<link rel="stylesheet" href="/themes/{e(slug)}/{THEME_CSS_HREF}">\n'
         f"{meter}"
         "\n"
@@ -265,7 +305,8 @@ def render_get_strip(g: dict) -> str:
 
 def render_hero(product: dict, s: dict) -> str:
     accent = f" <em>{e(s['titleAccent'])}</em>" if s.get("titleAccent") else ""
-    out = ['  <section class="hero">\n']
+    cls = "hero hero-center" if s.get("align") == "center" else "hero"
+    out = [f'  <section class="{cls}">\n']
     if s.get("eyebrow"):
         out.append(f'    <p class="eyebrow">{e(s["eyebrow"])}</p>\n')
     out.append(f"    <h1>{e(s['title'])}{accent}</h1>\n")
@@ -424,7 +465,47 @@ def block_contact(b: dict, product: dict) -> str:
     return f'    <div class="contact">\n{"".join(items)}    </div>\n'
 
 
+def block_widget(b: dict, product: dict) -> str:
+    """The game's mount point. Its stylesheet, script and init are emitted
+    once at the end of the page by widget_tail(), from the entry's fields."""
+    for k in ("script", "stylesheet", "initFn"):
+        if not product.get(k):
+            raise ValueError(f"{product.get('id')}: a widget block needs the entry's {k!r}")
+    width = f' style="max-width:{int(b["maxWidth"])}px"' if b.get("maxWidth") else ""
+    return (
+        '    <div class="widget-stage">\n'
+        f'      <div id="{e(product["id"])}" class="play-widget"{width}></div>\n'
+        "    </div>\n"
+    )
+
+
+def widget_tail(product: dict, spec: dict) -> str:
+    """The game's stylesheet, script and init, when the page mounts one."""
+    blocks = [b for s in spec.get("sections", []) for b in s.get("blocks", []) if b.get("type") == "widget"]
+    if not blocks:
+        return ""
+    init_fn = product["initFn"]
+    if not re.fullmatch(r"[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*)*", init_fn):
+        raise ValueError(f"{product.get('id')}: initFn {init_fn!r} is not a dotted name")
+    config = {**(product.get("config") or {}), **(blocks[0].get("config") or {})}
+    args = json.dumps(config, ensure_ascii=False).replace("</", "<\\/")
+    mount = json.dumps(product["id"])
+    return (
+        "<!-- the game (served from the repo root by GitHub Pages) -->\n"
+        f'<link rel="stylesheet" href="{e(product["stylesheet"])}" />\n'
+        f'<script src="{e(product["script"])}" defer></script>\n'
+        "<script>\n"
+        '  window.addEventListener("DOMContentLoaded", function () {\n'
+        f"    if (window.{init_fn.split('.')[0]}) {{\n"
+        f"      {init_fn}(Object.assign({{ container: document.getElementById({mount}) }}, {args}));\n"
+        "    }\n"
+        "  });\n"
+        "</script>\n"
+    )
+
+
 BLOCKS = {
+    "widget": block_widget,
     "lead": block_lead,
     "cards": block_cards,
     "callout": block_callout,
@@ -453,6 +534,10 @@ def render_section(product: dict, s: dict) -> str:
     if not rendered:
         return ""
     sid = f' id="{e(s["id"])}"' if s.get("id") else ""
+    # A section with no heading (a game's stage, right under its hero)
+    # renders its blocks alone, with no empty heading row.
+    if not s.get("heading"):
+        return f"  <section{sid}>\n" + "\n".join(rendered) + "  </section>\n"
     head = []
     if s.get("eyebrow"):
         head.append(f'      <p class="eyebrow">{e(s["eyebrow"])}</p>\n')
@@ -473,7 +558,7 @@ SECTIONS = {
 }
 
 
-def render_page(product: dict, slug: str) -> str:
+def render_page(product: dict, slug: str, source: str = "products") -> str:
     spec = product["pageSpec"]
     rel = output_rel(product)
     parts = []
@@ -484,11 +569,11 @@ def render_page(product: dict, slug: str) -> str:
         html = fn(product, s)
         if html:
             parts.append(html)
-    tail_scripts = ""
+    tail_scripts = widget_tail(product, spec)
     if _uses(spec, "reachMap"):
-        tail_scripts = '<script src="/assets/reach-map.js" defer></script>\n'
+        tail_scripts += '<script src="/assets/reach-map.js" defer></script>\n'
     return (
-        render_head(product, spec, rel, slug)
+        render_head(product, spec, rel, slug, source)
         + "<body>\n\n"
         + render_nav(spec)
         + '\n<main class="wrap">\n\n'
@@ -509,13 +594,14 @@ def build(slug: str | None = None, root: Path = ROOT) -> dict[str, str]:
         slug = theme_registry.active_slug(theme_registry.load(root))
     content = load_content(root)
     outputs: dict[str, str] = {}
-    for product in _products(content):
-        if not product.get("pageSpec"):
-            continue
-        rel = output_rel(product)
-        if rel in outputs:
-            raise ValueError(f"two products render to {rel}")
-        outputs[rel] = render_page(product, slug)
+    for source, product in _page_sources(content):
+        html = render_page(product, slug, source)
+        # Aliases share the page, canonical included, so search engines fold
+        # them into productPage.
+        for rel in [output_rel(product), *alias_rels(product)]:
+            if rel in outputs:
+                raise ValueError(f"two pages render to {rel}")
+            outputs[rel] = html
     return dict(sorted(outputs.items()))
 
 

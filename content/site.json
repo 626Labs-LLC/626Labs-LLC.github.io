@@ -1896,6 +1896,52 @@
         "config": {
           "ctaUrl": "#work",
           "ctaLabel": "See the full suite →"
+        },
+        "productPage": "/bacon-trail/",
+        "pageSpec": {
+          "aliases": [
+            "/play/bacon/"
+          ],
+          "meta": {
+            "title": "Birthday Bacon Trail — 626 Labs",
+            "description": "Today's birthday actors, one film chain to Kevin Bacon. A 626 Labs lobby game — play it in your browser. The widget pulls the day's birthdays and you walk the chain until you find him (or don't).",
+            "ogTitle": "Birthday Bacon Trail — 626 Labs",
+            "ogDescription": "Today's birthday actors, one film chain to Kevin Bacon. Play it in your browser.",
+            "ogImage": "/assets/og-bacon-trail.png"
+          },
+          "nav": [
+            {
+              "label": "See the full suite →",
+              "href": "/#work",
+              "cta": true
+            }
+          ],
+          "sections": [
+            {
+              "type": "hero",
+              "align": "center",
+              "eyebrow": "05 · Play",
+              "title": "Birthday",
+              "titleAccent": "Bacon Trail",
+              "dek": "A moment with Kevin Bacon. The widget pulls today's birthday actors, you walk a film chain until you find him <em>(or don't)</em>.",
+              "fine": "Pick a birthday actor &middot; <b>follow the films</b> &middot; land on Bacon"
+            },
+            {
+              "type": "section",
+              "blocks": [
+                {
+                  "type": "widget",
+                  "maxWidth": 440,
+                  "config": {
+                    "ctaUrl": "/#work"
+                  }
+                }
+              ]
+            }
+          ],
+          "footer": {
+            "label": "626 Labs · Birthday Bacon Trail"
+          }
         }
       },
       {

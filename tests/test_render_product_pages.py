@@ -90,7 +90,14 @@ def test_generated_page_carries_the_site_wide_furniture(rel):
     footer = html[html.rindex("<footer"):html.rindex("</footer>")]
     assert 'class="site-signature"' in footer
     assert "/assets/logos/signature.css" in html
-    assert f'<link rel="canonical" href="{rpp.page_url(rel)}" />' in html
+    # An alias (pageSpec.aliases) canonicalizes to its entry's productPage,
+    # so search engines fold the duplicate URL into the real one.
+    canonical = {}
+    for _, entry in rpp._page_sources(rpp.load_content()):
+        primary = rpp.output_rel(entry)
+        canonical[primary] = primary
+        canonical.update({a: primary for a in rpp.alias_rels(entry)})
+    assert f'<link rel="canonical" href="{rpp.page_url(canonical[rel])}" />' in html
 
 
 def test_style_keeps_the_font_import_first():
@@ -241,3 +248,48 @@ def test_rbx15_is_never_called_native():
     html = (ROOT / "rbx15.html").read_text(encoding="utf-8").lower()
     assert not re.search(r"\bnative\b", html)  # "nominatively" is fine
     assert "windows desktop app" in html
+
+
+# ─── games: play.widgets entries with a pageSpec (2026-10-17) ─────────────
+
+def _bacon():
+    return next(w for w in rpp.load_content()["play"]["widgets"] if w["id"] == "bacon-widget")
+
+
+def test_bacon_trail_and_its_legacy_alias_are_generated():
+    pages = rpp.generated_pages()
+    assert "bacon-trail/index.html" in pages and "play/bacon/index.html" in pages
+    a = (ROOT / "bacon-trail/index.html").read_text(encoding="utf-8")
+    b = (ROOT / "play/bacon/index.html").read_text(encoding="utf-8")
+    assert a == b  # one page, two addresses; the canonical names the first
+    assert '<link rel="canonical" href="https://626labs.dev/bacon-trail/" />' in a
+    assert "(play.widgets[id=bacon-widget].pageSpec)" in a
+
+
+def test_the_game_mounts_from_the_entrys_own_fields():
+    w = _bacon()
+    html = (ROOT / "bacon-trail/index.html").read_text(encoding="utf-8")
+    assert f'<div id="{w["id"]}" class="play-widget" style="max-width:440px"></div>' in html
+    assert f'<link rel="stylesheet" href="{w["stylesheet"]}" />' in html
+    assert f'<script src="{w["script"]}" defer></script>' in html
+    # The page's config overrides the home row's: on its own page the CTA
+    # has to leave for /#work, not scroll to a #work that isn't there.
+    assert '"ctaUrl": "/#work"' in html and '"ctaLabel": "See the full suite' in html
+    assert f'{w["initFn"]}(Object.assign({{ container: document.getElementById("{w["id"]}") }}' in html
+
+
+def test_a_widget_block_refuses_a_bad_entry():
+    w = copy.deepcopy(_bacon())
+    w["initFn"] = "alert(1);x"
+    with pytest.raises(ValueError, match="dotted name"):
+        rpp.render_page(w, "slate-broadsheet", "play.widgets")
+    del w["script"]
+    with pytest.raises(ValueError, match="script"):
+        rpp.render_page(w, "slate-broadsheet", "play.widgets")
+
+
+def test_an_alias_must_be_a_local_page_path():
+    w = copy.deepcopy(_bacon())
+    w["pageSpec"]["aliases"] = ["https://example.com/x/"]
+    with pytest.raises(ValueError, match="aliases"):
+        rpp.alias_rels(w)
