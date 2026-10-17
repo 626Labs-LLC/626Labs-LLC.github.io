@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-16T10:55:29.814Z",
-  "count": 57,
+  "generatedAt": "2026-10-17T10:17:29.731Z",
+  "count": 58,
   "owners": [
     "user:estevanhernandez-stack-ed",
     "org:626Labs-LLC"
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-10-16T10:12:24Z",
+      "pushed_at": "2026-10-17T09:45:59Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -49,7 +49,7 @@
       "description": "Native Windows (.NET 10 / WinUI 3) rewrite of the 626 Labs Mod Launcher. Phase 1 (ModManager.Core) complete: 157 tests green.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher",
       "language": "C#",
-      "pushed_at": "2026-10-03T04:36:00Z",
+      "pushed_at": "2026-10-17T05:21:16Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -109,7 +109,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-10-14T22:18:12Z",
+      "pushed_at": "2026-10-17T05:18:41Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -217,7 +217,7 @@
       "description": "Homebrew tap for Sanduhr and other Estevan Hernandez Mac apps",
       "html_url": "https://github.com/estevanhernandez-stack-ed/homebrew-tap",
       "language": "Ruby",
-      "pushed_at": "2026-10-16T03:16:24Z",
+      "pushed_at": "2026-10-17T04:22:57Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -265,7 +265,7 @@
       "description": "R15 Shirt and Pants Template Editor",
       "html_url": "https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants",
       "language": "C#",
-      "pushed_at": "2026-10-15T03:54:23Z",
+      "pushed_at": "2026-10-16T20:56:38Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -385,7 +385,19 @@
       "description": "Native Windows 11 + macOS glass widget that projects when you'll hit your Claude usage cap — burn-rate, pace markers, live token-burn from local Claude Code sessions, and five glass themes. Independent third-party tool. MIT.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
       "language": "Swift",
-      "pushed_at": "2026-10-16T04:01:02Z",
+      "pushed_at": "2026-10-17T04:22:49Z",
+      "stargazers_count": 0,
+      "archived": false,
+      "fork": false
+    },
+    {
+      "full_name": "estevanhernandez-stack-ed/sanduhr-mods",
+      "owner": "estevanhernandez-stack-ed",
+      "name": "sanduhr-mods",
+      "description": "Claude Code mods, published from Sanduhr. claude plugin marketplace add estevanhernandez-stack-ed/sanduhr-mods",
+      "html_url": "https://github.com/estevanhernandez-stack-ed/sanduhr-mods",
+      "language": "TypeScript",
+      "pushed_at": "2026-10-16T16:43:02Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -469,7 +481,7 @@
       "description": null,
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-access",
       "language": "JavaScript",
-      "pushed_at": "2026-10-04T06:05:36Z",
+      "pushed_at": "2026-10-17T02:23:33Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -478,10 +490,10 @@
       "full_name": "estevanhernandez-stack-ed/vibe-cartographer",
       "owner": "estevanhernandez-stack-ed",
       "name": "vibe-cartographer",
-      "description": "Plot your course from idea to shipped app — spec-driven development as a Claude Code plugin, delivered as 8 slash commands (onboard, scope, prd, spec, checklist, build, iterate, reflect). 626Labs LLC.",
+      "description": "Find your direction no matter where you start. Claude Code plugin: plot a raw idea to a shipped app, or /take any backlog, findings report or plan and run it overnight, nothing pushed until you review.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer",
       "language": "JavaScript",
-      "pushed_at": "2026-10-01T04:30:32Z",
+      "pushed_at": "2026-10-17T03:50:34Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -553,7 +565,7 @@
       "description": "Localize your app's UI without corrupting its logic — the i18n member of the Vibe plugin family. Deep on next-intl + App Router; honest about the rest.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Lingual",
       "language": "JavaScript",
-      "pushed_at": "2026-10-01T18:28:58Z",
+      "pushed_at": "2026-10-17T02:23:57Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -565,7 +577,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-10-16T08:18:57Z",
+      "pushed_at": "2026-10-17T08:16:28Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -577,7 +589,7 @@
       "description": null,
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Prompt",
       "language": "Python",
-      "pushed_at": "2026-10-01T18:34:48Z",
+      "pushed_at": "2026-10-17T02:23:30Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -589,7 +601,7 @@
       "description": "Surface prior art from your own repos while you spec the next one. Indexes your estate, ranks what you already built, and verifies the hit at current HEAD before it claims anything.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Recall",
       "language": "JavaScript",
-      "pushed_at": "2026-10-04T06:01:15Z",
+      "pushed_at": "2026-10-17T02:23:39Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -601,7 +613,7 @@
       "description": "A runbook says do X and you will see W. Nothing checks whether that is still true. vibe-runbook writes one by inspecting your app, then verifies its claims against a running system — read-only, never spends, and honest about what it could not check.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Runbook",
       "language": "JavaScript",
-      "pushed_at": "2026-10-04T06:01:04Z",
+      "pushed_at": "2026-10-17T03:54:07Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -625,7 +637,7 @@
       "description": "Take it with you. Capture a feature out of one repo as a portable bundle; plant it into another and adapt to the destination stack.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-taker",
       "language": "Python",
-      "pushed_at": "2026-07-10T03:34:11Z",
+      "pushed_at": "2026-10-17T02:23:27Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -637,7 +649,7 @@
       "description": "Vibe Test — diagnostic-and-retrofit testing plugin for vibe-coded apps. Canary channel for beta testers; stable channel via @626labs vibe-plugins marketplace.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-test",
       "language": "TypeScript",
-      "pushed_at": "2026-07-10T03:34:00Z",
+      "pushed_at": "2026-10-17T02:23:23Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -649,7 +661,7 @@
       "description": "Start with a strong stance before you even ask for a line of code",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Vibe-Thesis",
       "language": "JavaScript",
-      "pushed_at": "2026-10-01T18:28:49Z",
+      "pushed_at": "2026-10-17T02:23:43Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
