@@ -3,6 +3,9 @@
     python scripts/draft-field-note.py <product-id>              # newest release
     python scripts/draft-field-note.py <product-id> --tag v1.2.0 # a specific one
     python scripts/draft-field-note.py <product-id> --dry-run    # show the prompt, no API call
+    python scripts/draft-field-note.py sanduhr --since 2026-10-01 --match='-mac$'
+                                     # every release since a date, one note
+                                     # (`--match=`: a value starting with - needs the = form)
 
 The API counterpart of the repo-local /announce skill, for the site Field Note
 only. It reads the same sources so the two never drift: the product entry in
@@ -89,10 +92,11 @@ def _gh_json(*args: str):
     return json.loads(out.stdout)
 
 
-def resolve_release(product: dict, tag: str | None) -> dict | None:
-    """The /announce resolution order (SKILL.md step 2): SHIELDS_RELEASE entry,
-    then the vibe-plugins monorepo prefix, then the product's own repo. None
-    means no release to draft from, which is expected for some products."""
+def _release_source(product: dict) -> tuple[str, str] | None:
+    """(repo, tag prefix) by the /announce resolution order (SKILL.md step 2):
+    SHIELDS_RELEASE entry, then the vibe-plugins monorepo prefix, then the
+    product's own repo. None means no release to draft from, which is
+    expected for some products."""
     pid = product["id"]
     entry = _render_hub().SHIELDS_RELEASE.get(pid, {})
     if entry.get("hide"):
@@ -102,8 +106,86 @@ def resolve_release(product: dict, tag: str | None) -> dict | None:
         repo = product.get("repo")
         if repo == "estevanhernandez-stack-ed/vibe-plugins":
             prefix = f"{pid}-v"
-    if not repo:
+    return (repo, prefix) if repo else None
+
+
+def resolve_releases_since(product: dict, since: str, match: str | None) -> dict | None:
+    """Every published, non-prerelease release on or after `since` (and whose
+    tag matches the `match` regex, if given), folded into one release-shaped
+    dict so the prompt and renderer stay single-path. None when nothing
+    qualifies."""
+    src = _release_source(product)
+    if not src:
         return None
+    repo, prefix = src
+    listed = _gh_json("release", "list", "--repo", repo, "-L", "100",
+                      "--json", "tagName,publishedAt,isPrerelease") or []
+    tags = [r["tagName"] for r in listed
+            if not r["isPrerelease"] and r["publishedAt"][:10] >= since
+            and r["tagName"].startswith(prefix)
+            and (not match or re.search(match, r["tagName"]))]
+    releases = [rel for t in tags
+                if (rel := _gh_json("release", "view", t, "--repo", repo,
+                                    "--json", "tagName,name,body,publishedAt,url"))]
+    if not releases:
+        return None
+    newest, oldest = releases[0], releases[-1]
+    return {
+        "repo": repo,
+        "tagName": f"{oldest['tagName']}..{newest['tagName']}",
+        "count": len(releases),
+        "publishedAt": newest["publishedAt"],
+        "url": f"https://github.com/{repo}/releases",
+        "body": fold_release_notes(releases),
+    }
+
+
+_BOLD_LEAD = re.compile(r"^- \*\*(.+?)\*\*")
+
+
+def _blocks(body: str) -> list[str]:
+    """A release body as top-level bullet items and paragraphs. A bullet runs
+    until the next top-level bullet or a blank line followed by a non-bullet."""
+    blocks: list[str] = []
+    for chunk in re.split(r"\n\s*\n", (body or "").replace("\r\n", "\n")):
+        for item in re.split(r"\n(?=- )", chunk.strip()):
+            if item.strip():
+                blocks.append(item.strip())
+    return blocks
+
+
+def _block_key(block: str) -> str:
+    m = _BOLD_LEAD.match(block)
+    return (m.group(1) if m else " ".join(block.split())).lower()
+
+
+def fold_release_notes(releases: list[dict]) -> str:
+    """Releases newest first -> one notes body with each item once. Some repos
+    write cumulative notes (Sanduhr's 2.24.1 repeats all of 2.24.0), so an
+    item keyed by its bold lead (else its text) keeps its NEWEST wording but
+    sits under the OLDEST release that carried it, which is when it shipped."""
+    newest_text: dict[str, str] = {}
+    first_seen: dict[str, int] = {}
+    for i, rel in enumerate(releases):           # newest -> oldest
+        for block in _blocks(rel.get("body", "")):
+            key = _block_key(block)
+            newest_text.setdefault(key, block)
+            first_seen[key] = i                  # overwritten until the oldest
+    sections = []
+    for i, rel in enumerate(releases):
+        items = [newest_text[k] for k in newest_text if first_seen[k] == i]
+        if items:
+            head = f"### {rel['tagName']} ({rel['publishedAt'][:10]})"
+            sections.append(head + "\n\n" + "\n\n".join(items))
+    return "\n\n".join(sections)
+
+
+def resolve_release(product: dict, tag: str | None) -> dict | None:
+    """One release: `tag`, else the newest under the product's release source."""
+    src = _release_source(product)
+    if not src:
+        return None
+    repo, prefix = src
     fields = "tagName,name,body,publishedAt,url"
     if not tag and prefix:
         listed = _gh_json("release", "list", "--repo", repo, "--json", "tagName,publishedAt", "-L", "30") or []
@@ -158,7 +240,15 @@ def build_prompt(product: dict, release: dict | None) -> tuple[str, str]:
             "liveUrl", "storeUrl", "tags", "npm", "status")
     facts = {k: product[k] for k in keep if k in product}
     parts = ["## Product entry (content/site.json)\n" + json.dumps(facts, indent=2, ensure_ascii=False)]
-    if release:
+    if release and release.get("count"):
+        parts.append(
+            f"## {release['count']} releases, {release['tagName']} ({release['repo']})\n"
+            f"{release['url']}\n\n"
+            "Write ONE note about the period, grouped by theme (what a user can now do), "
+            "not a section per version. Name versions only where it helps the reader update.\n\n"
+            + release["body"]
+        )
+    elif release:
         parts.append(
             f"## Release {release.get('tagName')} ({release.get('repo')}, published "
             f"{(release.get('publishedAt') or '')[:10]})\n{release.get('url', '')}\n\n"
@@ -232,20 +322,41 @@ def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("product", help="product id from content/site.json")
     ap.add_argument("--tag", help="release tag (default: newest)")
+    ap.add_argument("--since", metavar="YYYY-MM-DD",
+                    help="fold every release published on or after this date into one note")
+    ap.add_argument("--match", metavar="REGEX",
+                    help="with --since: only tags matching this regex (e.g. '-mac$')")
     ap.add_argument("--model", default=MODEL)
     ap.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max"])
     ap.add_argument("--dry-run", action="store_true", help="print the prompt; no API call, nothing written")
     ap.add_argument("--force", action="store_true", help="overwrite an existing draft")
     args = ap.parse_args(argv)
 
+    if args.match and not args.since:
+        ap.error("--match needs --since")
+    if args.since and args.tag:
+        ap.error("--since and --tag are exclusive")
+    if args.since and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.since):
+        ap.error("--since takes YYYY-MM-DD")
+
     product = find_product(args.product)
-    release = resolve_release(product, args.tag)
-    print(f"release: {release['repo']}@{release['tagName']}" if release else "release: none, drafting from site.json",
-          file=sys.stderr)
+    if args.since:
+        release = resolve_releases_since(product, args.since, args.match)
+        if not release:
+            sys.exit(f"no published release since {args.since}"
+                     + (f" matching {args.match!r}" if args.match else ""))
+        print(f"releases: {release['count']}, {release['repo']}@{release['tagName']}", file=sys.stderr)
+    else:
+        release = resolve_release(product, args.tag)
+        print(f"release: {release['repo']}@{release['tagName']}" if release else "release: none, drafting from site.json",
+              file=sys.stderr)
     system, user = build_prompt(product, release)
 
     today = date.today().isoformat()
-    tag = release["tagName"].lower().removeprefix(f"{product['id']}-") if release else "note"
+    if args.since:
+        tag = f"since-{args.since}"
+    else:
+        tag = release["tagName"].lower().removeprefix(f"{product['id']}-") if release else "note"
     suffix = re.sub(r"[^a-z0-9.]+", "-", tag).strip("-")
     dest = STORIES / f"{today}-{product['id']}-{suffix}.md"
 
