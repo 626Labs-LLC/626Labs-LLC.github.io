@@ -76,9 +76,9 @@ const INITIAL_CONTENT = {
       id: "vibe-cartographer",
       flagship: true,
       title: "Vibe Cartographer",
-      tagline: "Vibe coding with a map.",
+      tagline: "Find your direction no matter where you start.",
       description:
-        "Eleven slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect — and the plugin remembers where you left off.",
+        "From a raw idea, eight commands walk you to a shipped app. From anything else, /take runs the backlog, plan or findings report you already have, the way you would.",
       tags: [
         { label: "Flagship", tone: "magenta" },
         { label: "Live", tone: "live" },

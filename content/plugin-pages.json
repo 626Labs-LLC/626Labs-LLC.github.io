@@ -1,7 +1,7 @@
 {
   "$comment": "Per-plugin landing-page content. Rendered by scripts/render-plugin-pages.py. See docs/vibe-plugins-pages.md. Fields rendered as raw HTML (allow entities): subhead, card.desc, card.reach, prose paragraphs, terminal lines, family[].beat. Escaped (plain text only): name, eyebrow, headings, card.title, card.command, callout, mini.name. thesis object (render_thesis): raw HTML — lead, quote, paragraphs[], artifacts[].blurb; escaped — eyebrow, headline, cta.label, cta.href, artifacts[].eyebrow, artifacts[].title, artifacts[].links[].label, artifacts[].links[].href.",
   "family": [
-    { "id": "vibe-cartographer", "name": "vibe-cartographer", "role": "idea → v1", "href": "/vibe-cartographer/", "beat": "Idea to shipped v1 through spec-driven commands &mdash; scope, PRD, spec, build. Hands the baton to vibe-iterate once real users show up." },
+    { "id": "vibe-cartographer", "name": "vibe-cartographer", "role": "any start → shipped", "href": "/vibe-cartographer/", "beat": "Find your direction no matter where you start. A raw idea walks the spec-driven chain to a shipped v1; a backlog, a findings report or someone else's plan goes to /take, which runs it the way you would. Hands the baton to vibe-iterate once real users show up." },
     { "id": "vibe-iterate", "name": "vibe-iterate", "role": "v1 → v1+n", "href": "/vibe-iterate/", "beat": "Where Cart's map ends, vibe-iterate keeps going &mdash; v1 to v1+n, one PR per session. Defers cleanly when Cart's installed in the same repo." },
     { "id": "vibe-keystone", "name": "vibe-keystone", "role": "bootstrap any repo", "href": "/vibe-keystone/", "beat": "Inventories a repo before writing a line, then interviews you for real conventions. Adapts the file to repo type instead of a placeholder-padded template." },
     { "id": "vibe-doc", "name": "vibe-doc", "role": "documentation completeness", "href": "/vibe-doc/", "beat": "Scans for documentation gaps against a maturity standard, then generates the missing docs from artifacts you already have. Source-cited, no fabrication." },
@@ -204,14 +204,14 @@
 
     "vibe-cartographer": {
       "name": "vibe-cartographer",
-      "metaTitle": "vibe-cartographer · Vibe coding with a map. · 626Labs",
-      "ogTitle": "vibe-cartographer · Vibe coding with a map.",
-      "metaDescription": "Vibe Cartographer is a Claude Code plugin: {{fact:cmd_vibe-cartographer}} slash commands guiding you from idea to shipped app with spec-driven vibe coding. MIT. 626Labs.",
+      "metaTitle": "vibe-cartographer · Find your direction no matter where you start. · 626Labs",
+      "ogTitle": "vibe-cartographer · Find your direction no matter where you start.",
+      "metaDescription": "Vibe Cartographer is a Claude Code plugin with {{fact:cmd_vibe-cartographer}} slash commands. Walk a raw idea to a shipped app, or hand /take the backlog, plan or findings report you already have and let it run, overnight if you want. MIT. 626Labs.",
       "ogImage": "/assets/brand/plugins/vibe-cartographer-banner-1280x640.png",
       "eyebrow": "626Labs · Claude Code plugin",
-      "h1": "Vibe coding with a map.",
-      "subhead": "{{fact:cmd_vibe-cartographer_word}} slash commands that take you from idea spark to shipped app &mdash; spec-first, persona-aware, with persistent memory that gets sharper every run. Built for builders who move fast and don't want to lose the thread.",
-      "heroMeta": ["v1.10.1", "{{fact:cmd_vibe-cartographer}} commands", "MIT", "Level 3.5"],
+      "h1": "Find your direction no matter where you start.",
+      "subhead": "Start from a raw idea and eight spec-driven commands walk it to a shipped app. Start from anything else, a backlog, a security findings report, a plan someone else wrote, or nothing at all, and <strong>/take</strong> plans what needs planning, then runs the list the way you would. It knows your builder profile, and it gets sharper every run.",
+      "heroMeta": ["v1.13.0", "{{fact:cmd_vibe-cartographer}} commands", "MIT", "Level 3.5"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer" }
@@ -220,7 +220,7 @@
         "label": "vibe-cartographer ~",
         "lines": [
           "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-cartographer:onboard</span>",
-          "<span class=\"agent\">Cart v1.10.1</span> &mdash; let's plot your course.",
+          "<span class=\"agent\">Cart v1.13.0</span>: let's find your direction.",
           "  What are you working on?",
           "&nbsp;",
           "<span class=\"prompt\">&gt;</span> A CLI that scrapes structured data from job boards.",
@@ -238,9 +238,9 @@
       "sections": [
         {
           "type": "cards",
-          "eyebrow": "01 · The build chain",
-          "heading": "{{fact:cmd_vibe-cartographer_word}} commands. One shipped app.",
-          "lead": "Each command writes an artifact the next one reads — scope feeds the PRD, PRD feeds the spec, spec feeds the checklist — so you're never starting from a blank page mid-build.",
+          "eyebrow": "01 · From a raw idea",
+          "heading": "Eight commands. One shipped app.",
+          "lead": "Each command writes an artifact the next one reads: scope feeds the PRD, the PRD feeds the spec, the spec feeds the checklist. You're never starting from a blank page mid-build.",
           "cards": [
             { "command": "/vibe-cartographer:onboard", "title": "Welcome and meet the builder.", "desc": "Profiles your experience, pacing, and persona choice, then writes a builder profile every downstream command reads." },
             { "command": "/vibe-cartographer:scope", "title": "Brainstorm and focus your idea.", "desc": "Brainstorm partner mode &mdash; expands before it constrains. Interviews you, then writes docs/scope.md." },
@@ -249,16 +249,36 @@
             { "command": "/vibe-cartographer:checklist", "title": "Sequence the build plan.", "desc": "Co-designs a dependency-aware, riskiest-item-first build sequence. You pick step-by-step or autonomous here." },
             { "command": "/vibe-cartographer:build", "title": "Build the app.", "desc": "Executes the checklist in your chosen mode. Step-by-step pauses at each item; autonomous runs straight through." },
             { "command": "/vibe-cartographer:iterate", "title": "Optional polish pass.", "desc": "Compressed planning loop after the core build. Surfaces Tier 1/2/3 polish candidates from the build's open flags." },
-            { "command": "/vibe-cartographer:reflect", "title": "Retro and peer review.", "desc": "Post-ship retro: a conversational check-in, then a qualitative review of your build against the eval rubric." },
-            { "command": "/vibe-cartographer:evolve", "title": "Propose self-improvements.", "desc": "Reads session logs and friction signals, surfaces patterns, proposes concrete SKILL edits. Nothing auto-applies." },
-            { "command": "/vibe-cartographer:vitals", "title": "Self-diagnostic health check.", "desc": "Eight read-only checks across plugin files, profile, and logs. Offers matching auto-fixes with explicit confirmation." },
-            { "command": "/vibe-cartographer:friction", "title": "Inspect the friction log.", "desc": "Read-only view into the friction log, grouped by type with confidence. Filterable by project, type, and days." },
-            { "command": "/vibe-cartographer:coder-voice", "title": "Capture your coder voice.", "desc": "Writes a voice block so the agent answers in your voice during autonomous work. Personal sweep or preset cutter." }
+            { "command": "/vibe-cartographer:reflect", "title": "Retro and peer review.", "desc": "Post-ship retro: a conversational check-in, then a qualitative review of your build against the eval rubric." }
           ]
         },
         {
+          "type": "cards",
+          "eyebrow": "02 · From anything else",
+          "heading": "Hand it the list. It runs it the way you would.",
+          "lead": "Most work doesn't start at a raw idea. <strong>/take</strong> picks up whatever you already have, plans what needs planning, and runs the rest with your builder profile in hand: your pace, your persona, your calls.",
+          "cols": 3,
+          "cards": [
+            { "command": "/vibe-cartographer:take backlog.md", "title": "Hand it what you have.", "desc": "A backlog, a security findings report, a plan someone else wrote, one step of another process, or a one-line ask. Cart plans the items that need it, then works the list." },
+            { "command": "/vibe-cartographer:take", "title": "Or let it find the work.", "desc": "With no argument, Cart builds the list itself from evolve proposals, open GitHub issues, dashboard tasks and validator output. It checks each item against the repo and drops what's already done, with the evidence. You trim the list before anything runs." },
+            { "command": "run it overnight", "title": "Wake up to a report.", "desc": "Every item gets its own local branch. Anything touching money or auth is built, then held for your review. A failure is parked, not fatal, and the run keeps going. You get a decision ledger and a morning report, and nothing is pushed until you review it." }
+          ],
+          "mini": {
+            "heading": "The rest of the kit.",
+            "hint": "Run any of these on its own, any time.",
+            "items": [
+              { "name": ":next", "desc": "Names your next step." },
+              { "name": ":what-do-you-know", "desc": "Shows everything Cart has stored about you. Read-only." },
+              { "name": ":evolve", "desc": "Reads session logs and friction signals, then proposes concrete SKILL edits. Nothing auto-applies." },
+              { "name": ":vitals", "desc": "Read-only health checks across plugin files, profile and logs, with fixes offered on confirmation." },
+              { "name": ":friction", "desc": "The friction log, grouped by type with confidence. Filter by project, type and days." },
+              { "name": ":coder-voice", "desc": "Writes a voice block so the agent answers in your voice during autonomous work." }
+            ]
+          }
+        },
+        {
           "type": "prose",
-          "eyebrow": "02 · The brain",
+          "eyebrow": "03 · The brain",
           "heading": "A plugin that learns from every run.",
           "paragraphs": [
             "Vibe Cartographer is built on the <strong>Self-Evolving Plugin Framework</strong> &mdash; the thesis that a plugin should be more useful on its tenth run than its first, not because you learned it, but because it learned you. Three capabilities drive that: self-repair, self-teach, and self-evolve. The deepest is self-evolve: <strong>/evolve</strong> reads your session logs and friction signals, then proposes concrete edits to its own commands &mdash; with your consent, one change at a time.",
@@ -267,6 +287,7 @@
           "callout": "No telemetry. Session data stays on your machine."
         }
       ],
+      "installEyebrow": "04 · Get it",
       "install": {
         "stable": "/plugin marketplace add estevanhernandez-stack-ed/vibe-cartographer\n/plugin install vibe-cartographer@vibe-cartographer",
         "stableBlurb": "Tagged releases via the Vibe Plugins marketplace.",

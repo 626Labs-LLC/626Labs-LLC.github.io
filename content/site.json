@@ -190,8 +190,8 @@
       "id": "vibe-cartographer",
       "flagship": true,
       "title": "Vibe Cartographer",
-      "tagline": "Vibe coding with a map.",
-      "description": "{{fact:cmd_vibe-cartographer_word}} slash commands walk you from first idea to shipped app — onboard, scope, PRD, spec, checklist, build, iterate, reflect. Each step reads what the last one wrote, so the plan compounds instead of drifting, and it remembers where you left off between sessions. Pick a builder persona, keep a living architecture doc, run autonomous or step-by-step. Structure for vibe coding that doesn't kill the vibe.",
+      "tagline": "Find your direction no matter where you start.",
+      "description": "From a raw idea, eight commands walk you to a shipped app: onboard, scope, PRD, spec, checklist, build, iterate, reflect. Each step reads what the last one wrote, so the plan compounds instead of drifting. From anything else, /take runs the list you already have: a backlog, a findings report, someone else's plan, or the work it finds in the repo itself. It plans what needs planning and runs the rest the way you would, overnight if you say so, with nothing pushed until you review. {{fact:cmd_vibe-cartographer_word}} slash commands, one builder profile that remembers you.",
       "tags": [
         {
           "label": "Flagship",
