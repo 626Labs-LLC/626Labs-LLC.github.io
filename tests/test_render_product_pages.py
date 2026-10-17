@@ -293,3 +293,34 @@ def test_an_alias_must_be_a_local_page_path():
     w["pageSpec"]["aliases"] = ["https://example.com/x/"]
     with pytest.raises(ValueError, match="aliases"):
         rpp.alias_rels(w)
+
+
+# ─── app-page blocks: showcase, platforms, gallery, panel, cta (2026-10-17) ─
+
+def _sanduhr():
+    return next(p for p in rpp.load_content()["products"] if p["id"] == "sanduhr")
+
+
+def test_sanduhr_is_generated_with_its_furniture():
+    assert "sanduhr/index.html" in rpp.generated_pages()
+    html = (ROOT / "sanduhr/index.html").read_text(encoding="utf-8")
+    assert '<img class="app-icon" src="icon.png"' in html
+    assert '<h2 class="hand">Desk, on a real Mac.</h2>' in html  # a sanctioned use of the hand
+    assert html.count('class="platform-card"') == 2 and html.count('class="store-badge"') == 3
+    assert html.count('class="gallery-shot"') + html.count('class="gallery-shot wide"') == 10
+    assert 'class="panel ok"' in html and 'data-app="9NH3NK2RGCF5"' in html
+    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@' in html
+
+
+def test_a_badge_kind_must_be_known():
+    p = copy.deepcopy(_sanduhr())
+    plats = next(b for s in p["pageSpec"]["sections"] for b in s.get("blocks", []) if b["type"] == "platforms")
+    plats["items"][0]["badges"][0]["kind"] = "itch"
+    with pytest.raises(ValueError, match="badge kind"):
+        rpp.render_page(p, "slate-broadsheet")
+
+
+def test_a_section_without_a_heading_renders_its_blocks_alone():
+    html = rpp.render_section({"id": "x"}, {"type": "section", "blocks": [
+        {"type": "cta", "text": "More?", "href": "/x", "label": "Go"}]})
+    assert 'class="section-hd"' not in html and '<a class="btn" href="/x">Go</a>' in html

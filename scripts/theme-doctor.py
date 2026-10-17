@@ -232,9 +232,10 @@ BROWSER_CHECK_LIVE_PAGES = (
     "conundrum.html", "rororo-plugins.html", "rororo.html",
     "mod-launcher-games.html", "thesis.html", "workflow.html",
     "press.html", "privacy.html",
-    # bacon-trail/index.html left on 2026-10-17: generated now, so it joins
-    # through generated_pages() in browser_check_live_pages() below.
-    "404.html", "play/index.html", "sanduhr/index.html",
+    # bacon-trail/index.html and sanduhr/index.html left on 2026-10-17:
+    # generated now, so they join through generated_pages() in
+    # browser_check_live_pages() below.
+    "404.html", "play/index.html",
     "year-in-review.html", "rororo-trailer.html", "mod-launcher-trailer.html",
     "snapsnip.html",
 )

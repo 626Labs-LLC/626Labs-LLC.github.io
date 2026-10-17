@@ -396,6 +396,53 @@ h1{ text-shadow: var(--page-bloom); }
 /* text-align: the game was built on a centered page and inherits it. */
 .widget-stage{ display:flex; justify-content:center; width:100%; margin: 12px 0 8px; text-align:center; }
 .widget-stage .play-widget{ width:100%; max-width:440px; }
+
+/* ---------- App-page blocks (Sanduhr first, 2026-10-17) ----------
+   Ported from sanduhr/index.html's own stylesheet, its private --sd-* tokens
+   swapped for the contract (--page-hairline, --cyan, --text-sec, --ok...) so
+   the page rotates with the theme. Each rule needs its block's class, so no
+   other page moves. */
+.hero .app-icon{ width:128px; height:128px; border-radius:28px; display:block; margin:0 auto 24px;
+  box-shadow: 0 24px 60px -16px rgba(59,180,217,.35), 0 0 0 1px rgba(59,180,217,.12); }
+.showcase{ text-align:center; padding: 8px 0 0; }
+.showcase-frame{ display:inline-block; max-width:480px; width:100%; border-radius:14px; border:1px solid var(--page-hairline);
+  overflow:hidden; box-shadow: 0 24px 60px rgba(0,0,0,.45); background: var(--page-panel-fill); }
+.showcase-frame img{ display:block; width:100%; height:auto; }
+.platform-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:14px; }
+.platform-card{ display:flex; flex-direction:column; padding:22px 24px; background: var(--page-panel-fill);
+  border:1px solid var(--page-hairline); border-radius:14px; transition: border-color var(--dur-fast), transform var(--dur-fast); }
+.platform-card:hover{ border-color: var(--cyan); transform: translateY(-2px); }
+.platform-card h3{ margin:0 0 6px; font-size:18px; font-weight:600; }
+.platform-card p{ margin:0 0 12px; color:var(--text-sec); font-size:13.5px; line-height:1.55; flex:1; }
+.platform-card ul{ list-style:none; padding:0; margin:0 0 14px; font-size:13px; color:var(--text-dim); }
+.platform-card ul li{ padding-left:18px; position:relative; margin:4px 0; }
+.platform-card ul li::before{ content:"\2192"; color:var(--cyan); position:absolute; left:0; }
+.badge-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:4px; }
+.store-badge{ display:inline-flex; align-items:center; gap:12px; width:216px; height:60px; padding:0 18px; box-sizing:border-box;
+  background: var(--page-panel-fill); border:1px solid var(--page-hairline); border-radius:8px; color:var(--text); text-decoration:none;
+  transition: border-color var(--dur-fast), transform var(--dur-fast); }
+.store-badge:hover{ border-color:var(--cyan); color:var(--text); text-decoration:none; transform: translateY(-1px); }
+.store-badge svg{ width:28px; height:28px; flex-shrink:0; color:var(--text); }
+.store-badge-text{ display:flex; flex-direction:column; line-height:1.15; min-width:0; }
+.store-badge-top{ font-size:9.5px; font-weight:500; color:var(--text-dim); letter-spacing:.1em; text-transform:uppercase; }
+.store-badge-bottom{ font-size:15px; font-weight:600; color:var(--text); letter-spacing:-.005em; }
+.gallery-strip{ display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:14px; }
+.gallery-strip.align-start{ align-items:start; }
+.gallery-shot{ border:1px solid var(--page-hairline); border-radius:12px; overflow:hidden; background: var(--page-panel-fill); }
+.gallery-shot.wide{ margin-top:14px; }
+.gallery-shot img{ width:100%; height:auto; display:block; }
+.gallery-shot .caption{ padding:10px 14px; font-size:13px; color:var(--text-sec); border-top:1px solid var(--page-hairline); }
+.gallery-shot .caption strong{ color:var(--text); font-weight:600; }
+.section-hd h2.hand{ font-family:"EsteFont Pro", "Segoe Print", "Bradley Hand", cursive; font-weight:700; font-size:40px; line-height:1.15; letter-spacing:0; }
+.panel{ padding:26px 28px; background: var(--page-panel-fill); border:1px solid var(--page-hairline); border-radius:14px; }
+.panel.ok{ background: linear-gradient(135deg, rgba(74,222,128,.08), rgba(59,180,217,.05)); border-color: rgba(74,222,128,.3); }
+.panel h3{ margin:0 0 10px; font-size:20px; }
+.panel.ok h3{ color: var(--ok); }
+.panel p{ margin:0 0 10px; color:var(--text-sec); font-size:14.5px; line-height:1.6; }
+.panel p:last-child{ margin-bottom:0; }
+.panel a{ color: var(--cyan-pale); }
+.cta-row{ text-align:center; padding: 8px 0 0; }
+.cta-row p{ color:var(--text-dim); margin:0 0 14px; font-size:14px; }
 </style>
 <link rel="stylesheet" href="/assets/logos/signature.css">
 </head>

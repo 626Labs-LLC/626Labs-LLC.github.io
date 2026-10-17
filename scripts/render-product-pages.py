@@ -307,6 +307,8 @@ def render_hero(product: dict, s: dict) -> str:
     accent = f" <em>{e(s['titleAccent'])}</em>" if s.get("titleAccent") else ""
     cls = "hero hero-center" if s.get("align") == "center" else "hero"
     out = [f'  <section class="{cls}">\n']
+    if s.get("icon"):
+        out.append(f'    <img class="app-icon" src="{e(s["icon"]["src"])}" alt="{e(s["icon"]["alt"])}" />\n')
     if s.get("eyebrow"):
         out.append(f'    <p class="eyebrow">{e(s["eyebrow"])}</p>\n')
     out.append(f"    <h1>{e(s['title'])}{accent}</h1>\n")
@@ -504,8 +506,113 @@ def widget_tail(product: dict, spec: dict) -> str:
     )
 
 
+GITHUB_ICON = (
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 '
+    '0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61'
+    'C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 '
+    '2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-'
+    '.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-'
+    '1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 '
+    '5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 '
+    '12.297c0-6.627-5.373-12-12-12"/></svg>'
+)
+BADGE_ICONS = {
+    "github": GITHUB_ICON,
+    "store": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>',
+}
+
+
+def block_showcase(b: dict, product: dict) -> str:
+    """One framed hero image, centered."""
+    return (
+        '    <div class="showcase"><div class="showcase-frame">\n'
+        f'      <img src="{e(b["src"])}" alt="{e(b["alt"])}" />\n'
+        "    </div></div>\n"
+    )
+
+
+def _badge(bd: dict) -> str:
+    icon = BADGE_ICONS.get(bd.get("kind", ""))
+    if icon is None:
+        raise ValueError(f"badge kind {bd.get('kind')!r} is not one of {sorted(BADGE_ICONS)}")
+    return (
+        f'          <a class="store-badge" href="{e(bd["href"])}" rel="noopener">\n'
+        f"            {icon}\n"
+        '            <div class="store-badge-text">\n'
+        f'              <span class="store-badge-top">{e(bd["top"])}</span>\n'
+        f'              <span class="store-badge-bottom">{e(bd["bottom"])}</span>\n'
+        "            </div>\n"
+        "          </a>\n"
+    )
+
+
+def block_platforms(b: dict, product: dict) -> str:
+    """A card per platform: title, body, bullets, download badges."""
+    cards = []
+    for c in b["items"]:
+        bullets = "".join(f"          <li>{li}</li>\n" for li in c.get("bullets") or [])
+        badges = "".join(_badge(bd) for bd in c.get("badges") or [])
+        cards.append(
+            '      <article class="platform-card">\n'
+            f"        <h3>{e(c['title'])}</h3>\n"
+            f"        <p>{c['body']}</p>\n"
+            + (f"        <ul>\n{bullets}        </ul>\n" if bullets else "")
+            + (f'        <div class="badge-row">\n{badges}        </div>\n' if badges else "")
+            + "      </article>\n"
+        )
+    return f'    <div class="platform-grid">\n{"".join(cards)}    </div>\n'
+
+
+def _shot(s: dict, extra: str = "") -> str:
+    return (
+        f'      <div class="gallery-shot{extra}">\n'
+        f'        <img src="{e(s["src"])}" alt="{e(s["alt"])}" loading="lazy" />\n'
+        f'        <div class="caption">{s["caption"]}</div>\n'
+        "      </div>\n"
+    )
+
+
+def block_gallery(b: dict, product: dict) -> str:
+    """Captioned images from fixed paths (a product's own page assets, not the
+    uploader's screenshots list: that is `shots`). `wide` adds one full-width
+    image under the strip; `align: start` top-aligns shots of mixed heights."""
+    cls = "gallery-strip align-start" if b.get("align") == "start" else "gallery-strip"
+    out = f'    <div class="{cls}">\n' + "".join(_shot(s) for s in b["items"]) + "    </div>\n"
+    if b.get("wide"):
+        out += _shot(b["wide"], " wide")
+    return out
+
+
+def block_panel(b: dict, product: dict) -> str:
+    """A bordered card with a heading and paragraphs. `tone: ok` is the green
+    reassurance card (privacy); the default takes the page's panel fill."""
+    tone = " ok" if b.get("tone") == "ok" else ""
+    paras = "".join(f"      <p>{p}</p>\n" for p in b["paragraphs"])
+    return (
+        f'    <div class="panel{tone}">\n'
+        f"      <h3>{e(b['title'])}</h3>\n"
+        f"{paras}"
+        "    </div>\n"
+    )
+
+
+def block_cta(b: dict, product: dict) -> str:
+    """A centered line and one button."""
+    return (
+        '    <div class="cta-row">\n'
+        f"      <p>{b['text']}</p>\n"
+        f'      <a class="btn" href="{e(b["href"])}">{e(b["label"])}</a>\n'
+        "    </div>\n"
+    )
+
+
 BLOCKS = {
     "widget": block_widget,
+    "showcase": block_showcase,
+    "platforms": block_platforms,
+    "gallery": block_gallery,
+    "panel": block_panel,
+    "cta": block_cta,
     "lead": block_lead,
     "cards": block_cards,
     "callout": block_callout,
@@ -541,7 +648,8 @@ def render_section(product: dict, s: dict) -> str:
     head = []
     if s.get("eyebrow"):
         head.append(f'      <p class="eyebrow">{e(s["eyebrow"])}</p>\n')
-    head.append(f"      <h2>{e(s['heading'])}</h2>\n")
+    hand = ' class="hand"' if s.get("hand") else ""
+    head.append(f"      <h2{hand}>{e(s['heading'])}</h2>\n")
     return (
         f"  <section{sid}>\n"
         '    <div class="section-hd">\n'
