@@ -1852,13 +1852,247 @@
       "banner": "assets/thumb-snapsnip.png",
       "meta": "Windows native · context-aware screenshots",
       "productPage": "snapsnip.html",
+      "pageSpec": {
+        "meta": {
+          "title": "SnapSnip · Screenshots named after the window they came from · 626 Labs",
+          "description": "SnapSnip renames every Snipping Tool capture after the app and window it came from, with on-device redaction first. Library, Collections and a careful duplicate clean-up. No network calls. Free on the Microsoft Store.",
+          "ogTitle": "SnapSnip: every screenshot named after the window it came from",
+          "ogDescription": "Context-rich screenshot names, on-device redaction, a Library, and a clean-up that never deletes. Free on the Microsoft Store.",
+          "ogImage": "/assets/thumb-snapsnip.png"
+        },
+        "nav": [
+          {
+            "label": "The lab",
+            "href": "/",
+            "hideSm": true
+          },
+          {
+            "label": "See it",
+            "href": "#see-it",
+            "hideSm": true
+          },
+          {
+            "label": "Get it",
+            "href": "#get-it",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "eyebrow": "Windows 11 · Snipping Tool companion",
+            "title": "Snap",
+            "titleAccent": "Snip",
+            "accentJoin": "",
+            "dek": "Every screenshot, named after the app and window it came from.",
+            "sub": "SnapSnip rides alongside Snipping Tool. Press <b>Win+Shift+S</b> or <b>Print Screen</b> as always, and the capture is saved as something like <code>Outlook — Q3 forecast — 2026-04-29 142301.png</code>, with window titles redacted on your machine first.",
+            "strip": [
+              {
+                "key": "Latest",
+                "value": "v0.3.0"
+              },
+              {
+                "key": "Windows 11",
+                "value": "22H2+"
+              },
+              {
+                "key": "License",
+                "value": "MIT"
+              },
+              {
+                "key": "Price",
+                "value": "Free"
+              }
+            ],
+            "get": {
+              "label": "Get SnapSnip",
+              "links": [
+                {
+                  "label": "Get it from Microsoft Store",
+                  "href": "https://apps.microsoft.com/detail/9PBX8F5TR0VR?cid=site-product",
+                  "primary": true,
+                  "store": true
+                }
+              ]
+            }
+          },
+          {
+            "type": "section",
+            "heading": "A folder of Screenshot 2026-04-29 142301.png",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Every capture Snipping Tool saves gets a name like <code>Screenshot 2026-04-29 142301.png</code>: no app, no window, no context. A month later the folder is a few hundred files that all look the same from the outside, and the one you need is somewhere in the middle.",
+                  "SnapSnip reattaches that context at capture time, from the window's own metadata and never from the image, and embeds it as structured XMP that file search, ExifTool and your own scripts can read without parsing filenames."
+                ]
+              },
+              {
+                "type": "pull",
+                "text": "Your screenshot folder becomes something you can search, not a graveyard."
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "Named, redacted, found, cleaned up",
+            "sub": "Snipping Tool is unchanged. SnapSnip works on what it saves.",
+            "aside": "Nothing leaves your PC",
+            "blocks": [
+              {
+                "type": "features",
+                "columns": 3,
+                "items": [
+                  {
+                    "title": "Named at capture",
+                    "body": "Win+Shift+S or Print Screen, and the file is named for the app and window it came from. The same context is embedded as XMP metadata that any XMP-aware tool can read."
+                  },
+                  {
+                    "title": "Redaction comes first",
+                    "body": "Window titles can carry customer names, ticket numbers and document titles. Three preset policies, Strict, Balanced and Permissive, plus per-app overrides: trust your code editor, lock down your password manager."
+                  },
+                  {
+                    "title": "Profiles and a preview",
+                    "body": "One-click Redaction Profiles for how you work: Developer, Healthcare, Finance, Streamer. A side-by-side preview shows exactly what was redacted and what wasn't, before you rely on it."
+                  },
+                  {
+                    "tag": "New in 0.3",
+                    "title": "Library and Collections",
+                    "body": "Browse every screenshot by the app and window it came from, and gather the right ones into named Collections for a doc, a deck or a Store listing. Collections export copies; your originals stay where they are."
+                  },
+                  {
+                    "tag": "New in 0.3",
+                    "title": "Review clean-up",
+                    "body": "SnapSnip finds exact copies, near copies and blurry photos in a folder you choose. You decide each one, or keep a burst together as a set. Set-aside files move into a <code>_review</code> folder. Nothing is deleted, and every run can be undone."
+                  },
+                  {
+                    "title": "Fail-closed",
+                    "body": "If redaction ever errors, the capture still saves, with a timestamp-only filename, never an unredacted title."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "See it work",
+            "id": "see-it",
+            "aside": "Sample library, no real files",
+            "blocks": [
+              {
+                "type": "shots",
+                "captions": [
+                  "<b>Exact copies.</b> Four copies of the same beach photo. Keep the original, set the copies aside, and nothing moves until you apply.",
+                  "<b>Near copies.</b> A quick burst of your cat. Keep the one you like, keep them all as a set, or set the rest aside.",
+                  "<b>The Library.</b> Your screenshots grouped by the app they came from, with the window, monitor and site SnapSnip recorded at capture.",
+                  "<b>Collections.</b> Gather the shots for one destination, a doc, a deck or a Store listing, and export named copies.",
+                  "<b>See what redaction changed.</b> The original title, the redacted one, and the rule that fired. Originals stay in memory only.",
+                  "<b>Counts, never content.</b> A counts-only privacy dashboard: how many of each kind were redacted and how fast, never the content itself."
+                ],
+                "alts": [
+                  "SnapSnip Review: four exact copies of a beach photo, the original marked Keep and the copies Set aside",
+                  "SnapSnip Review: a burst of near-identical kitten photos with Keep all as a set",
+                  "SnapSnip Library: sample screenshots grouped by the app they came from",
+                  "SnapSnip Collections for a doc, a deck and a Store listing",
+                  "SnapSnip redaction preview: original and redacted window titles side by side with the rule that fired",
+                  "SnapSnip Privacy Dashboard showing redaction counts and median protection time"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "How it's built",
+            "sub": "A Windows tray app that listens for the capture keys, reads the window at that moment, and writes the name and the metadata before the file settles.",
+            "aside": "Windows 11 22H2 or later",
+            "blocks": [
+              {
+                "type": "features",
+                "columns": 2,
+                "items": [
+                  {
+                    "tag": ".NET 10 · WPF",
+                    "title": "The tray app",
+                    "body": "Settings, the Library, Review and the Privacy Dashboard, with dark and light themes that follow Windows. .NET 10 ships inside the package."
+                  },
+                  {
+                    "tag": "C++/WinRT",
+                    "title": "The keyboard hook",
+                    "body": "A low-level hook that notices Win+Shift+S and Print Screen and snapshots the foreground window's app and title at that instant."
+                  },
+                  {
+                    "tag": "XMP v1",
+                    "title": "A frozen metadata schema",
+                    "body": "The context is written as a published, frozen v1 XMP schema: a public contract, so any XMP-aware tool can read it."
+                  },
+                  {
+                    "tag": "SQLite",
+                    "title": "The library index",
+                    "body": "A local index of your screenshots that powers the Library, Collections and duplicate finding. It lives on your PC with everything else."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "What leaves your machine: nothing",
+            "aside": "No network calls",
+            "blocks": [
+              {
+                "type": "trust",
+                "rows": [
+                  {
+                    "label": "No network",
+                    "body": "SnapSnip makes no network calls. There is no cloud redaction: the rules are regular expressions, run locally."
+                  },
+                  {
+                    "label": "Counts, not content",
+                    "body": "Its telemetry is rule counts only, and it stays on this PC: never window-title content, never URLs, never image content. The Privacy Dashboard shows a counts-only view, so you can check the promise without exposing what it protected."
+                  },
+                  {
+                    "label": "Originals in memory only",
+                    "body": "The unredacted title lives in memory for one capture, then it's gone. There is no on-disk vault of originals, by design."
+                  },
+                  {
+                    "label": "Nothing deleted",
+                    "body": "Review clean-up only moves files you approve, only into a <code>_review</code> folder, and every run can be undone. Collections export copies and never move the originals."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "Where it ended up",
+            "sub": "Every Microsoft Store install since launch, plotted by country. Dot area is proportional to install count.",
+            "aside": "Lifetime installs",
+            "blocks": [
+              {
+                "type": "reachMap",
+                "label": "SnapSnip"
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · SnapSnip",
+          "disclaimer": "Requires Windows 11 22H2 or later. Windows and Snipping Tool are trademarks of Microsoft Corporation; SnapSnip is an independent 626 Labs product and does not modify Snipping Tool.",
+          "links": [
+            {
+              "label": "Privacy",
+              "href": "privacy.html"
+            }
+          ]
+        }
+      },
       "screenshots": [
-        {"id": "shot-1791308486295-01-r", "path": "assets/screenshots/snapsnip/1791308486295-01-review-exact.png", "name": "01-review-exact.png", "size": 176717},
-        {"id": "shot-1791308486298-02-r", "path": "assets/screenshots/snapsnip/1791308486298-02-review-near.png", "name": "02-review-near.png", "size": 403111},
-        {"id": "shot-1791308486300-03-l", "path": "assets/screenshots/snapsnip/1791308486300-03-library.png", "name": "03-library.png", "size": 121906},
-        {"id": "shot-1791308486303-04-c", "path": "assets/screenshots/snapsnip/1791308486303-04-collections.png", "name": "04-collections.png", "size": 121203},
-        {"id": "shot-1791308486305-05-r", "path": "assets/screenshots/snapsnip/1791308486305-05-redaction-preview.png", "name": "05-redaction-preview.png", "size": 131322},
-        {"id": "shot-1791308486307-06-p", "path": "assets/screenshots/snapsnip/1791308486307-06-privacy-dashboard.png", "name": "06-privacy-dashboard.png", "size": 98654}
+        {"id": "shot-1791308486295-01-r", "path": "assets/screenshots/snapsnip/1791308486295-01-review-exact.png", "name": "01-review-exact.png", "size": 176717, "width": 1920, "height": 1080},
+        {"id": "shot-1791308486298-02-r", "path": "assets/screenshots/snapsnip/1791308486298-02-review-near.png", "name": "02-review-near.png", "size": 403111, "width": 1920, "height": 1080},
+        {"id": "shot-1791308486300-03-l", "path": "assets/screenshots/snapsnip/1791308486300-03-library.png", "name": "03-library.png", "size": 121906, "width": 1920, "height": 1080},
+        {"id": "shot-1791308486303-04-c", "path": "assets/screenshots/snapsnip/1791308486303-04-collections.png", "name": "04-collections.png", "size": 121203, "width": 1920, "height": 1080},
+        {"id": "shot-1791308486305-05-r", "path": "assets/screenshots/snapsnip/1791308486305-05-redaction-preview.png", "name": "05-redaction-preview.png", "size": 131322, "width": 1920, "height": 1080},
+        {"id": "shot-1791308486307-06-p", "path": "assets/screenshots/snapsnip/1791308486307-06-privacy-dashboard.png", "name": "06-privacy-dashboard.png", "size": 98654, "width": 1920, "height": 1080}
       ]
     },
     {
@@ -1889,6 +2123,553 @@
       "install": null,
       "storeUrl": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-home",
       "productPage": "rororo.html",
+      "pageSpec": {
+        "meta": {
+          "title": "RORORO — multi-launcher for Roblox · 626 Labs",
+          "description": "Run multiple Roblox clients side by side, each signed in as a different saved account. Native on Windows and macOS, plugin-extensible, free. An independent third-party tool — not affiliated with Roblox Corporation.",
+          "ogTitle": "RORORO — multi-launcher for Roblox",
+          "ogDescription": "Windows + macOS native multi-launcher. Run multiple Roblox clients side by side, each signed in as a saved account. Plugin-extensible. Free.",
+          "ogImage": "/assets/video/rororo/rororo-launch-poster.jpg"
+        },
+        "releaseReviewed": [
+          "estevanhernandez-stack-ed/ROROROblox@v1.33.0.0"
+        ],
+        "nav": [
+          {
+            "label": "The lab",
+            "href": "/",
+            "hideSm": true
+          },
+          {
+            "label": "Plugins",
+            "href": "rororo-plugins.html"
+          },
+          {
+            "label": "Source",
+            "href": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
+            "hideSm": true
+          },
+          {
+            "label": "Get RORORO",
+            "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "section",
+            "blocks": [
+              {
+                "type": "nudge",
+                "title": "RORORO",
+                "shareText": "RORORO, multi-launcher for Roblox. Open on desktop.",
+                "text": "<b>On a phone?</b> RORORO installs on Windows and Mac. Save this page and open it on your desktop, the Microsoft Store and Mac links are right below."
+              }
+            ]
+          },
+          {
+            "type": "hero",
+            "eyebrow": "626 Labs · Product · Roblox tooling",
+            "title": "Run multiple Roblox clients.",
+            "titleAccent": "Side by side, one machine.",
+            "dek": "<em>RORORO</em> is a native multi-launcher for Roblox — spawn several clients at once, each signed in as a different saved account, one click each. Native on Windows and macOS, plugin-extensible, free. No injection, no client modification — it holds a singleton lock before launch and starts the official client unmodified.",
+            "strip": [
+              {
+                "key": "Platforms",
+                "value": "Windows · macOS"
+              },
+              {
+                "key": "Latest · Windows",
+                "value": "v1.14",
+                "id": "win-latest"
+              },
+              {
+                "key": "Plugin host",
+                "value": "Named-pipe · consent-gated"
+              },
+              {
+                "key": "License",
+                "value": "MIT · open source"
+              },
+              {
+                "key": "Price",
+                "value": "Free"
+              }
+            ],
+            "get": {
+              "label": "Get RORORO",
+              "links": [
+                {
+                  "label": "Get it on Microsoft Store",
+                  "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product",
+                  "primary": true,
+                  "store": true
+                },
+                {
+                  "label": "View source on GitHub",
+                  "href": "https://github.com/estevanhernandez-stack-ed/ROROROblox"
+                }
+              ]
+            }
+          },
+          {
+            "type": "section",
+            "blocks": [
+              {
+                "type": "showcase",
+                "wide": true,
+                "src": "assets/screenshots/rororo/win-main.png",
+                "alt": "RORORO main window — saved accounts list with per-account Launch As, the singleton-lock toggle, and the state-coloured tray ring"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "Get it",
+            "id": "get",
+            "sub": "Three install paths. Pick the trust posture that fits you — they all land the same app.",
+            "aside": "Windows + macOS",
+            "blocks": [
+              {
+                "type": "install",
+                "items": [
+                  {
+                    "pill": "Recommended",
+                    "plat": "Windows",
+                    "title": "Microsoft Store",
+                    "body": "Signed by Microsoft, bypasses SmartScreen entirely, auto-updates through the Store. One click and you are in — the best path for most people.",
+                    "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product",
+                    "label": "Open the Store listing"
+                  },
+                  {
+                    "plat": "Windows",
+                    "title": "GitHub Releases",
+                    "body": "Grab <code>rororo-win-Setup.exe</code> — one click, installs to your user profile. SmartScreen warns once because the installer is unsigned; choose <b>More info → Run anyway</b>. Velopack auto-updates it from there.",
+                    "href": "https://github.com/estevanhernandez-stack-ed/ROROROblox/releases",
+                    "label": "Open Releases"
+                  },
+                  {
+                    "plat": "macOS 14+",
+                    "title": "Homebrew",
+                    "body": "The Mac-native sibling — signed and notarized by Apple, Sparkle auto-update. Install with one tap:",
+                    "code": "brew tap estevanhernandez-stack-ed/rororo\nbrew install --cask rororo",
+                    "href": "https://github.com/estevanhernandez-stack-ed/rororo-mac",
+                    "label": "RORORO Mac on GitHub"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "What it does",
+            "sub": "The launcher core is the same shape on both platforms — the deep roster tooling below it ships Windows-first.",
+            "aside": "The launcher",
+            "blocks": [
+              {
+                "type": "features",
+                "columns": 3,
+                "items": [
+                  {
+                    "key": "01 · MULTI-INSTANCE",
+                    "title": "One-click multi-instance",
+                    "body": "A tray toggle holds the Roblox singleton lock so multiple clients run side by side. The official client, unmodified — no injection, no DevTools, no registry edits. The tray ring reads at a glance: cyan on, slate off, magenta error."
+                  },
+                  {
+                    "key": "02 · VAULT",
+                    "title": "Saved-account vault",
+                    "body": "Add your alts once via an embedded login window. Cookies are encrypted at rest and tied to your machine — DPAPI on Windows, Keychain on macOS — with a passphrase-encrypted export when you move PCs."
+                  },
+                  {
+                    "key": "03 · LAUNCH AS",
+                    "title": "Launch As",
+                    "body": "One click spawns each saved account straight into your default game, a saved private server, or any pasted share link. Set it once; every alt lands where you pointed it."
+                  },
+                  {
+                    "key": "04 · LOGIN",
+                    "title": "Your password never touches the app",
+                    "body": "Login happens on Roblox's own page inside an embedded browser. RORORO is the window frame, not the form handler — it only ever captures the session cookie set after a successful login."
+                  },
+                  {
+                    "key": "05 · SQUAD LAUNCH",
+                    "title": "Whole squad, one server",
+                    "body": "Send a set of accounts into the same private server in three trust-aware phases — direct joins, an anchor, then followers. Careful mode waits for each alt to land before sending the next. An alt set to Join via friend follows your main on every launch, and when your main isn't in a game RORORO asks instead of joining direct."
+                  },
+                  {
+                    "key": "06 · FRIEND FOLLOW",
+                    "title": "Follow a friend in",
+                    "body": "Pick any friend of your main account — not just your saved alts — and launch straight into their server. If they aren't joinable, RORORO says so instead of bouncing."
+                  },
+                  {
+                    "key": "07 · ROUTING",
+                    "title": "A library for games and servers",
+                    "body": "Keep saved games and private servers, set defaults, and route different alts into different servers in one batch. Local renames and tags keep a deep roster legible — Roblox-side names untouched."
+                  },
+                  {
+                    "key": "08 · PRESENCE",
+                    "title": "Live roster status",
+                    "body": "Every row shows the real game it's in — \"In Pet Sim 99\", \"At Roblox home\" — plus an idle chip that turns amber when an alt has sat too long. The idle alert fires only for an alt that is actually in a game, where an idle kick costs you something; the threshold is yours."
+                  },
+                  {
+                    "key": "09 · STREAMER MODE",
+                    "title": "Stream without leaking your alts",
+                    "body": "One flip disguises the whole roster — stand-in names and hand-drawn avatars across every row, banner, modal, and Roblox window title. Private-server links hide behind a reveal-only pill. Disguises persist across restarts."
+                  },
+                  {
+                    "key": "10 · FPS LIMITER",
+                    "title": "Per-account FPS caps",
+                    "body": "Cap each alt's FPS from its row before launch — farm accounts low, your main uncapped. Plays nice with Bloxstrap and warns when the two would fight."
+                  },
+                  {
+                    "key": "11 · PLUGINS",
+                    "title": "Consent-gated plugins",
+                    "body": "Extend RORORO with out-of-process plugins — separate signed apps behind a per-capability consent sheet, SHA-verified at install. The Ur family (Task, OCR, AFK) is live on the <a href=\"rororo-plugins.html\">marketplace</a>."
+                  },
+                  {
+                    "key": "12 · UPDATES",
+                    "title": "Auto-update built in",
+                    "body": "Velopack on Windows, Sparkle on macOS. When Roblox shifts under the launcher, the fix ships to you without a reinstall — the compat config even updates remotely, no new binary needed."
+                  },
+                  {
+                    "key": "13 · WATCHDOG",
+                    "title": "Memory watchdog + Recycle",
+                    "body": "The Roblox client eats more RAM the longer it runs — enough clients will eventually fill your PC. RORORO learns what each client really costs on your machine, warns before you run out, and one click puts a heavy alt right back into its server."
+                  },
+                  {
+                    "key": "14 · ALERTS",
+                    "title": "Alerts wherever you are",
+                    "body": "Route any alert to the desktop, a Discord webhook you create, or your phone through Pushover or ntfy — in any mix per alert. Drops, memory warnings, recycle completions, and an every-two-hours all-good mark while your accounts run, so silence itself becomes the warning. You set how often each alert may repeat, and whether it sounds like the RoRoRo chime, the Windows default or nothing."
+                  },
+                  {
+                    "key": "15 · HISTORY",
+                    "title": "RORORO keeps score",
+                    "body": "History opens with your stats — the most alts you've ever run at once, total hours, longest session — plus per-alt login streaks that only count days the alt actually landed in a game."
+                  },
+                  {
+                    "key": "16 · THEMES",
+                    "title": "Themes, yours to build",
+                    "body": "Four built in — cyan and magenta out of the box — plus a builder to tune every surface to taste and share the result as a file anyone can import."
+                  },
+                  {
+                    "key": "17 · STARTUP",
+                    "title": "Start with Windows + Discord Join",
+                    "body": "One startup toggle Windows stays in control of, and Discord Join links that start RORORO even when it's closed. Both work on Store installs too, not just direct downloads."
+                  },
+                  {
+                    "key": "18 · WINDOWED",
+                    "title": "Roblox stays windowed",
+                    "body": "A crash or a stray Alt+Enter used to leave your next launch swallowing the whole screen. RORORO clears that saved fullscreen flag before every launch. On by default."
+                  },
+                  {
+                    "key": "19 · LANGUAGES",
+                    "title": "Speaks your language",
+                    "body": "The whole app — screens and messages alike — in French, German, Russian, Portuguese (Brazil), Polish, or Spanish. Follows your Windows language, or pick one in Settings and it switches instantly. The launch trailer below speaks all six too."
+                  },
+                  {
+                    "key": "20 · AUTO-REJOIN",
+                    "title": "Alts that drop out come back",
+                    "body": "Turn on Rejoin if it drops out for any alt. When its Roblox window is open but it has been out of the game for 3 minutes — an idle kick, a failed join, a verification page — RORORO closes it and joins again. At most 3 rejoins an hour, your Stop always wins, and it never answers Roblox's verification page for you."
+                  },
+                  {
+                    "key": "21 · KNOWN ISSUES",
+                    "title": "When it's Roblox, not RORORO",
+                    "body": "Known Roblox issues lists problems in Roblox itself: what happens, what to do, and a button to the RORORO feature that helps. A serious one gets a single notice. The list is signed and updates without an app update, and nothing about you is sent to fetch it."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "See it work",
+            "sub": "The surfaces you actually use — the welcome flow, the add-account window, Squad Launch, settings, the diagnostics tab.",
+            "aside": "The app",
+            "blocks": [
+              {
+                "type": "video",
+                "base": "assets/video/rororo/rororo-launch",
+                "cut": "The launch cut",
+                "caption": "The launch cut · 63 seconds, sound on",
+                "watch": {
+                  "href": "rororo-trailer.html",
+                  "label": "Watch on its own page"
+                },
+                "langs": [
+                  {
+                    "code": "",
+                    "label": "English"
+                  },
+                  {
+                    "code": "fr",
+                    "label": "Français",
+                    "secs": 61
+                  },
+                  {
+                    "code": "de",
+                    "label": "Deutsch",
+                    "secs": 65
+                  },
+                  {
+                    "code": "ru",
+                    "label": "Русский",
+                    "secs": 63
+                  },
+                  {
+                    "code": "pt-BR",
+                    "label": "Português",
+                    "secs": 60
+                  },
+                  {
+                    "code": "pl",
+                    "label": "Polski",
+                    "secs": 61
+                  },
+                  {
+                    "code": "es",
+                    "label": "Español",
+                    "secs": 59
+                  },
+                  {
+                    "code": "en-GB",
+                    "label": "English (UK)",
+                    "secs": 64
+                  }
+                ]
+              },
+              {
+                "type": "gallery",
+                "align": "start",
+                "items": [
+                  {
+                    "src": "assets/screenshots/rororo/win-welcome.png",
+                    "alt": "RORORO welcome screen",
+                    "caption": "Welcome · first run"
+                  },
+                  {
+                    "src": "assets/screenshots/rororo/win-add-account.png",
+                    "alt": "RORORO add-account flow with embedded Roblox login",
+                    "caption": "Add an account"
+                  },
+                  {
+                    "src": "assets/screenshots/rororo/win-add-game.png",
+                    "alt": "RORORO default-game configuration",
+                    "caption": "Set a default game"
+                  },
+                  {
+                    "src": "assets/screenshots/rororo/win-squad-launch.png",
+                    "alt": "RORORO Squad Launch panel",
+                    "caption": "Squad Launch"
+                  },
+                  {
+                    "src": "assets/screenshots/rororo/win-settings.png",
+                    "alt": "RORORO settings panel",
+                    "caption": "Settings"
+                  },
+                  {
+                    "src": "assets/screenshots/rororo/win-theme.png",
+                    "alt": "RORORO theme picker",
+                    "caption": "Theme"
+                  },
+                  {
+                    "src": "assets/screenshots/rororo/win-diagnostics.png",
+                    "alt": "RORORO diagnostics tab",
+                    "caption": "Diagnostics"
+                  },
+                  {
+                    "src": "assets/screenshots/rororo/win-about.png",
+                    "alt": "RORORO about screen with version and license info",
+                    "caption": "About"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "Two platforms, one product",
+            "sub": "Not a port wrapped in a cross-platform runtime — each build is native to its OS, using only public APIs.",
+            "aside": "Native × 2",
+            "blocks": [
+              {
+                "type": "platforms",
+                "items": [
+                  {
+                    "key": "Windows 10 · 11",
+                    "title": "RORORO for Windows",
+                    "stack": ".NET 10 LTS · C# 14 · WPF",
+                    "bullets": [
+                      "Multi-instance via a <b>singleton-mutex hold</b> — typed P/Invokes, no client touch.",
+                      "<b>DPAPI-encrypted</b> account vault — cookies tied to your Windows user; a copied file won't decrypt elsewhere.",
+                      "Squad Launch, Friend Follow, join-by-link, private servers, per-game routing, local renames, and <b>auto-rejoin</b> for alts that drop out.",
+                      "<b>Presence + idle awareness</b> per row, and <b>streamer mode</b> to disguise the roster on stream.",
+                      "The <b>plugin host</b> — the named-pipe extension surface behind the Ur plugin family (see below).",
+                      "Velopack auto-update · Microsoft Store + GitHub Releases · Windows 10 22H2 and up."
+                    ]
+                  },
+                  {
+                    "key": "macOS 14+",
+                    "title": "RORORO for Mac",
+                    "stack": "Swift · SwiftUI",
+                    "tone": "alt",
+                    "bullets": [
+                      "Multi-instance via <b>POSIX <code>sem_unlink</code> + per-launch app copy</b> — public APIs only, no client modification.",
+                      "<b>Keychain-backed</b> vault — saved cookies never sync to iCloud.",
+                      "Embedded WKWebView login — same password-never-touches-the-app contract as Windows.",
+                      "A built-in <b>auto-keys macro cycler</b> for AFK keep-alive.",
+                      "Sparkle auto-update · signed and notarized by Apple · Homebrew."
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "Plugins",
+            "sub": "v1.4 opened RORORO on Windows to plugins — browse them all on the <a href=\"rororo-plugins.html\">plugin marketplace</a>.",
+            "aside": "v1.4 plugin host",
+            "blocks": [
+              {
+                "type": "panel",
+                "paragraphs": [
+                  "A plugin is a <b>separate, signed Windows app</b> — its own process, never loaded into RORORO. It connects over a per-user named pipe, declares every capability it wants up front, and shows you a <b>consent sheet</b> before it gets any of them. You install one by pasting a GitHub release URL into <b>RORORO → Plugins</b>; RORORO verifies the SHA-256 before it unpacks anything. A plugin crash can't take RORORO down — the wall is intentional, and it is what keeps RORORO itself eligible for the Microsoft Store."
+                ]
+              },
+              {
+                "type": "pluginList",
+                "href": "rororo-plugins.html",
+                "linkLabel": "Install from the marketplace",
+                "icons": {
+                  "626labs.ur-afk": "assets/rororo-family/ur-afk.svg",
+                  "626labs.ur-ocr": "assets/rororo-family/ur-ocr.svg",
+                  "626labs.ur-score": "assets/rororo-family/ur-score.png",
+                  "626labs.ur-task": "assets/rororo-family/ur-task.svg"
+                },
+                "fallback": {
+                  "title": "RoRoRo plugins",
+                  "status": "Live",
+                  "label": "Open the marketplace",
+                  "body": "Ur Task, Ur OCR, and Ur AFK — browse versions and install links on the marketplace."
+                },
+                "bench": [
+                  {
+                    "title": "Session Stats",
+                    "status": "On the bench",
+                    "link": "Scoped",
+                    "body": "Live per-account uptime, launch counts this session, and mutex state — a pure observer panel for tracking a long farming run."
+                  },
+                  {
+                    "title": "Discord Rich Presence",
+                    "status": "On the bench",
+                    "link": "Scoped",
+                    "body": "Pushes \"playing with N alts via RORORO\" to your Discord status whenever accounts launch."
+                  },
+                  {
+                    "title": "Auto-Relaunch on Exit",
+                    "status": "On the bench",
+                    "link": "Scoped",
+                    "body": "Watches for an alt's window closing and relaunches it — closes the crashed-alt loop on an unattended run."
+                  }
+                ]
+              },
+              {
+                "type": "howto",
+                "wide": true,
+                "columns": [
+                  {
+                    "key": "How to install a plugin",
+                    "steps": [
+                      "Open <b>Plugins</b> from RORORO's main-window nav, or from the tray menu.",
+                      "Paste the plugin's <b>GitHub release directory URL</b> into Install — the parent path that holds its <code>manifest.json</code>, <code>manifest.sha256</code>, and <code>plugin.zip</code>.",
+                      "RORORO fetches the manifest and <b>verifies the SHA-256</b> of the download against it — and refuses to extract on any mismatch.",
+                      "Review the <b>consent sheet</b>. Every capability the plugin declared is itemized; toggle each one before it gets access.",
+                      "<b>Restart RORORO.</b> Plugins start when RORORO launches, so a fresh install runs after the restart prompt."
+                    ]
+                  },
+                  {
+                    "key": "Publishing a plugin",
+                    "tone": "alt",
+                    "paragraphs": [
+                      "A plugin is your own signed Windows app built against the <b>RORORO plugin contract</b>. Ship it as a GitHub release with three artifacts — <code>manifest.json</code>, <code>manifest.sha256</code>, <code>plugin.zip</code> — and anyone can install it with the steps on the left."
+                    ],
+                    "links": [
+                      {
+                        "href": "https://github.com/estevanhernandez-stack-ed/ROROROblox/blob/main/docs/plugins/AUTHOR_GUIDE.md",
+                        "label": "Plugin author guide",
+                        "note": "contract · capabilities · manifest"
+                      },
+                      {
+                        "href": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
+                        "label": "Reference plugin",
+                        "note": "RoRoRo Ur Task · working example"
+                      },
+                      {
+                        "href": "https://github.com/estevanhernandez-stack-ed/ROROROblox/issues",
+                        "label": "Questions & feature asks",
+                        "note": "ROROROblox issues"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "The honest part",
+            "sub": "What this is, what the risk is, and whose work it builds on — said plainly, because it should be.",
+            "aside": "Owned, not hidden",
+            "blocks": [
+              {
+                "type": "trust",
+                "rows": [
+                  {
+                    "label": "Independence",
+                    "title": "An independent third-party tool",
+                    "body": "RORORO is not affiliated with, endorsed by, or sponsored by Roblox Corporation. \"Roblox\" is a trademark of Roblox Corporation, used here only to describe compatibility — RORORO launches the official Roblox client, unmodified."
+                  },
+                  {
+                    "label": "The risk",
+                    "title": "No injection — but the risk isn't zero",
+                    "body": "RORORO doesn't inject into or modify the Roblox client. It holds a Windows mutex name (or a POSIX semaphore on macOS) before launch, then starts the official client. Roblox has stated that multi-instancing \"may be considered malicious behavior,\" so the risk of a ban appears low but is non-zero — and the README says exactly that. Don't run this on accounts you can't afford to lose."
+                  },
+                  {
+                    "label": "Provenance",
+                    "title": "Reuse without erasure",
+                    "body": "The named-mutex defeat technique originated with <a href=\"https://github.com/Zgoly/MultiBloxy\">MultiBloxy by Zgoly</a>. RORORO is a clean C# reimplementation with substantially expanded scope — account management, structured launch flow, a plugin host — not a fork. The credit, the reference binary, and the caveats are all in <a href=\"https://github.com/estevanhernandez-stack-ed/ROROROblox/blob/main/PROVENANCE.txt\">PROVENANCE.txt</a>."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "Where it ended up",
+            "sub": "Every Microsoft Store install since launch, plotted by country. Dot area is proportional to install count, so the long tail stays readable next to the United States.",
+            "aside": "Lifetime installs",
+            "blocks": [
+              {
+                "type": "reachMap",
+                "label": "RORORO"
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · RORORO",
+          "axiom": "Run six. <em>Trust the window you're recording.</em> Own the provenance.",
+          "links": [
+            {
+              "label": "Thesis",
+              "href": "thesis.html"
+            },
+            {
+              "label": "Privacy",
+              "href": "privacy.html"
+            }
+          ]
+        }
+      },
       "banner": "assets/thumb-rororo.png",
       "meta": "Free · Windows + macOS · plugin-extensible",
       "screenshots": []
@@ -1921,6 +2702,145 @@
       "install": null,
       "storeUrl": "https://apps.microsoft.com/detail/9N53V6RRJK95?cid=site-home",
       "productPage": "mod-launcher-games.html",
+      "pageSpec": {
+        "meta": {
+          "title": "Supported games · 626 Mod Launcher · 626 Labs",
+          "description": "Every game the 626 Mod Launcher supports — engine-curated quick-pick setups and Nexus-identified titles, live from the signed game feed. Updates itself as curation lands.",
+          "ogTitle": "626 Mod Launcher — supported games",
+          "ogDescription": "The live list of games the 626 Mod Launcher supports, straight from the game feed. New games land without an app update.",
+          "ogImage": "/assets/video/mod-launcher/mod-launcher-launch-poster.jpg"
+        },
+        "releaseReviewed": [
+          "estevanhernandez-stack-ed/626-mod-launcher@v0.25.0"
+        ],
+        "nav": [
+          {
+            "label": "GitHub",
+            "href": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher",
+            "hideSm": true
+          },
+          {
+            "label": "Game feed",
+            "href": "https://github.com/estevanhernandez-stack-ed/626-game-manifest"
+          },
+          {
+            "label": "Get the launcher",
+            "href": "#get-launcher",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "title": "Every game the launcher",
+            "titleAccent": "already knows",
+            "dek": "The 626 Mod Launcher ships with a signed game feed — engines, mod folders, Nexus identities — so supported games set up in a couple of clicks. This page reads the <b>same feed the app reads</b>, live. When a new game lands in curation, it shows up here and in the launcher without either one shipping an update.",
+            "fine": "loading the live list…",
+            "fineId": "hero-fine",
+            "get": {
+              "id": "get-launcher",
+              "label": "Get 626 Mod Launcher",
+              "links": [
+                {
+                  "label": "Microsoft Store",
+                  "href": "https://apps.microsoft.com/detail/9N53V6RRJK95?cid=site-product",
+                  "primary": true,
+                  "store": true
+                },
+                {
+                  "label": "Direct download",
+                  "href": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher/releases"
+                }
+              ]
+            }
+          },
+          {
+            "type": "section",
+            "blocks": [
+              {
+                "type": "nudge",
+                "title": "626 Mod Launcher",
+                "shareText": "626 Mod Launcher — reversible mod manager for Windows. Open on desktop.",
+                "text": "<b>On a phone?</b> The launcher installs on Windows. Save this page and open it on your desktop, both install paths are right below."
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "See it run",
+            "aside": "the launch cut",
+            "blocks": [
+              {
+                "type": "video",
+                "base": "assets/video/mod-launcher/mod-launcher-launch",
+                "caption": "Install a game, stack the mods, hit play · sound on · <a href=\"mod-launcher-trailer.html\">watch on its own page</a>"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "blocks": [
+              {
+                "type": "gameFeed",
+                "feed": "https://raw.githubusercontent.com/estevanhernandez-stack-ed/626-game-manifest/main/supported-games.json",
+                "loading": "Fetching the live game feed…",
+                "fallback": "The live list is momentarily unavailable — the games are fine, the fetch isn't. See the full list on <a href=\"https://github.com/estevanhernandez-stack-ed/626-game-manifest/blob/main/SUPPORTED-GAMES.md\">GitHub</a>.",
+                "featured": {
+                  "heading": "Featured",
+                  "aside": "quick-pick, ranked"
+                },
+                "curated": {
+                  "heading": "Engine-curated",
+                  "dek": "Quick-pick setup — the launcher already knows the engine and the mod folder. Add the game, drop a mod, play."
+                },
+                "nexus": {
+                  "heading": "Nexus-identified",
+                  "dek": "Known on Nexus Mods; the launcher detects the engine from the game folder at runtime. Everything still toggles reversibly."
+                },
+                "request": {
+                  "q": "Missing a game?",
+                  "d": "Request it with the facts you have — Steam ID, engine if you know it. Curation lands fast.",
+                  "links": [
+                    {
+                      "label": "Request a game",
+                      "href": "https://github.com/estevanhernandez-stack-ed/626-game-manifest/issues/new?template=game-request.yml",
+                      "primary": true
+                    },
+                    {
+                      "label": "Raw JSON",
+                      "href": "https://raw.githubusercontent.com/estevanhernandez-stack-ed/626-game-manifest/main/supported-games.json"
+                    }
+                  ]
+                },
+                "repo": "estevanhernandez-stack-ed/626-game-manifest",
+                "meterLabel": "the 626 game feed"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "Where it ended up",
+            "sub": "Every Microsoft Store install since launch, plotted by country. Dot area is proportional to install count.",
+            "aside": "Lifetime installs",
+            "blocks": [
+              {
+                "type": "reachMap",
+                "label": "626 Mod Launcher"
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · 626 Mod Launcher",
+          "disclaimer": "Game names and cover art belong to their publishers. Covers served from Steam's public CDN.",
+          "links": [
+            {
+              "label": "Privacy",
+              "href": "privacy.html"
+            }
+          ]
+        }
+      },
       "productPageLabel": "Browse supported games",
       "banner": "assets/thumb-mod-launcher.png",
       "meta": "Free on MS Store · Windows native",
@@ -2187,6 +3107,418 @@
       "banner": null,
       "meta": "Private testing · read-focused · Etsy Open API v3",
       "screenshots": []
+    }
+  ],
+  "pages": [
+    {
+      "id": "rororo-plugins",
+      "title": "RoRoRo",
+      "repo": "estevanhernandez-stack-ed/ROROROblox",
+      "productPage": "rororo-plugins.html",
+      "pageSpec": {
+        "meta": {
+          "title": "RoRoRo Plugin Marketplace · 626 Labs",
+          "description": "Every RoRoRo plugin in one place — live versions, install links, and what each one does. The same catalog the app reads, on the web. An independent third-party tool — not affiliated with Roblox Corporation.",
+          "ogTitle": "RoRoRo Plugin Marketplace",
+          "ogDescription": "Every RoRoRo plugin in one place — live versions, install links, and what each one does. Refreshed automatically whenever a plugin ships.",
+          "ogImage": "/assets/thumb-rororo.png"
+        },
+        "nav": [
+          {
+            "label": "RoRoRo",
+            "href": "rororo.html"
+          },
+          {
+            "label": "GitHub",
+            "href": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
+            "hideSm": true
+          },
+          {
+            "label": "Get RoRoRo",
+            "href": "#get-rororo",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "title": "The RoRoRo",
+            "titleAccent": "plugin marketplace",
+            "dek": "Every RoRoRo plugin in one place — what it does, the version that's actually shipped, and the link that installs it. This page reads the <b>same catalog the app reads</b>, then checks each plugin's live releases, so it can't go stale when a plugin ships.",
+            "fine": "Refreshed automatically · same data as the in-app marketplace",
+            "get": {
+              "id": "get-rororo",
+              "label": "You'll need RoRoRo first",
+              "versionId": "host-ver",
+              "links": [
+                {
+                  "label": "Microsoft Store",
+                  "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product",
+                  "primary": true,
+                  "store": true,
+                  "id": "host-store"
+                },
+                {
+                  "label": "Direct download",
+                  "href": "https://github.com/estevanhernandez-stack-ed/ROROROblox/releases",
+                  "id": "host-setup"
+                }
+              ]
+            }
+          },
+          {
+            "type": "section",
+            "blocks": [
+              {
+                "type": "pluginCatalog",
+                "icons": {
+                  "626labs.ur-afk": "assets/rororo-family/ur-afk.svg",
+                  "626labs.ur-ocr": "assets/rororo-family/ur-ocr.svg",
+                  "626labs.ur-score": "assets/rororo-family/ur-score.png",
+                  "626labs.ur-task": "assets/rororo-family/ur-task.svg"
+                },
+                "fallback": "Couldn't load the live catalog just now — the plugins themselves are fine. Browse them directly: <a href=\"https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases\">Ur Task</a> · <a href=\"https://github.com/estevanhernandez-stack-ed/Ur-OCR/releases\">Ur OCR</a> · <a href=\"https://github.com/estevanhernandez-stack-ed/Ur-Score/releases\">Ur Score</a> · <a href=\"https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases\">Ur AFK</a>.",
+                "meters": {
+                  "626labs.ur-afk": {
+                    "repo": "estevanhernandez-stack-ed/rororo-ur-afk",
+                    "label": "Ur AFK"
+                  },
+                  "626labs.ur-ocr": {
+                    "repo": "estevanhernandez-stack-ed/Ur-OCR",
+                    "label": "Ur OCR"
+                  },
+                  "626labs.ur-score": {
+                    "repo": "estevanhernandez-stack-ed/Ur-Score",
+                    "label": "Ur Score"
+                  },
+                  "626labs.ur-task": {
+                    "repo": "estevanhernandez-stack-ed/rororo-ur-task",
+                    "label": "Ur Task"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "Installing a plugin",
+            "aside": "two ways in",
+            "blocks": [
+              {
+                "type": "howto",
+                "columns": [
+                  {
+                    "key": "If your RoRoRo has the Plugins window",
+                    "steps": [
+                      "Direct-download builds (v1.9+): open <b>Plugins</b> — the marketplace is built in. Pick a plugin, click <b>Install</b>, done.",
+                      "On an older build, or to install anything by hand: click <b>Copy install URL</b> on a card here, then paste it into <b>Plugins → Install</b>.",
+                      "RoRoRo fetches the manifest and <b>verifies the SHA-256</b> before unpacking anything, then shows a <b>consent sheet</b> — every capability the plugin wants, itemized, each one yours to allow.",
+                      "<b>Restart RoRoRo.</b> Plugins start with the host, so a fresh install runs after the restart prompt."
+                    ]
+                  },
+                  {
+                    "key": "Why the Store build sends you here",
+                    "paragraphs": [
+                      "The Microsoft Store edition can't ship the in-app marketplace (Store policy draws the line at downloadable code), so <b>this page is its marketplace</b> — same catalog, same plugins.",
+                      "Store users: plugins install the same way — <b>Copy install URL</b> here, paste into <b>Plugins → Install</b> in the app. The SHA-256 check and the consent sheet work identically on every edition.",
+                      "Building your own? A plugin is a separate signed Windows app on the gRPC contract — ship <code>manifest.json</code> + <code>manifest.sha256</code> + <code>plugin.zip</code> as a GitHub release. Start at the <a href=\"https://github.com/estevanhernandez-stack-ed/ROROROblox/blob/main/docs/plugins/AUTHOR_GUIDE.md\">plugin author guide</a>."
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · RoRoRo plugins",
+          "disclaimer": "\"Roblox\" is a trademark of Roblox Corporation. RoRoRo and its plugins are independent third-party tools.",
+          "links": [
+            {
+              "label": "RoRoRo",
+              "href": "rororo.html"
+            },
+            {
+              "label": "Privacy",
+              "href": "privacy.html"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rororo-trailer",
+      "title": "RORORO launch trailer",
+      "productPage": "rororo-trailer.html",
+      "pageSpec": {
+        "meta": {
+          "title": "RORORO launch trailer: eight Roblox clients on one PC · 626 Labs",
+          "description": "Watch the RORORO launch trailer: eight Roblox clients on one PC, saved accounts one click each, Squad Launch into one private server, and stats that stay on your machine. In seven languages. Free for Windows and Mac.",
+          "ogTitle": "RORORO launch trailer: eight Roblox clients on one PC",
+          "ogDescription": "Watch the RORORO launch trailer: eight Roblox clients on one PC, saved accounts one click each, Squad Launch into one private server, and stats that stay on your machine. In seven languages. Free for Windows and Mac.",
+          "ogImage": "/assets/video/rororo/rororo-launch-poster.jpg",
+          "ogType": "video.other",
+          "video": {
+            "url": "/assets/video/rororo/rororo-launch-16x9.mp4",
+            "width": 1920,
+            "height": 1080
+          }
+        },
+        "jsonLd": {
+          "@context": "https://schema.org",
+          "@type": "VideoObject",
+          "name": "RORORO launch trailer: eight Roblox clients on one PC",
+          "description": "RORORO is a free multi-launcher for Roblox on Windows and Mac. The trailer shows eight clients running on one PC, saving every alt once and launching each with one click, Squad Launch sending every account into the same private server, the history stats page, themes and the theme builder, and the encrypted account vault. Not affiliated with Roblox Corporation.",
+          "thumbnailUrl": [
+            "https://626labs.dev/assets/video/rororo/rororo-launch-poster.jpg"
+          ],
+          "uploadDate": "2026-08-30T15:33:01-05:00",
+          "duration": "PT63S",
+          "contentUrl": "https://626labs.dev/assets/video/rororo/rororo-launch-16x9.mp4",
+          "inLanguage": "en",
+          "publisher": {
+            "@type": "Organization",
+            "name": "626Labs LLC",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://626labs.dev/assets/brand/icon-transparent-512.png"
+            }
+          }
+        },
+        "nav": [
+          {
+            "label": "The lab",
+            "href": "/",
+            "hideSm": true
+          },
+          {
+            "label": "RORORO",
+            "href": "rororo.html"
+          },
+          {
+            "label": "Get RORORO",
+            "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-trailer",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "eyebrow": "626 Labs · Video · RORORO launch trailer",
+            "title": "Eight Roblox clients.",
+            "titleAccent": "One PC, 63 seconds."
+          },
+          {
+            "type": "section",
+            "blocks": [
+              {
+                "type": "video",
+                "base": "assets/video/rororo/rororo-launch",
+                "cut": "The launch cut",
+                "caption": "The launch cut · 63 seconds, sound on",
+                "langs": [
+                  {
+                    "code": "",
+                    "label": "English"
+                  },
+                  {
+                    "code": "fr",
+                    "label": "Français",
+                    "secs": 61
+                  },
+                  {
+                    "code": "de",
+                    "label": "Deutsch",
+                    "secs": 65
+                  },
+                  {
+                    "code": "ru",
+                    "label": "Русский",
+                    "secs": 63
+                  },
+                  {
+                    "code": "pt-BR",
+                    "label": "Português",
+                    "secs": 60
+                  },
+                  {
+                    "code": "pl",
+                    "label": "Polski",
+                    "secs": 61
+                  },
+                  {
+                    "code": "es",
+                    "label": "Español",
+                    "secs": 59
+                  },
+                  {
+                    "code": "en-GB",
+                    "label": "English (UK)",
+                    "secs": 64
+                  }
+                ]
+              },
+              {
+                "type": "watch",
+                "heading": "What the trailer shows",
+                "paragraphs": [
+                  "<em>RORORO</em> is a free multi-launcher for Roblox on Windows and Mac. It runs several Roblox clients side by side, each signed in as a different saved account. The trailer comes in seven languages, each with the app captured in that language: pick one under the player."
+                ],
+                "beats": [
+                  "<b>Eight clients on one PC,</b> running at the same time.",
+                  "<b>Save every alt once,</b> then launch each with one click, with live status and the game each one is in.",
+                  "<b>Squad Launch:</b> one link, and every account lands in the same private server.",
+                  "<b>History:</b> peak alts at once, total uptime and login streaks, computed on your machine.",
+                  "<b>Themes,</b> plus a theme builder.",
+                  "<b>Your password never touches the app.</b> The vault is encrypted, and a memory watchdog warns before a client runs your PC out of memory."
+                ],
+                "links": [
+                  {
+                    "label": "Get it on Microsoft Store",
+                    "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-trailer",
+                    "primary": true,
+                    "store": true
+                  },
+                  {
+                    "label": "Get it for Mac",
+                    "href": "https://github.com/estevanhernandez-stack-ed/rororo-mac"
+                  },
+                  {
+                    "label": "The full RORORO page",
+                    "href": "rororo.html"
+                  }
+                ],
+                "note": "Free on Windows and Mac. The official Roblox client, unmodified."
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · RORORO launch trailer",
+          "disclaimer": "Independent third-party tool. Not affiliated with Roblox Corporation.",
+          "links": [
+            {
+              "label": "Privacy",
+              "href": "privacy.html"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mod-launcher-trailer",
+      "title": "626 Mod Launcher trailer",
+      "productPage": "mod-launcher-trailer.html",
+      "pageSpec": {
+        "meta": {
+          "title": "626 Mod Launcher trailer: your files are yours · 626 Labs",
+          "description": "Watch the 626 Mod Launcher trailer: mods that move aside instead of being deleted, Steam games found automatically, save snapshots before you experiment, and your whole setup backed up to one file. Free on the Microsoft Store.",
+          "ogTitle": "626 Mod Launcher trailer: your files are yours",
+          "ogDescription": "Watch the 626 Mod Launcher trailer: mods that move aside instead of being deleted, Steam games found automatically, save snapshots before you experiment, and your whole setup backed up to one file. Free on the Microsoft Store.",
+          "ogImage": "/assets/video/mod-launcher/mod-launcher-launch-poster.jpg",
+          "ogType": "video.other",
+          "video": {
+            "url": "/assets/video/mod-launcher/mod-launcher-launch-16x9.mp4",
+            "width": 1920,
+            "height": 1080
+          }
+        },
+        "jsonLd": {
+          "@context": "https://schema.org",
+          "@type": "VideoObject",
+          "name": "626 Mod Launcher trailer: your files are yours",
+          "description": "626 Mod Launcher is a free Windows mod manager built on one rule: your files are yours. The trailer shows mods turned off by moving their files aside rather than deleting them, Steam games found automatically, a signed game feed that adds games without an app update, save snapshots before you experiment, and backing up every game's mods, saves and settings to one file. No ads, no telemetry, no account.",
+          "thumbnailUrl": [
+            "https://626labs.dev/assets/video/mod-launcher/mod-launcher-launch-poster.jpg"
+          ],
+          "uploadDate": "2026-08-30T16:20:59-05:00",
+          "duration": "PT53S",
+          "contentUrl": "https://626labs.dev/assets/video/mod-launcher/mod-launcher-launch-16x9.mp4",
+          "inLanguage": "en",
+          "publisher": {
+            "@type": "Organization",
+            "name": "626Labs LLC",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://626labs.dev/assets/brand/icon-transparent-512.png"
+            }
+          }
+        },
+        "nav": [
+          {
+            "label": "The lab",
+            "href": "/",
+            "hideSm": true
+          },
+          {
+            "label": "Supported games",
+            "href": "mod-launcher-games.html"
+          },
+          {
+            "label": "Get the launcher",
+            "href": "https://apps.microsoft.com/detail/9N53V6RRJK95?cid=site-trailer",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "eyebrow": "626 Labs · Video · 626 Mod Launcher trailer",
+            "title": "Every game, every mod.",
+            "titleAccent": "Your files are yours."
+          },
+          {
+            "type": "section",
+            "blocks": [
+              {
+                "type": "video",
+                "base": "assets/video/mod-launcher/mod-launcher-launch",
+                "caption": "The launch cut · 53 seconds, sound on"
+              },
+              {
+                "type": "watch",
+                "heading": "What the trailer shows",
+                "paragraphs": [
+                  "<em>626 Mod Launcher</em> is a free mod manager for Windows, built on one rule: your files are yours."
+                ],
+                "beats": [
+                  "<b>Off means moved aside,</b> never deleted. Flip a mod back on and it's where it was.",
+                  "<b>Steam games found automatically,</b> and a signed game feed adds new games without an app update.",
+                  "<b>Save snapshots</b> before you experiment, one click to go back.",
+                  "<b>Back up everything:</b> every game's mods, saves and settings in one file, and restore exactly what you choose.",
+                  "<b>No ads, no telemetry, no account.</b>"
+                ],
+                "links": [
+                  {
+                    "label": "Get it on Microsoft Store",
+                    "href": "https://apps.microsoft.com/detail/9N53V6RRJK95?cid=site-trailer",
+                    "primary": true,
+                    "store": true
+                  },
+                  {
+                    "label": "Direct download",
+                    "href": "https://github.com/estevanhernandez-stack-ed/626-mod-launcher/releases"
+                  },
+                  {
+                    "label": "Every supported game",
+                    "href": "mod-launcher-games.html"
+                  }
+                ],
+                "note": "Free on the Microsoft Store, with the full build on GitHub."
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · 626 Mod Launcher trailer",
+          "disclaimer": "Game names and cover art belong to their publishers.",
+          "links": [
+            {
+              "label": "Privacy",
+              "href": "privacy.html"
+            }
+          ]
+        }
+      }
     }
   ],
   "pluginFamily": {

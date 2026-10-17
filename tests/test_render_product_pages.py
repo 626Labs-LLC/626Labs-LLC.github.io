@@ -375,3 +375,88 @@ def test_conundrum_page_takes_its_links_from_site_json():
     # The click history continues: same event paths as the hand page.
     assert "path: \"etsy-click/\" + slug" in html
     assert 'data-repo="626Labs-LLC/626labs-pod-pipeline"' in html
+
+
+# ─── the last six pages: live blocks, standalone pages, watch pages ──────
+# (rororo, rororo-plugins, mod-launcher-games, the two trailers, snapsnip;
+# 2026-10-17, which finished issue #200's list)
+
+def _read(rel):
+    return (ROOT / rel).read_text(encoding="utf-8")
+
+
+def test_the_last_six_pages_are_generated():
+    pages = rpp.generated_pages()
+    for rel in ("rororo.html", "rororo-plugins.html", "mod-launcher-games.html",
+                "rororo-trailer.html", "mod-launcher-trailer.html", "snapsnip.html"):
+        assert rel in pages, rel
+        assert "Do not hand-edit" in _read(rel)
+    # Standalone pages name their source as `pages`, not products.
+    assert "(pages[id=rororo-trailer].pageSpec)" in _read("rororo-trailer.html")
+
+
+def test_release_markers_carry_over():
+    assert 'content="estevanhernandez-stack-ed/ROROROblox@' in _read("rororo.html")
+    assert 'content="estevanhernandez-stack-ed/626-mod-launcher@' in _read("mod-launcher-games.html")
+
+
+def test_watch_pages_keep_their_video_seo():
+    for rel, dur in (("rororo-trailer.html", "PT63S"), ("mod-launcher-trailer.html", "PT53S")):
+        html = _read(rel)
+        assert '<meta property="og:type" content="video.other" />' in html
+        assert '<meta property="og:video" content="https://626labs.dev/assets/video/' in html
+        ld = json.loads(re.search(r'<script type="application/ld\+json">\n(.*?)\n</script>', html, re.S).group(1))
+        assert ld["@type"] == "VideoObject" and ld["duration"] == dur
+        # The video is the main content: it comes right after the h1.
+        main = html[html.index("<main"):]
+        assert main.index("<h1>") < main.index("<video") < main.index("<h2>")
+
+
+def test_page_scripts_are_emitted_once_each_for_the_blocks_used():
+    rororo = _read("rororo.html")
+    assert rororo.count('src="/assets/rororo-plugins.js"') == 1
+    assert rororo.count('src="/assets/video-langs.js"') == 1
+    assert rororo.count('src="/assets/phone-nudge.js"') == 1
+    # A video without language pills needs no script.
+    assert "video-langs.js" not in _read("mod-launcher-trailer.html")
+    assert 'src="/assets/game-feed.js"' in _read("mod-launcher-games.html")
+    for script in ("video-langs.js", "phone-nudge.js", "rororo-plugins.js", "game-feed.js"):
+        assert (ROOT / "assets" / script).exists()
+
+
+def test_plugin_meters_stay_in_the_page_for_the_repo_activity_bot():
+    # refresh-repo-activity.mjs finds the repos it tracks by scanning root
+    # HTML for data-repo=, so the meters the marketplace script attaches to
+    # its cards must be written into the page, not into the script.
+    html = _read("rororo-plugins.html")
+    tpl = html[html.index('<template class="plugin-meters">'):html.index("</template>")]
+    for repo in ("rororo-ur-afk", "Ur-OCR", "Ur-Score", "rororo-ur-task"):
+        assert f'data-repo="estevanhernandez-stack-ed/{repo}"' in tpl
+    assert 'data-repo="estevanhernandez-stack-ed/626-game-manifest"' in _read("mod-launcher-games.html")
+
+
+def test_the_game_feed_keeps_its_fallback_and_fixture_url():
+    html = _read("mod-launcher-games.html")
+    assert 'data-feed="https://raw.githubusercontent.com/estevanhernandez-stack-ed/626-game-manifest/main/supported-games.json"' in html
+    assert '<div class="fallback" hidden>' in html and 'id="hero-fine"' in html
+    assert 'id="curated-count"' in html and 'id="nexus-count"' in html
+
+
+def test_language_pills_default_to_the_first_cut():
+    html = _read("rororo-trailer.html")
+    assert html.count('class="lang-pill') == 8
+    assert '<button type="button" class="lang-pill is-active" data-lang="">English</button>' in html
+    assert 'data-base="assets/video/rororo/rororo-launch" data-cut="The launch cut"' in html
+
+
+def test_a_heading_with_sub_or_aside_is_a_split_row_and_one_without_is_unchanged():
+    plain = rpp.section_head({"heading": "A"})
+    assert plain == '    <div class="section-hd">\n      <h2>A</h2>\n    </div>\n'
+    split = rpp.section_head({"heading": "A", "sub": "<b>s</b>", "aside": "x", "asideId": "n"})
+    assert 'class="section-hd split"' in split and '<p class="sub"><b>s</b></p>' in split
+    assert '<div class="r" id="n">x</div>' in split
+
+
+def test_the_nudge_copies_the_canonical_url():
+    assert 'data-url="https://626labs.dev/rororo.html"' in _read("rororo.html")
+    assert 'data-url="https://626labs.dev/mod-launcher-games.html"' in _read("mod-launcher-games.html")

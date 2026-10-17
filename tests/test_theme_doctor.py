@@ -1005,19 +1005,18 @@ def test_browser_checks_open_every_hand_authored_product_page():
     # before it left this tuple for the generated-page list (#200; see
     # test_browser_checks_open_every_generated_product_page).
     assert td.BROWSER_CHECK_LIVE_PAGES == (
-        "rororo-plugins.html", "rororo.html",
-        "mod-launcher-games.html", "thesis.html", "workflow.html",
+        "thesis.html", "workflow.html",
         "press.html", "privacy.html",
         "404.html", "play/index.html",
-        "year-in-review.html", "rororo-trailer.html", "mod-launcher-trailer.html",
-        "snapsnip.html",
+        "year-in-review.html",
     )
-    # bacon-trail/index.html and sanduhr/index.html left this tuple on
-    # 2026-10-17, the way etsy-mcp.html did: they are generated now, so the
+    # Every product page issue #200 listed left this tuple by 2026-10-17,
+    # the way etsy-mcp.html did first: they are generated now, so the
     # generated-page list carries them into the browser gate.
-    assert "bacon-trail/index.html" in td.browser_check_live_pages()
-    assert "sanduhr/index.html" in td.browser_check_live_pages()
-    assert "conundrum.html" in td.browser_check_live_pages()
+    for page in ("bacon-trail/index.html", "sanduhr/index.html", "conundrum.html",
+                 "rororo.html", "rororo-plugins.html", "mod-launcher-games.html",
+                 "rororo-trailer.html", "mod-launcher-trailer.html", "snapsnip.html"):
+        assert page in td.browser_check_live_pages(), page
     previewable = _render_hub_previewable_pages()
     for name in td.BROWSER_CHECK_LIVE_PAGES:
         assert (ROOT / name).exists()
