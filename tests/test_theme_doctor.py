@@ -1008,10 +1008,14 @@ def test_browser_checks_open_every_hand_authored_product_page():
         "conundrum.html", "rororo-plugins.html", "rororo.html",
         "mod-launcher-games.html", "thesis.html", "workflow.html",
         "press.html", "privacy.html",
-        "404.html", "bacon-trail/index.html", "play/index.html", "sanduhr/index.html",
+        "404.html", "play/index.html", "sanduhr/index.html",
         "year-in-review.html", "rororo-trailer.html", "mod-launcher-trailer.html",
         "snapsnip.html",
     )
+    # bacon-trail/index.html left this tuple on 2026-10-17, the way
+    # etsy-mcp.html did: it is generated now, so the generated-page list
+    # carries it into the browser gate.
+    assert "bacon-trail/index.html" in td.browser_check_live_pages()
     previewable = _render_hub_previewable_pages()
     for name in td.BROWSER_CHECK_LIVE_PAGES:
         assert (ROOT / name).exists()
@@ -1307,16 +1311,18 @@ def test_the_browser_gate_opens_every_previewable_theme_css_page():
 
 
 def test_live_pages_are_keyed_by_repo_relative_path_and_none_collide():
-    # Two of the gate's pages are named index.html (bacon-trail/, sanduhr/),
-    # as is the home page. Keyed on Path.name they would collapse into one
-    # entry; the tuple has to hold their repo-relative posix paths, every
-    # entry has to exist on disk, and the bare names have to stay distinct
-    # from the home archetype's rendered output.
-    assert "bacon-trail/index.html" in td.BROWSER_CHECK_LIVE_PAGES
-    assert "sanduhr/index.html" in td.BROWSER_CHECK_LIVE_PAGES
-    assert "index.html" not in td.BROWSER_CHECK_LIVE_PAGES
-    assert len(set(td.BROWSER_CHECK_LIVE_PAGES)) == len(td.BROWSER_CHECK_LIVE_PAGES)
-    for name in td.BROWSER_CHECK_LIVE_PAGES:
+    # Several of the gate's pages are named index.html (bacon-trail/,
+    # play/bacon/, sanduhr/), as is the home page. Keyed on Path.name they
+    # would collapse into one entry; the full list (hand-authored plus
+    # generated) has to hold their repo-relative posix paths, every entry has
+    # to exist on disk, and the bare names have to stay distinct from the
+    # home archetype's rendered output.
+    pages = td.browser_check_live_pages()
+    assert "bacon-trail/index.html" in pages
+    assert "sanduhr/index.html" in pages
+    assert "index.html" not in pages
+    assert len(set(pages)) == len(pages)
+    for name in pages:
         assert "\\" not in name and not name.startswith("/"), name
         assert (ROOT / name).is_file(), name
 

@@ -382,6 +382,20 @@ h1{ text-shadow: var(--page-bloom); }
   .stats{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .shots{ grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ---------- Game pages (play.widgets entries with a pageSpec) ----------
+   A centered hero over the game's stage. The game scopes its own styles
+   under its widget root and reads nothing from the page, so the stage only
+   sizes and centers the mount. Nothing here applies without .hero-center or
+   .widget-stage, so the product pages render exactly as before. */
+.hero-center{ text-align:center; display:flex; flex-direction:column; align-items:center; }
+.hero-center h1{ font-size:clamp(40px, 6vw, 68px); line-height:1.0; letter-spacing:-0.03em; }
+.hero-center p.dek{ margin-left:auto; margin-right:auto; max-width:560px; font-size:18px; line-height:1.55; }
+.hero-center p.dek em{ font-style:normal; font-weight:500; color:var(--fg-1); }
+.hero-center .fine{ text-transform:none; font-size:12px; letter-spacing:.04em; }
+/* text-align: the game was built on a centered page and inherits it. */
+.widget-stage{ display:flex; justify-content:center; width:100%; margin: 12px 0 8px; text-align:center; }
+.widget-stage .play-widget{ width:100%; max-width:440px; }
 </style>
 <link rel="stylesheet" href="/assets/logos/signature.css">
 </head>
