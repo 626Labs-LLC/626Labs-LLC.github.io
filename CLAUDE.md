@@ -465,7 +465,7 @@ hand-edit the bundle output at `widget-bacon-trail/`.
 | Check whether a branch moved any pixels | `python3 scripts/visual-diff.py origin/main` (base ref FIRST), or put the `visual-diff` label on the PR |
 | Queue a theme for the next rotation | Append its slug to `"queue"` in `content/themes.json` |
 | Roll back a bad rotation | `git revert` the `chore(themes): rotate to ...` commit |
-| Update a product page after a release | Open the `release-review` issue, read each listed release's notes, fix the page's claims, and move its `release-reviewed` marker to the newest tag in the same commit. A new product page tied to a repo gets a marker when it ships. |
+| Update a product page after a release | Open the `release-review` issue, read each listed release's notes, fix the page's claims, and move its `release-reviewed` marker to the newest tag in the same commit. **On a generated page** (`render-product-pages.py --list-outputs`: sanduhr, conundrum, bacon-trail, rtclickpng, rbx15, etsy-mcp) both live in `content/site.json` (the entry's `pageSpec`, marker under `releaseReviewed`); an HTML edit is overwritten on the next render, and the issue says so per page. A new product page tied to a repo gets a marker when it ships. |
 | Ship a new top-level page | Merge (the sitemap updates itself) → then GSC: URL Inspection → Request Indexing for the new URL at search.google.com/search-console. Agents: list the new public URL(s) in every ship report — this step is part of the workflow, not optional polish. Sitemap re-submission is never needed (same URL; Google re-reads it). |
 
 ---

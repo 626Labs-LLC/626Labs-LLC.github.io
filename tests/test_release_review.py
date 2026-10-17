@@ -95,3 +95,19 @@ def test_workflow_never_commits_and_never_runs_on_pull_requests():
     assert "git push" not in text and "git commit" not in text
     assert "pull_request" not in text
     assert "contents: read" in text
+
+
+def test_a_generated_page_is_told_where_its_edits_go():
+    # sanduhr/ has been generated since 2026-10-17: a reviewer who edits its
+    # HTML loses the edit on the next render, so the issue says where to go.
+    results = [
+        {"page": "sanduhr/index.html", "repo": "o/s", "tag": "v1",
+         "releases": [{"tag_name": "v2", "name": "v2", "published_at": "2026-10-16T00:00:00Z", "html_url": "u", "body": "x"}]},
+        {"page": "rororo.html", "repo": "o/r", "tag": "v1",
+         "releases": [{"tag_name": "v2", "name": "v2", "published_at": "2026-10-16T00:00:00Z", "html_url": "u", "body": "x"}]},
+    ]
+    body = rr.render_body(results, generated={"sanduhr/index.html"})
+    sanduhr, rororo = body.split("## `rororo.html`")
+    assert "Generated page" in sanduhr and "pageSpec" in sanduhr
+    assert "Generated page" not in rororo
+    assert "sanduhr/index.html" in rr.generated_pages()

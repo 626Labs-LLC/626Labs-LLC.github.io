@@ -69,71 +69,9 @@ def test_sitemap_honors_exclude(tmp_path, monkeypatch):
     assert "drafts" not in xml
 
 
-# ─── conundrum shop page zones ──────────────────────────────────────
+# conundrum.html's gallery, shop and repo links moved to render-product-pages.py
+# on 2026-10-17; tests/test_render_product_pages.py pins them now.
 
-def _conundrum(**over):
-    base = {
-        "etsyUrl": "https://www.etsy.com/shop/ConundrumByEste",
-        "repoUrl": None,
-        "products": [
-            {
-                "title": "Fire & Ice Spider Monster Joggers",
-                "price": "$46.99",
-                "image": "assets/screenshots/conundrum/fire-ice-spider-monster-joggers.jpg",
-                "etsyListing": "https://www.etsy.com/listing/111",
-                "chip": "recently sold",
-            },
-            {
-                "title": "Not My Problem Penguin Crew Socks",
-                "price": "$21.99",
-                "image": "assets/screenshots/conundrum/not-my-problem-penguin-crew-socks.jpg",
-                "etsyListing": "https://www.etsy.com/listing/222",
-            },
-        ],
-    }
-    base.update(over)
-    return base
-
-
-def test_conundrum_products_renders_cards_in_array_order():
-    html = render_hub.render_conundrum_products(_conundrum())
-    assert html.count('class="merch-card"') == 2
-    assert html.index("Fire &amp; Ice") < html.index("Penguin")
-    assert 'href="https://www.etsy.com/listing/111"' in html
-    assert 'src="assets/screenshots/conundrum/fire-ice-spider-monster-joggers.jpg"' in html
-    assert "$46.99" in html
-
-
-def test_conundrum_products_chip_is_optional():
-    html = render_hub.render_conundrum_products(_conundrum())
-    assert html.count('class="merch-chip"') == 1
-    assert "recently sold" in html
-
-
-def test_conundrum_products_slugs_data_etsy():
-    html = render_hub.render_conundrum_products(_conundrum())
-    assert 'data-etsy="fire-ice-spider-monster-joggers"' in html
-
-
-def test_conundrum_products_empty_list_renders_nothing():
-    assert render_hub.render_conundrum_products(_conundrum(products=[])) == ""
-
-
-def test_conundrum_repo_collapses_when_null():
-    assert render_hub.render_conundrum_repo(_conundrum()) == ""
-    assert render_hub.render_conundrum_repo(_conundrum(repoUrl="")) == ""
-
-
-def test_conundrum_repo_renders_when_set():
-    html = render_hub.render_conundrum_repo(
-        _conundrum(repoUrl="https://github.com/626Labs-LLC/pod-pipeline")
-    )
-    assert 'href="https://github.com/626Labs-LLC/pod-pipeline"' in html
-    assert 'class="repo-cta"' in html
-    assert "Read the code" in html
-
-
-# ─── plugin-family grouping ─────────────────────────────────────────
 
 def _products():
     mk = lambda i: {"id": i, "title": i, "description": "d", "tags": [], "status": "live"}
@@ -705,7 +643,6 @@ def test_every_stylesheet_a_page_links_is_one_the_doctor_token_checks():
 # else. Kept as one list so a fifth page joins every test below at once
 # instead of joining whichever ones someone remembered.
 PRODUCT_TOKEN_PAGES = (
-    render_hub.CONUNDRUM_HTML,
     render_hub.ROROROPLUGINS_HTML,
     render_hub.RORORO_HTML,
     render_hub.MODLAUNCHERGAMES_HTML,
@@ -767,24 +704,9 @@ def test_theme_css_constants_agree_in_both_directions():
     # is the EXCLUSION list and thesis.html has no block of its own. The
     # exclusions are exactly the two pages main() renders in their own
     # block, and that is a fact worth stating rather than deriving.
-    assert render_hub.THEME_CSS_MULTI_ZONE_PAGES == (
-        render_hub.THEMES_HTML, render_hub.CONUNDRUM_HTML,
-    )
-
-
-def test_conundrum_keeps_its_gallery_zones_when_the_theme_css_zone_renders():
-    # conundrum.html is the first page to carry the theme-css zone AND
-    # renderer-owned content zones. main() renders it once, in its own
-    # block; this pins that a full render leaves BOTH intact rather than
-    # one overwriting the other.
-    slug = render_hub.theme_registry.active_slug(render_hub.theme_registry.load())
-    html = render_hub.CONUNDRUM_HTML.read_text(encoding="utf-8")
-    assert (
-        render_hub.render_theme_css_link(slug, "archetypes/product-tokens.css") in html
-    )
-    assert "<!-- SITE_JSON:conundrum-products:start -->" in html
-    assert "<!-- SITE_JSON:conundrum-repo:start -->" in html
-    assert 'class="merch-card"' in html
+    # conundrum.html left on 2026-10-17 (generated now), so themes.html is
+    # the one page main() renders in a block of its own.
+    assert render_hub.THEME_CSS_MULTI_ZONE_PAGES == (render_hub.THEMES_HTML,)
 
 
 def test_preview_covers_every_theme_css_page_except_themes_html():
@@ -1324,23 +1246,6 @@ def test_plugin_family_without_a_card_fails_by_name():
 
 
 # ─── #81: the Etsy shop URL is renderer-owned ────────────────────────
-def test_conundrum_shop_links_come_from_etsy_url():
-    page = (ROOT / "conundrum.html").read_text(encoding="utf-8")
-    site = json.loads((ROOT / "content" / "site.json").read_text(encoding="utf-8"))
-    url = site["conundrum"]["etsyUrl"]
-    for where, el_id in (("nav", "nav-shop"), ("hero", "hero-shop")):
-        zone = page.split(f"SITE_JSON:conundrum-shop-{where}:start")[1].split(
-            f"SITE_JSON:conundrum-shop-{where}:end")[0]
-        assert f'href="{url}"' in zone and f'id="{el_id}"' in zone
-    edited = render_hub.render_conundrum_shop_cta({"etsyUrl": "https://example.com/s"}, "hero")
-    assert 'href="https://example.com/s"' in edited
-
-
-def test_conundrum_without_etsy_url_fails_by_name():
-    with pytest.raises(SystemExit, match='"etsyUrl"'):
-        render_hub.render_conundrum_shop_cta({}, "nav")
-
-
 def test_lab_runs_cta_renders_a_door_under_the_caption():
     html = render_hub.render_lab_runs({
         "headline": "How the lab runs.",

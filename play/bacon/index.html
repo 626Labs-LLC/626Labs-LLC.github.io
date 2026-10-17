@@ -440,6 +440,34 @@ h1{ text-shadow: var(--page-bloom); }
 .panel a{ color: var(--cyan-pale); }
 .cta-row{ text-align:center; padding: 8px 0 0; }
 .cta-row p{ color:var(--text-dim); margin:0 0 14px; font-size:14px; }
+
+/* ---------- Shop-page blocks (Conundrum, 2026-10-17) ----------
+   Ported from conundrum.html's own stylesheet onto the contract (its two
+   literal colors are --ink-950 and --bg-1 here). Each rule needs its
+   block's class, so no other page moves. */
+.hero-side{ display:flex; flex-wrap:wrap; align-items:center; gap:20px 48px; }
+.hero-side .logo{ width:min(220px, 40vw); height:auto; }
+.hero-side > div{ flex:1 1 320px; min-width:0; }
+.merch-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:22px; margin:18px 0 8px;
+  position:relative; z-index:61; }
+.merch-card{ position:relative; display:block; text-decoration:none; border:1px solid var(--page-hairline); border-radius:var(--r-lg);
+  overflow:hidden; background: var(--page-panel-fill); transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-med) var(--ease-out); }
+.merch-card:hover{ transform:translateY(-3px); border-color:var(--cyan); }
+.merch-img{ width:100%; aspect-ratio:1/1; object-fit:cover; display:block; }
+.merch-chip{ position:absolute; top:12px; left:12px; font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-950); background:var(--cyan); padding:4px 9px; border-radius:999px; font-weight:600; }
+.merch-meta{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:14px 16px; }
+.merch-title{ color:var(--fg-1); font-size:14px; font-weight:600; line-height:1.35; }
+.merch-price{ font-family:var(--font-mono); color:var(--magenta); font-size:13px; white-space:nowrap; }
+.stages{ display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 26px; padding:0; list-style:none; font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; }
+.stages li{ color:var(--fg-2); border:1px solid var(--page-panel-border); border-radius:999px; padding:7px 14px; background: var(--page-panel-fill); }
+.stages li b{ color:var(--cyan); font-weight:500; margin-right:6px; }
+.pull{ border-left:2px solid var(--magenta); margin:26px 0; padding:6px 0 6px 18px; font-family:var(--font-display); font-size:18px;
+  color:var(--fg-1); max-width:560px; line-height:1.5; }
+.cta-arrow p{ color:var(--fg-2); max-width:680px; line-height:1.7; }
+.arrow-link{ display:inline-flex; align-items:center; gap:10px; margin-top:8px; font-family:var(--font-mono); font-size:13px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--cyan); text-decoration:none; border:1px solid var(--cyan); border-radius:var(--r-pill); padding:10px 18px; }
+.arrow-link .ic{ width:16px; height:16px; stroke:currentColor; stroke-width:2; fill:none; }
 </style>
 <link rel="stylesheet" href="/assets/logos/signature.css">
 </head>

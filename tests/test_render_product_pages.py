@@ -324,3 +324,54 @@ def test_a_section_without_a_heading_renders_its_blocks_alone():
     html = rpp.render_section({"id": "x"}, {"type": "section", "blocks": [
         {"type": "cta", "text": "More?", "href": "/x", "label": "Go"}]})
     assert 'class="section-hd"' not in html and '<a class="btn" href="/x">Go</a>' in html
+
+
+# ─── shop pages: merch, references, click tracking (conundrum, 2026-10-17) ─
+
+def _shop(**over):
+    content = {"conundrum": {
+        "etsyUrl": "https://www.etsy.com/shop/ConundrumByEste", "repoUrl": None,
+        "products": [
+            {"title": "Fire & Ice Spider Monster Joggers", "price": "$46.99",
+             "image": "assets/screenshots/conundrum/fire-ice.jpg",
+             "etsyListing": "https://www.etsy.com/listing/111", "chip": "recently sold"},
+            {"title": "Watercolor x Neon Spider Monster Joggers", "price": "$49.99",
+             "image": "assets/screenshots/conundrum/watercolor.jpg",
+             "etsyListing": "https://www.etsy.com/listing/222"},
+        ]}}
+    content["conundrum"].update(over)
+    return {"id": "conundrum", "title": "Conundrum", "_content": content}
+
+
+def test_merch_renders_cards_in_array_order_with_tracked_slugs():
+    html = rpp.block_merch({"source": "@conundrum.products"}, _shop())
+    assert html.count('class="merch-card"') == 2
+    assert html.index("Fire &amp; Ice") < html.index("Watercolor")
+    assert 'href="https://www.etsy.com/listing/111"' in html and "$46.99" in html
+    assert 'data-track="fire-ice-spider-monster-joggers"' in html
+    assert html.count('class="merch-chip"') == 1 and "recently sold" in html
+    assert rpp.block_merch({"source": "@conundrum.products"}, _shop(products=[])) == ""
+
+
+def test_repo_cta_collapses_when_unset_and_renders_when_set():
+    b = {"style": "arrow", "href": "@conundrum.repoUrl", "label": "Read the code", "external": True, "track": "repo"}
+    assert rpp.block_cta(b, _shop()) == ""
+    html = rpp.block_cta(b, _shop(repoUrl="https://github.com/626Labs-LLC/pod-pipeline"))
+    assert 'href="https://github.com/626Labs-LLC/pod-pipeline"' in html and 'data-track="repo"' in html
+    assert 'class="arrow-link"' in html and "Read the code" in html
+
+
+def test_a_shop_link_without_its_url_fails_by_name():
+    with pytest.raises(ValueError, match="etsyUrl"):
+        rpp.link_attrs(_shop(etsyUrl=""), {"label": "Shop on Etsy", "href": "@conundrum.etsyUrl"})
+
+
+def test_conundrum_page_takes_its_links_from_site_json():
+    site = json.loads((ROOT / "content" / "site.json").read_text(encoding="utf-8"))
+    html = (ROOT / "conundrum.html").read_text(encoding="utf-8")
+    url = site["conundrum"]["etsyUrl"]
+    assert html.count(f'href="{url}" target="_blank" rel="noopener" data-track="shop"') == 2  # nav + hero
+    assert html.count('class="merch-card"') == len(site["conundrum"]["products"])
+    # The click history continues: same event paths as the hand page.
+    assert "path: \"etsy-click/\" + slug" in html
+    assert 'data-repo="626Labs-LLC/626labs-pod-pipeline"' in html
