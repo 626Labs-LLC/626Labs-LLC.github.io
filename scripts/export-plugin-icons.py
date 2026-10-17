@@ -667,7 +667,7 @@ GLYPHS = {
 PLUGINS = [
     {
         "id": "vibe-cartographer", "name": "VIBE CARTOGRAPHER",
-        "tagline": "plot your course",
+        "tagline": "find your direction no matter where you start",
         "glyph": "node_graph", "primary": MAGENTA, "secondary": CYAN,  # flagship gets the duo
     },
     {
