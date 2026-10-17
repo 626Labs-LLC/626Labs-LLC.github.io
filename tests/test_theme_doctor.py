@@ -1005,7 +1005,7 @@ def test_browser_checks_open_every_hand_authored_product_page():
     # before it left this tuple for the generated-page list (#200; see
     # test_browser_checks_open_every_generated_product_page).
     assert td.BROWSER_CHECK_LIVE_PAGES == (
-        "conundrum.html", "rororo-plugins.html", "rororo.html",
+        "rororo-plugins.html", "rororo.html",
         "mod-launcher-games.html", "thesis.html", "workflow.html",
         "press.html", "privacy.html",
         "404.html", "play/index.html",
@@ -1017,6 +1017,7 @@ def test_browser_checks_open_every_hand_authored_product_page():
     # generated-page list carries them into the browser gate.
     assert "bacon-trail/index.html" in td.browser_check_live_pages()
     assert "sanduhr/index.html" in td.browser_check_live_pages()
+    assert "conundrum.html" in td.browser_check_live_pages()
     previewable = _render_hub_previewable_pages()
     for name in td.BROWSER_CHECK_LIVE_PAGES:
         assert (ROOT / name).exists()

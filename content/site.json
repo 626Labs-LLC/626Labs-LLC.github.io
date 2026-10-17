@@ -184,6 +184,148 @@
       "productPageLabel": "Visit the shop",
       "banner": "assets/thumb-conundrum.png",
       "meta": "POD merch · Etsy · AI-designed",
+      "pageSpec": {
+        "meta": {
+          "title": "Conundrum by Este · merch built by a machine · 626 Labs",
+          "description": "Conundrum by Este is the 626 Labs merch shop — streetwear-grade prints designed by an AI pipeline and shipped print-on-demand. Socks, joggers, totes, hats. Every design AI-generated, human-approved.",
+          "ogTitle": "Conundrum by Este — merch built by a machine",
+          "ogDescription": "The 626 Labs merch shop. AI-designed, human-approved, print-on-demand. See what's selling and the nine-stage pipeline behind it.",
+          "ogImage": "/assets/thumb-conundrum.png"
+        },
+        "clickTrack": {
+          "prefix": "etsy-click/",
+          "titlePrefix": "Etsy click: "
+        },
+        "nav": [
+          {
+            "label": "Products",
+            "href": "/#work"
+          },
+          {
+            "label": "Field Notes",
+            "href": "/#field-notes"
+          },
+          {
+            "label": "Shop on Etsy",
+            "href": "@conundrum.etsyUrl",
+            "cta": true,
+            "external": true,
+            "track": "shop"
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "align": "side",
+            "logo": {
+              "src": "/assets/conundrum-logo.png",
+              "alt": "Conundrum by Este logo"
+            },
+            "eyebrow": "626 Labs presents",
+            "title": "Conundrum",
+            "titleAccent": "by Este",
+            "dek": "Merch with a plot twist: every design here came out of a machine that was taught taste. Bold prints, zero clip-art energy, socks that go harder than they need to. AI-generated, human-approved, printed on demand.",
+            "get": {
+              "label": "Shop",
+              "links": [
+                {
+                  "href": "@conundrum.etsyUrl",
+                  "label": "Shop on Etsy",
+                  "primary": true,
+                  "external": true,
+                  "track": "shop"
+                }
+              ]
+            }
+          },
+          {
+            "type": "section",
+            "eyebrow": "The lineup",
+            "heading": "What's moving",
+            "blocks": [
+              {
+                "type": "merch",
+                "source": "@conundrum.products"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "eyebrow": "The machine behind it",
+            "heading": "Nine stages, concept to listing",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Every product in the shop rode the same pipeline: a Python script library that takes a concept to a live Etsy listing with a human approval gate at the end. Gemini generates the art, a QA pass filters the AI slop, classical CV cuts the background, PIL composites the type, and one base artwork fans out into a full variant matrix before anything uploads."
+                ]
+              },
+              {
+                "type": "steps",
+                "items": [
+                  {
+                    "n": "01",
+                    "text": "concept"
+                  },
+                  {
+                    "n": "02",
+                    "text": "generate — textless, always"
+                  },
+                  {
+                    "n": "03",
+                    "text": "QA — the AI-slop filter"
+                  },
+                  {
+                    "n": "04",
+                    "text": "background removal"
+                  },
+                  {
+                    "n": "05",
+                    "text": "text composite"
+                  },
+                  {
+                    "n": "06",
+                    "text": "variant matrix"
+                  },
+                  {
+                    "n": "07",
+                    "text": "upload"
+                  },
+                  {
+                    "n": "08",
+                    "text": "create product"
+                  },
+                  {
+                    "n": "09",
+                    "text": "publish — human go required"
+                  }
+                ]
+              },
+              {
+                "type": "pull",
+                "text": "The model never writes the words. Art generates textless; type gets composited after — so the lettering is always real."
+              },
+              {
+                "type": "cta",
+                "style": "arrow",
+                "text": "The whole machine is open source — art generation to Etsy publish.",
+                "href": "@conundrum.repoUrl",
+                "label": "Read the code",
+                "external": true,
+                "track": "repo"
+              },
+              {
+                "type": "meter",
+                "repo": "626Labs-LLC/626labs-pod-pipeline",
+                "label": "the Conundrum pod pipeline"
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "Conundrum by Este x 626 Labs"
+        }
+      },
       "screenshots": []
     },
     {

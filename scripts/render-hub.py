@@ -698,71 +698,10 @@ def render_product_foot(p: dict) -> str:
         </div>"""
 
 
-# ─── conundrum shop page (conundrum.html zones) ─────────────────────
-def _etsy_slug(title: str) -> str:
-    """Stable slug for GoatCounter etsy-click event paths."""
-    return re.sub(r"[^a-z0-9]+", "-", (title or "").lower()).strip("-")
-
-
-def render_conundrum_products(conundrum: dict) -> str:
-    """Gallery cards for the SITE_JSON:conundrum-products zone.
-
-    Array order IS display order (performance-ranked upstream). Chips are
-    optional labels, never numbers.
-    """
-    cards = []
-    for p in conundrum.get("products") or []:
-        chip = (
-            f'\n  <span class="merch-chip">{esc(p.get("chip"))}</span>'
-            if p.get("chip")
-            else ""
-        )
-        cards.append(
-            f'<a class="merch-card" href="{attr(p.get("etsyListing"))}" '
-            f'target="_blank" rel="noopener" '
-            f'data-etsy="{attr(_etsy_slug(p.get("title")))}">\n'
-            f'  <img class="merch-img" src="{attr(p.get("image"))}" '
-            f'alt="" loading="lazy" />{chip}\n'
-            f'  <div class="merch-meta">\n'
-            f'    <div class="merch-title">{esc(p.get("title"))}</div>\n'
-            f'    <div class="merch-price">{esc(p.get("price"))}</div>\n'
-            f"  </div>\n"
-            f"</a>"
-        )
-    return "\n".join(cards)
-
-
-def render_conundrum_shop_cta(conundrum: dict, where: str) -> str:
-    """The "Shop on Etsy" link for the conundrum-shop-nav / -hero zones.
-
-    The shop URL lives in site.json's conundrum.etsyUrl, so an admin edit
-    reaches both links. A missing URL fails the render by name: the CTA is
-    the page's whole point, and a blank href would ship silently.
-    """
-    url = (conundrum.get("etsyUrl") or "").strip()
-    if not url:
-        raise SystemExit('site.json conundrum has no "etsyUrl": the shop links need it.')
-    cls, el_id = {"nav": ("cta", "nav-shop"), "hero": ("shop-cta", "hero-shop")}[where]
-    return (
-        f'<a class="{cls}" href="{attr(url)}" target="_blank" rel="noopener" '
-        f'id="{el_id}" data-etsy="shop">Shop on Etsy</a>'
-    )
-
-
-def render_conundrum_repo(conundrum: dict) -> str:
-    """Repo CTA for the SITE_JSON:conundrum-repo zone.
-
-    Collapses to nothing while repoUrl is unset — no placeholder ships.
-    """
-    repo = (conundrum.get("repoUrl") or "").strip()
-    if not repo:
-        return ""
-    return (
-        f'<a class="repo-cta" href="{attr(repo)}" target="_blank" '
-        f'rel="noopener" data-etsy="repo">Read the code '
-        '<svg class="ic arrow" viewBox="0 0 24 24">'
-        '<path d="M5 12h14M13 5l7 7-7 7"/></svg></a>'
-    )
+# conundrum.html has been generated since 2026-10-17 (render-product-pages.py,
+# from products[conundrum].pageSpec): its gallery is the `merch` block and its
+# shop and repo links are `@conundrum.*` references, so this file no longer
+# renders any of it.
 
 
 # ─── themes gallery (themes.html zone) ───────────────────────────────
@@ -962,7 +901,6 @@ THEME_CSS_HREFS = {
     THEMES_HTML: "tokens.css",
     THESIS_HTML: "archetypes/reading-tokens.css",
     WORKFLOW_HTML: "archetypes/reading-tokens.css",
-    CONUNDRUM_HTML: "archetypes/product-tokens.css",
     ROROROPLUGINS_HTML: "archetypes/product-tokens.css",
     RORORO_HTML: "archetypes/product-tokens.css",
     MODLAUNCHERGAMES_HTML: "archetypes/product-tokens.css",
@@ -994,7 +932,7 @@ THEME_CSS_HREFS = {
 # THEME_CSS_ONLY_PAGES too would make main() read it from disk, apply only
 # the theme-css substitution, and write it back AFTER its own block wrote
 # the other zones — silently reverting them.
-THEME_CSS_MULTI_ZONE_PAGES = (THEMES_HTML, CONUNDRUM_HTML)
+THEME_CSS_MULTI_ZONE_PAGES = (THEMES_HTML,)
 
 # Every page in THEME_CSS_HREFS whose ONLY renderer-owned zone is
 # "theme-css" — the tuple main() loops over. The two constants are held to
@@ -2567,35 +2505,6 @@ def main(argv: list[str]) -> int:
             print(f"preview written: {page_dest}")
         return 0
 
-    # conundrum.html — shop page zones (gallery + repo CTA) PLUS its
-    # "theme-css" link (see THEME_CSS_HREFS / THEME_CSS_MULTI_ZONE_PAGES
-    # above). Rendered here rather than in the theme-css loop below
-    # precisely because it has other zones: two blocks each reading the
-    # page off disk and writing it back would have the later write revert
-    # the earlier one. The theme-css substitution is unconditional — the
-    # gallery zones depend on the "conundrum" key existing, the stylesheet
-    # link does not.
-    conundrum_old = CONUNDRUM_HTML.read_text(encoding="utf-8")
-    conundrum_new = substitute_zone(
-        conundrum_old, "theme-css",
-        render_theme_css_link(slug, THEME_CSS_HREFS[CONUNDRUM_HTML]),
-    )
-    if "conundrum" in content:
-        conundrum_new = substitute_zone(
-            conundrum_new, "conundrum-products",
-            render_conundrum_products(content["conundrum"]),
-        )
-        for where in ("nav", "hero"):
-            conundrum_new = substitute_zone(
-                conundrum_new, f"conundrum-shop-{where}",
-                render_conundrum_shop_cta(content["conundrum"], where),
-            )
-        conundrum_new = substitute_zone(
-            conundrum_new, "conundrum-repo",
-            render_conundrum_repo(content["conundrum"]),
-        )
-    conundrum_changed = conundrum_new != conundrum_old
-
     # themes.html — the rotation gallery, plus its "theme-css" stylesheet
     # link (see THEME_CSS_HREFS above). Always rendered — content/
     # themes.json always has an active theme, so there's always >=1 card
@@ -2611,8 +2520,6 @@ def main(argv: list[str]) -> int:
     # rororo-plugins.html / rororo.html / mod-launcher-games.html /
     # bacon-trail/index.html / sanduhr/index.html / 404.html
     # — no other zones, just the "theme-css" link (see THEME_CSS_HREFS above).
-    # conundrum.html has the same link but is rendered in its own block
-    # above, beside its gallery zones.
     theme_css_pages = []
     for page_path in THEME_CSS_ONLY_PAGES:
         page_old = page_path.read_text(encoding="utf-8")
@@ -2657,7 +2564,6 @@ def main(argv: list[str]) -> int:
         stale = [name for name, drifted in
                  (("index.html", index_changed), ("feed.xml", feed_changed),
                   ("sitemap.xml", sitemap_changed),
-                  ("conundrum.html", conundrum_changed),
                   ("themes.html", themes_changed),
                   ("about.html", about_changed)) if drifted]
         stale += [
@@ -2674,7 +2580,7 @@ def main(argv: list[str]) -> int:
             )
             return 1
         print(
-            "index.html, feed.xml, sitemap.xml, conundrum.html, themes.html, "
+            "index.html, feed.xml, sitemap.xml, themes.html, "
             f"about.html, {len(theme_css_pages)} theme-css page(s) and "
             f"{len(story_pages)} Field Note page(s) are up to date."
         )
@@ -2686,16 +2592,6 @@ def main(argv: list[str]) -> int:
         print(f"index.html rebuilt from {SITE_JSON.relative_to(ROOT)}")
     else:
         print("index.html already matches content/site.json — no change.")
-
-    if conundrum_changed:
-        CONUNDRUM_HTML.write_text(conundrum_new, encoding="utf-8")
-        # Both sources, because both zones live on this page — and on a
-        # rotation the themes.json half is the ONLY reason it changes.
-        print("conundrum.html zones rebuilt from content/site.json + content/themes.json")
-    elif "conundrum" in content:
-        print("conundrum.html already matches content/site.json — no change.")
-    else:
-        print("conundrum.html: no conundrum key in content/site.json — gallery zones left as they are.")
 
     if themes_changed:
         THEMES_HTML.write_text(themes_new, encoding="utf-8")

@@ -114,7 +114,20 @@ def fetch_releases(repo: str) -> list[dict]:
         return json.load(resp)
 
 
-def render_body(results: list[dict]) -> str:
+def generated_pages() -> set[str]:
+    """Pages render-product-pages.py writes from content/site.json. Their
+    claims and markers live in the entry's `pageSpec`; an edit to the HTML
+    is overwritten by the next render, silently."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "_release_review_product_pages", Path(__file__).resolve().parent / "render-product-pages.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return set(mod.generated_pages(ROOT))
+
+
+def render_body(results: list[dict], generated: set[str] | None = None) -> str:
+    generated = generated_pages() if generated is None else generated
     behind = [r for r in results if r["releases"]]
     total = sum(len(r["releases"]) for r in behind)
     lines = [
@@ -129,6 +142,14 @@ def render_body(results: list[dict]) -> str:
     for r in behind:
         lines.append(f"## `{r['page']}`, {r['repo']} (checked through `{r['tag']}`)")
         lines.append("")
+        if r["page"] in generated:
+            lines.append(
+                "_Generated page: fix its claims and move its marker in `content/site.json` "
+                "(the entry's `pageSpec`, marker under `releaseReviewed`), then run "
+                "`scripts/render-product-pages.py`. A direct edit to the HTML is overwritten "
+                "on the next render._"
+            )
+            lines.append("")
         for rel in r["releases"]:
             flag = " (fixes only)" if is_fixes_only(rel.get("body")) else ""
             date = rel["published_at"][:10]

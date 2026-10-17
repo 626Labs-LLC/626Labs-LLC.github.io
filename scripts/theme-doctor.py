@@ -229,7 +229,8 @@ TOKEN_ONLY_CSS = (
 # nested page resolves its own relative assets (sanduhr's icon.png and
 # screenshots) exactly as it does live.
 BROWSER_CHECK_LIVE_PAGES = (
-    "conundrum.html", "rororo-plugins.html", "rororo.html",
+    # conundrum.html left on 2026-10-17 (generated; joins via generated_pages()).
+    "rororo-plugins.html", "rororo.html",
     "mod-launcher-games.html", "thesis.html", "workflow.html",
     "press.html", "privacy.html",
     # bacon-trail/index.html and sanduhr/index.html left on 2026-10-17:

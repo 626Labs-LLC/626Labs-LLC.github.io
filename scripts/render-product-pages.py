@@ -195,7 +195,7 @@ def render_head(product: dict, spec: dict, rel: str, slug: str, source: str = "p
         for m in spec.get("releaseReviewed") or []
     )
     meter = ""
-    if product.get("repo"):
+    if product.get("repo") or _uses(spec, "meter"):
         meter = ('<link rel="stylesheet" href="/repo-meter/meter.css" />\n'
                  '<script src="/repo-meter/meter.js" defer></script>\n')
     return (
@@ -227,7 +227,36 @@ def render_head(product: dict, spec: dict, rel: str, slug: str, source: str = "p
     )
 
 
-def render_nav(spec: dict) -> str:
+def resolve(product: dict, value):
+    """`"@a.b"` reads site.json's a.b (the content the page was built from),
+    so a fact like the Etsy shop URL lives in one place; anything else is
+    returned as written. A reference that leads nowhere resolves to ""."""
+    if not (isinstance(value, str) and value.startswith("@")):
+        return value
+    node = product.get("_content") or {}
+    for key in value[1:].split("."):
+        node = node.get(key) if isinstance(node, dict) else None
+    return node if node is not None else ""
+
+
+def link_attrs(product: dict, link: dict) -> str:
+    """href (resolved), and for an outbound link `target`/`rel`; `track`
+    becomes data-track, which the page's clickTrack script counts."""
+    href = resolve(product, link["href"])
+    if not href:
+        # A nav or get-strip link that resolves to nothing would ship a blank
+        # href silently (the Etsy shop link is the Conundrum page's whole
+        # point). The cta block collapses instead and never gets here empty.
+        raise ValueError(f"{product.get('id', '?')}: link {link.get('label')!r} has no href ({link['href']!r} is empty)")
+    out = f' href="{e(href)}"'
+    if link.get("external"):
+        out += ' target="_blank" rel="noopener"'
+    if link.get("track"):
+        out += f' data-track="{e(link["track"])}"'
+    return out
+
+
+def render_nav(spec: dict, product: dict | None = None) -> str:
     links = []
     for link in spec.get("nav") or []:
         classes = []
@@ -236,7 +265,7 @@ def render_nav(spec: dict) -> str:
         if link.get("hideSm"):
             classes.append("hide-sm")
         cls = f' class="{" ".join(classes)}"' if classes else ""
-        links.append(f'      <a{cls} href="{e(link["href"])}">{e(link["label"])}</a>')
+        links.append(f'      <a{cls}{link_attrs(product or {}, link)}>{e(link["label"])}</a>')
     return (
         '<div class="grid-bg" aria-hidden="true"></div>\n\n'
         '<nav class="topnav">\n'
@@ -286,14 +315,14 @@ STORE_ICON = (
 )
 
 
-def render_get_strip(g: dict) -> str:
+def render_get_strip(g: dict, product: dict | None = None) -> str:
     """The get-it strip under the hero: a label, then the ways to get the
     app. A link with `store: true` wears the Microsoft Store mark."""
     links = []
     for link in g["links"]:
         cls = "btn primary" if link.get("primary") else "btn"
         icon = STORE_ICON if link.get("store") else ""
-        links.append(f'      <a class="{cls}" href="{e(link["href"])}">{icon}{e(link["label"])}</a>\n')
+        links.append(f'      <a class="{cls}"{link_attrs(product or {}, link)}>{icon}{e(link["label"])}</a>\n')
     return (
         '\n    <div class="get-strip" id="get-it">\n'
         f'      <span class="gs-key">{e(g["label"])}</span>\n'
@@ -305,8 +334,12 @@ def render_get_strip(g: dict) -> str:
 
 def render_hero(product: dict, s: dict) -> str:
     accent = f" <em>{e(s['titleAccent'])}</em>" if s.get("titleAccent") else ""
-    cls = "hero hero-center" if s.get("align") == "center" else "hero"
+    cls = {"center": "hero hero-center", "side": "hero hero-side"}.get(s.get("align"), "hero")
     out = [f'  <section class="{cls}">\n']
+    if s.get("logo"):
+        out.append(f'    <img class="logo" src="{e(s["logo"]["src"])}" alt="{e(s["logo"]["alt"])}" />\n')
+    if s.get("align") == "side":
+        out.append("    <div>\n")
     if s.get("icon"):
         out.append(f'    <img class="app-icon" src="{e(s["icon"]["src"])}" alt="{e(s["icon"]["alt"])}" />\n')
     if s.get("eyebrow"):
@@ -325,8 +358,10 @@ def render_hero(product: dict, s: dict) -> str:
         )
         out.append(f'\n    <div class="strip">\n{cells}    </div>\n')
     if s.get("get"):
-        out.append(render_get_strip(s["get"]))
+        out.append(render_get_strip(s["get"], product))
     out.append(render_repo_meter(product))
+    if s.get("align") == "side":
+        out.append("    </div>\n")
     out.append("  </section>\n")
     return "".join(out)
 
@@ -596,18 +631,106 @@ def block_panel(b: dict, product: dict) -> str:
     )
 
 
+ARROW_ICON = '<svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>'
+
+
 def block_cta(b: dict, product: dict) -> str:
-    """A centered line and one button."""
+    """A line and one button. The href may be a content reference; one that
+    resolves empty drops the block (no placeholder link ships). `style:
+    arrow` is the left-aligned outlined link with an arrow."""
+    href = resolve(product, b["href"])
+    if not href:
+        return ""
+    link = {**b, "href": href}
+    if b.get("style") == "arrow":
+        text = f"      <p>{b['text']}</p>\n" if b.get("text") else ""
+        return (
+            '    <div class="cta-arrow">\n'
+            f"{text}"
+            f'      <a class="arrow-link"{link_attrs(product, link)}>{e(b["label"])} {ARROW_ICON}</a>\n'
+            "    </div>\n"
+        )
     return (
         '    <div class="cta-row">\n'
         f"      <p>{b['text']}</p>\n"
-        f'      <a class="btn" href="{e(b["href"])}">{e(b["label"])}</a>\n'
+        f'      <a class="btn"{link_attrs(product, link)}>{e(b["label"])}</a>\n'
         "    </div>\n"
+    )
+
+
+def _track_slug(title: str) -> str:
+    """Stable slug for click-event paths (etsy-click/<slug> since July)."""
+    return re.sub(r"[^a-z0-9]+", "-", (title or "").lower()).strip("-")
+
+
+def block_merch(b: dict, product: dict) -> str:
+    """Shop cards from a content list (`source`, e.g. "@conundrum.products").
+    Array order IS display order (ranked upstream); a chip is an optional
+    label, never a number. Each card links out and is click-tracked by its
+    title's slug. No items, no grid."""
+    items = resolve(product, b["source"]) or []
+    if not items:
+        return ""
+    cards = []
+    for it in items:
+        chip = f'\n          <span class="merch-chip">{e(it["chip"])}</span>' if it.get("chip") else ""
+        cards.append(
+            f'      <a class="merch-card" href="{e(it["etsyListing"])}" target="_blank" rel="noopener" '
+            f'data-track="{e(_track_slug(it.get("title")))}">\n'
+            f'          <img class="merch-img" src="{e(it["image"])}" alt="" loading="lazy" />{chip}\n'
+            '          <div class="merch-meta">\n'
+            f'            <div class="merch-title">{e(it["title"])}</div>\n'
+            f'            <div class="merch-price">{e(it["price"])}</div>\n'
+            "          </div>\n"
+            "      </a>\n"
+        )
+    return f'    <div class="merch-grid">\n{"".join(cards)}    </div>\n'
+
+
+def block_steps(b: dict, product: dict) -> str:
+    """A numbered row of stage pills."""
+    items = "".join(f'      <li><b>{e(s["n"])}</b>{s["text"]}</li>\n' for s in b["items"])
+    return f'    <ul class="stages">\n{items}    </ul>\n'
+
+
+def block_pull(b: dict, product: dict) -> str:
+    return f'    <p class="pull">{b["text"]}</p>\n'
+
+
+def block_meter(b: dict, product: dict) -> str:
+    """A repo meter for a repo the product entry doesn't carry (the home row
+    reads `repo`, so setting it would change the home page)."""
+    return render_repo_meter({"id": product["id"], "repo": b["repo"], "title": b.get("label") or product.get("title")})
+
+
+def render_click_track(spec: dict) -> str:
+    """Outbound clicks on [data-track] links as GoatCounter events, at
+    <prefix><slug>. etsy-click/ is the path conundrum.html has always used,
+    so the shop's click history continues."""
+    ct = spec.get("clickTrack")
+    if not ct:
+        return ""
+    prefix, title = json.dumps(ct["prefix"]), json.dumps(ct.get("titlePrefix", ""))
+    return (
+        "<script>\n"
+        "(function () {\n"
+        "  document.addEventListener('click', function (e) {\n"
+        "    var a = e.target.closest ? e.target.closest('a[data-track]') : null;\n"
+        "    if (!a || !window.goatcounter || !window.goatcounter.count) return;\n"
+        "    var slug = a.getAttribute('data-track');\n"
+        f"    window.goatcounter.count({{ path: {prefix} + slug, title: {title} + slug, event: true }});\n"
+        "  });\n"
+        "})();\n"
+        "</script>\n"
     )
 
 
 BLOCKS = {
     "widget": block_widget,
+    "merch": block_merch,
+    "steps": block_steps,
+    "pull": block_pull,
+    "meter": block_meter,
     "showcase": block_showcase,
     "platforms": block_platforms,
     "gallery": block_gallery,
@@ -680,10 +803,11 @@ def render_page(product: dict, slug: str, source: str = "products") -> str:
     tail_scripts = widget_tail(product, spec)
     if _uses(spec, "reachMap"):
         tail_scripts += '<script src="/assets/reach-map.js" defer></script>\n'
+    tail_scripts += render_click_track(spec)
     return (
         render_head(product, spec, rel, slug, source)
         + "<body>\n\n"
-        + render_nav(spec)
+        + render_nav(spec, product)
         + '\n<main class="wrap">\n\n'
         + "\n".join(parts)
         + "\n</main>\n\n"
@@ -703,7 +827,8 @@ def build(slug: str | None = None, root: Path = ROOT) -> dict[str, str]:
     content = load_content(root)
     outputs: dict[str, str] = {}
     for source, product in _page_sources(content):
-        html = render_page(product, slug, source)
+        # The page can reference other content ("@conundrum.etsyUrl").
+        html = render_page({**product, "_content": content}, slug, source)
         # Aliases share the page, canonical included, so search engines fold
         # them into productPage.
         for rel in [output_rel(product), *alias_rels(product)]:
