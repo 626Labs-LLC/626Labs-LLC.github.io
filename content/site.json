@@ -1146,7 +1146,7 @@
                   "<b>One right-click, the whole batch.</b> A mixed selection of <code>.heic</code>, <code>.avif</code> and <code>.webp</code>, one summary toast at the end."
                 ],
                 "alts": [
-                  "The File Explorer right-click menu on a .webp file, showing Convert to PNG and Copy as PNG",
+                  "The File Explorer right-click menu on a .webp file, showing the Right Click to PNG submenu with Convert to PNG, Copy as PNG and Settings…",
                   "The toast after Convert to PNG, with the new .png beside the original",
                   "A Copy as PNG result pasted into a chat app",
                   "The Right Click PNG settings window with its two toggles",
@@ -1279,12 +1279,12 @@
       "banner": "assets/thumb-rtclickpng.png",
       "meta": "Windows shell extension · 24h build",
       "screenshots": [
-        {"id": "shot-1791753969382", "path": "assets/screenshots/rtclickpng/1791753969382-final-1-context-menu.png", "name": "final-1-context-menu.png", "size": 245450},
-        {"id": "shot-1791753973261", "path": "assets/screenshots/rtclickpng/1791753973261-final-2-converted-toast.png", "name": "final-2-converted-toast.png", "size": 161888},
-        {"id": "shot-1791753974824", "path": "assets/screenshots/rtclickpng/1791753974824-final-3-paste-paint.png", "name": "final-3-paste-paint.png", "caption": "<b>Paste anywhere.</b> Copy as PNG puts a real PNG on the clipboard, so any app that takes an image takes it. Here a <code>.heic</code> lands in Paint.", "alt": "A .heic file copied as PNG and pasted into Paint", "size": 168224},
-        {"id": "shot-1791753976410", "path": "assets/screenshots/rtclickpng/1791753976410-final-4-settings.png", "name": "final-4-settings.png", "alt": "The Right Click PNG settings window with its two toggles, Show JPEG variants and Confirm before overwriting", "size": 25094},
-        {"id": "shot-1791753977974", "path": "assets/screenshots/rtclickpng/1791753977974-final-5a-batch-menu.png", "name": "final-5a-batch-menu.png", "caption": "<b>One right-click, the whole batch.</b> A mixed selection of <code>.webp</code>, <code>.avif</code> and <code>.heic</code>. With several files selected, the menu offers Convert.", "alt": "Three selected files, .webp, .avif and .heic, with the Right Click to PNG submenu open", "size": 289445},
-        {"id": "shot-1791753979554", "path": "assets/screenshots/rtclickpng/1791753979554-final-5b-batch-done.png", "name": "final-5b-batch-done.png", "caption": "<b>One toast for the batch.</b> Three files converted, each new <code>.png</code> beside its original.", "alt": "The folder after a batch conversion, each .png beside its original, with a toast reading Converted 3 files to PNG", "size": 222562}
+        {"id": "shot-1792209396972", "path": "assets/screenshots/rtclickpng/1792209396972-right-click-menu.png", "name": "01-right-click-menu.png", "size": 289081},
+        {"id": "shot-1792209398472", "path": "assets/screenshots/rtclickpng/1792209398472-converted-in-place.png", "name": "02-converted-in-place.png", "size": 363223},
+        {"id": "shot-1792209399972", "path": "assets/screenshots/rtclickpng/1792209399972-copy-as-png-paste.png", "name": "03-copy-as-png-paste.png", "caption": "<b>Paste anywhere.</b> Copy as PNG puts a real PNG on the clipboard, so any app that takes an image takes it. Here a <code>.heic</code> lands in Paint.", "alt": "A .heic file copied as PNG and pasted into Paint", "size": 381926},
+        {"id": "shot-1792209401472", "path": "assets/screenshots/rtclickpng/1792209401472-settings.png", "name": "04-settings.png", "alt": "The Right Click PNG settings window with its two toggles, Show JPEG variants and Confirm before overwriting", "size": 175399},
+        {"id": "shot-1792209402972", "path": "assets/screenshots/rtclickpng/1792209402972-batch-selection.png", "name": "05-batch-selection.png", "caption": "<b>One right-click, the whole batch.</b> A mixed selection of <code>.webp</code>, <code>.avif</code> and <code>.heic</code>. With several files selected, the menu offers Convert.", "alt": "Three selected files, .webp, .avif and .heic, with the Right Click to PNG submenu open", "size": 315618},
+        {"id": "shot-1792209404472", "path": "assets/screenshots/rtclickpng/1792209404472-batch-done.png", "name": "06-batch-done.png", "caption": "<b>One toast for the batch.</b> Three files converted, each new <code>.png</code> beside its original.", "alt": "The folder after a batch conversion, each .png beside its original, with a toast reading Converted 3 files to PNG", "size": 513667}
       ]
     },
     {
