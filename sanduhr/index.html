@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.27.0-mac" />
-<title>Sanduhr für Claude for Mac — your claude.ai meters on the desktop, and your Claude Code setup carried · 626 Labs</title>
+<title>Sanduhr für Claude for Mac: your claude.ai meters on the desktop, and your Claude Code setup carried · 626 Labs</title>
 <meta name="description" content="The Mac build of Sanduhr für Claude: your claude.ai usage meters living on the desktop and around the notch, and one Settings page that reads and carries your whole Claude Code setup. Notarized, on Homebrew, macOS 14 or newer." />
 <link rel="canonical" href="https://626labs.dev/sanduhr/" />
 <meta property="og:title" content="Sanduhr für Claude for Mac" />
@@ -724,7 +724,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
   </section>
 
   <section>
-    <div class="showcase"><div class="showcase-frame">
+    <div class="showcase wide"><div class="showcase-frame">
       <img src="screenshot-desk-full.jpg" alt="The Desk on a bare Mac desktop: Session, Weekly All Models and Weekly Sonnet meters in the top left corner, each with a pace mark and its reset time; a handwritten daily line, the Work account&#x27;s numbers and three made-up meetings in the bottom left; the clock and date in the bottom right; the time and the meters on the notch" />
     </div></div>
   </section>
@@ -804,10 +804,6 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     </div>
 
     <div class="gallery-strip align-start">
-      <div class="gallery-shot">
-        <img src="screenshot-settings-notch.png" alt="Sanduhr Settings, Notch: the island around the camera switched on, Text beside the camera with the left wing set to Time and the right wing to Now playing, Text under the camera off, and a Test Glow button above the preview" loading="lazy" />
-        <div class="caption"><strong>Notch settings</strong> &middot; each wing and the strip, your pick</div>
-      </div>
     </div>
       <div class="gallery-shot wide">
         <img src="screenshot-notch-wings.png" alt="The notch on a MacBook widened into one black island: the time on the left wing, and 5h 42% and wk 63% on the right" loading="lazy" />
@@ -820,7 +816,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       <h2>Your Claude Code setup, seen and carried.</h2>
     </div>
 
-    <p class="lead">Settings &rarr; Claude Code, and Mods &amp; Config: one page per Claude Code folder that reads everything first and writes only through receipts you can undo.</p>
+    <p class="lead">Mods &amp; Config, under Settings &rarr; Claude Code: one page per Claude Code folder that reads everything first and writes only through receipts you can undo.</p>
 
     <div class="cards">
       <div class="card">
@@ -843,14 +839,18 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
         <h3>Claude writes your messages and themes</h3>
         <p>With the MCP server installed, Claude Code can suggest Desk messages, with effects like a glow or a line written in by hand, and propose widget themes as a live preview. Nothing changes until you approve it.</p>
       </div>
+      <div class="card">
+        <h3>Receipts, with exact undo</h3>
+        <p>Every write Sanduhr makes to a Claude Code folder is a receipt: what it created, and the bytes it replaced. Remove and Undo put the file back byte for byte, and the backups live in Sanduhr's own folder, never in yours.</p>
+      </div>
     </div>
 
     <ul class="stages">
-      <li><b>1</b><strong>Export.</strong> Pick a folder; the sheet shows what travels and what stays home.</li>
-      <li><b>2</b><strong>The pack.</strong> A manifest plus plain files. Secrets travel as names, never values.</li>
-      <li><b>3</b><strong>Import.</strong> Open the pack into any folder, on any Mac.</li>
-      <li><b>4</b><strong>Compare.</strong> A checkbox per difference; only what that folder lacks comes over.</li>
-      <li><b>5</b><strong>Keep, or undo.</strong> Every write is a receipt; Undo Import reverses them all.</li>
+      <li><b>1</b><strong>Export.</strong> Pick a folder; see what travels.</li>
+      <li><b>2</b><strong>Pack.</strong> Plain files plus a manifest; secrets as names.</li>
+      <li><b>3</b><strong>Import.</strong> Open it into any folder, on any Mac.</li>
+      <li><b>4</b><strong>Compare.</strong> A checkbox per difference.</li>
+      <li><b>5</b><strong>Keep, or undo.</strong> One Undo Import reverses it all.</li>
     </ul>
   </section>
 
@@ -920,10 +920,10 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div class="card">
         <h3>Per-model weekly meters</h3>
-        <p>Your Claude Fable 5 allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed.</p>
+        <p>Each per-model weekly allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed.</p>
       </div>
       <div class="card">
-        <h3>Claude Usage tab + local vault</h3>
+        <h3>Claude Usage page + local vault</h3>
         <p>Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export, and an opt-in vault that outlives the CLI's 30-day log cleanup.</p>
       </div>
       <div class="card">
@@ -961,10 +961,6 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       <div class="gallery-shot">
         <img src="screenshot-settings-alerts.png" alt="Sanduhr Settings, Alerts: Notifications off, Session and Weekly thresholds at 80%, the pace warning and reset notices unchecked, Where alerts show set to Banner, a Sound picker and Quiet hours from 10:00 PM to 7:00 AM" loading="lazy" />
         <div class="caption"><strong>Alerts</strong> &middot; thresholds, the pace warning, quiet hours</div>
-      </div>
-      <div class="gallery-shot">
-        <img src="screenshot-accounts.png" alt="Sanduhr Settings, Accounts: the account list with Work active, its session key field, Sign Out and Remove Account" loading="lazy" />
-        <div class="caption"><strong>Accounts</strong> &middot; one key and one history each</div>
       </div>
     </div>
   </section>

@@ -560,7 +560,7 @@
     {
       "id": "sanduhr",
       "title": "Sanduhr für Claude",
-      "description": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with a pace mark and reset time on each, the clock, your next meetings and a daily line in a handwritten face, and since 2.27.0 the Desk can sit under your desktop files. One Settings page reads your whole Claude Code setup, agents, skills, plugins, MCP servers and settings per folder, and carries it to another Mac as a config pack with Compare and Undo Import. Burn-rate projection, pace markers, sparklines and per-model weekly meters do the pacing math; the Claude Usage page turns local Claude Code logs into a dashboard. Homebrew or a notarized .dmg on Mac; free on the Microsoft Store on Windows, with a statusline and MCP server for Claude Code. No telemetry: the only network call is to claude.ai with your own cookie.",
+      "description": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with a pace mark and reset time on each, the clock, your next meetings and a daily line in a handwritten face. Since 2.27.0 the Desk can sit under your desktop files. One Settings page reads your whole Claude Code setup per folder and carries it to another Mac as a config pack, with Compare and Undo Import. Homebrew or a notarized .dmg on Mac; free on the Microsoft Store on Windows, with a statusline and MCP server for Claude Code. No telemetry: it talks to claude.ai with your own cookie, checks for its own updates, and nothing else.",
       "tags": [
         {
           "label": "macOS",
@@ -593,7 +593,7 @@
       "meta": "Mac: Homebrew or .dmg · Windows: free on the Store",
       "pageSpec": {
         "meta": {
-          "title": "Sanduhr für Claude for Mac — your claude.ai meters on the desktop, and your Claude Code setup carried · 626 Labs",
+          "title": "Sanduhr für Claude for Mac: your claude.ai meters on the desktop, and your Claude Code setup carried · 626 Labs",
           "description": "The Mac build of Sanduhr für Claude: your claude.ai usage meters living on the desktop and around the notch, and one Settings page that reads and carries your whole Claude Code setup. Notarized, on Homebrew, macOS 14 or newer.",
           "ogTitle": "Sanduhr für Claude for Mac",
           "ogDescription": "Your claude.ai usage meters, living on the Mac desktop. And your Claude Code setup, seen in one place and carried to another Mac. By 626 Labs.",
@@ -654,6 +654,7 @@
             "blocks": [
               {
                 "type": "showcase",
+                "wide": true,
                 "src": "screenshot-desk-full.jpg",
                 "alt": "The Desk on a bare Mac desktop: Session, Weekly All Models and Weekly Sonnet meters in the top left corner, each with a pace mark and its reset time; a handwritten daily line, the Work account's numbers and three made-up meetings in the bottom left; the clock and date in the bottom right; the time and the meters on the notch"
               }
@@ -750,13 +751,7 @@
               {
                 "type": "gallery",
                 "align": "start",
-                "items": [
-                  {
-                    "src": "screenshot-settings-notch.png",
-                    "alt": "Sanduhr Settings, Notch: the island around the camera switched on, Text beside the camera with the left wing set to Time and the right wing to Now playing, Text under the camera off, and a Test Glow button above the preview",
-                    "caption": "<strong>Notch settings</strong> &middot; each wing and the strip, your pick"
-                  }
-                ],
+                "items": [],
                 "wide": {
                   "src": "screenshot-notch-wings.png",
                   "alt": "The notch on a MacBook widened into one black island: the time on the left wing, and 5h 42% and wk 63% on the right",
@@ -772,7 +767,7 @@
               {
                 "type": "lead",
                 "paragraphs": [
-                  "Settings &rarr; Claude Code, and Mods &amp; Config: one page per Claude Code folder that reads everything first and writes only through receipts you can undo."
+                  "Mods &amp; Config, under Settings &rarr; Claude Code: one page per Claude Code folder that reads everything first and writes only through receipts you can undo."
                 ]
               },
               {
@@ -797,6 +792,10 @@
                   {
                     "title": "Claude writes your messages and themes",
                     "body": "With the MCP server installed, Claude Code can suggest Desk messages, with effects like a glow or a line written in by hand, and propose widget themes as a live preview. Nothing changes until you approve it."
+                  },
+                  {
+                    "title": "Receipts, with exact undo",
+                    "body": "Every write Sanduhr makes to a Claude Code folder is a receipt: what it created, and the bytes it replaced. Remove and Undo put the file back byte for byte, and the backups live in Sanduhr's own folder, never in yours."
                   }
                 ]
               },
@@ -805,23 +804,23 @@
                 "items": [
                   {
                     "n": "1",
-                    "text": "<strong>Export.</strong> Pick a folder; the sheet shows what travels and what stays home."
+                    "text": "<strong>Export.</strong> Pick a folder; see what travels."
                   },
                   {
                     "n": "2",
-                    "text": "<strong>The pack.</strong> A manifest plus plain files. Secrets travel as names, never values."
+                    "text": "<strong>Pack.</strong> Plain files plus a manifest; secrets as names."
                   },
                   {
                     "n": "3",
-                    "text": "<strong>Import.</strong> Open the pack into any folder, on any Mac."
+                    "text": "<strong>Import.</strong> Open it into any folder, on any Mac."
                   },
                   {
                     "n": "4",
-                    "text": "<strong>Compare.</strong> A checkbox per difference; only what that folder lacks comes over."
+                    "text": "<strong>Compare.</strong> A checkbox per difference."
                   },
                   {
                     "n": "5",
-                    "text": "<strong>Keep, or undo.</strong> Every write is a receipt; Undo Import reverses them all."
+                    "text": "<strong>Keep, or undo.</strong> One Undo Import reverses it all."
                   }
                 ]
               }
@@ -907,10 +906,10 @@
                   },
                   {
                     "title": "Per-model weekly meters",
-                    "body": "Your Claude Fable 5 allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed."
+                    "body": "Each per-model weekly allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed."
                   },
                   {
-                    "title": "Claude Usage tab + local vault",
+                    "title": "Claude Usage page + local vault",
                     "body": "Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export, and an opt-in vault that outlives the CLI's 30-day log cleanup."
                   },
                   {
@@ -954,11 +953,6 @@
                     "src": "screenshot-settings-alerts.png",
                     "alt": "Sanduhr Settings, Alerts: Notifications off, Session and Weekly thresholds at 80%, the pace warning and reset notices unchecked, Where alerts show set to Banner, a Sound picker and Quiet hours from 10:00 PM to 7:00 AM",
                     "caption": "<strong>Alerts</strong> &middot; thresholds, the pace warning, quiet hours"
-                  },
-                  {
-                    "src": "screenshot-accounts.png",
-                    "alt": "Sanduhr Settings, Accounts: the account list with Work active, its session key field, Sign Out and Remove Account",
-                    "caption": "<strong>Accounts</strong> &middot; one key and one history each"
                   }
                 ]
               }
@@ -3564,7 +3558,7 @@
       "productPage": "/sanduhr/windows/",
       "pageSpec": {
         "meta": {
-          "title": "Sanduhr für Claude on Windows — your claude.ai usage, paced, from the Microsoft Store · 626 Labs",
+          "title": "Sanduhr für Claude on Windows: your claude.ai usage, paced, from the Microsoft Store · 626 Labs",
           "description": "The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a statusline and MCP server for Claude Code. Free on the Microsoft Store.",
           "ogTitle": "Sanduhr für Claude on Windows",
           "ogDescription": "A native Windows widget that paces your claude.ai usage, with a statusline and MCP server for Claude Code. Free on the Microsoft Store. By 626 Labs.",
@@ -3645,7 +3639,7 @@
                   },
                   {
                     "title": "Per-model weekly meters",
-                    "body": "Your Claude Fable 5 allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed."
+                    "body": "Each per-model weekly allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed."
                   },
                   {
                     "title": "Claude Usage tab + local vault",
@@ -3699,7 +3693,7 @@
           {
             "type": "section",
             "id": "install",
-            "heading": "Install",
+            "heading": "Install.",
             "blocks": [
               {
                 "type": "install",
@@ -3743,7 +3737,7 @@
           },
           {
             "type": "section",
-            "heading": "Where it ended up",
+            "heading": "Where it ended up.",
             "blocks": [
               {
                 "type": "lead",
