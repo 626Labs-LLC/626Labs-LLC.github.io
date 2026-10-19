@@ -122,6 +122,33 @@ def releases_after(marker_tag: str, releases: list[dict]) -> list[dict]:
     return sorted(newer, key=lambda r: r["published_at"], reverse=True)
 
 
+def unwatched_releases(marker_tags: list[str], releases: list[dict]) -> list[dict]:
+    """Published releases of one repo in a tag family none of its markers
+    watch, newer than every marker, newest first. A page can only go stale
+    silently when a release lands in a family no page reads; this names it.
+    A marker outside the version pattern watches every family, so it has no
+    strays; releases older than the newest marker are history."""
+    families = {tag_family(t) for t in marker_tags}
+    if None in families:
+        return []
+    published = [
+        r for r in releases
+        if not r.get("draft") and not r.get("prerelease") and r.get("published_at")
+    ]
+    by_tag = {r["tag_name"]: r for r in published}
+    dates = [by_tag[t]["published_at"] for t in marker_tags if t in by_tag]
+    if not dates:
+        return []
+    cutoff = max(dates)
+    strays = [
+        r for r in published
+        if r["published_at"] > cutoff
+        and tag_family(r["tag_name"]) is not None
+        and tag_family(r["tag_name"]) not in families
+    ]
+    return sorted(strays, key=lambda r: r["published_at"], reverse=True)
+
+
 def fetch_releases(repo: str) -> list[dict]:
     """The repo's 100 most recent releases (ample for a daily check)."""
     req = urllib.request.Request(
@@ -147,10 +174,12 @@ def generated_pages() -> set[str]:
     return set(mod.generated_pages(ROOT))
 
 
-def render_body(results: list[dict], generated: set[str] | None = None) -> str:
+def render_body(results: list[dict], generated: set[str] | None = None,
+                strays: list[dict] | None = None) -> str:
     generated = generated_pages() if generated is None else generated
     behind = [r for r in results if r["releases"]]
-    total = sum(len(r["releases"]) for r in behind)
+    strays = [s for s in (strays or []) if s["releases"]]
+    total = sum(len(r["releases"]) for r in behind) + sum(len(s["releases"]) for s in strays)
     lines = [
         f"{total} release{'s' if total != 1 else ''} landed since "
         f"{len(behind)} page{'s were' if len(behind) != 1 else ' was'} last checked.",
@@ -176,6 +205,21 @@ def render_body(results: list[dict], generated: set[str] | None = None) -> str:
             date = rel["published_at"][:10]
             name = rel.get("name") or rel["tag_name"]
             lines.append(f"- [{name}]({rel['html_url']}), `{rel['tag_name']}`, {date}{flag}")
+        lines.append("")
+    for s in strays:
+        watched = ", ".join(f"`-{f}`" if f else "bare `vX.Y.Z`" for f in s["watched"])
+        lines.append(f"## {s['repo']}: releases in a tag family no page watches")
+        lines.append("")
+        lines.append(
+            f"_This repo's pages watch {watched}. These landed in another family, so no page "
+            "will ever list them as behind: either tag in a watched family, or move the "
+            "marker of the page they belong to onto one of them in the same commit._"
+        )
+        lines.append("")
+        for rel in s["releases"]:
+            date = rel["published_at"][:10]
+            name = rel.get("name") or rel["tag_name"]
+            lines.append(f"- [{name}]({rel['html_url']}), `{rel['tag_name']}`, {date}")
         lines.append("")
     lines.append("_Maintained by `.github/workflows/release-review.yml`; closes itself when nothing is behind._")
     return "\n".join(lines) + "\n"
@@ -211,9 +255,24 @@ def main(argv: list[str] | None = None) -> int:
             flag = "  (fixes only)" if is_fixes_only(rel.get("body")) else ""
             print(f"    {rel['tag_name']}  {rel['published_at'][:10]}{flag}")
 
-    total = sum(len(r["releases"]) for r in results)
+    # Releases in a tag family none of a repo's markers watch: the one way a
+    # page goes stale with no signal under the family rule.
+    by_repo: dict[str, list[str]] = {}
+    for _, repo, tag in markers:
+        by_repo.setdefault(repo, []).append(tag)
+    strays = []
+    for repo, tags in by_repo.items():
+        unwatched = unwatched_releases(tags, cache[repo])
+        if unwatched:
+            watched = sorted({f for f in (tag_family(t) for t in tags) if f is not None})
+            strays.append({"repo": repo, "watched": watched, "releases": unwatched})
+            print(f"{repo}  {len(unwatched)} release(s) in a tag family no page watches (pages watch: {watched})")
+            for rel in unwatched:
+                print(f"    {rel['tag_name']}  {rel['published_at'][:10]}")
+
+    total = sum(len(r["releases"]) for r in results) + sum(len(s["releases"]) for s in strays)
     if args.out:
-        args.out.write_text(render_body(results), encoding="utf-8")
+        args.out.write_text(render_body(results, strays=strays), encoding="utf-8")
     print(f"BEHIND={total}")
     return 0
 
