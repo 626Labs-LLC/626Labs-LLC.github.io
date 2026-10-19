@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T10:33:10.704Z",
+  "generatedAt": "2026-10-19T12:26:30.218Z",
   "count": 58,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-10-18T09:58:41Z",
+      "pushed_at": "2026-10-19T11:20:46Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -37,7 +37,7 @@
       "description": "626 Mod Launcher Games",
       "html_url": "https://github.com/estevanhernandez-stack-ed/626-game-manifest",
       "language": "Python",
-      "pushed_at": "2026-10-12T06:08:03Z",
+      "pushed_at": "2026-10-19T06:05:06Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -109,7 +109,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-10-18T00:55:38Z",
+      "pushed_at": "2026-10-19T05:22:18Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -217,7 +217,7 @@
       "description": "Homebrew tap for Sanduhr and other Estevan Hernandez Mac apps",
       "html_url": "https://github.com/estevanhernandez-stack-ed/homebrew-tap",
       "language": "Ruby",
-      "pushed_at": "2026-10-18T00:44:35Z",
+      "pushed_at": "2026-10-19T04:39:51Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -265,7 +265,7 @@
       "description": "R15 Shirt and Pants Template Editor",
       "html_url": "https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants",
       "language": "C#",
-      "pushed_at": "2026-10-17T23:36:24Z",
+      "pushed_at": "2026-10-19T03:19:47Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -385,7 +385,7 @@
       "description": "Native Windows 11 + macOS glass widget that projects when you'll hit your Claude usage cap — burn-rate, pace markers, live token-burn from local Claude Code sessions, and five glass themes. Independent third-party tool. MIT.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
       "language": "Swift",
-      "pushed_at": "2026-10-18T00:44:09Z",
+      "pushed_at": "2026-10-19T04:39:56Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -493,7 +493,7 @@
       "description": "Find your direction no matter where you start. Claude Code plugin: plot a raw idea to a shipped app, or /take any backlog, findings report or plan and run it overnight, nothing pushed until you review.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer",
       "language": "JavaScript",
-      "pushed_at": "2026-10-17T12:57:02Z",
+      "pushed_at": "2026-10-19T01:57:08Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -577,7 +577,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-10-18T08:17:03Z",
+      "pushed_at": "2026-10-19T08:23:38Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
