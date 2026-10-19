@@ -318,7 +318,7 @@ def test_sanduhr_is_generated_with_its_furniture():
     assert 'href="/sanduhr/windows/"' in html
     assert html.count('class="gallery-shot"') + html.count('class="gallery-shot wide"') >= 11
     assert 'class="panel ok"' in html
-    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.27.0-mac"' in html
+    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.28.0-mac"' in html
 
 
 def test_sanduhr_windows_is_generated_beside_the_mac_page():
