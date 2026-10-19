@@ -64,6 +64,46 @@ def test_a_marker_tag_the_repo_lacks_fails_loudly():
         rr.releases_after("v4-rc", RELEASES)
 
 
+# Two pages can mark one repo (Sanduhr's Mac page at v2.x-mac, its Windows
+# page at bare v3.x). A marker's tag suffix is its family; it sees only that.
+FAMILIES = [
+    rel("v3.5.0", "2026-10-19T12:00:00Z"),  # a Windows release newer than every Mac one
+    rel("v2.27.0-mac", "2026-10-18T00:41:16Z"),
+    rel("v2.26.1-mac", "2026-10-17T12:00:00Z"),
+    rel("v2.26.0-mac", "2026-10-16T12:00:00Z"),
+    rel("v3.4.3", "2026-10-11T15:36:06Z"),
+    rel("v3.4.2", "2026-09-14T12:00:00Z"),
+    rel("v3.3.0.0", "2026-07-19T12:00:00Z"),
+    rel("v2.3.0-windows", "2026-05-06T12:00:00Z"),
+    rel("legacy/python-v2.3.0", "2026-09-13T12:00:00Z"),
+]
+
+
+@pytest.mark.parametrize("tag,family", [
+    ("v2.27.0-mac", "mac"), ("v2.3.0-windows", "windows"), ("v3.4.3", ""),
+    ("v3.3.0.0", ""), ("3.4.3", ""), ("v1", None), ("legacy/python-v2.3.0", None),
+    ("untagged-c6478f02e761a516871a", None),
+])
+def test_tag_family(tag, family):
+    assert rr.tag_family(tag) == family
+
+
+def test_a_suffixed_marker_sees_only_its_own_family():
+    # The Mac page must not be flagged by v3.4.3.
+    assert [r["tag_name"] for r in rr.releases_after("v2.26.0-mac", FAMILIES)] == ["v2.27.0-mac", "v2.26.1-mac"]
+
+
+def test_a_bare_marker_sees_bare_and_four_part_tags_only():
+    assert [r["tag_name"] for r in rr.releases_after("v3.4.2", FAMILIES)] == ["v3.5.0", "v3.4.3"]
+    # v3.3.0.0 is the same family, older by date, so absent for the right reason.
+    assert [r["tag_name"] for r in rr.releases_after("v3.3.0.0", FAMILIES)] == ["v3.5.0", "v3.4.3", "v3.4.2"]
+
+
+def test_a_marker_outside_the_pattern_keeps_date_only_behavior():
+    assert [r["tag_name"] for r in rr.releases_after("legacy/python-v2.3.0", FAMILIES)] == [
+        "v3.5.0", "v2.27.0-mac", "v2.26.1-mac", "v2.26.0-mac", "v3.4.3", "v3.4.2"]
+
+
 @pytest.mark.parametrize("body,expected", [
     ("## Fixes\n- a\n\n## Install\nget it", True),
     ("## Bug fixes\n- a", True),
