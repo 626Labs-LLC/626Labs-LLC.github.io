@@ -305,11 +305,20 @@ def test_sanduhr_is_generated_with_its_furniture():
     assert "sanduhr/index.html" in rpp.generated_pages()
     html = (ROOT / "sanduhr/index.html").read_text(encoding="utf-8")
     assert '<img class="app-icon" src="icon.png"' in html
-    assert '<h2 class="hand">Desk, on a real Mac.</h2>' in html  # a sanctioned use of the hand
-    assert html.count('class="platform-card"') == 2 and html.count('class="store-badge"') == 3
-    assert html.count('class="gallery-shot"') + html.count('class="gallery-shot wide"') == 10
-    assert 'class="panel ok"' in html and 'data-app="9NH3NK2RGCF5"' in html
-    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@' in html
+    # The Mac page since 2026-10-18: Desk first, the Claude config carry
+    # second; the platform picker and the Store reach map moved to
+    # /sanduhr/windows/. The hand sets Este's own words only; no heading here
+    # is one.
+    assert 'class="hand"' not in html
+    assert 'class="platform-card"' not in html and 'data-app=' not in html
+    assert 'src="screenshot-desk-full.jpg"' in html and 'src="screenshot-desk-under-files.jpg"' in html
+    assert "screenshot-whats-new" not in html
+    assert 'class="stages"' in html  # how a pack travels
+    assert "brew install --cask estevanhernandez-stack-ed/tap/sanduhr" in html
+    assert 'href="/sanduhr/windows/"' in html
+    assert html.count('class="gallery-shot"') + html.count('class="gallery-shot wide"') >= 11
+    assert 'class="panel ok"' in html
+    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.27.0-mac"' in html
 
 
 def test_sanduhr_windows_is_generated_beside_the_mac_page():
@@ -325,11 +334,12 @@ def test_sanduhr_windows_is_generated_beside_the_mac_page():
 
 
 def test_a_badge_kind_must_be_known():
-    p = copy.deepcopy(_sanduhr())
-    plats = next(b for s in p["pageSpec"]["sections"] for b in s.get("blocks", []) if b["type"] == "platforms")
-    plats["items"][0]["badges"][0]["kind"] = "itch"
+    # The Sanduhr page carried the platform picker until 2026-10-18; the
+    # block's badge check is pinned on its own now.
+    block = {"type": "platforms", "items": [{"title": "macOS", "badges": [
+        {"href": "/x", "kind": "itch", "top": "Get it from", "bottom": "itch.io"}]}]}
     with pytest.raises(ValueError, match="badge kind"):
-        rpp.render_page(p, "slate-broadsheet")
+        rpp.block_platforms(block, {"id": "x", "title": "X"})
 
 
 def test_a_section_without_a_heading_renders_its_blocks_alone():

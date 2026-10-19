@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.26.0-mac" />
-<title>Sanduhr für Claude — native usage widget for claude.ai power users · 626 Labs</title>
-<meta name="description" content="Native desktop widget for pacing your claude.ai subscription usage. Burn-rate projection, pace markers, sparklines, five glass themes. Mac + Windows." />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.27.0-mac" />
+<title>Sanduhr für Claude for Mac — your claude.ai meters on the desktop, and your Claude Code setup carried · 626 Labs</title>
+<meta name="description" content="The Mac build of Sanduhr für Claude: your claude.ai usage meters living on the desktop and around the notch, and one Settings page that reads and carries your whole Claude Code setup. Notarized, on Homebrew, macOS 14 or newer." />
 <link rel="canonical" href="https://626labs.dev/sanduhr/" />
-<meta property="og:title" content="Sanduhr für Claude" />
-<meta property="og:description" content="Native desktop widget for pacing your claude.ai subscription usage. By 626 Labs." />
+<meta property="og:title" content="Sanduhr für Claude for Mac" />
+<meta property="og:description" content="Your claude.ai usage meters, living on the Mac desktop. And your Claude Code setup, seen in one place and carried to another Mac. By 626 Labs." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://626labs.dev/sanduhr/" />
-<meta property="og:image" content="https://626labs.dev/sanduhr/icon.png" />
+<meta property="og:image" content="https://626labs.dev/sanduhr/screenshot-desk-full.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" type="image/png" href="/favicon-626.png" />
 
@@ -698,7 +698,8 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     <a class="brand" href="index.html"><span class="mark"></span>626 Labs</a>
     <div class="links">
       <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude">GitHub</a>
-      <a class="cta" href="https://apps.microsoft.com/detail/9NH3NK2RGCF5">Download</a>
+      <a href="/sanduhr/windows/">Windows</a>
+      <a class="cta" href="#install">Download</a>
     </div>
   </div>
 </nav>
@@ -707,85 +708,33 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
 
   <section class="hero hero-center">
     <img class="app-icon" src="icon.png" alt="Sanduhr app icon" />
+    <p class="eyebrow">On your Mac</p>
     <h1>Sanduhr für Claude</h1>
-    <p class="dek">Native desktop widget that turns your claude.ai subscription usage into something you can actually pace yourself by.</p>
-    <p class="fine">Burn-rate projection, pace markers, sparkline trends, and five hand-tuned glass themes. Mac + Windows. No telemetry.</p>
+    <p class="dek">Your claude.ai usage meters, living on the desktop and around the notch. And one Settings page that reads your whole Claude Code setup and carries it to another Mac.</p>
+    <p class="fine">Native Swift, signed with Developer ID and notarized by Apple. Homebrew or a .dmg. macOS 14 or newer, Apple silicon and Intel. No telemetry.</p>
 
     <div class="get-strip" id="get-it">
       <span class="gs-key">Get it</span>
       <span class="spacer"></span>
-      <a class="btn primary" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases">Download from GitHub</a>
-      <a class="btn" href="https://estevanhernandez-stack-ed.github.io/Sanduhr_f-r_Claude/">Full product page →</a>
+      <a class="btn primary" href="#install">Homebrew</a>
+      <a class="btn" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases?q=mac&amp;expanded=true" target="_blank" rel="noopener">.dmg from GitHub</a>
+      <a class="btn" href="/sanduhr/windows/">Windows</a>
     </div>
     <div class="repo-meter" data-repo="estevanhernandez-stack-ed/Sanduhr_f-r_Claude" aria-label="Commit activity for Sanduhr für Claude"></div>
   </section>
 
   <section>
     <div class="showcase"><div class="showcase-frame">
-      <img src="screenshot-widget-mac.png" alt="The Sanduhr widget on Mac with the Personal account chip: Session, Weekly All Models and a temporary Weekly Special limit at 100%, each with a pace mark, reset time and sparkline" />
+      <img src="screenshot-desk-full.jpg" alt="The Desk on a bare Mac desktop: Session, Weekly All Models and Weekly Sonnet meters in the top left corner, each with a pace mark and its reset time; a handwritten daily line, the Work account&#x27;s numbers and three made-up meetings in the bottom left; the clock and date in the bottom right; the time and the meters on the notch" />
     </div></div>
   </section>
 
   <section>
     <div class="section-hd">
-      <h2>Pick your platform</h2>
+      <h2>Your meters live on the desktop.</h2>
     </div>
 
-    <p class="lead">Two builds. Pick the one that matches your OS.</p>
-
-    <div class="platform-grid">
-      <article class="platform-card">
-        <h3>macOS</h3>
-        <p>Native Mac app, signed with Developer ID and notarized by Apple. Install it once and it updates itself: it checks daily when automatic checks are on, or right away from Check for Updates&hellip; in any Sanduhr menu.</p>
-        <ul>
-          <li>Universal: Apple silicon and Intel, no Rosetta</li>
-          <li>Desk: your meters on the desktop and around the notch</li>
-          <li>Requires macOS 14 (Sonoma) or newer</li>
-        </ul>
-        <div class="badge-row">
-          <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases?q=mac&amp;expanded=true" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-            <div class="store-badge-text">
-              <span class="store-badge-top">Download the latest from</span>
-              <span class="store-badge-bottom">GitHub Releases</span>
-            </div>
-          </a>
-        </div>
-      </article>
-      <article class="platform-card">
-        <h3>Windows 11</h3>
-        <p>Native .NET and WPF with real Win11 Mica glass. Windows Credential Manager for the session cookie.</p>
-        <ul>
-          <li>Mica backdrop on Win11 (solid fallback on Win10)</li>
-          <li>Free on the Microsoft Store — no SmartScreen warnings</li>
-          <li>Full source under /windows-dotnet/</li>
-        </ul>
-        <div class="badge-row">
-          <a class="store-badge" href="https://apps.microsoft.com/detail/9NH3NK2RGCF5" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zm9.5 0H21v8.5h-8.5zM3 12.5h8.5V21H3zm9.5 0H21V21h-8.5z"/></svg>
-            <div class="store-badge-text">
-              <span class="store-badge-top">Get it from</span>
-              <span class="store-badge-bottom">Microsoft Store</span>
-            </div>
-          </a>
-          <a class="store-badge" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-            <div class="store-badge-text">
-              <span class="store-badge-top">Download from</span>
-              <span class="store-badge-bottom">GitHub Releases</span>
-            </div>
-          </a>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-hd">
-      <h2>On Mac, your meters live on the desktop.</h2>
-    </div>
-
-    <p class="lead">A fresh install starts with Desk on and your meters already there. The widget becomes the toolbox you open for the deep tools.</p>
+    <p class="lead">A fresh install starts with Desk on and your meters already there, drawn under your windows in a handwritten face. The widget becomes the toolbox you open for the deep tools.</p>
 
     <div class="cards">
       <div class="card">
@@ -793,23 +742,55 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
         <p>Your session and weekly limits drawn as bars under your windows, each with a pace tick and its reset time, in any of eight places you arrange right on the desktop. A limit that's nearly full with plenty of time left turns red, and you set how full and how far from a reset, per limit. A two-finger click on a meter opens that limit's own menu.</p>
       </div>
       <div class="card">
-        <h3>Sign in inside the app</h3>
-        <p>Sign in to claude.ai in a Sanduhr window and your session key is saved the moment you're in: no DevTools, no copying cookies. The window keeps nothing once it closes. Accounts made with Google sign in through your browser and paste the key, because Google refuses sign-in inside apps.</p>
-      </div>
-      <div class="card">
-        <h3>More than one account</h3>
-        <p>Add each Claude login under a name, like Work or Team, and switch from the widget's account chip, any Sanduhr menu, or the account name on Desk. Each account keeps its own history, so the sparklines never mix. Follow the account I'm using, off by default, switches for you when the signal is clear.</p>
-      </div>
-      <div class="card">
-        <h3>Limits that come and go</h3>
-        <p>A limit that looks temporary, like a promotion, can be hidden from that limit's two-finger menu, and it comes back on its own when it resets or refills. Session, weekly and the model limits always show. The menu bar shows session, weekly, whichever is higher, or rotates between them.</p>
-      </div>
-      <div class="card">
         <h3>The rest of Desk</h3>
         <p>The time, today's next meetings with one-click join, and a daily line of your own, in the handwritten EsteFont that ships with the app. Calendar access is asked for only if you turn meetings on, and nothing leaves your Mac. Corners on the Dock's side stay clear of it, and rise with a Dock that hides.</p>
       </div>
       <div class="card">
-        <h3>The notch, your way</h3>
+        <h3>Under your files</h3>
+        <p>Since 2.27.0, Settings &rarr; Desk &rarr; Clicks has <strong>Keep the Desk under desktop icons</strong>: the Desk moves below the Finder's icons, so files on the desktop sit on top of its text and can be selected, opened and dragged wherever they are. Meeting rows, watchers, now playing and the account name keep their clicks through a transparent layer; the clock's, message's and meters' menus wait until the option is off. Off by default.</p>
+      </div>
+      <div class="card">
+        <h3>A plate behind every piece</h3>
+        <p>Desk Look's <strong>Plate behind the text</strong> draws a soft dark plate behind each piece, for a desktop with files under it. On for a new install, untouched for an existing one.</p>
+      </div>
+      <div class="card">
+        <h3>Arrange Desk</h3>
+        <p>Drag each piece where you want it. While arranging, every piece has Hide and a Hidden strip brings one back; Done writes the layout once, Cancel drops it.</p>
+      </div>
+      <div class="card">
+        <h3>Limits that come and go</h3>
+        <p>A temporary limit, like a Weekly Special, shows up when Anthropic adds it and can be hidden from its own meter's menu. Hidden Limits brings it back, and the same menu turns that limit's warnings off and on.</p>
+      </div>
+    </div>
+
+    <div class="gallery-strip align-start">
+      <div class="gallery-shot">
+        <img src="screenshot-desk-meters.jpg" alt="Three Desk meters in the handwritten face: Session (5 hr) at 42%, resets today 11:35 PM; Weekly All Models at 63%, resets Thursday 9:35 PM; Weekly Sonnet at 18%, resets Thursday 9:35 PM; each bar with a pace mark" loading="lazy" />
+        <div class="caption"><strong>Meters</strong> &middot; a pace mark and a reset time on each</div>
+      </div>
+      <div class="gallery-shot">
+        <img src="screenshot-desk-clock.png" alt="The Desk clock reading 9:36 above Sunday, October 18, both in the handwritten face on a dark desktop" loading="lazy" />
+        <div class="caption"><strong>Clock</strong> &middot; the time and the date, in the hand</div>
+      </div>
+      <div class="gallery-shot">
+        <img src="screenshot-desk-limit-menu.jpg" alt="A Desk meter&#x27;s two-finger menu beside the three meters: Hide Widget, Accounts, Warn again for this limit, Hidden Limits, Alerts Settings, Menu Bar Shows, the Tools (Deep Work, Pacing Calculators, Cooldown Snake, Camera Fill Light, Claude Usage), Refresh, All Settings, Arrange Desk, Check for Updates, What&#x27;s New, Take the Tour and Quit" loading="lazy" />
+        <div class="caption"><strong>A meter's menu</strong> &middot; accounts, hidden limits, the Tools, Arrange Desk</div>
+      </div>
+    </div>
+      <div class="gallery-shot wide">
+        <img src="screenshot-desk-under-files.jpg" alt="The same Desk under a desktop full of files: Budget.xlsx, Design review.key, Launch checklist.pages, Logo draft.png, Notes.txt and Q3 plan.numbers stacked down the right edge on top of the Desk&#x27;s text, with the meters, the daily line, the meetings and the clock still readable beneath" loading="lazy" />
+        <div class="caption"><strong>Under your files</strong> &middot; the 2.27.0 option: desktop files sit on top and stay clickable</div>
+      </div>
+  </section>
+
+  <section>
+    <div class="section-hd">
+      <h2>The notch, your way.</h2>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Each wing, your pick</h3>
         <p>On MacBooks with a camera notch, pick what the left wing, the right wing and the strip under the camera show: your next meeting, the time, your meters, your message, what's playing, or nothing. A camera light around the notch lights your face when any app turns the camera on. Off until you switch it on, no camera permission needed. Test Glow in Settings shows you the notch glow once before you turn any of it on. With the Claude Code integration, the notch can also glow when a Claude session is waiting on you.</p>
       </div>
       <div class="card">
@@ -817,38 +798,104 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
         <p>The song or video playing on your Mac, from Spotify, Apple Music, YouTube Music, Pandora or a browser tab, on a notch wing or a Desk corner with a moving position bar. Click it to play or pause. Titles never leave your Mac and are never saved.</p>
       </div>
       <div class="card">
-        <h3>Claude Code, from Sanduhr</h3>
-        <p>Settings &rarr; Claude Code installs your meters above Claude Code's prompt, a statusline, the notch glow when a session needs you, and an MCP server so Claude can ask about your usage. Already have a statusline? Sanduhr can combine its meters with yours, keeping the segments you pick, instead of replacing it. Remove takes out only what Sanduhr added and restores anything it replaced. Link an account to a Claude Code folder and that folder's sessions show its meters, with the statusline naming the account.</p>
-      </div>
-      <div class="card">
         <h3>Watchers</h3>
         <p>Small live cards on the notch or the Desk for work in flight: a CI run, a deploy, a long test, with its state, time so far and progress. Agents can put one up through the MCP server, and Claude Code's own background tasks can show up on their own. Both switches are off until you turn them on.</p>
+      </div>
+    </div>
+
+    <div class="gallery-strip align-start">
+      <div class="gallery-shot">
+        <img src="screenshot-settings-notch.png" alt="Sanduhr Settings, Notch: the island around the camera switched on, Text beside the camera with the left wing set to Time and the right wing to Now playing, Text under the camera off, and a Test Glow button above the preview" loading="lazy" />
+        <div class="caption"><strong>Notch settings</strong> &middot; each wing and the strip, your pick</div>
+      </div>
+    </div>
+      <div class="gallery-shot wide">
+        <img src="screenshot-notch-wings.png" alt="The notch on a MacBook widened into one black island: the time on the left wing, and 5h 42% and wk 63% on the right" loading="lazy" />
+        <div class="caption"><strong>The notch</strong> &middot; time left, meters right</div>
+      </div>
+  </section>
+
+  <section>
+    <div class="section-hd">
+      <h2>Your Claude Code setup, seen and carried.</h2>
+    </div>
+
+    <p class="lead">Settings &rarr; Claude Code, and Mods &amp; Config: one page per Claude Code folder that reads everything first and writes only through receipts you can undo.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>What each folder really loads</h3>
+        <p>Agents, skills, commands, plugins, MCP servers and settings, for every Claude Code folder on your Mac, with the file each one comes from and why one wins over another. The page reads first: nothing is run to find out what it is.</p>
+      </div>
+      <div class="card">
+        <h3>Meters above the prompt</h3>
+        <p>The page opens on one row per folder with its state and a switch. Behind it, the rest of the integration: a statusline that can combine with yours, keeping the segments you pick, instead of replacing it; the notch glow when a session needs you; and an MCP server so Claude can ask about your usage. Remove takes out only what Sanduhr added and restores anything it replaced. Link an account to a folder and that folder's sessions show its meters, with the statusline naming the account.</p>
+      </div>
+      <div class="card">
+        <h3>Carry it to another Mac</h3>
+        <p>Export Config reads a folder's agents, skills, commands, settings and MCP servers into one config pack: a description plus the plain files that travel, never a copy of the folder. Secrets and paths only your Mac has stay home, listed as names to set by hand in <code>CARRY.md</code>. Import opens the pack into any other folder as a Compare view with a checkbox per difference: only what that folder lacks comes over, and Undo Import takes it back.</p>
+      </div>
+      <div class="card">
+        <h3>Mod packs, and mods Claude proposes</h3>
+        <p>A mod pack is the smallest config pack: export a kept mod, open it on any Mac, and it lands as a proposal with its files and the validator's card, to review before you keep it. Claude can propose mods and config too; nothing lands until you review it. A mod pack is also a one-plugin marketplace, so it works without Sanduhr.</p>
       </div>
       <div class="card">
         <h3>Claude writes your messages and themes</h3>
         <p>With the MCP server installed, Claude Code can suggest Desk messages, with effects like a glow or a line written in by hand, and propose widget themes as a live preview. Nothing changes until you approve it.</p>
       </div>
+    </div>
+
+    <ul class="stages">
+      <li><b>1</b><strong>Export.</strong> Pick a folder; the sheet shows what travels and what stays home.</li>
+      <li><b>2</b><strong>The pack.</strong> A manifest plus plain files. Secrets travel as names, never values.</li>
+      <li><b>3</b><strong>Import.</strong> Open the pack into any folder, on any Mac.</li>
+      <li><b>4</b><strong>Compare.</strong> A checkbox per difference; only what that folder lacks comes over.</li>
+      <li><b>5</b><strong>Keep, or undo.</strong> Every write is a receipt; Undo Import reverses them all.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="section-hd">
+      <h2>The widget, when you want it.</h2>
+    </div>
+
+    <div class="cards">
       <div class="card">
-        <h3>Your Claude Code setup, portable</h3>
-        <p>Export a Claude Code folder's agents, skills, commands, settings and MCP servers as one config pack, and open it into any other folder: only what that folder lacks comes over, and Undo Import takes it back. Secrets and paths only your Mac has stay home, and <code>CARRY.md</code> lists what to set by hand. Claude can propose mods and config too; nothing lands until you review it.</p>
-      </div>
-      <div class="card">
-        <h3>Your usage, per account</h3>
-        <p>Each account chooses what Sanduhr keeps: 30 days of meter history, a local record of its Claude Code sessions (tokens by day, model and project, never what was written), and what Claude may see, off by default. The Claude Usage page shows it as overview, trends and sessions, with CSV export.</p>
-      </div>
-      <div class="card">
-        <h3>The widget, when you want it</h3>
+        <h3>Shown, hidden, or on call</h3>
         <p>Always shown, hidden while Desk is on, or only when you open it. Click the meters and it appears beside them. Deep Work, the Pacing Calculators and Cooldown Snake open from the Tools menu, even with the widget hidden.</p>
       </div>
       <div class="card">
         <h3>Themes you can see</h3>
-        <p>A gallery of every theme, yours included, with a preview of each and one click to apply. Hover one for a line on its look, and your own theme files can carry one too. Match Desk draws the widget in your Desk font and ink, so it reads like part of the desktop.</p>
+        <p>A gallery of every theme, yours included, with a preview of each and one click to apply. Seven ship in the box: Obsidian, Aurora, Ember, Mint, 626 Labs, Matrix and Blueprint. Match Desk draws the widget in your Desk face and ink, so it reads like part of the desktop.</p>
       </div>
       <div class="card">
-        <h3>Smarter alerts, one Settings window</h3>
-        <p>A pace warning when a limit is on course to run out before it resets, quiet hours and a sound of your choice, all off until you turn them on. Every setting sits in one window, Updates and About included, and a shortcut you pick, Option+S by default, opens it while Desk is on.</p>
+        <h3>Your own themes</h3>
+        <p>Drop a theme JSON into Settings &rarr; Themes, or paste what an AI agent returned. Copy Agent Prompt hands any chat agent the brief; Open Themes Folder is where your files live.</p>
       </div>
     </div>
+
+    <div class="gallery-strip">
+      <div class="gallery-shot">
+        <img src="screenshot-widget-mac.png" alt="The Sanduhr widget on Mac in Match Desk, with the Work account chip beside the title: Session (5 hr) at 42% with a sparkline and 15% under pace, Weekly All Models at 63%, 20% ahead with a note that at the current pace it expires in 1d 18h 17m, Weekly Sonnet at 18%, the tool row and a Use Sonnet nudge" loading="lazy" />
+        <div class="caption"><strong>Match Desk</strong> &middot; the widget in your Desk face and ink</div>
+      </div>
+      <div class="gallery-shot">
+        <img src="screenshot-obsidian.png" alt="The Sanduhr widget on Mac in the Obsidian theme, the same three meters and account chip" loading="lazy" />
+        <div class="caption"><strong>Obsidian</strong> &middot; near-black glass, violet accent, the default</div>
+      </div>
+      <div class="gallery-shot">
+        <img src="screenshot-aurora.png" alt="The Sanduhr widget on Mac in the Aurora theme, the same three meters and account chip" loading="lazy" />
+        <div class="caption"><strong>Aurora</strong> &middot; deep night blue, sky-blue accent</div>
+      </div>
+      <div class="gallery-shot">
+        <img src="screenshot-matrix.png" alt="The Sanduhr widget on Mac in the Matrix theme, the same three meters and account chip" loading="lazy" />
+        <div class="caption"><strong>Matrix</strong> &middot; phosphor green on black</div>
+      </div>
+    </div>
+      <div class="gallery-shot wide">
+        <img src="screenshot-settings-themes.png" alt="Sanduhr Settings, Themes: eight tiles, Obsidian, Aurora, Ember, Mint, 626 Labs, Matrix, Blueprint and Match Desk, with Match Desk selected; below them Your own themes with a drop field, Save and Apply, Copy Agent Prompt and Open Themes Folder" loading="lazy" />
+        <div class="caption"><strong>Themes</strong> &middot; click one to use it; drop your own below</div>
+      </div>
   </section>
 
   <section>
@@ -865,137 +912,99 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div class="card">
         <h3>Pace markers on every bar</h3>
-        <p>Colored ticks show where "on pace" is right now — pace by eye, not by math.</p>
+        <p>Colored ticks show where "on pace" is right now, so you pace by eye, not by math.</p>
       </div>
       <div class="card">
         <h3>Sparkline history</h3>
-        <p>Per-tier velocity trends, 30 days per account on Mac, so you can see whether you're accelerating or cooling off.</p>
-      </div>
-      <div class="card">
-        <h3>Five hand-tuned themes</h3>
-        <p>Obsidian, Aurora, Ember, Mint, Matrix — plus unlimited user-authored JSON themes via Settings or a drop-in file.</p>
-      </div>
-      <div class="card">
-        <h3>AI-agent theme prompt</h3>
-        <p>Hand any chat agent a reference image or vibe description. Get back a drop-in theme JSON.</p>
-      </div>
-      <div class="card">
-        <h3>Real native vibrancy</h3>
-        <p>Win11 Mica glass. macOS NSVisualEffectView. No Electron. No WebView.</p>
+        <p>Per-tier velocity trends, 30 days per account, so you can see whether you're accelerating or cooling off.</p>
       </div>
       <div class="card">
         <h3>Per-model weekly meters</h3>
-        <p>Your Claude Fable 5 allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears — no update needed.</p>
+        <p>Your Claude Fable 5 allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed.</p>
       </div>
       <div class="card">
         <h3>Claude Usage tab + local vault</h3>
-        <p>Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export — and an opt-in vault that outlives the CLI's 30-day log cleanup.</p>
+        <p>Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export, and an opt-in vault that outlives the CLI's 30-day log cleanup.</p>
+      </div>
+      <div class="card">
+        <h3>Your usage, per account</h3>
+        <p>Each account chooses what Sanduhr keeps: 30 days of meter history, a local record of its Claude Code sessions (tokens by day, model and project, never what was written), and what Claude may see, off by default. The Claude Usage page shows it as overview, trends and sessions, with CSV export.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-hd">
+      <h2>Accounts, alerts, and one Settings window.</h2>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Sign in without DevTools</h3>
+        <p>Sign in to claude.ai in a Sanduhr window and your session key is saved the moment you're in: no DevTools, no copying cookies. The window keeps nothing once it closes. Accounts made with Google sign in through your browser and paste the key, because Google refuses sign-in inside apps.</p>
+      </div>
+      <div class="card">
+        <h3>More than one account</h3>
+        <p>Add each Claude login under a name, like Work or Team, and switch from the widget's account chip, any Sanduhr menu, or the account name on Desk. Each account keeps its own history, so the sparklines never mix. Follow the account I'm using, off by default, switches for you when the signal is clear.</p>
+      </div>
+      <div class="card">
+        <h3>Smarter alerts, one Settings window</h3>
+        <p>A pace warning when a limit is on course to run out before it resets, quiet hours and a sound of your choice, all off until you turn them on. Every setting sits in one window, Updates and About included, and a shortcut you pick, Option+S by default, opens it while Desk is on.</p>
       </div>
       <div class="card">
         <h3>Threshold alerts</h3>
         <p>A toast and a soft procedural chime when a pool crosses your warn or urgent line. Per-model meters stay politely silent by default.</p>
       </div>
     </div>
-  </section>
-
-  <section>
-    <div class="section-hd">
-      <h2 class="hand">Desk, on a real Mac.</h2>
-    </div>
-
-    <p class="lead">Captured from Sanduhr 2.6, with demo meetings.</p>
 
     <div class="gallery-strip align-start">
       <div class="gallery-shot">
-        <img src="screenshot-desk-corner.jpg" alt="A Desk corner: the clock, the date, Session and Weekly meters with a pace mark, a daily message drawn in glowing handwriting, the account line and three upcoming meetings" loading="lazy" />
-        <div class="caption"><strong>Desk</strong> &middot; clock, meters, message, meetings</div>
+        <img src="screenshot-settings-alerts.png" alt="Sanduhr Settings, Alerts: Notifications off, Session and Weekly thresholds at 80%, the pace warning and reset notices unchecked, Where alerts show set to Banner, a Sound picker and Quiet hours from 10:00 PM to 7:00 AM" loading="lazy" />
+        <div class="caption"><strong>Alerts</strong> &middot; thresholds, the pace warning, quiet hours</div>
       </div>
-      <div class="gallery-shot">
-        <img src="screenshot-desk-limit-menu.jpg" alt="A Desk meter&#x27;s two-finger menu on a temporary Weekly Special limit at 100%: Show Widget, Accounts, Hide Weekly Special, Stop warnings, Meter Settings and the Tools" loading="lazy" />
-        <div class="caption"><strong>A limit's menu</strong> &middot; hide a temporary limit, stop its warnings</div>
-      </div>
-      <div class="gallery-shot">
-        <img src="screenshot-whats-new.png" alt="Sanduhr&#x27;s What&#x27;s New window for 2.4.0 to 2.6.0: now playing on the notch and the Desk, and Claude writing your messages and themes" loading="lazy" />
-        <div class="caption"><strong>What's New</strong> &middot; opens after each update</div>
-      </div>
-    </div>
-      <div class="gallery-shot wide">
-        <img src="screenshot-notch-wings.png" alt="The notch on a MacBook: the next meeting on the left wing, Session and Weekly percentages on the right, and the time in the strip under the camera" loading="lazy" />
-        <div class="caption"><strong>The notch</strong> &middot; next meeting left, meters right, the time underneath</div>
-      </div>
-  </section>
-
-  <section>
-    <div class="section-hd">
-      <h2>Settings, on Mac.</h2>
-    </div>
-
-    <p class="lead">Accounts, the menu bar and the meters.</p>
-
-    <div class="gallery-strip">
       <div class="gallery-shot">
         <img src="screenshot-accounts.png" alt="Sanduhr Settings, Accounts: the account list with Work active, its session key field, Sign Out and Remove Account" loading="lazy" />
         <div class="caption"><strong>Accounts</strong> &middot; one key and one history each</div>
       </div>
-      <div class="gallery-shot">
-        <img src="screenshot-menu-bar.png" alt="Sanduhr Settings, General: the surfaces toggles and the menu bar&#x27;s percent set to Whichever is higher" loading="lazy" />
-        <div class="caption"><strong>Menu bar</strong> &middot; session, weekly, higher or rotate</div>
-      </div>
-      <div class="gallery-shot">
-        <img src="screenshot-meters.png" alt="Sanduhr Settings, Desk Meters: per-limit warnings, and the note that temporary limits can be hidden and come back on their own" loading="lazy" />
-        <div class="caption"><strong>Meters</strong> &middot; per-limit warnings, temporary limits hide</div>
-      </div>
     </div>
   </section>
 
-  <section>
+  <section id="install">
     <div class="section-hd">
-      <h2>Five themes. Or infinite.</h2>
+      <h2>Install.</h2>
     </div>
 
-    <p class="lead">A taste of what ships in the box.</p>
+    <div class="install-grid">
+      <div class="install-card recommended">
+        <span class="pill">Recommended</span>
+        <span class="plat">macOS 14 or newer · Apple silicon and Intel</span>
+        <h3>Homebrew</h3>
+        <p>One line taps and installs. Updates come with <code>brew upgrade --cask sanduhr</code>, or from the app's own daily check.</p>
+        <code>brew install --cask estevanhernandez-stack-ed/tap/sanduhr</code>
+        <a class="go" href="https://github.com/estevanhernandez-stack-ed/homebrew-tap" target="_blank" rel="noopener">The tap on GitHub <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+      </div>
+      <div class="install-card">
+        <span class="plat">macOS 14 or newer · Apple silicon and Intel</span>
+        <h3>The .dmg</h3>
+        <p>Download the latest <code>Sanduhr-&lt;version&gt;.dmg</code> and drag it to Applications. Signed with Developer ID and notarized by Apple, so no Gatekeeper warning. It checks for updates daily when automatic checks are on, or right away from Check for Updates&hellip; in any Sanduhr menu.</p>
+        <a class="go" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases?q=mac&amp;expanded=true" target="_blank" rel="noopener">Mac releases on GitHub <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+      </div>
+    </div>
 
-    <div class="gallery-strip">
-      <div class="gallery-shot">
-        <img src="screenshot-obsidian.png" alt="Obsidian theme" loading="lazy" />
-        <div class="caption"><strong>Obsidian</strong> &middot; deep black &middot; purple accent</div>
-      </div>
-      <div class="gallery-shot">
-        <img src="screenshot-aurora.png" alt="Aurora theme" loading="lazy" />
-        <div class="caption"><strong>Aurora</strong> &middot; dark blue &middot; cyan glow</div>
-      </div>
-      <div class="gallery-shot">
-        <img src="screenshot-matrix.png" alt="Matrix theme" loading="lazy" />
-        <div class="caption"><strong>Matrix</strong> &middot; phosphor &middot; CRT corners</div>
-      </div>
+    <div class="callout">
+      <span class="k">On Windows?</span>
+      <p>The Windows build is its own app from the same repo: the widget, a statusline and an MCP server for Claude Code, free on the Microsoft Store. <a href="/sanduhr/windows/">Sanduhr für Claude on Windows</a>.</p>
     </div>
   </section>
 
   <section>
     <div class="panel ok">
       <h3>✓ No data comes back to us.</h3>
-      <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr — even in principle.</p>
-      <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. Your cookie stays on your machine: in the macOS Keychain on Mac, in Credential Manager on Windows. On Mac, Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain or Credential Manager. On Mac, Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote. On Windows, sign out first, then delete <code>%APPDATA%\Sanduhr</code> and <code>%LOCALAPPDATA%\Sanduhr</code> after uninstalling.</p>
-      <p>On Mac, Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default, and what Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
+      <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.</p>
+      <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. Your cookie stays in the macOS Keychain. Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain; Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote.</p>
+      <p>Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default, and what Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
       <p><a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md">Security policy</a> &middot; <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md">Privacy policy</a></p>
     </div>
-  </section>
-
-  <section>
-    <div class="cta-row">
-      <p>Looking for the full pitch with all the screenshots, themes gallery, and docs?</p>
-      <a class="btn" href="https://estevanhernandez-stack-ed.github.io/Sanduhr_f-r_Claude/">Open the full landing page →</a>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-hd">
-      <h2>Where it ended up</h2>
-    </div>
-
-    <p class="lead">Every Microsoft Store install since launch, plotted by country. Dot area is proportional to install count.</p>
-
-    <div class="reach-map" data-app="9NH3NK2RGCF5" data-label="Sanduhr für Claude"></div>
   </section>
 
 </main>
@@ -1007,7 +1016,6 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
   <a class="site-signature" href="/" aria-label="626Labs, home"></a>
 </footer>
 
-<script src="/assets/reach-map.js" defer></script>
 <!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
 <script data-goatcounter="https://626labs.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
