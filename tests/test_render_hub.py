@@ -34,6 +34,34 @@ def test_sitemap_includes_home_and_subpages(tmp_path):
     assert "<loc>https://626labs.dev/bacon-trail/</loc>" in xml
 
 
+def test_sitemap_lists_nested_pages_but_not_aliases(tmp_path):
+    # /sanduhr/windows/ (2026-10-18) is the first generated page two levels
+    # down that is a page of its own. A nested index.html joins the sitemap
+    # when its canonical link is its own URL; play/bacon/ canonicalizes to
+    # /bacon-trail/ and stays out, and editorial/<slug>/ is the Field Notes
+    # class, listed from the stories with a lastmod, not from the dir walk.
+    _make_site(tmp_path)
+    own = (tmp_path / "sanduhr" / "windows")
+    own.mkdir(parents=True)
+    own.joinpath("index.html").write_text(
+        '<link rel="canonical" href="https://626labs.dev/sanduhr/windows/" />', encoding="utf-8")
+    alias = (tmp_path / "play" / "bacon")
+    alias.mkdir(parents=True)
+    alias.joinpath("index.html").write_text(
+        '<link rel="canonical" href="https://626labs.dev/bacon-trail/" />', encoding="utf-8")
+    note = (tmp_path / "editorial" / "some-note")
+    note.mkdir(parents=True)
+    note.joinpath("index.html").write_text("<html></html>", encoding="utf-8")
+    stray = (tmp_path / "tools" / "thing")  # no canonical link at all: not a page of its own
+    stray.mkdir(parents=True)
+    stray.joinpath("index.html").write_text("<html></html>", encoding="utf-8")
+    xml = render_hub.render_sitemap(stories=[], root=tmp_path)
+    assert "<loc>https://626labs.dev/sanduhr/windows/</loc>" in xml
+    assert "play/bacon" not in xml
+    assert "editorial/some-note" not in xml
+    assert "tools/thing" not in xml
+
+
 def test_sitemap_is_deterministic(tmp_path):
     _make_site(tmp_path)
     assert render_hub.render_sitemap(root=tmp_path) == render_hub.render_sitemap(root=tmp_path)

@@ -37,9 +37,9 @@ RELEASES = [
 ]
 
 
-def test_the_three_pages_carry_a_marker():
+def test_the_marked_pages_carry_a_marker():
     pages = {page for page, _, _ in rr.find_markers()}
-    assert {"sanduhr/index.html", "rororo.html", "mod-launcher-games.html"} <= pages
+    assert {"sanduhr/index.html", "sanduhr/windows/index.html", "rororo.html", "mod-launcher-games.html"} <= pages
 
 
 @pytest.mark.parametrize("page,repo,tag", rr.find_markers())

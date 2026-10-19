@@ -297,7 +297,7 @@ def render_nav(spec: dict, product: dict | None = None) -> str:
         '<div class="grid-bg" aria-hidden="true"></div>\n\n'
         '<nav class="topnav">\n'
         '  <div class="topnav-inner">\n'
-        '    <a class="brand" href="index.html"><span class="mark"></span>626 Labs</a>\n'
+        '    <a class="brand" href="/"><span class="mark"></span>626 Labs</a>\n'
         '    <div class="links">\n'
         + "\n".join(links) + "\n"
         "    </div>\n"
@@ -319,7 +319,7 @@ def render_footer(spec: dict) -> str:
         f"  <span>{e(foot.get('label', '626 Labs'))}</span>\n"
         f"{axiom}"
         f"{disclaimer}"
-        f'  <span><a href="index.html">626labs.dev</a> · Imagine Something Else.{links}</span>\n'
+        f'  <span><a href="/">626labs.dev</a> · Imagine Something Else.{links}</span>\n'
         '  <a class="site-signature" href="/" aria-label="626Labs, home"></a>\n'
         "</footer>\n"
     )

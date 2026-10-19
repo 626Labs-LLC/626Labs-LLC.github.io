@@ -305,19 +305,59 @@ def test_sanduhr_is_generated_with_its_furniture():
     assert "sanduhr/index.html" in rpp.generated_pages()
     html = (ROOT / "sanduhr/index.html").read_text(encoding="utf-8")
     assert '<img class="app-icon" src="icon.png"' in html
-    assert '<h2 class="hand">Desk, on a real Mac.</h2>' in html  # a sanctioned use of the hand
-    assert html.count('class="platform-card"') == 2 and html.count('class="store-badge"') == 3
-    assert html.count('class="gallery-shot"') + html.count('class="gallery-shot wide"') == 10
-    assert 'class="panel ok"' in html and 'data-app="9NH3NK2RGCF5"' in html
-    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@' in html
+    # The Mac page since 2026-10-18: Desk first, the Claude config carry
+    # second; the platform picker and the Store reach map moved to
+    # /sanduhr/windows/. The hand sets Este's own words only; no heading here
+    # is one.
+    assert 'class="hand"' not in html
+    assert 'class="platform-card"' not in html and 'data-app=' not in html
+    assert 'src="screenshot-desk-full.jpg"' in html and 'src="screenshot-desk-under-files.jpg"' in html
+    assert "screenshot-whats-new" not in html
+    assert 'class="stages"' in html  # how a pack travels
+    assert "brew install --cask estevanhernandez-stack-ed/tap/sanduhr" in html
+    assert 'href="/sanduhr/windows/"' in html
+    assert html.count('class="gallery-shot"') + html.count('class="gallery-shot wide"') >= 11
+    assert 'class="panel ok"' in html
+    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.27.0-mac"' in html
+
+
+def test_sanduhr_windows_is_generated_beside_the_mac_page():
+    # /sanduhr/ is the Mac build's page since 2026-10-18; Windows lives at
+    # /sanduhr/windows/ (a `pages[]` entry) until it catches up.
+    assert "sanduhr/windows/index.html" in rpp.generated_pages()
+    html = (ROOT / "sanduhr/windows/index.html").read_text(encoding="utf-8")
+    assert '<img class="app-icon" src="icon.png"' in html and (ROOT / "sanduhr/windows/icon.png").is_file()
+    assert 'href="/sanduhr/"' in html  # the Mac page, root-relative
+    assert 'data-app="9NH3NK2RGCF5"' in html  # the reach map moved here
+    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.4.3"' in html
+    assert 'class="hand"' not in html
+
+
+def test_sanduhr_directory_holds_only_what_its_pages_use():
+    # The spec's rule for the capture set: the directory says what the page
+    # uses. A capture nothing references is a leftover, not an asset.
+    mac = (ROOT / "sanduhr/index.html").read_text(encoding="utf-8")
+    win = (ROOT / "sanduhr/windows/index.html").read_text(encoding="utf-8")
+    for f in sorted((ROOT / "sanduhr").glob("screenshot-*")):
+        assert f.name in mac or f.name in win, f"{f.name} is referenced by no page"
+    assert 'src="screenshot-settings-notch.png"' in mac  # the Notch pane, in the Settings strip
+
+
+def test_nested_generated_pages_link_home_at_the_root():
+    # A relative href="index.html" on /sanduhr/windows/ is the page itself.
+    for rel in ("sanduhr/index.html", "sanduhr/windows/index.html"):
+        html = (ROOT / rel).read_text(encoding="utf-8")
+        assert '<a class="brand" href="/">' in html, rel
+        assert '<a href="/">626labs.dev</a>' in html, rel
 
 
 def test_a_badge_kind_must_be_known():
-    p = copy.deepcopy(_sanduhr())
-    plats = next(b for s in p["pageSpec"]["sections"] for b in s.get("blocks", []) if b["type"] == "platforms")
-    plats["items"][0]["badges"][0]["kind"] = "itch"
+    # The Sanduhr page carried the platform picker until 2026-10-18; the
+    # block's badge check is pinned on its own now.
+    block = {"type": "platforms", "items": [{"title": "macOS", "badges": [
+        {"href": "/x", "kind": "itch", "top": "Get it from", "bottom": "itch.io"}]}]}
     with pytest.raises(ValueError, match="badge kind"):
-        rpp.render_page(p, "slate-broadsheet")
+        rpp.block_platforms(block, {"id": "x", "title": "X"})
 
 
 def test_a_section_without_a_heading_renders_its_blocks_alone():
