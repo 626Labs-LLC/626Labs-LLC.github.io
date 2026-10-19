@@ -2247,6 +2247,19 @@ def render_sitemap(stories: list[dict] | None = None, root: Path = ROOT) -> str:
         if name in SITEMAP_EXCLUDE:
             continue
         pages.append((f"{SITE_URL}/{name}/", "weekly", "0.8", None))
+    # 2b. <dir>/<sub>/index.html that is a page of its own (sanduhr/windows/,
+    # 2026-10-18). editorial/ is class 4; SITEMAP_EXCLUDE dirs stay out; a
+    # nested page whose canonical link names another URL is an alias
+    # (play/bacon/ -> /bacon-trail/) and is not advertised.
+    for idx in sorted(root.glob("*/*/index.html"), key=lambda p: p.parent.as_posix()):
+        top, sub = idx.parent.parent.name, idx.parent.name
+        if top in SITEMAP_EXCLUDE or top == "editorial" or sub in SITEMAP_EXCLUDE:
+            continue
+        loc = f"{SITE_URL}/{top}/{sub}/"
+        m = re.search(r'<link\s+rel="canonical"\s+href="([^"]+)"', idx.read_text(encoding="utf-8", errors="replace"))
+        if m and m.group(1) != loc:
+            continue
+        pages.append((loc, "weekly", "0.8", None))
     for html_file in sorted(root.glob("*.html"), key=lambda p: p.name):
         if html_file.name in SITEMAP_ROOT_HTML_EXCLUDE:
             continue

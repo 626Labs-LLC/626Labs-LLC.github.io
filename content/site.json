@@ -3523,6 +3523,224 @@
           ]
         }
       }
+    },
+    {
+      "id": "sanduhr-windows",
+      "title": "Sanduhr für Claude",
+      "repo": "estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
+      "productPage": "/sanduhr/windows/",
+      "pageSpec": {
+        "meta": {
+          "title": "Sanduhr für Claude on Windows — your claude.ai usage, paced, from the Microsoft Store · 626 Labs",
+          "description": "The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a statusline and MCP server for Claude Code. Free on the Microsoft Store.",
+          "ogTitle": "Sanduhr für Claude on Windows",
+          "ogDescription": "A native Windows widget that paces your claude.ai usage, with a statusline and MCP server for Claude Code. Free on the Microsoft Store. By 626 Labs.",
+          "ogImage": "/sanduhr/icon.png"
+        },
+        "releaseReviewed": [
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.4.3"
+        ],
+        "nav": [
+          {
+            "label": "GitHub",
+            "href": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude"
+          },
+          {
+            "label": "Mac",
+            "href": "/sanduhr/"
+          },
+          {
+            "label": "Microsoft Store",
+            "href": "https://apps.microsoft.com/detail/9NH3NK2RGCF5",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "align": "center",
+            "icon": {
+              "src": "icon.png",
+              "alt": "Sanduhr app icon"
+            },
+            "eyebrow": "On Windows 10 and 11",
+            "title": "Sanduhr für Claude",
+            "dek": "A native Windows widget that shows how fast you're burning through your claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm.",
+            "fine": ".NET and WPF with real Win11 Mica glass. Your session cookie in Windows Credential Manager. Free on the Microsoft Store. No telemetry.",
+            "get": {
+              "label": "Get it",
+              "links": [
+                {
+                  "href": "https://apps.microsoft.com/detail/9NH3NK2RGCF5",
+                  "label": "Microsoft Store",
+                  "primary": true,
+                  "store": true,
+                  "external": true
+                },
+                {
+                  "href": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases?q=v3&expanded=true",
+                  "label": "Setup.exe from GitHub",
+                  "external": true
+                }
+              ]
+            }
+          },
+          {
+            "type": "section",
+            "heading": "Not just a mirror of the numbers.",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Sanduhr does the pacing math so you don't have to."
+                ]
+              },
+              {
+                "type": "cards",
+                "items": [
+                  {
+                    "title": "Burn-rate projection",
+                    "body": "\"Hits 100% in ~4h 22m at current pace\" warns you before you run dry, not after."
+                  },
+                  {
+                    "title": "Pace markers on every bar",
+                    "body": "Colored ticks show where \"on pace\" is right now, so you pace by eye, not by math."
+                  },
+                  {
+                    "title": "Sparkline history",
+                    "body": "Per-tier velocity trends, so you can see whether you're accelerating or cooling off."
+                  },
+                  {
+                    "title": "Per-model weekly meters",
+                    "body": "Your Claude Fable 5 allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed."
+                  },
+                  {
+                    "title": "Claude Usage tab + local vault",
+                    "body": "Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export, and an opt-in vault that outlives the CLI's 30-day log cleanup."
+                  },
+                  {
+                    "title": "Threshold alerts",
+                    "body": "A toast and a soft procedural chime when a pool crosses your warn or urgent line. Per-model meters stay politely silent by default."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "Claude Code, from Sanduhr.",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Since 3.4.0 the widget reaches into Claude Code: a statusline, an MCP server, and themes you can ask for in words."
+                ]
+              },
+              {
+                "type": "cards",
+                "items": [
+                  {
+                    "title": "A statusline under the prompt",
+                    "body": "Settings &rarr; Claude Usage &rarr; Install statusline&hellip; puts your usage percentages and reset times under the Claude Code prompt of the one home you pick. After each fetch the widget writes a snapshot file; the statusline reads that file and nothing else that could hold a credential."
+                  },
+                  {
+                    "title": "An MCP server Claude can ask",
+                    "body": "Install MCP server&hellip; registers <code>sanduhr-mcp</code> with one Claude Code home and lets you tick which homes the burn tool may read, none by default. Claude can then ask for your usage, your model mix, your history and your burn by project. Remove MCP server reverts all of it. Needs widget 3.4.0 or later; an older widget answers <code>widget_too_old</code> with the remedy instead of nothing."
+                  },
+                  {
+                    "title": "Theme Studio",
+                    "body": "Settings &rarr; Themes &rarr; Studio edits the fourteen color tokens and two dials with the widget as the live preview, lint findings as you type, Save &amp; apply, Revert and Copy JSON. Start from any theme."
+                  },
+                  {
+                    "title": "Themes from the terminal",
+                    "body": "With the MCP server installed, ask Claude Code for a theme (\"make me a theme from this album cover\"). The widget lints the palette, saves it, applies it, and tells the agent which theme was active before so you can go back. A rejected palette comes back with the fields to fix."
+                  },
+                  {
+                    "title": "The Store build shares its folders",
+                    "body": "Since 3.4.3 the Store version saves to the real <code>%APPDATA%\\Sanduhr</code> and <code>%LOCALAPPDATA%\\Sanduhr</code>, the same folders the Setup.exe build uses, so the statusline and MCP server find it. Earlier Store installs copy their settings, history and archive over once, on first start."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "id": "install",
+            "heading": "Install",
+            "blocks": [
+              {
+                "type": "install",
+                "items": [
+                  {
+                    "pill": "Recommended",
+                    "plat": "Windows 10 (1903+) and 11 · x64",
+                    "title": "Microsoft Store",
+                    "body": "Search <strong>Sanduhr für Claude</strong>, publisher 626Labs LLC, and install. Store-signed, so no SmartScreen prompt, and updates arrive through the Store.",
+                    "href": "https://apps.microsoft.com/detail/9NH3NK2RGCF5",
+                    "label": "Open the Store listing",
+                    "external": true
+                  },
+                  {
+                    "plat": "Windows 10 (1809+) and 11 · x64",
+                    "title": "Setup.exe from GitHub",
+                    "body": "Download <code>626Labs.Sanduhr-win-Setup.exe</code> from Releases. The installer is unsigned, so SmartScreen shows \"Windows protected your PC\" once: More info, then Run anyway. Installs per user and updates itself from the release feed; a portable zip sits on the same page. The <code>.msix</code> there is the unsigned Store upload and will not install by double-click.",
+                    "href": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases?q=v3&expanded=true",
+                    "label": "Open Releases",
+                    "external": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "blocks": [
+              {
+                "type": "panel",
+                "tone": "ok",
+                "title": "✓ No data comes back to us.",
+                "paragraphs": [
+                  "No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.",
+                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you ask it to, it runs Claude Code's own install commands on your machine; none of that reaches 626 Labs. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: sign out first, then delete <code>%APPDATA%\\Sanduhr</code> and <code>%LOCALAPPDATA%\\Sanduhr</code> after uninstalling.",
+                  "Claude sees your usage only if you install Sanduhr's MCP server, and what Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
+                  "<a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md\">Security policy</a> &middot; <a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md\">Privacy policy</a>"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "Where it ended up",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Every Microsoft Store install since launch, plotted by country. Dot area is proportional to install count."
+                ]
+              },
+              {
+                "type": "reachMap",
+                "app": "9NH3NK2RGCF5",
+                "label": "Sanduhr für Claude"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "blocks": [
+              {
+                "type": "callout",
+                "label": "On a Mac?",
+                "text": "The Mac build is further along: your meters live on the desktop and around the notch, and Settings reads and carries your whole Claude Code setup. <a href=\"/sanduhr/\">Sanduhr für Claude on the Mac</a>."
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · Sanduhr für Claude on Windows",
+          "disclaimer": "© 2026 626Labs LLC. Independent studio. “Claude” and “claude.ai” are trademarks of Anthropic PBC, used nominatively to describe integration. Sanduhr für Claude is an independent third-party tool."
+        }
+      }
     }
   ],
   "pluginFamily": {
