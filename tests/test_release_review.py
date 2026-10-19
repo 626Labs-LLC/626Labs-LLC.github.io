@@ -104,6 +104,26 @@ def test_a_marker_outside_the_pattern_keeps_date_only_behavior():
         "v3.5.0", "v2.27.0-mac", "v2.26.1-mac", "v2.26.0-mac", "v3.4.3", "v3.4.2"]
 
 
+def test_releases_in_a_family_no_page_watches_are_reported():
+    # Sanduhr's Windows tags went bare in June; if one came back as -windows,
+    # neither marker's family would see it and the page would go stale with
+    # no signal. The bot names such releases instead of ignoring them.
+    stray = rel("v3.5.0-windows", "2026-10-20T00:00:00Z")
+    out = rr.unwatched_releases(["v2.26.0-mac", "v3.4.2"], FAMILIES + [stray])
+    assert [r["tag_name"] for r in out] == ["v3.5.0-windows"]
+    # v2.3.0-windows predates every marker: history, not a stray.
+    assert rr.unwatched_releases(["v2.26.0-mac", "v3.4.2"], FAMILIES) == []
+    # A marker outside the version pattern watches every family.
+    assert rr.unwatched_releases(["legacy/python-v2.3.0"], FAMILIES + [stray]) == []
+
+
+def test_body_names_the_unwatched_family():
+    strays = [{"repo": "o/r", "watched": ["mac", ""], "releases": [rel("v3.5.0-windows", "2026-10-20T00:00:00Z")]}]
+    body = rr.render_body([], generated=set(), strays=strays)
+    assert body.startswith("1 release landed")
+    assert "no page watches" in body and "`v3.5.0-windows`" in body and "o/r" in body
+
+
 @pytest.mark.parametrize("body,expected", [
     ("## Fixes\n- a\n\n## Install\nget it", True),
     ("## Bug fixes\n- a", True),
