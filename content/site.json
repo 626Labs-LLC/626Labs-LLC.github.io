@@ -560,7 +560,7 @@
     {
       "id": "sanduhr",
       "title": "Sanduhr für Claude",
-      "description": "Native desktop widget that shows how fast you're burning through your Claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Burn-rate projection, pace markers, sparkline trends, five hand-tuned glass themes — and per-model weekly meters that track your Claude Fable 5 allowance automatically: when Anthropic adds a limit for a new model, its bar just appears, no update needed. The Claude Usage tab turns your local Claude Code logs into a dashboard — sessions stacked by project with agent roll-up, weekly trends, a clickable usage calendar, sent/received splits, CSV export — with an opt-in local vault so your history outlives Claude Code's 30-day log cleanup. Threshold alerts chime softly when a pool crosses your line. Free on the Microsoft Store with real Win11 Mica glass, Apple-notarized for Mac with Sparkle auto-updates, single-file Python for everyone else. No telemetry — the only network call is to claude.ai with your own cookie.",
+      "description": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with a pace mark and reset time on each, the clock, your next meetings and a daily line in a handwritten face, and since 2.27.0 the Desk can sit under your desktop files. One Settings page reads your whole Claude Code setup, agents, skills, plugins, MCP servers and settings per folder, and carries it to another Mac as a config pack with Compare and Undo Import. Burn-rate projection, pace markers, sparklines and per-model weekly meters do the pacing math; the Claude Usage page turns local Claude Code logs into a dashboard. Homebrew or a notarized .dmg on Mac; free on the Microsoft Store on Windows, with a statusline and MCP server for Claude Code. No telemetry: the only network call is to claude.ai with your own cookie.",
       "tags": [
         {
           "label": "macOS",
@@ -590,7 +590,7 @@
       "productPage": "/sanduhr/",
       "storeUrl": "https://apps.microsoft.com/detail/9NH3NK2RGCF5?cid=site-home",
       "banner": "assets/sanduhr-card-shot.png",
-      "meta": "Free on MS Store · Mac + Win native",
+      "meta": "Mac: Homebrew or .dmg · Windows: free on the Store",
       "pageSpec": {
         "meta": {
           "title": "Sanduhr für Claude for Mac — your claude.ai meters on the desktop, and your Claude Code setup carried · 626 Labs",
