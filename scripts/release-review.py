@@ -9,6 +9,9 @@ against:
 The tag is the newest release the page's claims were read against. Every
 published, non-prerelease release of that repo that came out after the tag is
 a release nobody has read the page against yet. Draft releases never count.
+A tag's suffix is its family: a page marked `@v2.27.0-mac` sees only `-mac`
+releases and a page marked `@v3.4.3` only unsuffixed ones, so two pages can
+review one repo (Sanduhr's Mac and Windows pages).
 
 The release notes are the feature log: this script only notices that a
 release landed and points at its notes. Updating a page means reading those
@@ -82,8 +85,23 @@ def is_fixes_only(body: str | None) -> bool:
     return bool(headings) and all(FIX_HEADING_RE.search(h) for h in headings)
 
 
+TAG_FAMILY_RE = re.compile(r"^v?\d+(?:\.\d+)+(?:-([A-Za-z][A-Za-z0-9]*))?$")
+
+
+def tag_family(tag: str) -> str | None:
+    """The tag's family: its suffix ("mac"), "" for a bare numeric tag, None
+    when the tag is not a version at all. Two pages can mark one repo (the
+    Sanduhr Mac and Windows pages); each sees only its own family."""
+    m = TAG_FAMILY_RE.match(tag)
+    if not m:
+        return None
+    return m.group(1) or ""
+
+
 def releases_after(marker_tag: str, releases: list[dict]) -> list[dict]:
-    """Published, non-prerelease releases newer than the marker's, newest first.
+    """Published, non-prerelease releases newer than the marker's, newest first,
+    in the marker's tag family when it has one (a marker outside the version
+    pattern sees every family, as before).
 
     Raises KeyError when the marker's tag is not among the published
     releases: a typo'd or deleted tag must fail loudly, not read as
@@ -98,6 +116,9 @@ def releases_after(marker_tag: str, releases: list[dict]) -> list[dict]:
         raise KeyError(marker_tag)
     cutoff = by_tag[marker_tag]["published_at"]
     newer = [r for r in published if r["published_at"] > cutoff]
+    family = tag_family(marker_tag)
+    if family is not None:
+        newer = [r for r in newer if tag_family(r["tag_name"]) == family]
     return sorted(newer, key=lambda r: r["published_at"], reverse=True)
 
 
