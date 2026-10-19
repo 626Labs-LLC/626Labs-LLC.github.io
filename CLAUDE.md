@@ -553,6 +553,16 @@ Each of these cost real measurement time to find, and would again.
   `productPage` then `liveUrl` then `storeUrl`, `banner` (else
   `assets/brand/plugins/<id>-banner-1280x640.png`), and the versions file as
   `{ id: "vX.Y.Z" }`. Renaming any of those breaks it with no signal here.
+- **`data/site-stats.json` and `data/downloads.csv` have a reader outside
+  this repo too.** The 626 dashboard's bulletin (Project-626Labs,
+  `functions/src/domains/bulletin/reachSection.ts`, since 2026-10-16)
+  fetches both from raw GitHub `main` for its Reach section: from the JSON,
+  `total.stats[].day/.daily` and `hits.hits[].path` with each page's
+  `stats[].day/.daily`; from the CSV, the `date,repo,downloads,installers`
+  header order, reading `installers` only and never `downloads`. A read
+  failure degrades the section with a `console.warn` over there and nothing
+  here, so renaming a file, a key, or a CSV column empties the dashboard's
+  daily and weekly Reach with no signal in this repo.
 
 <!-- gitnexus:start -->
 
