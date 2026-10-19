@@ -52,10 +52,14 @@ def test_sitemap_lists_nested_pages_but_not_aliases(tmp_path):
     note = (tmp_path / "editorial" / "some-note")
     note.mkdir(parents=True)
     note.joinpath("index.html").write_text("<html></html>", encoding="utf-8")
+    stray = (tmp_path / "tools" / "thing")  # no canonical link at all: not a page of its own
+    stray.mkdir(parents=True)
+    stray.joinpath("index.html").write_text("<html></html>", encoding="utf-8")
     xml = render_hub.render_sitemap(stories=[], root=tmp_path)
     assert "<loc>https://626labs.dev/sanduhr/windows/</loc>" in xml
     assert "play/bacon" not in xml
     assert "editorial/some-note" not in xml
+    assert "tools/thing" not in xml
 
 
 def test_sitemap_is_deterministic(tmp_path):

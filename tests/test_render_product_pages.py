@@ -333,6 +333,24 @@ def test_sanduhr_windows_is_generated_beside_the_mac_page():
     assert 'class="hand"' not in html
 
 
+def test_sanduhr_directory_holds_only_what_its_pages_use():
+    # The spec's rule for the capture set: the directory says what the page
+    # uses. A capture nothing references is a leftover, not an asset.
+    mac = (ROOT / "sanduhr/index.html").read_text(encoding="utf-8")
+    win = (ROOT / "sanduhr/windows/index.html").read_text(encoding="utf-8")
+    for f in sorted((ROOT / "sanduhr").glob("screenshot-*")):
+        assert f.name in mac or f.name in win, f"{f.name} is referenced by no page"
+    assert 'src="screenshot-settings-notch.png"' in mac  # the Notch pane, in the Settings strip
+
+
+def test_nested_generated_pages_link_home_at_the_root():
+    # A relative href="index.html" on /sanduhr/windows/ is the page itself.
+    for rel in ("sanduhr/index.html", "sanduhr/windows/index.html"):
+        html = (ROOT / rel).read_text(encoding="utf-8")
+        assert '<a class="brand" href="/">' in html, rel
+        assert '<a href="/">626labs.dev</a>' in html, rel
+
+
 def test_a_badge_kind_must_be_known():
     # The Sanduhr page carried the platform picker until 2026-10-18; the
     # block's badge check is pinned on its own now.

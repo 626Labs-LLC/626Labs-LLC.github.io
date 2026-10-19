@@ -953,6 +953,11 @@
                     "src": "screenshot-settings-alerts.png",
                     "alt": "Sanduhr Settings, Alerts: Notifications off, Session and Weekly thresholds at 80%, the pace warning and reset notices unchecked, Where alerts show set to Banner, a Sound picker and Quiet hours from 10:00 PM to 7:00 AM",
                     "caption": "<strong>Alerts</strong> &middot; thresholds, the pace warning, quiet hours"
+                  },
+                  {
+                    "src": "screenshot-settings-notch.png",
+                    "alt": "Sanduhr Settings, Notch: the island around the camera switched on, Text beside the camera with the left wing set to Time and the right wing to Now playing, Text under the camera off, and a Test Glow button above the preview",
+                    "caption": "<strong>Notch</strong> &middot; each wing and the strip, your pick"
                   }
                 ]
               }
