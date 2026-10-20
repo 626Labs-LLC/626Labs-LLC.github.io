@@ -65,6 +65,9 @@ import re
 import sys
 from html import escape
 from pathlib import Path
+from urllib.parse import unquote
+
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS = Path(__file__).resolve().parent
@@ -365,6 +368,41 @@ def render_get_strip(g: dict, product: dict | None = None) -> str:
     )
 
 
+_REMOTE_SRC_RE = re.compile(r"(?:[a-z][a-z0-9+.-]*:|//)", re.I)
+
+
+def img_size_attrs(src: str, out_path: Path, root: Path = ROOT) -> str:
+    """` width="W" height="H"` for a local image, so the browser can reserve
+    the box before the file loads and the page does not shift as captures
+    arrive. `src` resolves the way the browser would: a root-relative path
+    from the repo root, a relative one from the directory of the page being
+    written (`out_path`). A URL (`http:`, `https:`, `//`, `data:`) or a file
+    that is not there returns "": nothing is ever fetched, and a missing
+    image stays the renderer's non-problem (the link check owns that)."""
+    if not src or _REMOTE_SRC_RE.match(src):
+        return ""
+    path = unquote(src.split("#", 1)[0].split("?", 1)[0])
+    f = root / path.lstrip("/") if path.startswith("/") else out_path.parent / path
+    if not f.is_file():
+        return ""
+    try:
+        with Image.open(f) as im:
+            w, h = im.size
+    except (OSError, ValueError):
+        return ""
+    return f' width="{w}" height="{h}"'
+
+
+def _size(product: dict, src: str) -> str:
+    """`img_size_attrs` for the page `product` renders to. The page's output
+    path and root ride on the product dict (`_root`, set by build() beside
+    `_content`) so the block functions keep their (b, product) signature."""
+    root = product.get("_root", ROOT)
+    # A bare block-test product has no productPage; its page dir is the root.
+    rel = output_rel(product) if product.get("productPage") else "index.html"
+    return img_size_attrs(src, root / rel, root)
+
+
 def _id(d: dict, key: str = "id") -> str:
     """An element id a page script writes live data into."""
     return f' id="{e(d[key])}"' if d.get(key) else ""
@@ -376,11 +414,11 @@ def render_hero(product: dict, s: dict) -> str:
     cls = {"center": "hero hero-center", "side": "hero hero-side"}.get(s.get("align"), "hero")
     out = [f'  <section class="{cls}">\n']
     if s.get("logo"):
-        out.append(f'    <img class="logo" src="{e(s["logo"]["src"])}" alt="{e(s["logo"]["alt"])}" />\n')
+        out.append(f'    <img class="logo" src="{e(s["logo"]["src"])}" alt="{e(s["logo"]["alt"])}"{_size(product, s["logo"]["src"])} />\n')
     if s.get("align") == "side":
         out.append("    <div>\n")
     if s.get("icon"):
-        out.append(f'    <img class="app-icon" src="{e(s["icon"]["src"])}" alt="{e(s["icon"]["alt"])}" />\n')
+        out.append(f'    <img class="app-icon" src="{e(s["icon"]["src"])}" alt="{e(s["icon"]["alt"])}"{_size(product, s["icon"]["src"])} />\n')
     if s.get("eyebrow"):
         out.append(f'    <p class="eyebrow">{e(s["eyebrow"])}</p>\n')
     out.append(f"    <h1>{e(s['title'])}{accent}</h1>\n")
@@ -467,9 +505,11 @@ def block_shots(b: dict, product: dict) -> str:
         size = ""
         if shot.get("width") and shot.get("height"):
             size = f' width="{int(shot["width"])}" height="{int(shot["height"])}"'
+        src = "/" + shot["path"].lstrip("/")
+        if not size:
+            size = _size(product, src)
         cap = f'\n        <figcaption class="shot-cap">{caption}</figcaption>' if caption else ""
         lead = " lead" if i == 0 else ""
-        src = "/" + shot["path"].lstrip("/")
         figures.append(
             f'      <figure class="shot{lead}">\n'
             f'        <div class="shot-frame"><img src="{e(src)}" alt="{e(alt)}"{size} loading="lazy" /></div>'
@@ -606,7 +646,7 @@ def block_showcase(b: dict, product: dict) -> str:
     wide = " wide" if b.get("wide") else ""
     return (
         f'    <div class="showcase{wide}"><div class="showcase-frame">\n'
-        f'      <img src="{e(b["src"])}" alt="{e(b["alt"])}" />\n'
+        f'      <img src="{e(b["src"])}" alt="{e(b["alt"])}"{_size(product, b["src"])} />\n'
         "    </div></div>\n"
     )
 
@@ -648,10 +688,10 @@ def block_platforms(b: dict, product: dict) -> str:
     return f'    <div class="platform-grid">\n{"".join(cards)}    </div>\n'
 
 
-def _shot(s: dict, extra: str = "") -> str:
+def _shot(s: dict, product: dict, extra: str = "") -> str:
     return (
         f'      <div class="gallery-shot{extra}">\n'
-        f'        <img src="{e(s["src"])}" alt="{e(s["alt"])}" loading="lazy" />\n'
+        f'        <img src="{e(s["src"])}" alt="{e(s["alt"])}"{_size(product, s["src"])} loading="lazy" />\n'
         f'        <div class="caption">{s["caption"]}</div>\n'
         "      </div>\n"
     )
@@ -662,9 +702,9 @@ def block_gallery(b: dict, product: dict) -> str:
     uploader's screenshots list: that is `shots`). `wide` adds one full-width
     image under the strip; `align: start` top-aligns shots of mixed heights."""
     cls = "gallery-strip align-start" if b.get("align") == "start" else "gallery-strip"
-    out = f'    <div class="{cls}">\n' + "".join(_shot(s) for s in b["items"]) + "    </div>\n"
+    out = f'    <div class="{cls}">\n' + "".join(_shot(s, product) for s in b["items"]) + "    </div>\n"
     if b.get("wide"):
-        out += _shot(b["wide"], " wide")
+        out += _shot(b["wide"], product, " wide")
     return out
 
 
@@ -727,7 +767,7 @@ def block_merch(b: dict, product: dict) -> str:
         cards.append(
             f'      <a class="merch-card" href="{e(it["etsyListing"])}" target="_blank" rel="noopener" '
             f'data-track="{e(_track_slug(it.get("title")))}">\n'
-            f'          <img class="merch-img" src="{e(it["image"])}" alt="" loading="lazy" />{chip}\n'
+            f'          <img class="merch-img" src="{e(it["image"])}" alt=""{_size(product, it["image"])} loading="lazy" />{chip}\n'
             '          <div class="merch-meta">\n'
             f'            <div class="merch-title">{e(it["title"])}</div>\n'
             f'            <div class="merch-price">{e(it["price"])}</div>\n'
@@ -1163,7 +1203,7 @@ def build(slug: str | None = None, root: Path = ROOT) -> dict[str, str]:
     outputs: dict[str, str] = {}
     for source, product in _page_sources(content):
         # The page can reference other content ("@conundrum.etsyUrl").
-        html = render_page({**product, "_content": content}, slug, source)
+        html = render_page({**product, "_content": content, "_root": root}, slug, source)
         # Aliases share the page, canonical included, so search engines fold
         # them into productPage.
         for rel in [output_rel(product), *alias_rels(product)]:

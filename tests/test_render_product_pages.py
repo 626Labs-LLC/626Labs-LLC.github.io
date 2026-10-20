@@ -500,3 +500,71 @@ def test_a_heading_with_sub_or_aside_is_a_split_row_and_one_without_is_unchanged
 def test_the_nudge_copies_the_canonical_url():
     assert 'data-url="https://626labs.dev/rororo.html"' in _read("rororo.html")
     assert 'data-url="https://626labs.dev/mod-launcher-games.html"' in _read("mod-launcher-games.html")
+
+
+# --- img width/height (issue #248) -------------------------------------------
+
+def _png(path, size):
+    from PIL import Image
+    path.parent.mkdir(parents=True, exist_ok=True)
+    Image.new("RGB", size, (10, 20, 30)).save(path)
+
+
+def test_img_size_attrs_resolves_relative_root_relative_missing_and_urls(tmp_path):
+    _png(tmp_path / "assets" / "a.png", (40, 30))
+    _png(tmp_path / "play" / "pic.png", (7, 9))
+    out = tmp_path / "play" / "index.html"
+    # root-relative: from the repo root
+    assert rpp.img_size_attrs("/assets/a.png", out, tmp_path) == ' width="40" height="30"'
+    # relative: from the page's own directory
+    assert rpp.img_size_attrs("pic.png", out, tmp_path) == ' width="7" height="9"'
+    # a query string or fragment does not hide the file
+    assert rpp.img_size_attrs("/assets/a.png?v=2", out, tmp_path) == ' width="40" height="30"'
+    # missing file: no attributes, never an error
+    assert rpp.img_size_attrs("/assets/nope.png", out, tmp_path) == ""
+    # never fetched, never opened
+    for url in ("https://x.test/a.png", "http://x.test/a.png", "//x.test/a.png",
+                "data:image/png;base64,AAAA"):
+        assert rpp.img_size_attrs(url, out, tmp_path) == ""
+
+
+def test_hero_and_blocks_emit_size_attributes_for_local_images(tmp_path):
+    _png(tmp_path / "assets" / "logo.png", (120, 60))
+    _png(tmp_path / "assets" / "shot.png", (300, 200))
+    p = _minimal()
+    p["_root"] = tmp_path
+    hero = rpp.render_hero(p, {"type": "hero", "title": "T",
+                               "logo": {"src": "/assets/logo.png", "alt": "L"},
+                               "icon": {"src": "/assets/logo.png", "alt": "I"}})
+    assert hero.count('width="120" height="60"') == 2
+    assert 'alt="L" width="120" height="60" />' in hero
+    show = rpp.block_showcase({"src": "/assets/shot.png", "alt": "S"}, p)
+    assert 'alt="S" width="300" height="200" />' in show
+    gal = rpp._shot({"src": "/assets/shot.png", "alt": "G", "caption": "c"}, p)
+    assert 'alt="G" width="300" height="200" loading="lazy" />' in gal
+
+
+def test_every_local_img_on_a_generated_page_carries_its_real_size():
+    from PIL import Image
+    img_re = re.compile(r"<img\b[^>]*>")
+    checked = 0
+    for rel in rpp.generated_pages(ROOT):
+        html = _read(rel)
+        for tag in img_re.findall(html):
+            src = re.search(r'\bsrc="([^"]*)"', tag)
+            if not src:
+                continue
+            src = src.group(1)
+            if re.match(r"(?:[a-z][a-z0-9+.-]*:|//)", src, re.I):
+                continue
+            base = ROOT if src.startswith("/") else (ROOT / rel).parent
+            f = base / src.lstrip("/").split("?")[0].split("#")[0]
+            if not f.is_file():
+                continue
+            w = re.search(r'\bwidth="(\d+)"', tag)
+            h = re.search(r'\bheight="(\d+)"', tag)
+            assert w and h, f"{rel}: <img> for a local file has no width/height: {tag}"
+            with Image.open(f) as im:
+                assert (int(w.group(1)), int(h.group(1))) == im.size, f"{rel}: {tag}"
+            checked += 1
+    assert checked > 0
