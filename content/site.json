@@ -600,7 +600,7 @@
           "ogImage": "/sanduhr/screenshot-desk-full.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.28.0-mac"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.29.0-mac"
         ],
         "nav": [
           {
@@ -667,7 +667,8 @@
               {
                 "type": "lead",
                 "paragraphs": [
-                  "A fresh install starts with Desk on and your meters already there, drawn under your windows in a handwritten face. The widget becomes the toolbox you open for the deep tools."
+                  "A fresh install starts with Desk on and your meters already there, drawn under your windows in a handwritten face. The widget becomes the toolbox you open for the deep tools.",
+                  "Since 2.29.0, <strong>Just the Desk</strong> on the welcome sheet starts with the Desk and a three-step tour, no Claude subscription needed. Pacing still needs one."
                 ]
               },
               {
@@ -757,6 +758,16 @@
                   "alt": "The notch on a MacBook widened into one black island: the time on the left wing, and 5h 42% and wk 63% on the right",
                   "caption": "<strong>The notch</strong> &middot; time left, meters right"
                 }
+              },
+              {
+                "type": "gallery",
+                "align": "start",
+                "items": [],
+                "wide": {
+                  "src": "screenshot-notch-pill.png",
+                  "alt": "The menu bar of a Mac without a notch: Sanduhr's island drawn as a black pill at the top center, the time on its left and 5h 42% and wk 63% on its right in handwriting, a strip of wallpaper below",
+                  "caption": "<strong>No notch</strong> &middot; the same island as a pill, on a Mac mini, an iMac or an external display"
+                }
               }
             ]
           },
@@ -798,6 +809,16 @@
                     "body": "Every write Sanduhr makes to a Claude Code folder is a receipt: what it created, and the bytes it replaced. Remove and Undo put the file back byte for byte, and the backups live in Sanduhr's own folder, never in yours."
                   }
                 ]
+              },
+              {
+                "type": "gallery",
+                "align": "start",
+                "items": [],
+                "wide": {
+                  "src": "screenshot-settings-mods-config.png",
+                  "alt": "Sanduhr Settings, Mods &amp; Config: Meters above the prompt with a row per Claude Code folder, one Not installed and one On with Remove and Watchers Settings buttons; under More, mods and config, a Let agents propose mods checkbox, a count strip of 7 mods, 61 plugins, 66 on in a folder and 2 folders, and Catalog, By Folder and Compare tabs",
+                  "caption": "<strong>Mods &amp; Config</strong> &middot; a row per folder, then what each one loads, read before anything runs"
+                }
               },
               {
                 "type": "steps",
@@ -955,9 +976,9 @@
                     "caption": "<strong>Alerts</strong> &middot; thresholds, the pace warning, quiet hours"
                   },
                   {
-                    "src": "screenshot-settings-notch.png",
-                    "alt": "Sanduhr Settings, Notch: the island around the camera switched on, Text beside the camera with the left wing set to Time and the right wing to Now playing, Text under the camera off, and a Test Glow button above the preview",
-                    "caption": "<strong>Notch</strong> &middot; each wing and the strip, your pick"
+                    "src": "screenshot-settings-notch-pill.png",
+                    "alt": "Sanduhr Settings, Notch, on a Mac without a notch: the preview says the island draws as a pill at the top center, with a Test Glow button; the island around the camera and Top-center island on screens without a notch both switched on; Text beside the camera on, the left wing set to Next meeting or the time, the right wing to Claude meters, text under the camera off",
+                    "caption": "<strong>Notch</strong> &middot; each wing your pick, the pill for a Mac without one"
                   }
                 ]
               }
