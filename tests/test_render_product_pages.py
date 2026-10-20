@@ -301,6 +301,29 @@ def _sanduhr():
     return next(p for p in rpp.load_content()["products"] if p["id"] == "sanduhr")
 
 
+def _declared_shots(product):
+    """Every image src the pageSpec's gallery and showcase blocks declare."""
+    srcs = []
+    for section in product["pageSpec"]["sections"]:
+        for b in section.get("blocks", []):
+            if b["type"] == "gallery":
+                srcs += [s["src"] for s in b["items"]]
+                if b.get("wide"):
+                    srcs.append(b["wide"]["src"])
+            elif b["type"] == "showcase":
+                srcs.append(b["src"])
+    return srcs
+
+
+def _assert_shots_match(html, srcs):
+    frames = (html.count('class="gallery-shot"') + html.count('class="gallery-shot wide"')
+              + html.count('class="showcase-frame"'))
+    assert frames == len(srcs), f"{frames} frames rendered, {len(srcs)} declared"
+    for src in srcs:
+        n = len(re.findall(r'<img src="' + re.escape(src) + '"', html))
+        assert n == 1, f"{src} rendered {n} times"
+
+
 def test_sanduhr_is_generated_with_its_furniture():
     assert "sanduhr/index.html" in rpp.generated_pages()
     html = (ROOT / "sanduhr/index.html").read_text(encoding="utf-8")
@@ -316,7 +339,7 @@ def test_sanduhr_is_generated_with_its_furniture():
     assert 'class="stages"' in html  # how a pack travels
     assert "brew install --cask estevanhernandez-stack-ed/tap/sanduhr" in html
     assert 'href="/sanduhr/windows/"' in html
-    assert html.count('class="gallery-shot"') + html.count('class="gallery-shot wide"') >= 11
+    _assert_shots_match(html, _declared_shots(_sanduhr()))
     assert 'class="panel ok"' in html
     assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.29.0-mac"' in html
 
@@ -352,8 +375,8 @@ def test_nested_generated_pages_link_home_at_the_root():
 
 
 def test_a_badge_kind_must_be_known():
-    # The Sanduhr page carried the platform picker until 2026-10-18; the
-    # block's badge check is pinned on its own now.
+    # The platforms block is live on the rororo page, so every render exercises
+    # it; this direct call pins the badge-kind ValueError, which no page triggers.
     block = {"type": "platforms", "items": [{"title": "macOS", "badges": [
         {"href": "/x", "kind": "itch", "top": "Get it from", "bottom": "itch.io"}]}]}
     with pytest.raises(ValueError, match="badge kind"):
@@ -500,3 +523,71 @@ def test_a_heading_with_sub_or_aside_is_a_split_row_and_one_without_is_unchanged
 def test_the_nudge_copies_the_canonical_url():
     assert 'data-url="https://626labs.dev/rororo.html"' in _read("rororo.html")
     assert 'data-url="https://626labs.dev/mod-launcher-games.html"' in _read("mod-launcher-games.html")
+
+
+# --- img width/height (issue #248) -------------------------------------------
+
+def _png(path, size):
+    from PIL import Image
+    path.parent.mkdir(parents=True, exist_ok=True)
+    Image.new("RGB", size, (10, 20, 30)).save(path)
+
+
+def test_img_size_attrs_resolves_relative_root_relative_missing_and_urls(tmp_path):
+    _png(tmp_path / "assets" / "a.png", (40, 30))
+    _png(tmp_path / "play" / "pic.png", (7, 9))
+    out = tmp_path / "play" / "index.html"
+    # root-relative: from the repo root
+    assert rpp.img_size_attrs("/assets/a.png", out, tmp_path) == ' width="40" height="30"'
+    # relative: from the page's own directory
+    assert rpp.img_size_attrs("pic.png", out, tmp_path) == ' width="7" height="9"'
+    # a query string or fragment does not hide the file
+    assert rpp.img_size_attrs("/assets/a.png?v=2", out, tmp_path) == ' width="40" height="30"'
+    # missing file: no attributes, never an error
+    assert rpp.img_size_attrs("/assets/nope.png", out, tmp_path) == ""
+    # never fetched, never opened
+    for url in ("https://x.test/a.png", "http://x.test/a.png", "//x.test/a.png",
+                "data:image/png;base64,AAAA"):
+        assert rpp.img_size_attrs(url, out, tmp_path) == ""
+
+
+def test_hero_and_blocks_emit_size_attributes_for_local_images(tmp_path):
+    _png(tmp_path / "assets" / "logo.png", (120, 60))
+    _png(tmp_path / "assets" / "shot.png", (300, 200))
+    p = _minimal()
+    p["_root"] = tmp_path
+    hero = rpp.render_hero(p, {"type": "hero", "title": "T",
+                               "logo": {"src": "/assets/logo.png", "alt": "L"},
+                               "icon": {"src": "/assets/logo.png", "alt": "I"}})
+    assert hero.count('width="120" height="60"') == 2
+    assert 'alt="L" width="120" height="60" />' in hero
+    show = rpp.block_showcase({"src": "/assets/shot.png", "alt": "S"}, p)
+    assert 'alt="S" width="300" height="200" />' in show
+    gal = rpp._shot({"src": "/assets/shot.png", "alt": "G", "caption": "c"}, p)
+    assert 'alt="G" width="300" height="200" loading="lazy" />' in gal
+
+
+def test_every_local_img_on_a_generated_page_carries_its_real_size():
+    from PIL import Image
+    img_re = re.compile(r"<img\b[^>]*>")
+    checked = 0
+    for rel in rpp.generated_pages(ROOT):
+        html = _read(rel)
+        for tag in img_re.findall(html):
+            src = re.search(r'\bsrc="([^"]*)"', tag)
+            if not src:
+                continue
+            src = src.group(1)
+            if re.match(r"(?:[a-z][a-z0-9+.-]*:|//)", src, re.I):
+                continue
+            base = ROOT if src.startswith("/") else (ROOT / rel).parent
+            f = base / src.lstrip("/").split("?")[0].split("#")[0]
+            if not f.is_file():
+                continue
+            w = re.search(r'\bwidth="(\d+)"', tag)
+            h = re.search(r'\bheight="(\d+)"', tag)
+            assert w and h, f"{rel}: <img> for a local file has no width/height: {tag}"
+            with Image.open(f) as im:
+                assert (int(w.group(1)), int(h.group(1))) == im.size, f"{rel}: {tag}"
+            checked += 1
+    assert checked > 0
