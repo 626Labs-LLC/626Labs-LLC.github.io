@@ -1,0 +1,70 @@
+{
+  "run": "hub-img-sizes",
+  "repo": "C:\\Users\\estev\\Projects\\626labs-hub",
+  "base_commit": "ed9d380bc3b860e1d0366bbc9129bb0abcd5c79f",
+  "base_ref": "origin/main",
+  "merged_at_start": null,
+  "behind_at_start": 0,
+  "integration_branch": "cart/hub-img-sizes",
+  "integration_worktree": "C:\\Users\\estev\\.cwt\\626labs-hub-hub-img-sizes\\int",
+  "worktree_root": "C:\\Users\\estev\\.cwt\\626labs-hub-hub-img-sizes",
+  "builder_branch": "main",
+  "uncommitted_at_start": [],
+  "started_at": "2026-10-20T02:43:46.653Z",
+  "items": [
+    {
+      "n": 1,
+      "slug": "img-sizes",
+      "title": "Generated product pages emit img width and height",
+      "stop_class": "go",
+      "status": "merged",
+      "branch": "cart/hub-img-sizes--01-img-sizes",
+      "worktree": "",
+      "on": null,
+      "checks": [
+        {
+          "attempt": 1,
+          "command": "python scripts/render-product-pages.py --check && python scripts/render-hub.py --check",
+          "result": "pass"
+        },
+        {
+          "attempt": 2,
+          "command": "python -m pytest tests/ -q (802 passed); python scripts/site-doctor.py --check (exit 0); mutation of _size turns the walk test red",
+          "result": "pass"
+        }
+      ],
+      "reason": ""
+    },
+    {
+      "n": 2,
+      "slug": "gallery-pin",
+      "title": "Pin the Sanduhr gallery exactly and correct the platforms test comment",
+      "stop_class": "go",
+      "status": "merged",
+      "branch": "cart/hub-img-sizes--02-gallery-pin",
+      "worktree": "",
+      "on": null,
+      "checks": [
+        {
+          "attempt": 1,
+          "command": "python -m pytest tests/test_render_product_pages.py -q (69 passed); drop and extra-frame mutations both caught",
+          "result": "pass"
+        }
+      ],
+      "reason": ""
+    }
+  ],
+  "cleanup": {
+    "at": "2026-10-20T16:05:05.525Z",
+    "removed_worktrees": [
+      "C:/Users/estev/.cwt/626labs-hub-hub-img-sizes/int"
+    ],
+    "deleted_branches": [
+      "cart/hub-img-sizes--01-img-sizes",
+      "cart/hub-img-sizes--02-gallery-pin",
+      "cart/hub-img-sizes"
+    ],
+    "kept": [],
+    "root_removed": true
+  }
+}
