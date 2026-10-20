@@ -301,6 +301,29 @@ def _sanduhr():
     return next(p for p in rpp.load_content()["products"] if p["id"] == "sanduhr")
 
 
+def _declared_shots(product):
+    """Every image src the pageSpec's gallery and showcase blocks declare."""
+    srcs = []
+    for section in product["pageSpec"]["sections"]:
+        for b in section.get("blocks", []):
+            if b["type"] == "gallery":
+                srcs += [s["src"] for s in b["items"]]
+                if b.get("wide"):
+                    srcs.append(b["wide"]["src"])
+            elif b["type"] == "showcase":
+                srcs.append(b["src"])
+    return srcs
+
+
+def _assert_shots_match(html, srcs):
+    frames = (html.count('class="gallery-shot"') + html.count('class="gallery-shot wide"')
+              + html.count('class="showcase-frame"'))
+    assert frames == len(srcs), f"{frames} frames rendered, {len(srcs)} declared"
+    for src in srcs:
+        n = len(re.findall(r'<img src="' + re.escape(src) + '"', html))
+        assert n == 1, f"{src} rendered {n} times"
+
+
 def test_sanduhr_is_generated_with_its_furniture():
     assert "sanduhr/index.html" in rpp.generated_pages()
     html = (ROOT / "sanduhr/index.html").read_text(encoding="utf-8")
@@ -316,7 +339,7 @@ def test_sanduhr_is_generated_with_its_furniture():
     assert 'class="stages"' in html  # how a pack travels
     assert "brew install --cask estevanhernandez-stack-ed/tap/sanduhr" in html
     assert 'href="/sanduhr/windows/"' in html
-    assert html.count('class="gallery-shot"') + html.count('class="gallery-shot wide"') >= 11
+    _assert_shots_match(html, _declared_shots(_sanduhr()))
     assert 'class="panel ok"' in html
     assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.29.0-mac"' in html
 
@@ -352,8 +375,8 @@ def test_nested_generated_pages_link_home_at_the_root():
 
 
 def test_a_badge_kind_must_be_known():
-    # The Sanduhr page carried the platform picker until 2026-10-18; the
-    # block's badge check is pinned on its own now.
+    # The platforms block is live on the rororo page, so every render exercises
+    # it; this direct call pins the badge-kind ValueError, which no page triggers.
     block = {"type": "platforms", "items": [{"title": "macOS", "badges": [
         {"href": "/x", "kind": "itch", "top": "Get it from", "bottom": "itch.io"}]}]}
     with pytest.raises(ValueError, match="badge kind"):
