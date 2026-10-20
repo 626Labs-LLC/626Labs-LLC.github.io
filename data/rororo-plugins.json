@@ -16,7 +16,7 @@
       "version": "0.5.2",
       "releasedAt": "2026-07-07",
       "minHostVersion": "1.8.0.0",
-      "installs": 164,
+      "installs": 165,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases/latest/download/plugin.zip"
@@ -26,8 +26,8 @@
       "name": "RoRoRo Ur MCP",
       "description": "Drive RoRoRo from Claude. A stdio MCP server Claude Code / Claude Desktop launches, authorized as this consent-gated plugin: list and launch accounts, follow the main, watch presence, stop clients, and run or stop Ur Task macros. Autostart stays off — Claude owns the process.",
       "publisher": "626 Labs LLC",
-      "version": "0.3.0",
-      "releasedAt": "2026-10-11",
+      "version": "0.4.0",
+      "releasedAt": "2026-10-20",
       "minHostVersion": "1.22.0",
       "installs": 20,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-mcp",
@@ -67,7 +67,7 @@
       "version": "0.9.1",
       "releasedAt": "2026-09-30",
       "minHostVersion": "1.19.0",
-      "installs": 221,
+      "installs": 222,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/plugin.zip"
