@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.4.3" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.5.0" />
 <title>Sanduhr für Claude on Windows: your claude.ai usage, paced, from the Microsoft Store · 626 Labs</title>
-<meta name="description" content="The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a statusline and MCP server for Claude Code. Free on the Microsoft Store." />
+<meta name="description" content="The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, the Desk since 3.5.0, and Claude Code tools. Free on the Microsoft Store." />
 <link rel="canonical" href="https://626labs.dev/sanduhr/windows/" />
 <meta property="og:title" content="Sanduhr für Claude on Windows" />
-<meta property="og:description" content="A native Windows widget that paces your claude.ai usage, with a statusline and MCP server for Claude Code. Free on the Microsoft Store. By 626 Labs." />
+<meta property="og:description" content="A native Windows widget that paces your claude.ai usage, now with the Desk and a Claude Code page. Free on the Microsoft Store. By 626 Labs." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://626labs.dev/sanduhr/windows/" />
 <meta property="og:image" content="https://626labs.dev/sanduhr/icon.png" />
@@ -710,7 +710,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     <img class="app-icon" src="icon.png" alt="Sanduhr app icon" width="512" height="512" />
     <p class="eyebrow">On Windows 10 and 11</p>
     <h1>Sanduhr für Claude</h1>
-    <p class="dek">A native Windows widget that shows how fast you're burning through your claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm.</p>
+    <p class="dek">A native Windows widget that shows how fast you're burning through your claude.ai usage, so you can pace yourself instead of finding out you're out of tokens at 11pm. Since 3.5.0 it can draw on your desktop too.</p>
     <p class="fine">.NET and WPF with real Win11 Mica glass. Your session cookie in Windows Credential Manager. Free on the Microsoft Store. No telemetry.</p>
 
     <div class="get-strip" id="get-it">
@@ -759,31 +759,91 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
 
   <section>
     <div class="section-hd">
+      <h2>The Desk, now on Windows.</h2>
+    </div>
+
+    <p class="lead">3.5.0 brings the Mac's Desk to Windows: Sanduhr draws on your desktop, under your windows. It's off by default; turn it on in Settings &rarr; Desk.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>What it draws</h3>
+        <p>The clock and date, in the handwritten EsteFont that ships with the app; your session and weekly meters with a pace tick; your own messages, with effects like ink, glow and shimmer; what's playing, with bars that follow your audio; CPU, memory and disk; and the weather for a city you choose.</p>
+      </div>
+      <div class="card">
+        <h3>Arrange it by dragging</h3>
+        <p>Arrange Desk&hellip; dims the screen so you can drag each piece to one of eight places. Automatic ink picks light or dark from your wallpaper, never the screen. Pieces keep clear of the taskbar and pause while a window covers them.</p>
+      </div>
+      <div class="card">
+        <h3>Just the Desk</h3>
+        <p>No Claude account? Choose Just the Desk on the first-run card and use the Desk on its own; the tray icon brings the widget back, and signing in later brings the meters.</p>
+      </div>
+      <div class="card">
+        <h3>Weather, and only what it needs</h3>
+        <p>The forecast comes from Open-Meteo. Sanduhr sends it two things: the city name you type, to find the place, and its coordinates rounded to about 1 km, at most every 30 minutes. No location permission is used.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-hd">
       <h2>Claude Code, from Sanduhr.</h2>
     </div>
 
-    <p class="lead">Since 3.4.0 the widget reaches into Claude Code: a statusline, an MCP server, and themes you can ask for in words.</p>
+    <p class="lead">Since 3.5.0, Settings &rarr; Claude Code finds every Claude Code folder on your PC and installs or removes four things per folder, each behind a consent dialog. Every change keeps a backup and a receipt, so Remove puts the file back exactly.</p>
 
     <div class="cards">
       <div class="card">
         <h3>A statusline under the prompt</h3>
-        <p>Settings &rarr; Claude Usage &rarr; Install statusline&hellip; puts your usage percentages and reset times under the Claude Code prompt of the one home you pick. After each fetch the widget writes a snapshot file; the statusline reads that file and nothing else that could hold a credential.</p>
+        <p>Your usage percentages and reset times under Claude Code's prompt. Already have a statusline? <strong>Combine</strong> runs yours first, then Sanduhr's line, with a segment picker; <strong>Replace</strong> backs yours up so Remove can restore it.</p>
       </div>
       <div class="card">
         <h3>An MCP server Claude can ask</h3>
-        <p>Install MCP server&hellip; registers <code>sanduhr-mcp</code> with one Claude Code home and lets you tick which homes the burn tool may read, none by default. Claude can then ask for your usage, your model mix, your history and your burn by project. Remove MCP server reverts all of it. Needs widget 3.4.0 or later; an older widget answers <code>widget_too_old</code> with the remedy instead of nothing.</p>
+        <p><code>sanduhr-mcp</code> lets Claude ask for your usage, your model mix, your history and your burn by project. It reads a folder only after you tick it, none by default, and makes no network calls.</p>
       </div>
       <div class="card">
-        <h3>Theme Studio</h3>
-        <p>Settings &rarr; Themes &rarr; Studio edits the fourteen color tokens and two dials with the widget as the live preview, lint findings as you type, Save &amp; apply, Revert and Copy JSON. Start from any theme.</p>
+        <h3>Meters above the prompt</h3>
+        <p>The Mac's meters mod now ships with Windows: your session and weekly meters drawn above Claude Code's prompt, from the same snapshot the statusline reads. Link a folder to an account and that folder shows that account's meters.</p>
       </div>
       <div class="card">
-        <h3>Themes from the terminal</h3>
-        <p>With the MCP server installed, ask Claude Code for a theme ("make me a theme from this album cover"). The widget lints the palette, saves it, applies it, and tells the agent which theme was active before so you can go back. A rejected palette comes back with the fields to fix.</p>
+        <h3>The glow when Claude needs you</h3>
+        <p>Optional hooks light the top edge of the window you're working in: your theme's accent while Claude waits on you, its success color when it's done. Skipped while a terminal is in front, off by default.</p>
       </div>
       <div class="card">
-        <h3>The Store build shares its folders</h3>
-        <p>Since 3.4.3 the Store version saves to the real <code>%APPDATA%\Sanduhr</code> and <code>%LOCALAPPDATA%\Sanduhr</code>, the same folders the Setup.exe build uses, so the statusline and MCP server find it. Earlier Store installs copy their settings, history and archive over once, on first start.</p>
+        <h3>Mods &amp;amp; Config</h3>
+        <p>A read-only page per folder: its settings, statusline, hooks, plugins, mods, MCP server names, <code>CLAUDE.md</code> and log retention, with a warning when Claude Code would delete your logs in 30 days or less.</p>
+      </div>
+      <div class="card">
+        <h3>Themes, in the Studio or in words</h3>
+        <p>Theme Studio edits the fourteen color tokens with the widget as the live preview. With the MCP server installed, ask Claude Code for a theme; the widget lints it, applies it, and the previous theme stays one click away.</p>
+      </div>
+      <div class="card">
+        <h3>One folder Claude Code can see</h3>
+        <p>The files Claude Code reads live in <code>%USERPROFILE%\.sanduhr</code>, so the statusline, the MCP server and the meters mod work the same on the Store and Setup.exe builds. Existing setups move there on first launch; your own entries are left alone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-hd">
+      <h2>Accounts, settings and a clean way out.</h2>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Follow the account I&#x27;m using</h3>
+        <p>Off by default. Sanduhr checks your other signed-in accounts every 15 minutes and switches the widget to the one whose session is climbing, each account in its own browser profile so cookies never mix.</p>
+      </div>
+      <div class="card">
+        <h3>Settings, found by name</h3>
+        <p>A grouped sidebar with a search box that jumps to the control you name, a shortcut that opens Settings from any app (Ctrl+Alt+S, off until you turn it on), and a tray that shows the limit you pick.</p>
+      </div>
+      <div class="card">
+        <h3>What&#x27;s New and a welcome tour</h3>
+        <p>After an update, a card per change with a Show me button. A new install gets a short tour of your limits, the tray, accounts and Claude Code.</p>
+      </div>
+      <div class="card">
+        <h3>Reset Sanduhr&amp;hellip;</h3>
+        <p>Settings &rarr; About removes, in five parts you can uncheck: your Claude Code entries through their receipts; your accounts, keys and sign-in profiles; history, snapshots, the vault and logs; your themes; and your settings with your Desk messages. Then it quits.</p>
       </div>
     </div>
   </section>
@@ -796,7 +856,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     <div class="install-grid">
       <div class="install-card recommended">
         <span class="pill">Recommended</span>
-        <span class="plat">Windows 10 (1903+) and 11 · x64</span>
+        <span class="plat">Windows 10 (1809+) and 11 · x64</span>
         <h3>Microsoft Store</h3>
         <p>Search <strong>Sanduhr für Claude</strong>, publisher 626Labs LLC, and install. Store-signed, so no SmartScreen prompt, and updates arrive through the Store.</p>
         <a class="go" href="https://apps.microsoft.com/detail/9NH3NK2RGCF5" target="_blank" rel="noopener">Open the Store listing <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
@@ -814,7 +874,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     <div class="panel ok">
       <h3>✓ No data comes back to us.</h3>
       <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.</p>
-      <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you ask it to, it runs Claude Code's own install commands on your machine; none of that reaches 626 Labs. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: sign out first, then delete <code>%APPDATA%\Sanduhr</code> and <code>%LOCALAPPDATA%\Sanduhr</code> after uninstalling.</p>
+      <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.</p>
       <p>Claude sees your usage only if you install Sanduhr's MCP server, and what Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
       <p><a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md">Security policy</a> &middot; <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md">Privacy policy</a></p>
     </div>
@@ -833,7 +893,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
   <section>
     <div class="callout">
       <span class="k">On a Mac?</span>
-      <p>The Mac build is further along: your meters live on the desktop and around the notch, and Settings reads and carries your whole Claude Code setup. <a href="/sanduhr/">Sanduhr für Claude on the Mac</a>.</p>
+      <p>The Mac build adds the notch, and carries a Claude Code folder's setup to another Mac as a config pack. <a href="/sanduhr/">Sanduhr für Claude on the Mac</a>.</p>
     </div>
   </section>
 
