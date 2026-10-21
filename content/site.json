@@ -600,7 +600,7 @@
           "ogImage": "/sanduhr/screenshot-desk-full.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.29.0-mac"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.31.0-mac"
         ],
         "nav": [
           {
@@ -737,7 +737,7 @@
                 "items": [
                   {
                     "title": "Each wing, your pick",
-                    "body": "On MacBooks with a camera notch, pick what the left wing, the right wing and the strip under the camera show: your next meeting, the time, your meters, your message, what's playing, or nothing. A camera light around the notch lights your face when any app turns the camera on. Off until you switch it on, no camera permission needed. Test Glow in Settings shows you the notch glow once before you turn any of it on. With the Claude Code integration, the notch can also glow when a Claude session is waiting on you. Since 2.28.0 a Mac without a notch, a Mac mini, an iMac, an external display, can draw the same wing text as a pill at the top center of the menu bar, with the same clicks, menu and glow; off by default."
+                    "body": "On MacBooks with a camera notch, pick what the left wing, the right wing and the strip under the camera show: your next meeting, the time, your meters, your message, what's playing, or nothing. A camera light around the notch lights your face when any app turns the camera on. Off until you switch it on, no camera permission needed. Test Glow in Settings shows you the notch glow once before you turn any of it on. With the Claude Code integration, the notch can also glow when a Claude session is waiting on you. Since 2.28.0 a Mac without a notch, a Mac mini, an iMac, an external display, can draw the same wing text as a pill at the top center of the menu bar, with the same clicks, menu and glow; off by default. Since 2.30.0 the camera and mic indicators draw beside the pill's text, and since 2.31.0 Sanduhr idles at about half a percent of one core."
                   },
                   {
                     "title": "Now playing",
