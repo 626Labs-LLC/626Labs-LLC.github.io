@@ -28,6 +28,12 @@ jobs:
         with:
           python-version: '3.12'
 
+      # release-review.py loads render-product-pages.py to list the generated
+      # pages, and that imports Pillow (since 2026-10-19). Without this the run
+      # crashes exactly when a page is behind, before the issue can open.
+      - name: Install deps
+        run: pip install -r requirements.txt
+
       - name: Check pages against releases
         id: check
         env:
