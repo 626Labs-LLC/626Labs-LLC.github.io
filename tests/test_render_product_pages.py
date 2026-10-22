@@ -352,7 +352,7 @@ def test_sanduhr_windows_is_generated_beside_the_mac_page():
     assert '<img class="app-icon" src="icon.png"' in html and (ROOT / "sanduhr/windows/icon.png").is_file()
     assert 'href="/sanduhr/"' in html  # the Mac page, root-relative
     assert 'data-app="9NH3NK2RGCF5"' in html  # the reach map moved here
-    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.5.0"' in html
+    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.7.1"' in html
     assert 'class="hand"' not in html
 
 
