@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.7.2" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.8.0" />
 <title>Sanduhr für Claude on Windows: your claude.ai usage, paced, from the Microsoft Store · 626 Labs</title>
 <meta name="description" content="The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a Desk Claude can design with you, with widgets and a companion to go on it. Free on the Microsoft Store." />
 <link rel="canonical" href="https://626labs.dev/sanduhr/windows/" />
@@ -997,7 +997,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div class="card">
         <h3>Restart to update</h3>
-        <p>When an update is ready, the toast, the tray and the widget ask &ldquo;Restart to update?&rdquo; Nothing happens until you click; then Sanduhr closes its browser helpers, installs and opens on the new version. A failed or cancelled install leaves it running with the offer still there. Setup.exe installs download updates in the background from 3.8.</p>
+        <p>When an update is ready, the toast, the tray and the widget ask &ldquo;Restart to update?&rdquo; Nothing happens until you click; then Sanduhr closes its browser helpers, installs and opens on the new version. A failed or cancelled install leaves it running with the offer still there. Setup.exe installs download updates in the background; the Store build asks the Store every 6 hours.</p>
       </div>
       <div class="card">
         <h3>What&#x27;s New and a welcome tour</h3>
@@ -1026,7 +1026,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       <div class="install-card">
         <span class="plat">Windows 10 (1809+) and 11 · x64</span>
         <h3>Setup.exe from GitHub</h3>
-        <p>Download <code>626Labs.Sanduhr-win-Setup.exe</code> from Releases. The installer is unsigned, so SmartScreen shows "Windows protected your PC" once: More info, then Run anyway. Installs per user; to update, run the newest Setup.exe, and from 3.8 the app downloads updates itself and applies them when you click Restart to update. A portable zip sits on the same page. The <code>.msix</code> there is the unsigned Store upload and will not install by double-click.</p>
+        <p>Download <code>626Labs.Sanduhr-win-Setup.exe</code> from Releases. The installer is unsigned, so SmartScreen shows "Windows protected your PC" once: More info, then Run anyway. Installs per user. Updates download in the background and apply when you click Restart to update; on a 3.7 install, run the 3.8 Setup.exe once to get there. A portable zip sits on the same page. The <code>.msix</code> there is the unsigned Store upload and will not install by double-click.</p>
         <a class="go" href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases?q=v3&amp;expanded=true" target="_blank" rel="noopener">Open Releases <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
       </div>
     </div>
