@@ -3601,7 +3601,7 @@
       "pageSpec": {
         "meta": {
           "title": "Sanduhr für Claude on Windows: your claude.ai usage, paced, from the Microsoft Store · 626 Labs",
-          "description": "The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a Desk Claude can design with you. Free on the Microsoft Store.",
+          "description": "The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a Desk Claude can design with you, with widgets and a companion to go on it. Free on the Microsoft Store.",
           "ogTitle": "Sanduhr für Claude on Windows",
           "ogDescription": "A native Windows widget that paces your claude.ai usage, now with a Desk Claude can design with you. Free on the Microsoft Store. By 626 Labs.",
           "ogImage": "/sanduhr/icon.png"
@@ -3660,8 +3660,8 @@
               {
                 "type": "showcase",
                 "wide": true,
-                "src": "screenshot-desk-full.jpg",
-                "alt": "The widget and the Desk on a black Windows desktop. On the left the widget for a Personal account: Session at 4%, 62% under pace; Weekly All Models at 82%, 16% ahead, with a note that at the current pace it expires in 1d 10m; Capped Extra Usage at 28%. On the right the Desk in handwriting that runs from cyan to purple to pink: the time 3:08, Thursday, October 22, a line reading claude 4% session, resets 4:50 and 82% week, a song playing in its own lime green look with level bars, CPU, memory and disk bars, the weather for Fort Worth, and a row of six Launcher buttons along the bottom: Claude, VS Code, Terminal, YouTube Music, The Lab and 626labs.dev"
+                "src": "screenshot-desk-hero.jpg",
+                "alt": "The widget and the Desk on a black Windows desktop. On the left the widget for a Personal account: Session at 7%, 37% under pace; Weekly All Models at 89%, 13% ahead, with a note that at the current pace it expires in 15h 44m; Capped Extra Usage at 28%. On the right, in handwriting that runs from cyan to purple to pink: a message reading showtime., the time 8:20, Friday, October 23, a two-line summary reading claude 7% session, resets 11:09 and 89% week, CPU, RAM and disk as three small ring gauges, and the weather under a nickname, Funky Town, with the current conditions, the day's high and low and tomorrow's forecast. Along the bottom right a row of six Launcher buttons: Claude, VS Code, Terminal, YouTube Music, The Lab and 626labs.dev. At the bottom left a pixel-art hourglass companion"
               }
             ]
           },
@@ -3742,7 +3742,7 @@
                 "items": [
                   {
                     "title": "What it draws",
-                    "body": "The clock and date, in the handwritten EsteFont that ships with the app; your session and weekly meters with a pace tick; your own messages, with effects like ink, glow and shimmer; and what's playing, with bars that move with your music and a piece that steps aside when you pause. Then add live cards for work Claude is watching, a Launcher, CPU, memory and disk, and the weather for a city you choose."
+                    "body": "The clock and date, in the handwritten EsteFont that ships with the app; your session and weekly meters with a pace tick; your own messages, with effects like ink, glow and shimmer; and what's playing, with bars that move with your music and a piece that steps aside when you pause. Then add live cards for work Claude is watching, a Launcher, a small companion, CPU, memory and disk, and the weather for a city you choose."
                   },
                   {
                     "title": "Arrange it by dragging",
@@ -3767,8 +3767,42 @@
                   {
                     "title": "OLED care",
                     "body": "The Desk and the widget drift a few pixels every three minutes, dim after five minutes away and never hold pure white. It reads only the time of your last input. Off by default."
+                  },
+                  {
+                    "title": "Meter styles",
+                    "body": "The Claude line, the Claude limits and the CPU, memory and disk readings each take a style: bars, slim (half the height, one line), rings (small arc gauges side by side) or ticks (ten cells, the OLED-friendly one). Pace marks stay on every style. Pick them in Settings &rarr; Desk, or ask for them in a Desk design."
+                  },
+                  {
+                    "title": "Fold the Desk",
+                    "body": "A Desk design from Claude Code can slant a stack of pieces up to 20 degrees either way, plate included, so a left stack and a right stack read as the two faces of a fold. Arrange Desk outlines and drags a slanted piece, and a slanted stack stays inside its column."
+                  },
+                  {
+                    "title": "Call the weather anything",
+                    "body": "Settings &rarr; Weather &rarr; <strong>Show it as</strong> puts a name of up to 24 characters, like &ldquo;Funky Town&rdquo;, on the weather piece in place of the city. The forecast lookup never sees it."
+                  },
+                  {
+                    "title": "A companion that grows with your days",
+                    "body": "A pixel hourglass on the Desk that grows with the days you code, never with your usage. Its mood follows your pace, it notices a watcher waiting on you and a reset, and it naps when you're away. Show it, pick it and let it roam in Settings &rarr; Widgets."
+                  },
+                  {
+                    "title": "Widgets, from a signed catalog",
+                    "body": "Settings &rarr; Widgets lists the 626 Labs catalog: the hourglass sprite, plus the OLED Neon theme, palettes and effects to start. Packs are data only, never code. The catalog's signature and every pack are checked on your PC before anything installs, and the catalog is fetched only when you open the page or ask."
+                  },
+                  {
+                    "title": "Livelier bars",
+                    "body": "The bars beside now playing ease, fall and wear peak caps. <strong>Gradient bars</strong> spreads your ink's colors across them. Still only the playing app's level: no audio is captured."
                   }
                 ]
+              },
+              {
+                "type": "gallery",
+                "align": "start",
+                "items": [],
+                "wide": {
+                  "src": "screenshot-desk-fold.jpg",
+                  "alt": "A Desk folded around the widget on a black desktop. The left face is slanted up 17 degrees: the time 8:22, Friday, October 23, a message reading showtime., and the weather as Funky Town with its forecast. The right face is slanted the other way, down 17 degrees: a summary line reading claude 8% session, resets 11:09 and 89% week, slim bars for CPU, RAM and Disk, and slim limit bars for Session (5hr), Weekly - All Models and Capped Extra Usage with pace marks. Between them the widget at 8%, 89% and 28%, with the pixel hourglass and the six Launcher buttons along the bottom",
+                  "caption": "<strong>The fold</strong> &middot; two slanted faces, the widget between them"
+                }
               },
               {
                 "type": "gallery",
@@ -3778,6 +3812,16 @@
                     "src": "screenshot-launcher.png",
                     "alt": "The Launcher: six buttons with their own icons, labeled in handwriting: Claude, VS Code, Terminal, YouTube Music, The Lab and 626labs.dev",
                     "caption": "<strong>Launcher</strong> &middot; up to eight apps and links, each with its icon"
+                  },
+                  {
+                    "src": "screenshot-meter-rings.png",
+                    "alt": "A close-up of the right edge of the Desk with the meters drawn as rings: a two-line summary reading claude 7% session, resets 11:09 and 89% week, three small ring gauges in cyan to pink handwriting showing CPU 26, RAM 90 and Disk 98, and below them the weather titled Funky Town with Clear and 57 degrees, a high of 83 and low of 52, and tomorrow's forecast",
+                    "caption": "<strong>Rings</strong> &middot; CPU, memory and disk as small gauges, the weather under a name you chose"
+                  },
+                  {
+                    "src": "screenshot-meter-slim.png",
+                    "alt": "A close-up of a slanted stack on the Desk with the meters drawn slim, half the height of bars: a summary line reading claude 8% session, resets 11:09 and 89% week, then slim lines for CPU 19%, RAM 89% and Disk 93%, and for the limits Session (5hr) 8%, Weekly - All Models 89% with a pace mark and Capped Extra Usage 28%, all tilted down to the right",
+                    "caption": "<strong>Slim</strong> &middot; the limits and the machine in one line each, with their pace marks"
                   }
                 ],
                 "wide": {
@@ -3820,6 +3864,10 @@
                   {
                     "title": "Messages and song looks, suggested",
                     "body": "Ask Claude for a Desk message or looks for your songs. A suggestion waits in Settings until you <strong>Add</strong> or <strong>Save</strong> it, and Dismiss drops it."
+                  },
+                  {
+                    "title": "Widgets Claude makes with you",
+                    "body": "Ask Claude Code for a pixel-art sprite, a palette or effects. It previews on your Desk, a sprite as the companion, under a bar that says what the widget is and lists its files. It installs only when you choose <strong>Apply</strong>, even with direct Desk changes on. <strong>Use my own art&hellip;</strong> puts your PNG sprite sheet into a sprite made here, and it stays on your PC."
                   }
                 ]
               },
@@ -3831,6 +3879,22 @@
                   "src": "screenshot-claude-designs-review.jpg",
                   "alt": "Claude Code's proposed Desk design shown on the desktop: a review card reading Claude suggests a Desk design, Synthwave Column, with a note, a What changed list (the font from EsteFont Pro to EsteFont 26, the ink from #7aa2ff and #2f63e8 to #22d3ee, #a855f7 and #ec4899), and Dismiss and Apply buttons, beside the widget and the live preview of the new cyan to pink Desk. On a PC with one monitor the card opens next to the preview, as shown",
                   "caption": "<strong>Review bar</strong> &middot; the design draws live, you choose Apply or Dismiss"
+                }
+              },
+              {
+                "type": "gallery",
+                "align": "start",
+                "items": [
+                  {
+                    "src": "screenshot-settings-widgets.png",
+                    "alt": "Sanduhr Settings, Widgets: a Desk companion section with the sprite set to Hourglass, Show the companion on the Desk ticked, Let it roam unticked, and the line Stage 4 of 4, Keeper. 48 coding days so far.; below it the widget catalog, verified, 4 widgets, published 22 October 2026, with Hourglass marked Installed and OLED Neon, OLED Neon Effects and OLED Neon Palettes each with an Install button",
+                    "caption": "<strong>Settings &rarr; Widgets</strong> &middot; the companion, and a catalog that is checked before it installs"
+                  }
+                ],
+                "wide": {
+                  "src": "screenshot-claude-widget-review.jpg",
+                  "alt": "Claude Code's proposed widget on the Desk: a review card reading Claude suggests a widget, Neon bit, described as a 12-pixel companion in the Desk's cyan and violet, with a What this widget is list (one stage, nine animations at 6 fps; four frames of 12 by 12 pixels in four colors; roams the bottom edge when roaming is on; four files under an MIT license; installs on Apply, on this PC only), a Make it the companion box ticked, and Dismiss and Apply buttons. Below the card the new purple pixel sprite already stands in as the companion, with the folded Desk behind it",
+                  "caption": "<strong>A widget from Claude</strong> &middot; it previews as your companion, and installs only on Apply"
                 }
               },
               {
@@ -3928,6 +3992,10 @@
                     "body": "A grouped sidebar with a search box that jumps to the control you name, a shortcut that opens Settings from any app (Ctrl+Alt+S, off until you turn it on), and a tray that shows the limit you pick."
                   },
                   {
+                    "title": "Restart to update",
+                    "body": "When an update is ready, the toast, the tray and the widget ask &ldquo;Restart to update?&rdquo; Nothing happens until you click; then Sanduhr closes its browser helpers, installs and opens on the new version. A failed or cancelled install leaves it running with the offer still there. Setup.exe installs download updates in the background from 3.8."
+                  },
+                  {
                     "title": "What's New and a welcome tour",
                     "body": "After an update, a card per change with a Show me button. A new install gets a short tour of your limits, the tray, accounts and Claude Code."
                   },
@@ -3977,7 +4045,7 @@
                 "title": "✓ No data comes back to us.",
                 "paragraphs": [
                   "No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.",
-                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.",
+                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Settings &rarr; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.",
                   "Claude sees your usage, your Desk messages and how your Desk looks only if you install Sanduhr's MCP server. It can open a picture of your wallpaper only if you let Claude Code read that file. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
                   "<a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md\">Security policy</a> &middot; <a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md\">Privacy policy</a>"
                 ]
