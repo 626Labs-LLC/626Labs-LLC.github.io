@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T11:19:44.461Z",
+  "generatedAt": "2026-10-23T11:10:40.975Z",
   "count": 59,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-10-22T10:42:49Z",
+      "pushed_at": "2026-10-23T10:34:58Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -37,7 +37,7 @@
       "description": "Curated, signed widget packs for the Sanduhr für Claude Desk: OLED themes, palettes, effects and companion sprites.",
       "html_url": "https://github.com/626Labs-LLC/sanduhr-widgets",
       "language": "Python",
-      "pushed_at": "2026-10-22T02:32:15Z",
+      "pushed_at": "2026-10-23T03:05:26Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -121,7 +121,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-10-21T19:17:20Z",
+      "pushed_at": "2026-10-22T15:22:06Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -350,7 +350,7 @@
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
       "pushed_at": "2026-10-20T00:04:33Z",
-      "stargazers_count": 9,
+      "stargazers_count": 10,
       "archived": false,
       "fork": false
     },
@@ -396,8 +396,8 @@
       "name": "Sanduhr_f-r_Claude",
       "description": "Native Windows 11 + macOS glass widget that projects when you'll hit your Claude usage cap — burn-rate, pace markers, live token-burn from local Claude Code sessions, and five glass themes. Independent third-party tool. MIT.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
-      "language": "Swift",
-      "pushed_at": "2026-10-22T04:41:19Z",
+      "language": "C#",
+      "pushed_at": "2026-10-23T04:07:32Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -409,7 +409,7 @@
       "description": "Claude Code mods, published from Sanduhr. claude plugin marketplace add estevanhernandez-stack-ed/sanduhr-mods",
       "html_url": "https://github.com/estevanhernandez-stack-ed/sanduhr-mods",
       "language": "TypeScript",
-      "pushed_at": "2026-10-17T16:16:06Z",
+      "pushed_at": "2026-10-22T18:50:53Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -589,7 +589,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-10-22T08:19:42Z",
+      "pushed_at": "2026-10-23T08:18:40Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
