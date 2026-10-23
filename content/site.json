@@ -3607,7 +3607,7 @@
           "ogImage": "/sanduhr/icon.png"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.7.1"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.7.2"
         ],
         "nav": [
           {
@@ -3869,7 +3869,7 @@
                   {
                     "plat": "Windows 10 (1809+) and 11 · x64",
                     "title": "Setup.exe from GitHub",
-                    "body": "Download <code>626Labs.Sanduhr-win-Setup.exe</code> from Releases. The installer is unsigned, so SmartScreen shows \"Windows protected your PC\" once: More info, then Run anyway. Installs per user and updates itself from the release feed; a portable zip sits on the same page. The <code>.msix</code> there is the unsigned Store upload and will not install by double-click.",
+                    "body": "Download <code>626Labs.Sanduhr-win-Setup.exe</code> from Releases. The installer is unsigned, so SmartScreen shows \"Windows protected your PC\" once: More info, then Run anyway. Installs per user; to update, run the newest Setup.exe, and from 3.8 the app downloads updates itself and applies them when you click Restart to update. A portable zip sits on the same page. The <code>.msix</code> there is the unsigned Store upload and will not install by double-click.",
                     "href": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/releases?q=v3&expanded=true",
                     "label": "Open Releases",
                     "external": true
