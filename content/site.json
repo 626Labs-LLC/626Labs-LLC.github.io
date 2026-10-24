@@ -2205,7 +2205,7 @@
           "ogImage": "/assets/video/rororo/rororo-launch-poster.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/ROROROblox@v1.33.0.0"
+          "estevanhernandez-stack-ed/ROROROblox@v1.34.0.0"
         ],
         "nav": [
           {
@@ -2381,7 +2381,7 @@
                   {
                     "key": "08 · PRESENCE",
                     "title": "Live roster status",
-                    "body": "Every row shows the real game it's in — \"In Pet Sim 99\", \"At Roblox home\" — plus an idle chip that turns amber when an alt has sat too long. The idle alert fires only for an alt that is actually in a game, where an idle kick costs you something; the threshold is yours."
+                    "body": "Every row shows the real game it's in — \"In Pet Sim 99\", \"At Roblox home\" — plus an idle chip that turns amber when an alt has sat too long. The idle alert fires only for an alt that is actually in a game, where an idle kick costs you something; the threshold is yours. An account with Roblox presence privacy on never gets one, because RORORO can't see it in a game."
                   },
                   {
                     "key": "09 · STREAMER MODE",
@@ -2421,7 +2421,7 @@
                   {
                     "key": "16 · THEMES",
                     "title": "Themes, yours to build",
-                    "body": "Four built in — cyan and magenta out of the box — plus a builder to tune every surface to taste and share the result as a file anyone can import."
+                    "body": "Four built in — cyan and magenta out of the box — plus a builder to tune every surface to taste. Share a theme you made as a file, and import one a friend sends: it applies straight away."
                   },
                   {
                     "key": "17 · STARTUP",
