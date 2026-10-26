@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.31.0-mac" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.33.1-mac" />
 <title>Sanduhr für Claude for Mac: your claude.ai meters on the desktop, and your Claude Code setup carried · 626 Labs</title>
 <meta name="description" content="The Mac build of Sanduhr für Claude: your claude.ai usage meters living on the desktop and around the notch, and one Settings page that reads and carries your whole Claude Code setup. Notarized, on Homebrew, macOS 14 or newer." />
 <link rel="canonical" href="https://626labs.dev/sanduhr/" />
@@ -762,6 +762,10 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
         <h3>Limits that come and go</h3>
         <p>A temporary limit, like a Weekly Special, shows up when Anthropic adds it and can be hidden from its own meter's menu. Hidden Limits brings it back, and the same menu turns that limit's warnings off and on.</p>
       </div>
+      <div class="card">
+        <h3>A line on the lock screen</h3>
+        <p>Settings &rarr; Desktop &rarr; Lock Screen puts one short line under the lock screen clock: your Claude usage, when it resets, and how many watchers are waiting for you, after a prefix of your own if you like. Anyone at the screen can read it, so only counts, percents and times get through; paths, emails, addresses and tokens are dropped, and the page previews the exact line. Turning it on asks for an administrator password once, for a small helper that sets the message. Off by default, and turning it off brings back any message you had there before.</p>
+      </div>
     </div>
 
     <div class="gallery-strip align-start">
@@ -967,7 +971,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     <div class="cards">
       <div class="card">
         <h3>Sign in without DevTools</h3>
-        <p>Sign in to claude.ai in a Sanduhr window and your session key is saved the moment you're in: no DevTools, no copying cookies. The window keeps nothing once it closes. Accounts made with Google sign in through your browser and paste the key, because Google refuses sign-in inside apps.</p>
+        <p>Sign in to claude.ai in a Sanduhr window and your session key is saved the moment you're in: no DevTools, no copying cookies. The window keeps nothing once it closes. Continue with Google works too: Google's sign-in opens in a small window of its own and hands back to claude.ai, with your browser and a pasted key as the way out only if Google's page stays blank.</p>
       </div>
       <div class="card">
         <h3>More than one account</h3>

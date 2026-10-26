@@ -600,7 +600,7 @@
           "ogImage": "/sanduhr/screenshot-desk-full.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.31.0-mac"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.33.1-mac"
         ],
         "nav": [
           {
@@ -697,6 +697,10 @@
                   {
                     "title": "Limits that come and go",
                     "body": "A temporary limit, like a Weekly Special, shows up when Anthropic adds it and can be hidden from its own meter's menu. Hidden Limits brings it back, and the same menu turns that limit's warnings off and on."
+                  },
+                  {
+                    "title": "A line on the lock screen",
+                    "body": "Settings &rarr; Desktop &rarr; Lock Screen puts one short line under the lock screen clock: your Claude usage, when it resets, and how many watchers are waiting for you, after a prefix of your own if you like. Anyone at the screen can read it, so only counts, percents and times get through; paths, emails, addresses and tokens are dropped, and the page previews the exact line. Turning it on asks for an administrator password once, for a small helper that sets the message. Off by default, and turning it off brings back any message you had there before."
                   }
                 ]
               },
@@ -966,7 +970,7 @@
                 "items": [
                   {
                     "title": "Sign in without DevTools",
-                    "body": "Sign in to claude.ai in a Sanduhr window and your session key is saved the moment you're in: no DevTools, no copying cookies. The window keeps nothing once it closes. Accounts made with Google sign in through your browser and paste the key, because Google refuses sign-in inside apps."
+                    "body": "Sign in to claude.ai in a Sanduhr window and your session key is saved the moment you're in: no DevTools, no copying cookies. The window keeps nothing once it closes. Continue with Google works too: Google's sign-in opens in a small window of its own and hands back to claude.ai, with your browser and a pasted key as the way out only if Google's page stays blank."
                   },
                   {
                     "title": "More than one account",
@@ -3607,7 +3611,7 @@
           "ogImage": "/sanduhr/icon.png"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.8.0"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.9.1"
         ],
         "nav": [
           {
@@ -3786,7 +3790,7 @@
                   },
                   {
                     "title": "Widgets, from a signed catalog",
-                    "body": "Settings &rarr; Widgets lists the 626 Labs catalog: the hourglass sprite, plus the OLED Neon theme, palettes and effects to start. Packs are data only, never code. The catalog's signature and every pack are checked on your PC before anything installs, and the catalog is fetched only when you open the page or ask."
+                    "body": "Settings &rarr; Widgets lists the 626 Labs catalog: the hourglass sprite, plus the OLED Neon theme, palettes and effects to start. Packs are data only, never code. The catalog's signature and every pack are checked on your PC before anything installs, and the catalog is fetched only when you open the page or ask. A pack's themes, palettes and fonts join the theme list and the Desk's ink and font pickers; effects packs install and preview, and drawing them comes later."
                   },
                   {
                     "title": "Livelier bars",
