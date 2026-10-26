@@ -341,7 +341,7 @@ def test_sanduhr_is_generated_with_its_furniture():
     assert 'href="/sanduhr/windows/"' in html
     _assert_shots_match(html, _declared_shots(_sanduhr()))
     assert 'class="panel ok"' in html
-    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.31.0-mac"' in html
+    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.33.1-mac"' in html
 
 
 def test_sanduhr_windows_is_generated_beside_the_mac_page():
@@ -352,7 +352,7 @@ def test_sanduhr_windows_is_generated_beside_the_mac_page():
     assert '<img class="app-icon" src="icon.png"' in html and (ROOT / "sanduhr/windows/icon.png").is_file()
     assert 'href="/sanduhr/"' in html  # the Mac page, root-relative
     assert 'data-app="9NH3NK2RGCF5"' in html  # the reach map moved here
-    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.8.0"' in html
+    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.9.1"' in html
     assert 'class="hand"' not in html
 
 

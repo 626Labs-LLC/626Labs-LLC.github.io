@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.8.0" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v3.9.1" />
 <title>Sanduhr für Claude on Windows: your claude.ai usage, paced, from the Microsoft Store · 626 Labs</title>
 <meta name="description" content="The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a Desk Claude can design with you, with widgets and a companion to go on it. Free on the Microsoft Store." />
 <link rel="canonical" href="https://626labs.dev/sanduhr/windows/" />
@@ -832,11 +832,15 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div class="card">
         <h3>Widgets, from a signed catalog</h3>
-        <p>Settings &rarr; Widgets lists the 626 Labs catalog: the hourglass sprite, plus the OLED Neon theme, palettes and effects to start. Packs are data only, never code. The catalog's signature and every pack are checked on your PC before anything installs, and the catalog is fetched only when you open the page or ask.</p>
+        <p>Settings &rarr; Widgets lists the 626 Labs catalog: the hourglass sprite, plus the OLED Neon theme, palettes and effects to start. Packs are data only, never code. The catalog's signature and every pack are checked on your PC before anything installs, and the catalog is fetched only when you open the page or ask. A pack's themes, palettes and fonts join the theme list and the Desk's ink and font pickers; effects packs install and preview, and drawing them comes later.</p>
       </div>
       <div class="card">
         <h3>Livelier bars</h3>
         <p>The bars beside now playing ease, fall and wear peak caps. <strong>Gradient bars</strong> spreads your ink's colors across them. Still only the playing app's level: no audio is captured.</p>
+      </div>
+      <div class="card">
+        <h3>Your CI runs on the Desk</h3>
+        <p>Turn on <strong>Show my CI runners' jobs</strong> and every job a GitHub Actions runner on your PC runs gets a card: a push, a pull request or a re-run on github.com. A passed job fades, a failed one stays until you dismiss it and glows once, and the companion cheers a pass. Sanduhr reads the runners' logs through Docker's local pipe: no GitHub account, no token, no network. Off by default.</p>
       </div>
     </div>
 
@@ -1036,7 +1040,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     <div class="panel ok">
       <h3>✓ No data comes back to us.</h3>
       <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.</p>
-      <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Settings &rarr; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.</p>
+      <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Settings &rarr; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. CI watchers read your runner containers' logs through Docker's local pipe and send nothing anywhere. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.</p>
       <p>Claude sees your usage, your Desk messages and how your Desk looks only if you install Sanduhr's MCP server. It can open a picture of your wallpaper only if you let Claude Code read that file. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
       <p><a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md">Security policy</a> &middot; <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md">Privacy policy</a></p>
     </div>
