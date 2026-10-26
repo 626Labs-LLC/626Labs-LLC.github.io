@@ -989,6 +989,16 @@
               {
                 "type": "gallery",
                 "align": "start",
+                "wide": {
+                  "src": "screenshot-settings-accounts.png",
+                  "alt": "Sanduhr Settings, Accounts, in demo mode with two sample accounts: Work, marked Active and Signed in, with Change Sign-In, a name field with Rename, Sign Out and Remove Account; Personal below it; Add Account; and the Follow the account I'm using switch, with the line that every 15 minutes Sanduhr switches to the signed-in account whose session meter is climbing when the active one is idle, and switching by hand pauses it for up to 3 hours",
+                  "caption": "<strong>Accounts</strong> &middot; one row per login, and Follow the account I'm using"
+                },
+                "items": []
+              },
+              {
+                "type": "gallery",
+                "align": "start",
                 "items": [
                   {
                     "src": "screenshot-settings-alerts.png",
