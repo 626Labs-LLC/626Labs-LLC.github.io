@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-20T12:51:39.175Z",
+  "generated": "2026-10-27T13:28:59.545Z",
   "entries": [
     {
       "id": "m01",
@@ -658,11 +658,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1153576",
-      "title": "Street Fighter",
+      "id": "t687163",
+      "title": "Project Hail Mary",
       "year": 2026,
-      "tagline": "Ready. Set. Fight.",
-      "posterPath": "/pwUb3gdkSrlyMZWs0MFOQg3N5s7.jpg",
+      "tagline": "Believe in the Hail Mary.",
+      "posterPath": "/iOb2fjXLbpJgyQXe46n1WtGCnaa.jpg",
       "source": "tmdb"
     },
     {
@@ -674,43 +674,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1148365",
-      "title": "Matchbox the Movie",
-      "year": 2026,
-      "tagline": "Save the world, bring your friends.",
-      "posterPath": "/aHhHRz6nOpwkqJs5ASeRGAdK2dt.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1291595",
-      "title": "Insidious: Out of the Further",
-      "year": 2026,
-      "tagline": "Evil found a way out.",
-      "posterPath": "/4tTrW9dXCByS5wt2pXVWb58zNjz.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t1368337",
       "title": "The Odyssey",
       "year": 2026,
       "tagline": "Defy the gods.",
-      "posterPath": "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1400837",
-      "title": "Other Mommy",
-      "year": 2026,
-      "tagline": "Your mommy won't save you.",
-      "posterPath": "/fGRNCssTRrhYZxNzykGGCoMsAVq.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1255833",
-      "title": "Whalefall",
-      "year": 2026,
-      "tagline": "Hold your breath.",
-      "posterPath": "/vjTYUTgh9nO88i6HZ4YPRhiFL05.jpg",
+      "posterPath": "/krVa7rKCQb4OBfsr2LTJv4rTz5q.jpg",
       "source": "tmdb"
     },
     {
@@ -722,83 +690,27 @@
       "source": "tmdb"
     },
     {
-      "id": "t1228834",
-      "title": "The Fix",
+      "id": "t1400940",
+      "title": "Clayface",
       "year": 2026,
-      "tagline": "Settle the score.",
-      "posterPath": "/jlP8XDjZN89GrpM3je5Uf8Grqx8.jpg",
+      "tagline": "Look fear in the face.",
+      "posterPath": "/9l1NuFjel2j89hiuiJbsxfblqjy.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1236045",
-      "title": "Animals",
+      "id": "t1291595",
+      "title": "Insidious: Out of the Further",
       "year": 2026,
-      "tagline": "Power can't protect you.",
-      "posterPath": "/iISM36voS1E8gX9BM0DVK0kgi3E.jpg",
+      "tagline": "Evil found a way out.",
+      "posterPath": "/4tTrW9dXCByS5wt2pXVWb58zNjz.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1377237",
-      "title": "Runner",
+      "id": "t1148365",
+      "title": "Matchbox the Movie",
       "year": 2026,
-      "tagline": "Next-day delivery isn't an option.",
-      "posterPath": "/yBKMAIj7clP42UkFejhGDBBoTpb.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1423191",
-      "title": "Resident Evil",
-      "year": 2026,
-      "tagline": "A new era of evil.",
-      "posterPath": "/i7UyjfPio0VFHB9rBUZSFyhOoM8.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1712451",
-      "title": "Resident Dead",
-      "year": 2026,
-      "tagline": "You're next",
-      "posterPath": "/qKhMVWwFikSUzOpkhOl35GBLkGH.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1503762",
-      "title": "Sense and Sensibility",
-      "year": 2026,
-      "tagline": "No one knows your heart like a sister.",
-      "posterPath": "/czsyPHosFNbh4PPqXfqWu1aBXnA.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1248832",
-      "title": "Digger",
-      "year": 2026,
-      "tagline": "A man. A plan. A meltdown.",
-      "posterPath": "/1ATXKrIPJyKNwnJ6lcG088Sa6zi.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1302904",
-      "title": "Practical Magic 2",
-      "year": 2026,
-      "tagline": "Everything you've witched for.",
-      "posterPath": "/ogwQOLbCfncjvBhFb5l0OmQH8KC.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1281331",
-      "title": "The Social Reckoning",
-      "year": 2026,
-      "tagline": "We're way past making friends.",
-      "posterPath": "/7jK6NuxVg1XuEV7UdNa6KO03IgZ.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1084244",
-      "title": "Toy Story 5",
-      "year": 2026,
-      "tagline": "It's on.",
-      "posterPath": "/sfQtVlIHljToOwYjhe21KPGzZWK.jpg",
+      "tagline": "Save the world, bring your friends.",
+      "posterPath": "/aHhHRz6nOpwkqJs5ASeRGAdK2dt.jpg",
       "source": "tmdb"
     },
     {
@@ -810,51 +722,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1147572",
-      "title": "Narnia: The Magician's Nephew",
-      "year": 2027,
-      "tagline": "A universe begins.",
-      "posterPath": "/yrqR0qquy4JOfqZCsFJV7vJoOSh.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1375161",
-      "title": "Don't Move",
+      "id": "t1423191",
+      "title": "Resident Evil",
       "year": 2026,
-      "tagline": "Whatever you do…",
-      "posterPath": "/uh0ZSdM8iOQgHwnUlhhanP8Dkl6.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1101383",
-      "title": "The End of Oak Street",
-      "year": 2026,
-      "tagline": "Where goes the neighborhood.",
-      "posterPath": "/hkPxuAMEqIqo1HCtIi4sqx0GRuP.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t460458",
-      "title": "Resident Evil: Welcome to Raccoon City",
-      "year": 2021,
-      "tagline": "Witness the beginning of evil.",
-      "posterPath": "/bArhvjRHl535XMaSh9VjInF2mSZ.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1389172",
-      "title": "Reporting Live",
-      "year": 2026,
-      "tagline": "Some stories refuse to be buried.",
-      "posterPath": "/xVabS4lTi6IMscr2FOucxydE6ZD.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1204680",
-      "title": "Coyote vs. Acme",
-      "year": 2026,
-      "tagline": "The movie ACME doesn't want you to see.",
-      "posterPath": "/kYDCl2y0VPvhT5eYWbMRInPoB03.jpg",
+      "tagline": "A new era of evil.",
+      "posterPath": "/i7UyjfPio0VFHB9rBUZSFyhOoM8.jpg",
       "source": "tmdb"
     },
     {
@@ -863,6 +735,94 @@
       "year": 2026,
       "tagline": "He has no strings to hold him back now.",
       "posterPath": "/hJNdizFlxOW89edX3Rzr6OliSFI.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1236045",
+      "title": "Animals",
+      "year": 2026,
+      "tagline": "Power can't protect you.",
+      "posterPath": "/iISM36voS1E8gX9BM0DVK0kgi3E.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1712451",
+      "title": "Resident Dead",
+      "year": 2026,
+      "tagline": "You're next",
+      "posterPath": "/qKhMVWwFikSUzOpkhOl35GBLkGH.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1228834",
+      "title": "The Fix",
+      "year": 2026,
+      "tagline": "Settle the score.",
+      "posterPath": "/jlP8XDjZN89GrpM3je5Uf8Grqx8.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1153576",
+      "title": "Street Fighter",
+      "year": 2026,
+      "tagline": "Ready. Set. Fight.",
+      "posterPath": "/ccxdepKqORLwccbzvO4eAGkN0IC.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t791523",
+      "title": "Wildwood",
+      "year": 2026,
+      "tagline": "How far would you go for those you love?",
+      "posterPath": "/snFM00mpNAfUzUtkdEW0uDEvXA0.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1302904",
+      "title": "Practical Magic 2",
+      "year": 2026,
+      "tagline": "Everything you've witched for.",
+      "posterPath": "/ogwQOLbCfncjvBhFb5l0OmQH8KC.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t9479",
+      "title": "The Nightmare Before Christmas",
+      "year": 1993,
+      "tagline": "A holiday film for the whole family... except yours.",
+      "posterPath": "/oQffRNjK8e19rF7xVYEN8ew0j7b.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t755898",
+      "title": "War of the Worlds",
+      "year": 2025,
+      "tagline": "Your data is deadly.",
+      "posterPath": "/yvirUYrva23IudARHn3mMGVxWqM.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1084244",
+      "title": "Toy Story 5",
+      "year": 2026,
+      "tagline": "It's on.",
+      "posterPath": "/sfQtVlIHljToOwYjhe21KPGzZWK.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1400837",
+      "title": "Other Mommy",
+      "year": 2026,
+      "tagline": "Your mommy won't save you.",
+      "posterPath": "/fGRNCssTRrhYZxNzykGGCoMsAVq.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1108427",
+      "title": "Moana",
+      "year": 2026,
+      "tagline": "The ocean chose her for a reason.",
+      "posterPath": "/gaet1xQ2nxrG0V1Ep9T20ZMNEIC.jpg",
       "source": "tmdb"
     },
     {
@@ -890,35 +850,59 @@
       "source": "tmdb"
     },
     {
-      "id": "t9479",
-      "title": "The Nightmare Before Christmas",
-      "year": 1993,
-      "tagline": "A holiday film for the whole family... except yours.",
-      "posterPath": "/oQffRNjK8e19rF7xVYEN8ew0j7b.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1288069",
-      "title": "Tenzing",
+      "id": "t1377237",
+      "title": "Runner",
       "year": 2026,
-      "tagline": "The ascent that made history.",
-      "posterPath": "/eI0QW02PYqhnmIvLRdn9vrfVVP7.jpg",
+      "tagline": "Next-day delivery isn't an option.",
+      "posterPath": "/vJk2TW1QZAmBiD7oj9ZF9EPTYY1.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t858035",
-      "title": "Klara and the Sun",
+      "id": "t1255833",
+      "title": "Whalefall",
       "year": 2026,
-      "tagline": "Meet the future of friendship.",
-      "posterPath": "/xqovj2p6HRsgHxN81qYAYF4StgM.jpg",
+      "tagline": "Hold your breath.",
+      "posterPath": "/vjTYUTgh9nO88i6HZ4YPRhiFL05.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t299536",
-      "title": "Avengers: Infinity War",
-      "year": 2018,
-      "tagline": "An entire universe. Once and for all.",
-      "posterPath": "/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
+      "id": "t1204680",
+      "title": "Coyote vs. Acme",
+      "year": 2026,
+      "tagline": "The movie ACME doesn't want you to see.",
+      "posterPath": "/kYDCl2y0VPvhT5eYWbMRInPoB03.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1101383",
+      "title": "The End of Oak Street",
+      "year": 2026,
+      "tagline": "Where goes the neighborhood.",
+      "posterPath": "/7DmtuAK5gYGlMFA45Oxkl1bEpIC.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1375161",
+      "title": "Don't Move",
+      "year": 2026,
+      "tagline": "Whatever you do…",
+      "posterPath": "/uh0ZSdM8iOQgHwnUlhhanP8Dkl6.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1284046",
+      "title": "Onslaught",
+      "year": 2026,
+      "tagline": "They unleashed their deadliest weapon on us.",
+      "posterPath": "/eAs7G3yFaULpfwfVdGvPo5HmFJS.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1375646",
+      "title": "Colony",
+      "year": 2026,
+      "tagline": "Survive the hive.",
+      "posterPath": "/enz3WLx5QU1FUyhXZld04QWIc6N.jpg",
       "source": "tmdb"
     },
     {
@@ -951,14 +935,6 @@
       "year": 1994,
       "tagline": "Fear can hold you prisoner. Hope can set you free.",
       "posterPath": "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t687163",
-      "title": "Project Hail Mary",
-      "year": 2026,
-      "tagline": "Believe in the Hail Mary.",
-      "posterPath": "/iOb2fjXLbpJgyQXe46n1WtGCnaa.jpg",
       "source": "tmdb"
     },
     {
@@ -1150,7 +1126,7 @@
       "title": "Cinema Paradiso",
       "year": 1988,
       "tagline": "An enchanted village. A wonderful friendship. Star-crossed lovers. And the magic of the movies.",
-      "posterPath": "/9JhfVOveaY00o8njQu2Xrp4YWud.jpg",
+      "posterPath": "/aRgPnx4aPS96f7CnhJH7IG5dN1A.jpg",
       "source": "tmdb"
     },
     {
