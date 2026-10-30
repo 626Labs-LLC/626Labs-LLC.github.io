@@ -341,7 +341,7 @@ def test_sanduhr_is_generated_with_its_furniture():
     assert 'href="/sanduhr/windows/"' in html
     _assert_shots_match(html, _declared_shots(_sanduhr()))
     assert 'class="panel ok"' in html
-    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.33.1-mac"' in html
+    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.37.0-mac"' in html
 
 
 def test_sanduhr_windows_is_generated_beside_the_mac_page():

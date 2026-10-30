@@ -560,7 +560,7 @@
     {
       "id": "sanduhr",
       "title": "Sanduhr für Claude",
-      "description": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with a pace mark and reset time on each, the clock, your next meetings and a daily line in a handwritten face. Since 2.27.0 the Desk can sit under your desktop files. One Settings page reads your whole Claude Code setup per folder and carries it to another Mac as a config pack, with Compare and Undo Import. Homebrew or a notarized .dmg on Mac; free on the Microsoft Store on Windows, with a statusline and MCP server for Claude Code. No telemetry: it talks to claude.ai with your own cookie, checks for its own updates, and nothing else.",
+      "description": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with a pace mark and reset time on each, the clock, your next meetings and a daily line in a handwritten face. Since 2.27.0 the Desk can sit under your desktop files. One Settings page reads your whole Claude Code setup per folder and carries it to another Mac as a config pack, with Compare and Undo Import. Homebrew or a notarized .dmg on Mac; free on the Microsoft Store on Windows, with a statusline and MCP server for Claude Code. No telemetry: it talks to claude.ai with your own cookie and checks for its own updates, and the widget catalog and the Windows weather piece go online only when you use them.",
       "tags": [
         {
           "label": "macOS",
@@ -600,7 +600,7 @@
           "ogImage": "/sanduhr/screenshot-desk-full.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.33.1-mac"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.37.0-mac"
         ],
         "nav": [
           {
@@ -701,6 +701,18 @@
                   {
                     "title": "A line on the lock screen",
                     "body": "Settings &rarr; Desktop &rarr; Lock Screen puts one short line under the lock screen clock: your Claude usage, when it resets, and how many watchers are waiting for you, after a prefix of your own if you like. Anyone at the screen can read it, so only counts, percents and times get through; paths, emails, addresses and tokens are dropped, and the page previews the exact line. Turning it on asks for an administrator password once, for a small helper that sets the message. Off by default, and turning it off brings back any message you had there before."
+                  },
+                  {
+                    "title": "The fold",
+                    "body": "Since 2.37.0, Settings &rarr; Desk &rarr; Slant tilts a whole place, plate and all, up to 20 degrees either way, and every piece at that place shares it. Arrange Desk outlines and drags the slanted piece, and a straight Desk draws exactly as it did."
+                  },
+                  {
+                    "title": "Meter styles",
+                    "body": "The Claude line and the meters take a style: Bar, Slim, Ring or Ticks. Every style keeps the pace mark and the nearly-full warning, and none of them animates."
+                  },
+                  {
+                    "title": "OLED care",
+                    "body": "A switch in Settings &rarr; Desk, off by default. On, the Desk's pieces drift a few points every three minutes, the Desk and the widget dim after five minutes without input, and the ink never draws pure white. Nothing leaves your Mac."
                   }
                 ]
               },
@@ -806,7 +818,11 @@
                   },
                   {
                     "title": "Claude writes your messages and themes",
-                    "body": "With the MCP server installed, Claude Code can suggest Desk messages, with effects like a glow or a line written in by hand, and propose widget themes as a live preview. Nothing changes until you approve it."
+                    "body": "With the MCP server installed, Claude Code can suggest Desk messages, with effects like a glow or a line written in by hand, and propose widget themes as a live preview. Since 2.36.0 it can make you a widget too: a pixel-art sprite or a palette, written as text, checked against the catalog's own rules and installed only when you press Apply. Nothing changes until you approve it."
+                  },
+                  {
+                    "title": "Claude designs your Desk",
+                    "body": "Since 2.37.0, Claude can read how your Desk is set up and suggest a whole look: where each piece sits, its size, slant and style, the font, the ink, the plate and the shadow. It waits at the top of Settings &rarr; Desk with what it changes; preview it, then Apply or Dismiss, and after Apply, Put my Desk back undoes it. What Claude reads for this is a small note of those settings, never your usage, message text, paths or account names."
                   },
                   {
                     "title": "Receipts, with exact undo",
@@ -922,6 +938,39 @@
           },
           {
             "type": "section",
+            "heading": "Widgets, and a companion.",
+            "blocks": [
+              {
+                "type": "lead",
+                "paragraphs": [
+                  "Since 2.35.0, Settings &rarr; Widgets installs packs from a signed catalog: color themes, message palettes, sprites and, since 2.37.0, fonts. Packs are data only, never code. Installed themes join the theme gallery, and palettes join the message editor."
+                ]
+              },
+              {
+                "type": "cards",
+                "items": [
+                  {
+                    "title": "A signed catalog",
+                    "body": "Sanduhr reaches GitHub only when the page opens, when you press Check the catalog again, and on Install or Update. It checks the catalog's signature and each download's size and SHA-256, then checks every file again on your Mac before the pack goes in. Nothing polls in the background."
+                  },
+                  {
+                    "title": "A companion on the Desk",
+                    "body": "Install a sprite pack and place the Companion piece. It grows with the days you code, never with your tokens, shows your pacing as a mood, reacts when a watcher needs you or a limit nears, naps when you're away, and roams the Desk's edges unless Reduce Motion is on."
+                  },
+                  {
+                    "title": "Font packs",
+                    "body": "Since 2.37.0, fonts from the catalog load for Sanduhr only: never installed on your Mac, unseen by Font Book and other apps, and gone from the Desk, the message and the font lists the moment you uninstall them."
+                  },
+                  {
+                    "title": "Use my own art",
+                    "body": "Since 2.36.0, on a sprite made here, Use my own art&hellip; takes one PNG per stage, checks each one and says why when it doesn't fit, and reinstalls the widget as your own. The picture never leaves your Mac."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
             "heading": "Not just a mirror of the numbers.",
             "blocks": [
               {
@@ -974,7 +1023,7 @@
                   },
                   {
                     "title": "More than one account",
-                    "body": "Add each Claude login under a name, like Work or Team, and switch from the widget's account chip, any Sanduhr menu, or the account name on Desk. Each account keeps its own history, so the sparklines never mix. Follow the account I'm using, off by default, switches for you when the signal is clear."
+                    "body": "Add each Claude login under a name, like Work or Team, and switch from the widget's account chip, any Sanduhr menu, or the account name on Desk. Each account keeps its own history, so the sparklines never mix. Follow the account I'm using, off by default, switches for you when the signal is clear. Since 2.34.0 Settings &rarr; Accounts shows each account's plan beside its name, and the widget's footer shows yours, from the answer Sanduhr already fetches."
                   },
                   {
                     "title": "Smarter alerts, one Settings window",
@@ -1058,8 +1107,8 @@
                 "title": "✓ No data comes back to us.",
                 "paragraphs": [
                   "No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.",
-                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. Your cookie stays in the macOS Keychain. Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain; Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote.",
-                  "Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default, and what Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
+                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you open Settings &rarr; Widgets, it also asks GitHub for the signed widget catalog, and downloads a pack only when you press Install; nothing about you goes with either. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. Your cookie stays in the macOS Keychain. Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain; Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote.",
+                  "Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default. With the server installed, Claude can also read how your Desk is laid out, to suggest a design you approve. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
                   "<a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md\">Security policy</a> &middot; <a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md\">Privacy policy</a>"
                 ]
               }
