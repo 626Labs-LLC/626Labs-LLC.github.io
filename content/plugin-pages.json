@@ -213,8 +213,8 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Find your direction no matter where you start.",
       "subhead": "Start from a raw idea and eight spec-driven commands walk it to a shipped app. Start from anything else, a backlog, a security findings report, a plan someone else wrote, or nothing at all, and <strong>/take</strong> plans what needs planning, then runs the list the way you would. It knows your builder profile, and it gets sharper every run.",
-      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-cartographer@v1.13.0"],
-      "heroMeta": ["v1.13.0", "{{fact:cmd_vibe-cartographer}} commands", "MIT", "Level 3.5"],
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-cartographer@v1.13.2"],
+      "heroMeta": ["v1.13.2", "{{fact:cmd_vibe-cartographer}} commands", "MIT", "Level 3.5"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer" }
@@ -223,7 +223,7 @@
         "label": "vibe-cartographer ~",
         "lines": [
           "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-cartographer:onboard</span>",
-          "<span class=\"agent\">Cart v1.13.0</span>: let's find your direction.",
+          "<span class=\"agent\">Cart v1.13.2</span>: let's find your direction.",
           "  What are you working on?",
           "&nbsp;",
           "<span class=\"prompt\">&gt;</span> A CLI that scrapes structured data from job boards.",
@@ -264,7 +264,7 @@
           "cards": [
             { "command": "/vibe-cartographer:take backlog.md", "title": "Hand it what you have.", "desc": "A backlog, a security findings report, a plan someone else wrote, one step of another process, or a one-line ask. Cart plans the items that need it, then works the list." },
             { "command": "/vibe-cartographer:take", "title": "Or let it find the work.", "desc": "With no argument, Cart builds the list itself from evolve proposals, open GitHub issues, dashboard tasks and validator output. It checks each item against the repo and drops what's already done, with the evidence. You trim the list before anything runs." },
-            { "command": "run it overnight", "title": "Wake up to a report.", "desc": "Every item gets its own local branch. Anything touching money or auth is built, then held for your review. A failure is parked, not fatal, and the run keeps going. You get a decision ledger and a morning report, and nothing is pushed until you review it." }
+            { "command": "run it overnight", "title": "Wake up to a report.", "desc": "Every item gets its own local branch, cut from current code: a run won't start from a checkout that's behind main. Anything touching money or auth is built, then held for your review. A failure is parked, not fatal, and the run keeps going. You get a decision ledger and a morning report, and nothing is pushed until you review it. Cleanup removes that run's branches and nothing else." }
           ],
           "mini": {
             "heading": "The rest of the kit.",
