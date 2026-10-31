@@ -83,6 +83,8 @@ FAMILIES = [
     ("v2.27.0-mac", "mac"), ("v2.3.0-windows", "windows"), ("v3.4.3", ""),
     ("v3.3.0.0", ""), ("3.4.3", ""), ("v1", None), ("legacy/python-v2.3.0", None),
     ("untagged-c6478f02e761a516871a", None),
+    ("vibe-sec-v0.10.1", "vibe-sec-"), ("vibe-test-v0.4.1", "vibe-test-"),
+    ("vibe-sec-v0.10.1-mac", "vibe-sec-mac"), ("vibe-sec", None),
 ])
 def test_tag_family(tag, family):
     assert rr.tag_family(tag) == family
@@ -211,3 +213,22 @@ def test_a_release_search_link_tracks_its_markers_major(page, repo, tag):
         return
     assert majors == {str(rr.version_key(tag)[0])}, (
         f"{page} searches releases for v{sorted(majors)} but is marked {tag}")
+
+
+def test_a_prefixed_family_sees_only_its_own_name():
+    # vibe-sec and vibe-test tag "<name>-vX.Y.Z". A shared repo tagging
+    # two plugins must not list one plugin's releases on the other's page.
+    releases = [rel("vibe-sec-v0.10.1", "2026-10-02T00:00:00Z"), rel("vibe-test-v0.4.1", "2026-10-17T00:00:00Z"),
+                rel("vibe-sec-v0.10.0", "2026-09-20T00:00:00Z"), rel("v9.9.9", "2026-10-18T00:00:00Z")]
+    assert [r["tag_name"] for r in rr.releases_after("vibe-sec-v0.10.0", releases)] == ["vibe-sec-v0.10.1"]
+    assert rr.version_key("vibe-sec-v0.10.1") == (0, 10, 1)
+    tags = ["vibe-sec-v0.11.0", "vibe-sec-v0.10.1", "vibe-test-v0.5.0", "v9.9.9"]
+    assert rr.unreleased_tags("vibe-sec-v0.10.1", tags, releases) == ["vibe-sec-v0.11.0"]
+    assert [r["tag_name"] for r in rr.unwatched_releases(["vibe-sec-v0.10.0"], releases)] == ["v9.9.9", "vibe-test-v0.4.1"]
+
+
+def test_family_labels_read_in_the_issue():
+    assert rr.family_label("") == "bare `vX.Y.Z`"
+    assert rr.family_label("mac") == "`-mac`"
+    assert rr.family_label("vibe-sec-") == "`vibe-sec-v*`"
+    assert rr.family_label("vibe-sec-mac") == "`vibe-sec-v*-mac`"
