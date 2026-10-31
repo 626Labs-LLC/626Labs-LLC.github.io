@@ -13,6 +13,12 @@ A tag's suffix is its family: a page marked `@v2.27.0-mac` sees only `-mac`
 releases and a page marked `@v3.4.3` only unsuffixed ones, so two pages can
 review one repo (Sanduhr's Mac and Windows pages).
 
+A tag with no published release is listed too, when it is in the marker's
+family and a higher version than the marker's: Sanduhr's v4.0.0 was tagged
+and shipped with no GitHub release, so the Windows page sat checked through
+3.9.1 while this script listed only 4.0.1, and moving the marker would have
+marked 4.0.0 reviewed unread. Its notes live in the repo's changelog.
+
 The release notes are the feature log: this script only notices that a
 release landed and points at its notes. Updating a page means reading those
 notes, fixing any claim that changed, and moving the tag forward in the same
@@ -98,6 +104,11 @@ def tag_family(tag: str) -> str | None:
     return m.group(1) or ""
 
 
+def version_key(tag: str) -> tuple[int, ...]:
+    """The tag's numbers, for ordering within a family: v4.0.0 > v3.9.1."""
+    return tuple(int(n) for n in re.match(r"^v?(\d+(?:\.\d+)+)", tag).group(1).split("."))
+
+
 def releases_after(marker_tag: str, releases: list[dict]) -> list[dict]:
     """Published, non-prerelease releases newer than the marker's, newest first,
     in the marker's tag family when it has one (a marker outside the version
@@ -149,17 +160,41 @@ def unwatched_releases(marker_tags: list[str], releases: list[dict]) -> list[dic
     return sorted(strays, key=lambda r: r["published_at"], reverse=True)
 
 
-def fetch_releases(repo: str) -> list[dict]:
-    """The repo's 100 most recent releases (ample for a daily check)."""
+def unreleased_tags(marker_tag: str, tags: list[str], releases: list[dict]) -> list[str]:
+    """Tags in the marker's family, of a higher version than the marker's,
+    that have no published release, highest first. A release published as a
+    prerelease is deliberate and does not count; a draft does. A marker
+    outside the version pattern has no family to compare in, so none."""
+    family = tag_family(marker_tag)
+    if family is None:
+        return []
+    released = {r["tag_name"] for r in releases if not r.get("draft")}
+    floor = version_key(marker_tag)
+    found = [
+        t for t in tags
+        if t not in released and tag_family(t) == family and version_key(t) > floor
+    ]
+    return sorted(found, key=version_key, reverse=True)
+
+
+def _get(url: str):
     req = urllib.request.Request(
-        f"https://api.github.com/repos/{repo}/releases?per_page=100",
-        headers={"Accept": "application/vnd.github+json", "User-Agent": "626labs-release-review"},
-    )
+        url, headers={"Accept": "application/vnd.github+json", "User-Agent": "626labs-release-review"})
     token = os.environ.get("GITHUB_TOKEN")
     if token:
         req.add_header("Authorization", f"Bearer {token}")
     with urllib.request.urlopen(req, timeout=30) as resp:
         return json.load(resp)
+
+
+def fetch_releases(repo: str) -> list[dict]:
+    """The repo's 100 most recent releases (ample for a daily check)."""
+    return _get(f"https://api.github.com/repos/{repo}/releases?per_page=100")
+
+
+def fetch_tags(repo: str) -> list[str]:
+    """The repo's 100 most recent tag names."""
+    return [t["name"] for t in _get(f"https://api.github.com/repos/{repo}/tags?per_page=100")]
 
 
 def generated_pages() -> set[str]:
@@ -177,9 +212,10 @@ def generated_pages() -> set[str]:
 def render_body(results: list[dict], generated: set[str] | None = None,
                 strays: list[dict] | None = None) -> str:
     generated = generated_pages() if generated is None else generated
-    behind = [r for r in results if r["releases"]]
+    behind = [r for r in results if r["releases"] or r.get("unreleased")]
     strays = [s for s in (strays or []) if s["releases"]]
-    total = sum(len(r["releases"]) for r in behind) + sum(len(s["releases"]) for s in strays)
+    total = (sum(len(r["releases"]) + len(r.get("unreleased", [])) for r in behind)
+             + sum(len(s["releases"]) for s in strays))
     lines = [
         f"{total} release{'s' if total != 1 else ''} landed since "
         f"{len(behind)} page{'s were' if len(behind) != 1 else ' was'} last checked.",
@@ -205,6 +241,10 @@ def render_body(results: list[dict], generated: set[str] | None = None,
             date = rel["published_at"][:10]
             name = rel.get("name") or rel["tag_name"]
             lines.append(f"- [{name}]({rel['html_url']}), `{rel['tag_name']}`, {date}{flag}")
+        for tag in r.get("unreleased", []):
+            lines.append(
+                f"- `{tag}`, tagged with no GitHub release: read its entry in the repo's changelog "
+                f"([the tag](https://github.com/{r['repo']}/tree/{tag}))")
         lines.append("")
     for s in strays:
         watched = ", ".join(f"`-{f}`" if f else "bare `vX.Y.Z`" for f in s["watched"])
@@ -236,24 +276,32 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     cache: dict[str, list[dict]] = {}
+    tag_cache: dict[str, list[str]] = {}
     results = []
     for page, repo, tag in markers:
         try:
             if repo not in cache:
                 cache[repo] = fetch_releases(repo)
             newer = releases_after(tag, cache[repo])
+            if repo not in tag_cache:
+                tag_cache[repo] = fetch_tags(repo)
+            unreleased = unreleased_tags(tag, tag_cache[repo], cache[repo])
         except KeyError:
             print(f"{page}: {repo} has no published release tagged {tag}", file=sys.stderr)
             return 2
         except (urllib.error.URLError, TimeoutError) as exc:
             print(f"{page}: could not read {repo}'s releases: {exc}", file=sys.stderr)
             return 2
-        results.append({"page": page, "repo": repo, "tag": tag, "releases": newer})
-        state = f"{len(newer)} behind" if newer else "current"
+        results.append({"page": page, "repo": repo, "tag": tag, "releases": newer,
+                        "unreleased": unreleased})
+        count = len(newer) + len(unreleased)
+        state = f"{count} behind" if count else "current"
         print(f"{page}  {repo}@{tag}  {state}")
         for rel in newer:
             flag = "  (fixes only)" if is_fixes_only(rel.get("body")) else ""
             print(f"    {rel['tag_name']}  {rel['published_at'][:10]}{flag}")
+        for t in unreleased:
+            print(f"    {t}  tagged, no release")
 
     # Releases in a tag family none of a repo's markers watch: the one way a
     # page goes stale with no signal under the family rule.
@@ -270,7 +318,8 @@ def main(argv: list[str] | None = None) -> int:
             for rel in unwatched:
                 print(f"    {rel['tag_name']}  {rel['published_at'][:10]}")
 
-    total = sum(len(r["releases"]) for r in results) + sum(len(s["releases"]) for s in strays)
+    total = (sum(len(r["releases"]) + len(r["unreleased"]) for r in results)
+             + sum(len(s["releases"]) for s in strays))
     if args.out:
         args.out.write_text(render_body(results, strays=strays), encoding="utf-8")
     print(f"BEHIND={total}")
