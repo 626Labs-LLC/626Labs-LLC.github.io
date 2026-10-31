@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/ROROROblox@v1.34.0.0" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/ROROROblox@v1.35.0.0" />
 <title>RORORO — multi-launcher for Roblox · 626 Labs</title>
 <meta name="description" content="Run multiple Roblox clients side by side, each signed in as a different saved account. Native on Windows and macOS, plugin-extensible, free. An independent third-party tool — not affiliated with Roblox Corporation." />
 <link rel="canonical" href="https://626labs.dev/rororo.html" />
@@ -910,6 +910,11 @@ brew install --cask rororo</code>
         <h3>When it&#x27;s Roblox, not RORORO</h3>
         <p>Known Roblox issues lists problems in Roblox itself: what happens, what to do, and a button to the RORORO feature that helps. A serious one gets a single notice. The list is signed and updates without an app update, and nothing about you is sent to fetch it.</p>
       </div>
+      <div class="feature">
+        <div class="key">22 · ITS OWN WINDOW</div>
+        <h3>Every launch in its own window</h3>
+        <p>Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RORORO closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. RORORO also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog.</p>
+      </div>
     </div>
   </section>
 
@@ -1027,7 +1032,7 @@ brew install --cask rororo</code>
     </div>
 
     <div class="panel">
-      <p>A plugin is a <b>separate, signed Windows app</b> — its own process, never loaded into RORORO. It connects over a per-user named pipe, declares every capability it wants up front, and shows you a <b>consent sheet</b> before it gets any of them. You install one by pasting a GitHub release URL into <b>RORORO → Plugins</b>; RORORO verifies the SHA-256 before it unpacks anything. A plugin crash can't take RORORO down — the wall is intentional, and it is what keeps RORORO itself eligible for the Microsoft Store.</p>
+      <p>A plugin is a <b>separate, signed Windows app</b> — its own process, never loaded into RORORO. It connects over a per-user named pipe, declares every capability it wants up front, and shows you a <b>consent sheet</b> before it gets any of them. You install one by pasting a GitHub release URL into <b>RORORO → Plugins</b>; RORORO verifies the SHA-256 before it unpacks anything. A plugin crash can't take RORORO down — the wall is intentional, and it is what keeps RORORO itself eligible for the Microsoft Store. Since 1.35 the Plugins page says why a plugin stopped, and offers Restart only when restarting can help.</p>
     </div>
 
     <div class="plugin-list">
