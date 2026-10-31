@@ -369,8 +369,8 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Close the documentation vacuum.",
       "subhead": "vibe-doc scans your codebase, classifies your project type, finds the documentation holes, and generates professional docs from the artifacts you already have. For builders shipping fast who don't have time to write docs by hand &mdash; and can't afford to skip them.",
-      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Doc@v0.7.1"],
-      "heroMeta": ["v0.7.1", "4 commands", "MIT"],
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Doc@v0.8.2"],
+      "heroMeta": ["v0.8.2", "5 commands", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Doc" }
@@ -403,7 +403,7 @@
             { "command": "/vibe-doc:scan", "title": "Scan for documentation gaps.", "desc": "Walks your codebase, classifies your project type, and produces a tiered gap report &mdash; Required, Recommended, Optional &mdash; with risk callouts. Saves to .vibe-doc/state.json for the downstream commands." },
             { "command": "/vibe-doc:generate", "title": "Generate missing docs.", "desc": "Reads scan results, then fills autonomously from your READMEs, CI configs, SKILL files, schemas, and git history &mdash; asking only for the sections that genuinely need human judgment. Outputs to docs/generated/; promotion is your call." },
             { "command": "/vibe-doc:check", "title": "Validate deployment readiness.", "desc": "CI-safe validation that all Required-tier docs exist and haven't gone stale relative to recent commits. Exits 0 or 1 &mdash; drop it into any pipeline as a documentation gate." },
-            { "command": "/vibe-doc:evolve", "title": "Reflect and propose improvements.", "desc": "Reads your session history and friction log, weights patterns across three tracks, and proposes concrete edits to SKILL files or the classifier. Nothing applies without your explicit yes." }
+            { "command": "/vibe-doc:evolve-doc", "title": "Reflect and propose improvements.", "desc": "Reads your session history and friction log, weights patterns across three tracks, and proposes concrete edits to SKILL files or the classifier. Nothing applies without your explicit yes." }
           ]
         },
         {
@@ -414,7 +414,7 @@
             "vibe-doc is two systems sharing one classification engine. The <strong>conversational layer</strong> (Skills) handles adaptive, interview-driven flows with checkpoint gates so you stay in control at every fork. The <strong>deterministic layer</strong> (a CLI binary) handles reproducible, CI-safe operations with stable exit codes. Both read and write the same .vibe-doc/state.json so context carries between sessions and tools.",
             "Generate runs autonomous-first: it reads your actual files and fills what it can without asking, interviewing you only where the code genuinely can't answer &mdash; security judgment, business intent, operational context. The rule is strict: confident content only, inline source citations, NEEDS INPUT markers where evidence doesn't exist. No fabrication."
           ],
-          "callout": "Self-evolving. /evolve proposes improvements to its own classifier — with your approval, never automatically."
+          "callout": "Self-evolving. /vibe-doc:evolve-doc proposes improvements to its own classifier — with your approval, never automatically."
         }
       ],
       "install": {
