@@ -91,22 +91,40 @@ def is_fixes_only(body: str | None) -> bool:
     return bool(headings) and all(FIX_HEADING_RE.search(h) for h in headings)
 
 
-TAG_FAMILY_RE = re.compile(r"^v?\d+(?:\.\d+)+(?:-([A-Za-z][A-Za-z0-9]*))?$")
+TAG_FAMILY_RE = re.compile(
+    r"^(?:([A-Za-z][A-Za-z0-9]*(?:-[A-Za-z][A-Za-z0-9]*)*)-)?"
+    r"v?(\d+(?:\.\d+)+)(?:-([A-Za-z][A-Za-z0-9]*))?$")
 
 
 def tag_family(tag: str) -> str | None:
     """The tag's family: its suffix ("mac"), "" for a bare numeric tag, None
     when the tag is not a version at all. Two pages can mark one repo (the
-    Sanduhr Mac and Windows pages); each sees only its own family."""
+    Sanduhr Mac and Windows pages); each sees only its own family.
+
+    A name prefix is part of the family too: vibe-sec and vibe-test tag
+    "vibe-sec-v0.10.1", and a repo that releases several things would tag
+    each under its own name. "vibe-sec-v0.10.1" is family "vibe-sec-",
+    "vibe-sec-v0.10.1-mac" would be "vibe-sec-mac"."""
     m = TAG_FAMILY_RE.match(tag)
     if not m:
         return None
-    return m.group(1) or ""
+    prefix = f"{m.group(1)}-" if m.group(1) else ""
+    return prefix + (m.group(3) or "")
+
+
+def family_label(family: str) -> str:
+    """How a family reads in the issue: `-mac`, `vibe-sec-v*`, bare `vX.Y.Z`."""
+    if family.endswith("-"):
+        return f"`{family}v*`"
+    if "-" in family:
+        prefix, _, suffix = family.rpartition("-")
+        return f"`{prefix}-v*-{suffix}`"
+    return f"`-{family}`" if family else "bare `vX.Y.Z`"
 
 
 def version_key(tag: str) -> tuple[int, ...]:
     """The tag's numbers, for ordering within a family: v4.0.0 > v3.9.1."""
-    return tuple(int(n) for n in re.match(r"^v?(\d+(?:\.\d+)+)", tag).group(1).split("."))
+    return tuple(int(n) for n in TAG_FAMILY_RE.match(tag).group(2).split("."))
 
 
 def releases_after(marker_tag: str, releases: list[dict]) -> list[dict]:
@@ -247,7 +265,7 @@ def render_body(results: list[dict], generated: set[str] | None = None,
                 f"([the tag](https://github.com/{r['repo']}/tree/{tag}))")
         lines.append("")
     for s in strays:
-        watched = ", ".join(f"`-{f}`" if f else "bare `vX.Y.Z`" for f in s["watched"])
+        watched = ", ".join(family_label(f) for f in s["watched"])
         lines.append(f"## {s['repo']}: releases in a tag family no page watches")
         lines.append("")
         lines.append(
