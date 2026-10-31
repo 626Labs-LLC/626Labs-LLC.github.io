@@ -213,8 +213,8 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Find your direction no matter where you start.",
       "subhead": "Start from a raw idea and eight spec-driven commands walk it to a shipped app. Start from anything else, a backlog, a security findings report, a plan someone else wrote, or nothing at all, and <strong>/take</strong> plans what needs planning, then runs the list the way you would. It knows your builder profile, and it gets sharper every run.",
-      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-cartographer@v1.13.0"],
-      "heroMeta": ["v1.13.0", "{{fact:cmd_vibe-cartographer}} commands", "MIT", "Level 3.5"],
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-cartographer@v1.13.2"],
+      "heroMeta": ["v1.13.2", "{{fact:cmd_vibe-cartographer}} commands", "MIT", "Level 3.5"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-cartographer" }
@@ -223,7 +223,7 @@
         "label": "vibe-cartographer ~",
         "lines": [
           "<span class=\"prompt\">&gt;</span> <span class=\"cmd\">/vibe-cartographer:onboard</span>",
-          "<span class=\"agent\">Cart v1.13.0</span>: let's find your direction.",
+          "<span class=\"agent\">Cart v1.13.2</span>: let's find your direction.",
           "  What are you working on?",
           "&nbsp;",
           "<span class=\"prompt\">&gt;</span> A CLI that scrapes structured data from job boards.",
@@ -264,7 +264,7 @@
           "cards": [
             { "command": "/vibe-cartographer:take backlog.md", "title": "Hand it what you have.", "desc": "A backlog, a security findings report, a plan someone else wrote, one step of another process, or a one-line ask. Cart plans the items that need it, then works the list." },
             { "command": "/vibe-cartographer:take", "title": "Or let it find the work.", "desc": "With no argument, Cart builds the list itself from evolve proposals, open GitHub issues, dashboard tasks and validator output. It checks each item against the repo and drops what's already done, with the evidence. You trim the list before anything runs." },
-            { "command": "run it overnight", "title": "Wake up to a report.", "desc": "Every item gets its own local branch. Anything touching money or auth is built, then held for your review. A failure is parked, not fatal, and the run keeps going. You get a decision ledger and a morning report, and nothing is pushed until you review it." }
+            { "command": "run it overnight", "title": "Wake up to a report.", "desc": "Every item gets its own local branch, cut from current code: a run won't start from a checkout that's behind main. Anything touching money or auth is built, then held for your review. A failure is parked, not fatal, and the run keeps going. You get a decision ledger and a morning report, and nothing is pushed until you review it. Cleanup removes that run's branches and nothing else." }
           ],
           "mini": {
             "heading": "The rest of the kit.",
@@ -307,8 +307,8 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Bootstrap the file agents stand on.",
       "subhead": "vibe-keystone produces a production-grade CLAUDE.md for any repository &mdash; inventorying first, interviewing you for your actual conventions, then writing a structured file every downstream agent can stand on. Works for any org, not just 626Labs.",
-      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-Keystone@v0.1.1"],
-      "heroMeta": ["v0.1.1", "1 command", "tenant-aware", "MIT"],
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-Keystone@v0.3.0"],
+      "heroMeta": ["v0.3.0", "2 commands", "tenant-aware", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-Keystone" }
@@ -335,11 +335,12 @@
         {
           "type": "cards",
           "eyebrow": "01 · What it does",
-          "heading": "One command, one load-bearing file.",
+          "heading": "One load-bearing file, and a loop that sharpens it.",
           "lead": "Before writing a line, /keystone inventories your stack and asks four targeted questions — then produces a CLAUDE.md future agents actually stand on, not a template dressed up with your repo name.",
           "cards": [
             { "command": "/keystone", "title": "Bootstrap a CLAUDE.md.", "desc": "Inventories the repo (git state, layout, stack files, existing .claude/ config), interviews you for tenant identity and conventions, then writes a structured CLAUDE.md adapted to that context. Shows a diff and confirms before overwriting an existing file." },
-            { "command": "(follow-ups)", "title": "Proposes the scaffold.", "desc": "After the file, it proposes .claude/agents/, .claude/rules/, and .claude/hooks/ candidates tailored to the repo &mdash; but never auto-creates anything. You decide what to keep." }
+            { "command": "(follow-ups)", "title": "Proposes the scaffold.", "desc": "After the file, it proposes .claude/agents/, .claude/rules/, and .claude/hooks/ candidates tailored to the repo &mdash; but never auto-creates anything. You decide what to keep." },
+            { "command": "/vibe-keystone:evolve-keystone", "title": "Learns from its own runs.", "desc": "With your yes at the end of a run, Keystone notes the file's shape (repo type, which sections it kept or dropped) in a local log. Never code, never identity, never sent anywhere. Once five runs are in, evolve-keystone reads the log for patterns and proposes edits to its own skeleton. Nothing is applied automatically." }
           ]
         },
         {
@@ -348,9 +349,9 @@
           "heading": "It refuses to write blind.",
           "paragraphs": [
             "Most bootstrapping tools generate a template and call it done. vibe-keystone treats blind writes as a bug: it inventories the repo first &mdash; git log, package.json, workflow files, existing .claude/ structure &mdash; then asks one round of targeted questions before drafting anything. The produced file is specific to your stack, your decision-tracking surface, and your org's voice rules.",
-            "The skill adapts its output to repo type. A code platform gets a tech-stack section and infrastructure guardrails. A marketing site gets voice rules and a design-system reference. A writing repo gets a persona-override clause and citation discipline. Sections that don't apply are dropped, not left as placeholders that rot."
+            "The skill adapts its output to repo type. A code platform gets a tech-stack section and infrastructure guardrails. A marketing site gets voice rules and a design-system reference. A writing repo gets a persona-override clause and citation discipline. Sections that don't apply are dropped, not left as placeholders that rot. Every candidate line also has to pass a derivability test: if an agent could work it out from the repo on its own, it's cut. What survives is gotchas, the reasons behind choices, and conventions nobody could guess."
           ],
-          "callout": "It will not overwrite an existing CLAUDE.md without a diff and explicit confirmation."
+          "callout": "It will not overwrite an existing CLAUDE.md without a diff and explicit confirmation, and it won't write over sections another tool owns."
         }
       ],
       "install": {
@@ -369,8 +370,8 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Close the documentation vacuum.",
       "subhead": "vibe-doc scans your codebase, classifies your project type, finds the documentation holes, and generates professional docs from the artifacts you already have. For builders shipping fast who don't have time to write docs by hand &mdash; and can't afford to skip them.",
-      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Doc@v0.7.1"],
-      "heroMeta": ["v0.7.1", "4 commands", "MIT"],
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Doc@v0.8.2"],
+      "heroMeta": ["v0.8.2", "5 commands", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Doc" }
@@ -403,7 +404,7 @@
             { "command": "/vibe-doc:scan", "title": "Scan for documentation gaps.", "desc": "Walks your codebase, classifies your project type, and produces a tiered gap report &mdash; Required, Recommended, Optional &mdash; with risk callouts. Saves to .vibe-doc/state.json for the downstream commands." },
             { "command": "/vibe-doc:generate", "title": "Generate missing docs.", "desc": "Reads scan results, then fills autonomously from your READMEs, CI configs, SKILL files, schemas, and git history &mdash; asking only for the sections that genuinely need human judgment. Outputs to docs/generated/; promotion is your call." },
             { "command": "/vibe-doc:check", "title": "Validate deployment readiness.", "desc": "CI-safe validation that all Required-tier docs exist and haven't gone stale relative to recent commits. Exits 0 or 1 &mdash; drop it into any pipeline as a documentation gate." },
-            { "command": "/vibe-doc:evolve", "title": "Reflect and propose improvements.", "desc": "Reads your session history and friction log, weights patterns across three tracks, and proposes concrete edits to SKILL files or the classifier. Nothing applies without your explicit yes." }
+            { "command": "/vibe-doc:evolve-doc", "title": "Reflect and propose improvements.", "desc": "Reads your session history and friction log, weights patterns across three tracks, and proposes concrete edits to SKILL files or the classifier. Nothing applies without your explicit yes." }
           ]
         },
         {
@@ -414,7 +415,7 @@
             "vibe-doc is two systems sharing one classification engine. The <strong>conversational layer</strong> (Skills) handles adaptive, interview-driven flows with checkpoint gates so you stay in control at every fork. The <strong>deterministic layer</strong> (a CLI binary) handles reproducible, CI-safe operations with stable exit codes. Both read and write the same .vibe-doc/state.json so context carries between sessions and tools.",
             "Generate runs autonomous-first: it reads your actual files and fills what it can without asking, interviewing you only where the code genuinely can't answer &mdash; security judgment, business intent, operational context. The rule is strict: confident content only, inline source citations, NEEDS INPUT markers where evidence doesn't exist. No fabrication."
           ],
-          "callout": "Self-evolving. /evolve proposes improvements to its own classifier — with your approval, never automatically."
+          "callout": "Self-evolving. /vibe-doc:evolve-doc proposes improvements to its own classifier — with your approval, never automatically."
         }
       ],
       "install": {
@@ -774,8 +775,8 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Take it with you.",
       "subhead": "Move a feature between repos without copy-paste archaeology. vibe-taker captures a feature out of one codebase as a portable bundle &mdash; architecture, contract surface, the prompts that built it, a verbatim source snapshot, and the gotchas &mdash; then plants it into another repo with stack-aware adaptation.",
-      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-taker@v0.1.1"],
-      "heroMeta": ["v0.1.1", "3 commands", "local-only", "MIT"],
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-taker@v0.2.1"],
+      "heroMeta": ["v0.2.1", "3 commands", "local-only", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-taker" }
@@ -815,7 +816,7 @@
           "heading": "It reads the source, then asks the right questions.",
           "paragraphs": [
             "Copy-paste between repos loses everything that isn't code &mdash; the contract, the reasoning, the prompts, the gotchas. vibe-taker captures all of it: an architecture sketch, the contract surface, the AI prompts that built the feature, a verbatim source snapshot, and the warnings. It derives the <strong>what</strong> and <strong>how</strong> autonomously from the code, and only asks you for the <strong>why</strong> when the code can't tell it.",
-            "On plant, it detects the destination stack and adapts &mdash; lifting code when the match is high, re-implementing from the spec when it's low, and declining outright on a hard cross-language mismatch rather than shipping something broken. Nothing is written until you confirm the diff."
+            "On plant, it detects the destination stack and adapts &mdash; lifting code when the match is high, re-implementing from the spec when it's low, and declining outright on a hard cross-language mismatch rather than shipping something broken. Nothing is written until you confirm the diff.", "It also speaks up on its own. Say something like <em>I want this in my other app</em> and vibe-taker offers a capture in one line, then stays quiet if you pass. It never captures without your yes."
           ],
           "callout": "Local-only by default. ~/.vibe-taker/library/ is the single source of truth — nothing leaves your machine."
         }
@@ -895,13 +896,13 @@
       "name": "vibe-prompt",
       "metaTitle": "vibe-prompt · Audit the prompts your app ships. · 626Labs",
       "ogTitle": "vibe-prompt · Audit the prompts your app ships.",
-      "metaDescription": "Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs.",
+      "metaDescription": "Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 14 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs.",
       "ogImage": "/assets/brand/plugins/vibe-prompt-banner-1280x640.png",
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Audit the prompts your app ships.",
-      "subhead": "Close the prompt loop: scan, audit, eval, grade, fix. vibe-prompt is the prompt-audit and behavioral-testing layer for vibe-coded apps that ship LLM features &mdash; running 13 structural smell checks across 5 dimensions, evaluating against your production model with a calibrated LLM-judge, and routing confident fixes to ready-to-apply diffs.",
-      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Prompt@v0.7.1"],
-      "heroMeta": ["v0.7.1", "9 commands", "F1-F13 smells", "MIT"],
+      "subhead": "Close the prompt loop: scan, audit, eval, grade, fix. vibe-prompt is the prompt-audit and behavioral-testing layer for vibe-coded apps that ship LLM features &mdash; running 14 structural smell checks across 5 dimensions, evaluating against your production model with a calibrated LLM-judge, and routing confident fixes to ready-to-apply diffs.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Prompt@v0.8.3"],
+      "heroMeta": ["v0.8.3", "9 commands", "F1-F14 smells", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Prompt" }
@@ -915,7 +916,7 @@
           "  &rarr; read-only &mdash; nothing changed",
           "&nbsp;",
           "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-prompt:audit</span>",
-          "<span class=\"agent\">[vibe-prompt]</span> Running F1&ndash;F13 checks...",
+          "<span class=\"agent\">[vibe-prompt]</span> Running F1&ndash;F14 checks...",
           "  &rarr; schema tightness: <span class=\"muted\">2 issues</span> &middot; persona consistency: <span class=\"ok\">clean</span>",
           "  &rarr; injection resistance: <span class=\"muted\">F11 flagged</span> &rarr; handoff to vibe-sec",
           "&nbsp;",
@@ -931,7 +932,7 @@
           "lead": "From inventory to fix, every command in the loop is a direct call. Read-only by default &mdash; real model calls only on :eval, behind a cost gate.",
           "cards": [
             { "command": "/vibe-prompt:scan", "title": "Inventory every prompt site.", "desc": "Reads the codebase and maps every place an LLM prompt is constructed or dispatched. Read-only &mdash; nothing is changed, nothing is written. The starting point for the rest of the loop.", "reach": "Reach for it <em>when you want to know what your app is actually sending to the model</em>." },
-            { "command": "/vibe-prompt:audit", "title": "Run 13 structural smell checks.", "desc": "Applies the F1&ndash;F13 taxonomy across five dimensions &mdash; schema tightness, persona consistency, instruction clarity, token efficiency, and injection resistance. No model calls, no cost.", "reach": "Reach for it <em>before an eval run, or any time you change a prompt</em>." },
+            { "command": "/vibe-prompt:audit", "title": "Run 14 structural smell checks.", "desc": "Applies the F1&ndash;F14 taxonomy across five dimensions &mdash; schema tightness, persona consistency, instruction clarity, token efficiency, and injection resistance. It also flags API calls that break on newer Claude models, and model IDs that are retired or about to be. No model calls, no cost.", "reach": "Reach for it <em>before an eval run, or any time you change a prompt</em>." },
             { "command": "/vibe-prompt:eval", "title": "Behavioral test against production.", "desc": "Runs test cases against your real model with a calibrated LLM-judge. Cost-gated &mdash; you confirm spend before any call goes out. Surfaces behavioral drift that static checks can't catch.", "reach": "Reach for it <em>when you need ground truth on how the prompt behaves, not just how it reads</em>." },
             { "command": "/vibe-prompt:grade", "title": "Composite grade + regression check.", "desc": "Rolls scan, audit, and eval signals into a composite grade and compares it against your monotonic baseline &mdash; so regressions show up as deltas, not surprises.", "reach": "Reach for it <em>on every PR that touches a prompt</em>." },
             { "command": "/vibe-prompt:remediate", "title": "Confidence-routed fix diffs.", "desc": "Routes high-confidence findings to ready-to-apply diffs and lower-confidence ones to annotated review files. Backs up every prompt before touching it and keeps rollback explicit.", "reach": "Reach for it <em>after audit surfaces issues you want to fix</em>." },
@@ -946,8 +947,8 @@
           "eyebrow": "02 · How it's built",
           "heading": "Scan, audit, eval, grade, fix — in that order.",
           "paragraphs": [
-            "The loop runs left to right: <strong>scan</strong> inventories every prompt site read-only, <strong>audit</strong> applies the F1&ndash;F13 taxonomy statically, <strong>eval</strong> runs behavioral tests against your production model behind a cost gate, <strong>grade</strong> rolls everything into a composite score compared against a monotonic baseline, and <strong>remediate</strong> routes confident fixes to diffs with backup and explicit rollback. Each step is a standalone call &mdash; run the whole loop or drop in at any stage.",
-            "The <strong>F1&ndash;F13 taxonomy</strong> covers 13 structural smell classes across five scoring dimensions: schema tightness (are outputs constrained or freeform?), persona consistency (does the assistant's identity hold across turns?), instruction clarity (are directives specific enough to survive model updates?), token efficiency (is the prompt spending tokens on things that matter?), and injection resistance (is user input sanitized before it reaches the model?). F10&ndash;F12 are the injection-surface smells &mdash; when those trigger, vibe-prompt hands off directly to <strong>vibe-sec</strong>, which carries the injection findings through its own security posture loop. The two plugins compose, neither depends on the other.",
+            "The loop runs left to right: <strong>scan</strong> inventories every prompt site read-only, <strong>audit</strong> applies the F1&ndash;F14 taxonomy statically, <strong>eval</strong> runs behavioral tests against your production model behind a cost gate, <strong>grade</strong> rolls everything into a composite score compared against a monotonic baseline, and <strong>remediate</strong> routes confident fixes to diffs with backup and explicit rollback. Each step is a standalone call &mdash; run the whole loop or drop in at any stage.",
+            "The <strong>F1&ndash;F14 taxonomy</strong> covers 14 structural smell classes across five scoring dimensions: schema tightness (are outputs constrained or freeform?), persona consistency (does the assistant's identity hold across turns?), instruction clarity (are directives specific enough to survive model updates?), token efficiency (is the prompt spending tokens on things that matter?), and injection resistance (is user input sanitized before it reaches the model?). F10&ndash;F12 are the injection-surface smells &mdash; when those trigger, vibe-prompt hands off directly to <strong>vibe-sec</strong>, which carries the injection findings through its own security posture loop. The two plugins compose, neither depends on the other. F14 looks past the prompt at the API call around it: disabled or budgeted thinking, forced tool choice, the legacy computer tool, and positional response reads, all of which break on Claude Opus 5.5, Fable 5.1 and Sonnet 5.5. A model ID that is retired or due to retire within 60 days gets flagged with its date.",
             "The eval step uses a <strong>calibrated LLM-judge</strong>: a secondary model call that scores the primary output against a rubric derived from your audit findings. Calibration means the judge's pass threshold is tuned against known-good and known-bad examples from your own baseline, not a generic rubric &mdash; so the score means something specific to your app. Every eval run costs real tokens; the cost gate ensures you confirm spend before anything goes out."
           ],
           "callout": "Read-only by default. Real model calls only on :eval, behind an explicit cost gate. Nothing leaves your machine except the eval request you confirm."

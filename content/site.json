@@ -1246,7 +1246,7 @@
       "id": "vibe-prompt",
       "title": "Vibe Prompt",
       "tagline": "Close the prompt loop: scan, audit, eval, grade, fix.",
-      "description": "vibe-prompt inventories every prompt your site uses, then audits each one across five structural dimensions — catching the 13 flagged failure patterns (F1–F13) that range from missing persona to absent output constraints. A calibrated LLM judge runs behavioral eval so you catch regressions, not just structural smells. Confidence-routed fixes apply changes only where the signal is clear; uncertain ones surface for your call. Handoff to vibe-sec is built in for prompts that touch sensitive surfaces.",
+      "description": "vibe-prompt inventories every prompt your site uses, then audits each one across five structural dimensions — catching the 14 flagged failure patterns (F1–F14) that range from missing persona to absent output constraints to API calls that break on newer Claude models. A calibrated LLM judge runs behavioral eval so you catch regressions, not just structural smells. Confidence-routed fixes apply changes only where the signal is clear; uncertain ones surface for your call. Handoff to vibe-sec is built in for prompts that touch sensitive surfaces.",
       "tags": [
         {
           "label": "Plugin",
