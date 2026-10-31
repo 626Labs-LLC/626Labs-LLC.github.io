@@ -560,7 +560,7 @@
     {
       "id": "sanduhr",
       "title": "Sanduhr für Claude",
-      "description": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with a pace mark and reset time on each, the clock, your next meetings and a daily line in a handwritten face. Since 2.27.0 the Desk can sit under your desktop files. One Settings page reads your whole Claude Code setup per folder and carries it to another Mac as a config pack, with Compare and Undo Import. Homebrew or a notarized .dmg on Mac; free on the Microsoft Store on Windows, with a statusline and MCP server for Claude Code. No telemetry: it talks to claude.ai with your own cookie and checks for its own updates, and the widget catalog and the Windows weather piece go online only when you use them.",
+      "description": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with a pace mark and reset time on each, the clock, your next meetings and a daily line in a handwritten face. Since 2.27.0 the Desk can sit under your desktop files. One Settings page reads your whole Claude Code setup per folder and carries it to another Mac as a config pack, with Compare and Undo Import. Homebrew or a notarized .dmg on Mac; free on the Microsoft Store on Windows, with a statusline and MCP server for Claude Code. No telemetry: it talks to claude.ai with your own cookie and checks for its own updates, and the widget catalog and the weather piece go online only when you use them.",
       "tags": [
         {
           "label": "macOS",
@@ -600,7 +600,7 @@
           "ogImage": "/sanduhr/screenshot-desk-full.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.37.0-mac"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.38.0-mac"
         ],
         "nav": [
           {
@@ -711,6 +711,14 @@
                     "body": "The Claude line and the meters take a style: Bar, Slim, Ring or Ticks. Every style keeps the pace mark and the nearly-full warning, and none of them animates."
                   },
                   {
+                    "title": "The system piece",
+                    "body": "Since 2.38.0 the Desk can show CPU, memory and disk, in the same Bar, Slim, Ring and Ticks styles, with no pace mark and no warning: it's a reading, not usage. Sanduhr reads it from the Mac every 5 seconds, only while the Desk shows and the piece is placed, and nothing is sent or stored."
+                  },
+                  {
+                    "title": "Weather",
+                    "body": "Settings &rarr; Weather: type a city, press Look up and pick the place, and the Weather piece shows now, today's range and tomorrow. Open-Meteo gets the city name you typed and the place's coordinates, rounded to about 1 km, at most every 30 minutes while the piece shows. No account, no key, no Location Services. <strong>Show it as</strong> gives the place a nickname of up to 24 characters, which neither request carries."
+                  },
+                  {
                     "title": "OLED care",
                     "body": "A switch in Settings &rarr; Desk, off by default. On, the Desk's pieces drift a few points every three minutes, the Desk and the widget dim after five minutes without input, and the ink never draws pure white. Nothing leaves your Mac."
                   }
@@ -761,7 +769,7 @@
                   },
                   {
                     "title": "Watchers",
-                    "body": "Small live cards on the notch or the Desk for work in flight: a CI run, a deploy, a long test, with its state, time so far and progress. Agents can put one up through the MCP server, and Claude Code's own background tasks can show up on their own. Both switches are off until you turn them on."
+                    "body": "Small live cards on the notch or the Desk for work in flight: a CI run, a deploy, a long test, with its state, time so far and progress. Agents can put one up through the MCP server, and Claude Code's own background tasks can show up on their own. Since 2.38.0, <strong>Show my CI runners' jobs</strong> gives each job a GitHub Actions runner container on your Mac runs its own card, read from Docker's local socket and never the network: a passed one fades, a failed one stays and glows the notch once. Every switch is off until you turn it on."
                   }
                 ]
               },
@@ -1107,8 +1115,8 @@
                 "title": "✓ No data comes back to us.",
                 "paragraphs": [
                   "No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.",
-                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you open Settings &rarr; Widgets, it also asks GitHub for the signed widget catalog, and downloads a pack only when you press Install; nothing about you goes with either. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. Your cookie stays in the macOS Keychain. Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain; Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote.",
-                  "Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default. With the server installed, Claude can also read how your Desk is laid out, to suggest a design you approve. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
+                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you open Settings &rarr; Widgets, it also asks GitHub for the signed widget catalog, and downloads a pack only when you press Install; nothing about you goes with either. With the Weather piece placed, it asks Open-Meteo for a forecast: the city name you typed, then the place's coordinates rounded to about 1 km. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. Your cookie stays in the macOS Keychain. Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain; Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote.",
+                  "Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default. With the server installed, Claude can also read how your Desk is laid out, to suggest a design you approve; your weather place and its coordinates stay out of it. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
                   "<a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md\">Security policy</a> &middot; <a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md\">Privacy policy</a>"
                 ]
               }
