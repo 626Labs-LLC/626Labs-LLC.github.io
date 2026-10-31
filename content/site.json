@@ -434,7 +434,7 @@
         }
       ],
       "status": "live",
-      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "repo": "estevanhernandez-stack-ed/vibe-Keystone",
       "npm": null,
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
@@ -519,7 +519,7 @@
         }
       ],
       "status": "live",
-      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "repo": "estevanhernandez-stack-ed/Vibe-Thesis",
       "npm": null,
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
@@ -548,7 +548,7 @@
         }
       ],
       "status": "live",
-      "repo": "estevanhernandez-stack-ed/vibe-plugins",
+      "repo": "estevanhernandez-stack-ed/Thesis-Engine",
       "npm": null,
       "install": "/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins",
       "claudeCode": true,
