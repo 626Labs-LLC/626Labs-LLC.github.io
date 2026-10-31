@@ -277,6 +277,12 @@ def render_head(p):
     desc = e(p["metaDescription"])
     url = f"https://626labs.dev/{p['id']}/"
     og = "https://626labs.dev" + p["ogImage"]
+    # The release this page's claims were last read against; release-review.py
+    # lists every release since. Move it in the same commit as the copy.
+    reviewed = "".join(
+        f'  <meta name="release-reviewed" content="{e(m)}" />\n'
+        for m in p.get("releaseReviewed") or []
+    )
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -287,7 +293,7 @@ def render_head(p):
   <title>{title}</title>
   <meta name="description" content="{desc}" />
   <link rel="canonical" href="{url}" />
-  <link rel="icon" type="image/png" href="/favicon-626.png" />
+{reviewed}  <link rel="icon" type="image/png" href="/favicon-626.png" />
 
   <meta property="og:title" content="{e(p['ogTitle'])}" />
   <meta property="og:description" content="{desc}" />

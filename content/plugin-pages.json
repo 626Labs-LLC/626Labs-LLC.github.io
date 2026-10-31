@@ -61,6 +61,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Maintain your Atlas.",
       "subhead": "Cart took you idea &rarr; v1. vibe-iterate takes you v1 &rarr; v1+n. Ships one PR per session &mdash; regression-aware, small-diff-preferred.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-iterate@v1.3.0"],
       "heroMeta": ["v1.0.0", "4 modes", "6 sidecars", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -139,6 +140,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "The /insights you wish you had.",
       "subhead": "vibe-insights reads your Claude Code transcripts across every machine and your whole history, then hands back coverage, where-was-I recall, the cache reveal, trends, the open threads worth picking back up, and a synthesized read of how you actually work. Personal by default, no telemetry, all local. The verbose /insights, over everything.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-insights@v0.3.0"],
       "heroMeta": ["v0.3.0", "cross-machine", "all local", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -211,6 +213,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Find your direction no matter where you start.",
       "subhead": "Start from a raw idea and eight spec-driven commands walk it to a shipped app. Start from anything else, a backlog, a security findings report, a plan someone else wrote, or nothing at all, and <strong>/take</strong> plans what needs planning, then runs the list the way you would. It knows your builder profile, and it gets sharper every run.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-cartographer@v1.13.0"],
       "heroMeta": ["v1.13.0", "{{fact:cmd_vibe-cartographer}} commands", "MIT", "Level 3.5"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -304,6 +307,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Bootstrap the file agents stand on.",
       "subhead": "vibe-keystone produces a production-grade CLAUDE.md for any repository &mdash; inventorying first, interviewing you for your actual conventions, then writing a structured file every downstream agent can stand on. Works for any org, not just 626Labs.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-Keystone@v0.1.1"],
       "heroMeta": ["v0.1.1", "1 command", "tenant-aware", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -365,6 +369,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Close the documentation vacuum.",
       "subhead": "vibe-doc scans your codebase, classifies your project type, finds the documentation holes, and generates professional docs from the artifacts you already have. For builders shipping fast who don't have time to write docs by hand &mdash; and can't afford to skip them.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Doc@v0.7.1"],
       "heroMeta": ["v0.7.1", "4 commands", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -427,6 +432,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Tests your app actually needs.",
       "subhead": "vibe-test reads your app, classifies it by type and deployment risk, and generates the tests proportional to that risk &mdash; not a boilerplate dump, not a pass/fail coverage meter. For builders who shipped vibe-coded apps with thin-to-zero coverage and no clear path to fixing that.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-test@vibe-test-v0.3.0"],
       "heroMeta": ["v0.3.0", "7 commands", "JS / TS", "626Labs"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -495,6 +501,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Security audit for the app your AI just shipped.",
       "subhead": "vibe-sec scans vibe-coded apps for the predictable security gaps AI prototyping leaves behind &mdash; secrets in source, sketchy auth, stale dependencies, open CORS &mdash; and generates fixes proportional to what your app actually needs. For solo builders shipping fast and not wanting to get burned.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-sec@vibe-sec-v0.9.0"],
       "heroMeta": ["v0.9.0", "9 commands", "tier-aware", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -565,6 +572,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Research feeder for vibe-thesis.",
       "subhead": "thesis-engine does the cold-start work that's painful before you can write: it scans the field for live, low-competition topics, pulls primary sources across five research axes, and emits vibe-thesis-shaped notes plus a BibTeX bibliography ready to drop into ThesisStudio.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/Thesis-Engine@v0.2.1"],
       "heroMeta": ["v0.2.1", "4 commands", "3 stages", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -628,6 +636,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Start with a strong stance.",
       "subhead": "A Claude Code plugin that scaffolds and co-authors thesis-shaped artifacts &mdash; dissertations, master's theses, long-form research articles, position essays &mdash; with a rendered PDF skeleton in roughly 30 minutes. For researchers and technical writers who want Claude in the loop without giving up their own voice.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Thesis@v0.2.0"],
       "heroMeta": ["v0.2.0", "6 commands", "voice pipeline", "PDF / HTML / md"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -689,6 +698,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Tours your users actually finish.",
       "subhead": "vibe-walk reads your app, names the aha moment, and builds a spotlight tour you own outright &mdash; Driver.js module, anchor codemod, six analytics events wired to track what actually lands. And it's honest about fit: if a tour won't help, it tells you before you build one.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Walk@v0.1.0"],
       "heroMeta": ["v0.1.0", "walkthrough mode", "Driver.js", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -764,6 +774,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Take it with you.",
       "subhead": "Move a feature between repos without copy-paste archaeology. vibe-taker captures a feature out of one codebase as a portable bundle &mdash; architecture, contract surface, the prompts that built it, a verbatim source snapshot, and the gotchas &mdash; then plants it into another repo with stack-aware adaptation.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-taker@v0.1.1"],
       "heroMeta": ["v0.1.1", "3 commands", "local-only", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -827,6 +838,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Sessions wrap themselves.",
       "subhead": "vibe-wrap reads the breadcrumb trail your toolkit already left &mdash; instead of cold-reconstructing from git log and memory. One gesture at session end: what shipped across every repo you touched, what's still uncommitted, what's still unpushed &mdash; plus a written handoff you can read, share, or paste into a status update.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-wrap@v0.3.0"],
       "heroMeta": ["v0.2.1", "4 commands", "multi-repo", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -888,6 +900,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Audit the prompts your app ships.",
       "subhead": "Close the prompt loop: scan, audit, eval, grade, fix. vibe-prompt is the prompt-audit and behavioral-testing layer for vibe-coded apps that ship LLM features &mdash; running 13 structural smell checks across 5 dimensions, evaluating against your production model with a calibrated LLM-judge, and routing confident fixes to ready-to-apply diffs.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Prompt@v0.7.1"],
       "heroMeta": ["v0.7.1", "9 commands", "F1-F13 smells", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
@@ -955,6 +968,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Localize your app's UI without corrupting its logic.",
       "subhead": "vibe-lingual is the i18n-retrofit layer for vibe-coded apps. It classifies every user-facing string by kind, audits the stack for the gotchas that bite localization retrofits, then runs a confidence-routed extract &rarr; wire &rarr; translate &rarr; guard loop that mutates only with per-file backups and idempotent re-runs &mdash; deep on next-intl + App Router, honest about the rest.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Lingual@v0.1.0"],
       "heroMeta": [
         "v0.1.0",
         "5 commands",
@@ -1050,6 +1064,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Give agents pipelines into your app.",
       "subhead": "vibe-access scans your routes and auth model, maps every callable surface into a schema-versioned <code>agent-access.json</code> manifest with dev and prod-safe tiers, scaffolds the affordances your app is missing behind hard env gates, then proves the layer with a cold-agent verify &mdash; adapters for Firebase Cloud Functions and Streamlit, honest about the rest.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-access@v0.3.0"],
       "heroMeta": [
         "v0.3.0",
         "8 commands",
@@ -1164,6 +1179,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Take an app from working to wanted.",
       "subhead": "vibe-glow runs a repeatable, gated beautification campaign: a measuring stick first, a skeptic-verified findings register next, then fix batches re-reviewed until clean, then the flagship release. Go app-wide with an invented design language, or scoped to one area with a goal in your own words. Consent is per stage, so one yes runs one stage.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-glow@v0.2.0"],
       "heroMeta": [
         "v0.2.0",
         "6 commands",
@@ -1263,6 +1279,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "A runbook that checks itself against the running system.",
       "subhead": "A runbook says do X and you will see W. Nothing checks whether that is still true. vibe-runbook writes one by inspecting your app, then walks its claims against a running system &mdash; read-only, never spends, and honest about what it could not check. Every report says <em>checked N of M enumerated</em>.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Runbook@v0.2.1"],
       "heroMeta": [
         "v0.2.1",
         "7 commands",
@@ -1370,6 +1387,7 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Have you already built this? Check your own repos first.",
       "subhead": "vibe-recall indexes the repos you've already written and answers one question while you spec the next feature: have I built something like this? It ranks shallow cards against your phrase or spec file, then re-reads the winning hit live at its current HEAD before it says anything about the source. A stale card can point. Only a live read can claim.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Recall@v0.1.3"],
       "heroMeta": [
         "v0.1.3",
         "6 commands",
