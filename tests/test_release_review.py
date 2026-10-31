@@ -171,3 +171,30 @@ def test_a_generated_page_is_told_where_its_edits_go():
     assert "Generated page" in sanduhr and "pageSpec" in sanduhr
     assert "Generated page" not in rororo
     assert "sanduhr/index.html" in rr.generated_pages()
+
+
+def test_a_tag_with_no_release_above_the_marker_is_listed():
+    # Sanduhr v4.0.0 was tagged and shipped with no GitHub release; the
+    # Windows page was checked through v3.9.1 and the bot listed only 4.0.1.
+    releases = [rel("v4.0.1", "2026-10-29T00:00:00Z"), rel("v3.9.1", "2026-10-24T00:00:00Z"),
+                rel("v2.37.0-mac", "2026-10-29T00:00:00Z"),
+                rel("v4.1.0", "2026-10-30T00:00:00Z", prerelease=True),
+                rel("v4.2.0", None, draft=True)]
+    tags = ["v4.2.0", "v4.1.0", "v4.0.1", "v4.0.0", "v3.9.1", "v3.8.5", "v2.38.0-mac",
+            "untagged-c6478f02e761a516871a", "legacy/python-v2.3.0"]
+    # A draft counts as unreleased; a prerelease is deliberate; v3.8.5 is
+    # below the marker; the -mac tag is another family; non-versions skip.
+    assert rr.unreleased_tags("v3.9.1", tags, releases) == ["v4.2.0", "v4.0.0"]
+    assert rr.unreleased_tags("v4.0.1", tags, releases) == ["v4.2.0"]
+    assert rr.unreleased_tags("v2.37.0-mac", tags, releases) == ["v2.38.0-mac"]
+    assert rr.unreleased_tags("legacy/python-v2.3.0", tags, releases) == []
+
+
+def test_body_lists_an_unreleased_tag_and_counts_it():
+    results = [{"page": "w.html", "repo": "o/s", "tag": "v3.9.1",
+                "releases": [rel("v4.0.1", "2026-10-29T00:00:00Z")], "unreleased": ["v4.0.0"]},
+               {"page": "x.html", "repo": "o/t", "tag": "v1", "releases": [], "unreleased": ["v2.0.0"]}]
+    body = rr.render_body(results, generated=set())
+    assert body.startswith("3 releases landed since 2 pages were last checked.")
+    assert "`v4.0.0`, tagged with no GitHub release" in body and "o/s/tree/v4.0.0" in body
+    assert "x.html" in body
