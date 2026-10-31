@@ -198,3 +198,16 @@ def test_body_lists_an_unreleased_tag_and_counts_it():
     assert body.startswith("3 releases landed since 2 pages were last checked.")
     assert "`v4.0.0`, tagged with no GitHub release" in body and "o/s/tree/v4.0.0" in body
     assert "x.html" in body
+
+
+@pytest.mark.parametrize("page,repo,tag", rr.find_markers())
+def test_a_release_search_link_tracks_its_markers_major(page, repo, tag):
+    # The Sanduhr Windows page links releases?q=v4 because the repo's latest
+    # release is the Mac build. A hardcoded major hides every 5.x build the
+    # day it ships; moving the marker to 5.x without the link fails here.
+    html = (ROOT / page).read_text(encoding="utf-8")
+    majors = set(re.findall(rf"github\.com/{re.escape(repo)}/releases\?q=v(\d+)\b", html))
+    if not majors or rr.tag_family(tag) is None:
+        return
+    assert majors == {str(rr.version_key(tag)[0])}, (
+        f"{page} searches releases for v{sorted(majors)} but is marked {tag}")
