@@ -6,20 +6,20 @@
   <link rel="preload" as="font" type="font/woff2" href="/fonts/SpaceGrotesk-Variable.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-Variable.woff2" crossorigin />
   <title>vibe-prompt · Audit the prompts your app ships. · 626Labs</title>
-  <meta name="description" content="Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs." />
+  <meta name="description" content="Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 14 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs." />
   <link rel="canonical" href="https://626labs.dev/vibe-prompt/" />
-  <meta name="release-reviewed" content="estevanhernandez-stack-ed/Vibe-Prompt@v0.7.1" />
+  <meta name="release-reviewed" content="estevanhernandez-stack-ed/Vibe-Prompt@v0.8.3" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
   <meta property="og:title" content="vibe-prompt · Audit the prompts your app ships." />
-  <meta property="og:description" content="Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs." />
+  <meta property="og:description" content="Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 14 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs." />
   <meta property="og:url" content="https://626labs.dev/vibe-prompt/" />
   <meta property="og:image" content="https://626labs.dev/assets/brand/plugins/vibe-prompt-banner-1280x640.png" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="626 Labs" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="vibe-prompt · Audit the prompts your app ships." />
-  <meta name="twitter:description" content="Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs." />
+  <meta name="twitter:description" content="Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 14 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs." />
   <meta name="twitter:image" content="https://626labs.dev/assets/brand/plugins/vibe-prompt-banner-1280x640.png" />
 
   <script type="application/ld+json">
@@ -28,7 +28,7 @@
   "@type": "SoftwareApplication",
   "@id": "https://626labs.dev/vibe-prompt/#software",
   "name": "vibe-prompt",
-  "description": "Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs.",
+  "description": "Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 14 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs.",
   "url": "https://626labs.dev/vibe-prompt/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Claude Code",
@@ -1023,12 +1023,12 @@
           <div class="hero-left">
             <span class="eyebrow">626Labs · Claude Code plugin</span>
             <h1>Audit the prompts your app ships.</h1>
-            <p class="hero-subhead">Close the prompt loop: scan, audit, eval, grade, fix. vibe-prompt is the prompt-audit and behavioral-testing layer for vibe-coded apps that ship LLM features &mdash; running 13 structural smell checks across 5 dimensions, evaluating against your production model with a calibrated LLM-judge, and routing confident fixes to ready-to-apply diffs.</p>
+            <p class="hero-subhead">Close the prompt loop: scan, audit, eval, grade, fix. vibe-prompt is the prompt-audit and behavioral-testing layer for vibe-coded apps that ship LLM features &mdash; running 14 structural smell checks across 5 dimensions, evaluating against your production model with a calibrated LLM-judge, and routing confident fixes to ready-to-apply diffs.</p>
             <div class="hero-ctas">
               <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/Vibe-Prompt" class="btn btn-ghost">View on GitHub</a>
             </div>
             <div class="hero-meta">
-              <span>v0.8.3</span><span>·</span><span>9 commands</span><span>·</span><span>F1-F13 smells</span><span>·</span><span>MIT</span>
+              <span>v0.8.3</span><span>·</span><span>9 commands</span><span>·</span><span>F1-F14 smells</span><span>·</span><span>MIT</span>
             </div>
             <p class="hero-caps"><span class="captag">Includes</span>9 commands &middot; 13 skills</p>
             <div class="repo-meter" data-repo="estevanhernandez-stack-ed/Vibe-Prompt" aria-label="Commit activity for vibe-prompt"></div>
@@ -1049,7 +1049,7 @@
                 <div>  &rarr; read-only &mdash; nothing changed</div>
                 <div>&nbsp;</div>
                 <div><span class="prompt">$</span> <span class="cmd">/vibe-prompt:audit</span></div>
-                <div><span class="agent">[vibe-prompt]</span> Running F1&ndash;F13 checks...</div>
+                <div><span class="agent">[vibe-prompt]</span> Running F1&ndash;F14 checks...</div>
                 <div>  &rarr; schema tightness: <span class="muted">2 issues</span> &middot; persona consistency: <span class="ok">clean</span></div>
                 <div>  &rarr; injection resistance: <span class="muted">F11 flagged</span> &rarr; handoff to vibe-sec</div>
                 <div>&nbsp;</div>
@@ -1080,8 +1080,8 @@
 
           <div class="card">
             <span class="cmd">/vibe-prompt:audit</span>
-            <h3>Run 13 structural smell checks.</h3>
-            <p class="desc">Applies the F1&ndash;F13 taxonomy across five dimensions &mdash; schema tightness, persona consistency, instruction clarity, token efficiency, and injection resistance. No model calls, no cost.</p>
+            <h3>Run 14 structural smell checks.</h3>
+            <p class="desc">Applies the F1&ndash;F14 taxonomy across five dimensions &mdash; schema tightness, persona consistency, instruction clarity, token efficiency, and injection resistance. It also flags API calls that break on newer Claude models, and model IDs that are retired or about to be. No model calls, no cost.</p>
             <p class="reach">Reach for it <em>before an eval run, or any time you change a prompt</em>.</p>
           </div>
 
@@ -1145,8 +1145,8 @@
         </div>
         <div class="brain-grid">
           <div>
-            <p>The loop runs left to right: <strong>scan</strong> inventories every prompt site read-only, <strong>audit</strong> applies the F1&ndash;F13 taxonomy statically, <strong>eval</strong> runs behavioral tests against your production model behind a cost gate, <strong>grade</strong> rolls everything into a composite score compared against a monotonic baseline, and <strong>remediate</strong> routes confident fixes to diffs with backup and explicit rollback. Each step is a standalone call &mdash; run the whole loop or drop in at any stage.</p>
-            <p>The <strong>F1&ndash;F13 taxonomy</strong> covers 13 structural smell classes across five scoring dimensions: schema tightness (are outputs constrained or freeform?), persona consistency (does the assistant's identity hold across turns?), instruction clarity (are directives specific enough to survive model updates?), token efficiency (is the prompt spending tokens on things that matter?), and injection resistance (is user input sanitized before it reaches the model?). F10&ndash;F12 are the injection-surface smells &mdash; when those trigger, vibe-prompt hands off directly to <strong>vibe-sec</strong>, which carries the injection findings through its own security posture loop. The two plugins compose, neither depends on the other.</p>
+            <p>The loop runs left to right: <strong>scan</strong> inventories every prompt site read-only, <strong>audit</strong> applies the F1&ndash;F14 taxonomy statically, <strong>eval</strong> runs behavioral tests against your production model behind a cost gate, <strong>grade</strong> rolls everything into a composite score compared against a monotonic baseline, and <strong>remediate</strong> routes confident fixes to diffs with backup and explicit rollback. Each step is a standalone call &mdash; run the whole loop or drop in at any stage.</p>
+            <p>The <strong>F1&ndash;F14 taxonomy</strong> covers 14 structural smell classes across five scoring dimensions: schema tightness (are outputs constrained or freeform?), persona consistency (does the assistant's identity hold across turns?), instruction clarity (are directives specific enough to survive model updates?), token efficiency (is the prompt spending tokens on things that matter?), and injection resistance (is user input sanitized before it reaches the model?). F10&ndash;F12 are the injection-surface smells &mdash; when those trigger, vibe-prompt hands off directly to <strong>vibe-sec</strong>, which carries the injection findings through its own security posture loop. The two plugins compose, neither depends on the other. F14 looks past the prompt at the API call around it: disabled or budgeted thinking, forced tool choice, the legacy computer tool, and positional response reads, all of which break on Claude Opus 5.5, Fable 5.1 and Sonnet 5.5. A model ID that is retired or due to retire within 60 days gets flagged with its date.</p>
             <p>The eval step uses a <strong>calibrated LLM-judge</strong>: a secondary model call that scores the primary output against a rubric derived from your audit findings. Calibration means the judge's pass threshold is tuned against known-good and known-bad examples from your own baseline, not a generic rubric &mdash; so the score means something specific to your app. Every eval run costs real tokens; the cost gate ensures you confirm spend before anything goes out.</p>
           </div>
           <div>

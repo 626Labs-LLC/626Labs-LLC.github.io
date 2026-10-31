@@ -895,13 +895,13 @@
       "name": "vibe-prompt",
       "metaTitle": "vibe-prompt · Audit the prompts your app ships. · 626Labs",
       "ogTitle": "vibe-prompt · Audit the prompts your app ships.",
-      "metaDescription": "Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 13 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs.",
+      "metaDescription": "Claude Code plugin for prompt audit and behavioral evaluation. Scans every prompt site, runs 14 structural smells across 5 dimensions, evals against production, grades for regressions, and routes confident fixes to diffs. By 626Labs.",
       "ogImage": "/assets/brand/plugins/vibe-prompt-banner-1280x640.png",
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Audit the prompts your app ships.",
-      "subhead": "Close the prompt loop: scan, audit, eval, grade, fix. vibe-prompt is the prompt-audit and behavioral-testing layer for vibe-coded apps that ship LLM features &mdash; running 13 structural smell checks across 5 dimensions, evaluating against your production model with a calibrated LLM-judge, and routing confident fixes to ready-to-apply diffs.",
-      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Prompt@v0.7.1"],
-      "heroMeta": ["v0.7.1", "9 commands", "F1-F13 smells", "MIT"],
+      "subhead": "Close the prompt loop: scan, audit, eval, grade, fix. vibe-prompt is the prompt-audit and behavioral-testing layer for vibe-coded apps that ship LLM features &mdash; running 14 structural smell checks across 5 dimensions, evaluating against your production model with a calibrated LLM-judge, and routing confident fixes to ready-to-apply diffs.",
+      "releaseReviewed": ["estevanhernandez-stack-ed/Vibe-Prompt@v0.8.3"],
+      "heroMeta": ["v0.8.3", "9 commands", "F1-F14 smells", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/Vibe-Prompt" }
@@ -915,7 +915,7 @@
           "  &rarr; read-only &mdash; nothing changed",
           "&nbsp;",
           "<span class=\"prompt\">$</span> <span class=\"cmd\">/vibe-prompt:audit</span>",
-          "<span class=\"agent\">[vibe-prompt]</span> Running F1&ndash;F13 checks...",
+          "<span class=\"agent\">[vibe-prompt]</span> Running F1&ndash;F14 checks...",
           "  &rarr; schema tightness: <span class=\"muted\">2 issues</span> &middot; persona consistency: <span class=\"ok\">clean</span>",
           "  &rarr; injection resistance: <span class=\"muted\">F11 flagged</span> &rarr; handoff to vibe-sec",
           "&nbsp;",
@@ -931,7 +931,7 @@
           "lead": "From inventory to fix, every command in the loop is a direct call. Read-only by default &mdash; real model calls only on :eval, behind a cost gate.",
           "cards": [
             { "command": "/vibe-prompt:scan", "title": "Inventory every prompt site.", "desc": "Reads the codebase and maps every place an LLM prompt is constructed or dispatched. Read-only &mdash; nothing is changed, nothing is written. The starting point for the rest of the loop.", "reach": "Reach for it <em>when you want to know what your app is actually sending to the model</em>." },
-            { "command": "/vibe-prompt:audit", "title": "Run 13 structural smell checks.", "desc": "Applies the F1&ndash;F13 taxonomy across five dimensions &mdash; schema tightness, persona consistency, instruction clarity, token efficiency, and injection resistance. No model calls, no cost.", "reach": "Reach for it <em>before an eval run, or any time you change a prompt</em>." },
+            { "command": "/vibe-prompt:audit", "title": "Run 14 structural smell checks.", "desc": "Applies the F1&ndash;F14 taxonomy across five dimensions &mdash; schema tightness, persona consistency, instruction clarity, token efficiency, and injection resistance. It also flags API calls that break on newer Claude models, and model IDs that are retired or about to be. No model calls, no cost.", "reach": "Reach for it <em>before an eval run, or any time you change a prompt</em>." },
             { "command": "/vibe-prompt:eval", "title": "Behavioral test against production.", "desc": "Runs test cases against your real model with a calibrated LLM-judge. Cost-gated &mdash; you confirm spend before any call goes out. Surfaces behavioral drift that static checks can't catch.", "reach": "Reach for it <em>when you need ground truth on how the prompt behaves, not just how it reads</em>." },
             { "command": "/vibe-prompt:grade", "title": "Composite grade + regression check.", "desc": "Rolls scan, audit, and eval signals into a composite grade and compares it against your monotonic baseline &mdash; so regressions show up as deltas, not surprises.", "reach": "Reach for it <em>on every PR that touches a prompt</em>." },
             { "command": "/vibe-prompt:remediate", "title": "Confidence-routed fix diffs.", "desc": "Routes high-confidence findings to ready-to-apply diffs and lower-confidence ones to annotated review files. Backs up every prompt before touching it and keeps rollback explicit.", "reach": "Reach for it <em>after audit surfaces issues you want to fix</em>." },
@@ -946,8 +946,8 @@
           "eyebrow": "02 · How it's built",
           "heading": "Scan, audit, eval, grade, fix — in that order.",
           "paragraphs": [
-            "The loop runs left to right: <strong>scan</strong> inventories every prompt site read-only, <strong>audit</strong> applies the F1&ndash;F13 taxonomy statically, <strong>eval</strong> runs behavioral tests against your production model behind a cost gate, <strong>grade</strong> rolls everything into a composite score compared against a monotonic baseline, and <strong>remediate</strong> routes confident fixes to diffs with backup and explicit rollback. Each step is a standalone call &mdash; run the whole loop or drop in at any stage.",
-            "The <strong>F1&ndash;F13 taxonomy</strong> covers 13 structural smell classes across five scoring dimensions: schema tightness (are outputs constrained or freeform?), persona consistency (does the assistant's identity hold across turns?), instruction clarity (are directives specific enough to survive model updates?), token efficiency (is the prompt spending tokens on things that matter?), and injection resistance (is user input sanitized before it reaches the model?). F10&ndash;F12 are the injection-surface smells &mdash; when those trigger, vibe-prompt hands off directly to <strong>vibe-sec</strong>, which carries the injection findings through its own security posture loop. The two plugins compose, neither depends on the other.",
+            "The loop runs left to right: <strong>scan</strong> inventories every prompt site read-only, <strong>audit</strong> applies the F1&ndash;F14 taxonomy statically, <strong>eval</strong> runs behavioral tests against your production model behind a cost gate, <strong>grade</strong> rolls everything into a composite score compared against a monotonic baseline, and <strong>remediate</strong> routes confident fixes to diffs with backup and explicit rollback. Each step is a standalone call &mdash; run the whole loop or drop in at any stage.",
+            "The <strong>F1&ndash;F14 taxonomy</strong> covers 14 structural smell classes across five scoring dimensions: schema tightness (are outputs constrained or freeform?), persona consistency (does the assistant's identity hold across turns?), instruction clarity (are directives specific enough to survive model updates?), token efficiency (is the prompt spending tokens on things that matter?), and injection resistance (is user input sanitized before it reaches the model?). F10&ndash;F12 are the injection-surface smells &mdash; when those trigger, vibe-prompt hands off directly to <strong>vibe-sec</strong>, which carries the injection findings through its own security posture loop. The two plugins compose, neither depends on the other. F14 looks past the prompt at the API call around it: disabled or budgeted thinking, forced tool choice, the legacy computer tool, and positional response reads, all of which break on Claude Opus 5.5, Fable 5.1 and Sonnet 5.5. A model ID that is retired or due to retire within 60 days gets flagged with its date.",
             "The eval step uses a <strong>calibrated LLM-judge</strong>: a secondary model call that scores the primary output against a rubric derived from your audit findings. Calibration means the judge's pass threshold is tuned against known-good and known-bad examples from your own baseline, not a generic rubric &mdash; so the score means something specific to your app. Every eval run costs real tokens; the cost gate ensures you confirm spend before anything goes out."
           ],
           "callout": "Read-only by default. Real model calls only on :eval, behind an explicit cost gate. Nothing leaves your machine except the eval request you confirm."
