@@ -775,8 +775,8 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Take it with you.",
       "subhead": "Move a feature between repos without copy-paste archaeology. vibe-taker captures a feature out of one codebase as a portable bundle &mdash; architecture, contract surface, the prompts that built it, a verbatim source snapshot, and the gotchas &mdash; then plants it into another repo with stack-aware adaptation.",
-      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-taker@v0.1.1"],
-      "heroMeta": ["v0.1.1", "3 commands", "local-only", "MIT"],
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-taker@v0.2.1"],
+      "heroMeta": ["v0.2.1", "3 commands", "local-only", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-taker" }
@@ -816,7 +816,7 @@
           "heading": "It reads the source, then asks the right questions.",
           "paragraphs": [
             "Copy-paste between repos loses everything that isn't code &mdash; the contract, the reasoning, the prompts, the gotchas. vibe-taker captures all of it: an architecture sketch, the contract surface, the AI prompts that built the feature, a verbatim source snapshot, and the warnings. It derives the <strong>what</strong> and <strong>how</strong> autonomously from the code, and only asks you for the <strong>why</strong> when the code can't tell it.",
-            "On plant, it detects the destination stack and adapts &mdash; lifting code when the match is high, re-implementing from the spec when it's low, and declining outright on a hard cross-language mismatch rather than shipping something broken. Nothing is written until you confirm the diff."
+            "On plant, it detects the destination stack and adapts &mdash; lifting code when the match is high, re-implementing from the spec when it's low, and declining outright on a hard cross-language mismatch rather than shipping something broken. Nothing is written until you confirm the diff.", "It also speaks up on its own. Say something like <em>I want this in my other app</em> and vibe-taker offers a capture in one line, then stays quiet if you pass. It never captures without your yes."
           ],
           "callout": "Local-only by default. ~/.vibe-taker/library/ is the single source of truth — nothing leaves your machine."
         }

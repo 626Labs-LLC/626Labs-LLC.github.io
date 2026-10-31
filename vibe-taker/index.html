@@ -8,7 +8,7 @@
   <title>vibe-taker · Take it with you. · 626Labs</title>
   <meta name="description" content="Claude Code plugin that captures a feature out of one repo as a portable bundle and plants it into another, adapted to the destination stack." />
   <link rel="canonical" href="https://626labs.dev/vibe-taker/" />
-  <meta name="release-reviewed" content="estevanhernandez-stack-ed/vibe-taker@v0.1.1" />
+  <meta name="release-reviewed" content="estevanhernandez-stack-ed/vibe-taker@v0.2.1" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
   <meta property="og:title" content="vibe-taker · Take it with you." />
@@ -1103,6 +1103,7 @@
           <div>
             <p>Copy-paste between repos loses everything that isn't code &mdash; the contract, the reasoning, the prompts, the gotchas. vibe-taker captures all of it: an architecture sketch, the contract surface, the AI prompts that built the feature, a verbatim source snapshot, and the warnings. It derives the <strong>what</strong> and <strong>how</strong> autonomously from the code, and only asks you for the <strong>why</strong> when the code can't tell it.</p>
             <p>On plant, it detects the destination stack and adapts &mdash; lifting code when the match is high, re-implementing from the spec when it's low, and declining outright on a hard cross-language mismatch rather than shipping something broken. Nothing is written until you confirm the diff.</p>
+            <p>It also speaks up on its own. Say something like <em>I want this in my other app</em> and vibe-taker offers a capture in one line, then stays quiet if you pass. It never captures without your yes.</p>
           </div>
           <div>
             <div class="callout">Local-only by default. ~/.vibe-taker/library/ is the single source of truth — nothing leaves your machine.</div>
