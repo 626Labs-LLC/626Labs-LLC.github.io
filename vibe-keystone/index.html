@@ -8,7 +8,7 @@
   <title>vibe-keystone · Bootstrap the file agents stand on · 626Labs</title>
   <meta name="description" content="vibe-keystone bootstraps a CLAUDE.md for any repo. Inventories the stack, interviews you for your conventions, then writes the load-bearing file every agent needs." />
   <link rel="canonical" href="https://626labs.dev/vibe-keystone/" />
-  <meta name="release-reviewed" content="estevanhernandez-stack-ed/vibe-Keystone@v0.1.1" />
+  <meta name="release-reviewed" content="estevanhernandez-stack-ed/vibe-Keystone@v0.3.0" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
   <meta property="og:title" content="vibe-keystone · Bootstrap any repo" />
@@ -1028,7 +1028,7 @@
               <a href="#install" class="btn btn-primary">Install plugin</a><a href="https://github.com/estevanhernandez-stack-ed/vibe-Keystone" class="btn btn-ghost">View on GitHub</a>
             </div>
             <div class="hero-meta">
-              <span>v0.3.0</span><span>·</span><span>1 command</span><span>·</span><span>tenant-aware</span><span>·</span><span>MIT</span>
+              <span>v0.3.0</span><span>·</span><span>2 commands</span><span>·</span><span>tenant-aware</span><span>·</span><span>MIT</span>
             </div>
             <p class="hero-caps"><span class="captag">Includes</span>2 skills</p>
             <p class="hero-validated"><span class="vtag">Validated</span>Bootstrapped the CLAUDE.md across every 626 Labs work repo and the main repo.</p>
@@ -1068,7 +1068,7 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">01 · What it does</span>
-          <h2>One command, one load-bearing file.</h2>
+          <h2>One load-bearing file, and a loop that sharpens it.</h2>
           <p class="lead">Before writing a line, /keystone inventories your stack and asks four targeted questions — then produces a CLAUDE.md future agents actually stand on, not a template dressed up with your repo name.</p>
         </div>
 
@@ -1084,6 +1084,12 @@
             <h3>Proposes the scaffold.</h3>
             <p class="desc">After the file, it proposes .claude/agents/, .claude/rules/, and .claude/hooks/ candidates tailored to the repo &mdash; but never auto-creates anything. You decide what to keep.</p>
           </div>
+
+          <div class="card">
+            <span class="cmd">/vibe-keystone:evolve-keystone</span>
+            <h3>Learns from its own runs.</h3>
+            <p class="desc">With your yes at the end of a run, Keystone notes the file's shape (repo type, which sections it kept or dropped) in a local log. Never code, never identity, never sent anywhere. Once five runs are in, evolve-keystone reads the log for patterns and proposes edits to its own skeleton. Nothing is applied automatically.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -1097,10 +1103,10 @@
         <div class="brain-grid">
           <div>
             <p>Most bootstrapping tools generate a template and call it done. vibe-keystone treats blind writes as a bug: it inventories the repo first &mdash; git log, package.json, workflow files, existing .claude/ structure &mdash; then asks one round of targeted questions before drafting anything. The produced file is specific to your stack, your decision-tracking surface, and your org's voice rules.</p>
-            <p>The skill adapts its output to repo type. A code platform gets a tech-stack section and infrastructure guardrails. A marketing site gets voice rules and a design-system reference. A writing repo gets a persona-override clause and citation discipline. Sections that don't apply are dropped, not left as placeholders that rot.</p>
+            <p>The skill adapts its output to repo type. A code platform gets a tech-stack section and infrastructure guardrails. A marketing site gets voice rules and a design-system reference. A writing repo gets a persona-override clause and citation discipline. Sections that don't apply are dropped, not left as placeholders that rot. Every candidate line also has to pass a derivability test: if an agent could work it out from the repo on its own, it's cut. What survives is gotchas, the reasons behind choices, and conventions nobody could guess.</p>
           </div>
           <div>
-            <div class="callout">It will not overwrite an existing CLAUDE.md without a diff and explicit confirmation.</div>
+            <div class="callout">It will not overwrite an existing CLAUDE.md without a diff and explicit confirmation, and it won&#x27;t write over sections another tool owns.</div>
           </div>
         </div>
       </div>

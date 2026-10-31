@@ -307,8 +307,8 @@
       "eyebrow": "626Labs · Claude Code plugin",
       "h1": "Bootstrap the file agents stand on.",
       "subhead": "vibe-keystone produces a production-grade CLAUDE.md for any repository &mdash; inventorying first, interviewing you for your actual conventions, then writing a structured file every downstream agent can stand on. Works for any org, not just 626Labs.",
-      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-Keystone@v0.1.1"],
-      "heroMeta": ["v0.1.1", "1 command", "tenant-aware", "MIT"],
+      "releaseReviewed": ["estevanhernandez-stack-ed/vibe-Keystone@v0.3.0"],
+      "heroMeta": ["v0.3.0", "2 commands", "tenant-aware", "MIT"],
       "ctas": {
         "primary": { "label": "Install plugin" },
         "secondary": { "label": "View on GitHub", "href": "https://github.com/estevanhernandez-stack-ed/vibe-Keystone" }
@@ -335,11 +335,12 @@
         {
           "type": "cards",
           "eyebrow": "01 · What it does",
-          "heading": "One command, one load-bearing file.",
+          "heading": "One load-bearing file, and a loop that sharpens it.",
           "lead": "Before writing a line, /keystone inventories your stack and asks four targeted questions — then produces a CLAUDE.md future agents actually stand on, not a template dressed up with your repo name.",
           "cards": [
             { "command": "/keystone", "title": "Bootstrap a CLAUDE.md.", "desc": "Inventories the repo (git state, layout, stack files, existing .claude/ config), interviews you for tenant identity and conventions, then writes a structured CLAUDE.md adapted to that context. Shows a diff and confirms before overwriting an existing file." },
-            { "command": "(follow-ups)", "title": "Proposes the scaffold.", "desc": "After the file, it proposes .claude/agents/, .claude/rules/, and .claude/hooks/ candidates tailored to the repo &mdash; but never auto-creates anything. You decide what to keep." }
+            { "command": "(follow-ups)", "title": "Proposes the scaffold.", "desc": "After the file, it proposes .claude/agents/, .claude/rules/, and .claude/hooks/ candidates tailored to the repo &mdash; but never auto-creates anything. You decide what to keep." },
+            { "command": "/vibe-keystone:evolve-keystone", "title": "Learns from its own runs.", "desc": "With your yes at the end of a run, Keystone notes the file's shape (repo type, which sections it kept or dropped) in a local log. Never code, never identity, never sent anywhere. Once five runs are in, evolve-keystone reads the log for patterns and proposes edits to its own skeleton. Nothing is applied automatically." }
           ]
         },
         {
@@ -348,9 +349,9 @@
           "heading": "It refuses to write blind.",
           "paragraphs": [
             "Most bootstrapping tools generate a template and call it done. vibe-keystone treats blind writes as a bug: it inventories the repo first &mdash; git log, package.json, workflow files, existing .claude/ structure &mdash; then asks one round of targeted questions before drafting anything. The produced file is specific to your stack, your decision-tracking surface, and your org's voice rules.",
-            "The skill adapts its output to repo type. A code platform gets a tech-stack section and infrastructure guardrails. A marketing site gets voice rules and a design-system reference. A writing repo gets a persona-override clause and citation discipline. Sections that don't apply are dropped, not left as placeholders that rot."
+            "The skill adapts its output to repo type. A code platform gets a tech-stack section and infrastructure guardrails. A marketing site gets voice rules and a design-system reference. A writing repo gets a persona-override clause and citation discipline. Sections that don't apply are dropped, not left as placeholders that rot. Every candidate line also has to pass a derivability test: if an agent could work it out from the repo on its own, it's cut. What survives is gotchas, the reasons behind choices, and conventions nobody could guess."
           ],
-          "callout": "It will not overwrite an existing CLAUDE.md without a diff and explicit confirmation."
+          "callout": "It will not overwrite an existing CLAUDE.md without a diff and explicit confirmation, and it won't write over sections another tool owns."
         }
       ],
       "install": {
