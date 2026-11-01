@@ -2248,7 +2248,7 @@
     },
     {
       "id": "rororo",
-      "title": "RORORO",
+      "title": "RoRoRo",
       "description": "Multi-launcher for Windows — run multiple Roblox clients side by side, each signed in as a different saved account. Native .NET 10 / WPF, DPAPI-encrypted account vault tied to your Windows user, embedded WebView2 login so your password never touches the app process. System-tray UX with state-coloured ring, per-game launch routing, Velopack auto-update. A hardened plugin host — sideload-only, https-only installs, named-pipe IPC with per-capability consent — with an in-app marketplace to browse, install, and update the Ur family in one click. Watches every client's memory and offers a one-click Recycle before a memory leak takes the window down, alongside stray-process cleanup, tray-residence recovery, Limited-account detection, idle-awareness that warns before Roblox's AFK kick, and a signed roblox-compat feed published on every release. Alerts reach your desktop, a Discord webhook, or your phone through Pushover or ntfy — with an every-two-hours all-good mark while your accounts run — and a History tab keeps score: most alts at once, total hours, per-alt login streaks. Trust-aware Squad Launch lands a group in the same server together, streamer mode swaps in fake names and avatars when you're live, and four themes plus a builder let you tune the app and share the result as a file. Mac-native sibling, and a three-plugin family: Ur Task (portable, window-aware macros), Ur OCR (screen triggers that fire keybinds or Ur Task macros), and Ur AFK (one-tap keep-alive). Speaks six languages — French, German, Russian, Portuguese, Polish, Spanish — following your Windows language or pinned in Settings. Free on the Microsoft Store. Independent third-party tool — not affiliated with Roblox Corporation.",
       "tags": [
         {
@@ -2276,9 +2276,9 @@
       "productPage": "rororo.html",
       "pageSpec": {
         "meta": {
-          "title": "RORORO — multi-launcher for Roblox · 626 Labs",
+          "title": "RoRoRo — multi-launcher for Roblox · 626 Labs",
           "description": "Run multiple Roblox clients side by side, each signed in as a different saved account. Native on Windows and macOS, plugin-extensible, free. An independent third-party tool — not affiliated with Roblox Corporation.",
-          "ogTitle": "RORORO — multi-launcher for Roblox",
+          "ogTitle": "RoRoRo — multi-launcher for Roblox",
           "ogDescription": "Windows + macOS native multi-launcher. Run multiple Roblox clients side by side, each signed in as a saved account. Plugin-extensible. Free.",
           "ogImage": "/assets/video/rororo/rororo-launch-poster.jpg"
         },
@@ -2301,7 +2301,7 @@
             "hideSm": true
           },
           {
-            "label": "Get RORORO",
+            "label": "Get RoRoRo",
             "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product",
             "cta": true
           }
@@ -2312,9 +2312,9 @@
             "blocks": [
               {
                 "type": "nudge",
-                "title": "RORORO",
-                "shareText": "RORORO, multi-launcher for Roblox. Open on desktop.",
-                "text": "<b>On a phone?</b> RORORO installs on Windows and Mac. Save this page and open it on your desktop, the Microsoft Store and Mac links are right below."
+                "title": "RoRoRo",
+                "shareText": "RoRoRo, multi-launcher for Roblox. Open on desktop.",
+                "text": "<b>On a phone?</b> RoRoRo installs on Windows and Mac. Save this page and open it on your desktop, the Microsoft Store and Mac links are right below."
               }
             ]
           },
@@ -2323,7 +2323,7 @@
             "eyebrow": "626 Labs · Product · Roblox tooling",
             "title": "Run multiple Roblox clients.",
             "titleAccent": "Side by side, one machine.",
-            "dek": "<em>RORORO</em> is a native multi-launcher for Roblox — spawn several clients at once, each signed in as a different saved account, one click each. Native on Windows and macOS, plugin-extensible, free. No injection, no client modification — it holds a singleton lock before launch and starts the official client unmodified.",
+            "dek": "<em>RoRoRo</em> is a native multi-launcher for Roblox — spawn several clients at once, each signed in as a different saved account, one click each. Native on Windows and macOS, plugin-extensible, free. No injection, no client modification — it holds a singleton lock before launch and starts the official client unmodified.",
             "strip": [
               {
                 "key": "Platforms",
@@ -2348,7 +2348,7 @@
               }
             ],
             "get": {
-              "label": "Get RORORO",
+              "label": "Get RoRoRo",
               "links": [
                 {
                   "label": "Get it on Microsoft Store",
@@ -2370,7 +2370,7 @@
                 "type": "showcase",
                 "wide": true,
                 "src": "assets/screenshots/rororo/win-main.png",
-                "alt": "RORORO main window — saved accounts list with per-account Launch As, the singleton-lock toggle, and the state-coloured tray ring"
+                "alt": "RoRoRo main window — saved accounts list with per-account Launch As, the singleton-lock toggle, and the state-coloured tray ring"
               }
             ]
           },
@@ -2405,7 +2405,7 @@
                     "body": "The Mac-native sibling — signed and notarized by Apple, Sparkle auto-update. Install with one tap:",
                     "code": "brew tap estevanhernandez-stack-ed/rororo\nbrew install --cask rororo",
                     "href": "https://github.com/estevanhernandez-stack-ed/rororo-mac",
-                    "label": "RORORO Mac on GitHub"
+                    "label": "RoRoRo Mac on GitHub"
                   }
                 ]
               }
@@ -2439,17 +2439,17 @@
                   {
                     "key": "04 · LOGIN",
                     "title": "Your password never touches the app",
-                    "body": "Login happens on Roblox's own page inside an embedded browser. RORORO is the window frame, not the form handler — it only ever captures the session cookie set after a successful login."
+                    "body": "Login happens on Roblox's own page inside an embedded browser. RoRoRo is the window frame, not the form handler — it only ever captures the session cookie set after a successful login."
                   },
                   {
                     "key": "05 · SQUAD LAUNCH",
                     "title": "Whole squad, one server",
-                    "body": "Send a set of accounts into the same private server in three trust-aware phases — direct joins, an anchor, then followers. Careful mode waits for each alt to land before sending the next. An alt set to Join via friend follows your main on every launch, and when your main isn't in a game RORORO asks instead of joining direct."
+                    "body": "Send a set of accounts into the same private server in three trust-aware phases — direct joins, an anchor, then followers. Careful mode waits for each alt to land before sending the next. An alt set to Join via friend follows your main on every launch, and when your main isn't in a game RoRoRo asks instead of joining direct."
                   },
                   {
                     "key": "06 · FRIEND FOLLOW",
                     "title": "Follow a friend in",
-                    "body": "Pick any friend of your main account — not just your saved alts — and launch straight into their server. If they aren't joinable, RORORO says so instead of bouncing."
+                    "body": "Pick any friend of your main account — not just your saved alts — and launch straight into their server. If they aren't joinable, RoRoRo says so instead of bouncing."
                   },
                   {
                     "key": "07 · ROUTING",
@@ -2459,7 +2459,7 @@
                   {
                     "key": "08 · PRESENCE",
                     "title": "Live roster status",
-                    "body": "Every row shows the real game it's in — \"In Pet Sim 99\", \"At Roblox home\" — plus an idle chip that turns amber when an alt has sat too long. The idle alert fires only for an alt that is actually in a game, where an idle kick costs you something; the threshold is yours. An account with Roblox presence privacy on never gets one, because RORORO can't see it in a game."
+                    "body": "Every row shows the real game it's in — \"In Pet Sim 99\", \"At Roblox home\" — plus an idle chip that turns amber when an alt has sat too long. The idle alert fires only for an alt that is actually in a game, where an idle kick costs you something; the threshold is yours. An account with Roblox presence privacy on never gets one, because RoRoRo can't see it in a game."
                   },
                   {
                     "key": "09 · STREAMER MODE",
@@ -2474,7 +2474,7 @@
                   {
                     "key": "11 · PLUGINS",
                     "title": "Consent-gated plugins",
-                    "body": "Extend RORORO with out-of-process plugins — separate signed apps behind a per-capability consent sheet, SHA-verified at install. The Ur family (Task, OCR, AFK) is live on the <a href=\"rororo-plugins.html\">marketplace</a>."
+                    "body": "Extend RoRoRo with out-of-process plugins — separate signed apps behind a per-capability consent sheet, SHA-verified at install. The Ur family (Task, OCR, AFK) is live on the <a href=\"rororo-plugins.html\">marketplace</a>."
                   },
                   {
                     "key": "12 · UPDATES",
@@ -2484,7 +2484,7 @@
                   {
                     "key": "13 · WATCHDOG",
                     "title": "Memory watchdog + Recycle",
-                    "body": "The Roblox client eats more RAM the longer it runs — enough clients will eventually fill your PC. RORORO learns what each client really costs on your machine, warns before you run out, and one click puts a heavy alt right back into its server."
+                    "body": "The Roblox client eats more RAM the longer it runs — enough clients will eventually fill your PC. RoRoRo learns what each client really costs on your machine, warns before you run out, and one click puts a heavy alt right back into its server."
                   },
                   {
                     "key": "14 · ALERTS",
@@ -2493,7 +2493,7 @@
                   },
                   {
                     "key": "15 · HISTORY",
-                    "title": "RORORO keeps score",
+                    "title": "RoRoRo keeps score",
                     "body": "History opens with your stats — the most alts you've ever run at once, total hours, longest session — plus per-alt login streaks that only count days the alt actually landed in a game."
                   },
                   {
@@ -2504,12 +2504,12 @@
                   {
                     "key": "17 · STARTUP",
                     "title": "Start with Windows + Discord Join",
-                    "body": "One startup toggle Windows stays in control of, and Discord Join links that start RORORO even when it's closed. Both work on Store installs too, not just direct downloads."
+                    "body": "One startup toggle Windows stays in control of, and Discord Join links that start RoRoRo even when it's closed. Both work on Store installs too, not just direct downloads."
                   },
                   {
                     "key": "18 · WINDOWED",
                     "title": "Roblox stays windowed",
-                    "body": "A crash or a stray Alt+Enter used to leave your next launch swallowing the whole screen. RORORO clears that saved fullscreen flag before every launch. On by default."
+                    "body": "A crash or a stray Alt+Enter used to leave your next launch swallowing the whole screen. RoRoRo clears that saved fullscreen flag before every launch. On by default."
                   },
                   {
                     "key": "19 · LANGUAGES",
@@ -2519,17 +2519,17 @@
                   {
                     "key": "20 · AUTO-REJOIN",
                     "title": "Alts that drop out come back",
-                    "body": "Turn on Rejoin if it drops out for any alt. When its Roblox window is open but it has been out of the game for 3 minutes — an idle kick, a failed join, a verification page — RORORO closes it and joins again. At most 3 rejoins an hour, your Stop always wins, and it never answers Roblox's verification page for you."
+                    "body": "Turn on Rejoin if it drops out for any alt. When its Roblox window is open but it has been out of the game for 3 minutes — an idle kick, a failed join, a verification page — RoRoRo closes it and joins again. At most 3 rejoins an hour, your Stop always wins, and it never answers Roblox's verification page for you."
                   },
                   {
                     "key": "21 · KNOWN ISSUES",
-                    "title": "When it's Roblox, not RORORO",
-                    "body": "Known Roblox issues lists problems in Roblox itself: what happens, what to do, and a button to the RORORO feature that helps. A serious one gets a single notice. The list is signed and updates without an app update, and nothing about you is sent to fetch it."
+                    "title": "When it's Roblox, not RoRoRo",
+                    "body": "Known Roblox issues lists problems in Roblox itself: what happens, what to do, and a button to the RoRoRo feature that helps. A serious one gets a single notice. The list is signed and updates without an app update, and nothing about you is sent to fetch it."
                   },
                   {
                     "key": "22 · ITS OWN WINDOW",
                     "title": "Every launch in its own window",
-                    "body": "Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RORORO closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. RORORO also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog."
+                    "body": "Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RoRoRo closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. RoRoRo also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog."
                   }
                 ]
               }
@@ -2598,42 +2598,42 @@
                 "items": [
                   {
                     "src": "assets/screenshots/rororo/win-welcome.png",
-                    "alt": "RORORO welcome screen",
+                    "alt": "RoRoRo welcome screen",
                     "caption": "Welcome · first run"
                   },
                   {
                     "src": "assets/screenshots/rororo/win-add-account.png",
-                    "alt": "RORORO add-account flow with embedded Roblox login",
+                    "alt": "RoRoRo add-account flow with embedded Roblox login",
                     "caption": "Add an account"
                   },
                   {
                     "src": "assets/screenshots/rororo/win-add-game.png",
-                    "alt": "RORORO default-game configuration",
+                    "alt": "RoRoRo default-game configuration",
                     "caption": "Set a default game"
                   },
                   {
                     "src": "assets/screenshots/rororo/win-squad-launch.png",
-                    "alt": "RORORO Squad Launch panel",
+                    "alt": "RoRoRo Squad Launch panel",
                     "caption": "Squad Launch"
                   },
                   {
                     "src": "assets/screenshots/rororo/win-settings.png",
-                    "alt": "RORORO settings panel",
+                    "alt": "RoRoRo settings panel",
                     "caption": "Settings"
                   },
                   {
                     "src": "assets/screenshots/rororo/win-theme.png",
-                    "alt": "RORORO theme picker",
+                    "alt": "RoRoRo theme picker",
                     "caption": "Theme"
                   },
                   {
                     "src": "assets/screenshots/rororo/win-diagnostics.png",
-                    "alt": "RORORO diagnostics tab",
+                    "alt": "RoRoRo diagnostics tab",
                     "caption": "Diagnostics"
                   },
                   {
                     "src": "assets/screenshots/rororo/win-about.png",
-                    "alt": "RORORO about screen with version and license info",
+                    "alt": "RoRoRo about screen with version and license info",
                     "caption": "About"
                   }
                 ]
@@ -2651,7 +2651,7 @@
                 "items": [
                   {
                     "key": "Windows 10 · 11",
-                    "title": "RORORO for Windows",
+                    "title": "RoRoRo for Windows",
                     "stack": ".NET 10 LTS · C# 14 · WPF",
                     "bullets": [
                       "Multi-instance via a <b>singleton-mutex hold</b> — typed P/Invokes, no client touch.",
@@ -2664,7 +2664,7 @@
                   },
                   {
                     "key": "macOS 14+",
-                    "title": "RORORO for Mac",
+                    "title": "RoRoRo for Mac",
                     "stack": "Swift · SwiftUI",
                     "tone": "alt",
                     "bullets": [
@@ -2682,13 +2682,13 @@
           {
             "type": "section",
             "heading": "Plugins",
-            "sub": "v1.4 opened RORORO on Windows to plugins — browse them all on the <a href=\"rororo-plugins.html\">plugin marketplace</a>.",
+            "sub": "v1.4 opened RoRoRo on Windows to plugins — browse them all on the <a href=\"rororo-plugins.html\">plugin marketplace</a>.",
             "aside": "v1.4 plugin host",
             "blocks": [
               {
                 "type": "panel",
                 "paragraphs": [
-                  "A plugin is a <b>separate, signed Windows app</b> — its own process, never loaded into RORORO. It connects over a per-user named pipe, declares every capability it wants up front, and shows you a <b>consent sheet</b> before it gets any of them. You install one by pasting a GitHub release URL into <b>RORORO → Plugins</b>; RORORO verifies the SHA-256 before it unpacks anything. A plugin crash can't take RORORO down — the wall is intentional, and it is what keeps RORORO itself eligible for the Microsoft Store. Since 1.35 the Plugins page says why a plugin stopped, and offers Restart only when restarting can help."
+                  "A plugin is a <b>separate, signed Windows app</b> — its own process, never loaded into RoRoRo. It connects over a per-user named pipe, declares every capability it wants up front, and shows you a <b>consent sheet</b> before it gets any of them. You install one by pasting a GitHub release URL into <b>RoRoRo → Plugins</b>; RoRoRo verifies the SHA-256 before it unpacks anything. A plugin crash can't take RoRoRo down — the wall is intentional, and it is what keeps RoRoRo itself eligible for the Microsoft Store. Since 1.35 the Plugins page says why a plugin stopped, and offers Restart only when restarting can help."
                 ]
               },
               {
@@ -2718,7 +2718,7 @@
                     "title": "Discord Rich Presence",
                     "status": "On the bench",
                     "link": "Scoped",
-                    "body": "Pushes \"playing with N alts via RORORO\" to your Discord status whenever accounts launch."
+                    "body": "Pushes \"playing with N alts via RoRoRo\" to your Discord status whenever accounts launch."
                   },
                   {
                     "title": "Auto-Relaunch on Exit",
@@ -2735,18 +2735,18 @@
                   {
                     "key": "How to install a plugin",
                     "steps": [
-                      "Open <b>Plugins</b> from RORORO's main-window nav, or from the tray menu.",
+                      "Open <b>Plugins</b> from RoRoRo's main-window nav, or from the tray menu.",
                       "Paste the plugin's <b>GitHub release directory URL</b> into Install — the parent path that holds its <code>manifest.json</code>, <code>manifest.sha256</code>, and <code>plugin.zip</code>.",
-                      "RORORO fetches the manifest and <b>verifies the SHA-256</b> of the download against it — and refuses to extract on any mismatch.",
+                      "RoRoRo fetches the manifest and <b>verifies the SHA-256</b> of the download against it — and refuses to extract on any mismatch.",
                       "Review the <b>consent sheet</b>. Every capability the plugin declared is itemized; toggle each one before it gets access.",
-                      "<b>Restart RORORO.</b> Plugins start when RORORO launches, so a fresh install runs after the restart prompt."
+                      "<b>Restart RoRoRo.</b> Plugins start when RoRoRo launches, so a fresh install runs after the restart prompt."
                     ]
                   },
                   {
                     "key": "Publishing a plugin",
                     "tone": "alt",
                     "paragraphs": [
-                      "A plugin is your own signed Windows app built against the <b>RORORO plugin contract</b>. Ship it as a GitHub release with three artifacts — <code>manifest.json</code>, <code>manifest.sha256</code>, <code>plugin.zip</code> — and anyone can install it with the steps on the left."
+                      "A plugin is your own signed Windows app built against the <b>RoRoRo plugin contract</b>. Ship it as a GitHub release with three artifacts — <code>manifest.json</code>, <code>manifest.sha256</code>, <code>plugin.zip</code> — and anyone can install it with the steps on the left."
                     ],
                     "links": [
                       {
@@ -2782,17 +2782,17 @@
                   {
                     "label": "Independence",
                     "title": "An independent third-party tool",
-                    "body": "RORORO is not affiliated with, endorsed by, or sponsored by Roblox Corporation. \"Roblox\" is a trademark of Roblox Corporation, used here only to describe compatibility — RORORO launches the official Roblox client, unmodified."
+                    "body": "RoRoRo is not affiliated with, endorsed by, or sponsored by Roblox Corporation. \"Roblox\" is a trademark of Roblox Corporation, used here only to describe compatibility — RoRoRo launches the official Roblox client, unmodified."
                   },
                   {
                     "label": "The risk",
                     "title": "No injection — but the risk isn't zero",
-                    "body": "RORORO doesn't inject into or modify the Roblox client. It holds a Windows mutex name (or a POSIX semaphore on macOS) before launch, then starts the official client. Roblox has stated that multi-instancing \"may be considered malicious behavior,\" so the risk of a ban appears low but is non-zero — and the README says exactly that. Don't run this on accounts you can't afford to lose."
+                    "body": "RoRoRo doesn't inject into or modify the Roblox client. It holds a Windows mutex name (or a POSIX semaphore on macOS) before launch, then starts the official client. Roblox has stated that multi-instancing \"may be considered malicious behavior,\" so the risk of a ban appears low but is non-zero — and the README says exactly that. Don't run this on accounts you can't afford to lose."
                   },
                   {
                     "label": "Provenance",
                     "title": "Reuse without erasure",
-                    "body": "The named-mutex defeat technique originated with <a href=\"https://github.com/Zgoly/MultiBloxy\">MultiBloxy by Zgoly</a>. RORORO is a clean C# reimplementation with substantially expanded scope — account management, structured launch flow, a plugin host — not a fork. The credit, the reference binary, and the caveats are all in <a href=\"https://github.com/estevanhernandez-stack-ed/ROROROblox/blob/main/PROVENANCE.txt\">PROVENANCE.txt</a>."
+                    "body": "The named-mutex defeat technique originated with <a href=\"https://github.com/Zgoly/MultiBloxy\">MultiBloxy by Zgoly</a>. RoRoRo is a clean C# reimplementation with substantially expanded scope — account management, structured launch flow, a plugin host — not a fork. The credit, the reference binary, and the caveats are all in <a href=\"https://github.com/estevanhernandez-stack-ed/ROROROblox/blob/main/PROVENANCE.txt\">PROVENANCE.txt</a>."
                   }
                 ]
               }
@@ -2806,7 +2806,7 @@
             "blocks": [
               {
                 "type": "reachMap",
-                "label": "RORORO"
+                "label": "RoRoRo"
               }
             ]
           },
@@ -2817,7 +2817,7 @@
               {
                 "type": "panel",
                 "paragraphs": [
-                  "RORORO comes from <b>626 Labs</b>, one builder in Fort Worth, Texas. The same bench ships <b>Sanduhr</b>, which puts your claude.ai limits on the desktop; <b>Celestia 3</b>, an astrology app built on real astronomy; <b>RBX15</b>, a classic Roblox shirt and pants maker; and a family of open-source <b>Claude Code plugins</b>."
+                  "RoRoRo comes from <b>626 Labs</b>, one builder in Fort Worth, Texas. The same bench ships <b>Sanduhr</b>, which puts your claude.ai limits on the desktop; <b>Celestia 3</b>, an astrology app built on real astronomy; <b>RBX15</b>, a classic Roblox shirt and pants maker; and a family of open-source <b>Claude Code plugins</b>."
                 ]
               },
               {
@@ -2830,7 +2830,7 @@
           }
         ],
         "footer": {
-          "label": "626 Labs · RORORO",
+          "label": "626 Labs · RoRoRo",
           "axiom": "Run six. <em>Trust the window you're recording.</em> Own the provenance.",
           "links": [
             {
@@ -3421,14 +3421,14 @@
     },
     {
       "id": "rororo-trailer",
-      "title": "RORORO launch trailer",
+      "title": "RoRoRo launch trailer",
       "productPage": "rororo-trailer.html",
       "pageSpec": {
         "meta": {
-          "title": "RORORO launch trailer: eight Roblox clients on one PC · 626 Labs",
-          "description": "Watch the RORORO launch trailer: eight Roblox clients on one PC, saved accounts one click each, Squad Launch into one private server, and stats that stay on your machine. In seven languages. Free for Windows and Mac.",
-          "ogTitle": "RORORO launch trailer: eight Roblox clients on one PC",
-          "ogDescription": "Watch the RORORO launch trailer: eight Roblox clients on one PC, saved accounts one click each, Squad Launch into one private server, and stats that stay on your machine. In seven languages. Free for Windows and Mac.",
+          "title": "RoRoRo launch trailer: eight Roblox clients on one PC · 626 Labs",
+          "description": "Watch the RoRoRo launch trailer: eight Roblox clients on one PC, saved accounts one click each, Squad Launch into one private server, and stats that stay on your machine. In seven languages. Free for Windows and Mac.",
+          "ogTitle": "RoRoRo launch trailer: eight Roblox clients on one PC",
+          "ogDescription": "Watch the RoRoRo launch trailer: eight Roblox clients on one PC, saved accounts one click each, Squad Launch into one private server, and stats that stay on your machine. In seven languages. Free for Windows and Mac.",
           "ogImage": "/assets/video/rororo/rororo-launch-poster.jpg",
           "ogType": "video.other",
           "video": {
@@ -3440,8 +3440,8 @@
         "jsonLd": {
           "@context": "https://schema.org",
           "@type": "VideoObject",
-          "name": "RORORO launch trailer: eight Roblox clients on one PC",
-          "description": "RORORO is a free multi-launcher for Roblox on Windows and Mac. The trailer shows eight clients running on one PC, saving every alt once and launching each with one click, Squad Launch sending every account into the same private server, the history stats page, themes and the theme builder, and the encrypted account vault. Not affiliated with Roblox Corporation.",
+          "name": "RoRoRo launch trailer: eight Roblox clients on one PC",
+          "description": "RoRoRo is a free multi-launcher for Roblox on Windows and Mac. The trailer shows eight clients running on one PC, saving every alt once and launching each with one click, Squad Launch sending every account into the same private server, the history stats page, themes and the theme builder, and the encrypted account vault. Not affiliated with Roblox Corporation.",
           "thumbnailUrl": [
             "https://626labs.dev/assets/video/rororo/rororo-launch-poster.jpg"
           ],
@@ -3465,11 +3465,11 @@
             "hideSm": true
           },
           {
-            "label": "RORORO",
+            "label": "RoRoRo",
             "href": "rororo.html"
           },
           {
-            "label": "Get RORORO",
+            "label": "Get RoRoRo",
             "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-trailer",
             "cta": true
           }
@@ -3477,7 +3477,7 @@
         "sections": [
           {
             "type": "hero",
-            "eyebrow": "626 Labs · Video · RORORO launch trailer",
+            "eyebrow": "626 Labs · Video · RoRoRo launch trailer",
             "title": "Eight Roblox clients.",
             "titleAccent": "One PC, 63 seconds."
           },
@@ -3535,7 +3535,7 @@
                 "type": "watch",
                 "heading": "What the trailer shows",
                 "paragraphs": [
-                  "<em>RORORO</em> is a free multi-launcher for Roblox on Windows and Mac. It runs several Roblox clients side by side, each signed in as a different saved account. The trailer comes in seven languages, each with the app captured in that language: pick one under the player."
+                  "<em>RoRoRo</em> is a free multi-launcher for Roblox on Windows and Mac. It runs several Roblox clients side by side, each signed in as a different saved account. The trailer comes in seven languages, each with the app captured in that language: pick one under the player."
                 ],
                 "beats": [
                   "<b>Eight clients on one PC,</b> running at the same time.",
@@ -3557,7 +3557,7 @@
                     "href": "https://github.com/estevanhernandez-stack-ed/rororo-mac"
                   },
                   {
-                    "label": "The full RORORO page",
+                    "label": "The full RoRoRo page",
                     "href": "rororo.html"
                   }
                 ],
@@ -3567,7 +3567,7 @@
           }
         ],
         "footer": {
-          "label": "626 Labs · RORORO launch trailer",
+          "label": "626 Labs · RoRoRo launch trailer",
           "disclaimer": "Independent third-party tool. Not affiliated with Roblox Corporation.",
           "links": [
             {
@@ -4507,7 +4507,7 @@
     "starMap": {
       "products": [
         "Celestia 3",
-        "RORORO",
+        "RoRoRo",
         "We See You at the Movies"
       ]
     },
