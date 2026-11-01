@@ -356,6 +356,13 @@ Counts/lists in prose can use `{{fact:KEY}}` tokens — they resolve at render
 time from `scripts/site_facts.py` (e.g. `{{fact:claude_plugins}}`,
 `{{fact:live_plugin_names}}`, `{{fact:cmd_vibe-cartographer_word}}`). An unknown
 token fails the render loudly, so a typo never ships.
+Hero copy (headline, subhead, meta values, chips) can also use `{{live:KEY}}`,
+for a number that moves daily: it renders `hero.live[KEY].fallback` inside a
+`<span data-live>` that `assets/live-stats.js` refreshes in the browser from
+the bot-written data file (`store-dau`: a 7-day floor of Store daily users,
+read from `data/store-analytics.json`). Never derive a daily number at render
+time; the morning bot write would dirty `--check` every day. Re-read the
+fallback now and then; it is what shows if the fetch fails.
 
 ### Agent management CLI — `scripts/site.py`
 
