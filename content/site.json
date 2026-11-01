@@ -3,9 +3,9 @@
   "version": 1,
   "hero": {
     "eyebrow": "626Labs LLC · Fort Worth, TX",
-    "headline": "Astrology engines, dev tools, streetwear.",
+    "headline": "Software you leave running.",
     "headlineAccent": "Imagine Something Else.",
-    "subhead": "A NASA-grade astrology app, Claude Code plugins for builders who ship for real, and merch designed by its own AI pipeline. Three shelves, one lab.",
+    "subhead": "RoRoRo, the free Windows multi-launcher for Roblox, has {{live:rororo-dau}} daily users from the Microsoft Store. The same bench ships Sanduhr, which puts your claude.ai limits on the desktop; Celestia 3, an astrology app built on real astronomy; and {{fact:claude_plugins}} open-source Claude Code plugins. One builder.",
     "primaryCta": {
       "label": "See the work",
       "href": "#work"
@@ -30,22 +30,29 @@
     ],
     "chips": [
       {
+        "label": "rororo · {{live:rororo-dau}} daily",
+        "tone": "cyan"
+      },
+      {
+        "label": "sanduhr · mac + windows",
+        "tone": "magenta"
+      },
+      {
         "label": "celestia 3",
         "tone": "cyan"
       },
       {
-        "label": "conundrum",
-        "tone": "magenta"
-      },
-      {
-        "label": "rororo",
-        "tone": "cyan"
-      },
-      {
-        "label": "vibe-test · live",
+        "label": "{{fact:claude_plugins}} claude code plugins",
         "tone": "success"
       }
-    ]
+    ],
+    "live": {
+      "rororo-dau": {
+        "source": "store-dau",
+        "app": "9NMJCS390KWB",
+        "fallback": "200+"
+      }
+    }
   },
   "sections": {
     "thinking": {
@@ -2800,6 +2807,24 @@
               {
                 "type": "reachMap",
                 "label": "RORORO"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "The lab behind it",
+            "blocks": [
+              {
+                "type": "panel",
+                "paragraphs": [
+                  "RORORO comes from <b>626 Labs</b>, one builder in Fort Worth, Texas. The same bench ships <b>Sanduhr</b>, which puts your claude.ai limits on the desktop; <b>Celestia 3</b>, an astrology app built on real astronomy; <b>RBX15</b>, a classic Roblox shirt and pants maker; and a family of open-source <b>Claude Code plugins</b>."
+                ]
+              },
+              {
+                "type": "cta",
+                "style": "arrow",
+                "label": "See everything 626 Labs makes",
+                "href": "/"
               }
             ]
           }

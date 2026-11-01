@@ -150,11 +150,37 @@ def substitute_zone(source: str, zone: str, rendered: str, js: bool = False) -> 
 
 
 # ─── hero ───────────────────────────────────────────────────────────
+# {{live:KEY}} in hero copy renders the static fallback from hero.live[KEY]
+# inside a span that assets/live-stats.js refreshes from the daily data file
+# in the browser. Runtime on purpose, like the repo meter: the bots write the
+# data every morning, and a render-time number would dirty --check daily.
+LIVE_RE = re.compile(r"\{\{live:([a-z0-9-]+)\}\}")
+LIVE_SCRIPT = '<script src="/assets/live-stats.js" defer></script>'
+
+
+def live(text: str, hero: dict) -> str:
+    """Escape `text`, then turn each {{live:KEY}} into its refreshable span.
+    An unknown key fails the render, like an unknown {{fact:}}."""
+    config = hero.get("live") or {}
+
+    def span(m: re.Match) -> str:
+        key = m.group(1)
+        if key not in config:
+            raise KeyError(f"unknown live token: {{{{live:{key}}}}}")
+        c = config[key]
+        return (
+            f'<span data-live="{attr(c["source"])}" data-app="{attr(c["app"])}">'
+            f'{esc(c["fallback"])}</span>'
+        )
+
+    return LIVE_RE.sub(span, esc(text))
+
+
 def render_hero(hero: dict) -> str:
     eyebrow = esc(hero.get("eyebrow", ""))
-    headline = esc(hero.get("headline", ""))
+    headline = live(hero.get("headline", ""), hero)
     accent = esc(hero.get("headlineAccent", ""))
-    subhead = esc(hero.get("subhead", ""))
+    subhead = live(hero.get("subhead", ""), hero)
     primary = hero.get("primaryCta") or {}
     secondary = hero.get("secondaryCta") or {}
     meta = hero.get("meta") or []
@@ -175,9 +201,11 @@ def render_hero(hero: dict) -> str:
         )
 
     meta_rows = "\n".join(
-        f'        <div>{esc(m.get("label", ""))}<b>{esc(m.get("value", ""))}</b></div>'
+        f'        <div>{esc(m.get("label", ""))}<b>{live(m.get("value", ""), hero)}</b></div>'
         for m in meta
     )
+    # The chips zone renders separately; one script tag here fills both.
+    script = f"\n      {LIVE_SCRIPT}" if hero.get("live") else ""
 
     return f"""\
       <div class="eyebrow">
@@ -198,7 +226,7 @@ def render_hero(hero: dict) -> str:
       </div>
       <div class="hero-meta">
 {meta_rows}
-      </div>"""
+      </div>{script}"""
 
 
 # ─── hero chips ─────────────────────────────────────────────────────
@@ -210,14 +238,14 @@ CHIP_TONE_CLASS = {
 }
 
 
-def render_chips(chips: list[dict]) -> str:
+def render_chips(chips: list[dict], hero: dict | None = None) -> str:
     items = []
     for i, chip in enumerate(chips[:4]):
         pos = CHIP_POSITIONS[i]
         tone = CHIP_TONE_CLASS.get(chip.get("tone", "cyan"), "")
         items.append(
             f'        <div class="mark-chip{tone} {pos}">'
-            f'<span class="dot"></span>{esc(chip.get("label", ""))}'
+            f'<span class="dot"></span>{live(chip.get("label", ""), hero or {})}'
             "</div>"
         )
     return '      <div class="mark-chips">\n' + "\n".join(items) + "\n      </div>"
@@ -2427,7 +2455,7 @@ def main(argv: list[str]) -> int:
 
     out = src
     out = substitute_zone(out, "hero", render_hero(content["hero"]))
-    out = substitute_zone(out, "hero-chips", render_chips(content["hero"]["chips"]))
+    out = substitute_zone(out, "hero-chips", render_chips(content["hero"]["chips"], content["hero"]))
     out = substitute_zone(out, "products",
                           render_products(content["products"], content.get("pluginFamily")))
     out = substitute_zone(out, "lab-pool", render_lab_pool(content["lab"]), js=True)

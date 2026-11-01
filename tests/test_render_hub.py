@@ -1280,3 +1280,40 @@ def test_family_preview_escapes_labels_and_fails_without_bullets():
 
 def test_preview_without_marker_is_returned_verbatim():
     assert render_hub.render_flagship_preview({"id": "vibe-cartographer"}) == render_hub.FLAGSHIP_PREVIEWS["vibe-cartographer"]
+
+# ─── {{live:}} hero tokens ──────────────────────────────────────────
+LIVE_HERO = {
+    "headline": "h",
+    "subhead": "RoRoRo has {{live:rororo-dau}} daily users & more.",
+    "meta": [{"label": "Deployed", "value": "{{live:rororo-dau}} a day"}],
+    "chips": [{"label": "rororo · {{live:rororo-dau}} daily", "tone": "cyan"}],
+    "live": {"rororo-dau": {"source": "store-dau", "app": "9NMJCS390KWB", "fallback": "200+"}},
+}
+LIVE_SPAN = '<span data-live="store-dau" data-app="9NMJCS390KWB">200+</span>'
+
+
+def test_live_token_renders_the_static_fallback_in_a_refreshable_span():
+    out = render_hub.render_hero(LIVE_HERO)
+    assert f"RoRoRo has {LIVE_SPAN} daily users &amp; more." in out
+    assert f"<b>{LIVE_SPAN} a day</b>" in out
+    assert out.count(render_hub.LIVE_SCRIPT) == 1
+    chips = render_hub.render_chips(LIVE_HERO["chips"], LIVE_HERO)
+    assert f"rororo · {LIVE_SPAN} daily" in chips
+
+
+def test_no_live_config_emits_no_script():
+    hero = {"headline": "h", "subhead": "s"}
+    assert render_hub.LIVE_SCRIPT not in render_hub.render_hero(hero)
+
+
+def test_unknown_live_token_fails_the_render():
+    with pytest.raises(KeyError, match="live:nope"):
+        render_hub.render_hero({**LIVE_HERO, "subhead": "{{live:nope}}"})
+
+
+def test_live_stats_script_reads_the_data_file_the_bot_writes():
+    """The span's source name must exist in assets/live-stats.js, and the file
+    it fetches must be one a daily bot writes, or the number never refreshes."""
+    js = (ROOT / "assets" / "live-stats.js").read_text(encoding="utf-8")
+    assert '"store-dau": "/data/store-analytics.json"' in js
+    assert (ROOT / "data" / "store-analytics.json").exists()
