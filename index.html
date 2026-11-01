@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="preload" as="font" type="font/woff2" href="/fonts/SpaceGrotesk-Variable.woff2" crossorigin />
-  <link rel="preload" as="font" type="font/woff2" href="/fonts/SourceSerif4-Variable.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/Archivo-Variable.woff2" crossorigin />
   <title>626 Labs — Imagine Something Else</title>
   <meta name="description" content="626 Labs ships vibe-coded SaaS, native apps, and Claude Code plugins. Enterprise grade, reached for via vibe coding." />
-  <meta name="theme-color" content="#3A4350" />
+  <meta name="theme-color" content="#159EBE" />
   <link rel="canonical" href="https://626labs.dev/" />
   <link rel="icon" type="image/png" href="favicon-626.png" />
   <link rel="alternate" type="application/atom+xml" title="626 Labs — Field Notes" href="/feed.xml" />
@@ -73,85 +72,109 @@
 
   <style>
     /* ==================================================================
-       The Slate Broadsheet — home shell (October 2026).
-       A newspaper printed on slate. Every color, rule and measure below is
-       a token /themes/slate-broadsheet/tokens.css defines (the 47-name
-       contract plus the --sb-* furniture block); nothing is declared here.
-       Design source: Design/explorations/2026-09-03-paper-and-ink/
-       sheet-slate-broadsheet.html. Matte throughout: no glow, no bloom,
-       no scanlines, no grid, no gradient field. The brand pair appears as
-       spot color only: the printer's color bar, the caption rules, the
-       door underlines. Magenta is never text; the hover ink is the
-       declared tint --sb-link-hover.
+       Cyan Fade — home shell (November 2026).
+       The brand is the ground, and the ground fades to paper. Every color,
+       rule and measure below is a token /themes/cyan-fade/tokens.css
+       defines (the 47-name contract plus the --cf-* block); nothing is
+       declared here. Design source: Design/explorations/
+       2026-10-01-november-bakeoff/sheet-cyan-fade.html.
 
-       Rule tokens are BORDER SHORTHANDS: --sb-hair / --sb-rule / --sb-heavy
-       are spent on border-* and column-rule only. The colors are
-       --sb-hair-color and --sb-rule-color.
+       THE SWEEP. body carries one 3200px scroll-attached gradient:
+       --cf-top at the top, the brand cyan at 22%, paper at the end. The
+       masthead and the hero sit on the blue; the contents list rides the
+       fade; everything from the band down lands on paper. It is the ONLY
+       gradient on the page and the only page that paints one.
 
-       Under the grain, --fg-muted, --magenta-pale and --ok are --bg-0 inks
-       only; this shell paints no --bg-1 or --bg-2 surface at all. The only
-       other surfaces are the plate mat (--sb-mat, no text sits on it) and
-       the raster (--sb-raster, the widgets' and previews' own dark field).
+       THE INK RULE ON THE SWEEP. --cf-ink is 5.29:1 on --cf-top and
+       --cf-ink-2 is 3.87:1, so every string in the masthead and the hero
+       is --cf-ink, no exceptions. The Work section begins past the
+       brand-cyan stop, where --cf-ink-2 is already 6.87:1 and climbing, so
+       the contents list may use --cf-ink-2 for its taglines and tags; it
+       uses NO accent ink (--cyan, --magenta, --ok are paper inks and fail
+       on cyan). Accent inks first appear in the band and below.
+
+       ONE FACE. Archivo: the expanded black (.disp, or the same three
+       declarations inline) on every head, the normal width on every line
+       of text. The mono is spent on code only: the install command and
+       the flagship's preview screen. No tracked uppercase labels, no mono
+       folios, no cards, no radius, no glow, no texture, no arrows on links.
+       Links are ink, underlined; hover thickens the underline.
+
+       THE BAND. section.thinking (the founding today; the thinking zone if
+       it ever renders) is the one magenta surface, with --cf-band-ink and
+       --cf-band-ink-2 type. THE SCREENS: every raster (thumb, preview,
+       star map, lab thumb, lab-runs frame) is a flat --cf-screen block;
+       the one caption printed inside one is --cf-screen-ink.
+
+       Rule tokens are BORDER SHORTHANDS: --cf-hair / --cf-heavy are spent
+       on border-* and column-rule only. The color is --cf-hair-color.
        ================================================================== */
     @import url('/fonts/fonts.css');
 
     *, *::before, *::after { box-sizing: border-box; }
     html { background: var(--bg-0); }
-    body {
+    /* `html > body`, not `body`: tokens.css is linked AFTER this block and
+       pins `body { background: var(--bg-0) }` at the same specificity, which
+       would win the cascade and erase the sweep. */
+    html > body {
       margin: 0;
-      background: var(--bg-0);
-      color: var(--sb-ink);
-      font-family: var(--sb-serif);
-      font-size: 17px;
+      background: var(--cf-sweep) top center / 100% var(--cf-sweep-height) no-repeat var(--bg-0);
+      color: var(--cf-ink);
+      font-family: var(--cf-face);
+      font-size: 18px;
       line-height: 1.5;
+      font-stretch: 100%;
       position: relative;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      font-feature-settings: "kern", "liga", "onum";
+      font-feature-settings: "kern", "liga";
     }
-    /* Stone grain: fractal noise, paper at half alpha, laid at 7 percent.
-       Matte tooth, not scanlines, not a grid. */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 5;
-      opacity: var(--sb-grain-opacity);
-      background-image: var(--sb-grain);
-    }
-    h1, h2, h3, h4, p, li { color: inherit; }
+    /* Design/colors_and_type.css sets bare h1/h2/h3 in Space Grotesk at
+       element specificity, which beats inheritance from body; pin the face
+       and the ink here so every head is Archivo and navy. */
+    h1, h2, h3, h4, p, li, blockquote, figcaption { color: inherit; font-family: inherit; }
     p { margin: 0; }
-    a { color: var(--cyan); text-decoration: none; }
-    a:hover, a:focus-visible { color: var(--sb-link-hover); }
-    a:focus-visible { outline: 2px solid var(--sb-link-hover); outline-offset: 2px; }
+    blockquote { margin: 0; }
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
+    }
+    a:hover, a:focus-visible { text-decoration-thickness: var(--cf-underline-hover); }
+    a:focus-visible { outline: 2px solid var(--cf-ink); outline-offset: 2px; }
     img, svg { max-width: 100%; }
     button { font-family: inherit; cursor: pointer; }
-    blockquote { margin: 0; }
 
-    /* The letterpress impression, inverted for slate: a hairline of shadow
-       under each stroke of the display heads. Display heads only. */
-    .press { text-shadow: 0 1px 0 var(--sb-impression); }
+    /* The expanded black: the one display cut. */
+    .disp {
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      letter-spacing: -0.015em;
+      line-height: .92;
+    }
 
     .wrap {
-      max-width: var(--sb-page);
+      max-width: var(--cf-page);
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 var(--cf-gutter);
       min-width: 0;
     }
 
     .skip-link {
       position: absolute;
       left: -9999px;
-      top: 8px;
-      background: var(--sb-tab-bg);
-      color: var(--sb-tab-fg);
+      top: 0;
+      background: var(--cf-ink);
+      color: var(--cf-cyan);
       padding: 8px 12px;
-      font-family: var(--sb-mono);
-      font-size: 13px;
-      z-index: 10;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      z-index: 60;
     }
-    .skip-link:focus { left: 8px; color: var(--sb-tab-fg); outline: 2px solid var(--sb-link-hover); outline-offset: 2px; }
+    .skip-link:focus { left: 12px; top: 12px; outline: 2px solid var(--cf-cyan); outline-offset: 2px; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -166,1008 +189,572 @@
     .ic-lg { width: 16px; height: 16px; }
     .ic-xl { width: 18px; height: 18px; }
 
-    /* ---------- Furniture: meta label, folio, reversed tab, color bar ---------- */
-    .meta {
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
-    .folio {
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-      font-variant-numeric: tabular-nums;
-    }
-    /* Reversed tab, inverted back: ink field, slate type. The renderer emits
-       every section label as `.eyebrow > span`, with `.pulse` first in the
-       hero and `.line` last everywhere; the text span (neither class) IS
-       the tab. The pulse dot and the line are not newspaper furniture and
-       are not drawn (the gap collapses with them). */
-    .eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 0 0 14px;
-    }
-    .eyebrow > span:not(.pulse):not(.line), .tab {
-      display: inline-block;
-      background: var(--sb-tab-bg);
-      color: var(--sb-tab-fg);
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 4px 8px 3px;
-      line-height: 1.3;
-      vertical-align: middle;
-    }
+    /* ---------- Furniture: the section label, the eyebrow, the button ---------- */
+    /* The renderer emits every section label as `.eyebrow > span`, with
+       `.pulse` first in the hero and `.line` last everywhere; the text span
+       is the label. Plain, sentence case, weight 500. The dot and the line
+       are not drawn. */
+    .eyebrow { display: flex; align-items: baseline; gap: 10px; margin: 0; font-size: 17px; font-weight: 500; color: var(--cf-ink-2); }
     .eyebrow .pulse, .eyebrow .line { display: none; }
+    .meta { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    .folio { font-size: 17px; font-weight: 500; color: var(--cf-ink-2); font-variant-numeric: tabular-nums; }
 
-    /* Printer's color bar: the only place the brand pair floods a shape. */
-    .regbar { display: inline-flex; gap: 4px; vertical-align: middle; }
-    .regbar i { display: block; width: 9px; height: 9px; }
-    .regbar .c { background: var(--cyan); }
-    .regbar .m { background: var(--magenta); }
-    .regbar .k { background: var(--sb-ink); }
-
-    /* A door: the mono, uppercase, cyan link with the brand pair ruled
-       under it. Every renderer-emitted button becomes one. */
+    /* Every renderer-emitted button is a link: ink, underlined, weight 500. */
     .btn, .door, .product-link, .play-link, .sponsor-cta, .thinking-link a, .lab-runs-link a,
     .field-notes-subscribe, .field-notes-more > summary, .field-note-link a, .artifact-links a {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-family: var(--sb-mono);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      padding-bottom: 3px;
-      background-image: var(--brand-gradient);
-      background-repeat: no-repeat;
-      background-position: 0 100%;
-      background-size: 100% 2px;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 500;
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
       border: 0;
-      background-color: transparent;
+      padding: 0;
+      background: transparent;
       cursor: pointer;
     }
     .btn:hover, .door:hover, .product-link:hover, .play-link:hover, .sponsor-cta:hover,
     .thinking-link a:hover, .lab-runs-link a:hover, .field-notes-subscribe:hover, .field-notes-more > summary:hover, .field-note-link a:hover, .artifact-links a:hover {
-      color: var(--sb-link-hover);
-    }
-    .btn-ghost, .field-note-link a {
-      background-image: none;
-      border-bottom: var(--sb-hair);
+      text-decoration-thickness: var(--cf-underline-hover);
     }
 
-    /* ================= MASTHEAD ================= */
-    .masthead { padding-top: 14px; }
-    .ears {
+    /* ================= MASTHEAD: the top strip and the wayfinding line ================= */
+    .masthead { padding-top: 26px; color: var(--cf-ink); }
+    .masthead .top {
       display: flex;
+      align-items: baseline;
       justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      padding: 6px 0;
-      border-bottom: var(--sb-hair);
+      gap: 16px var(--cf-gutter);
+      flex-wrap: wrap;
     }
-    .masthead-title {
-      margin: 0;
-      padding: 22px 0 14px;
-      text-align: center;
-      font-family: var(--sb-display);
-      font-weight: 500;
-      font-size: clamp(56px, 9vw, 124px);
-      letter-spacing: -0.035em;
-      line-height: 0.9;
-      color: var(--sb-ink);
-      border-bottom: var(--sb-heavy);
-      position: relative;
-    }
-    .masthead-title::after {
-      /* the second line of the double rule, hairline under the heavy one */
-      content: '';
-      position: absolute;
-      left: 0; right: 0;
-      bottom: -6px;
-      border-bottom: var(--sb-hair);
-    }
-    .masthead-title a, .masthead-title a:hover { color: inherit; }
-    /* Pinned to the line height so the web font swapping in can't grow or
-       shrink the masthead: its inline boxes took the fallback face's taller
-       metrics and the whole page jumped when Space Grotesk arrived (CLS). */
-    .masthead-title a { display: block; height: 0.9em; }
-    /* The body sets old-style figures for the serif; "626" in the masthead is
-       the name, not a number in a sentence, so it keeps lining figures. */
-    .masthead-title { font-feature-settings: "kern", "liga", "lnum"; }
-    .masthead-title .lab { font-weight: 300; letter-spacing: -0.02em; }
-
-    /* The dateline row: two folios. The wayfinding sentence is the imprint. */
-    .dateline {
-      margin: 6px 0 0;
-      padding: 10px 0;
-      border-bottom: var(--sb-rule);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px 20px;
-    }
-
-    /* Nav as the section index strip. */
-    nav.nav { border-bottom: var(--sb-heavy); }
+    .wordmark { font-size: 28px; text-decoration: none; color: var(--cf-ink); }
+    .wordmark:hover { text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); }
     .nav-links {
       list-style: none;
       margin: 0;
       padding: 0;
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
+      gap: 4px 28px;
     }
-    .nav-links li { position: relative; }
-    .nav-links li + li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 10px;
-      bottom: 10px;
-      border-left: var(--sb-hair);
-    }
-    .nav-links a {
-      display: block;
-      padding: 12px 22px;
-      font-family: var(--sb-mono);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--sb-ink);
-    }
-    .nav-links a:hover, .nav-links a.active { color: var(--sb-link-hover); }
+    .nav-links a { font-size: 17px; font-weight: 500; text-decoration: none; color: var(--cf-ink); }
+    .nav-links a:hover, .nav-links a.active { text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); }
+    /* On the sweep's top: ink, not ink-2 (3.87:1 there). */
+    .wayfinding { padding: 14px 0 0; font-size: 17px; color: var(--cf-ink); }
 
-    /* ================= HERO: the lead story + the Field Notes front rail ================= */
-    .hero { padding: 36px 0 40px; }
-    .hero-inner {
-      display: grid;
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      gap: 0 var(--sb-gutter);
-      align-items: start;
-    }
-    .lead {
-      min-width: 0;
-      padding-right: var(--sb-gutter);
-      border-right: var(--sb-rule);
-    }
-    /* The kicker: the hero eyebrow as a plain meta line, not a tab. */
-    .lead .eyebrow { margin: 0 0 18px; }
-    .lead .eyebrow > span:not(.pulse):not(.line) {
-      background: none;
-      color: var(--sb-ink-3);
-      padding: 0;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-    }
+    /* ================= HERO: left, not centered, and every string in ink ================= */
+    .hero { padding: 72px 0 80px; color: var(--cf-ink); }
+    .hero-inner { display: block; }
+    .lead { min-width: 0; }
+    .lead .eyebrow { margin: 0 0 22px; color: var(--cf-ink); }
     .lead h1 {
       margin: 0 0 20px;
-      font-family: var(--sb-display);
-      font-weight: 500;
-      font-size: clamp(42px, 5.6vw, 84px);
-      line-height: 0.98;
-      letter-spacing: -0.03em;
-      color: var(--sb-ink);
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      /* 10.4vw, not the sheet's 11.5: the renderer's h1 carries the
+         tagline as a block inside it, and at 165px "streetwear." ran
+         one period past the measure, which `anywhere` then broke onto
+         its own line. 150px fits with room; `pretty`, not `balance`,
+         so the balancer cannot shrink the measure under the last word. */
+      font-size: clamp(56px, 10.4vw, 150px);
+      line-height: .92;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      max-width: 9.2em;
+      text-wrap: pretty;
       overflow-wrap: anywhere;
-      text-wrap: balance;
-      text-shadow: 0 1px 0 var(--sb-impression);
     }
     .lead h1 br { display: none; }
     .lead h1 .accent {
-      /* the lead accent: the headline's second line set as the serif italic subhead */
+      /* the headline's second line: the tagline in the expanded regular */
       display: block;
-      margin-top: 16px;
-      padding-bottom: 16px;
-      border-bottom: var(--sb-hair);
-      font-family: var(--sb-serif);
-      font-style: italic;
+      margin-top: 24px;
+      font-stretch: var(--cf-display-stretch);
       font-weight: 400;
-      font-size: clamp(22px, 2.2vw, 30px);
-      line-height: 1.2;
-      letter-spacing: 0;
-      color: var(--sb-ink);
-      text-shadow: none;
+      font-size: clamp(30px, 4.6vw, 68px);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
     }
     .lead .hero-sub {
-      font-family: var(--sb-serif);
-      font-size: clamp(18px, 1.5vw, 21px);
+      margin-top: 30px;
+      font-size: clamp(19px, 1.6vw, 23px);
       line-height: 1.5;
-      color: var(--sb-ink-2);
-      max-width: 38em;
+      max-width: 30em;
       text-wrap: pretty;
-    }
-    .lead .hero-sub::first-letter {
-      /* newspaper lead: the first letter of the deck set big and dropped */
-      float: left;
-      font-size: 3.4em;
-      line-height: 0.8;
-      padding: 6px 8px 0 0;
-      font-weight: 700;
-      color: var(--sb-ink);
+      color: var(--cf-ink);
     }
     .hero-actions {
-      clear: both;
       display: flex;
       flex-wrap: wrap;
       gap: 10px 28px;
-      margin-top: 22px;
+      margin-top: 30px;
     }
-    /* By the numbers: the hero's meta rows as a folio table under the lead. */
+    /* By the numbers: three columns under a heavy rule. */
     .hero-meta {
-      margin-top: 24px;
-      padding: 10px 0;
-      border-top: var(--sb-rule);
-      border-bottom: var(--sb-hair);
+      margin-top: 44px;
+      padding-top: 14px;
+      border-top: var(--cf-heavy);
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px var(--sb-gutter);
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-      font-variant-numeric: tabular-nums;
-    }
-    .hero-meta::before {
-      content: 'By the numbers';
-      grid-column: 1 / -1;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      color: var(--sb-ink-2);
+      gap: 12px var(--cf-gutter);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink);
     }
     .hero-meta > div { min-width: 0; overflow-wrap: anywhere; }
-    .hero-meta > div b {
-      display: block;
-      margin-top: 3px;
-      font-weight: 600;
-      font-size: 12px;
-      letter-spacing: 0.04em;
-      text-transform: none;
-      color: var(--sb-ink);
-    }
-    /* The chips: one mono folio line of what is in print this edition. */
+    .hero-meta > div b { display: block; margin-top: 4px; font-weight: 700; font-size: 17px; }
+    /* The chips: one plain line of what is in print this month. */
     .mark-chips {
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
       gap: 4px 0;
-      margin-top: 10px;
-      padding-bottom: 10px;
-      border-bottom: var(--sb-hair);
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
-    .mark-chips::before {
-      content: 'In this edition';
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      color: var(--sb-ink-2);
-      margin-right: 14px;
-    }
-    .mark-chip { display: inline-flex; align-items: baseline; }
-    .mark-chip + .mark-chip::before { content: '·'; margin: 0 10px; color: var(--sb-ink-3); }
-    .mark-chip .dot { display: none; }
-    .mark-chip.magenta { color: var(--magenta-pale); }
-    .mark-chip.success { color: var(--ok); }
-
-    /* The plate on slate: a dark raster mounted on a pale paper mat. The mat
-       is the separation (ground vs raster alone is 1.66:1); the halftone
-       screen stays so it reads as a screened press photo. The caption sits
-       on the slate under the brand pair's rule. No text sits on the mat. */
-    .plate { margin: 0; min-width: 0; }
-    .plate-mat { background: var(--sb-mat); padding: 6px; }
-    .raster {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: var(--sb-raster);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .raster img { display: block; width: 78%; height: auto; }
-    .raster::before {
-      /* halftone screen: a 4px dot grid of paper at 14 percent over the ink */
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(circle, var(--sb-screen) 0.9px, transparent 1.1px);
-      background-size: 4px 4px;
-      pointer-events: none;
-    }
-    .plate figcaption, .caprule {
-      position: relative;
-      margin-top: 10px;
-      padding-top: 9px;
-      font-family: var(--sb-serif);
-      font-size: 14px;
-      line-height: 1.45;
-      color: var(--sb-ink-3);
-    }
-    .plate figcaption::before, .caprule::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0;
-      width: 56px; height: 2px;
-      background: var(--brand-gradient);
-    }
-    .plate figcaption b, .caprule b {
-      font-family: var(--sb-mono);
-      font-weight: 600;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-2);
-      margin-right: 8px;
-    }
-    .lead-plate { clear: both; padding-top: 30px; }
-
-    /* Field Notes rail: a boxed column with a heavy top rule and a mono label. */
-    .rail { min-width: 0; }
-    section.field-notes {
-      border-top: var(--sb-heavy);
-      padding-top: 12px;
-    }
-    section.field-notes .wrap { padding: 0; max-width: none; }
-    section.field-notes .section-head {
-      display: block;
-      margin: 0 0 4px;
-      padding-bottom: 10px;
-      border-bottom: var(--sb-hair);
-    }
-    section.field-notes .section-head::after { content: none; }
-    section.field-notes .eyebrow {
-      margin: 0 0 8px;
-      justify-content: space-between;
-    }
-    section.field-notes .eyebrow > span:not(.pulse):not(.line) {
-      background: none;
-      color: var(--sb-ink);
-      padding: 0;
-      font-size: 12px;
-      letter-spacing: 0.12em;
-    }
-    section.field-notes .eyebrow::after {
-      content: 'Front rail';
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
-    section.field-notes .section-head h2 {
-      margin: 0 0 4px;
-      font-family: var(--sb-serif);
-      font-style: italic;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 1.35;
-      letter-spacing: 0;
-      color: var(--sb-ink);
-      text-wrap: pretty;
-    }
-    section.field-notes .section-head > p {
-      font-family: var(--sb-serif);
-      font-size: 13.5px;
-      line-height: 1.45;
-      color: var(--sb-ink-3);
-      text-wrap: pretty;
-    }
-    .field-notes-grid { display: block; }
-    .field-note {
-      padding: 16px 0 18px;
-      border-bottom: var(--sb-hair);
-      break-inside: avoid;
-      min-width: 0;
-    }
-    .field-note-eyebrow {
-      margin-bottom: 6px;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-      font-variant-numeric: tabular-nums;
-    }
-    .field-note-title {
-      margin: 0 0 6px;
-      font-family: var(--sb-display);
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 1.18;
-      letter-spacing: -0.015em;
-      color: var(--sb-ink);
-      text-wrap: balance;
-      overflow-wrap: anywhere;
-    }
-    .field-note-subtitle {
-      font-family: var(--sb-serif);
-      font-size: 15px;
-      line-height: 1.45;
-      color: var(--sb-ink-2);
-      text-wrap: pretty;
-    }
-    .field-note-tagline {
-      margin-top: 4px;
-      font-family: var(--sb-serif);
-      font-style: italic;
-      font-size: 14px;
-      line-height: 1.45;
-      color: var(--sb-ink-3);
-      text-wrap: pretty;
-    }
-    .field-note-link { margin-top: 8px; }
-    .field-note-link a { font-size: 11px; letter-spacing: 0.1em; padding-bottom: 2px; }
-    .field-notes-subscribe { margin-top: 14px; }
-    /* Continued inside: the renderer folds the notes past railLimit into a
-       <details>; its summary is the door, and the cards it reveals wear the
-       same dress as the four above them. Every note's link stays in the DOM. */
-    .field-notes-more { margin: 0; }
-    .field-notes-more > summary {
-      list-style: none;
       margin-top: 14px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .field-notes-more > summary::-webkit-details-marker { display: none; }
-    .field-notes-more > summary::after { content: '\2192'; }
-    .field-notes-more[open] > summary::after { content: '\2191'; }
-    .field-notes-more[open] > summary { margin-bottom: 4px; border-bottom: var(--sb-hair); padding-bottom: 8px; background-image: none; }
-    .field-notes-more > summary:focus-visible { outline: 2px solid var(--sb-link-hover); outline-offset: 2px; }
-
-    /* ================= SECTION FRONT chrome ================= */
-    .section { padding: 34px 0 44px; }
-    .hero + .section, .section + .section, .section + .backpage { border-top: var(--sb-hair); }
-    .section-head {
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      gap: 12px var(--sb-gutter);
-      align-items: end;
-      padding-bottom: 12px;
-      margin-bottom: 26px;
-      border-bottom: var(--sb-heavy);
-    }
-    .section-head::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 0;
-      bottom: -6px;
-      border-bottom: var(--sb-hair);
-    }
-    .section-head > div { min-width: 0; }
-    .section-head h2 {
-      margin: 0;
-      font-family: var(--sb-display);
+      padding-top: 12px;
+      border-top: var(--cf-hair);
+      font-size: 15px;
       font-weight: 500;
-      font-size: clamp(32px, 3.8vw, 52px);
-      line-height: 1.04;
-      letter-spacing: -0.025em;
-      color: var(--sb-ink);
+      color: var(--cf-ink);
+    }
+    .mark-chips::before { content: 'In this edition'; font-weight: 700; margin-right: 14px; }
+    .mark-chip { display: inline-flex; align-items: baseline; }
+    .mark-chip + .mark-chip::before { content: '·'; margin: 0 10px; }
+    .mark-chip .dot { display: none; }
+    /* .magenta and .success chips stay ink: no accent ink passes on the sweep. */
+
+    /* ================= SECTION FRONTS ================= */
+    .section { padding: 56px 0 0; }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px var(--cf-gutter);
+      flex-wrap: wrap;
+      padding-bottom: 12px;
+      margin-bottom: 8px;
+      border-bottom: var(--cf-heavy);
+    }
+    .section-head > div { min-width: 0; flex: 1 1 24em; }
+    .section-head h2 {
+      margin: 8px 0 0;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: clamp(28px, 3.4vw, 48px);
+      line-height: .96;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
       text-wrap: balance;
       overflow-wrap: anywhere;
-      text-shadow: 0 1px 0 var(--sb-impression);
     }
     .section-head > p {
       margin: 0;
-      padding-bottom: 6px;
-      font-family: var(--sb-serif);
+      flex: 1 1 20em;
+      max-width: 34em;
       font-size: 17px;
-      line-height: 1.5;
-      color: var(--sb-ink-2);
+      line-height: 1.45;
+      color: var(--cf-ink-2);
       text-wrap: pretty;
     }
     section[id] { scroll-margin-top: 16px; }
 
-    /* ================= 01 WORK: the flagship listing + columned listings ================= */
-    /* The listing runs in true columns with a column rule, as the sheet
-       sets it; the flagship spans all columns above it. */
-    .products {
-      columns: 3;
-      column-gap: var(--sb-gutter);
-      column-rule: var(--sb-rule);
-      counter-reset: listing;
+    /* ================= 01 WORK: the contents page ================= */
+    /* Ten products as a numbered list in display type: the number, the name
+       and its line, the screen beside. No cards. */
+    .products { counter-reset: listing; }
+    article.product {
+      counter-increment: listing;
+      position: relative;
+      display: grid;
+      grid-template-columns: 3.2em minmax(0, 1fr) minmax(200px, 28%);
+      gap: 8px 24px;
+      align-items: start;
+      padding: 24px 0 26px;
+      border-bottom: var(--cf-hair);
+      min-width: 0;
     }
+    article.product:last-child { border-bottom: var(--cf-heavy); }
+    article.product::before {
+      content: counter(listing);
+      grid-column: 1;
+      grid-row: 1 / span 24;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: clamp(22px, 2.2vw, 30px);
+      line-height: 1;
+      color: var(--cf-ink-2);
+      padding-top: .18em;
+    }
+    article.product > * { grid-column: 2; min-width: 0; }
     /* Whole-row click-through (restored 2026-10-07; Phosphor Blueprint had it,
        #120): the renderer emits a stretched .product-cover link to each
        row's primary destination. Real links lift above it and keep their
        own targets; the install command stays selectable. */
-    article.product { position: relative; }
     .product-cover { position: absolute; inset: 0; z-index: 1; }
     article.product a:not(.product-cover),
     article.product .product-cta,
     article.product .install { position: relative; z-index: 2; }
-    article.product {
-      counter-increment: listing;
-      break-inside: avoid;
-      min-width: 0;
-      padding: 2px 0 18px;
-      margin-bottom: 18px;
-      border-bottom: var(--sb-hair);
+    /* Name first, its line second, the tags under them. */
+    article.product h3 { order: -2; }
+    .product-desc { order: -1; }
+    article.product h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: clamp(26px, 3.4vw, 48px);
+      line-height: .96;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      overflow-wrap: anywhere;
     }
-    article.product::before {
-      content: 'No. ' counter(listing, decimal-leading-zero);
-      display: block;
-      margin-bottom: 6px;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-      font-variant-numeric: tabular-nums;
+    .product-desc {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.45;
+      color: var(--cf-ink-2);
+      max-width: 42em;
+      text-wrap: pretty;
     }
     .product-head {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
+      align-items: baseline;
       gap: 6px 12px;
-      margin-bottom: 6px;
-      min-width: 0;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
     }
-    .product-sigil { display: inline-flex; color: var(--sb-ink-3); }
-    .product-sigil svg { width: 16px; height: 16px; }
+    .product-sigil { display: none; }
+    .product-tags { display: flex; flex-wrap: wrap; align-items: baseline; }
+    /* Tags in ink-2 only. The list rides the sweep, where no accent ink
+       passes; "Live" reads as a word. */
+    .tag { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    .tag + .tag::before { content: '·'; margin: 0 8px; }
     /* The flagship head's lead: sigil beside the tags and the category line.
        These were inline styles render-hub emitted until 2026-10-03; a class
        lets a theme restyle them without fighting an inline declaration. */
     .product-head-lead { display: flex; align-items: center; gap: 16px; }
     .product-head-lead .product-tags { margin-bottom: 4px; }
     .product-category { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); letter-spacing: .08em; }
-    .product-tags { display: flex; flex-wrap: wrap; align-items: baseline; }
-    .tag {
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
-    .tag + .tag::before { content: '·'; margin: 0 6px; color: var(--sb-ink-3); }
-    .tag.live { color: var(--ok); }
-    .tag.wip { color: var(--magenta-pale); }
-    .tag.magenta { color: var(--magenta-pale); }
-    article.product h3 {
-      margin: 0 0 6px;
-      font-family: var(--sb-display);
+    /* On the sweep --fg-muted is 2.73:1, so the category line (and the lead
+       it sits in) reads as a tag: ink-2, the body face, untracked. */
+    article.product.flagship .product-head-lead,
+    article.product.flagship .product-head-lead .product-tags,
+    article.product.flagship .product-category {
+      color: var(--cf-ink-2);
+      font-family: inherit;
+      font-size: 15px;
       font-weight: 500;
-      font-size: 22px;
-      line-height: 1.12;
-      letter-spacing: -0.02em;
-      color: var(--sb-ink);
-      overflow-wrap: anywhere;
-      text-wrap: balance;
+      letter-spacing: 0;
+      text-transform: none;
     }
-    .product-desc {
-      margin-bottom: 10px;
-      font-family: var(--sb-serif);
-      font-size: 16px;
-      line-height: 1.45;
-      color: var(--sb-ink-2);
-      text-wrap: pretty;
-    }
-    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; }
     .badges img { display: block; height: 18px; }
     .install {
-      margin: 10px 0;
-      padding: 8px 0;
-      border-top: var(--sb-hair);
-      border-bottom: var(--sb-hair);
+      margin: 6px 0 0;
+      padding: 10px 0;
+      border-top: var(--cf-hair);
+      border-bottom: var(--cf-hair);
     }
-    .install .label {
-      display: block;
-      margin-bottom: 4px;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
+    .install .label { display: block; margin-bottom: 4px; font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
     .install code {
       display: block;
-      font-family: var(--sb-mono);
-      font-size: 12.5px;
+      font-family: var(--cf-mono);
+      font-size: 13px;
       line-height: 1.5;
-      color: var(--sb-ink);
+      color: var(--cf-ink);
       overflow-wrap: anywhere;
     }
-    .install code .prompt { color: var(--sb-ink-3); margin-right: 6px; }
-    .product-cta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 10px 0; }
-    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    .install code .prompt { color: var(--cf-ink-2); margin-right: 6px; }
+    .product-cta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 6px 0 0; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 0; }
     .store-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 6px 10px;
-      border: var(--sb-hair);
-      color: var(--sb-ink);
+      border: 1px solid var(--cf-ink);
+      color: var(--cf-ink);
+      text-decoration: none;
     }
     .store-badge svg { width: 18px; height: 18px; fill: currentColor; }
     .store-badge-text { display: flex; flex-direction: column; line-height: 1.15; }
-    .store-badge-top {
-      font-family: var(--sb-mono);
-      font-size: 9px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
-    .store-badge-bottom { font-family: var(--sb-mono); font-size: 12px; font-weight: 600; }
-    .store-badge:hover { color: var(--sb-link-hover); border-color: var(--sb-rule-color); }
+    .store-badge-top { font-size: 12px; font-weight: 500; color: var(--cf-ink-2); }
+    .store-badge-bottom { font-size: 15px; font-weight: 700; }
+    .store-badge:hover .store-badge-bottom { text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); text-underline-offset: .14em; }
     .product-foot {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: baseline;
       gap: 8px 16px;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: var(--sb-hair);
+      margin-top: 6px;
     }
-    .product-meta {
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-      overflow-wrap: anywhere;
-    }
-    .product-link { font-size: 11px; letter-spacing: 0.1em; padding-bottom: 2px; }
-    /* A listing thumb: the banner mounted on a mat at listing width. */
-    .product-visual { margin: 0 0 10px; padding: 4px; background: var(--sb-mat); }
-    .product-visual img { display: block; width: 100%; height: auto; background: var(--sb-raster); }
-
-    /* The flagship: head and copy on the left, the preview as the plate on
-       the right, mounted on a mat, its bullets as a numbered listing. */
-    article.product.flagship {
-      column-span: all;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 40%);
-      gap: 0 var(--sb-gutter);
-      padding-bottom: 28px;
-      margin-bottom: 28px;
-      border-bottom: var(--sb-rule);
-    }
-    article.product.flagship > * { grid-column: 1; min-width: 0; }
-    article.product.flagship::before { grid-column: 1; }
-    article.product.flagship h3 {
-      margin: 6px 0 12px;
-      font-size: clamp(30px, 3.2vw, 44px);
-      line-height: 1.02;
-      letter-spacing: -0.025em;
-      text-shadow: 0 1px 0 var(--sb-impression);
-    }
-    article.product.flagship .product-desc {
-      font-size: 19px;
-      line-height: 1.4;
-      font-style: italic;
-    }
-    article.product.flagship .product-preview {
-      grid-column: 2;
-      grid-row: 1 / span 12;
+    .product-meta { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); overflow-wrap: anywhere; }
+    /* The screen beside the listing: a flat navy block carrying the thumb.
+       `article.product > .product-visual` outranks the `> *` column rule. */
+    article.product > .product-visual {
+      grid-column: 3;
+      grid-row: 1 / span 24;
       align-self: start;
-      padding-left: var(--sb-gutter);
-      border-left: var(--sb-rule);
+      margin: 0;
+      aspect-ratio: 16 / 10;
+      background: var(--cf-screen);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .preview-frame { background: var(--sb-mat); padding: 6px; }
+    .product-visual img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    /* The flagship: the same row, its preview as the screen beside it. */
+    article.product.flagship .product-preview {
+      grid-column: 3;
+      grid-row: 1 / span 24;
+      align-self: start;
+      min-width: 0;
+    }
+    .preview-frame { background: var(--cf-screen); }
     .preview-dots { display: none; }
     .preview-body {
-      position: relative;
       padding: 14px 16px;
-      background: var(--sb-raster);
-      color: var(--text);
-      font-family: var(--sb-mono);
+      color: var(--ink-0);
+      font-family: var(--cf-mono);
       font-size: 12px;
       line-height: 1.7;
       overflow: hidden;
       overflow-wrap: anywhere;
     }
-    .preview-body::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(circle, var(--sb-screen) 0.9px, transparent 1.1px);
-      background-size: 4px 4px;
-      pointer-events: none;
-    }
-    .preview-body > div { position: relative; }
-    .preview-body .k { color: var(--cyan); }
-    .preview-body .s { color: var(--ok); }
-    .preview-body .m { color: var(--magenta-pale); }
-    .preview-body .muted { color: var(--fg-3); }
-    .preview-bullets {
-      position: relative;
-      margin-top: 10px;
-      padding-top: 9px;
-      display: grid;
-      gap: 0;
-    }
-    .preview-bullets::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0;
-      width: 56px; height: 2px;
-      background: var(--brand-gradient);
-    }
+    /* On the screen only two inks pass: the brand cyan and paper. */
+    .preview-body .k { color: var(--cf-screen-ink); }
+    .preview-body .s { color: var(--ink-0); }
+    .preview-body .m { color: var(--cf-screen-ink); }
+    .preview-body .muted { color: var(--cf-screen-ink); }
+    .preview-bullets { margin-top: 10px; display: grid; gap: 0; }
     .preview-bullet {
       display: flex;
       gap: 12px;
       padding: 8px 0;
-      border-bottom: var(--sb-hair);
+      border-bottom: var(--cf-hair);
     }
     .preview-bullet:last-child { border-bottom: 0; }
-    .preview-bullet .num {
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      color: var(--sb-ink-3);
-      font-variant-numeric: tabular-nums;
-      padding-top: 2px;
-    }
-    .preview-bullet .txt {
-      font-family: var(--sb-serif);
-      font-size: 14px;
-      line-height: 1.45;
-      color: var(--sb-ink-2);
-      text-wrap: pretty;
-    }
-    .preview-bullet .txt b { color: var(--sb-ink); font-weight: 700; }
+    .preview-bullet .num { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); font-variant-numeric: tabular-nums; padding-top: 1px; }
+    .preview-bullet .txt { font-size: 15px; line-height: 1.45; color: var(--cf-ink-2); text-wrap: pretty; }
+    .preview-bullet .txt b { color: var(--cf-ink); font-weight: 700; }
 
-    /* ================= 02 THE FOUNDING / 03 THINKING: pull quote + columned body ================= */
-    section.thinking .wrap {
-      display: grid;
-      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-      gap: 0 var(--sb-gutter);
+    /* ================= 02 THE FOUNDING / 03 THINKING: the band ================= */
+    section.thinking {
+      margin-top: 80px;
+      padding: 64px 0 72px;
+      background: var(--cf-band);
+      color: var(--cf-band-ink);
     }
-    section.thinking .section-head { grid-column: 1 / -1; }
+    section.thinking .section-head { border-bottom: 2px solid var(--cf-band-ink); margin-bottom: 0; }
+    section.thinking .section-head .eyebrow, section.thinking .section-head > p { color: var(--cf-band-ink-2); }
+    section.thinking .section-head h2 {
+      /* the line under the label, in the expanded regular */
+      font-weight: 400;
+      font-size: clamp(22px, 2.4vw, 34px);
+      line-height: 1.1;
+      color: var(--cf-band-ink);
+    }
     section.thinking blockquote {
-      grid-column: 1;
-      grid-row: 2 / span 40;
-      align-self: start;
-      padding: 12px 0 18px;
-      border-top: var(--sb-heavy);
-      border-bottom: var(--sb-hair);
-      /* Este's own words, in his hand (see /fonts/fonts.css). */
+      margin: 28px 0 40px;
+      /* The one exception to Archivo: Este's own words, in his hand
+         (see /fonts/fonts.css). Bold, at display size. */
       font-family: "EsteFont Pro", "Segoe Print", "Bradley Hand", cursive;
-      font-size: clamp(30px, 2.8vw, 38px);
-      line-height: 1.25;
-      color: var(--sb-ink);
-      text-wrap: pretty;
-    }
-    section.thinking blockquote::before { content: '\201C'; color: var(--sb-ink-2); margin-right: 2px; }
-    section.thinking blockquote::after { content: '\201D'; color: var(--sb-ink-2); margin-left: 2px; }
-    section.thinking .wrap > p {
-      grid-column: 2;
-      margin: 0 0 1em;
-      font-family: var(--sb-serif);
-      font-size: 17px;
-      line-height: 1.55;
-      color: var(--sb-ink);
-      text-wrap: pretty;
-      hanging-punctuation: first;
-      min-width: 0;
-    }
-    section.thinking .wrap > p strong { font-weight: 700; color: var(--sb-ink); }
-    /* The founding body (render-hub wraps it when theme.json sets
-       foundingBody) runs in two serif columns under a hairline rule, as
-       the sheet sets it. */
-    section.thinking .founding-body {
-      grid-column: 2;
-      min-width: 0;
-      columns: 2;
-      column-gap: var(--sb-gutter);
-      column-rule: var(--sb-hair);
-      font-family: var(--sb-serif);
-      font-size: 17px;
-      line-height: 1.55;
-      color: var(--sb-ink);
-    }
-    section.thinking .founding-body p { margin: 0 0 1em; text-wrap: pretty; hanging-punctuation: first; }
-    section.thinking .founding-body p strong { font-weight: 700; color: var(--sb-ink); }
-    section.thinking .founding-body p:first-child::first-letter,
-    section.thinking blockquote + p::first-letter,
-    section.thinking .section-head + p::first-letter {
-      float: left;
-      font-size: 4.2em;
-      line-height: 0.82;
-      padding: 5px 8px 0 0;
       font-weight: 700;
-      color: var(--sb-ink);
+      font-size: clamp(40px, 6vw, 96px);
+      line-height: 1.02;
+      max-width: 11em;
+      text-wrap: balance;
+      color: var(--cf-band-ink);
     }
-    section.thinking .thinking-link { grid-column: 2; margin-top: 6px; }
+    section.thinking .wrap > p {
+      margin: 0 0 1em;
+      max-width: 36em;
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--cf-band-ink-2);
+      text-wrap: pretty;
+    }
+    section.thinking .wrap > p strong { color: var(--cf-band-ink); font-weight: 700; }
+    /* The founding body (render-hub wraps it when theme.json sets
+       foundingBody) runs in two columns on the band. */
+    section.thinking .founding-body {
+      columns: 2;
+      column-gap: 48px;
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--cf-band-ink-2);
+      min-width: 0;
+    }
+    section.thinking .founding-body p { margin: 0 0 1em; text-wrap: pretty; break-inside: avoid; }
+    section.thinking .founding-body p strong { color: var(--cf-band-ink); font-weight: 700; }
+    section.thinking .thinking-link { margin-top: 6px; }
+    section.thinking .thinking-link a, section.thinking a { color: var(--cf-band-ink); }
     section.thinking .thinking-artifacts {
-      grid-column: 1 / -1;
       margin-top: 28px;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0 var(--sb-gutter);
+      gap: 0 var(--cf-gutter);
     }
-    .thinking-artifact {
-      min-width: 0;
-      padding: 12px 0 16px;
-      border-top: var(--sb-rule);
-    }
-    .thinking-artifact + .thinking-artifact {
-      margin-left: calc(var(--sb-gutter) / -2);
-      padding-left: calc(var(--sb-gutter) / 2);
-      border-left: var(--sb-hair);
-    }
-    .artifact-eyebrow {
-      margin-bottom: 6px;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
+    .thinking-artifact { min-width: 0; padding: 12px 0 16px; border-top: 1px solid var(--cf-band-ink); }
+    .artifact-eyebrow { margin-bottom: 6px; font-size: 15px; font-weight: 500; color: var(--cf-band-ink-2); }
     .artifact-title {
       margin: 0 0 6px;
-      font-family: var(--sb-display);
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 1.18;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 22px;
+      line-height: 1;
       letter-spacing: -0.015em;
-      color: var(--sb-ink);
+      color: var(--cf-band-ink);
       overflow-wrap: anywhere;
     }
-    .artifact-blurb {
-      margin-bottom: 8px;
-      font-family: var(--sb-serif);
-      font-size: 15px;
-      line-height: 1.45;
-      color: var(--sb-ink-2);
-    }
+    .artifact-blurb { margin-bottom: 8px; font-size: 16px; line-height: 1.45; color: var(--cf-band-ink-2); }
     .artifact-links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
-    .artifact-links a { font-size: 11px; letter-spacing: 0.1em; padding-bottom: 2px; }
 
-    /* ================= THE PHOTO PAGE: how the lab runs ================= */
+    /* ================= FIELD NOTES: rows, newest first ================= */
+    section.field-notes .section-head > p { align-self: end; }
+    .field-notes-grid { display: block; }
+    .field-note {
+      display: grid;
+      grid-template-columns: 7.5em minmax(0, 1fr);
+      gap: 6px 20px;
+      padding: 22px 0 24px;
+      border-bottom: var(--cf-hair);
+      min-width: 0;
+    }
+    .field-note > * { grid-column: 2; min-width: 0; }
+    .field-note-eyebrow {
+      grid-column: 1;
+      grid-row: 1 / span 6;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
+      padding-top: .35em;
+      font-variant-numeric: tabular-nums;
+    }
+    .field-note-title {
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: clamp(22px, 2.6vw, 36px);
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      text-wrap: balance;
+      overflow-wrap: anywhere;
+    }
+    .field-note-subtitle { font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); max-width: 44em; text-wrap: pretty; }
+    .field-note-tagline { margin-top: 4px; font-size: 16px; font-style: italic; line-height: 1.5; color: var(--cf-ink-2); max-width: 44em; text-wrap: pretty; }
+    .field-note-link { margin-top: 8px; }
+    .field-notes-subscribe { margin-top: 18px; }
+    /* The notes past railLimit fold into a <details>; its summary is a row
+       in the same list, and the notes it reveals wear the same dress. */
+    .field-notes-more { margin: 0; }
+    .field-notes-more > summary {
+      list-style: none;
+      display: inline-flex;
+      margin: 18px 0 0;
+      cursor: pointer;
+      user-select: none;
+    }
+    .field-notes-more > summary::-webkit-details-marker { display: none; }
+    .field-notes-more[open] > summary { margin-bottom: 4px; }
+    .field-notes-more > summary:focus-visible { outline: 2px solid var(--cf-ink); outline-offset: 2px; }
+
+    /* ================= HOW THE LAB RUNS: three screens and a caption ================= */
     section.lab-runs .frames {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 24px var(--sb-gutter);
-      counter-reset: plate;
+      gap: 24px var(--cf-gutter);
+      margin-top: 36px;
     }
-    section.lab-runs .frame {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      counter-increment: plate;
-    }
+    section.lab-runs .frame { display: flex; flex-direction: column; min-width: 0; }
     section.lab-runs .frame img {
       order: -1;
       display: block;
       width: 100%;
       aspect-ratio: 16 / 10;
       object-fit: cover;
-      background: var(--sb-raster);
-      border: 6px solid var(--sb-mat);
+      background: var(--cf-screen);
     }
-    section.lab-runs .frame-tag {
-      position: relative;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 0 8px;
-      margin-top: 10px;
-      padding-top: 9px;
-      font-family: var(--sb-serif);
-      font-size: 14px;
-      line-height: 1.45;
-      color: var(--sb-ink-3);
-    }
-    section.lab-runs .frame-tag::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0;
-      width: 56px; height: 2px;
-      background: var(--brand-gradient);
-    }
-    section.lab-runs .frame-tag::after {
-      content: 'Plate ' counter(plate, decimal-leading-zero);
-      order: -1;
-      font-family: var(--sb-mono);
-      font-weight: 600;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-2);
-      font-variant-numeric: tabular-nums;
-    }
+    section.lab-runs .frame-tag { margin-top: 10px; font-size: 15px; font-weight: 500; line-height: 1.45; color: var(--cf-ink-2); }
     section.lab-runs .caption {
       margin-top: 28px;
       columns: 2;
-      column-gap: var(--sb-gutter);
-      column-rule: var(--sb-hair);
-      font-family: var(--sb-serif);
-      font-size: 16px;
+      column-gap: var(--cf-gutter);
+      font-size: 17px;
       line-height: 1.55;
-      color: var(--sb-ink-2);
+      color: var(--cf-ink-2);
     }
     section.lab-runs .caption p { margin: 0 0 1em; text-wrap: pretty; break-inside: avoid; }
     section.lab-runs .lab-runs-link { margin-top: 18px; }
 
-    /* ================= THE GAMES PAGE: play ================= */
+    /* ================= PLAY: the widgets, each on its own screen ================= */
     section.play .section-head .play-aside {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: 10px;
-      padding-bottom: 6px;
+      flex: 1 1 20em;
+      max-width: 34em;
       min-width: 0;
     }
     section.play .play-aside p, section.play .section-head > p {
-      font-family: var(--sb-serif);
       font-size: 17px;
-      line-height: 1.5;
-      color: var(--sb-ink-2);
+      line-height: 1.45;
+      color: var(--cf-ink-2);
       text-wrap: pretty;
     }
     .play-grid, .play-grid.two-up {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 0 var(--sb-gutter);
+      gap: 0 var(--cf-gutter);
       justify-items: center;
       max-width: none;
-      margin: 0;
+      margin: 36px 0 0;
       counter-reset: puzzle;
     }
-    /* Each widget mounted on a mat like the flagship plate. The widgets
-       keep their own chrome; only the mat and the caption are the paper's. */
+    /* The widgets keep their own dark chrome: they are screens already. */
     .play-widget {
       position: relative;
       align-self: start;
       width: 100%;
       max-width: 432px;
-      margin-bottom: 44px;
-      padding: 6px;
-      background: var(--sb-mat);
+      margin-bottom: 48px;
       counter-increment: puzzle;
     }
     .play-widget::after {
-      content: 'Puzzle ' counter(puzzle, decimal-leading-zero);
+      content: 'Puzzle ' counter(puzzle);
       position: absolute;
       left: 0;
       top: 100%;
       margin-top: 10px;
-      padding-top: 9px;
-      font-family: var(--sb-mono);
-      font-weight: 600;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-2);
-      background-image: var(--brand-gradient);
-      background-repeat: no-repeat;
-      background-position: 0 0;
-      background-size: 56px 2px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
     }
-    /* Each mat hugs its own plate (align-self: start above): a mat that
-       stretched to the row's tallest widget would show bare paper under a
-       shorter one, and the widgets change height with their own state. */
     .play-widget > .bacon-trail-widget,
     .play-widget > .box-office-widget,
     .play-widget > .tag-that-line-widget { max-width: none; }
-    /* A lone last plate in a two-across row is centered, not stranded. */
     @media (min-width: 640px) and (max-width: 1011px) {
       .play-grid > .play-widget:last-child:nth-child(odd) { grid-column: 1 / -1; }
     }
     .play-games {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px var(--sb-gutter);
+      gap: 0 var(--cf-gutter);
       max-width: none;
       margin: 8px 0 0;
     }
@@ -1175,240 +762,160 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      padding: 14px 16px;
-      border: var(--sb-hair);
-      color: var(--sb-ink);
+      padding: 16px 0 18px;
+      border-top: var(--cf-hair);
+      color: var(--cf-ink);
+      text-decoration: none;
       min-width: 0;
     }
-    .play-game-card:hover { border-color: var(--sb-rule-color); color: var(--sb-ink); }
-    .play-game-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
-    .play-game-note { color: var(--magenta-pale); }
+    .play-game-meta { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    .play-game-note { color: var(--magenta); }
     .play-game-card h3 {
       margin: 0;
-      font-family: var(--sb-display);
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 1.18;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 22px;
+      line-height: 1;
       letter-spacing: -0.015em;
     }
-    .play-game-card p { font-family: var(--sb-serif); font-size: 15px; line-height: 1.45; color: var(--sb-ink-2); }
-    .play-game-cta {
-      margin-top: auto;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--cyan);
-    }
-    .play-game-card:hover .play-game-cta { color: var(--sb-link-hover); }
+    .play-game-card p { font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); }
+    .play-game-cta { margin-top: auto; font-size: 17px; font-weight: 500; text-decoration: underline; text-decoration-thickness: var(--cf-underline); text-underline-offset: .14em; }
+    .play-game-card:hover .play-game-cta { text-decoration-thickness: var(--cf-underline-hover); }
 
-    /* ================= ABOUT: the manifesto, the star map on a mat, the principles ================= */
+    /* ================= ABOUT: the manifesto, the star map as a screen, the principles ================= */
     .manifesto-inner {
       display: grid;
       grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      gap: 0 var(--sb-gutter);
+      gap: 24px 48px;
+      padding-top: 56px;
     }
-    .manifesto-inner > div:first-child {
-      min-width: 0;
-      padding-right: var(--sb-gutter);
-      border-right: var(--sb-rule);
-    }
+    .manifesto-inner > div:first-child { min-width: 0; }
     section.manifesto h2 {
-      margin: 0;
-      font-family: var(--sb-display);
-      font-weight: 500;
+      margin: 8px 0 0;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
       font-size: clamp(32px, 3.8vw, 52px);
-      line-height: 1.04;
-      letter-spacing: -0.025em;
-      color: var(--sb-ink);
+      line-height: .96;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
       text-wrap: balance;
       overflow-wrap: anywhere;
-      text-shadow: 0 1px 0 var(--sb-impression);
     }
-    section.manifesto h2 em {
-      font-family: var(--sb-serif);
-      font-style: italic;
-      font-weight: 400;
-      letter-spacing: 0;
-      color: var(--sb-ink-2);
-      text-shadow: none;
-    }
+    section.manifesto h2 em { font-style: normal; font-weight: 400; letter-spacing: -0.01em; }
     .stack {
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
       margin-top: 18px;
-      padding-top: 10px;
-      border-top: var(--sb-hair);
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
+      padding-top: 12px;
+      border-top: var(--cf-hair);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
     }
     .stack-chip + .stack-chip::before { content: '·'; margin: 0 8px; }
-    .manifesto-body {
-      min-width: 0;
-      font-family: var(--sb-serif);
-      font-size: 17px;
-      line-height: 1.55;
-      color: var(--sb-ink);
-    }
-    .manifesto-body p { margin: 0 0 1em; text-wrap: pretty; hanging-punctuation: first; }
+    .manifesto-body { min-width: 0; font-size: 18px; line-height: 1.55; color: var(--cf-ink); }
+    .manifesto-body p { margin: 0 0 1em; text-wrap: pretty; }
     .manifesto-body p:last-child { margin-bottom: 0; }
-    .manifesto-body p:first-child::first-letter {
-      float: left;
-      font-size: 4.2em;
-      line-height: 0.82;
-      padding: 5px 8px 0 0;
-      font-weight: 700;
-      color: var(--sb-ink);
-    }
-    .manifesto-body p strong { font-weight: 700; color: var(--sb-ink); }
-    .manifesto-body p a { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    .manifesto-body p strong { font-weight: 700; }
 
-    /* The star map: the canvas draws its own sky; the mat is a box-shadow
-       spread around it so the caption stays on the slate AND the canvas's
-       client box is untouched (a border would shift the untouched JS's
-       pointer hit-test and tooltip by its width). Legend dots are flat. */
-    .starmap { margin: 42px 0 0; position: relative; }
-    .starmap-sky {
-      display: block;
-      width: 100%;
-      height: 340px;
-      background: var(--sb-raster);
-      box-shadow: 0 0 0 6px var(--sb-mat);
-    }
+    /* The star map: the canvas draws its own sky, on the screen navy. The
+       canvas's client box is untouched (a border would shift the JS
+       hit-test); the caption sits on the paper under it. */
+    .starmap { margin: 44px 0 0; position: relative; }
+    .starmap-sky { display: block; width: 100%; height: 340px; background: var(--cf-screen); }
     .starmap-caption {
       position: relative;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 12px 16px;
-      margin-top: 16px;
-      padding-top: 9px;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
+      align-items: baseline;
+      gap: 8px 16px;
+      margin-top: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
     }
-    .starmap-caption::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0;
-      width: 56px; height: 2px;
-      background: var(--brand-gradient);
-    }
-    .starmap-label { font-weight: 600; color: var(--sb-ink-2); }
+    .starmap-label { font-weight: 700; color: var(--cf-ink); }
     .starmap-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; }
     .starmap-legend .lg { display: inline-flex; align-items: center; gap: 6px; }
-    .starmap-legend .lg::before { content: ''; width: 7px; height: 7px; border-radius: 50%; }
-    .starmap-legend .lg-plugin::before   { background: var(--cyan); }
-    .starmap-legend .lg-flagship::before { background: var(--magenta); }
-    .starmap-legend .lg-product::before  { background: var(--sb-ink); }
+    .starmap-legend .lg::before { content: ''; width: 8px; height: 8px; }
+    .starmap-legend .lg-plugin::before   { background: var(--cf-cyan); }
+    .starmap-legend .lg-flagship::before { background: var(--cf-band); }
+    .starmap-legend .lg-product::before  { background: var(--cf-ink); }
     .starmap-tooltip {
       position: absolute;
       z-index: 2;
       pointer-events: none;
       padding: 5px 9px;
-      font-family: var(--sb-mono);
-      font-size: 10.5px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--sb-ink);
-      background: var(--sb-raster);
-      border: var(--sb-hair);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--cf-screen-ink);
+      background: var(--cf-screen);
       white-space: nowrap;
       max-width: calc(100% - 12px);
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .principles {
-      margin-top: 34px;
+      margin-top: 44px;
       padding-top: 14px;
-      border-top: var(--sb-heavy);
+      border-top: var(--cf-heavy);
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0 var(--sb-gutter);
+      gap: 0 var(--cf-gutter);
     }
     .principle { min-width: 0; padding-bottom: 14px; }
-    .principle + .principle {
-      margin-left: calc(var(--sb-gutter) / -2);
-      padding-left: calc(var(--sb-gutter) / 2);
-      border-left: var(--sb-hair);
-    }
-    .principle .num {
-      margin-bottom: 6px;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-      font-variant-numeric: tabular-nums;
-    }
+    .principle .num { margin-bottom: 8px; font-size: 15px; font-weight: 500; color: var(--cf-ink-2); font-variant-numeric: tabular-nums; }
     .principle h4 {
-      margin: 0 0 6px;
-      font-family: var(--sb-display);
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 1.18;
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 22px;
+      line-height: 1;
       letter-spacing: -0.015em;
-      color: var(--sb-ink);
+      color: var(--cf-ink);
     }
-    .principle p { font-family: var(--sb-serif); font-size: 15px; line-height: 1.45; color: var(--sb-ink-2); text-wrap: pretty; }
+    .principle p { font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); text-wrap: pretty; }
 
-    /* ================= THE BACK PAGE: 04 Notices ================= */
-    .backpage { padding: 34px 0 44px; }
-    .backpage section { padding: 0; border-top: 0; }
+    /* ================= THE BACK PAGE: also from the lab, support, contact ================= */
+    .backpage { padding: 56px 0 0; }
+    .backpage section { padding: 0; }
     .backpage .wrap .wrap { padding: 0; max-width: none; }
     .notice-head {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
       gap: 12px;
-      padding-bottom: 8px;
-      margin-bottom: 14px;
-      border-bottom: var(--sb-rule);
-      font-family: var(--sb-mono);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--sb-ink);
+      padding-bottom: 10px;
+      margin-bottom: 8px;
+      border-bottom: var(--cf-heavy);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
     }
-    .notice-head .folio { font-weight: 400; }
-    /* The lab pool as short boxed notices with hairline rules. */
+    section.lab { margin-top: 36px; }
     section.lab .shelf {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
+      gap: 0 var(--cf-gutter);
     }
     section.lab .lab-card {
       display: flex;
       flex-direction: column;
       min-width: 0;
-      padding: 12px 14px 12px;
-      border: var(--sb-hair);
+      padding: 18px 0 20px;
+      border-bottom: var(--cf-hair);
     }
     section.lab .lab-card .thumb {
       position: relative;
       display: block;
-      margin: 0 0 10px;
+      margin: 0 0 12px;
       aspect-ratio: 16 / 9;
       overflow: hidden;
-      background: var(--sb-raster);
-      border: 4px solid var(--sb-mat);
+      background: var(--cf-screen);
     }
     section.lab .lab-card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     section.lab .lab-card .thumb.video::after {
@@ -1417,337 +924,215 @@
       top: 50%; left: 50%;
       width: 40px; height: 40px;
       margin: -20px 0 0 -20px;
-      border-radius: 999px;
-      background: var(--sb-raster) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%23F7F5F0' d='M5.5 3.5v9l7-4.5z'/></svg>") center/16px no-repeat;
-      border: 1px solid var(--sb-ink);
+      background: var(--cf-screen) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%2317D4FA' d='M5.5 3.5v9l7-4.5z'/></svg>") center/16px no-repeat;
+      border: 1px solid var(--cf-screen-ink);
       pointer-events: none;
     }
-    section.lab .lab-card .thumb.video:hover::after { background-color: var(--magenta); }
     section.lab .lab-card .thumb.static { cursor: default; }
     section.lab .lab-card .thumb.static img { object-fit: contain; }
     section.lab .lab-card h4 {
-      margin: 0 0 3px;
-      font-family: var(--sb-display);
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      color: var(--sb-ink);
+      margin: 0 0 4px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 18px;
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
       overflow-wrap: anywhere;
     }
-    section.lab .lab-card .meta {
-      flex: 0 0 auto;
-      margin: 0 0 8px;
-      font-family: var(--sb-mono);
-      font-size: 10.5px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
-    section.lab .lab-card p {
-      flex: 1;
-      margin: 0 0 8px;
-      font-family: var(--sb-serif);
-      font-size: 14px;
-      line-height: 1.5;
-      color: var(--sb-ink-2);
-      text-wrap: pretty;
-    }
-    section.lab .lab-card .links {
-      padding-top: 8px;
-      border-top: var(--sb-hair);
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      color: var(--sb-ink-3);
-      overflow-wrap: anywhere;
-    }
-    section.lab .shuffle-note {
-      margin-top: 12px;
-      text-align: right;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
+    section.lab .lab-card .meta { flex: 0 0 auto; margin: 0 0 8px; font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    section.lab .lab-card p { flex: 1; margin: 0 0 10px; font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); text-wrap: pretty; }
+    section.lab .lab-card .links { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); overflow-wrap: anywhere; }
+    section.lab .lab-card .links a { color: var(--cf-ink); }
+    section.lab .shuffle-note { margin-top: 14px; text-align: right; }
     section.lab .shuffle-note button {
       background: none;
       border: 0;
       padding: 0;
-      color: var(--cyan);
+      color: var(--cf-ink);
       font: inherit;
-      letter-spacing: inherit;
-      text-transform: inherit;
+      font-size: 17px;
+      font-weight: 500;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
       cursor: pointer;
     }
-    section.lab .shuffle-note button:hover { color: var(--sb-link-hover); text-decoration: underline; text-underline-offset: 3px; }
+    section.lab .shuffle-note button:hover { text-decoration-thickness: var(--cf-underline-hover); }
 
-    /* Support and contact as two boxed notices in the classified columns. */
+    /* Support and contact: two columns under their own heavy rules. */
     .notices {
       display: grid;
       grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      gap: 12px var(--sb-gutter);
-      margin-top: 30px;
+      gap: 24px var(--cf-gutter);
+      margin-top: 48px;
       align-items: start;
     }
     .backpage section.support, .backpage section.contact {
       min-width: 0;
-      padding: 18px 20px 20px;
-      border: var(--sb-hair);
+      padding-top: 14px;
+      border-top: var(--cf-heavy);
     }
     .support-box { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
     .support-copy h3 {
       margin: 0 0 8px;
-      font-family: var(--sb-display);
-      font-weight: 500;
-      font-size: 24px;
-      line-height: 1.12;
-      letter-spacing: -0.02em;
-      color: var(--sb-ink);
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
     }
-    .support-copy p { font-family: var(--sb-serif); font-size: 15px; line-height: 1.5; color: var(--sb-ink-2); text-wrap: pretty; }
+    .support-copy p { font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); text-wrap: pretty; }
     .sponsor-cta svg { width: 14px; height: 14px; fill: currentColor; }
     .contact-inner { display: grid; grid-template-columns: 1fr; gap: 16px; }
     .contact-inner > div { min-width: 0; }
-    section.contact .eyebrow { margin-bottom: 10px; }
+    section.contact .eyebrow { margin-bottom: 8px; font-size: 15px; }
     section.contact h2 {
       margin: 0 0 8px;
-      font-family: var(--sb-display);
-      font-weight: 500;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
       font-size: 28px;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      color: var(--sb-ink);
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
       text-wrap: balance;
       overflow-wrap: anywhere;
     }
-    .contact-sub {
-      margin-bottom: 12px;
-      font-family: var(--sb-serif);
-      font-size: 15px;
-      line-height: 1.5;
-      color: var(--sb-ink-2);
-      text-wrap: pretty;
-    }
-    .contact-inner .btn { overflow-wrap: anywhere; text-transform: none; letter-spacing: 0.04em; }
-    .contact-list { border-top: var(--sb-rule); }
+    .contact-sub { margin-bottom: 12px; font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); text-wrap: pretty; }
+    .contact-inner .btn { overflow-wrap: anywhere; }
+    .contact-list { border-top: var(--cf-hair); }
     .contact-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
       padding: 10px 0;
-      border-bottom: var(--sb-hair);
-      color: var(--sb-ink);
+      border-bottom: var(--cf-hair);
+      color: var(--cf-ink);
+      text-decoration: none;
       min-width: 0;
     }
     .contact-row > div { min-width: 0; }
-    .contact-row .label {
-      font-family: var(--sb-mono);
-      font-size: 10.5px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sb-ink-3);
-    }
-    .contact-row .value { font-family: var(--sb-mono); font-size: 13px; overflow-wrap: anywhere; }
-    .contact-row .arrow { color: var(--sb-ink-3); }
-    .contact-row:hover { color: var(--sb-link-hover); }
-    .contact-row:hover .arrow { color: var(--sb-link-hover); }
+    .contact-row .label { font-size: 15px; font-weight: 500; color: var(--cf-ink-2); }
+    .contact-row .value { font-size: 17px; overflow-wrap: anywhere; }
+    .contact-row .arrow { color: var(--cf-ink-2); }
+    .contact-row:hover .value { text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); text-underline-offset: .14em; }
 
-    /* ================= FOOTER: the color bar, the section index, the imprint ================= */
-    footer.footer {
-      margin-top: 24px;
-      border-top: var(--sb-heavy);
-      position: relative;
-    }
-    footer.footer::before {
-      content: '';
-      position: absolute;
-      left: 0; right: 0; top: 5px;
-      border-top: var(--sb-hair);
-    }
+    /* ================= FOOTER: the heavy rule, the index, the imprint ================= */
+    footer.footer { margin-top: 88px; border-top: var(--cf-heavy); }
     .footer-inner {
-      padding: 28px 24px 22px;
+      padding: 22px var(--cf-gutter) 0;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       flex-wrap: wrap;
       gap: 16px 24px;
     }
-    .footer-meta {
-      font-family: var(--sb-mono);
-      font-size: 12.5px;
-      line-height: 1.7;
-      letter-spacing: 0.04em;
-      color: var(--sb-ink-2);
-      min-width: 0;
-    }
-    .footer-meta .brand-tagline {
-      font-family: var(--sb-serif);
-      font-style: italic;
-      font-size: 15px;
-      letter-spacing: 0;
-      color: var(--sb-ink);
-    }
+    .footer-meta { font-size: 17px; line-height: 1.6; color: var(--cf-ink); min-width: 0; }
+    .footer-meta .brand-tagline { font-weight: 500; }
     .footer-links {
       width: 100%;
       display: flex;
       flex-wrap: wrap;
       gap: 6px 22px;
       padding-top: 12px;
-      border-top: var(--sb-hair);
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      border-top: var(--cf-hair);
+      font-size: 17px;
+      font-weight: 500;
     }
-    .footer-links a { color: var(--sb-ink); }
-    .footer-links a:hover { color: var(--sb-link-hover); }
-
-    /* The imprint. The wayfinding sentence, where a paper prints its
-       imprint: at the foot of the editorial page. Mono, legible at every
-       width, the link in cyan. */
-    .imprint {
-      border-top: var(--sb-hair);
-      padding: 14px 24px 44px;
-    }
-    .imprint p {
-      font-family: var(--sb-mono);
-      font-size: 12px;
-      line-height: 1.7;
-      letter-spacing: 0.04em;
-      color: var(--sb-ink-2);
-    }
-    .imprint .k { font-weight: 600; color: var(--sb-ink); }
-    .imprint .sep { color: var(--sb-ink-3); padding: 0 4px; }
-    .imprint a {
-      color: var(--cyan);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      text-decoration-thickness: 1px;
-      white-space: nowrap;
-    }
-    .imprint a:hover { color: var(--sb-link-hover); }
+    .footer-links a { color: var(--cf-ink); text-decoration: none; }
+    .footer-links a:hover { text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); }
+    /* The imprint: the wayfinding sentence again, at the foot. */
+    .imprint { padding: 14px var(--cf-gutter) 56px; }
+    .imprint p { font-size: 17px; line-height: 1.6; color: var(--cf-ink-2); }
+    .imprint .k { font-weight: 700; color: var(--cf-ink); }
+    .imprint .sep { padding: 0 4px; }
+    .imprint a { color: var(--cf-ink); white-space: nowrap; }
 
     /* ================= 768 ================= */
     @media (max-width: 960px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 32px 0; }
-      .lead { padding-right: 0; border-right: 0; }
-      .field-notes-grid { columns: 2; column-gap: var(--sb-gutter); column-rule: var(--sb-hair); }
-      .field-note { padding-top: 12px; }
-      /* The stories zone renders a FULL section (its own heading, lead, and
-         every published note), and this theme nests that section inside the
-         hero's .rail. Beside the lead at 5fr it reads as a front-page rail;
-         stacked at one column it became a ~1750px editorial block sitting
-         AHEAD of the portfolio, pushing .products 1278px further down at
-         390px than the active theme does (measured, not inferred). Cap the
-         rail to a two-note teaser on phones: every note keeps its own
-         indexed page and its own link, and the desktop front page is
-         untouched. Revisit if the rail ever stops being a hero child. */
-      .rail .field-notes-grid .field-note:nth-of-type(n+3) { display: none; }
-      .nav-links a { padding: 11px 12px; font-size: 11px; letter-spacing: 0.1em; }
-      .section-head { grid-template-columns: 1fr; gap: 10px 0; }
-      .section-head > p { padding-bottom: 0; }
-      .products { columns: 2; }
-      article.product.flagship { grid-template-columns: minmax(0, 1fr) minmax(0, 44%); }
-      section.thinking .wrap { grid-template-columns: 1fr; }
-      section.thinking blockquote { grid-column: 1; grid-row: auto; margin-bottom: 22px; }
-      section.thinking .wrap > p, section.thinking .thinking-link, section.thinking .founding-body { grid-column: 1; }
+      .nav-links { gap: 4px 20px; }
+      .section-head { align-items: start; }
       section.thinking .thinking-artifacts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .thinking-artifact + .thinking-artifact { margin-left: 0; padding-left: 0; border-left: 0; }
-      .thinking-artifact:nth-child(2n) {
-        margin-left: calc(var(--sb-gutter) / -2);
-        padding-left: calc(var(--sb-gutter) / 2);
-        border-left: var(--sb-hair);
-      }
       section.lab-runs .frames { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .manifesto-inner { grid-template-columns: 1fr; gap: 24px 0; }
-      .manifesto-inner > div:first-child { padding-right: 0; border-right: 0; }
+      section.lab-runs .frames .frame:last-child:nth-child(odd) { grid-column: 1 / -1; }
+      .manifesto-inner { grid-template-columns: 1fr; }
       .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .principle + .principle { margin-left: 0; padding-left: 0; border-left: 0; }
-      .principle:nth-child(2n) {
-        margin-left: calc(var(--sb-gutter) / -2);
-        padding-left: calc(var(--sb-gutter) / 2);
-        border-left: var(--sb-hair);
-      }
       section.lab .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .notices { grid-template-columns: 1fr; }
     }
     /* ================= 390 ================= */
     @media (max-width: 600px) {
-      .wrap { padding: 0 18px; }
-      .masthead-title { padding: 18px 0 12px; }
-      .dateline { padding: 12px 0; }
-      .hero { padding-top: 26px; }
+      .wrap { padding: 0 20px; }
+      .masthead { padding-top: 20px; }
+      .hero { padding: 48px 0 56px; }
+      /* the expanded cut is wide: "streetwear." must fit the 335px column
+         on its own line. The sheet fit it at 48px; this h1 carries the
+         tagline block inside it and the period fell off at 48, so 42. */
+      .lead h1 { font-size: clamp(36px, 11.2vw, 72px); overflow-wrap: break-word; }
       .hero-meta { grid-template-columns: 1fr; }
-      .field-notes-grid { columns: 1; }
-      .products { columns: 1; }
-      article.product.flagship { grid-template-columns: 1fr; }
-      article.product.flagship .product-preview {
-        grid-column: 1;
+      article.product { grid-template-columns: 2.4em minmax(0, 1fr); padding: 16px 0 18px; gap: 6px 14px; }
+      article.product::before { grid-row: 1; }
+      .product-visual, article.product.flagship .product-preview {
+        grid-column: 2;
         grid-row: auto;
-        padding-left: 0;
-        border-left: 0;
-        margin-top: 12px;
+        margin-top: 8px;
       }
+      section.thinking { margin-top: 56px; padding: 44px 0 52px; }
+      section.thinking .founding-body { columns: 1; }
       section.thinking .thinking-artifacts { grid-template-columns: 1fr; }
-      .thinking-artifact:nth-child(n) { margin-left: 0; padding-left: 0; border-left: 0; }
+      .field-note { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 18px 0 20px; }
+      .field-note > *, .field-note-eyebrow { grid-column: 1; grid-row: auto; }
       section.lab-runs .frames { grid-template-columns: 1fr; }
       section.lab-runs .caption { columns: 1; }
-      section.thinking .founding-body { columns: 1; }
       .play-grid, .play-grid.two-up { grid-template-columns: 1fr; }
       .play-games { grid-template-columns: 1fr; }
       .starmap-sky { height: 260px; }
       .starmap-caption { flex-direction: column; align-items: flex-start; gap: 6px; }
       .principles { grid-template-columns: 1fr; }
-      .principle:nth-child(n) { margin-left: 0; padding-left: 0; border-left: 0; }
       section.lab .shelf { grid-template-columns: 1fr; }
-      .backpage section.support, .backpage section.contact { padding: 16px 16px 18px; }
-      .footer-inner { padding: 22px 18px 16px; }
-      .imprint { padding: 12px 18px 36px; }
+      .footer-inner { padding: 22px 20px 0; }
+      .imprint { padding: 12px 20px 40px; }
     }
   </style>
   <!-- Token layer: the theme registry (content/themes.json) decides the active
-       theme; this shell belongs to themes/slate-broadsheet/theme.json. -->
-  <link rel="stylesheet" href="/themes/slate-broadsheet/tokens.css">
+       theme; this shell belongs to themes/cyan-fade/theme.json. -->
+  <link rel="stylesheet" href="/themes/cyan-fade/tokens.css">
 <link rel="stylesheet" href="/assets/logos/signature.css">
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- =============== MASTHEAD =============== -->
+<!-- =============== MASTHEAD: the top strip =============== -->
 <header class="masthead" id="top">
   <div class="wrap">
-    <div class="ears">
-      <span class="meta">626labs.dev</span>
-      <span class="regbar" aria-hidden="true"><i class="c"></i><i class="m"></i><i class="k"></i></span>
+    <div class="top">
+      <a class="wordmark disp" href="#top">626 Labs</a>
+      <nav class="nav" aria-label="Sections">
+        <ul class="nav-links">
+          <li><a href="#work">Work</a></li>
+          <li><a href="/plugins/">Plugins</a></li>
+          <li><a href="plugins/#thesis">Thinking</a></li>
+          <li><a href="#field-notes">Field Notes</a></li>
+          <li><a href="#lab">Lab</a></li>
+          <li><a href="#play">Play</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="https://github.com/sponsors/estevanhernandez-stack-ed">Sponsor</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
     </div>
-    <p class="masthead-title press"><a href="#top">626 <span class="lab">Labs</span></a></p>
-    <p class="dateline">
-      <span class="folio">Fort Worth, TX</span>
-      <span class="folio">Monthly edition</span>
-    </p>
-    <nav class="nav" aria-label="Sections">
-      <ul class="nav-links">
-        <li><a href="#work">Work</a></li>
-        <li><a href="/plugins/">Plugins</a></li>
-        <li><a href="plugins/#thesis">Thinking</a></li>
-        <li><a href="#field-notes">Field Notes</a></li>
-        <li><a href="#lab">Lab</a></li>
-        <li><a href="#play">Play</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="https://github.com/sponsors/estevanhernandez-stack-ed">Sponsor</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
+    <p class="wayfinding">Theme: Cyan Fade &middot; this site changes monthly &middot; <a href="/themes.html">see all themes</a></p>
   </div>
 </header>
 
 <main id="main">
-<!-- =============== THE LEAD STORY + THE FRONT RAIL =============== -->
+<!-- =============== THE HERO: left, on the blue =============== -->
 <section class="hero" id="lead">
   <div class="wrap hero-inner">
     <article class="lead">
@@ -1782,169 +1167,11 @@
         <div class="mark-chip success chip-d"><span class="dot"></span>vibe-test · live</div>
       </div>
       <!-- SITE_JSON:hero-chips:end -->
-      <figure class="plate lead-plate">
-        <div class="plate-mat">
-          <div class="raster">
-            <img src="assets/brand/logo-lockup-transparent-720.webp" alt="626 Labs — Imagine Something Else" width="720" height="720" decoding="async"/>
-          </div>
-        </div>
-        <figcaption><b>Plate</b>The 626 Labs lockup, screened and mounted. Imagine Something Else.</figcaption>
-      </figure>
     </article>
-
-    <div class="rail">
-      <!-- Field Notes, auto-discovered from content/stories/*.md (frontmatter, draft: false). -->
-      <!-- The rail collapses entirely when zero published stories exist. -->
-      <!-- SITE_JSON:stories:start -->
-<section class="section field-notes" id="field-notes">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow"><span>Field Notes</span><span class="line"></span></div>
-        <h2>What we shipped, what bit us, what we'd do differently.</h2>
-      </div>
-      <p>Long-form retrospectives — the unfiltered version of what each launch actually looked like.</p>
-    </div>
-    <div class="field-notes-grid">
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-10-16</div>
-        <h3 class="field-note-title">Right Click PNG 0.1.2 gets one tidy menu entry and stops overwriting your originals</h3>
-        <p class="field-note-subtitle">Right Click PNG adds Convert to PNG and Copy as PNG to the Windows File Explorer right-click menu, and 0.1.2 cleans up that menu and protects the files you already have.</p>
-        <p class="field-note-tagline">One menu entry, and your originals stay put.</p>
-        <div class="field-note-link">
-          <a href="https://626labs.dev/editorial/2026-10-16-right-click-png-0-1-2/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-10-16</div>
-        <h3 class="field-note-title">Sanduhr for Mac now reads your Claude Code folders, not just your Claude limits</h3>
-        <p class="field-note-subtitle">Thirty-two Mac releases took Sanduhr für Claude from a burn-rate widget to a desktop, statusline and config desk for Claude.ai and Claude Code users.</p>
-        <p class="field-note-tagline">Pace the tokens. Then see what every session loads.</p>
-        <div class="field-note-link">
-          <a href="https://626labs.dev/editorial/2026-10-16-sanduhr-for-mac-in-october/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-09-28</div>
-        <h3 class="field-note-title">Containment for Frontier AI</h3>
-        <p class="field-note-subtitle">Containment is an architecture, not a sandbox setting. Revised after a summer of real escapes.</p>
-        <p class="field-note-tagline">In April a frontier model escaped a red-team sandbox. By August the record held three more incidents, and the audit logs themselves could be forged.</p>
-        <div class="field-note-link">
-          <a href="https://626labs.dev/editorial/2026-09-28-containment-for-frontier-ai/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-09-09 · rororo</div>
-        <h3 class="field-note-title">The words were the easy part</h3>
-        <p class="field-note-subtitle">RoRoRo shipped in six languages. The translating took an afternoon; finding every place the product speaks took the rest of the week.</p>
-        <p class="field-note-tagline">I set out to translate an app. What I found was every place a product speaks, and every one of them breaks differently.</p>
-        <div class="field-note-link">
-          <a href="https://626labs.dev/editorial/2026-09-09-the-words-were-the-easy-part/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </article>
-    </div>
-    <details class="field-notes-more">
-      <summary>More Field Notes (10)</summary>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-07-03</div>
-        <h3 class="field-note-title">RoRoRo grew eyes, hands, and a heartbeat</h3>
-        <p class="field-note-subtitle">The Roblox multi-launcher you could recommend on camera now has three plugins (perception, action, and a keep-alive), wired together by a consent-gated bridge that never leaves your machine.</p>
-        <p class="field-note-tagline">A launcher became a platform. Three plugins, one nervous system, and a trust bar that holds at every rung.</p>
-        <div class="field-note-link">
-          <a href="https://626labs.dev/editorial/2026-07-03-rororo-grew-a-family/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-06-26</div>
-        <h3 class="field-note-title">The first 626 Labs Day</h3>
-        <p class="field-note-subtitle">Today is 6/26/26, the first 626 Day since 626 Labs existed. The whole surface is shipped and live in one window: 14 Claude Code plugins and 6 Microsoft Store apps, one new and two with major updates this week.</p>
-        <p class="field-note-tagline">The whole surface is shipped and live, and on 6/26 that's allowed to be the whole point.</p>
-        <div class="field-note-link">
-          <a href="https://626labs.dev/editorial/2026-06-26-the-first-626-day/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-05-29</div>
-        <h3 class="field-note-title">Same code, 3x the thinking: what I did with my first 8 hours with Opus 4.8.</h3>
-        <p class="field-note-subtitle">I turned on max-orchestration to see what would happen. Eight sessions later the agent had burned three times the tokens and written the same amount of code. The extra went into tests it caught before I saw them, and into a run that stopped answering the wheel once it started.</p>
-        <p class="field-note-tagline">3.2x the tokens, the same lines of code. The extra went into care, not output, and into a run that stopped answering the wheel.</p>
-        <div class="field-note-link">
-          <a href="https://626labs.dev/editorial/2026-05-29-same-code-triple-thinking/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-05-24 · vibe-walk</div>
-        <h3 class="field-note-title">vibe-walk builds the onboarding tour, and tells you when not to</h3>
-        <p class="field-note-subtitle">A Claude Code plugin that reads your app, builds an instrumented spotlight tour you own, and is honest when a tour won't help.</p>
-        <p class="field-note-tagline">Tours your users actually finish.</p>
-        <div class="field-note-link">
-          <a href="https://626labs.dev/editorial/2026-05-24-vibe-walk-launch/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-05-23 · vibe-insights</div>
-        <h3 class="field-note-title">I complained that /insights wasn't insightful. Seven hours later I had a plugin that beats it.</h3>
-        <p class="field-note-subtitle">It grabs insights from every Claude Code building surface you use, walls work from personal, and can even tell you the story of how it got built.</p>
-        <p class="field-note-tagline">Get /insights across all of your vibe- coding surfaces.</p>
-        <div class="field-note-link">
-          <a href="https://626labs.dev/editorial/vibe-insights-build-2026-05-23/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-05-23 · vibe-wrap</div>
-        <h3 class="field-note-title">I said it's Evolve day. I left with a plugin I'd forgotten we'd planned.</h3>
-        <p class="field-note-subtitle">I went in to evolve two plugins. The agent cleared the whole backlog, and out came vibe-wrap, a session-wrap plugin I'd forgotten we planned. It shipped anyway.</p>
-        <p class="field-note-tagline">The plugin whose entire job is making sure you don't have to remember got finished because an earlier session left exactly that kind of trail.</p>
-        <div class="field-note-link">
-          <a href="https://626labs.dev/editorial/vibe-wrap-build-2026-05-23/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-05-06 · RoRoRo · Medium</div>
-        <h3 class="field-note-title">RoRoRo: the Roblox multi-launcher you can recommend on camera</h3>
-        <p class="field-note-subtitle">Three days from first commit to Microsoft Store. The build was a day; the wait was two.</p>
-        <p class="field-note-tagline">A native Roblox multi-launcher built trustworthy through real packaging, signatures, and transparent attribution.</p>
-        <div class="field-note-link">
-          <a href="https://ai.plainenglish.io/rororo-the-roblox-multi-launcher-you-can-recommend-on-camera-162cb542a51f?source=friends_link&amp;sk=8840456f1bd18f501f00d05eee3154cc" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-05-06 · Medium</div>
-        <h3 class="field-note-title">Three Pipelines</h3>
-        <p class="field-note-subtitle">Same doctrine, three institutional shapes for deploying AI-generated code across different organizational scales.</p>
-        <p class="field-note-tagline">Vibe coding deploys through three institutional shapes: the forge, the gauntlet, and the foundation.</p>
-        <div class="field-note-link">
-          <a href="https://ai.plainenglish.io/three-pipelines-659efa424e81?source=friends_link&amp;sk=6d5227e966bed3eac8dffd3915082380" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-04-29 · Medium</div>
-        <h3 class="field-note-title">From Legitimate to Sustainable</h3>
-        <p class="field-note-subtitle">A builder's guide to vibe-coded software that lasts, works for more than one user, and scales without trapping the builder in maintenance.</p>
-        <p class="field-note-tagline">Five commitments turn AI-built software from works-once artifacts into durable, production-ready systems.</p>
-        <div class="field-note-link">
-          <a href="https://ai.plainenglish.io/from-legitimate-to-sustainable-2c281edde513?source=friends_link&amp;sk=37308198a3e1f62e1814966976c5e8d8" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
-        </div>
-      </article>
-      <article class="field-note">
-        <div class="field-note-eyebrow">2026-04-29 · Medium</div>
-        <h3 class="field-note-title">The Second User</h3>
-        <p class="field-note-subtitle">How I built seven Claude Code plugins from real workflow friction points.</p>
-        <p class="field-note-tagline">Seven Claude Code plugins catch the gaps before users do, turning demos into sustainable software.</p>
-        <div class="field-note-link">
-          <a href="https://ai.plainenglish.io/the-second-user-457cbec2a69c?source=friends_link&amp;sk=228a3b6fbe83a513b0f3a7c1137ea546" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
-        </div>
-      </article>
-    </details>
-    <a class="field-notes-subscribe" href="/feed.xml">Subscribe via Atom<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a>
-  </div>
-</section>
-      <!-- SITE_JSON:stories:end -->
-    </div>
   </div>
 </section>
 
-<!-- =============== 01 WORK =============== -->
+<!-- =============== 01 WORK: the contents page =============== -->
 <section class="section" id="work">
   <div class="wrap">
     <div class="section-head">
@@ -2328,12 +1555,12 @@
   </div>
 </section>
 
-<!-- =============== 03 THINKING (section front; the zone is empty while content/site.json carries no `thinking` block) =============== -->
+<!-- =============== 03 THINKING (the band; the zone is empty while content/site.json carries no `thinking` block) =============== -->
 <!-- SITE_JSON:thinking:start -->
 
 <!-- SITE_JSON:thinking:end -->
 
-<!-- =============== 02 THE FOUNDING =============== -->
+<!-- =============== 02 THE FOUNDING: the band =============== -->
 <!-- SITE_JSON:founding:start -->
 <section class="section thinking" id="founding">
   <div class="wrap">
@@ -2362,7 +1589,154 @@
 </section>
 <!-- SITE_JSON:founding:end -->
 
-<!-- =============== THE PHOTO PAGE: how the lab runs =============== -->
+<!-- =============== FIELD NOTES: rows on paper, newest first. Auto-discovered from content/stories/*.md (frontmatter, draft: false); the section collapses entirely when zero published stories exist. =============== -->
+<!-- SITE_JSON:stories:start -->
+<section class="section field-notes" id="field-notes">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow"><span>Field Notes</span><span class="line"></span></div>
+        <h2>What we shipped, what bit us, what we'd do differently.</h2>
+      </div>
+      <p>Long-form retrospectives — the unfiltered version of what each launch actually looked like.</p>
+    </div>
+    <div class="field-notes-grid">
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-10-16</div>
+        <h3 class="field-note-title">Right Click PNG 0.1.2 gets one tidy menu entry and stops overwriting your originals</h3>
+        <p class="field-note-subtitle">Right Click PNG adds Convert to PNG and Copy as PNG to the Windows File Explorer right-click menu, and 0.1.2 cleans up that menu and protects the files you already have.</p>
+        <p class="field-note-tagline">One menu entry, and your originals stay put.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-10-16-right-click-png-0-1-2/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-10-16</div>
+        <h3 class="field-note-title">Sanduhr for Mac now reads your Claude Code folders, not just your Claude limits</h3>
+        <p class="field-note-subtitle">Thirty-two Mac releases took Sanduhr für Claude from a burn-rate widget to a desktop, statusline and config desk for Claude.ai and Claude Code users.</p>
+        <p class="field-note-tagline">Pace the tokens. Then see what every session loads.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-10-16-sanduhr-for-mac-in-october/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-09-28</div>
+        <h3 class="field-note-title">Containment for Frontier AI</h3>
+        <p class="field-note-subtitle">Containment is an architecture, not a sandbox setting. Revised after a summer of real escapes.</p>
+        <p class="field-note-tagline">In April a frontier model escaped a red-team sandbox. By August the record held three more incidents, and the audit logs themselves could be forged.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-09-28-containment-for-frontier-ai/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-09-09 · rororo</div>
+        <h3 class="field-note-title">The words were the easy part</h3>
+        <p class="field-note-subtitle">RoRoRo shipped in six languages. The translating took an afternoon; finding every place the product speaks took the rest of the week.</p>
+        <p class="field-note-tagline">I set out to translate an app. What I found was every place a product speaks, and every one of them breaks differently.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-09-09-the-words-were-the-easy-part/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+    </div>
+    <details class="field-notes-more">
+      <summary>More Field Notes (10)</summary>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-07-03</div>
+        <h3 class="field-note-title">RoRoRo grew eyes, hands, and a heartbeat</h3>
+        <p class="field-note-subtitle">The Roblox multi-launcher you could recommend on camera now has three plugins (perception, action, and a keep-alive), wired together by a consent-gated bridge that never leaves your machine.</p>
+        <p class="field-note-tagline">A launcher became a platform. Three plugins, one nervous system, and a trust bar that holds at every rung.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-07-03-rororo-grew-a-family/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-06-26</div>
+        <h3 class="field-note-title">The first 626 Labs Day</h3>
+        <p class="field-note-subtitle">Today is 6/26/26, the first 626 Day since 626 Labs existed. The whole surface is shipped and live in one window: 14 Claude Code plugins and 6 Microsoft Store apps, one new and two with major updates this week.</p>
+        <p class="field-note-tagline">The whole surface is shipped and live, and on 6/26 that's allowed to be the whole point.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-06-26-the-first-626-day/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-29</div>
+        <h3 class="field-note-title">Same code, 3x the thinking: what I did with my first 8 hours with Opus 4.8.</h3>
+        <p class="field-note-subtitle">I turned on max-orchestration to see what would happen. Eight sessions later the agent had burned three times the tokens and written the same amount of code. The extra went into tests it caught before I saw them, and into a run that stopped answering the wheel once it started.</p>
+        <p class="field-note-tagline">3.2x the tokens, the same lines of code. The extra went into care, not output, and into a run that stopped answering the wheel.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-05-29-same-code-triple-thinking/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-24 · vibe-walk</div>
+        <h3 class="field-note-title">vibe-walk builds the onboarding tour, and tells you when not to</h3>
+        <p class="field-note-subtitle">A Claude Code plugin that reads your app, builds an instrumented spotlight tour you own, and is honest when a tour won't help.</p>
+        <p class="field-note-tagline">Tours your users actually finish.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/2026-05-24-vibe-walk-launch/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-23 · vibe-insights</div>
+        <h3 class="field-note-title">I complained that /insights wasn't insightful. Seven hours later I had a plugin that beats it.</h3>
+        <p class="field-note-subtitle">It grabs insights from every Claude Code building surface you use, walls work from personal, and can even tell you the story of how it got built.</p>
+        <p class="field-note-tagline">Get /insights across all of your vibe- coding surfaces.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/vibe-insights-build-2026-05-23/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-23 · vibe-wrap</div>
+        <h3 class="field-note-title">I said it's Evolve day. I left with a plugin I'd forgotten we'd planned.</h3>
+        <p class="field-note-subtitle">I went in to evolve two plugins. The agent cleared the whole backlog, and out came vibe-wrap, a session-wrap plugin I'd forgotten we planned. It shipped anyway.</p>
+        <p class="field-note-tagline">The plugin whose entire job is making sure you don't have to remember got finished because an earlier session left exactly that kind of trail.</p>
+        <div class="field-note-link">
+          <a href="https://626labs.dev/editorial/vibe-wrap-build-2026-05-23/">Read the full story <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-06 · RoRoRo · Medium</div>
+        <h3 class="field-note-title">RoRoRo: the Roblox multi-launcher you can recommend on camera</h3>
+        <p class="field-note-subtitle">Three days from first commit to Microsoft Store. The build was a day; the wait was two.</p>
+        <p class="field-note-tagline">A native Roblox multi-launcher built trustworthy through real packaging, signatures, and transparent attribution.</p>
+        <div class="field-note-link">
+          <a href="https://ai.plainenglish.io/rororo-the-roblox-multi-launcher-you-can-recommend-on-camera-162cb542a51f?source=friends_link&amp;sk=8840456f1bd18f501f00d05eee3154cc" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-05-06 · Medium</div>
+        <h3 class="field-note-title">Three Pipelines</h3>
+        <p class="field-note-subtitle">Same doctrine, three institutional shapes for deploying AI-generated code across different organizational scales.</p>
+        <p class="field-note-tagline">Vibe coding deploys through three institutional shapes: the forge, the gauntlet, and the foundation.</p>
+        <div class="field-note-link">
+          <a href="https://ai.plainenglish.io/three-pipelines-659efa424e81?source=friends_link&amp;sk=6d5227e966bed3eac8dffd3915082380" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-04-29 · Medium</div>
+        <h3 class="field-note-title">From Legitimate to Sustainable</h3>
+        <p class="field-note-subtitle">A builder's guide to vibe-coded software that lasts, works for more than one user, and scales without trapping the builder in maintenance.</p>
+        <p class="field-note-tagline">Five commitments turn AI-built software from works-once artifacts into durable, production-ready systems.</p>
+        <div class="field-note-link">
+          <a href="https://ai.plainenglish.io/from-legitimate-to-sustainable-2c281edde513?source=friends_link&amp;sk=37308198a3e1f62e1814966976c5e8d8" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+      </article>
+      <article class="field-note">
+        <div class="field-note-eyebrow">2026-04-29 · Medium</div>
+        <h3 class="field-note-title">The Second User</h3>
+        <p class="field-note-subtitle">How I built seven Claude Code plugins from real workflow friction points.</p>
+        <p class="field-note-tagline">Seven Claude Code plugins catch the gaps before users do, turning demos into sustainable software.</p>
+        <div class="field-note-link">
+          <a href="https://ai.plainenglish.io/the-second-user-457cbec2a69c?source=friends_link&amp;sk=228a3b6fbe83a513b0f3a7c1137ea546" target="_blank" rel="noopener">Read on Medium <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        </div>
+      </article>
+    </details>
+    <a class="field-notes-subscribe" href="/feed.xml">Subscribe via Atom<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a>
+  </div>
+</section>
+<!-- SITE_JSON:stories:end -->
+
+<!-- =============== HOW THE LAB RUNS =============== -->
 <!-- SITE_JSON:lab-runs:start -->
 <section class="section lab-runs" id="lab-runs">
   <div class="wrap">
@@ -2401,7 +1775,7 @@
 </section>
 <!-- SITE_JSON:lab-runs:end -->
 
-<!-- =============== THE GAMES PAGE =============== -->
+<!-- =============== PLAY =============== -->
 <!-- SITE_JSON:play:start -->
 <section class="section play" id="play">
   <div class="wrap">
@@ -2507,14 +1881,14 @@
 </section>
 <!-- SITE_JSON:about:end -->
 
-<!-- =============== THE BACK PAGE: 04 Notices =============== -->
+<!-- =============== THE BACK PAGE: also from the lab, support, contact =============== -->
 <section class="backpage" id="notices">
   <div class="wrap">
     <div class="section-head">
       <div>
         <!-- Unnumbered on purpose: the renderer's own folios (05 Play, 06 About,
              07 Contact) precede and nest here, so a "04" would read as a
-             misprint. The tab is the page name. -->
+             misprint. -->
         <div class="eyebrow"><span>Notices</span><span class="line"></span></div>
         <h2>The back page.</h2>
       </div>
@@ -2608,7 +1982,6 @@
       © 2026 626Labs LLC · Fort Worth, TX · <span class="brand-tagline">Imagine Something Else.</span><br/>
       &ldquo;Claude&rdquo; and &ldquo;claude.ai&rdquo; are trademarks of Anthropic PBC, used nominatively.
     </div>
-    <span class="regbar" aria-hidden="true"><i class="c"></i><i class="m"></i><i class="k"></i></span>
     <div class="footer-links">
       <a href="#work">Work</a>
       <a href="plugins/#thesis">Thinking</a>
@@ -2622,15 +1995,14 @@
       <a href="editorial/">Editorial</a>
       <a href="press.html">Press</a>
       <a href="privacy.html">Privacy</a>
-      <a href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://github.com/626Labs-LLC" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
   <div class="wrap imprint">
-    <p id="imprint"><span class="k">Theme:</span> The Slate Broadsheet <span class="sep">·</span> this site changes monthly <span class="sep">·</span> <a href="/themes.html">see all themes</a></p>
+    <p id="imprint"><span class="k">Theme:</span> Cyan Fade <span class="sep">·</span> this site changes monthly <span class="sep">·</span> <a href="/themes.html">see all themes</a></p>
   </div>
   <a class="site-signature" href="/" aria-label="626Labs, home"></a>
 </footer>
-
 <script>
   // ============================================================
   //  LAB_POOL — JS-shuffled "Also from the lab" shelf
@@ -3036,7 +2408,7 @@
     // ── drawing ───────────────────────────────────
     function bgFill() {
       var g = ctx.createRadialGradient(W * .6, H * .4, 0, W * .6, H * .4, W * .7);
-      g.addColorStop(0, "#050c18"); g.addColorStop(1, "#000000"); /* PB: ink-950 core fading to the black field */
+      g.addColorStop(0, "#192e44"); g.addColorStop(1, "#0f1f31"); /* Cyan Fade: the screen navy (--cf-screen), navy-mid at the core */
       ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     }
     function dot(x, y, r, color, alpha, blur) {

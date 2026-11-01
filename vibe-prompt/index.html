@@ -52,51 +52,66 @@
 
   <style>
     /* ============================================================
-       Theme: slate-broadsheet — product archetype, ELEMENT DRESS.
+       Theme: cyan-fade — product archetype, ELEMENT DRESS.
 
-       One product per page, set as a section front of the paper: a reduced
-       masthead (the nameplate small at top-left, the plugin's name as the
-       section index, the printer's color bar in the ear), the product name
-       as the headline in Space Grotesk under a letterpress impression, the
-       tagline as the deck in serif italic, the terminal as the lead plate
-       mounted on a pale mat with a PLATE caption and the cyan-to-magenta
-       caption rule, the description as columned serif body with a drop cap,
-       the install block as a hairline-boxed how-to in mono, the family strip
-       as columned listings under an "Also in this section" folio, and the
-       footer with the color bar and the imprint line. The imprint is page
-       markup: render-plugin-pages.py emits `.imprint` from the active
-       theme's theme.json name with a real link to /themes.html, so the
-       line is right in every month and this dress only styles it. (It
-       used to be generated content on `footer .row::after` naming
-       "October 2026" as a literal, which could neither link nor survive a
-       slipped rotation.) Matte throughout: no
-       glow, no bloom, no scanlines, no grid, no gradient field. The stone
-       grain rides on body::before.
+       One product per page, on paper, with the brand as the ground at the
+       top. The masthead and the hero sit on ONE flat field of the brand
+       cyan (--cf-cyan) that runs full-bleed; the rest of the page reads on
+       white. That field is the page's one accent moment. The home shell
+       paints the same cyan as a sweep that fades to paper; a product page
+       is one screen tall at the top and has no room for the fade, so it
+       takes the sweep's second stop flat and stops.
+
+       ONE FACE. Archivo: the expanded black (font-stretch 125%, weight
+       900) on every head, the normal width at 400/500/700 for every line
+       of text. JetBrains Mono for code only: the install commands, the
+       slash commands, the terminal. No tracked uppercase eyebrows, no mono
+       folios, no mono small data. Section labels are plain 17px weight
+       500 sentence case, set on the heavy rule.
+
+       FLAT AND MATTE. No border-radius anywhere (the --r-* scale is zero),
+       no fills on cards, no glow, no texture, no gradient field: the
+       printer's color bar, the halftone screen, the pale mat, the grain
+       and the reversed folio tabs of the slate dress are all gone. Rows
+       are separated by hairlines (--cf-hair), section labels and the
+       footer sit on the heavy rule (--cf-heavy, 2px ink). Links are ink,
+       underlined; hover thickens the underline. Every call to action is a
+       link in that dress: the gradient-underline door is gone.
+
+       WHERE EACH INK MAY SIT. On the cyan field: --cf-ink and --cf-ink-2
+       only (9.39:1, 6.87:1); --cf-ink-3 is 3.05:1 there and the accent
+       inks are worse, so the hero's Validated tag, which slate set in
+       --ok, is --cf-ink here. On the screens (the terminal, the marks, the
+       listing thumbs): --cf-screen-ink, --cf-band-ink-2, --ink-0. On the
+       band (the brain section's callout; the thesis pull quote on
+       /plugins/), the one magenta surface on any page: --cf-band-ink and
+       --cf-band-ink-2. On paper: the whole ramp, plus --ok, --magenta and
+       --cyan as plain-text status inks.
 
        The dress only. Its token vocabulary lives beside it in
        archetypes/product-tokens.css, which render-plugin-pages.py
        concatenates AFTER this file before inlining the pair into the 15
        generated product pages. After, not before, because the @import
        below has to stay the first rule in the combined sheet or the
-       browser drops it and the whole type stack falls back. Every --sb-*,
+       browser drops it and the whole type stack falls back. Every --cf-*,
        --fg-*, --bg-* and --font-* name this file reads resolves inside
-       that {product.css + product-tokens.css} group. --sb-hair, --sb-rule
-       and --sb-heavy are BORDER SHORTHANDS, spent on border-* and
-       column-rule only; the colors are --sb-hair-color / --sb-rule-color.
+       that {product.css + product-tokens.css} group. --cf-hair and
+       --cf-heavy are BORDER SHORTHANDS, spent on border-* only; the color
+       is --cf-hair-color.
 
        This file is deliberately NOT what the hand-authored product pages
        (conundrum.html, rororo.html, rororo-plugins.html,
        mod-launcher-games.html, etsy-mcp.html) link. It styles bare element
-       and generic class selectors — `body`, `a`, `a:hover`, `h1, h2, h3`,
-       `section.hero`, `.card`, `.btn`, `.brand img`, `footer` — written for
+       and generic class selectors (`body`, `a`, `a:hover`, `h1, h2, h3`,
+       `section.hero`, `.card`, `.btn`, `.brand img`, `footer`) written for
        markup render-plugin-pages.py owns. Those pages link
-       product-tokens.css instead; see its header for the measurement that
-       settled it.
+       product-tokens.css instead; see its header.
 
-       Under the grain, --fg-muted, --magenta-pale and --ok are --bg-0 inks
-       only. This dress puts no text on --bg-1 or --bg-2 at all: every ink
-       sits on the slate ground, on the navy raster inside a plate, or
-       reversed on the ink-colored tab. No text sits on the mat.
+       The selector set is the slate dress's, kept whole: it was derived
+       from the real rendered pages, and a dropped selector is an undressed
+       element. Where slate drew a treatment this theme refuses (the ear
+       row, the color bars, the halftone, the drop caps), the selector
+       stays and states the refusal.
        ============================================================ */
     @import url('/fonts/fonts.css');
 
@@ -107,12 +122,11 @@
          every shared name, so these are byte-for-byte the token file's
          values. Everything else the dress reads it reads from the token
          file and does not restate. */
-      --cyan:         #17d4fa;
-      --cyan-pale:    #5ce6ff;
-      --magenta:      #f22f89;
-      --magenta-pale: #FFA3CC;
-      --navy-deep:    #0f1f31;
-      --ok:           #2bd99a;
+      --cf-ink:         #0F1F31;
+      --cf-cyan:        #17D4FA;
+      --cf-band:        #C21F6C;
+      --cf-screen:      #0F1F31;
+      --cf-screen-ink:  #17D4FA;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -120,40 +134,36 @@
     html, body { margin: 0; padding: 0; }
     body {
       background: var(--bg-0);
-      color: var(--fg-1);
-      font-family: var(--sb-serif);
+      color: var(--cf-ink);
+      font-family: var(--cf-face);
       font-size: 17px;
       line-height: 1.5;
       position: relative;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      font-feature-settings: "kern", "liga", "onum";
+      font-feature-settings: "kern", "liga";
     }
-    /* Stone grain: fractal noise, white at half alpha, laid at 7 percent.
-       Matte tooth, not scanlines, not a grid. */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 5;
-      opacity: var(--sb-grain-opacity);
-      background-image: var(--sb-grain);
-    }
+    /* No texture: the raw tone is the rendered tone. */
+    body::before { content: none; }
     p { margin: 0; }
     img, svg { max-width: 100%; }
-    a { color: var(--cyan); text-decoration: none; }
-    a:hover, a:focus-visible { color: var(--sb-link-hover); }
-    a:focus-visible { outline: 2px solid var(--sb-link-hover); outline-offset: 2px; }
+    a {
+      color: var(--cf-ink);
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
+    }
+    a:hover, a:focus-visible { color: var(--cf-ink); text-decoration-thickness: var(--cf-underline-hover); }
+    a:focus-visible { outline: 2px solid var(--cf-ink); outline-offset: 3px; }
 
-    /* The skip link is a reversed tab: ink field, slate type. */
+    /* The skip link is a screen: navy, the caption in brand cyan. */
     .skip-link {
       position: absolute; left: -9999px; top: 8px; z-index: 200;
-      background: var(--sb-tab-bg); color: var(--sb-tab-fg);
+      background: var(--cf-screen); color: var(--cf-screen-ink);
       padding: 8px 12px;
-      font-family: var(--sb-mono); font-size: 13px;
+      font-family: var(--cf-face); font-size: 15px; font-weight: 500;
     }
-    .skip-link:focus { left: 8px; color: var(--sb-tab-fg); outline: 2px solid var(--sb-link-hover); outline-offset: 2px; }
+    .skip-link:focus { left: 8px; color: var(--cf-screen-ink); outline: 2px solid var(--cf-ink); outline-offset: 2px; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -164,56 +174,58 @@
       }
     }
 
-    .container { max-width: var(--sb-page); margin: 0 auto; padding: 0 24px; min-width: 0; }
+    .container { max-width: var(--cf-page); margin: 0 auto; padding: 0 var(--cf-gutter); min-width: 0; }
 
-    /* Meta label: the brand's UPPERCASE +0.12em convention, on mono. */
+    /* Section label: plain text, sentence case, weight 500. Not tracked,
+       not uppercase, not mono. */
     .eyebrow {
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--fg-3);
+      font-family: var(--cf-face);
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.35;
+      color: var(--cf-ink-2);
     }
 
-    /* Heads: Space Grotesk, medium, under the letterpress impression. */
-    h1, h2, h3 { font-family: var(--sb-display); font-weight: 500; color: var(--fg-1); margin: 0; }
+    /* Heads: the expanded black cut. */
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      letter-spacing: -0.015em;
+      color: var(--cf-ink);
+      margin: 0;
+    }
     h1 {
-      font-size: clamp(42px, 5.6vw, 84px);
-      line-height: 0.98;
-      letter-spacing: -0.03em;
-      text-shadow: 0 1px 0 var(--sb-impression);
-      overflow-wrap: anywhere;
+      font-size: clamp(44px, 6.2vw, 96px);
+      line-height: .92;
+      overflow-wrap: break-word;
       text-wrap: balance;
     }
     h2 {
-      font-size: clamp(30px, 3.2vw, 44px);
-      line-height: 1.02;
-      letter-spacing: -0.025em;
-      text-shadow: 0 1px 0 var(--sb-impression);
-      overflow-wrap: anywhere;
+      font-size: clamp(30px, 3.8vw, 54px);
+      line-height: .95;
+      overflow-wrap: break-word;
       text-wrap: balance;
     }
-    h3 { font-size: 22px; line-height: 1.12; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+    h3 { font-size: 24px; line-height: 1; overflow-wrap: break-word; }
 
-    /* Doors: every call to action is a mono, tracked, uppercase link. The
-       primary carries the brand pair as a 2px rule underneath (the sheet's
-       .door); the ghost carries the mid rule. */
+    /* Calls to action are links: ink, underlined, weight 500. No fill, no
+       border, no gradient rule. */
     .btn {
       display: inline-block;
-      padding: 0 0 3px;
+      padding: 0;
       border: 0;
       border-radius: 0;
       background: transparent;
-      font-family: var(--sb-mono);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-family: var(--cf-face);
+      font-size: 17px;
+      font-weight: 500;
       line-height: 1.4;
+      color: var(--cf-ink);
       cursor: pointer;
-      text-decoration: none;
-      transition: color var(--dur-fast) var(--ease-out);
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
     }
     .btn-primary,
     section.thesis .thesis-link a,
@@ -221,586 +233,529 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding-bottom: 3px;
-      font-family: var(--sb-mono);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      background-image: var(--brand-gradient);
-      background-repeat: no-repeat;
-      background-position: 0 100%;
-      background-size: 100% 2px;
+      font-family: var(--cf-face);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--cf-ink);
+      background: none;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
     }
     .btn-primary:hover,
     section.thesis .thesis-link a:hover,
-    section.thesis .artifact-links a:hover { color: var(--sb-link-hover); text-decoration: none; }
-    .btn-ghost { color: var(--fg-1); border-bottom: var(--sb-rule); }
-    .btn-ghost:hover { color: var(--sb-link-hover); text-decoration: none; }
+    section.thesis .artifact-links a:hover { color: var(--cf-ink); text-decoration-thickness: var(--cf-underline-hover); }
+    .btn-ghost { color: var(--cf-ink); border-bottom: 0; }
+    .btn-ghost:hover { color: var(--cf-ink); text-decoration-thickness: var(--cf-underline-hover); }
 
-    /* ================= MASTHEAD, reduced =================
-       The ear row (626labs.dev, the printer's color bar) over a hairline,
-       then the nameplate at top-left with the plugin's name as the section
-       index, the Install door as the index's last entry behind a hairline
-       divider, and the double rule (heavy, then hair) under it all. Not
-       sticky: a paper's masthead does not follow the reader down the page. */
-    nav.top { position: relative; border-bottom: var(--sb-heavy); margin-bottom: 6px; }
-    nav.top::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 0;
-      bottom: -6px;
-      border-bottom: var(--sb-hair);
-    }
+    /* ================= MASTHEAD, on the field =================
+       The wordmark at left with the plugin's name after it, the Install
+       link at right, all on the brand cyan the hero continues. One row,
+       no ear, no color bar, no rule: the field is the masthead's edge. */
+    nav.top { position: relative; background: var(--cf-cyan); border-bottom: 0; margin-bottom: 0; }
+    nav.top::after { content: none; }
     nav.top .row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
+      display: flex;
       align-items: center;
-      column-gap: 16px;
-      padding-top: 14px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px 32px;
+      padding-top: 24px;
     }
-    nav.top .row::before {
-      content: '626labs.dev';
-      grid-column: 1 / -1;
-      grid-row: 1;
-      padding: 6px 0;
-      border-bottom: var(--sb-hair);
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--fg-3);
-    }
-    nav.top .row::after {
-      /* the printer's color bar: three 9px swatches, cyan, magenta, ink */
-      content: '';
-      grid-column: 1 / -1;
-      grid-row: 1;
-      justify-self: end;
-      align-self: center;
-      width: 9px;
-      height: 9px;
-      margin-right: 26px;
-      background: var(--cyan);
-      box-shadow: 13px 0 0 var(--magenta), 26px 0 0 var(--sb-ink);
-    }
-    nav.top .brand-row, nav.top .row > .brand { grid-row: 2; grid-column: 1; min-width: 0; }
-    nav.top .brand-row { display: flex; align-items: center; gap: 12px; padding: 18px 0 16px; }
-    nav.top .row > .brand { padding: 18px 0 16px; }
+    nav.top .row::before { content: none; }
+    nav.top .row::after { content: none; }
+    nav.top .brand-row, nav.top .row > .brand { min-width: 0; }
+    nav.top .brand-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; padding: 0; }
+    nav.top .row > .brand { padding: 0; }
     nav.top .brand {
-      display: inline-flex; align-items: center; gap: 8px;
-      color: var(--fg-1);
-      font-family: var(--sb-display); font-weight: 500; font-size: 24px; letter-spacing: -0.03em; line-height: 1;
-      text-shadow: 0 1px 0 var(--sb-impression);
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--cf-ink);
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 28px; letter-spacing: -0.015em; line-height: 1;
+      text-decoration: none;
     }
-    nav.top .brand:hover { color: var(--fg-1); text-decoration: none; }
-    nav.top .brand img { height: 24px; width: auto; display: block; }
-    nav.top .brand-sep { color: var(--fg-3); font-family: var(--sb-mono); font-size: 14px; }
+    nav.top .brand:hover { color: var(--cf-ink); text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); }
+    /* The mark is a raster: it sits on a screen, never on the cyan, where
+       its own cyan would vanish into the field. */
+    nav.top .brand img { height: 30px; width: 30px; padding: 4px; background: var(--cf-screen); display: block; }
+    nav.top .brand-sep { color: var(--cf-ink-2); font-family: var(--cf-face); font-size: 20px; font-weight: 400; }
     nav.top .brand-current {
-      display: inline-flex; align-items: center; gap: 8px; min-width: 0;
-      font-family: var(--sb-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--fg-1);
+      display: inline-flex; align-items: center; gap: 10px; min-width: 0;
+      font-family: var(--cf-face); font-size: 17px; font-weight: 500;
+      color: var(--cf-ink);
     }
     nav.top .brand-current span { min-width: 0; overflow-wrap: anywhere; }
     nav.top .vibe-mark {
-      width: 28px; height: 28px; flex-shrink: 0;
-      border: 2px solid var(--sb-mat); background: var(--sb-raster);
+      width: 30px; height: 30px; flex-shrink: 0;
+      border: 0; background: var(--cf-screen);
       display: inline-flex; align-items: center; justify-content: center;
     }
-    nav.top .vibe-mark img { width: 18px; height: 18px; display: block; }
+    nav.top .vibe-mark img { width: 20px; height: 20px; display: block; }
     nav.top .row > .btn {
-      grid-row: 2; grid-column: 2;
-      align-self: stretch;
-      display: inline-flex; align-items: center;
-      padding: 0 0 0 22px;
-      border-left: var(--sb-hair);
+      padding: 0;
+      border-left: 0;
       border-bottom: 0;
-      color: var(--fg-1);
+      color: var(--cf-ink);
     }
-    nav.top .row > .btn:hover { color: var(--sb-link-hover); }
+    nav.top .row > .btn:hover { color: var(--cf-ink); }
 
-    /* ================= HERO: the lead story + the lead plate ================= */
-    section.hero { padding: 36px 0 40px; }
+    /* ================= HERO: the field continues =================
+       Flat brand cyan, full-bleed (the section spans the page; the
+       container holds the measure). Every string on it is --cf-ink or
+       --cf-ink-2. */
+    section.hero { padding: 64px 0 72px; background: var(--cf-cyan); }
     .hero-grid {
       display: grid;
       grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      gap: 0 var(--sb-gutter);
+      gap: 0 48px;
       align-items: start;
     }
-    .hero-grid.solo { grid-template-columns: 1fr; max-width: 760px; }
-    .hero-left { min-width: 0; padding-right: var(--sb-gutter); border-right: var(--sb-rule); }
+    .hero-grid.solo { grid-template-columns: 1fr; max-width: 820px; }
+    .hero-left { min-width: 0; padding-right: 0; border-right: 0; }
     .hero-grid.solo .hero-left { padding-right: 0; border-right: 0; }
-    .hero-left .eyebrow { display: block; margin-bottom: 18px; }
+    .hero-left .eyebrow { display: block; margin-bottom: 22px; color: var(--cf-ink); }
     .hero-subhead {
-      margin: 14px 0 0;
-      padding-bottom: 16px;
-      border-bottom: var(--sb-hair);
-      font-family: var(--sb-serif);
-      font-style: italic;
-      font-size: clamp(20px, 1.8vw, 24px);
-      line-height: 1.25;
-      color: var(--fg-1);
-      max-width: 34em;
+      margin: 24px 0 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+      font-family: var(--cf-face);
+      font-style: normal;
+      font-size: clamp(19px, 1.6vw, 23px);
+      line-height: 1.45;
+      color: var(--cf-ink);
+      max-width: 30em;
       text-wrap: pretty;
     }
-    .hero-ctas { display: flex; gap: 24px; flex-wrap: wrap; margin: 18px 0 22px; }
-    /* The dateline row: folios in mono, the live version chip reversed as a tab. */
+    .hero-ctas { display: flex; gap: 12px 28px; flex-wrap: wrap; margin: 28px 0 26px; }
+    /* The dateline: plain text, weight 500, the version first. */
     .hero-meta {
-      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-      padding-top: 10px;
-      border-top: var(--sb-rule);
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--fg-3);
+      display: flex; align-items: center; gap: 4px 10px; flex-wrap: wrap;
+      padding-top: 12px;
+      border-top: var(--cf-heavy);
+      font-family: var(--cf-face);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--cf-ink);
       font-variant-numeric: tabular-nums;
     }
-    /* Reverses the FIRST meta span by position. Correct today because
-       render_hero() puts the version first on every page (heroMeta[0] is
-       version-shaped for all 14 and effective_version() overwrites it);
-       a page whose first meta is not the version would tab the wrong word. */
-    .hero-meta span:first-child {
-      background: var(--sb-tab-bg); color: var(--sb-tab-fg);
-      font-weight: 600; letter-spacing: 0.1em; text-transform: none;
-      padding: 4px 8px 3px; line-height: 1;
-    }
-    .hero-validated { margin-top: 14px; max-width: 34em; font-size: 14px; line-height: 1.45; color: var(--fg-3); }
+    /* The FIRST meta span is the version on every page (render_hero()
+       overwrites heroMeta[0] with the live tag); it takes the bold weight,
+       nothing more. */
+    .hero-meta span:first-child { font-weight: 700; }
+    .hero-validated { margin-top: 14px; max-width: 34em; font-size: 16px; line-height: 1.45; color: var(--cf-ink); }
     .hero-validated .vtag {
-      font-family: var(--sb-mono); font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--ok); margin-right: 10px;
+      font-family: var(--cf-face); font-size: 16px; font-weight: 700;
+      color: var(--cf-ink); margin-right: 8px;
     }
-    .hero-caps { margin-top: 12px; font-family: var(--sb-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--fg-2); }
-    .hero-caps .captag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-3); margin-right: 10px; }
+    .hero-caps { margin-top: 12px; font-family: var(--cf-face); font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); }
+    .hero-caps .captag { font-weight: 700; color: var(--cf-ink); margin-right: 8px; }
 
-    /* The plate on slate: the terminal is a dark raster mounted on a pale
-       paper mat, screened, and it reads as a press photo pasted up on the
-       page. The mat is the border, so no text ever sits on it; the caption
-       sits on the slate under the brand pair's rule. */
+    /* The terminal is a screen: a flat navy block on the field, no mat, no
+       border, no shadow. Its caption sits under it on the cyan in
+       --cf-ink-2. */
     .hero-right { min-width: 0; }
     .hero-right::after {
-      content: 'Plate · a session in Claude Code';
+      content: 'A session in Claude Code.';
       display: block;
       margin-top: 10px;
-      padding-top: 9px;
-      background-image: var(--brand-gradient);
-      background-repeat: no-repeat;
-      background-position: 0 0;
-      background-size: 56px 2px;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--fg-2);
+      font-family: var(--cf-face);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--cf-ink-2);
     }
-    .term { position: relative; border: 6px solid var(--sb-mat); background: var(--sb-raster); overflow: hidden; }
-    .term::before {
-      /* halftone screen: a 4px dot grid of paper at 14 percent over the raster
-         FIELD; the bar and the transcript sit above it, so the glyphs are
-         printed on the screened plate rather than screened themselves. */
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background-image: radial-gradient(circle, var(--sb-screen) 0.9px, transparent 1.1px);
-      background-size: 4px 4px;
-    }
-    .term-bar, .term-body { position: relative; z-index: 1; }
-    .term-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: var(--sb-hair); }
-    .term-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .term-dot.r { background: #ff5f57; }
-    .term-dot.y { background: #febc2e; }
-    .term-dot.g { background: #28c840; }
-    .term-label { margin-left: 12px; font-family: var(--sb-mono); font-size: 12px; color: var(--fg-3); }
-    .term-body { padding: 20px; font-family: var(--sb-mono); font-size: 13px; line-height: 1.65; color: var(--fg-2); max-height: 460px; overflow: hidden; }
-    .term-body .prompt, .term-body .agent { color: var(--cyan); }
-    .term-body .cmd { color: var(--fg-1); }
-    .term-body .path { color: var(--cyan-pale); }
-    .term-body .key { color: var(--magenta-pale); }
-    .term-body .ok { color: var(--ok); }
-    .term-body .muted { color: var(--fg-3); }
-    /* The cursor is printed, not lit: a block, no blink. */
-    .term-cursor { display: inline-block; width: 8px; height: 14px; background: var(--fg-1); vertical-align: -2px; }
+    .term { position: relative; border: 0; background: var(--cf-screen); overflow: hidden; }
+    .term::before { content: none; }
+    .term-bar, .term-body { position: relative; }
+    .term-bar { display: flex; align-items: center; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--navy-line); }
+    .term-dot { width: 9px; height: 9px; border-radius: 0; background: var(--navy-line); }
+    .term-dot.r { background: var(--navy-line); }
+    .term-dot.y { background: var(--navy-line); }
+    .term-dot.g { background: var(--navy-line); }
+    .term-label { margin-left: 10px; font-family: var(--cf-face); font-size: 14px; font-weight: 500; color: var(--cf-screen-ink); }
+    .term-body { padding: 20px; font-family: var(--cf-mono); font-size: 13px; line-height: 1.65; color: var(--cf-band-ink-2); max-height: 460px; overflow: hidden; }
+    .term-body .prompt, .term-body .agent { color: var(--cf-screen-ink); }
+    .term-body .cmd { color: var(--ink-0); font-weight: 600; }
+    .term-body .path { color: var(--cf-screen-ink); }
+    .term-body .key { color: var(--ink-0); }
+    .term-body .ok { color: var(--cf-screen-ink); }
+    .term-body .muted { color: var(--cf-band-ink-2); opacity: .72; }
+    /* The cursor: a flat block, no blink. */
+    .term-cursor { display: inline-block; width: 8px; height: 14px; background: var(--cf-screen-ink); vertical-align: -2px; }
 
-    /* /plugins/ only: the family mark as the lead plate. */
+    /* /plugins/ only: the family mark, on a screen. */
     .hero-mark { display: block; }
     .hero-mark img {
       display: block;
       width: 100%;
       height: auto;
       padding: 14%;
-      border: 6px solid var(--sb-mat);
-      background: var(--sb-raster);
+      border: 0;
+      background: var(--cf-screen);
     }
-    .hero-mark::after { content: 'Plate · the family mark'; }
+    .hero-mark::after { content: 'The family mark.'; }
 
-    /* ================= SECTION FRONT chrome =================
-       Every section opens on the double rule (heavy, then hair) with its
-       folio reversed as a tab, the section headline in Space Grotesk, and
-       the deck in serif. */
-    section.work, section.brain, section.install, section.family, section.thesis { padding: 34px 0 44px; }
-    main > section + section { border-top: var(--sb-hair); }
-    .section-head { margin-bottom: 26px; }
+    /* ================= SECTIONS, on paper =================
+       Every section opens on its label over the heavy rule, then the
+       headline in the expanded black, then the deck in --cf-ink-2. */
+    section.work, section.brain, section.install, section.family, section.thesis { padding: 64px 0 24px; }
+    main > section + section { border-top: 0; }
+    .section-head { margin-bottom: 32px; }
     .section-head .eyebrow {
-      display: inline-block;
-      margin-bottom: 10px;
-      background: var(--sb-tab-bg); color: var(--sb-tab-fg);
-      letter-spacing: 0.1em;
-      padding: 4px 8px 3px;
-      line-height: 1;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 26px;
+      padding-bottom: 10px;
+      border-bottom: var(--cf-heavy);
+      color: var(--cf-ink-2);
     }
-    /* The sheet's section-head: the label sits ON the double rule (heavy,
-       then hair 6px below), and the section's headline follows under it. */
     .section-head h2 {
       position: relative;
-      margin: 0 0 8px;
-      padding-top: 22px;
-      border-top: var(--sb-heavy);
+      margin: 0 0 14px;
+      padding-top: 0;
+      border-top: 0;
     }
-    .section-head h2::before {
-      content: '';
-      position: absolute;
-      left: 0; right: 0;
-      top: 5px;
-      border-top: var(--sb-hair);
-    }
+    .section-head h2::before { content: none; }
     .section-head .lead {
-      font-family: var(--sb-serif);
-      font-size: 18px;
-      line-height: 1.45;
-      color: var(--fg-2);
+      font-family: var(--cf-face);
+      font-size: 19px;
+      line-height: 1.5;
+      color: var(--cf-ink-2);
       max-width: 38em;
-      margin: 8px 0 0;
+      margin: 14px 0 0;
       text-wrap: pretty;
     }
 
-    /* ================= WORK: columned listings under column rules ================= */
-    .cards-grid { columns: 2; column-gap: var(--sb-gutter); column-rule: var(--sb-rule); }
-    .cards-grid.cols-3 { columns: 3; }
+    /* ================= WORK: rows under hairlines, two up ================= */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 48px;
+      border-top: var(--cf-hair);
+    }
+    .cards-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; }
     .card {
-      break-inside: avoid;
-      padding: 2px 0 16px;
-      margin-bottom: 16px;
-      border-bottom: var(--sb-hair);
+      padding: 22px 0 24px;
+      margin-bottom: 0;
+      border-bottom: var(--cf-hair);
       min-width: 0;
     }
-    .cards-grid .card:last-child { border-bottom: 0; margin-bottom: 0; }
+    .cards-grid .card:last-child { margin-bottom: 0; }
     .card .cmd {
       display: block;
-      margin-bottom: 6px;
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--fg-3);
+      margin-bottom: 10px;
+      font-family: var(--cf-mono);
+      font-size: 13px;
+      color: var(--cf-ink-2);
       overflow-wrap: anywhere;
     }
-    .card h3 { margin: 0 0 6px; font-size: 22px; text-wrap: balance; }
-    .card .desc { font-family: var(--sb-serif); font-size: 16px; line-height: 1.45; color: var(--fg-2); margin: 0; text-wrap: pretty; }
-    .card .reach { margin: 12px 0 0; padding-top: 10px; border-top: var(--sb-hair); font-size: 14px; line-height: 1.45; color: var(--fg-3); }
-    .card .reach em { color: var(--fg-1); }
+    .card h3 { margin: 0 0 10px; font-size: clamp(22px, 2vw, 28px); text-wrap: balance; }
+    .card .desc { font-family: var(--cf-face); font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); margin: 0; text-wrap: pretty; }
+    .card .reach { margin: 12px 0 0; padding-top: 10px; border-top: var(--cf-hair); font-size: 15px; line-height: 1.45; color: var(--cf-ink-3); }
+    .card .reach em { color: var(--cf-ink); }
 
+    /* The sub-head is the section-title row: label left, the hint right,
+       the heavy rule under. */
     .sub-head {
-      margin: 40px 0 16px;
-      padding-top: 12px;
-      border-top: var(--sb-rule);
-      display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+      margin: 56px 0 0;
+      padding: 0 0 10px;
+      border-top: 0;
+      border-bottom: var(--cf-heavy);
+      display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px;
     }
-    .sub-head h3 { margin: 0; }
+    .sub-head h3 {
+      margin: 0;
+      font-family: var(--cf-face);
+      font-stretch: 100%;
+      font-size: 17px;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 1.35;
+      color: var(--cf-ink-2);
+    }
     .sub-head .hint {
-      font-family: var(--sb-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--fg-3);
+      font-family: var(--cf-face); font-size: 17px; font-weight: 400;
+      color: var(--cf-ink-2);
     }
-    .mini-grid { columns: 3; column-gap: var(--sb-gutter); column-rule: var(--sb-hair); }
-    .mini { break-inside: avoid; padding: 0 0 12px; margin-bottom: 12px; border-bottom: var(--sb-hair); min-width: 0; }
-    .mini-grid .mini:last-child { border-bottom: 0; margin-bottom: 0; }
-    .mini .name { display: block; margin-bottom: 4px; font-family: var(--sb-mono); font-size: 13px; font-weight: 600; color: var(--fg-1); overflow-wrap: anywhere; }
-    .mini .desc { font-family: var(--sb-serif); font-size: 14px; line-height: 1.45; color: var(--fg-2); margin: 0; }
+    .mini-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; }
+    .mini { padding: 16px 0 18px; margin-bottom: 0; border-bottom: var(--cf-hair); min-width: 0; }
+    .mini-grid .mini:last-child { margin-bottom: 0; }
+    .mini .name { display: block; margin-bottom: 6px; font-family: var(--cf-mono); font-size: 13px; font-weight: 600; color: var(--cf-ink); overflow-wrap: anywhere; }
+    .mini .desc { font-family: var(--cf-face); font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); margin: 0; }
 
-    /* ================= BRAIN: the two-column read with a drop cap =================
-       The callout is the pull, set left on the heavy rule as the sheet's
-       founding grid does; the prose runs in two columns to its right. */
+    /* ================= BRAIN: the read, and the band =================
+       The prose runs one column at a reading measure; the callout beside
+       it is the page's one magenta surface. */
     .brain-grid {
       display: grid;
-      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-      gap: 0 var(--sb-gutter);
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: 32px 56px;
       align-items: start;
     }
-    .brain-grid > div:first-child { order: 2; }
-    .brain-grid > div:last-child { order: 1; }
+    .brain-grid > div:first-child { order: 1; }
+    .brain-grid > div:last-child { order: 2; }
     section.brain .section-head + div > div:first-child {
       min-width: 0;
-      columns: 2;
-      column-gap: var(--sb-gutter);
-      column-rule: var(--sb-hair);
-      font-family: var(--sb-serif);
-      font-size: 17px;
+      max-width: 38em;
+      font-family: var(--cf-face);
+      font-size: 18px;
       line-height: 1.55;
-      color: var(--fg-1);
+      color: var(--cf-ink);
     }
-    section.brain .section-head + div > div:first-child p { margin: 0 0 1em; color: var(--fg-1); text-wrap: pretty; hanging-punctuation: first; }
+    section.brain .section-head + div > div:first-child p { margin: 0 0 1em; color: var(--cf-ink); text-wrap: pretty; }
+    /* No drop cap: one face, one size of body. */
     section.brain .section-head + div > div:first-child p:first-child::first-letter {
-      float: left;
-      font-size: 4.2em;
-      line-height: 0.82;
-      padding: 5px 8px 0 0;
-      font-weight: 700;
-      color: var(--fg-1);
+      float: none;
+      font-size: inherit;
+      line-height: inherit;
+      padding: 0;
+      font-weight: inherit;
+      color: inherit;
     }
-    .brain-grid strong { color: var(--fg-1); font-weight: 600; }
+    .brain-grid strong { color: var(--cf-ink); font-weight: 700; }
     .callout {
       margin: 0;
-      padding: 12px 0 18px;
-      border-top: var(--sb-heavy);
-      border-bottom: var(--sb-hair);
-      font-family: var(--sb-serif);
-      font-style: italic;
-      font-size: clamp(22px, 2vw, 27px);
-      line-height: 1.3;
-      color: var(--fg-1);
+      padding: 30px 28px 34px;
+      border: 0;
+      background: var(--cf-band);
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-style: normal;
+      font-size: clamp(22px, 2.1vw, 30px);
+      line-height: 1.04;
+      letter-spacing: -0.015em;
+      color: var(--cf-band-ink);
+      overflow-wrap: break-word;
       text-wrap: pretty;
     }
 
-    /* ================= INSTALL: the boxed how-to ================= */
-    .install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sb-gutter); }
-    .install-grid.solo { grid-template-columns: 1fr; max-width: 640px; }
-    .card.install-card { border: var(--sb-hair); padding: 20px 22px 22px; margin: 0; }
-    .install-card h3 { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 0 0 8px; font-size: 22px; }
+    /* ================= INSTALL: the command on a tinted slip ================= */
+    .install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 48px; }
+    .install-grid.solo { grid-template-columns: 1fr; max-width: 680px; }
+    .card.install-card { border: 0; border-top: var(--cf-hair); padding: 22px 0 0; margin: 0; }
+    .install-card h3 { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 10px; font-size: 28px; }
+    /* Status tags: plain text in a paper-safe accent ink, set off by a
+       middle dot. Not chips. */
     .install-card .badge {
-      font-family: var(--sb-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-      background: var(--sb-tab-bg); color: var(--sb-tab-fg);
-      padding: 4px 8px 3px; line-height: 1;
+      font-family: var(--cf-face); font-stretch: 100%; font-size: 17px; font-weight: 500; letter-spacing: 0;
+      line-height: 1.35;
+      color: var(--cyan);
     }
-    /* Magenta is never text on slate; the canary tab carries it as a swatch under the tab. */
-    .install-card .badge.magenta { box-shadow: 0 2px 0 var(--magenta); }
-    .install-card .blurb { font-family: var(--sb-serif); font-size: 15px; line-height: 1.45; color: var(--fg-2); margin: 0 0 14px; }
+    .install-card .badge::before { content: "·"; margin-right: 10px; color: var(--cf-ink-3); }
+    .install-card .badge.magenta { color: var(--magenta); }
+    .install-card .blurb { font-family: var(--cf-face); font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); margin: 0 0 16px; }
     .codeblock {
       position: relative;
       margin: 0;
-      padding: 12px 44px 0 0;
-      border-top: var(--sb-rule);
-      font-family: var(--sb-mono);
+      padding: 14px 72px 14px 16px;
+      background: var(--bg-1);
+      border: var(--cf-hair);
+      font-family: var(--cf-mono);
       font-size: 13px;
       line-height: 1.7;
-      color: var(--fg-1);
+      color: var(--cf-ink);
       overflow-x: auto;
     }
     .codeblock .copybtn {
-      position: absolute; top: 10px; right: 0;
+      position: absolute; top: 12px; right: 14px;
       background: transparent;
-      border: var(--sb-hair);
-      padding: 3px 8px;
+      border: 0;
+      padding: 0;
       cursor: pointer;
-      color: var(--fg-3);
-      font-family: var(--sb-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-      transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+      color: var(--cf-ink);
+      font-family: var(--cf-face); font-size: 15px; font-weight: 500;
+      text-decoration: underline;
+      text-decoration-thickness: var(--cf-underline);
+      text-underline-offset: .14em;
     }
-    .codeblock .copybtn:hover { color: var(--sb-link-hover); border-color: var(--sb-rule-color); }
-    .codeblock .copybtn.ok { color: var(--ok); border-color: var(--ok); }
-    .install-note { margin-top: 20px; font-size: 14px; line-height: 1.45; color: var(--fg-3); }
+    .codeblock .copybtn:hover { color: var(--cf-ink); text-decoration-thickness: var(--cf-underline-hover); }
+    .codeblock .copybtn.ok { color: var(--ok); text-decoration: none; }
+    .install-note { margin-top: 24px; font-size: 15px; line-height: 1.45; color: var(--cf-ink-3); }
 
-    /* ================= FAMILY: columned listings under a folio ================= */
-    .family-lead { font-family: var(--sb-serif); font-size: 17px; line-height: 1.5; color: var(--fg-2); margin: 0 0 24px; max-width: 38em; }
-    .family-grid { columns: 3; column-gap: var(--sb-gutter); column-rule: var(--sb-rule); }
-    /* On a plugin page (the one with a "You are here" card) the strip is the
-       rest of the section; on /plugins/ it IS the section and gets no folio. */
+    /* ================= FAMILY: rows, three up ================= */
+    .family-lead { font-family: var(--cf-face); font-size: 19px; line-height: 1.5; color: var(--cf-ink-2); margin: 0 0 28px; max-width: 38em; }
+    .family-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; border-top: var(--cf-hair); }
+    /* On a plugin page (the one with a "You are here" row) the strip is
+       the rest of the section; on /plugins/ it IS the section and gets no
+       label. */
     .family-grid:has(.family-card.here)::before {
-      content: 'Also in this section';
-      column-span: all;
+      content: 'Also in the family';
+      grid-column: 1 / -1;
       display: block;
-      padding-bottom: 8px;
-      margin-bottom: 4px;
-      border-bottom: var(--sb-hair);
-      font-family: var(--sb-mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--fg-3);
+      padding: 14px 0 12px;
+      border-bottom: var(--cf-hair);
+      font-family: var(--cf-face);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--cf-ink-2);
     }
     .family-card {
-      display: flex; gap: 14px; align-items: flex-start;
-      break-inside: avoid;
-      padding: 14px 0 16px;
-      border-bottom: var(--sb-hair);
-      color: var(--fg-1);
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 18px 0 20px;
+      border-bottom: var(--cf-hair);
+      color: var(--cf-ink);
+      text-decoration: none;
       min-width: 0;
-      transition: color var(--dur-fast) var(--ease-out);
     }
-    .family-grid .family-card:last-child { border-bottom: 0; }
+    .family-grid .family-card:last-child { border-bottom: var(--cf-hair); }
     .family-card:hover { text-decoration: none; }
-    .family-card:hover .name { color: var(--sb-link-hover); }
+    .family-card:hover .name { color: var(--cf-ink); text-decoration: underline; text-decoration-thickness: var(--cf-underline-hover); text-underline-offset: .14em; }
     .family-card > div { min-width: 0; }
-    /* The listing thumb: the icon on a 3px mat over the raster. */
+    /* The listing thumb: the icon on a flat screen. */
     .family-card .fc-mark {
       width: 44px; height: 44px; flex-shrink: 0;
-      border: 3px solid var(--sb-mat); background: var(--sb-raster);
+      border: 0; background: var(--cf-screen);
       display: inline-flex; align-items: center; justify-content: center;
     }
     .family-card .fc-mark img { width: 30px; height: 30px; display: block; }
     .family-card .name {
-      font-family: var(--sb-display); font-size: 18px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.18;
-      color: var(--fg-1);
-      margin-bottom: 3px;
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-size: 20px; letter-spacing: -0.015em; line-height: 1.02;
+      color: var(--cf-ink);
+      margin-bottom: 6px;
       overflow-wrap: anywhere;
     }
-    .family-card .role { font-family: var(--sb-serif); font-size: 14px; line-height: 1.4; color: var(--fg-2); }
-    .family-card .fc-caps { margin-top: 6px; font-family: var(--sb-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--fg-3); }
-    .family-card .fc-beat { margin-top: 8px; font-family: var(--sb-serif); font-size: 14px; line-height: 1.45; color: var(--fg-2); text-wrap: pretty; }
+    .family-card .role { font-family: var(--cf-face); font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); }
+    .family-card .fc-caps { margin-top: 6px; font-family: var(--cf-face); font-size: 15px; font-weight: 500; color: var(--cf-ink-3); }
+    .family-card .fc-beat { margin-top: 8px; font-family: var(--cf-face); font-size: 16px; line-height: 1.45; color: var(--cf-ink-2); text-wrap: pretty; }
     .family-card .you {
       display: inline-block;
       margin-top: 8px;
-      font-family: var(--sb-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-      background: var(--sb-tab-bg); color: var(--sb-tab-fg);
-      padding: 4px 8px 3px; line-height: 1;
+      font-family: var(--cf-face); font-size: 16px; font-weight: 500;
+      color: var(--cyan);
     }
 
-    /* ================= THESIS (/plugins/ only): the features-page read ================= */
+    /* ================= THESIS (/plugins/ only): the pull on the band ================= */
     section.thesis blockquote {
-      margin: 0 0 28px;
-      padding: 12px 0 18px;
-      border-top: var(--sb-heavy);
-      border-bottom: var(--sb-hair);
-      font-family: var(--sb-serif);
-      font-style: italic;
-      font-size: clamp(24px, 2.3vw, 30px);
-      line-height: 1.3;
-      color: var(--fg-1);
-      max-width: 30em;
-      text-wrap: pretty;
+      margin: 0 0 36px;
+      padding: 34px 32px 38px;
+      border: 0;
+      background: var(--cf-band);
+      font-family: var(--font-display);
+      font-stretch: var(--cf-display-stretch);
+      font-weight: var(--cf-display-weight);
+      font-style: normal;
+      font-size: clamp(26px, 3.4vw, 50px);
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--cf-band-ink);
+      max-width: none;
+      overflow-wrap: break-word;
+      text-wrap: balance;
     }
-    section.thesis blockquote::before { content: '\201C'; color: var(--fg-2); margin-right: 2px; }
-    section.thesis blockquote::after { content: '\201D'; color: var(--fg-2); margin-left: 2px; }
+    section.thesis blockquote::before { content: '\201C'; color: var(--cf-band-ink-2); margin-right: 2px; }
+    section.thesis blockquote::after { content: '\201D'; color: var(--cf-band-ink-2); margin-left: 2px; }
     section.thesis .container > p {
-      font-family: var(--sb-serif);
-      font-size: 17px;
+      font-family: var(--cf-face);
+      font-size: 18px;
       line-height: 1.55;
-      color: var(--fg-1);
+      color: var(--cf-ink);
       max-width: 38em;
       margin: 0 0 1em;
       text-wrap: pretty;
-      hanging-punctuation: first;
     }
+    /* No drop cap. */
     section.thesis blockquote + p::first-letter {
-      float: left;
-      font-size: 4.2em;
-      line-height: 0.82;
-      padding: 5px 8px 0 0;
-      font-weight: 700;
-      color: var(--fg-1);
+      float: none;
+      font-size: inherit;
+      line-height: inherit;
+      padding: 0;
+      font-weight: inherit;
+      color: inherit;
     }
-    section.thesis strong { color: var(--fg-1); font-weight: 600; }
-    section.thesis .thesis-link { margin: 6px 0 32px; }
-    section.thesis .thesis-link svg, section.thesis .artifact-links svg { width: 14px; height: 14px; }
+    section.thesis strong { color: var(--cf-ink); font-weight: 700; }
+    section.thesis .thesis-link { margin: 10px 0 40px; }
+    section.thesis .thesis-link svg, section.thesis .artifact-links svg { width: 16px; height: 16px; }
     section.thesis .thesis-artifacts {
       margin-top: 16px;
-      padding-top: 20px;
-      border-top: var(--sb-rule);
-      columns: 2;
-      column-gap: var(--sb-gutter);
-      column-rule: var(--sb-hair);
+      padding-top: 0;
+      border-top: var(--cf-heavy);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 48px;
     }
     section.thesis .thesis-artifact { max-width: none; }
     section.thesis .artifact-eyebrow {
-      margin-bottom: 6px;
-      font-family: var(--sb-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--fg-3);
+      margin-bottom: 10px;
+      font-family: var(--cf-face); font-size: 17px; font-weight: 500;
+      color: var(--cf-ink-2);
     }
-    section.thesis .artifact-title { margin: 0 0 6px; font-size: 22px; }
-    section.thesis .artifact-blurb { font-family: var(--sb-serif); font-size: 16px; line-height: 1.45; color: var(--fg-2); margin: 0 0 12px; }
-    section.thesis .artifact-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    section.thesis .artifact-title { margin: 0 0 10px; font-size: clamp(22px, 2vw, 28px); }
+    section.thesis .artifact-blurb { font-family: var(--cf-face); font-size: 17px; line-height: 1.5; color: var(--cf-ink-2); margin: 0 0 14px; }
+    section.thesis .artifact-links { display: flex; gap: 12px 28px; flex-wrap: wrap; }
 
-    /* ================= FOOTER: the color bar and the imprint =================
-       The wayfinding sentence is the paper's imprint line. The 15 generated
-       pages own no footer markup a theme can add a link to, so the sentence
-       arrives as generated content, and the "see all themes" clause is
-       dropped rather than printed as a phrase nothing can click. The link
-       returns when render_footer() carries an imprint <p>, the same limit
-       the spec records for press.html and privacy.html. */
-    footer { margin-top: 24px; position: relative; border-top: var(--sb-heavy); }
-    footer::before {
-      content: '';
-      position: absolute;
-      left: 0; right: 0;
-      top: 5px;
-      border-top: var(--sb-hair);
-    }
+    /* ================= FOOTER: the heavy rule and the imprint =================
+       render-plugin-pages.py emits the row (entity, tagline, links) and
+       the imprint line (the active theme's name and a real link to
+       /themes.html); this dress only sets them. */
+    footer { margin-top: 72px; position: relative; border-top: var(--cf-heavy); }
+    footer::before { content: none; }
     footer .row {
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
-      gap: 12px 24px;
-      padding: 28px 0 22px;
-      font-family: var(--sb-mono);
-      font-size: 12.5px;
-      letter-spacing: 0.04em;
-      color: var(--fg-2);
+      display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap;
+      gap: 10px 32px;
+      padding: 22px 0 14px;
+      font-family: var(--cf-face);
+      font-size: 17px;
+      color: var(--cf-ink);
     }
-    footer .tagline { font-family: var(--sb-serif); font-style: italic; font-size: 15px; letter-spacing: 0; color: var(--fg-1); }
-    footer .links { display: flex; align-items: center; gap: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
-    footer .links a { color: var(--cyan); }
-    footer .links a:hover { color: var(--sb-link-hover); }
-    footer .links::after {
-      /* the printer's color bar, again, at the foot of the page */
-      content: '';
-      width: 9px; height: 9px;
-      margin: 0 26px 0 6px;
-      background: var(--cyan);
-      box-shadow: 13px 0 0 var(--magenta), 26px 0 0 var(--sb-ink);
-    }
-    /* The imprint: the wayfinding sentence at the foot of the page, the
-       sheet's treatment (mono, small, the link in cyan). Markup from
-       render-plugin-pages.py; the name from the active theme.json. */
+    footer .tagline { font-family: var(--cf-face); font-style: normal; font-size: 17px; font-weight: 500; color: var(--cf-ink); }
+    footer .links { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 28px; font-size: 17px; font-weight: 500; }
+    footer .links a { color: var(--cf-ink); }
+    footer .links a:hover { color: var(--cf-ink); }
+    footer .links::after { content: none; }
     footer .imprint {
-      margin-top: 10px;
-      padding: 14px 0 44px;
-      border-top: var(--sb-hair);
+      margin-top: 0;
+      padding: 0 0 56px;
+      border-top: 0;
     }
     footer .imprint p {
-      font-family: var(--sb-mono);
-      font-size: 12px;
-      line-height: 1.7;
-      letter-spacing: 0.04em;
-      color: var(--fg-2);
+      font-family: var(--cf-face);
+      font-size: 17px;
+      line-height: 1.5;
+      color: var(--cf-ink-2);
     }
     footer .imprint a {
-      color: var(--cyan);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      text-decoration-thickness: 1px;
+      color: var(--cf-ink);
       white-space: nowrap;
     }
-    footer .imprint a:hover { color: var(--sb-link-hover); }
+    footer .imprint a:hover { color: var(--cf-ink); }
 
     /* ================= 768 ================= */
     @media (max-width: 960px) {
-      .hero-grid { grid-template-columns: 1fr; gap: 32px 0; }
+      .hero-grid { grid-template-columns: 1fr; gap: 40px 0; }
       .hero-left { padding-right: 0; border-right: 0; }
       .hero-mark { display: none; }
-      .cards-grid, .cards-grid.cols-3 { columns: 2; }
-      .mini-grid { columns: 2; }
-      .brain-grid { grid-template-columns: 1fr; gap: 22px 0; }
-      .family-grid { columns: 2; }
+      .cards-grid, .cards-grid.cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .brain-grid { grid-template-columns: 1fr; gap: 28px 0; }
+      .family-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 720px) {
       nav.top .brand-row { flex-wrap: wrap; row-gap: 6px; }
       nav.top .brand-sep { display: none; }
       .install-grid { grid-template-columns: 1fr; }
-      section.brain .section-head + div > div:first-child { columns: 1; }
+      section.brain .section-head + div > div:first-child { max-width: none; }
     }
     /* ================= 390 ================= */
     @media (max-width: 600px) {
-      .container { padding: 0 18px; }
-      section.hero { padding-top: 26px; }
-      section.work, section.brain, section.install, section.family, section.thesis { padding: 28px 0 36px; }
-      .cards-grid, .cards-grid.cols-3, .mini-grid, .family-grid, section.thesis .thesis-artifacts { columns: 1; }
-      footer .row { padding: 22px 0 16px; }
-      footer .imprint { padding: 12px 0 36px; }
-      footer .imprint p { line-height: 1.75; }
+      .container { padding: 0 20px; }
+      nav.top .row { padding-top: 20px; }
+      section.hero { padding: 40px 0 52px; }
+      h1 { font-size: clamp(34px, 10vw, 52px); }
+      section.work, section.brain, section.install, section.family, section.thesis { padding: 48px 0 16px; }
+      .cards-grid, .cards-grid.cols-3, .mini-grid, .family-grid, section.thesis .thesis-artifacts { grid-template-columns: minmax(0, 1fr); }
+      .callout { padding: 24px 20px 28px; }
+      section.thesis blockquote { padding: 26px 20px 30px; }
+      footer .row { padding: 18px 0 12px; }
+      footer .imprint { padding: 0 0 44px; }
     }
 /* ============================================================
-   Theme: slate-broadsheet — product archetype, TOKEN VOCABULARY.
+   Theme: cyan-fade — product archetype, TOKEN VOCABULARY.
 
    This file is custom-property definitions and nothing else. No element
    selectors, no class selectors, no media queries, no @import. That is a
@@ -813,114 +768,102 @@
    after archetypes/product.css into the 15 generated plugin pages. Names
    this file shares with product.css's own :root must carry the same
    values (tests/test_render_plugin_pages.py asserts it on the active
-   theme), so the slate dress (Task 3) reads these rather than restating
-   them.
+   theme), so the Cyan Fade dress reads these rather than restating them.
 
-   COMPLETE against archetypes.REQUIRED_TOKENS (47 names), plus the --sb-*
-   treatment block, identical to tokens.css. The spacing scale is present
-   and unspent for the same reason it always was: the theme OFFERS a
-   scale; the linking pages decline it.
+   COMPLETE against archetypes.REQUIRED_TOKENS (47 names), plus the --cf-*
+   treatment block, both :root blocks copied verbatim from tokens.css. The
+   radius scale is offered at zero and the spacing scale is present and
+   unspent: the theme OFFERS them; the linking pages decline them.
+
+   THE FIRST PAPER THEME. The accent names are ACCENT INKS here, tones
+   that clear AA on paper; --ink-950, the type that sits on an accent
+   fill, is paper. See tokens.css's header for the full re-reading.
 
    AA CONTRAST, computed with scripts/theme-doctor.py's own WCAG 2.1 math
    (the numbers the gate will grade). The 4.5:1 body floor applies to every
-   pair, including sizes that would qualify as large text.
+   pair, including sizes that would qualify as large text. No texture, no
+   grain: the raw tone is the rendered tone.
 
-   ink / surface             --bg-0 #3A4350  --bg-1 #3E4754  --bg-2 #414A58
-   --fg-1 #F7F5F0                    9.18:1          8.63:1          8.22:1
-   --fg-2 #D9D6CF                    6.90:1          6.48:1          6.17:1
-   --fg-3 #C3C1BA                    5.55:1          5.22:1          4.97:1
-   --fg-muted #BCBBB4                5.20:1          4.88:1          4.65:1
-   --cyan #17D4FA                    5.64:1          5.30:1          5.05:1
-   --cyan-pale #5CE6FF               6.77:1          6.36:1          6.06:1
-   --magenta-pale #FFA3CC            5.41:1          5.09:1          4.85:1
-   --ok #2BD99A                      5.48:1          5.14:1          4.90:1
+   ink / surface             --bg-0 #FFFFFF  --bg-1 #F4FBFD  --bg-2 #E9F7FB
+   --fg-1 #0F1F31                   16.66:1         15.92:1         15.20:1
+   --fg-2 #2A3649                   12.19:1         11.65:1         11.13:1
+   --fg-3 #5E6B7F                    5.40:1          5.16:1          4.93:1
+   --fg-muted #627089                5.00:1          4.78:1          4.56:1
+   --cyan #087088                    5.70:1          5.45:1          5.20:1
+   --cyan-pale #065A6B               7.83:1          7.48:1          7.14:1
+   --magenta #C21F6C                 5.67:1          5.41:1          5.17:1
+   --magenta-pale #A8195D            7.09:1          6.77:1          6.47:1
+   --ok #107A4E                      5.36:1          5.12:1          4.89:1
+   --warn #8A5200                    6.39:1          6.10:1          5.83:1
 
-   COMPOSITED UNDER THE GRAIN. --sb-grain is painted fixed at z-index 5 over
-   everything, panels included, and the sheet's contract is graded under it:
-   worst case 3.5 percent paper over each surface. Same inks, grained surfaces:
+   THE PRODUCT PAGE'S ONE ACCENT FIELD. The 15 generated pages are flat
+   paper with ONE flat field of --cf-cyan (#17D4FA) under the masthead and
+   the hero. On that field the only inks are --cf-ink 9.39:1 and
+   --cf-ink-2 6.87:1. --cf-ink-3 is 3.05:1 there and the accent inks
+   (--cyan, --magenta, --ok) are worse: none of them is spent on the field.
+   The band (--cf-band, the one magenta surface): --cf-band-ink 5.67:1,
+   --cf-band-ink-2 5.28:1. The screens (--cf-screen): --cf-screen-ink, the
+   brand cyan, 9.39:1.
 
-   ink / surface+grain       --bg-0 #414956  --bg-1 #444D59  --bg-2 #47505D
-   --fg-1 #F7F5F0                    8.34:1          7.86:1          7.49:1
-   --fg-2 #D9D6CF                    6.26:1          5.90:1          5.62:1
-   --fg-3 #C3C1BA                    5.04:1          4.76:1          4.53:1
-   --fg-muted #BCBBB4                4.72:1          4.45:1          4.24:1
-   --cyan #17D4FA                    5.12:1          4.83:1          4.60:1
-   --cyan-pale #5CE6FF               6.15:1          5.80:1          5.52:1
-   --magenta-pale #FFA3CC            4.91:1          4.63:1          4.42:1
-   --ok #2BD99A                      4.97:1          4.69:1          4.47:1
+   NEVER TEXT on paper: --cf-cyan 1.84:1, --cf-top 2.94:1, the brand's
+   full magenta 3.79:1; --ink-0 and --ink-950 are fills' type.
 
-   THE RULE THAT FOLLOWS: under grain, --fg-muted, --magenta-pale and --ok are
-   --bg-0 INKS ONLY. None of the three clears 4.5:1 on a grained --bg-1 or
-   --bg-2, and --fg-3 on a grained --bg-2 is a hair over. A dress that sets a
-   folio in --fg-muted on a --bg-2 rail ships under AA with every gate green,
-   because the doctor grades flat colors. theme.json gates the flat ceiling
-   (--fg-muted/--bg-2, --magenta-pale/--bg-2); the grained one is this rule.
-
-   SHORTHANDS: --sb-hair, --sb-rule and --sb-heavy are BORDER SHORTHANDS
-   (width + style + color), exactly as the remix sheet declares them. Spend
-   them on border-* and column-rule only. The bare colors are --sb-hair-color
-   and --sb-rule-color, which --border-1 and --border-2 read.
-
-   Reversed folio tab, ground-colored type on the ink field
-   (#3A4350 on #F7F5F0): 9.18:1. Ground on the plate mat
-   (#3A4350 on #EFEBE2): 8.41:1. No text sits on the mat.
-
-   NEVER TEXT on slate, with the ratios that rule them out on --bg-0:
-   --magenta #F22F89 2.64:1 (the color bar and the underline
-   swatch only); the brand's pale magenta #FF5AA3 3.45:1, which is why
-   --magenta-pale here is the sheet's declared hover tint #FFA3CC instead;
-   --ed-link #0FA8C9 3.56:1; --ink-950 and the navy trio are field
-   constants for the brand and are not inks on this theme.
+   SHORTHANDS: --cf-hair and --cf-heavy are BORDER SHORTHANDS (width +
+   style + color). Spend them on border-* and column-rule only. The bare
+   color is --cf-hair-color, which --border-1 and --border-2 read.
    ============================================================ */
 :root {
-  /* Brand constants. The navy trio and --ink-950 are the 626 Labs field
-     colors every theme carries; on slate they are values a dress may spend
-     on a plate raster or a reversed swatch, never a surface text sits on. */
+  /* Brand constants. The navy trio and --ink-0 are the 626 Labs field
+     colors every theme carries; on paper the navy IS the ink, and the
+     brand cyan and magenta are the sweep and the band, never type. */
   --navy-deep: #0f1f31;
   --navy-mid:  #192e44;
   --navy-hi:   #223a54;
   --navy-line: #2a3a5c;
-  --cyan:      #17d4fa;
-  --cyan-pale: #5ce6ff;
-  --cyan-dim:  #0fa8c9;
-  --magenta:   #f22f89;
-  --magenta-pale: #FFA3CC;
   --ink-0:     #ffffff;
-  --ink-950:   #050c18;
-  --ok:        #2bd99a;
-  --warn:      #ffb454;
 
-  /* The ink ramp: the editorial paper tones, inverted. */
-  --text:      #F7F5F0;
-  --text-sec:  #D9D6CF;
-  --text-dim:  #C3C1BA;
-  --text-mute: #BCBBB4;
+  /* The accent inks: the contract's accent names as tones that clear AA on
+     paper. --ink-950 is the type that sits on an accent fill: paper. */
+  --cyan:      var(--cf-cyan-ink);
+  --cyan-pale: var(--cf-cyan-ink-hover);
+  --cyan-dim:  var(--cf-cyan-ink-hover);
+  --magenta:   var(--cf-band);
+  --magenta-pale: var(--cf-magenta-ink-hover);
+  --ink-950:   var(--cf-band-ink-2);
+  --ok:        #107a4e;
+  --warn:      #8a5200;
 
-  /* The slate. One ground, two steps lighter for mats and rails. */
-  --bg-0: var(--sb-ground);
-  --bg-1: #3E4754;
-  --bg-2: #414A58;
+  /* The ink ramp: the editorial inks, on paper. */
+  --text:      #0F1F31;
+  --text-sec:  #2A3649;
+  --text-dim:  #5E6B7F;
+  --text-mute: #627089;
+
+  /* The paper. One ground, two steps of cold tint for mats and rails. */
+  --bg-0: var(--cf-ground);
+  --bg-1: #F4FBFD;
+  --bg-2: #E9F7FB;
   --fg-1: var(--text);
   --fg-2: var(--text-sec);
   --fg-3: var(--text-dim);
   --fg-muted: var(--text-mute);
 
-  /* Rules are paper at low alpha: hairline, mid rule, and the heavy rule
-     a dress draws in ink itself. Cyan hairline for the accent border. */
-  --border-1: var(--sb-hair-color);
-  --border-2: var(--sb-rule-color);
-  --border-strong: rgba(247,245,240,.42);
-  --border-accent: rgba(23,212,250,.45);
+  /* Rules are ink at low alpha: the hairline between rows, and the heavy
+     rule a dress draws in ink itself. A deep-cyan hairline for the accent. */
+  --border-1: var(--cf-hair-color);
+  --border-2: var(--cf-hair-color);
+  --border-strong: rgba(15,31,49,.6);
+  --border-accent: rgba(8,112,136,.45);
 
-  /* The printer's color bar. A swatch recipe, never a text fill. */
+  /* The brand pair as a swatch recipe, in the paper inks, never a text fill. */
   --brand-gradient: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 100%);
   --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
-  --inner-stroke: inset 0 0 0 1px rgba(247,245,240,.06);
+  --inner-stroke: inset 0 0 0 1px rgba(15,31,49,.08);
 
-  /* Matte drop shadows for anything lifted off the page. No glow tokens:
+  /* Flat drop shadows for anything lifted off the page. No glow tokens:
      this theme defines none, so a dress cannot spend one by accident. */
-  --shadow-2: 0 4px 16px rgba(0,0,0,.28);
-  --shadow-3: 0 12px 32px rgba(0,0,0,.36);
+  --shadow-2: 0 4px 16px rgba(15,31,49,.10);
+  --shadow-3: 0 12px 32px rgba(15,31,49,.14);
 
   --ease-out: cubic-bezier(.2,.7,.2,1);
   --dur-fast: 120ms;
@@ -929,66 +872,78 @@
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
   --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
 
-  --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
-  --r-pill: 999px;
+  /* No radius anywhere on this theme. The scale is offered at zero so a
+     consumer that reads --r-md gets a square corner, not an unresolved var. */
+  --r-xs: 0; --r-sm: 0; --r-md: 0; --r-lg: 0; --r-xl: 0;
+  --r-pill: 0;
 
-  /* The Field Manual's type system: Space Grotesk on every head, the
-     serif on body and decks, JetBrains Mono on every piece of furniture.
-     Source Serif 4 is self-hosted in /fonts/fonts.css (roman + italic). */
-  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  --font-body:    'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  /* One face. Archivo on every head and every line of text; the mono for
+     code only. Archivo is self-hosted in /fonts/fonts.css (roman + italic,
+     wght 100-900, wdth 62-125). */
+  --font-display: 'Archivo', 'Arial Black', Arial, sans-serif;
+  --font-body:    'Archivo', Arial, Helvetica, sans-serif;
   --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
-/* The Slate Broadsheet — treatment layer (--sb-*). Same block as tokens.css. */
+/* Cyan Fade — treatment layer (--cf-*). Same block as tokens.css. */
 :root {
-  /* The slate and the inks. --sb-ground is the ONLY place the ground is
+  /* The paper and the inks. --cf-ground is the ONLY place the ground is
      declared; --bg-0 reads it. */
-  --sb-ground:      #3A4350;
-  --sb-ink:         #F7F5F0;   /* primary ink: masthead, heads, body copy */
-  --sb-ink-2:       #D9D6CF;   /* secondary ink: decks, descriptions, the imprint */
-  --sb-ink-3:       #C3C1BA;   /* caption ink: folios, datelines, plate captions */
-  --sb-ink-muted:   #BCBBB4;   /* the fourth step the contract's --fg-muted needs */
-  --sb-link-hover:  #FFA3CC;   /* hover and focus ink; magenta as a tint, 5.41:1 */
+  --cf-ground:      #FFFFFF;
+  --cf-ink:         #0F1F31;   /* primary ink: heads, body, links, the only ink on the sweep's top */
+  --cf-ink-2:       #2A3649;   /* secondary ink: decks, descriptions, dates */
+  --cf-ink-3:       #5E6B7F;   /* caption ink: 5.40:1 on paper, never on the sweep */
+  --cf-ink-muted:   #627089;   /* the fourth step the contract's --fg-muted needs */
 
-  /* Rule colors: paper at low alpha. Decorative, never text. */
-  --sb-hair-color:  rgba(247,245,240,.14);  /* hairlines, column rules */
-  --sb-rule-color:  rgba(247,245,240,.28);  /* the mid rule */
-  --sb-screen:      rgba(247,245,240,.14);  /* halftone dot screen over a raster */
-  --sb-impression:  rgba(15,31,49,.55);     /* letterpress impression under display heads */
+  /* The sweep. --cf-top is bluer than the brand (brand cyan 70 / brand
+     navy 30, in sRGB); --cf-cyan is the brand cyan itself. The home shell
+     paints them as one gradient; no other page paints either. */
+  --cf-top:         #159EBE;
+  --cf-cyan:        #17D4FA;
+  --cf-sweep:       linear-gradient(180deg, var(--cf-top) 0, var(--cf-cyan) 22%, var(--cf-ground) 100%);
+  --cf-sweep-height: 3200px;
 
-  /* The three rules, as the remix sheet declares them: BORDER SHORTHANDS,
-     width + style + color. Spend them on border-* and column-rule ONLY
-     (`border-top: var(--sb-hair)`, `column-rule: var(--sb-hair)`,
-     `border-top: var(--sb-heavy)`); never as a color. A bare color spent
-     as a shorthand parses with border-style none and the rule vanishes
-     silently. For a color, read --sb-hair-color / --sb-rule-color. */
-  --sb-hair:        1px solid var(--sb-hair-color);
-  --sb-rule:        1px solid var(--sb-rule-color);
-  --sb-heavy:       3px solid var(--sb-ink);
+  /* The accent inks: a deep cyan the pages may set type in, and its
+     hover; the dim magenta and its hover. The contract's --cyan,
+     --cyan-pale, --magenta and --magenta-pale read these. */
+  --cf-cyan-ink:        #087088;   /* 5.70:1 on paper */
+  --cf-cyan-ink-hover:  #065A6B;   /* 7.83:1 on paper */
+  --cf-magenta-ink-hover: #A8195D; /* 7.09:1 on paper */
 
-  /* The mounted plate: a pale mat carries a dark raster so a photo reads
-     as pasted onto the slate, not as a hole in it. No text on the mat. */
-  --sb-mat:         #EFEBE2;   /* the editorial paper-deep tone */
-  --sb-raster:      #0F1F31;   /* the plate placeholder, brand navy */
+  /* The band: the one magenta surface, and the type that sits on it. */
+  --cf-band:        #C21F6C;   /* the brand's dim magenta; 5.67:1 under white */
+  --cf-band-ink:    #FFFFFF;   /* heads and links on the band */
+  --cf-band-ink-2:  #F5F7FB;   /* body on the band, 5.28:1 */
 
-  /* The reversed folio tab: a pale tab with slate type, and the skip link. */
-  --sb-tab-bg:      var(--sb-ink);
-  --sb-tab-fg:      var(--sb-ground);
+  /* The screens: the dark rasters (thumbs, previews, the star map, the
+     widgets' own chrome) and the caption printed inside one. */
+  --cf-screen:      #0F1F31;   /* brand navy */
+  --cf-screen-ink:  #17D4FA;   /* the brand cyan, 9.39:1 on the screen */
 
-  /* Broadsheet measures. */
-  --sb-page:        1280px;
-  --sb-gutter:      32px;
+  /* Rule colors: ink at low alpha. Decorative, never text. */
+  --cf-hair-color:  rgba(15,31,49,.28);  /* hairlines between rows */
 
-  /* Stone grain: fractal noise, white at half alpha, laid at 7 percent.
-     Matte tooth, not scanlines, not a grid. No color literal in the SVG. */
-  --sb-grain:         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23g%29'/%3E%3C/svg%3E");
-  --sb-grain-opacity: .07;
+  /* The two rules, as the sheet declares them: BORDER SHORTHANDS, width +
+     style + color. Spend them on border-* and column-rule ONLY
+     (`border-bottom: var(--cf-hair)`, `border-top: var(--cf-heavy)`);
+     never as a color. For a color, read --cf-hair-color. */
+  --cf-hair:        1px solid var(--cf-hair-color);
+  --cf-heavy:       2px solid var(--cf-ink);
 
-  /* Role aliases the remix sheet's rules read. */
-  --sb-serif:       var(--font-body);
-  --sb-display:     var(--font-display);
-  --sb-mono:        var(--font-mono);
+  /* Links: ink, underlined; hover thickens the underline. Nothing else
+     on the sweep passes as a second color, so the theme has no link color. */
+  --cf-underline:   1.5px;
+  --cf-underline-hover: 3px;
+
+  /* Page measures. */
+  --cf-page:        1240px;
+  --cf-gutter:      32px;
+
+  /* Role aliases the sheet's rules read. */
+  --cf-face:        var(--font-body);
+  --cf-mono:        var(--font-mono);
+  --cf-display-stretch: 125%;
+  --cf-display-weight:  900;
 }
   </style>
   <link rel="stylesheet" href="/repo-meter/meter.css" />
@@ -1339,7 +1294,7 @@
       </div>
     </div>
     <div class="container imprint">
-      <p>Theme: The Slate Broadsheet · this site changes monthly · <a href="/themes.html">see all themes</a></p>
+      <p>Theme: Cyan Fade · this site changes monthly · <a href="/themes.html">see all themes</a></p>
     </div>
     <a class="site-signature" href="/" aria-label="626Labs, home"></a>
   </footer>

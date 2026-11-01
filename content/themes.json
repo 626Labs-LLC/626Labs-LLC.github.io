@@ -1,14 +1,17 @@
 {
   "$comment": "Presentation state for 626labs.dev. active = live theme; queue = approved themes awaiting rotation (FIFO); archive = frozen past themes. Content lives in site.json and stays theme-agnostic.",
-  "active": "slate-broadsheet",
-  "queue": [
-    "cyan-fade"
-  ],
+  "active": "cyan-fade",
+  "queue": [],
   "archive": [
     {
       "slug": "phosphor-blueprint",
       "month": "2026-09",
       "url": "/themes/archive/2026-09/"
+    },
+    {
+      "slug": "slate-broadsheet",
+      "month": "2026-10",
+      "url": "/themes/archive/2026-10/"
     }
   ]
 }
