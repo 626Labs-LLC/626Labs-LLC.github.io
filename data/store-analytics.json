@@ -1,17 +1,10 @@
 {
- "fetchedAt": "2026-11-01T13:50:25.352Z",
+ "fetchedAt": "2026-11-02T16:36:58.134Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
    "name": "RoRoRo",
    "usageDaily": {
-    "2026-10-02": {
-     "dailyActiveUsers": 142,
-     "dailyActiveDevices": 142,
-     "dailyNewUsers": 21,
-     "dailySessionCount": 328,
-     "engagementDurationMinutes": 299
-    },
     "2026-10-03": {
      "dailyActiveUsers": 188,
      "dailyActiveDevices": 187,
@@ -207,12 +200,23 @@
      "dailyNewUsers": 41,
      "dailySessionCount": 631,
      "engagementDurationMinutes": 680.8
+    },
+    "2026-10-31": {
+     "dailyActiveUsers": 374,
+     "dailyActiveDevices": 371,
+     "dailyNewUsers": 98,
+     "dailySessionCount": 924,
+     "engagementDurationMinutes": 1273.6
+    },
+    "2026-11-01": {
+     "dailyActiveUsers": 389,
+     "dailyActiveDevices": 386,
+     "dailyNewUsers": 66,
+     "dailySessionCount": 942,
+     "engagementDurationMinutes": 1369.6
     }
    },
    "installsDaily": {
-    "2026-10-02": {
-     "successfulInstallCount": 44
-    },
     "2026-10-03": {
      "successfulInstallCount": 72
     },
@@ -299,9 +303,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-10-02": {
-     "acquisitionQuantity": 19
-    },
     "2026-10-03": {
      "acquisitionQuantity": 28
     },
@@ -381,13 +382,16 @@
      "acquisitionQuantity": 55
     },
     "2026-10-30": {
-     "acquisitionQuantity": 3
+     "acquisitionQuantity": 53
     },
     "2026-10-31": {
      "acquisitionQuantity": 107
     },
     "2026-11-01": {
-     "acquisitionQuantity": 46
+     "acquisitionQuantity": 7
+    },
+    "2026-11-02": {
+     "acquisitionQuantity": 50
     }
    },
    "installsByMarket": {
@@ -532,6 +536,17 @@
     "MP": 1
    },
    "reviews": [
+    {
+     "reviewerName": "Altus",
+     "rating": 5,
+     "reviewTitle": "Pretty neat software",
+     "reviewText": "This is a pretty cool app that I can use to have two windows open playing roblox. I'd reccomend this to other people and I'm curious as why there's so little downloads for something so useful. I have *some* doubts as to whether or not this is a Trojan based on the reveiws on the store, but Ill keep using it for a little and find out myself.Also, can there be an option to modify FPS caps customley? There are only a few pre-selected options and funnily enough both my monitors don't fit in that range :((One is 75hz and the other is 180hz)",
+     "market": "US",
+     "date": "10/31/2026 7:08:05 PM",
+     "packageVersion": "1.35.0.0",
+     "isRevised": true,
+     "id": "d104e683-92c7-6b3b-4ece-4abf3fe79668"
+    },
     {
      "reviewerName": "Shorya",
      "rating": 5,
@@ -725,40 +740,33 @@
     "twoStars": 0,
     "threeStars": 1,
     "fourStars": 0,
-    "fiveStars": 14,
-    "total": 17,
-    "average": 4.41,
+    "fiveStars": 15,
+    "total": 18,
+    "average": 4.44,
     "oneStarWithText": 2
    },
    "failuresWindow": [
     {
      "failureName": "APPLICATION_HANG_ENDTASK_HungThreadIsIdle_cfffffff_626LabsLLC.RoRoRoBlox_ROROROblox!unknown_error_in_application",
      "failureHash": "bac8dbe3-eb0a-9cb0-8e8e-7158ff79b9bb",
-     "eventCount": 89,
-     "deviceCount": 69
+     "eventCount": 92,
+     "deviceCount": 72
     },
     {
      "failureName": "CLR_EXCEPTION_80263001_626LabsLLC.RoRoRoBlox_ROROROblox!unknown_function",
      "failureHash": "459271eb-3397-7bb2-e68e-559fc6bb203d",
-     "eventCount": 7,
-     "deviceCount": 7
+     "eventCount": 10,
+     "deviceCount": 10
     }
    ],
    "unclassifiedHits": {
-    "eventCount": 474,
-    "deviceCount": 376
+    "eventCount": 510,
+    "deviceCount": 403
    }
   },
   "9N53V6RRJK95": {
    "name": "626 Mod Launcher",
    "usageDaily": {
-    "2026-10-02": {
-     "dailyActiveUsers": 1,
-     "dailyActiveDevices": 1,
-     "dailyNewUsers": 1,
-     "dailySessionCount": 3,
-     "engagementDurationMinutes": 0.5
-    },
     "2026-10-04": {
      "dailyActiveUsers": 3,
      "dailyActiveDevices": 3,
@@ -891,12 +899,16 @@
      "dailyNewUsers": 1,
      "dailySessionCount": 3,
      "engagementDurationMinutes": 0.4
+    },
+    "2026-10-31": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 14,
+     "engagementDurationMinutes": 3.6
     }
    },
    "installsDaily": {
-    "2026-10-02": {
-     "successfulInstallCount": 1
-    },
     "2026-10-03": {
      "successfulInstallCount": 1
     },
@@ -971,9 +983,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-10-02": {
-     "acquisitionQuantity": 2
-    },
     "2026-10-04": {
      "acquisitionQuantity": 3
     },
@@ -1030,6 +1039,9 @@
     },
     "2026-10-28": {
      "acquisitionQuantity": 4
+    },
+    "2026-10-30": {
+     "acquisitionQuantity": 3
     },
     "2026-10-31": {
      "acquisitionQuantity": 1
@@ -1154,6 +1166,9 @@
     },
     "2026-10-28": {
      "acquisitionQuantity": 2
+    },
+    "2026-11-02": {
+     "acquisitionQuantity": 1
     }
    },
    "installsByMarket": {
@@ -1254,6 +1269,13 @@
      "dailyNewUsers": 1,
      "dailySessionCount": 3,
      "engagementDurationMinutes": 0.8
+    },
+    "2026-10-31": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.1
     }
    },
    "installsDaily": {
@@ -1358,11 +1380,14 @@
     "2026-10-28": {
      "acquisitionQuantity": 1
     },
+    "2026-10-30": {
+     "acquisitionQuantity": 1
+    },
     "2026-10-31": {
      "acquisitionQuantity": 2
     },
-    "2026-11-01": {
-     "acquisitionQuantity": 2
+    "2026-11-02": {
+     "acquisitionQuantity": 1
     }
    },
    "installsByMarket": {
@@ -1433,13 +1458,6 @@
   "9MV9G4XFJ8S0": {
    "name": "RBX15 Classic Shirt and Pants Maker",
    "usageDaily": {
-    "2026-10-02": {
-     "dailyActiveUsers": 2,
-     "dailyActiveDevices": 2,
-     "dailyNewUsers": 0,
-     "dailySessionCount": 5,
-     "engagementDurationMinutes": 9.7
-    },
     "2026-10-03": {
      "dailyActiveUsers": 5,
      "dailyActiveDevices": 5,
@@ -1635,12 +1653,23 @@
      "dailyNewUsers": 2,
      "dailySessionCount": 11,
      "engagementDurationMinutes": 9.9
+    },
+    "2026-10-31": {
+     "dailyActiveUsers": 5,
+     "dailyActiveDevices": 5,
+     "dailyNewUsers": 4,
+     "dailySessionCount": 16,
+     "engagementDurationMinutes": 27.9
+    },
+    "2026-11-01": {
+     "dailyActiveUsers": 6,
+     "dailyActiveDevices": 6,
+     "dailyNewUsers": 5,
+     "dailySessionCount": 42,
+     "engagementDurationMinutes": 64.3
     }
    },
    "installsDaily": {
-    "2026-10-02": {
-     "successfulInstallCount": 1
-    },
     "2026-10-03": {
      "successfulInstallCount": 5
     },
@@ -1805,10 +1834,13 @@
     "2026-10-29": {
      "acquisitionQuantity": 1
     },
+    "2026-10-30": {
+     "acquisitionQuantity": 4
+    },
     "2026-10-31": {
      "acquisitionQuantity": 5
     },
-    "2026-11-01": {
+    "2026-11-02": {
      "acquisitionQuantity": 1
     }
    },
@@ -1957,13 +1989,6 @@
   "9NH3NK2RGCF5": {
    "name": "Sanduhr für Claude",
    "usageDaily": {
-    "2026-10-02": {
-     "dailyActiveUsers": 1,
-     "dailyActiveDevices": 1,
-     "dailyNewUsers": 0,
-     "dailySessionCount": 1,
-     "engagementDurationMinutes": 3.6
-    },
     "2026-10-03": {
      "dailyActiveUsers": 2,
      "dailyActiveDevices": 2,
@@ -2075,12 +2100,23 @@
      "dailyNewUsers": 0,
      "dailySessionCount": 2,
      "engagementDurationMinutes": 0.2
+    },
+    "2026-10-31": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 1,
+     "engagementDurationMinutes": 0.1
+    },
+    "2026-11-01": {
+     "dailyActiveUsers": 1,
+     "dailyActiveDevices": 1,
+     "dailyNewUsers": 0,
+     "dailySessionCount": 4,
+     "engagementDurationMinutes": 9.9
     }
    },
    "installsDaily": {
-    "2026-10-02": {
-     "successfulInstallCount": 1
-    },
     "2026-10-15": {
      "successfulInstallCount": 1
     },
@@ -2095,9 +2131,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-10-02": {
-     "acquisitionQuantity": 1
-    },
     "2026-10-15": {
      "acquisitionQuantity": 1
     }
