@@ -269,7 +269,7 @@ PRODUCTS: dict[str, dict] = {
         "rules": [(FILE, "apps/reel-words/public/favicon.svg", "favicon.svg")],
     },
     "rororo-mac": {
-        "name": "RORORO for Mac", "siteId": None,
+        "name": "RoRoRo for Mac", "siteId": None,
         "local": "rororo-mac", "repo": "estevanhernandez-stack-ed/rororo-mac",
         # hero.png and hero@2x.png are both kept, as harvested: @2x is not a
         # size token the variant collapse knows.
@@ -286,7 +286,7 @@ PRODUCTS: dict[str, dict] = {
         "rules": [(FILE, "icon.png", "icon.png")],
     },
     "rororoblox": {
-        "name": "RORORO", "siteId": "rororo",
+        "name": "RoRoRo", "siteId": "rororo",
         "local": "ROROROblox", "repo": "estevanhernandez-stack-ed/ROROROblox",
         "rules": [
             (DIR, "docs/images", "", SHOTS),
