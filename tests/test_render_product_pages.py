@@ -464,7 +464,8 @@ def test_release_markers_carry_over():
 
 
 def test_watch_pages_keep_their_video_seo():
-    for rel, dur in (("rororo-trailer.html", "PT63S"), ("mod-launcher-trailer.html", "PT53S")):
+    for rel, dur in (("rororo-trailer.html", "PT63S"), ("mod-launcher-trailer.html", "PT53S"),
+                     ("rbx15-trailer.html", "PT48S")):
         html = _read(rel)
         assert '<meta property="og:type" content="video.other" />' in html
         assert '<meta property="og:video" content="https://626labs.dev/assets/video/' in html
