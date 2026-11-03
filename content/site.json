@@ -1990,6 +1990,18 @@
           },
           {
             "type": "section",
+            "heading": "See it run",
+            "aside": "the launch cut",
+            "blocks": [
+              {
+                "type": "video",
+                "base": "assets/video/rbx15/rbx15-trailer",
+                "caption": "Neon Tide, start to finish · sound on · <a href=\"rbx15-trailer.html\">watch on its own page</a>"
+              }
+            ]
+          },
+          {
+            "type": "section",
             "id": "see-it-work",
             "eyebrow": "See it work",
             "heading": "From an empty template to a finished shirt",
@@ -3685,6 +3697,124 @@
         "footer": {
           "label": "626 Labs · 626 Mod Launcher trailer",
           "disclaimer": "Game names and cover art belong to their publishers.",
+          "links": [
+            {
+              "label": "Privacy",
+              "href": "privacy.html"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rbx15-trailer",
+      "title": "RBX15 trailer",
+      "productPage": "rbx15-trailer.html",
+      "pageSpec": {
+        "meta": {
+          "title": "RBX15 trailer: paint your clothes, don't just place them · 626 Labs",
+          "description": "Watch the RBX15 trailer: paint Roblox Classic shirts and pants on the exact 585×559 template, gradients that wrap the body, your own art in layers, Word Art in 15 fonts and six styles, and a live 3D preview. Free on the Microsoft Store.",
+          "ogTitle": "RBX15 trailer: paint your clothes, don't just place them",
+          "ogDescription": "Watch the RBX15 trailer: paint Roblox Classic shirts and pants on the exact 585×559 template, gradients that wrap the body, your own art in layers, Word Art in 15 fonts and six styles, and a live 3D preview. Free on the Microsoft Store.",
+          "ogImage": "/assets/video/rbx15/rbx15-trailer-poster.jpg",
+          "ogType": "video.other",
+          "video": {
+            "url": "/assets/video/rbx15/rbx15-trailer-16x9.mp4",
+            "width": 1920,
+            "height": 1080
+          }
+        },
+        "jsonLd": {
+          "@context": "https://schema.org",
+          "@type": "VideoObject",
+          "name": "RBX15 trailer: paint your clothes, don't just place them",
+          "description": "RBX15 Classic Shirt and Pants Maker is a free Windows app for Roblox Classic (R15) clothing. The trailer paints a matching shirt and pants, Neon Tide, on the exact 585×559 template: gradient fills that wrap the body, the wearer's own art stacked in layers, Word Art in 15 fonts and six styles, and a 3D preview on an avatar while you work. Works offline, with no account and no ads. Not affiliated with Roblox Corporation.",
+          "thumbnailUrl": [
+            "https://626labs.dev/assets/video/rbx15/rbx15-trailer-poster.jpg"
+          ],
+          "uploadDate": "2026-11-03T12:39:00-06:00",
+          "duration": "PT48S",
+          "contentUrl": "https://626labs.dev/assets/video/rbx15/rbx15-trailer-16x9.mp4",
+          "inLanguage": "en",
+          "publisher": {
+            "@type": "Organization",
+            "name": "626Labs LLC",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://626labs.dev/assets/brand/icon-transparent-512.png"
+            }
+          }
+        },
+        "nav": [
+          {
+            "label": "The lab",
+            "href": "/",
+            "hideSm": true
+          },
+          {
+            "label": "About RBX15",
+            "href": "rbx15.html"
+          },
+          {
+            "label": "Get RBX15",
+            "href": "https://apps.microsoft.com/detail/9MV9G4XFJ8S0?cid=site-trailer",
+            "cta": true
+          }
+        ],
+        "sections": [
+          {
+            "type": "hero",
+            "eyebrow": "626 Labs · Video · RBX15 trailer",
+            "title": "Paint your clothes,",
+            "titleAccent": "don't just place them."
+          },
+          {
+            "type": "section",
+            "blocks": [
+              {
+                "type": "video",
+                "base": "assets/video/rbx15/rbx15-trailer",
+                "caption": "Neon Tide, start to finish · 48 seconds, sound on"
+              },
+              {
+                "type": "watch",
+                "heading": "What the trailer shows",
+                "paragraphs": [
+                  "<em>RBX15</em> is a free Windows app for Roblox Classic (R15) shirts and pants. The trailer paints one outfit, Neon Tide, from a blank template."
+                ],
+                "beats": [
+                  "<b>The exact 585×559 template,</b> the panels Roblox takes for Classic clothing.",
+                  "<b>Gradients that wrap the body,</b> one fill across every connected panel.",
+                  "<b>Your own art in layers,</b> stacked and moved without touching the original.",
+                  "<b>Word Art</b> in 15 fonts and six styles.",
+                  "<b>A 3D preview</b> on an avatar while you work.",
+                  "<b>Pants use the same tools,</b> so a matching set is easy.",
+                  "<b>Works offline. No account, no ads.</b>"
+                ],
+                "links": [
+                  {
+                    "label": "Get it on Microsoft Store",
+                    "href": "https://apps.microsoft.com/detail/9MV9G4XFJ8S0?cid=site-trailer",
+                    "primary": true,
+                    "store": true
+                  },
+                  {
+                    "label": "About RBX15",
+                    "href": "rbx15.html"
+                  },
+                  {
+                    "label": "Source on GitHub",
+                    "href": "https://github.com/estevanhernandez-stack-ed/RBX15-Shirt-and-Pants"
+                  }
+                ],
+                "note": "Free on the Microsoft Store. Independent tool, not affiliated with Roblox Corporation."
+              }
+            ]
+          }
+        ],
+        "footer": {
+          "label": "626 Labs · RBX15 trailer",
+          "disclaimer": "Roblox is a trademark of Roblox Corporation. RBX15 is an independent tool, not affiliated with or endorsed by Roblox Corporation.",
           "links": [
             {
               "label": "Privacy",
