@@ -27,11 +27,50 @@
     {
       "images": [
         {
-          "path": "shots-remote/cropped/01-accounts-running.png",
-          "effect": "slide_up"
+          "path": "shots-remote/cropped/v136-accounts-running.png"
         }
       ],
-      "narration": "Save all your alts and manage your accounts. One click each, with live status and the game each one is actually in."
+      "narration": "Save all your alts and manage your accounts. One click each, with live status and the game each one is actually in.",
+      "kenburns": {
+        "cx": 0.36,
+        "cy": 0.4
+      }
+    },
+    {
+      "images": [
+        {
+          "path": "shots-remote/cropped/v136-accounts-panel.png"
+        }
+      ],
+      "narration": "Now every account shows its Robux, Plus, and friends online. Open one up, and its games are right there. Recent, favorites, private servers.",
+      "kenburns": {
+        "cx": 0.5,
+        "cy": 0.44
+      }
+    },
+    {
+      "images": [
+        {
+          "path": "shots-remote/cropped/v136-accounts-health.png"
+        }
+      ],
+      "narration": "And when an account needs you, it says so. Session expired, needs verification, limited by Roblox. One click to fix it.",
+      "kenburns": {
+        "cx": 0.34,
+        "cy": 0.62
+      }
+    },
+    {
+      "images": [
+        {
+          "path": "shots-remote/cropped/v136-library-grid.png"
+        }
+      ],
+      "narration": "Every game you've played lands in the Library. Search it, filter it, and pick which account plays.",
+      "kenburns": {
+        "cx": 0.45,
+        "cy": 0.48
+      }
     },
     {
       "images": [

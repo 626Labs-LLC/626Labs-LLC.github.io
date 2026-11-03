@@ -1,5 +1,16 @@
 # TikTok: RORORO, eight Roblox clients on one PC
 
+> **2026-11-03, v1.36 refresh.** The cut is now 11 slides: about 88 s on the hub (16x9) and 84.5 s cold-open (9x16).
+> - **Three new slides after the accounts slide, all from the v1.36 account manager:**
+>   - **manager:** facts, and a panel opened onto its games.
+>   - **health:** session expired, needs verification, limited.
+>   - **library:** "Every game you've played lands in the Library."
+> - **Shots:** the accounts slide and the three new slides use test-harness renders of the real XAML with fake accounts, `shots-*/cropped/v136-*.png`. Each one has a Ken Burns push-in, so the vertical cut stays legible.
+> - **Voice:** ItsJustEste on eleven_v4, stability 0.45 (the 2026-10-06 setting, not the 0.35 below). Leveled to -17 LUFS.
+> - **en-GB:** the original delivery direction was not recorded. The new lines use `[posh British RP accent]`, so compare them by ear against the older en-GB slides.
+> - **Narration source of truth:** `ROROROblox/docs/videos/launch-video-narration-*.md`, verified in six languages.
+> - **Upload sheet:** `ROROROblox/docs/videos/youtube-1.36.md`.
+
 **Runtime:** ~42s · **Slides:** 7 · **Voiceover:** yes (ElevenLabs voice: ItsJustEste, stability 0.35 for energy)
 
 Built from the v1.23 Store screenshot set (`docs/store/screenshots/` in ROROROblox) and the feature ledger. Follows `docs/marketing/tiktok-ad-plan.md` guardrails: no ban-safety claims, no Ur/automation footage in the ad, "for Roblox" never "by Roblox", real UI only, 626 mark on the end card. Overlays get typed into TikTok's text tool; slides 6-7 are brand still frames.
