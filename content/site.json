@@ -425,7 +425,7 @@
                 "type": "video",
                 "base": "assets/video/rororo/rororo-launch",
                 "cut": "The launch cut",
-                "caption": "The launch cut · 63 seconds, sound on",
+                "caption": "The launch cut · 88 seconds, sound on",
                 "watch": {
                   "href": "rororo-trailer.html",
                   "label": "Watch on its own page"
@@ -438,37 +438,37 @@
                   {
                     "code": "fr",
                     "label": "Français",
-                    "secs": 61
+                    "secs": 86
                   },
                   {
                     "code": "de",
                     "label": "Deutsch",
-                    "secs": 65
+                    "secs": 93
                   },
                   {
                     "code": "ru",
                     "label": "Русский",
-                    "secs": 63
+                    "secs": 91
                   },
                   {
                     "code": "pt-BR",
                     "label": "Português",
-                    "secs": 60
+                    "secs": 87
                   },
                   {
                     "code": "pl",
                     "label": "Polski",
-                    "secs": 61
+                    "secs": 87
                   },
                   {
                     "code": "es",
                     "label": "Español",
-                    "secs": 59
+                    "secs": 86
                   },
                   {
                     "code": "en-GB",
                     "label": "English (UK)",
-                    "secs": 64
+                    "secs": 89
                   }
                 ]
               },
@@ -3458,7 +3458,7 @@
             "https://626labs.dev/assets/video/rororo/rororo-launch-poster.jpg"
           ],
           "uploadDate": "2026-08-30T15:33:01-05:00",
-          "duration": "PT63S",
+          "duration": "PT1M28S",
           "contentUrl": "https://626labs.dev/assets/video/rororo/rororo-launch-16x9.mp4",
           "inLanguage": "en",
           "publisher": {
@@ -3491,7 +3491,7 @@
             "type": "hero",
             "eyebrow": "626 Labs · Video · RoRoRo launch trailer",
             "title": "Eight Roblox clients.",
-            "titleAccent": "One PC, 63 seconds."
+            "titleAccent": "One PC, 88 seconds."
           },
           {
             "type": "section",
@@ -3500,7 +3500,7 @@
                 "type": "video",
                 "base": "assets/video/rororo/rororo-launch",
                 "cut": "The launch cut",
-                "caption": "The launch cut · 63 seconds, sound on",
+                "caption": "The launch cut · 88 seconds, sound on",
                 "langs": [
                   {
                     "code": "",
@@ -3509,37 +3509,37 @@
                   {
                     "code": "fr",
                     "label": "Français",
-                    "secs": 61
+                    "secs": 86
                   },
                   {
                     "code": "de",
                     "label": "Deutsch",
-                    "secs": 65
+                    "secs": 93
                   },
                   {
                     "code": "ru",
                     "label": "Русский",
-                    "secs": 63
+                    "secs": 91
                   },
                   {
                     "code": "pt-BR",
                     "label": "Português",
-                    "secs": 60
+                    "secs": 87
                   },
                   {
                     "code": "pl",
                     "label": "Polski",
-                    "secs": 61
+                    "secs": 87
                   },
                   {
                     "code": "es",
                     "label": "Español",
-                    "secs": 59
+                    "secs": 86
                   },
                   {
                     "code": "en-GB",
                     "label": "English (UK)",
-                    "secs": 64
+                    "secs": 89
                   }
                 ]
               },
