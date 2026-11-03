@@ -1847,7 +1847,7 @@
     {
       "id": "rbx15-shirt-pants",
       "title": "RBX15 Classic Shirt and Pants Maker",
-      "description": "Desktop editor for Roblox Classic (R15) shirt and pants templates, built for the exact 585×559 template grid. Layer-based compositing with non-destructive adjustments — brightness, contrast, saturation, hue, and per-channel RGB shift, all real-time — plus drawing tools, fullbleed / mirror / meme-tee presets, and a word-art generator with 15 fonts. Built on Electron for Windows. Free on the Microsoft Store.",
+      "description": "Paint Roblox Classic (R15) shirts and pants on the exact 585×559 template grid. A native Windows app with layers and live adjustments, fills that wrap the body, collars, cuffs and seams in one click, Word Art in 15 bundled fonts, and a 3D preview on an avatar while you work. Works offline, with no account. Free on the Microsoft Store.",
       "tags": [
         {
           "label": "Windows",
@@ -1875,13 +1875,13 @@
       "pageSpec": {
         "meta": {
           "title": "RBX15 Classic Shirt and Pants Maker · Roblox Classic clothing editor for Windows · 626 Labs",
-          "description": "Paint Roblox Classic shirts and pants like you mean it. Layers, pattern fills that wrap the body, gradients that span it, word art, and undo for everything, in a Windows desktop app built for the exact 585×559 template grid.",
+          "description": "Paint Roblox Classic shirts and pants like you mean it. A 3D preview on an avatar, layers, fills that wrap the body, one-click collars and cuffs, Word Art and undo for everything, in a native Windows app built for the exact 585×559 template grid. Works offline.",
           "ogTitle": "RBX15 Classic Shirt and Pants Maker: paint your Roblox Classic clothes, don't just place them",
-          "ogDescription": "Layers, fills that wrap the body, gradients that span it, and word art, on the exact 585×559 template grid. No account, no login. Free on the Microsoft Store.",
+          "ogDescription": "A 3D preview, layers, fills that wrap the body, and Word Art, on the exact 585×559 template grid. Works offline, no account. Free on the Microsoft Store.",
           "ogImage": "/assets/thumb-rbx15.png"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/RBX15-Shirt-and-Pants@v4.1.0"
+          "estevanhernandez-stack-ed/RBX15-Shirt-and-Pants@v5.0.0"
         ],
         "nav": [
           {
@@ -1905,11 +1905,11 @@
             "eyebrow": "Windows desktop app · Roblox Classic (R15) clothing",
             "title": "RBX15 Classic",
             "titleAccent": "Shirt and Pants Maker",
-            "dek": "Paint your Roblox Classic clothes, don't just place them. A Windows desktop app for Roblox Classic (R15) shirt and pants templates: the 585×559 PNG panels creators upload to Roblox. Open the app and start making. No account, no login, no setup.",
+            "dek": "Paint your Roblox Classic clothes, don't just place them. A native Windows app for Roblox Classic (R15) shirt and pants templates: the 585×559 PNG panels creators upload to Roblox, with a 3D preview of the result as you work. No account, no login, no network.",
             "strip": [
               {
                 "key": "Latest",
-                "value": "v4.1.0"
+                "value": "v5.0.0"
               },
               {
                 "key": "Platform",
@@ -1943,46 +1943,49 @@
           {
             "type": "section",
             "eyebrow": "What it does",
-            "heading": "Layers, fills that wrap, gradients that span",
+            "heading": "A 3D preview, fills that wrap, details in one click",
             "blocks": [
               {
                 "type": "cards",
                 "items": [
                   {
+                    "tag": "New in 5.0",
+                    "title": "3D preview",
+                    "body": "A panel beside the canvas shows your template on a Classic or R15 avatar and follows every edit. Drag to turn it, double-click to face front."
+                  },
+                  {
                     "title": "Layers",
-                    "body": "Layers that stack, move, and adjust without wrecking the original. Change your mind whenever."
+                    "body": "Layers that stack, move and adjust without wrecking the original: brightness, contrast, saturation, hue and a per-channel RGB shift, all live."
                   },
                   {
-                    "tag": "New in 4.1",
-                    "title": "Region fills with real style",
-                    "body": "Paint any panel with a solid color, a linear or radial gradient, or a pattern: stripes, checker, dots, or camo."
+                    "title": "Fills that wrap the body",
+                    "body": "A solid color, a linear or radial gradient, or stripes, checker, dots or camo. The same fill flows across connected panels as one piece, and changing the angle or colors later updates every panel."
                   },
                   {
-                    "tag": "New in 4.1",
-                    "title": "Patterns wrap the body",
-                    "body": "The same fill on connected panels flows across the seams as one piece instead of restarting at every edge."
+                    "title": "Details in one click",
+                    "body": "V-neck, crew, scoop and henley collars, cuffs, hems, seams, stripes, a pocket and a placket. Pick a color and a width, and each detail becomes its own layer."
                   },
                   {
-                    "tag": "New in 4.1",
-                    "title": "Gradients span the whole area",
-                    "body": "One smooth ramp across connected panels, with no visible breaks."
+                    "title": "Word Art and drawing tools",
+                    "body": "Word Art in 15 fonts bundled with the app, plus pen, line, shapes and an eraser that shows your brush size."
                   },
                   {
-                    "tag": "New in 4.1",
-                    "title": "Live fill editing",
-                    "body": "Change the angle or colors after painting and every panel updates at once."
+                    "tag": "New in 5.0",
+                    "title": "Colors from your art",
+                    "body": "Every color picker shows a From your art row, taken from the images on your canvas."
                   },
                   {
-                    "title": "Word art and drawing tools",
-                    "body": "Word art with styling, drawing tools, and an eraser with a cursor that shows your brush size."
+                    "tag": "New in 5.0",
+                    "title": "Autosave and recovery",
+                    "body": "While you have unsaved changes, the app copies your document to its own folder every 60 seconds, never over your file. After a crash, the next launch offers it back."
                   },
                   {
                     "title": "Undo everything",
-                    "body": "Undo everything, redo too (Ctrl+Y): fills, backgrounds, even switching between Shirt and Pants."
+                    "body": "Every edit is one undo step, with redo on Ctrl+Y and Ctrl+Shift+Z: fills, backgrounds, even switching between Shirt and Pants."
                   },
                   {
                     "title": "Built for the template grid",
-                    "body": "A fullscreen canvas built for the exact 585×559 template grid, so what you export is what Roblox expects."
+                    "body": "A large canvas that fills the window, locked to the exact 585×559 grid, with a faint region guide on transparent templates that never reaches the export."
                   }
                 ]
               }
@@ -2004,25 +2007,27 @@
             "type": "section",
             "id": "see-it-work",
             "eyebrow": "See it work",
-            "heading": "From an empty template to a finished shirt",
+            "heading": "From an empty template to a finished outfit",
             "blocks": [
               {
                 "type": "shots",
                 "captions": [
-                  "<b>Fills that wrap.</b> One gradient sweeping across every torso panel, or a pattern tiling unbroken across the seams.",
-                  "<b>Layers.</b> Stack, move and adjust without wrecking the original.",
-                  "<b>Live fill editing.</b> Change the angle or the colors after painting, and every connected panel updates at once.",
-                  "<b>Word art.</b> Style a word, then place it on the template.",
-                  "<b>Pants too.</b> A pattern running down both legs.",
-                  "<b>The export.</b> A 585×559 PNG, the file Roblox expects."
+                  "<b>The 3D preview.</b> Neon Tide on the shirt template, worn by an avatar beside the canvas.",
+                  "<b>Pants too.</b> The matching pants, with the preview following every edit.",
+                  "<b>Layers.</b> Every piece is its own layer: the art, the Word Art, the waves, seams and cuffs.",
+                  "<b>Fills that wrap.</b> One gradient across every connected panel, set from the Background tab.",
+                  "<b>Details in one click.</b> Collars, cuffs, hems and seams, each its own layer.",
+                  "<b>Word Art.</b> Style a word in one of 15 fonts, then add it to the canvas.",
+                  "<b>Patterns on the legs.</b> A fill running down both legs of the pants template."
                 ],
                 "alts": [
-                  "A gradient fill sweeping across every torso panel of a Roblox Classic shirt template",
-                  "The RBX15 layer stack with several layers composed on the template",
-                  "A fill's angle and colors being edited, with every connected panel updating",
-                  "Styled word art placed on a shirt template",
-                  "The pants template with a pattern running down both legs",
-                  "The exported 585×559 PNG beside the template"
+                  "RBX15 5.0 with the Neon Tide shirt on the template and a 3D avatar preview wearing it",
+                  "The Neon Tide pants template with the 3D preview showing the matching outfit",
+                  "The layer list beside the canvas, with art, Word Art, waves, seams and cuffs as separate layers",
+                  "The Background tab's fill styles, with one gradient running across every connected shirt panel",
+                  "The Details tab with collar, cuff, hem and seam buttons above the shirt template",
+                  "The Text tab styling a word in a Word Art font, with a preview before it is added",
+                  "A pattern fill running down both legs of the pants template, with the 3D preview"
                 ]
               }
             ]
@@ -2030,12 +2035,12 @@
           {
             "type": "section",
             "eyebrow": "How it's built",
-            "heading": "A Windows desktop app on a fixed grid",
+            "heading": "A native Windows app on a fixed grid",
             "blocks": [
               {
                 "type": "lead",
                 "paragraphs": [
-                  "RBX15 is a Windows desktop app built on Electron. Every layer composites onto a canvas locked to the 585×559 template grid Roblox Classic clothing uses, so the PNG you export is the file you upload. When you're done, export a PNG and upload it to Roblox yourself."
+                  "RBX15 5.0 is a native Windows app, WPF on .NET 10 with its own runtime, rebuilt from the Electron app it replaced. The Store package is about 69 MB, down from 141 MB, and your <code>.r15proj</code> projects from 4.x open as they are. Every layer composites onto a canvas locked to the 585×559 template grid Roblox Classic clothing uses, so the PNG you export matches the canvas and is the file you upload. When you're done, upload it to Roblox yourself."
                 ]
               }
             ]
@@ -2058,8 +2063,12 @@
                     "body": "The app doesn't connect to Roblox and doesn't sign in to anything. You upload the PNG yourself."
                   },
                   {
-                    "label": "Nothing collected",
-                    "body": "It doesn't collect anything. The one thing it fetches from the internet is fonts for word art."
+                    "label": "No network at all",
+                    "body": "The app makes no network requests: no update check, no web fonts, no crash reports. Its fonts are bundled, so it looks the same offline, and blocking it in a firewall changes nothing."
+                  },
+                  {
+                    "label": "Stays on this PC",
+                    "body": "It keeps its settings, recent projects, the autosave copy and an error log in <code>%LOCALAPPDATA%\\RBX15</code>. The log holds no layers or image data and is never sent anywhere."
                   },
                   {
                     "label": "Trademark",
@@ -2094,12 +2103,13 @@
       "banner": "assets/thumb-rbx15.png",
       "meta": "Windows · Roblox creator tooling",
       "screenshots": [
-        {"id": "shot-1791749694886", "path": "assets/screenshots/rbx15-shirt-pants/1791749694886-1-gradient-and-pattern.png", "name": "1-gradient-and-pattern.png", "alt": "A gradient sweeping across every torso panel of a Roblox Classic shirt template, with a dot pattern tiling across both arms", "size": 150166},
-        {"id": "shot-1791749696985", "path": "assets/screenshots/rbx15-shirt-pants/1791749696985-2-layers.png", "name": "2-layers.png", "size": 203200},
-        {"id": "shot-1791749699425", "path": "assets/screenshots/rbx15-shirt-pants/1791749699425-3-angle-live-edit-pair.png", "name": "3-angle-live-edit-pair.png", "alt": "Before and after: the same torso gradient with its angle changed, every connected panel updating at once", "size": 70502},
-        {"id": "shot-1791749701394", "path": "assets/screenshots/rbx15-shirt-pants/1791749701394-4-word-art.png", "name": "4-word-art.png", "size": 200586},
-        {"id": "shot-1791749703231", "path": "assets/screenshots/rbx15-shirt-pants/1791749703231-5-pants-camo.png", "name": "5-pants-camo.png", "size": 152596},
-        {"id": "shot-1791749704953", "path": "assets/screenshots/rbx15-shirt-pants/1791749704953-6-export-on-plate.png", "name": "6-export-on-plate.png", "alt": "The exported 585×559 PNG, ready to upload to Roblox", "size": 42978}
+        {"id": "shot-1793733201264", "path": "assets/screenshots/rbx15-shirt-pants/1793733201264-01-shirt-3d-preview.png", "name": "01-shirt-3d-preview.png", "alt": "RBX15 5.0 with the Neon Tide shirt on the template and a 3D avatar preview wearing it", "size": 744815},
+        {"id": "shot-1793733202264", "path": "assets/screenshots/rbx15-shirt-pants/1793733202264-02-pants-3d-preview.png", "name": "02-pants-3d-preview.png", "alt": "The Neon Tide pants template with the 3D preview showing the matching outfit", "size": 868544},
+        {"id": "shot-1793733203264", "path": "assets/screenshots/rbx15-shirt-pants/1793733203264-03-layers.png", "name": "03-layers.png", "alt": "The layer list beside the canvas, with art, Word Art, waves, seams and cuffs as separate layers", "size": 291591},
+        {"id": "shot-1793733204264", "path": "assets/screenshots/rbx15-shirt-pants/1793733204264-04-fills.png", "name": "04-fills.png", "alt": "The Background tab's fill styles, with one gradient running across every connected shirt panel", "size": 283069},
+        {"id": "shot-1793733205264", "path": "assets/screenshots/rbx15-shirt-pants/1793733205264-05-details.png", "name": "05-details.png", "alt": "The Details tab with collar, cuff, hem and seam buttons above the shirt template", "size": 267793},
+        {"id": "shot-1793733206264", "path": "assets/screenshots/rbx15-shirt-pants/1793733206264-06-word-art.png", "name": "06-word-art.png", "alt": "The Text tab styling a word in a Word Art font, with a preview before it is added", "size": 266839},
+        {"id": "shot-1793733207264", "path": "assets/screenshots/rbx15-shirt-pants/1793733207264-07-pants-fills.png", "name": "07-pants-fills.png", "alt": "A pattern fill running down both legs of the pants template, with the 3D preview", "size": 429248}
       ]
     },
     {

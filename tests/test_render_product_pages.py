@@ -243,11 +243,16 @@ def test_every_live_store_app_page_has_its_furniture(pid):
     assert 'id="get-it"' in html
 
 
-def test_rbx15_is_never_called_native():
-    # RBX15 is Electron. The page says "Windows desktop app".
+def test_rbx15_names_its_current_stack():
+    # 5.0 (2026-11-03) rebuilt RBX15 as a native WPF app. Before that it was
+    # Electron, and this test forbade "native". Electron may now appear only
+    # as the app 5.0 replaced. Re-pin this if the stack changes again.
     html = (ROOT / "rbx15.html").read_text(encoding="utf-8").lower()
-    assert not re.search(r"\bnative\b", html)  # "nominatively" is fine
-    assert "windows desktop app" in html
+    assert "native windows app" in html
+    assert "wpf on .net 10" in html
+    electron = [m.start() for m in re.finditer(r"electron", html)]
+    assert len(electron) == 1
+    assert "rebuilt from the electron app it replaced" in html
 
 
 # ─── games: play.widgets entries with a pageSpec (2026-10-17) ─────────────
