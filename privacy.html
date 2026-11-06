@@ -375,19 +375,19 @@
 
     <h3 id="privacy-rbx15">RBX15 Classic Shirt and Pants Maker</h3>
     <p>
-      <strong>What is collected.</strong> Nothing. There are no accounts, no telemetry, no analytics, and no crash reporting.
+      <strong>What is collected.</strong> Nothing. There are no accounts, no telemetry, no analytics and no crash reporting, and nothing is sent to 626 Labs or anyone else.
     </p>
     <p>
-      <strong>Where data lives.</strong> Exported PNG templates and <code>.r15proj</code> project files are written through the standard save dialog to locations you choose, and the app persists no settings of its own. The embedded browser runtime the app is built on (Electron) keeps a standard runtime cache under <code>%APPDATA%\RBX15 Classic Shirt and Pants Maker\</code>, which includes cached copies of the fonts described below.
+      <strong>Where data lives.</strong> Projects (<code>.r15proj</code>) and exported PNG templates are written where you choose. Since 5.0 the app keeps its own files in one folder, <code>%LOCALAPPDATA%\RBX15</code>: <code>settings.json</code> (the window position and size, the last folders you used, and the paths of your last 10 projects); an autosave copy of unsaved work, written every 60 seconds, never next to or over your file, and deleted when you save or close normally; and an error log, capped at about 512 KB, holding the error with the app and Windows versions, your user folder replaced with <code>%USERPROFILE%</code>, and no layers or image data. The app reads the clipboard only when you press Ctrl+V, and never writes to it.
     </p>
     <p>
-      <strong>What touches the network.</strong> One destination: Google Fonts. The editor loads its typefaces from Google's font servers on every launch, so Google receives a standard web request, including your IP address, governed by Google's privacy policy. Nothing else: no update checks (the .exe build updates by downloading a new installer; the Store build updates through the Store), no APIs, no cloud sync.
+      <strong>What touches the network.</strong> Nothing. Since 5.0 the app makes no network requests: no update check, no web fonts, no crash reports. Its 18 font families are bundled, and the Store package asks Windows for no network permission. The Store build updates through the Store; the portable zip is replaced by hand.
     </p>
     <p>
-      <strong>Third parties.</strong> Google (fonts).
+      <strong>Third parties.</strong> None.
     </p>
     <p>
-      <strong>Removal.</strong> Uninstalling removes the app. The runtime cache folder at <code>%APPDATA%\RBX15 Classic Shirt and Pants Maker\</code> may survive an .exe uninstall; delete it manually if you want every trace gone. Files you exported stay where you saved them.
+      <strong>Removal.</strong> Delete projects and templates where you saved them. Clear recent list in the File group empties the project list. Deleting <code>%LOCALAPPDATA%\RBX15</code> removes everything else the app stored; on the Store build, uninstalling is meant to do that for you, so check the folder afterwards. Builds before 5.0 were Electron apps and may have left a cache at <code>%APPDATA%\RBX15 Classic Shirt and Pants Maker\</code>; delete it if you want every trace gone.
     </p>
 
     <h3 id="privacy-snapsnip">SnapSnip</h3>
