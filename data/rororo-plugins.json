@@ -1,10 +1,10 @@
 {
   "$comment": "RoRoRo web marketplace data. Catalog identity comes from the same plugins-catalog.json the app reads; version/date/installs come from each plugin repo’s live releases.",
   "host": {
-    "version": "1.35.0.0",
-    "releasedAt": "2026-10-26",
+    "version": "1.36.0.0",
+    "releasedAt": "2026-11-06",
     "storeUrl": "https://apps.microsoft.com/detail/9NMJCS390KWB",
-    "setupUrl": "https://github.com/estevanhernandez-stack-ed/ROROROblox/releases/download/v1.35.0.0/RORORO-win-Setup.exe",
+    "setupUrl": "https://github.com/estevanhernandez-stack-ed/ROROROblox/releases/download/v1.36.0.0/RORORO-win-Setup.exe",
     "releasesUrl": "https://github.com/estevanhernandez-stack-ed/ROROROblox/releases"
   },
   "plugins": [
@@ -16,7 +16,7 @@
       "version": "0.5.2",
       "releasedAt": "2026-07-07",
       "minHostVersion": "1.8.0.0",
-      "installs": 243,
+      "installs": 246,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-afk/releases/latest/download/plugin.zip"
@@ -41,7 +41,7 @@
       "publisher": "626Labs LLC",
       "version": "0.4.0",
       "releasedAt": "2026-07-03",
-      "installs": 64,
+      "installs": 67,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/Ur-OCR",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/Ur-OCR/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/Ur-OCR/releases/latest/download/plugin.zip"
@@ -67,7 +67,7 @@
       "version": "0.13.0",
       "releasedAt": "2026-10-26",
       "minHostVersion": "1.19.0",
-      "installs": 262,
+      "installs": 265,
       "repoUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "installUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/",
       "zipUrl": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task/releases/latest/download/plugin.zip"
