@@ -13,7 +13,7 @@ name: Rotate theme
 
 on:
   schedule:
-    - cron: '0 9 1 * *'   # 09:00 UTC on the 1st of every month
+    - cron: '0 12 1 * *'  # 12:00 UTC on the 1st: past local midnight in every zone (UTC-12 included), so a theme that counts down to the 1st reaches zero everywhere before it rotates out
   workflow_dispatch:
     inputs:
       dry_run:
@@ -55,7 +55,7 @@ jobs:
           echo "month_name=$(date -u +'%B %Y')" >> "$GITHUB_OUTPUT"
           # archive_month is the month being ARCHIVED — the one that just
           # ENDED, not the one rotation is moving the site into. Rotation
-          # always runs on the 1st (09:00 UTC), so "yesterday" is always the
+          # always runs on the 1st (12:00 UTC), so "yesterday" is always the
           # last day of that ended month. This is the value the freeze dir,
           # the archive[] entry's URL, and the archive banner must all share
           # — do not use `month` (above) for any of those three.

@@ -97,7 +97,7 @@ The 13 bot workflows that push to main:
 | `refresh-rororo-plugins.yml` | Daily 06:45 UTC | Reads the same `plugins-catalog.json` the RoRoRo app reads (off ROROROblox's latest release), enriches each entry with live release version/date/installs → `data/rororo-plugins.json`. `rororo-plugins.html` and the plugins section of `rororo.html` render from it client-side (`assets/rororo-plugins.js`); warns on catalog-vs-release drift. |
 | `refresh-repo-activity.yml` | Daily 06:40 UTC | Per-repo commit activity for the **repo meters**: every `repo` in `site.json` products, every entry in `plugin-repos.json`, and every `data-repo=` attribute in the root HTML, via `GET /repos/{r}/commits?since=<182 days>`, bots excluded → `data/repo-activity.json`. No render step: the meters (`repo-meter/meter.js`) fetch the file in the browser, so the write never dirties a `--check`. Private repos 404 into the file's `missing` list and render no meter (Celestia3 is private by design). Implicit `GITHUB_TOKEN` only. |
 | `refresh-plugin-versions.yml` | Daily 07:00 UTC | Reads each plugin repo's latest tag (`content/plugin-repos.json` → GitHub API), writes `data/plugin-versions.json`, re-renders plugin pages so version chips can't drift. Default `GITHUB_TOKEN` reads public tags — no extra secret. |
-| `rotate-theme.yml` | Monthly, 09:00 UTC on the 1st + `workflow_dispatch` | Promotes `content/themes.json`'s `queue[0]` to active, unattended. See **Theme rotation** below for the full contract — this row is just the CI-table entry. No extra secret beyond the implicit `GITHUB_TOKEN`. |
+| `rotate-theme.yml` | Monthly, 12:00 UTC on the 1st + `workflow_dispatch` (past midnight in every zone, so a countdown theme reaches zero first) | Promotes `content/themes.json`'s `queue[0]` to active, unattended. See **Theme rotation** below for the full contract — this row is just the CI-table entry. No extra secret beyond the implicit `GITHUB_TOKEN`. |
 
 **Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`, `MCP_VERSION_TRUTH_KEY`, `STORE_TENANT_ID`, `STORE_CLIENT_ID`, `STORE_CLIENT_SECRET`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
@@ -216,7 +216,7 @@ repointing a page's stylesheet moves its group in the same commit.
 
 **Queueing:** append the slug to `"queue"` in `content/themes.json` (a normal PR to `main`). Queue order is FIFO — position in the list is rotation order, not a date. `scripts/theme_registry.validate()` enforces basic sanity (no dupes, the active theme never also sitting in the queue, every queued theme's required files present).
 
-**Rotation** (`.github/workflows/rotate-theme.yml`, cron `0 9 1 * *` UTC + `workflow_dispatch`):
+**Rotation** (`.github/workflows/rotate-theme.yml`, cron `0 12 1 * *` UTC + `workflow_dispatch`):
 
 1. Empty queue → open a "Theme queue is empty" issue, change nothing, exit. (`dry_run: true` skips even the issue — just logs it.)
 2. Freeze the outgoing theme (`scripts/freeze-theme.py <month>`) — see **Archives** below.
