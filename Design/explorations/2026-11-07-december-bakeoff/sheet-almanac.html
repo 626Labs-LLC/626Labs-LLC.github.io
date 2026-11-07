@@ -1,0 +1,371 @@
+<title>Almanac</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/*
+  ALMANAC. December 2026 candidate. Sky above, soil below.
+
+  PALETTE
+    sky      #060A1C -> #121842   star chart, dusk to night (hero, moon strip)
+    kraft    #B5A57E / #A89870    cool, dry kraft: the work ledger
+    loam     #22251B / #2B3022    founding + field notes
+    moss     #2E3B2A / #364531    pastimes (play)
+    umber    #15120D              footer
+    light    cyan #17D4FA and magenta #F22F89, drawn as stars and lines only
+
+  TEXT PAIRS (WCAG 2.1, ratio = (Lmax+.05)/(Lmin+.05)), graded against the worst
+  stop under the text. Stars and constellation lines are decorative (1-2px).
+
+  SKY (worst stop #121842)
+    --sky-ink    #E9EDF8   14.52
+    --sky-ink-2  #B4BEDC    9.18
+    --sky-cyan   #17D4FA    9.58   (brand cyan as type, passes on night)
+    --sky-pink   #FF6FAE    6.59   (magenta lightened for type)
+    brand #F22F89 as type on #121842 is 4.49: NOT used as text.
+  KRAFT (worst stop #A89870)
+    --kraft-ink   #14120C   6.59
+    --kraft-ink-2 #2A2518   5.37
+    --kraft-link  #04323B   4.85
+    --kraft-mag   #5A0E33   4.78
+  LOAM (worst stop #2B3022)
+    --loam-ink    #EAE5D3  10.75
+    --loam-ink-2  #C3C4AB   7.62
+    --loam-moss   #A9C98C   7.37
+    --loam-cyan   #7FDFF5   8.90
+  MOSS (worst stop #364531)
+    --moss-ink    #EEEBD9   8.54
+    --moss-ink-2  #C9D2B4   6.51
+    --moss-cyan   #9FE0F2   7.03
+  UMBER (#15120D)
+    --umber-ink   #E3DCC8  13.64
+    --umber-ink-2 #BDB59F   9.14
+    --umber-cyan  #7FDFF5  12.25
+  Tightest: brand-pink-lightened on night 6.59 is fine; the floor is kraft
+  magenta ink on the kraft stripe, 4.78, and kraft link 4.85.
+*/
+:root{
+  --sky-0:#060A1C; --sky-1:#121842;
+  --sky-ink:#E9EDF8; --sky-ink-2:#B4BEDC; --sky-cyan:#17D4FA; --sky-pink:#FF6FAE;
+  --kraft:#B5A57E; --kraft-2:#A89870; --kraft-ink:#14120C; --kraft-ink-2:#2A2518; --kraft-link:#04323B; --kraft-mag:#5A0E33;
+  --loam:#22251B; --loam-2:#2B3022; --loam-ink:#EAE5D3; --loam-ink-2:#C3C4AB; --loam-moss:#A9C98C; --loam-cyan:#7FDFF5;
+  --moss:#2E3B2A; --moss-2:#364531; --moss-ink:#EEEBD9; --moss-ink-2:#C9D2B4; --moss-cyan:#9FE0F2;
+  --umber:#15120D; --umber-ink:#E3DCC8; --umber-ink-2:#BDB59F; --umber-cyan:#7FDFF5;
+  --f-display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --f-text:"Source Serif 4", Georgia, serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#060A1C;color:var(--sky-ink);font-family:var(--f-text);font-size:17px;line-height:1.6;font-optical-sizing:auto}
+a{color:inherit}
+:focus-visible{outline:3px solid #FFD36B;outline-offset:3px;border-radius:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+h1,h2,h3,h4{font-family:var(--f-display);margin:0;font-optical-sizing:auto;line-height:1.08}
+p{margin:0}
+
+/* SKY */
+.sky{position:relative;background:linear-gradient(#060A1C 0%,#0B1130 55%,#121842 100%);overflow:hidden;padding-block:0 28px}
+.sky canvas.stars{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+.sky>*{position:relative;z-index:1}
+.sky>canvas.stars{position:absolute}
+.wayfind{font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;color:var(--sky-ink-2);padding-block:10px;border-bottom:1px solid rgba(180,190,220,.2)}
+.wayfind a{color:var(--sky-cyan)}
+nav.nav{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:baseline;padding-block:18px}
+nav.nav .brand{font-family:var(--f-display);font-weight:700;font-size:20px;margin-right:auto;text-decoration:none;color:var(--sky-ink)}
+nav.nav a.l{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--sky-ink);padding:6px 0}
+nav.nav a.l:hover{color:var(--sky-cyan)}
+.title-page{padding-block:56px 36px;text-align:center}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sky-cyan)}
+.title-page .rule{width:120px;height:1px;background:var(--sky-ink-2);margin:20px auto;position:relative}
+.title-page .rule::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;background:#17D4FA;transform:translateX(-50%) rotate(45deg)}
+h1.hero{font-size:clamp(40px,9vw,92px);font-weight:600;letter-spacing:-.015em;font-variation-settings:"opsz" 144;max-width:15ch;margin:0 auto}
+.accent{font-family:var(--f-display);font-style:italic;font-size:clamp(22px,4vw,32px);color:var(--sky-pink);margin-top:14px}
+.sub{max-width:62ch;margin:26px auto 0;color:var(--sky-ink-2);font-size:18px;text-align:left}
+@media(min-width:760px){.sub{text-align:center}}
+.sub strong{color:var(--sky-ink);font-weight:600}
+
+.ephem{padding-block:8px 8px}
+.ephem-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;border-top:1px solid rgba(180,190,220,.3);border-bottom:1px solid rgba(180,190,220,.3);padding-block:10px;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--sky-ink-2)}
+.ephem-head b{color:var(--sky-ink);font-weight:600}
+.moons{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:10px 4px}
+.moons li{display:flex;flex-direction:column;align-items:center;min-width:0;padding:5px 0 3px;border-radius:6px}
+.moons li.sol{outline:1.5px solid #17D4FA;outline-offset:-1px;background:rgba(23,212,250,.08)}
+.moons canvas{width:30px;height:30px;display:block}
+.moons .d{font-family:var(--f-mono);font-size:12px;color:var(--sky-ink);margin-top:4px;font-variant-numeric:tabular-nums}
+.moons .t{font-family:var(--f-mono);font-size:11px;color:var(--sky-cyan);min-height:15px;letter-spacing:.02em}
+.legend{font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;color:var(--sky-ink-2);margin-top:12px}
+
+canvas.ridge{display:block;width:100%;height:110px;background:#121842}
+
+/* KRAFT: the ledger */
+.kraft{background:var(--kraft);color:var(--kraft-ink);padding-block:34px 64px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;border-bottom:2px solid var(--kraft-ink);padding-bottom:10px;margin-bottom:6px}
+.sec-head h2{font-size:clamp(30px,5vw,48px);font-weight:700;font-variation-settings:"opsz" 96}
+.sec-head .mono{color:var(--kraft-ink-2)}
+ol.ledger{list-style:none;margin:0;padding:0;counter-reset:e}
+ol.ledger li{display:grid;grid-template-columns:3.2rem minmax(0,1fr);gap:2px 12px;padding:16px 8px;border-bottom:1px solid rgba(20,18,12,.35);counter-increment:e}
+ol.ledger li:nth-child(even){background:var(--kraft-2)}
+ol.ledger li::before{content:counter(e,decimal-leading-zero);grid-row:1/3;font-family:var(--f-mono);font-size:13px;font-weight:600;color:var(--kraft-ink-2);padding-top:6px;font-variant-numeric:tabular-nums}
+ol.ledger h3{font-size:22px;font-weight:700;min-width:0}
+ol.ledger h3 a{text-decoration:none;color:var(--kraft-link);background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat}
+ol.ledger h3 a:hover{background-size:100% 3px}
+ol.ledger p{color:var(--kraft-ink-2);min-width:0}
+ol.ledger li.flag{padding-block:24px}
+ol.ledger li.flag h3{font-size:clamp(30px,6vw,46px);font-weight:800}
+ol.ledger li.flag p{font-size:19px;color:var(--kraft-ink)}
+ol.ledger li.flag .mono{grid-column:2;color:var(--kraft-mag);font-weight:600}
+@media(min-width:820px){
+  ol.ledger li{grid-template-columns:3.4rem minmax(0,15rem) minmax(0,1fr);align-items:baseline;gap:0 24px}
+  ol.ledger li::before{grid-row:auto}
+  ol.ledger li.flag{grid-template-columns:3.4rem minmax(0,1fr);gap:6px 24px}
+  ol.ledger li.flag::before{grid-column:1;grid-row:1}
+  ol.ledger li.flag h3{grid-column:2;grid-row:1}
+  ol.ledger li.flag p{grid-column:2;grid-row:2;max-width:56ch}
+}
+
+/* LOAM: founding + notes */
+.loam{background:var(--loam);color:var(--loam-ink);padding-block:64px}
+.loam .eyebrow{color:var(--loam-cyan)}
+.founding{display:grid;gap:28px;grid-template-columns:minmax(0,1fr)}
+.founding h2{font-size:clamp(30px,5vw,50px);font-weight:700;margin-top:10px}
+.quote{font-family:var(--f-display);font-style:italic;font-weight:500;font-size:clamp(26px,4.4vw,38px);line-height:1.2;color:var(--loam-moss);border-left:3px solid var(--loam-moss);padding-left:18px;margin:0}
+.founding p.body{color:var(--loam-ink-2);max-width:60ch}
+.founding .door{display:inline-block;margin-top:18px;color:var(--loam-cyan);font-family:var(--f-mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+@media(min-width:900px){.founding{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:56px}}
+.notes{margin-top:72px}
+.notes .sec-head{border-bottom-color:var(--loam-ink-2)}
+.notes .sec-head .mono{color:var(--loam-ink-2)}
+.notes .sec-head h2{font-size:clamp(28px,4.4vw,40px)}
+ul.log{list-style:none;margin:0;padding:0}
+ul.log li{display:grid;gap:4px 28px;grid-template-columns:minmax(0,1fr);padding:18px 0;border-bottom:1px dashed rgba(195,196,171,.4)}
+ul.log time{font-family:var(--f-mono);font-size:13px;color:var(--loam-moss);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+ul.log h3{font-size:21px;font-weight:600;min-width:0}
+ul.log h3 a{text-decoration:none;color:var(--loam-ink);background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat}
+ul.log h3 a:hover{color:var(--loam-cyan)}
+ul.log p{color:var(--loam-ink-2);min-width:0}
+@media(min-width:760px){ul.log li{grid-template-columns:9rem minmax(0,1fr)}ul.log li>div{min-width:0}}
+
+/* MOSS: pastimes */
+.moss{background:var(--moss);color:var(--moss-ink);padding-block:56px 64px}
+.box{border:3px double var(--moss-ink-2);padding:22px 18px 26px;background:var(--moss-2)}
+.box>.mono{color:var(--moss-cyan);display:block;margin-bottom:6px}
+.box h2{font-size:clamp(28px,4.4vw,40px);font-weight:700}
+.box .sub2{color:var(--moss-ink-2);margin-top:6px;font-size:16px}
+.games{display:grid;gap:14px;margin-top:22px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:760px){.games{grid-template-columns:repeat(3,minmax(0,1fr))}.box{padding:28px 28px 32px}}
+.game{border:1px solid var(--moss-ink-2);background:var(--moss);padding:16px 16px 18px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.game .n{font-family:var(--f-mono);font-size:12px;color:var(--moss-cyan);letter-spacing:.1em}
+.game h3{font-size:22px;font-weight:700}
+.game h3 a{text-decoration:none;color:var(--moss-ink)}
+.game h3 a:hover{color:var(--moss-cyan)}
+.game p{color:var(--moss-ink-2);font-size:16px}
+
+/* UMBER: footer */
+footer{background:var(--umber);color:var(--umber-ink);padding-block:34px calc(34px + env(safe-area-inset-bottom,0px))}
+footer p{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:var(--umber-ink-2);line-height:1.8}
+footer p b{color:var(--umber-ink);font-weight:600}
+footer a{color:var(--umber-cyan)}
+
+@media (prefers-reduced-motion:no-preference){
+  nav.nav a.l,ul.log h3 a,.game h3 a{transition:color .15s}
+}
+</style>
+
+<header class="sky" id="top">
+  <canvas class="stars" id="stars" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="wayfind">Theme: December 2026 · this site changes monthly · <a href="/themes.html">see all themes</a></div>
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="#top">626Labs</a>
+      <a class="l" href="#work">Work</a>
+      <a class="l" href="#notes">Field Notes</a>
+      <a class="l" href="#play">Play</a>
+      <a class="l" href="#">About</a>
+      <a class="l" href="#">Contact</a>
+    </nav>
+    <section class="title-page">
+      <p class="eyebrow">626Labs LLC · Fort Worth, TX</p>
+      <div class="rule" aria-hidden="true"></div>
+      <h1 class="hero">Software you leave running.</h1>
+      <p class="accent">Imagine Something Else.</p>
+      <p class="sub">RoRoRo, the free Windows multi-launcher for Roblox, has 280+ daily users from the Microsoft Store. The same bench ships Sanduhr, which puts your claude.ai limits on the desktop; Celestia 3, an astrology app built on real astronomy; and 15 open-source Claude Code plugins. One builder.</p>
+    </section>
+    <section class="ephem" aria-label="Moon phases, December 2026">
+      <div class="ephem-head"><b>December 2026</b><span>Moon at 12:00 UTC</span><span>December solstice, 21 December</span></div>
+      <ol class="moons" id="moons"></ol>
+      <p class="legend">Ringed: December solstice, 21 December. Phases computed in the page.</p>
+    </section>
+  </div>
+</header>
+<canvas class="ridge" id="ridge" aria-hidden="true"></canvas>
+
+<main>
+<section class="kraft" id="work">
+  <div class="wrap">
+    <div class="sec-head"><h2>Work</h2><span class="mono">Ten entries</span></div>
+    <ol class="ledger">
+      <li class="flag"><h3><a href="#">RoRoRo</a></h3><p>Run multiple Roblox clients side by side, each signed in as a different saved account. Free on the Microsoft Store.</p></li>
+      <li><h3><a href="#">Sanduhr für Claude</a></h3><p>Your claude.ai usage meters on the desktop: session and weekly limits with a pace mark and reset times.</p></li>
+      <li><h3><a href="#">Celestia 3</a></h3><p>NASA-grade astrology AI.</p></li>
+      <li><h3><a href="#">Vibe Cartographer</a></h3><p>Find your direction no matter where you start.</p></li>
+      <li><h3><a href="#">Vibe Iterate</a></h3><p>Maintain your Atlas.</p></li>
+      <li><h3><a href="#">Vibe Insights</a></h3><p>The /insights you wish you had.</p></li>
+      <li><h3><a href="#">Vibe Keystone</a></h3><p>Map the repo before the agent starts.</p></li>
+      <li><h3><a href="#">Vibe Doc</a></h3><p>Point it at your codebase and it finds the docs you're missing.</p></li>
+      <li><h3><a href="#">Vibe Test</a></h3><p>Put your code to the test before somebody else does.</p></li>
+      <li><h3><a href="#">Vibe Thesis</a></h3><p>Long-form research, drafted with discipline.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="loam">
+  <div class="wrap">
+    <div class="founding">
+      <div>
+        <p class="eyebrow">02 · The founding</p>
+        <h2>626Labs builds exact-fit software.</h2>
+        <p class="body" style="margin-top:20px">626Labs builds exact-fit software. The founding argument is simple: it has never been easier to have the exact tools we need, and too much money has been going to too many companies for tools that only half fit. So we build and maintain our own, at a quality that rivals enterprise software, made to enhance the work people do instead of taking their jobs. We are here to make great products, even if only a handful of people need them. That's ok.</p>
+        <a class="door" href="#">Read the whole story →</a>
+      </div>
+      <blockquote class="quote">I build tools, because care doesn't always scale.</blockquote>
+    </div>
+
+    <div class="notes" id="notes">
+      <div class="sec-head"><h2>Field Notes</h2><span class="mono">Newest first</span></div>
+      <ul class="log">
+        <li><time datetime="2026-10-30">2026-10-30</time><div><h3><a href="#">Right Click PNG 0.1.2 gets one tidy menu entry and stops overwriting your originals</a></h3></div></li>
+        <li><time datetime="2026-10-16">2026-10-16</time><div><h3><a href="#">Sanduhr for Mac now reads your Claude Code folders, not just your Claude limits</a></h3></div></li>
+        <li><time datetime="2026-09-28">2026-09-28</time><div><h3><a href="#">Containment for Frontier AI</a></h3><p>Containment is an architecture, not a sandbox setting. Revised after a summer of real escapes.</p></div></li>
+        <li><time datetime="2026-06-26">2026-06-26</time><div><h3><a href="#">The first 626Labs Day</a></h3><p>Today is 6/26/26, the first 626 Day since 626Labs existed.</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="moss" id="play">
+  <div class="wrap">
+    <div class="box">
+      <span class="mono">New for December</span>
+      <h2>Play</h2>
+      <p class="sub2">The games now follow the theme.</p>
+      <div class="games">
+        <article class="game"><span class="n">I</span><h3><a href="#">Birthday Bacon Trail</a></h3><p>Who's born today? Find Kevin Bacon within six films.</p></article>
+        <article class="game"><span class="n">II</span><h3><a href="#">Box Office Heads Up</a></h3><p>Two movies. Which opened bigger?</p></article>
+        <article class="game"><span class="n">III</span><h3><a href="#">Tag That Line</a></h3><p>A classic tagline, four posters. Tap the one it belongs to.</p></article>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>626Labs LLC</b> · Fort Worth, TX · Imagine Something Else.</p>
+    <p>Theme: December 2026 · this site changes monthly · <a href="/themes.html">see all themes</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  function fit(c){
+    var dpr=Math.min(window.devicePixelRatio||1,3),w=c.clientWidth,h=c.clientHeight;
+    c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);
+    var x=c.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);return{x:x,w:w,h:h};
+  }
+
+  /* star chart */
+  function stars(){
+    var c=document.getElementById('stars'),o=fit(c),x=o.x,w=o.w,h=o.h,r=rng(626);
+    x.clearRect(0,0,w,h);
+    var n=Math.round(w*h/5200),i,j;
+    for(i=0;i<n;i++){
+      var px=r()*w,py=r()*h,s=r(),m=r()<0.06;
+      x.globalAlpha=0.25+0.55*r();
+      x.fillStyle=m?'#f22f89':(s<0.35?'#17d4fa':'#e9edf8');
+      x.beginPath();x.arc(px,py,s<0.9?0.6+s*0.7:1.5,0,6.2832);x.fill();
+    }
+    var cons=w<600?5:8;
+    for(i=0;i<cons;i++){
+      var ax=(i+0.5)/cons*w+(r()-.5)*w/cons*0.6,ay=h*(0.08+r()*0.55),pts=[[ax,ay]],k=4+Math.floor(r()*4);
+      for(j=1;j<k;j++){var p=pts[j-1],a=r()*6.2832,d=22+r()*(w<600?26:44);pts.push([p[0]+Math.cos(a)*d,p[1]+Math.sin(a)*d*0.8]);}
+      x.globalAlpha=0.5;x.strokeStyle='#17d4fa';x.lineWidth=1;x.beginPath();
+      pts.forEach(function(p,q){q?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1])});x.stroke();
+      pts.forEach(function(p,q){
+        x.globalAlpha=0.95;x.fillStyle=(i+q)%9===0?'#f22f89':'#e9edf8';
+        x.beginPath();x.arc(p[0],p[1],q%3===0?2.4:1.6,0,6.2832);x.fill();
+        if(q%3===0){x.globalAlpha=0.25;x.strokeStyle='#17d4fa';x.beginPath();x.arc(p[0],p[1],5,0,6.2832);x.stroke();}
+      });
+    }
+    x.globalAlpha=1;
+  }
+
+  /* ridges: sky into soil */
+  function ridge(){
+    var c=document.getElementById('ridge'),o=fit(c),x=o.x,w=o.w,h=o.h,r=rng(1226);
+    x.clearRect(0,0,w,h);
+    var layers=[['#1B2252',.30,.55],['#1E2B3E',.45,.50],['#27321F',.62,.42],['#B5A57E',.86,.18]];
+    layers.forEach(function(L,li){
+      var ph=r()*10,f1=0.004+r()*0.004,f2=0.011+r()*0.01;
+      x.fillStyle=L[0];x.beginPath();x.moveTo(0,h);
+      for(var px=0;px<=w;px+=4){
+        var y=h*L[1]+Math.sin(px*f1+ph)*h*L[2]*0.35+Math.sin(px*f2+ph*2)*h*L[2]*0.18;
+        x.lineTo(px,li===3?Math.min(y,h-4):y);
+      }
+      x.lineTo(w,h);x.closePath();x.fill();
+    });
+    x.fillStyle='#B5A57E';x.fillRect(0,h-2,w,2);
+  }
+
+  /* moon: known new moon 2000-01-06 18:14 UTC, synodic 29.530588853 d */
+  var EPOCH=Date.UTC(2000,0,6,18,14),SYN=29.530588853,DAY=86400000;
+  function phase(ms){var a=((ms-EPOCH)/DAY)%SYN;if(a<0)a+=SYN;return a/SYN}
+  function glyph(c,p){
+    var dpr=Math.min(window.devicePixelRatio||1,3),S=30;
+    c.width=S*dpr;c.height=S*dpr;
+    var x=c.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);
+    var cx=S/2,rad=S/2-2,k=Math.cos(2*Math.PI*p),sg=p<0.5?1:-1,t;
+    x.fillStyle='#1d2455';x.beginPath();x.arc(cx,cx,rad,0,6.2832);x.fill();
+    x.fillStyle='#E9EDF8';x.beginPath();
+    for(t=-Math.PI/2;t<=Math.PI/2+1e-6;t+=0.08)x.lineTo(cx+sg*rad*Math.cos(t),cx+rad*Math.sin(t));
+    for(t=Math.PI/2;t>=-Math.PI/2-1e-6;t-=0.08)x.lineTo(cx+sg*k*rad*Math.cos(t),cx+rad*Math.sin(t));
+    x.closePath();x.fill();
+    x.strokeStyle='rgba(180,190,220,.55)';x.lineWidth=1;x.beginPath();x.arc(cx,cx,rad,0,6.2832);x.stroke();
+  }
+  function moons(){
+    var ol=document.getElementById('moons'),d,items=[],ph=[];
+    for(d=1;d<=31;d++){ph.push(phase(Date.UTC(2026,11,d,12)))}
+    /* mark the day whose phase is nearest new (0) or full (.5) */
+    function near(target){var best=0,bd=9;ph.forEach(function(p,i){var e=Math.abs(p-target);e=Math.min(e,1-e);if(target===0&&p>0.5)e=Math.abs(1-p);if(e<bd){bd=e;best=i}});return best}
+    var marks={};
+    [0,.5].forEach(function(t){
+      /* each lunation in the month */
+      ph.forEach(function(p,i){
+        var e=Math.abs(p-t);if(t===0)e=Math.min(p,1-p);
+        var prev=i?ph[i-1]:null,next=i<30?ph[i+1]:null;
+        function dist(q){if(q===null)return 9;var z=Math.abs(q-t);if(t===0)z=Math.min(q,1-q);return z}
+        if(e<0.04&&e<=dist(prev)&&e<dist(next))marks[i]=t===0?'new':'full';
+      });
+    });
+    ph.forEach(function(p,i){
+      var li=document.createElement('li'),c=document.createElement('canvas'),
+          s=document.createElement('span'),t=document.createElement('span'),day=i+1;
+      if(day===21){li.className='sol';li.title='December solstice, 21 December'}
+      c.setAttribute('role','img');
+      c.setAttribute('aria-label','December '+day+', '+Math.round((1-Math.cos(2*Math.PI*p))/2*100)+' percent lit'+(marks[i]?', '+marks[i]+' moon':''));
+      glyph(c,p);
+      s.className='d';s.textContent=day;t.className='t';t.textContent=marks[i]||'';
+      li.appendChild(c);li.appendChild(s);li.appendChild(t);ol.appendChild(li);
+    });
+  }
+
+  function draw(){stars();ridge()}
+  moons();draw();
+  var tm;window.addEventListener('resize',function(){clearTimeout(tm);tm=setTimeout(draw,120)});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(stars);
+})();
+</script>

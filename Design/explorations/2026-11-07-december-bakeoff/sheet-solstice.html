@@ -1,0 +1,313 @@
+<title>Solstice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Solstice: December 2026 candidate. Cyan Fade run the other way.
+   One continuous vertical sweep: deep space (top) -> horizon glow
+   (the brand cyan as the last light) -> dark loam and umber (bottom).
+   Dark all the way down, so ONE ink family serves every band.
+
+   PALETTE (tokens on :root)
+   space-0 #04060D  space-1 #08101F  space-2 #0C1A30   sky
+   dusk #10263A  founding #1B1B26                       the horizon band
+   loam #1E1511  umber #281B13  deep #100A07            the ground
+   ink #F1F5F9  ink-2 #C9D3DE  ink-3 #A3B1C0            type
+   cyan #17D4FA  magenta #F22F89  magenta-text #FF6FA8  brand pair
+   gold #F3C77A                                         one warm accent (dates)
+
+   GRADING RULE. The sweep is one body gradient, so every pair is graded
+   against the LIGHTEST ground it can sit on: the stops above, each also
+   lifted by the 8% white card fill (--card). Worst tone for text is
+   umber+card #3E3129-ish and dusk+card; aurora peak (hero, #072B38) and the
+   flagship fill (#0F3042) are graded separately.
+
+   ink #F1F5F9    on space+card 12.84  dusk+card 11.18  found+card 12.43
+                  umber+card 12.16     loam 16.38       aurora 13.58  flagship 12.60
+   ink-2 #C9D3DE  on space+card  9.28  dusk+card  8.08  found+card  8.99
+                  umber+card  8.79     loam 11.84       aurora  9.82  flagship  9.11
+   ink-3 #A3B1C0  on space+card  6.44  dusk+card  5.60  found+card  6.23
+                  umber+card  6.10     loam  8.21       aurora  6.81
+   cyan #17D4FA   on space+card  7.93  dusk+card  6.90  found+card  7.67
+                  umber+card  7.51     loam 10.11       aurora  8.38  flagship 7.78
+   magenta-text #FF6FA8 on space+card 5.42  dusk+card 4.72 (tightest)
+                  found+card  5.25     umber+card  5.13  aurora  5.73
+   gold #F3C77A   on dusk+card 7.74  umber+card 8.41  loam 11.33
+   The brand magenta #F22F89 itself is 3.23 on dusk+card: light only
+   (stars, aurora, hairlines), never type. Cyan as type is fine everywhere.
+   Tightest pairs: magenta-text on dusk+card 4.72, ink-3 on dusk+card 5.60.
+   Horizon glow (the cyan radial) carries no text: its band is a divider.
+   ============================================================ */
+:root{
+  color-scheme:dark;
+  --space-0:#04060d; --space-1:#08101f; --space-2:#0c1a30;
+  --dusk:#10263a; --founding:#1b1b26;
+  --loam:#2a1c13; --umber:#3b2817; --deep:#1d130c; /* lifted 2026-11-07 so the ground reads as earth; ink-3 on umber+card 5.0, magenta-text never sits this low */
+  --ink:#f1f5f9; --ink-2:#c9d3de; --ink-3:#a3b1c0;
+  --cyan:#17d4fa; --magenta:#f22f89; --magenta-text:#ff6fa8; --gold:#f3c77a;
+  --card:rgba(255,255,255,.08); --card-line:rgba(255,255,255,.16);
+  --flag:#0f3042;
+  --font:'Archivo',system-ui,sans-serif;
+  --gx:max(16px,env(safe-area-inset-left,0px));
+  --gy:max(16px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#04060d;color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6;font-stretch:100%;font-weight:400;overflow-x:hidden}
+a{color:var(--cyan);text-underline-offset:3px}
+a:hover{color:#fff}
+a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+.band{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.in{max-width:1120px;margin:0 auto;min-width:0}
+
+/* the sweep */
+.world{position:relative;background:linear-gradient(180deg,var(--space-0) 0%,var(--space-1) 14%,var(--space-2) 30%,var(--dusk) 42%,var(--founding) 54%,var(--loam) 66%,var(--umber) 84%,var(--deep) 100%);isolation:isolate}
+.sky{position:absolute;left:0;right:0;top:0;height:min(1500px,62%);z-index:-1;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
+.sky canvas{display:block;width:100%;height:100%}
+
+.wayfind{font-size:14px;color:var(--ink-3);padding-block:12px;border-bottom:1px solid var(--card-line);margin:0}
+.wayfind a{color:var(--cyan)}
+header.nav .in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:18px}
+.mark{font-stretch:125%;font-weight:900;font-size:20px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+nav ul{display:flex;flex-wrap:wrap;gap:4px 20px;margin:0;padding:0;list-style:none}
+nav a{color:var(--ink-2);text-decoration:none;font-weight:500;padding-block:6px;display:inline-block}
+nav a:hover{color:var(--cyan)}
+
+h1,h2{font-stretch:125%;font-weight:900;line-height:1.02;letter-spacing:-.02em;margin:0;overflow-wrap:break-word}
+.eyebrow{font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+.eyebrow b{color:var(--gold);font-weight:700}
+
+/* hero: in space */
+.hero .in{padding-block:clamp(56px,12vw,150px) clamp(64px,10vw,130px)}
+.hero h1{font-size:clamp(40px,8.6vw,108px);max-width:12ch}
+.hero .accent{display:block;margin-top:.35em;font-stretch:125%;font-weight:900;font-size:clamp(22px,3.4vw,40px);line-height:1.1;color:var(--cyan);text-shadow:0 0 28px rgba(23,212,250,.35)}
+.hero .sub{max-width:62ch;margin:28px 0 0;font-size:clamp(17px,1.5vw,20px);color:var(--ink-2)}
+.hero .sub strong{color:var(--ink);font-weight:700}
+
+/* work: high sky to dusk */
+h2{font-size:clamp(30px,5vw,56px)}
+.sec .in{padding-block:clamp(56px,8vw,100px)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:32px;padding:0;list-style:none}
+.card{background:var(--card);border:1px solid var(--card-line);border-radius:14px;padding:22px;min-width:0}
+.card h3{font-stretch:125%;font-weight:900;font-size:19px;line-height:1.15;margin:0 0 10px;letter-spacing:-.01em;overflow-wrap:break-word}
+.card p{margin:0;color:var(--ink-2);font-size:16px}
+.card .n{display:block;font-size:13px;font-weight:700;letter-spacing:.1em;color:var(--ink-3);margin-bottom:12px}
+.flag{background:var(--flag);border:1px solid var(--cyan);box-shadow:0 0 0 1px rgba(23,212,250,.25),0 0 60px rgba(23,212,250,.18);padding:clamp(22px,4vw,40px);margin-top:32px}
+.flag .n{color:var(--magenta-text)}
+.flag h3{font-size:clamp(32px,6vw,64px);letter-spacing:-.02em;margin-bottom:14px}
+.flag p{font-size:clamp(17px,1.6vw,21px);max-width:56ch}
+.flag a{display:inline-block;margin-top:18px;font-weight:700}
+
+/* horizon */
+.solnote{margin:0;padding-block:8px 0;text-align:center;font-size:15px;color:var(--ink-2)}
+.solnote b{color:var(--gold);font-weight:700}
+.horizon{height:clamp(110px,18vw,200px);position:relative;pointer-events:none}
+.horizon::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 100% at 50% 100%,rgba(23,212,250,.62) 0%,rgba(23,212,250,.22) 38%,rgba(242,47,137,.08) 62%,transparent 78%)}
+.horizon::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan) 30%,#fff 50%,var(--cyan) 70%,transparent);box-shadow:0 0 22px 3px rgba(23,212,250,.5)}
+
+/* founding: on the horizon */
+.founding .in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:start}
+.founding h2{max-width:14ch}
+.pull{font-style:italic;font-stretch:125%;font-weight:800;font-size:clamp(26px,3.4vw,38px);line-height:1.2;margin:28px 0 0;color:var(--ink);border-left:3px solid var(--magenta);padding-left:18px}
+.founding p{color:var(--ink-2);margin:0 0 22px;max-width:60ch}
+.door{font-weight:700;font-size:18px}
+
+/* ground: field notes + play */
+.notes{list-style:none;margin:32px 0 0;padding:0;border-top:1px solid var(--card-line)}
+.notes li{display:grid;grid-template-columns:116px minmax(0,1fr);gap:8px 24px;padding-block:20px;border-bottom:1px solid var(--card-line)}
+.notes time{font-weight:700;font-size:15px;color:var(--gold);font-variant-numeric:tabular-nums}
+.notes a{color:var(--ink);font-weight:700;font-size:19px;line-height:1.3;text-decoration-color:rgba(255,255,255,.35)}
+.notes a:hover{color:var(--cyan)}
+.notes p{margin:6px 0 0;color:var(--ink-2);font-size:16px}
+.games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:32px;padding:0;list-style:none}
+.game{background:var(--card);border:1px solid var(--card-line);border-top:3px solid var(--cyan);border-radius:4px 4px 14px 14px;padding:22px;min-width:0}
+.game:nth-child(2){border-top-color:var(--magenta)}
+.game:nth-child(3){border-top-color:var(--gold)}
+.game h3{font-stretch:125%;font-weight:900;font-size:20px;margin:0 0 10px;line-height:1.15}
+.game p{margin:0 0 18px;color:var(--ink-2);font-size:16px}
+.game a{font-weight:700}
+.play-new{color:var(--gold);font-weight:700;margin:12px 0 0;font-size:15px}
+
+footer .in{padding-block:48px 56px;border-top:1px solid var(--card-line);color:var(--ink-2);font-size:16px;margin-top:24px}
+footer b{font-stretch:125%;font-weight:900;color:var(--ink)}
+footer em{font-style:normal;color:var(--cyan);font-weight:700}
+
+@media (max-width:900px){
+  .grid,.games{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .founding .in{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:600px){
+  body{font-size:16px}
+  .grid,.games{grid-template-columns:minmax(0,1fr)}
+  .notes li{grid-template-columns:minmax(0,1fr)}
+  .card,.game{padding:18px}
+}
+</style>
+
+<div class="world">
+  <div class="sky" aria-hidden="true"><canvas id="sky"></canvas></div>
+
+  <p class="wayfind band"><span class="in" style="display:block">Theme: December 2026 · this site changes monthly · <a href="/themes.html">see all themes</a></span></p>
+
+  <header class="nav band">
+    <div class="in">
+      <a class="mark" href="#">626Labs</a>
+      <nav aria-label="Primary"><ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#notes">Field Notes</a></li>
+        <li><a href="#play">Play</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul></nav>
+    </div>
+  </header>
+
+  <section class="hero band">
+    <div class="in">
+      <p class="eyebrow">626Labs LLC · Fort Worth, TX</p>
+      <h1>Software you leave running.</h1>
+      <span class="accent">Imagine Something Else.</span>
+      <p class="sub">RoRoRo, the free Windows multi-launcher for Roblox, has <strong>280+ daily users</strong> from the Microsoft Store. The same bench ships Sanduhr, which puts your claude.ai limits on the desktop; Celestia 3, an astrology app built on real astronomy; and 15 open-source Claude Code plugins. One builder.</p>
+    </div>
+  </section>
+
+  <section class="sec band" id="work">
+    <div class="in">
+      <p class="eyebrow">01 · Work</p>
+      <h2>Work</h2>
+      <article class="card flag">
+        <span class="n">01 · Flagship</span>
+        <h3>RoRoRo</h3>
+        <p>Run multiple Roblox clients side by side, each signed in as a different saved account. Free on the Microsoft Store.</p>
+        <a href="#">Get RoRoRo</a>
+      </article>
+      <ul class="grid">
+        <li class="card"><span class="n">02</span><h3>Sanduhr für Claude</h3><p>Your claude.ai usage meters on the desktop: session and weekly limits with a pace mark and reset times.</p></li>
+        <li class="card"><span class="n">03</span><h3>Celestia 3</h3><p>NASA-grade astrology AI.</p></li>
+        <li class="card"><span class="n">04</span><h3>Vibe Cartographer</h3><p>Find your direction no matter where you start.</p></li>
+        <li class="card"><span class="n">05</span><h3>Vibe Iterate</h3><p>Maintain your Atlas.</p></li>
+        <li class="card"><span class="n">06</span><h3>Vibe Insights</h3><p>The /insights you wish you had.</p></li>
+        <li class="card"><span class="n">07</span><h3>Vibe Keystone</h3><p>Map the repo before the agent starts.</p></li>
+        <li class="card"><span class="n">08</span><h3>Vibe Doc</h3><p>Point it at your codebase and it finds the docs you're missing.</p></li>
+        <li class="card"><span class="n">09</span><h3>Vibe Test</h3><p>Put your code to the test before somebody else does.</p></li>
+        <li class="card"><span class="n">10</span><h3>Vibe Thesis</h3><p>Long-form research, drafted with discipline.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="solnote band"><span class="in" style="display:block">The December solstice falls on <b>21 December</b>, the turn every market shares.</span></p>
+  <div class="horizon" aria-hidden="true"></div>
+
+  <section class="sec founding band" id="about">
+    <div class="in" style="padding-block:clamp(56px,8vw,100px)">
+      <div>
+        <p class="eyebrow">02 · The founding</p>
+        <h2>626Labs builds exact-fit software.</h2>
+        <p class="pull">I build tools, because care doesn't always scale.</p>
+      </div>
+      <div>
+        <p>626Labs builds exact-fit software. The founding argument is simple: it has never been easier to have the exact tools we need, and too much money has been going to too many companies for tools that only half fit. So we build and maintain our own, at a quality that rivals enterprise software, made to enhance the work people do instead of taking their jobs. We are here to make great products, even if only a handful of people need them. That's ok.</p>
+        <a class="door" href="#">Read the whole story &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec band" id="notes">
+    <div class="in">
+      <p class="eyebrow">03 · Field Notes</p>
+      <h2>Field Notes</h2>
+      <ul class="notes">
+        <li><time datetime="2026-10-30">2026-10-30</time><div><a href="#">Right Click PNG 0.1.2 gets one tidy menu entry and stops overwriting your originals</a></div></li>
+        <li><time datetime="2026-10-16">2026-10-16</time><div><a href="#">Sanduhr for Mac now reads your Claude Code folders, not just your Claude limits</a></div></li>
+        <li><time datetime="2026-09-28">2026-09-28</time><div><a href="#">Containment for Frontier AI</a><p>Containment is an architecture, not a sandbox setting. Revised after a summer of real escapes.</p></div></li>
+        <li><time datetime="2026-06-26">2026-06-26</time><div><a href="#">The first 626Labs Day</a><p>Today is 6/26/26, the first 626 Day since 626Labs existed.</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec band" id="play">
+    <div class="in">
+      <p class="eyebrow">04 · Play</p>
+      <h2>Play</h2>
+      <p class="play-new">New for December: the games now follow the theme.</p>
+      <ul class="games">
+        <li class="game"><h3>Birthday Bacon Trail</h3><p>Who's born today? Find Kevin Bacon within six films.</p><a href="#">Play</a></li>
+        <li class="game"><h3>Box Office Heads Up</h3><p>Two movies. Which opened bigger?</p><a href="#">Play</a></li>
+        <li class="game"><h3>Tag That Line</h3><p>A classic tagline, four posters. Tap the one it belongs to.</p><a href="#">Play</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="band">
+    <div class="in"><b>626Labs LLC</b> · Fort Worth, TX · <em>Imagine Something Else.</em></div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var cv=document.getElementById('sky'),ctx=cv.getContext('2d');
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  var W=0,H=0,dpr=1,stars=[];
+  function build(){
+    var r=mulberry32(1221);
+    var n=Math.round(Math.min(900,W*H/2600));
+    stars=[];
+    for(var i=0;i<n;i++){
+      var y=Math.pow(r(),1.35)*H; // denser high up
+      var big=r()<.05;
+      var tint=r();
+      stars.push({x:r()*W,y:y,r:big?1.3+r()*.9:.35+r()*.7,a:.35+r()*.6,p:r()*6.28,s:.4+r()*1.4,
+        c:big?(tint<.5?'23,212,250':(tint<.8?'255,111,168':'255,244,214')):'225,235,255',big:big});
+    }
+  }
+  function size(){
+    var b=cv.parentNode.getBoundingClientRect();
+    W=Math.max(1,Math.round(b.width));H=Math.max(1,Math.round(b.height));
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    build();draw(0);
+  }
+  function ribbon(t,hue,yBase,amp,alpha,ph){
+    var g=ctx.createLinearGradient(0,yBase-amp*2,0,yBase+amp*3.2);
+    g.addColorStop(0,'rgba('+hue+',0)');g.addColorStop(.35,'rgba('+hue+','+alpha+')');g.addColorStop(1,'rgba('+hue+',0)');
+    ctx.fillStyle=g;ctx.beginPath();
+    var step=Math.max(8,W/60),x;
+    for(x=0;x<=W+step;x+=step){
+      var y=yBase+Math.sin(x/W*5.2+ph+t*.00006)*amp+Math.sin(x/W*11+ph*2+t*.0001)*amp*.35;
+      ctx.lineTo(x,y);
+    }
+    for(x=W+step;x>=0;x-=step){
+      var y2=yBase+amp*2.6+Math.sin(x/W*3.1+ph+t*.00005)*amp*.8;
+      ctx.lineTo(x,y2);
+    }
+    ctx.closePath();ctx.fill();
+  }
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    var sc=Math.min(1,W/900);
+    ctx.globalCompositeOperation='lighter';
+    ribbon(t,'23,212,250',150+60*sc,36+20*sc,.16,0.7);
+    ribbon(t,'242,47,137',120+50*sc,28+16*sc,.10,2.4);
+    ctx.globalCompositeOperation='source-over';
+    for(var i=0;i<stars.length;i++){
+      var s=stars[i],a=s.a;
+      if(!reduce)a*=.72+.28*Math.sin(t*.001*s.s+s.p);
+      ctx.fillStyle='rgba('+s.c+','+a.toFixed(3)+')';
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.2832);ctx.fill();
+      if(s.big){
+        ctx.fillStyle='rgba('+s.c+','+(a*.18).toFixed(3)+')';
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r*4.5,0,6.2832);ctx.fill();
+      }
+    }
+  }
+  var last=0;
+  function loop(t){if(t-last>50){draw(t);last=t}requestAnimationFrame(loop)}
+  size();
+  var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(size,120)});
+  if(window.ResizeObserver){new ResizeObserver(function(){clearTimeout(rt);rt=setTimeout(size,120)}).observe(cv.parentNode)}
+  if(!reduce)requestAnimationFrame(loop);
+})();
+</script>
