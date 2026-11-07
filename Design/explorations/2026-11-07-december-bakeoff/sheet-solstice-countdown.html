@@ -293,6 +293,21 @@ footer em{font-style:normal;color:var(--cyan);font-weight:700}
     countdown:'The solstice turned on <b>21 December</b>. Now the year counts down.',
     newyear:'The year turned at your midnight. Welcome to <b>2027</b>.'
   };
+  /* whose midnight: the zone's city, else its long name, else "your time".
+     Read locally from the browser; nothing leaves the page. */
+  var ZONE=(function(){
+    try{
+      var id=Intl.DateTimeFormat().resolvedOptions().timeZone||'';
+      var city=id.indexOf('/')>0&&!/^Etc\//.test(id)?id.split('/').pop().replace(/_/g,' '):'';
+      /* browsers still report some zones by their retired IDs */
+      var RENAMED={'Calcutta':'Kolkata','Saigon':'Ho Chi Minh City','Ho Chi Minh':'Ho Chi Minh City','Kiev':'Kyiv','Rangoon':'Yangon','Katmandu':'Kathmandu','Godthab':'Nuuk','Ulan Bator':'Ulaanbaatar','Thimbu':'Thimphu','Dacca':'Dhaka','Faeroe':'Faroe'};
+      city=RENAMED[city]||city;
+      if(city&&!/^GMT|^UTC/i.test(city))return city+' time';
+      var part=new Intl.DateTimeFormat('en-US',{timeZoneName:'long'}).formatToParts(new Date()).filter(function(x){return x.type==='timeZoneName'})[0];
+      if(part&&!/^(GMT|UTC)/.test(part.value))return part.value;
+    }catch(e){}
+    return 'your time';
+  })();
   function pad(n){return n<10?'0'+n:''+n}
   function unit(v,t){return '<span class="u"><span class="n">'+v+'</span><span class="t">'+t+'</span></span>'}
   var phase=null;
@@ -309,10 +324,10 @@ footer em{font-style:normal;color:var(--cyan);font-weight:700}
       var s=Math.max(0,Math.floor((END-t)/1000));
       var d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),sec=s%60;
       if(d>0){
-        lab.textContent='Until midnight, 1 January 2027, your time';
+        lab.textContent='Until midnight, 1 January 2027, '+ZONE;
         num.innerHTML=unit(d,d===1?'day':'days')+unit(pad(h),'hours')+unit(pad(m),'min');
       }else{
-        lab.textContent='The last day of 2026, your time';
+        lab.textContent='The last day of 2026, '+ZONE;
         num.innerHTML=unit(pad(h),'hours')+unit(pad(m),'min')+unit(pad(sec),'sec');
       }
     }else if(p==='newyear'){
