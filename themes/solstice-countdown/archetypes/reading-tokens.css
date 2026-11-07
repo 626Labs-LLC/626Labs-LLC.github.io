@@ -1,0 +1,180 @@
+/* ============================================================
+   Theme: solstice-countdown — reading archetype, TOKEN VOCABULARY.
+
+   Custom-property definitions only (theme-doctor enforces it). Both :root
+   blocks copied verbatim from tokens.css: every archetypes.REQUIRED_TOKENS
+   name plus the --sc-* treatment block, so the reading group resolves on
+   its own.
+
+   AA CONTRAST, computed with scripts/theme-doctor.py's own WCAG 2.1 math
+   (the numbers the gate grades). The 4.5:1 floor applies to every pair.
+
+   ink / ground       --bg-0 #0A1426  --bg-1 #0E1A2E  --bg-2 #13223A  --sc-dusk #10263A
+   --fg-1 #F1F5F9          16.80:1         15.90:1         14.55:1         14.09:1
+   --fg-2 #C9D3DE          12.14:1         11.49:1         10.52:1         10.19:1
+   --fg-3 #A3B1C0           8.42:1          7.97:1          7.29:1          7.06:1
+   --fg-muted #97A5B6       7.34:1          6.94:1          6.36:1          6.16:1
+   --cyan #17D4FA          10.37:1          9.81:1          8.98:1          8.70:1
+   --cyan-pale #7FE6FC     12.82:1         12.13:1         11.10:1         10.75:1
+   --magenta #FF6FA8        7.09:1          6.71:1          6.14:1          5.95:1
+   --magenta-pale #FF9CC4   9.47:1          8.96:1          8.20:1          7.94:1
+   --ok #3DDC97            10.41:1          9.85:1          9.02:1          8.73:1
+   --warn #F3C77A          11.62:1         11.00:1         10.06:1          9.75:1
+
+   The sweep's lightest text grounds: --sc-umber #3B2817 (--sc-ink 12.76,
+   --sc-ink-2 9.23, --sc-ink-3 6.40) and glass over dusk (#273B4C: ink
+   10.55, ink-2 7.63, ink-3 5.29, muted 4.61). The flagship --sc-flag
+   #0F3042: ink 12.60, ink-2 9.11, cyan 7.78, magenta 5.32. Reversed fills:
+   --ink-950 #04060D on --cyan 11.41, on --magenta 7.80. The band #1B1B26:
+   band-ink 15.57, band-ink-2 11.25. The screen #060B16: screen-ink 11.09.
+
+   NEVER TEXT: --sc-magenta #F22F89 (light only: aurora, bulbs, sparks,
+   rules), and --magenta is never set on glass over the umber ground
+   (4.28:1). --sc-hair and --sc-heavy are BORDER SHORTHANDS.
+   ============================================================ */
+:root {
+  /* Brand constants. The navy trio and --ink-0 are the 626Labs field
+     colors every theme carries. */
+  --navy-deep: #0f1f31;
+  --navy-mid:  #192e44;
+  --navy-hi:   #223a54;
+  --navy-line: #2a3a5c;
+  --ink-0:     #ffffff;
+
+  /* The accents: on a dark ground the brand cyan is itself a type ink.
+     The magenta a page may set type in is the lifted #FF6FA8; the brand
+     #F22F89 is light only (--sc-magenta). --ink-950 is the type that sits
+     on an accent fill: deep space. */
+  --cyan:      var(--sc-cyan);
+  --cyan-pale: var(--sc-cyan-ink-hover);
+  --cyan-dim:  var(--sc-cyan-ink-hover);
+  --magenta:   var(--sc-magenta-ink);
+  --magenta-pale: var(--sc-magenta-ink-hover);
+  --ink-950:   var(--sc-space-0);
+  --ok:        #3ddc97;
+  --warn:      #f3c77a;
+
+  /* The ink ramp: starlight, cooling as it steps down. */
+  --text:      #F1F5F9;
+  --text-sec:  #C9D3DE;
+  --text-dim:  #A3B1C0;
+  --text-mute: #97A5B6;
+
+  /* The night ground, and two lifted steps for mats and rails. */
+  --bg-0: var(--sc-ground);
+  --bg-1: #0E1A2E;
+  --bg-2: #13223A;
+  --fg-1: var(--text);
+  --fg-2: var(--text-sec);
+  --fg-3: var(--text-dim);
+  --fg-muted: var(--text-mute);
+
+  /* Rules are starlight at low alpha. */
+  --border-1: var(--sc-hair-color);
+  --border-2: var(--sc-card-line);
+  --border-strong: rgba(241,245,249,.5);
+  --border-accent: rgba(23,212,250,.45);
+
+  --brand-gradient: linear-gradient(135deg, #17d4fa 0%, #f22f89 100%);
+  --brand-gradient-soft: linear-gradient(135deg, rgba(23,212,250,.18) 0%, rgba(242,47,137,.18) 100%);
+  --inner-stroke: inset 0 0 0 1px rgba(255,255,255,.08);
+
+  --shadow-2: 0 4px 16px rgba(0,0,0,.35);
+  --shadow-3: 0 12px 32px rgba(0,0,0,.45);
+
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  --dur-fast: 120ms;
+  --dur-med: 220ms;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  /* Soft corners, from the sheet: glass cards round at 14px. */
+  --r-xs: 4px; --r-sm: 8px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px;
+  --r-pill: 999px;
+
+  /* One face. Archivo on every head and every line of text; the mono for
+     code only. Archivo is self-hosted in /fonts/fonts.css. */
+  --font-display: 'Archivo', 'Arial Black', Arial, sans-serif;
+  --font-body:    'Archivo', Arial, Helvetica, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* ============================================================
+   Solstice Countdown â€” treatment layer (--sc-*).
+   The sky, the horizon, the ground, the glass. Read by the archetype
+   dresses; defined again in each token file so every resolution group
+   resolves on its own.
+   ============================================================ */
+:root {
+  /* The night and the inks. --sc-ground is the ONLY place the reading
+     ground is declared; --bg-0 reads it. */
+  --sc-ground:      #0A1426;
+  --sc-ink:         #F1F5F9;   /* primary ink: heads, body, links */
+  --sc-ink-2:       #C9D3DE;   /* secondary ink: decks, descriptions */
+  --sc-ink-3:       #A3B1C0;   /* caption ink */
+  --sc-ink-muted:   #97A5B6;   /* the fourth step --fg-muted needs */
+
+  /* The sweep's stops, top to bottom: deep space, high sky, dusk, the
+     horizon, then the ground. Home paints them as one body gradient over
+     the whole page; the inside pages open on --sc-field. */
+  --sc-space-0:     #04060D;
+  --sc-space-1:     #08101F;
+  --sc-space-2:     #0C1A30;
+  --sc-dusk:        #10263A;
+  --sc-founding:    #1B1B26;
+  --sc-loam:        #2A1C13;
+  --sc-umber:       #3B2817;
+  --sc-deep:        #1D130C;
+  --sc-top:         var(--sc-space-0);
+  --sc-sweep:       linear-gradient(180deg, var(--sc-space-0) 0%, var(--sc-space-1) 14%, var(--sc-space-2) 30%, var(--sc-dusk) 42%, var(--sc-founding) 54%, var(--sc-loam) 66%, var(--sc-umber) 84%, var(--sc-deep) 100%);
+  /* The inside pages' head: space down to dusk, ending on the horizon. */
+  --sc-field:       linear-gradient(180deg, var(--sc-space-0) 0%, var(--sc-space-2) 70%, var(--sc-dusk) 100%);
+
+  /* The brand pair as light. --sc-cyan doubles as a type ink (it clears
+     AA on every ground here); --sc-magenta is light only, never type. */
+  --sc-cyan:            #17D4FA;
+  --sc-magenta:         #F22F89;
+  --sc-cyan-ink-hover:  #7FE6FC;
+  --sc-magenta-ink:     #FF6FA8;
+  --sc-magenta-ink-hover: #FF9CC4;
+  --sc-gold:            #F3C77A;  /* the one warm accent: dates, the countdown's rule */
+  --sc-horizon-glow:    radial-gradient(60% 100% at 50% 100%, rgba(23,212,250,.62) 0%, rgba(23,212,250,.22) 38%, rgba(242,47,137,.08) 62%, transparent 78%);
+  --sc-horizon-line:    linear-gradient(90deg, transparent, #17D4FA 30%, #FFFFFF 50%, #17D4FA 70%, transparent);
+
+  /* Glass: the sheet's cards, starlight over whatever band is behind. */
+  --sc-card:        rgba(255,255,255,.08);
+  --sc-card-line:   rgba(255,255,255,.16);
+  --sc-radius:      14px;
+  --sc-flag:        #0F3042;   /* the flagship's own fill, framed in cyan */
+
+  /* The band: a quiet surface for the one set-apart section a page has
+     (the founding on home sits on the horizon instead and paints none). */
+  --sc-band:        #1B1B26;
+  --sc-band-ink:    #F1F5F9;
+  --sc-band-ink-2:  #C9D3DE;
+
+  /* The screens: the dark rasters (thumbs, previews, the star map, the
+     terminal) and the caption printed inside one. */
+  --sc-screen:      #060B16;
+  --sc-screen-ink:  #17D4FA;
+
+  /* Rule colors: starlight at low alpha. Decorative, never text. */
+  --sc-hair-color:  rgba(255,255,255,.16);
+
+  /* BORDER SHORTHANDS: spend on border-* and column-rule only. */
+  --sc-hair:        1px solid var(--sc-hair-color);
+  --sc-heavy:       2px solid rgba(241,245,249,.55);
+
+  /* Links: ink, underlined; hover thickens the underline. */
+  --sc-underline:   1.5px;
+  --sc-underline-hover: 3px;
+
+  --sc-page:        1240px;
+  --sc-gutter:      32px;
+
+  --sc-face:        var(--font-body);
+  --sc-mono:        var(--font-mono);
+  --sc-display-stretch: 125%;
+  --sc-display-weight:  900;
+}
