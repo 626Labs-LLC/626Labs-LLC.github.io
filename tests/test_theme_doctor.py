@@ -1248,7 +1248,7 @@ def test_main_theme_missing_a_required_token_in_utility_css_fails_the_gate(monke
 # ─── final review Fix 2: queue-time gating ──────────────────────────────────
 # theme-doctor's only CI invocation used to live inside rotate-theme.yml — a
 # broken theme could merge into the queue green and only get caught on
-# rotation morning (09:00 UTC on the 1st), when rotation aborts. Fail-safe,
+# rotation morning (12:00 UTC on the 1st), when rotation aborts. Fail-safe,
 # but late: the whole point of a queue is that its contents are known-good
 # ahead of their own turn. Running theme-doctor's STATIC checks (no
 # --browser — offline, no local server or chromium needed) against every

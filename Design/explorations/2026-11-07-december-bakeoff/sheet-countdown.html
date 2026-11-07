@@ -1,0 +1,404 @@
+<title>Countdown</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Caveat:wght@600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Countdown (December 2026 bake-off candidate).
+   The last night of the year, an outdoor party at dusk. Night sky with
+   string lights and one slow firework at the top, dusk horizon, dark
+   earth underfoot. Lights and sparks are generated on canvas (seeded PRNG).
+
+   Faces: Bricolage Grotesque (display, restrained: heads and the tagline),
+   Source Sans 3 (body, tabular figures for the countdown), Caveat only for
+   Este's pull quote (upright, 30px+).
+
+   PALETTE
+   sky-top  #070b1f   sky-mid #121a42   dusk #2a2150  (sky gradient stops)
+   card     #141c40   (work tickets, countdown panel)
+   peat     #1b1710   olive #1e2314     soil #2a2017  (earth gradient stops)
+   soil-card #262c19  (play cards)
+   ink #f6f2e7  ink-2 #cfcabb  warm #ffd9a0
+   cyan #17d4fa (light, and text: clears AA)  magenta #f22f89 (LIGHT ONLY)
+   mag-text #ff6fae (the magenta that may be set as type)
+
+   AA CONTRAST (WCAG 2.1, computed; floor is 4.5:1 everywhere, graded on the
+   worst tone under the text)
+   text \ ground        sky-top  sky-mid  dusk   card   peat   olive  soil   soil-card
+   ink   #f6f2e7        17.44    14.99    13.11  14.78  15.95  14.38  14.25  12.89
+   ink-2 #cfcabb        11.91    10.24     8.95  10.09  10.89   9.82   9.73   8.80
+   cyan  #17d4fa        10.99     9.45     8.27   9.32  10.06   9.06   8.98   8.12
+   mag-text #ff6fae      7.56     6.50     5.68   6.41   6.92   6.23   6.18   5.59
+   warm  #ffd9a0        14.57    12.53    10.95  12.35  13.33  12.01  11.91  10.77
+   Button: --night #06101f on cyan 10.74.
+   Raw magenta #f22f89 is 4.2 to 5.2 on these grounds: used only as bulbs,
+   sparks and rules, never as type. Tightest type pair: mag-text on
+   soil-card 5.59, then on dusk 5.68.
+   The firework can drift behind the hero type for a moment: it is a
+   transient light, kept below 0.85 alpha, and the page is complete without it.
+   ============================================================ */
+:root{
+  color-scheme: dark;
+  --sky-top:#070b1f; --sky-mid:#121a42; --dusk:#2a2150;
+  --card:#141c40;
+  --peat:#1b1710; --olive:#1e2314; --soil:#2a2017; --soil-card:#262c19;
+  --ink:#f6f2e7; --ink-2:#cfcabb; --warm:#ffd9a0;
+  --cyan:#17d4fa; --magenta:#f22f89; --mag-text:#ff6fae;
+  --night:#06101f;
+  --font-display:"Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body:"Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-hand:"Caveat", "Segoe Script", cursive;
+  --gutter-l:max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--peat);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.6;overflow-x:hidden}
+a{color:var(--cyan);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--warm);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1160px;margin:0 auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+h1,h2,h3{font-family:var(--font-display);margin:0;line-height:1.08;letter-spacing:-.01em}
+p{margin:0}
+
+/* ---------- sky ---------- */
+.sky{position:relative;background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-top) 40%,var(--sky-mid) 100%);overflow:hidden}
+.sky canvas{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+.sky-in{position:relative;z-index:1}
+.way{padding-block:92px 0;font-size:.95rem;color:var(--ink-2)}
+.way p{max-width:60ch}
+.nav{display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;padding-block:14px 0}
+.mark{font-family:var(--font-display);font-weight:800;font-size:1.15rem;color:var(--ink);margin-right:auto;text-decoration:none;padding-block:10px}
+.nav ul{display:flex;flex-wrap:wrap;gap:0 18px;list-style:none;margin:0;padding:0}
+.nav ul a{display:inline-block;padding:11px 2px;color:var(--ink);text-decoration:none;font-weight:600}
+.nav ul a:hover{color:var(--cyan);text-decoration:underline}
+.hero{padding-block:44px 64px}
+.eyebrow{font-weight:700;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--warm)}
+.hero h1{font-weight:800;font-size:clamp(2.7rem,9.4vw,5.9rem);margin-top:14px;max-width:11ch;font-variation-settings:"opsz" 96}
+.accent{display:block;margin-top:14px;font-family:var(--font-display);font-weight:700;font-size:clamp(1.5rem,4.4vw,2.4rem);color:var(--cyan)}
+.sub{margin-top:22px;max-width:60ch;color:var(--ink);font-size:1.08rem}
+.count{margin-top:34px;display:inline-block;max-width:100%;background:var(--card);border:1px solid rgba(23,212,250,.45);border-radius:16px;padding:16px 20px 14px;box-shadow:0 0 0 1px rgba(242,47,137,.35),0 10px 40px rgba(0,0,0,.4)}
+.count .lab{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.count .num{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:6px;font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum","lnum"}
+.count .u{display:flex;align-items:baseline;gap:6px;min-width:0}
+.count .n{font-weight:700;font-size:clamp(2.2rem,8vw,3.2rem);line-height:1;color:var(--ink);min-width:2ch;text-align:right}
+.count .t{color:var(--ink-2);font-size:.95rem}
+.count .done{font-family:var(--font-display);font-weight:800;font-size:clamp(2rem,7vw,3rem);color:var(--warm)}
+
+/* ---------- work (still sky, deepening to dusk) ---------- */
+.work{background:linear-gradient(180deg,var(--sky-mid) 0%,var(--dusk) 100%);padding-block:56px 80px}
+.head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-bottom:26px}
+.head h2{font-weight:800;font-size:clamp(1.9rem,5vw,2.8rem)}
+.head .eyebrow{color:var(--warm)}
+.tickets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ticket{display:grid;grid-template-columns:64px minmax(0,1fr);background:var(--card);border:1px solid rgba(246,242,231,.16);border-radius:14px;overflow:hidden;position:relative}
+.ticket .stub{display:flex;align-items:center;justify-content:center;border-right:2px dashed rgba(246,242,231,.35);font-family:var(--font-display);font-weight:800;font-size:1.25rem;color:var(--warm);font-variant-numeric:tabular-nums}
+.ticket .body{padding:16px 18px;min-width:0}
+.ticket h3{font-size:1.3rem;font-weight:700}
+.ticket h3 a{color:var(--ink);text-decoration:none}
+.ticket h3 a:hover{color:var(--cyan);text-decoration:underline}
+.ticket p{margin-top:6px;color:var(--ink-2);font-size:1rem;line-height:1.5}
+.ticket.flag{grid-column:1 / -1;border-color:rgba(23,212,250,.6);box-shadow:0 0 0 1px rgba(242,47,137,.45),0 0 36px rgba(23,212,250,.14)}
+.ticket.flag::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--cyan),var(--magenta))}
+.ticket.flag .stub{font-size:1.5rem}
+.ticket.flag h3{font-size:clamp(1.8rem,5vw,2.6rem);font-weight:800}
+.ticket.flag p{font-size:1.1rem;max-width:60ch}
+.flaglab{display:block;font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--warm);margin-bottom:4px}
+
+/* ---------- horizon ---------- */
+.horizon{position:relative;height:110px;background:linear-gradient(180deg,var(--dusk) 0%,var(--dusk) 30%,var(--peat) 100%);overflow:hidden}
+.horizon::before{content:"";position:absolute;left:-10%;right:-10%;top:0;height:60px;background:radial-gradient(ellipse at 50% 100%,rgba(242,47,137,.38),rgba(23,212,250,.12) 45%,transparent 70%)}
+.horizon i{position:absolute;bottom:-1px;display:block;background:var(--olive);border-radius:50% 50% 0 0}
+.horizon i:nth-child(1){left:-12%;width:60%;height:70px;background:#161a0e}
+.horizon i:nth-child(2){left:30%;width:50%;height:54px}
+.horizon i:nth-child(3){left:62%;width:56%;height:78px;background:#161a0e}
+.horizon i:nth-child(4){left:-5%;right:-5%;height:30px;border-radius:0;background:var(--peat)}
+
+/* ---------- earth ---------- */
+.earth{background:linear-gradient(180deg,var(--peat) 0%,var(--olive) 45%,var(--soil) 100%);padding-block:20px 0}
+.band{padding-block:56px 20px}
+.band .head h2{font-size:clamp(1.8rem,4.6vw,2.6rem)}
+.founding{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:36px;align-items:start}
+.founding h2{font-weight:800;font-size:clamp(2rem,5.4vw,3.3rem);margin-top:12px}
+.quote{font-family:var(--font-hand);font-weight:600;font-size:clamp(2rem,6vw,2.9rem);line-height:1.15;color:var(--warm);margin:22px 0 0;max-width:20ch}
+.founding p{color:var(--ink);max-width:60ch}
+.door{display:inline-block;margin-top:18px;font-weight:700;padding:12px 0}
+.notes{list-style:none;margin:0;padding:0;border-top:1px solid rgba(246,242,231,.22)}
+.notes li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 22px;padding:18px 0;border-bottom:1px solid rgba(246,242,231,.22)}
+.notes time{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:.98rem;padding-top:3px}
+.notes h3{font-size:1.25rem;font-weight:700;line-height:1.25}
+.notes h3 a{color:var(--ink);text-decoration:none}
+.notes h3 a:hover{color:var(--cyan);text-decoration:underline}
+.notes p{margin-top:4px;color:var(--ink-2);font-size:1rem}
+.playnote{color:var(--ink-2);font-size:.98rem;margin:-12px 0 22px}
+.games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.game{background:var(--soil-card);border:1px solid rgba(255,217,160,.32);border-radius:14px;padding:20px 20px 22px;position:relative}
+.game::before{content:"";position:absolute;left:20px;top:-1px;width:44px;height:4px;border-radius:0 0 4px 4px;background:var(--cyan)}
+.game:nth-child(2)::before{background:var(--magenta)}
+.game:nth-child(3)::before{background:var(--warm)}
+.game h3{font-size:1.3rem;font-weight:700}
+.game p{margin-top:8px;color:var(--ink-2);font-size:1rem;line-height:1.5}
+.game a.btn{display:inline-block;margin-top:14px;background:var(--cyan);color:var(--night);font-weight:700;text-decoration:none;padding:11px 18px;border-radius:999px}
+.game a.btn:hover{background:var(--warm)}
+footer{background:var(--soil);margin-top:56px;padding-block:34px 44px;color:var(--ink)}
+footer p{font-size:1rem}
+footer .tag{font-family:var(--font-display);font-weight:700;color:var(--warm)}
+
+@media (max-width:860px){
+  .tickets{grid-template-columns:minmax(0,1fr)}
+  .founding{grid-template-columns:minmax(0,1fr);gap:28px}
+  .games{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:480px){
+  body{font-size:17px}
+  .way{padding-block-start:80px}
+  .ticket{grid-template-columns:52px minmax(0,1fr)}
+  .ticket .body{padding:14px 14px}
+  .notes li{grid-template-columns:minmax(0,1fr)}
+  .count{padding:14px 16px 12px}
+}
+</style>
+
+<header class="sky" id="sky">
+  <canvas id="night" aria-hidden="true"></canvas>
+  <div class="sky-in">
+    <div class="wrap way">
+      <p>Theme: December 2026 · this site changes monthly · <a href="/themes.html">see all themes</a></p>
+    </div>
+    <nav class="wrap nav" aria-label="Primary">
+      <a class="mark" href="#">626Labs</a>
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#notes">Field Notes</a></li>
+        <li><a href="#play">Play</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="wrap hero">
+      <p class="eyebrow">626Labs LLC · Fort Worth, TX</p>
+      <h1>Software you leave running.<span class="accent">Imagine Something Else.</span></h1>
+      <p class="sub">RoRoRo, the free Windows multi-launcher for Roblox, has 280+ daily users from the Microsoft Store. The same bench ships Sanduhr, which puts your claude.ai limits on the desktop; Celestia 3, an astrology app built on real astronomy; and 15 open-source Claude Code plugins. One builder.</p>
+      <div class="count" id="count">
+        <div class="lab" id="countLab">Until midnight, 1 January 2027, your time</div>
+        <div class="num" id="countNum" role="timer" aria-live="off">
+          <span class="u"><span class="n" id="cd">--</span><span class="t">days</span></span>
+          <span class="u"><span class="n" id="ch">--</span><span class="t">hours</span></span>
+          <span class="u"><span class="n" id="cm">--</span><span class="t">min</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="work" id="work" aria-labelledby="work-h">
+  <div class="wrap">
+    <div class="head"><h2 id="work-h">Work</h2></div>
+    <div class="tickets">
+      <article class="ticket flag"><div class="stub">01</div><div class="body"><span class="flaglab">Flagship</span><h3><a href="#">RoRoRo</a></h3><p>Run multiple Roblox clients side by side, each signed in as a different saved account. Free on the Microsoft Store.</p></div></article>
+      <article class="ticket"><div class="stub">02</div><div class="body"><h3><a href="#">Sanduhr für Claude</a></h3><p>Your claude.ai usage meters on the desktop: session and weekly limits with a pace mark and reset times.</p></div></article>
+      <article class="ticket"><div class="stub">03</div><div class="body"><h3><a href="#">Celestia 3</a></h3><p>NASA-grade astrology AI.</p></div></article>
+      <article class="ticket"><div class="stub">04</div><div class="body"><h3><a href="#">Vibe Cartographer</a></h3><p>Find your direction no matter where you start.</p></div></article>
+      <article class="ticket"><div class="stub">05</div><div class="body"><h3><a href="#">Vibe Iterate</a></h3><p>Maintain your Atlas.</p></div></article>
+      <article class="ticket"><div class="stub">06</div><div class="body"><h3><a href="#">Vibe Insights</a></h3><p>The /insights you wish you had.</p></div></article>
+      <article class="ticket"><div class="stub">07</div><div class="body"><h3><a href="#">Vibe Keystone</a></h3><p>Map the repo before the agent starts.</p></div></article>
+      <article class="ticket"><div class="stub">08</div><div class="body"><h3><a href="#">Vibe Doc</a></h3><p>Point it at your codebase and it finds the docs you're missing.</p></div></article>
+      <article class="ticket"><div class="stub">09</div><div class="body"><h3><a href="#">Vibe Test</a></h3><p>Put your code to the test before somebody else does.</p></div></article>
+      <article class="ticket"><div class="stub">10</div><div class="body"><h3><a href="#">Vibe Thesis</a></h3><p>Long-form research, drafted with discipline.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<div class="horizon" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<div class="earth">
+  <section class="band" aria-labelledby="found-h">
+    <div class="wrap founding">
+      <div>
+        <p class="eyebrow">02 · The founding</p>
+        <h2 id="found-h">626Labs builds exact-fit software.</h2>
+        <p class="quote">I build tools, because care doesn't always scale.</p>
+      </div>
+      <div>
+        <p>626Labs builds exact-fit software. The founding argument is simple: it has never been easier to have the exact tools we need, and too much money has been going to too many companies for tools that only half fit. So we build and maintain our own, at a quality that rivals enterprise software, made to enhance the work people do instead of taking their jobs. We are here to make great products, even if only a handful of people need them. That's ok.</p>
+        <a class="door" href="#">Read the whole story →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="notes" aria-labelledby="notes-h">
+    <div class="wrap">
+      <div class="head"><h2 id="notes-h">Field Notes</h2></div>
+      <ul class="notes">
+        <li><time datetime="2026-10-30">2026-10-30</time><div><h3><a href="#">Right Click PNG 0.1.2 gets one tidy menu entry and stops overwriting your originals</a></h3></div></li>
+        <li><time datetime="2026-10-16">2026-10-16</time><div><h3><a href="#">Sanduhr for Mac now reads your Claude Code folders, not just your Claude limits</a></h3></div></li>
+        <li><time datetime="2026-09-28">2026-09-28</time><div><h3><a href="#">Containment for Frontier AI</a></h3><p>Containment is an architecture, not a sandbox setting. Revised after a summer of real escapes.</p></div></li>
+        <li><time datetime="2026-06-26">2026-06-26</time><div><h3><a href="#">The first 626Labs Day</a></h3><p>Today is 6/26/26, the first 626 Day since 626Labs existed.</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" id="play" aria-labelledby="play-h">
+    <div class="wrap">
+      <div class="head"><h2 id="play-h">Play</h2></div>
+      <p class="playnote">New for December: the games now follow the theme.</p>
+      <div class="games">
+        <article class="game"><h3>Birthday Bacon Trail</h3><p>Who's born today? Find Kevin Bacon within six films.</p><a class="btn" href="#">Play</a></article>
+        <article class="game"><h3>Box Office Heads Up</h3><p>Two movies. Which opened bigger?</p><a class="btn" href="#">Play</a></article>
+        <article class="game"><h3>Tag That Line</h3><p>A classic tagline, four posters. Tap the one it belongs to.</p><a class="btn" href="#">Play</a></article>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap"><p>626Labs LLC · Fort Worth, TX · <span class="tag">Imagine Something Else.</span></p></div>
+  </footer>
+</div>
+</main>
+
+<script>
+(function(){
+  /* ---- countdown, visitor's own local time ---- */
+  var target = new Date(2027,0,1).getTime();
+  var elD=document.getElementById('cd'), elH=document.getElementById('ch'), elM=document.getElementById('cm');
+  var num=document.getElementById('countNum'), lab=document.getElementById('countLab');
+  function pad(n){return n<10?'0'+n:''+n}
+  function tick(){
+    var ms = target - Date.now();
+    if(ms<=0){
+      lab.textContent='The year turned.';
+      num.innerHTML='<span class="done">Happy 2027.</span>';
+      return false;
+    }
+    var m=Math.floor(ms/60000);
+    elD.textContent=Math.floor(m/1440);
+    elH.textContent=pad(Math.floor(m%1440/60));
+    elM.textContent=pad(m%60);
+    return true;
+  }
+  if(tick()){
+    setTimeout(function again(){ if(tick()) setTimeout(again, 60000 - (Date.now()%60000) + 50); }, 60000 - (Date.now()%60000) + 50);
+  }
+
+  /* ---- night sky: stars, string lights, one firework ---- */
+  var host=document.getElementById('sky'), cv=document.getElementById('night');
+  var ctx=cv.getContext('2d');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  var W=0,H=0,DPR=1,stars=[],strings=[],fw=null,t0=0;
+  var COL=['23,212,250','242,47,137','255,226,170'];
+
+  function build(){
+    var r=rng(626);
+    stars=[];
+    var n=Math.round(W*H/5200);
+    for(var i=0;i<n;i++){
+      stars.push({x:r()*W,y:Math.pow(r(),1.35)*H*0.95,s:r()*1.1+.35,p:r()*6.28,v:.4+r()*1.2,c:r()<.12?(r()<.5?0:1):2});
+    }
+    strings=[];
+    var defs=[{y0:16,y1:34,sag:48,off:0},{y0:44,y1:22,sag:40,off:2}];
+    defs.forEach(function(d,si){
+      var step=Math.max(30,Math.min(44,W/12)), count=Math.round(W/step)+1, bulbs=[];
+      var x0=-10,x1=W+10;
+      for(var i=0;i<count;i++){
+        var t=(i+.5)/count;
+        var x=x0+(x1-x0)*t;
+        var y=d.y0+(d.y1-d.y0)*t+Math.sin(Math.PI*t)*d.sag;
+        bulbs.push({x:x,y:y,c:(i+d.off+si)%3,p:r()*6.28,v:.9+r()*1.4,sz:3.6+r()*1.2});
+      }
+      strings.push({d:d,bulbs:bulbs,x0:x0,x1:x1});
+    });
+    var narrow=W<700;
+    fw={cx:W*(narrow?0.62:0.76),cy:Math.min(H*(narrow?0.42:0.44),460),R:Math.min(W,H)*(narrow?0.46:0.4),parts:[]};
+    for(var k=0;k<170;k++){
+      var a=r()*6.2832, sp=.5+.5*Math.sqrt(r());
+      fw.parts.push({a:a,sp:sp,c:r()<.46?0:(r()<.85?1:2),sz:r()*1.2+.9,fall:r()*.5});
+    }
+  }
+  function size(){
+    var b=host.getBoundingClientRect();
+    W=Math.max(1,Math.round(b.width)); H=Math.max(1,Math.round(b.height));
+    DPR=Math.min(window.devicePixelRatio||1,2);
+    cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    build();
+  }
+  function glow(x,y,rad,rgb,a){
+    var g=ctx.createRadialGradient(x,y,0,x,y,rad);
+    g.addColorStop(0,'rgba('+rgb+','+a+')');
+    g.addColorStop(.35,'rgba('+rgb+','+(a*.35)+')');
+    g.addColorStop(1,'rgba('+rgb+',0)');
+    ctx.fillStyle=g; ctx.fillRect(x-rad,y-rad,rad*2,rad*2);
+  }
+  function eo(t){return 1-Math.pow(1-t,3)}
+  function frame(now){
+    var t=(now-t0)/1000;
+    ctx.clearRect(0,0,W,H);
+    var i,s,st;
+    for(i=0;i<stars.length;i++){
+      s=stars[i];
+      var a=reduce?.7:(.45+.4*Math.sin(t*s.v+s.p));
+      ctx.fillStyle='rgba('+COL[s.c]+','+a.toFixed(3)+')';
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,6.2832); ctx.fill();
+    }
+    /* firework: rise 0.3 to 1.0 s, bloom 1.0 to 4.6 s */
+    if(!reduce && fw){
+      var rise=(t-.3)/.7;
+      if(rise>0&&rise<1){
+        var ry=H+(fw.cy-H)*eo(rise);
+        ctx.strokeStyle='rgba(255,226,170,.8)'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(fw.cx,ry+26); ctx.lineTo(fw.cx,ry); ctx.stroke();
+        glow(fw.cx,ry,14,'255,226,170',.7);
+      }
+      var bt=(t-1)/3.6;
+      if(bt>0&&bt<1){
+        var e=eo(Math.min(1,bt*1.25));
+        var fade=bt<.35?1:Math.max(0,1-Math.pow((bt-.35)/.65,1.6));
+        glow(fw.cx,fw.cy,fw.R*.5*(1-bt),'255,226,170',.28*fade*(1-bt));
+        for(i=0;i<fw.parts.length;i++){
+          var p=fw.parts[i], d=fw.R*p.sp*e;
+          var x=fw.cx+Math.cos(p.a)*d, y=fw.cy+Math.sin(p.a)*d+p.fall*bt*bt*70;
+          var tx=x-Math.cos(p.a)*d*.08, ty=y-Math.sin(p.a)*d*.08;
+          var al=.82*fade*(.75+.25*Math.sin(t*9+i));
+          ctx.strokeStyle='rgba('+COL[p.c]+','+al.toFixed(3)+')'; ctx.lineWidth=p.sz;
+          ctx.lineCap='round';
+          ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(x,y); ctx.stroke();
+          if(p.sp>.8) glow(x,y,7,COL[p.c],.35*fade);
+        }
+      }
+    }
+    /* string lights */
+    for(i=0;i<strings.length;i++){
+      st=strings[i];
+      ctx.strokeStyle='rgba(2,4,12,.85)'; ctx.lineWidth=1.6;
+      ctx.beginPath();
+      for(var u=0;u<=40;u++){
+        var tt=u/40, wx=st.x0+(st.x1-st.x0)*tt, wy=st.d.y0+(st.d.y1-st.d.y0)*tt+Math.sin(Math.PI*tt)*st.d.sag;
+        if(u===0) ctx.moveTo(wx,wy); else ctx.lineTo(wx,wy);
+      }
+      ctx.stroke();
+      for(var j=0;j<st.bulbs.length;j++){
+        var b=st.bulbs[j];
+        var tw=reduce?.9:(.62+.38*Math.sin(t*b.v+b.p));
+        ctx.fillStyle='#02040c'; ctx.fillRect(b.x-1.6,b.y-1,3.2,4);
+        glow(b.x,b.y+5,b.sz*5.5,COL[b.c],.55*tw);
+        ctx.fillStyle='rgba('+COL[b.c]+','+(.55+.45*tw).toFixed(3)+')';
+        ctx.beginPath(); ctx.arc(b.x,b.y+5,b.sz,0,6.2832); ctx.fill();
+        ctx.fillStyle='rgba(255,255,255,'+(.35*tw).toFixed(3)+')';
+        ctx.beginPath(); ctx.arc(b.x-b.sz*.25,b.y+5-b.sz*.25,b.sz*.4,0,6.2832); ctx.fill();
+      }
+    }
+  }
+  function loop(now){ frame(now); requestAnimationFrame(loop); }
+  function start(){
+    size();
+    if(reduce){ frame(0); }
+    else { t0=performance.now(); requestAnimationFrame(loop); }
+  }
+  var rt;
+  function onResize(){ clearTimeout(rt); rt=setTimeout(function(){ size(); if(reduce) frame(0); },120); }
+  if('ResizeObserver' in window){ new ResizeObserver(onResize).observe(host); } else { window.addEventListener('resize',onResize); }
+  start();
+})();
+</script>
