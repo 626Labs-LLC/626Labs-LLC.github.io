@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/ROROROblox@v1.35.0.0" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/ROROROblox@v1.36.0.0" />
 <title>RoRoRo — multi-launcher for Roblox · 626 Labs</title>
 <meta name="description" content="Run multiple Roblox clients side by side, each signed in as a different saved account. Native on Windows and macOS, plugin-extensible, free. An independent third-party tool — not affiliated with Roblox Corporation." />
 <link rel="canonical" href="https://626labs.dev/rororo.html" />
@@ -838,7 +838,7 @@ brew install --cask rororo</code>
       <div class="feature">
         <div class="key">07 · ROUTING</div>
         <h3>A library for games and servers</h3>
-        <p>Keep saved games and private servers, set defaults, and route different alts into different servers in one batch. Local renames and tags keep a deep roster legible — Roblox-side names untouched.</p>
+        <p>The Library holds every game you've played, favourited or saved as a private server, as tiles or a list. Search it, filter it, paste any game link, and pick which account plays with Play as. Set defaults and route different alts into different servers in one batch. Local renames and tags keep a deep roster legible — Roblox-side names untouched.</p>
       </div>
       <div class="feature">
         <div class="key">08 · PRESENCE</div>
@@ -913,7 +913,12 @@ brew install --cask rororo</code>
       <div class="feature">
         <div class="key">22 · ITS OWN WINDOW</div>
         <h3>Every launch in its own window</h3>
-        <p>Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RoRoRo closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. RoRoRo also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog.</p>
+        <p>Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RoRoRo closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. Since 1.36, a leftover background Roblox process with no window closes on its own after two minutes. RoRoRo also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog.</p>
+      </div>
+      <div class="feature">
+        <div class="key">23 · ACCOUNT AT A GLANCE</div>
+        <h3>Every account, at a glance</h3>
+        <p>Each row shows its Robux, a Plus badge, how many friends are online and a note you write yourself. Open an account for its recent games, favourites and private servers, and play any of them in one click. When an account can't launch, a badge says why (Session expired, Needs verification or Limited by Roblox) and one click starts the fix. RoRoRo reads the facts from Roblox with that account's own login, about every ten minutes, and keeps them in the same encrypted file as your accounts. Streamer mode hides the numbers and the note.</p>
       </div>
     </div>
   </section>

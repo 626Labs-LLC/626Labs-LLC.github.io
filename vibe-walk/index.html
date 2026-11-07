@@ -8,7 +8,7 @@
   <title>vibe-walk · Tours your users actually finish. · 626Labs</title>
   <meta name="description" content="Claude Code plugin that reads your app, names the aha moment, and builds a spotlight tour you own — Driver.js, anchor codemod, six analytics events. Honest about fit when a tour won&#x27;t help. By 626Labs." />
   <link rel="canonical" href="https://626labs.dev/vibe-walk/" />
-  <meta name="release-reviewed" content="estevanhernandez-stack-ed/Vibe-Walk@v0.1.0" />
+  <meta name="release-reviewed" content="estevanhernandez-stack-ed/Vibe-Walk@v0.3.0" />
   <link rel="icon" type="image/png" href="/favicon-626.png" />
 
   <meta property="og:title" content="vibe-walk · Tours your users actually finish." />
@@ -1041,8 +1041,8 @@
           <div class="card">
             <span class="cmd">/vibe-walk:walk</span>
             <h3>Five gates, then a complete tour.</h3>
-            <p class="desc">Confirms mode (walkthrough vs training), trigger model, substrate, aha moment, and user role &mdash; then builds: Driver.js module, anchor-injection codemod, 6-event analytics wiring, and a persistent replay entry point. Emitted tours carry a keyboard/accessibility contract: focus returns on close, enforced at emit time.</p>
-            <p class="reach">Reach for it <em>after discover returns a build verdict</em>.</p>
+            <p class="desc">Confirms mode (walkthrough vs training), trigger model, substrate, aha moment, and user role &mdash; then builds: Driver.js module, anchor-injection codemod, 6-event analytics wiring, and a persistent replay entry point, an optional <code>?tour</code> permalink trigger, and a <code>spotlight.i18n.json</code> sidecar so step copy can be localized. Emitted tours carry a keyboard/accessibility contract: focus returns on close, enforced at emit time.</p>
+            <p class="reach">Reach for it <em>after discover returns its verdict</em>. A don't-build or cheaper-first verdict is advice: walk shows the reasons, asks once, and lets you go ahead.</p>
           </div>
         </div>
 
@@ -1057,7 +1057,7 @@
           </div>
           <div class="mini">
             <span class="name">:vitals</span>
-            <p class="desc">Structural self-test — checks plugin files, all SKILLs, scripts, and friction-trigger wiring. Read-only.</p>
+            <p class="desc">Structural self-test — checks plugin files, all SKILLs, scripts, and friction-trigger wiring, plus whether your tour's anchors have drifted from your source. Read-only.</p>
           </div>
           <div class="mini">
             <span class="name">:evolve-walk</span>
