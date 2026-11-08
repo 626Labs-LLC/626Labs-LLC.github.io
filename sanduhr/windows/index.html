@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v4.0.1" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v4.7.0" />
 <title>Sanduhr für Claude on Windows: your claude.ai usage, paced, from the Microsoft Store · 626 Labs</title>
-<meta name="description" content="The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a Desk Claude can design with you, with widgets and a companion to go on it. Free on the Microsoft Store." />
+<meta name="description" content="The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a Desk Claude can design with you, drawers for your files, and widgets and a companion to go on it. Works without a Claude account. Free on the Microsoft Store." />
 <link rel="canonical" href="https://626labs.dev/sanduhr/windows/" />
 <meta property="og:title" content="Sanduhr für Claude on Windows" />
 <meta property="og:description" content="A native Windows widget that paces your claude.ai usage, now with a Desk Claude can design with you. Free on the Microsoft Store. By 626 Labs." />
@@ -783,7 +783,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       <h2>The Desk, on your desktop.</h2>
     </div>
 
-    <p class="lead">Sanduhr draws on your desktop, under your windows. It's off by default; turn it on in Settings &rarr; Desk.</p>
+    <p class="lead">Sanduhr draws on your desktop, under your windows and, since 4.6, under your desktop icons. It's off by default; turn it on in Settings &rarr; Desk.</p>
 
     <div class="cards">
       <div class="card">
@@ -795,8 +795,12 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
         <p>Arrange Desk&hellip; dims the screen so you can drag each piece to one of eight places, on all monitors, the main one or one you pick, and hide a piece you don't want. Automatic ink picks light or dark from your wallpaper, never the screen, and a plate behind the text keeps it readable over desktop icons. Pieces keep clear of the taskbar and pause while a window covers them.</p>
       </div>
       <div class="card">
-        <h3>Just the Desk</h3>
-        <p>No Claude account? Choose Just the Desk on the first-run card and use the Desk on its own; the tray icon brings the widget back, and signing in later brings the meters.</p>
+        <h3>No Claude account needed</h3>
+        <p>No Claude account? Since 4.5 a new install opens Set up Sanduhr: a nicer desktop, drawers for your files, your AI usage, or any mix, with no sign-in screen and no meter unless you want one. Change it any time from the tray or Settings; signing in later brings the meters.</p>
+      </div>
+      <div class="card">
+        <h3>Drawers</h3>
+        <p>Themed panels on your desktop, each a real folder. Built-in rules sort screenshots, pictures, documents, installers, archives, shortcuts and old files, but only after you review the plan, and Undo puts them back. Pick Solid, Glass, Outline or Bare and an opacity; drawers snap to each other and the screen edges, and Tidy drawers lines them up. Turning drawers off returns every file to the Desktop.</p>
       </div>
       <div class="card">
         <h3>Weather, and only what it needs</h3>
@@ -836,7 +840,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div class="card">
         <h3>Widgets, from a signed catalog</h3>
-        <p>Settings &rarr; Mods &amp; Widgets lists the 626 Labs catalog: the hourglass sprite, plus the OLED Neon theme, palettes and effects to start. Packs are data only, never code. The catalog's signature and every pack are checked on your PC before anything installs, and the catalog is fetched only when you open the page or ask. A pack's themes, palettes and fonts join the theme list and the Desk's ink and font pickers; effects packs install and preview, and drawing them comes later.</p>
+        <p>Settings &rarr; Mods &amp; Widgets lists the 626 Labs catalog: the hourglass sprite, plus the OLED Neon theme, palettes and effects to start. Packs are data only, never code. The catalog's signature and every pack are checked on your PC before anything installs, and the catalog is fetched only when you open the page or ask. A pack's themes, palettes and fonts join the theme list and the Desk's ink and font pickers; effects packs install and preview, and drawing them comes later. Since 4.7, Install widget from file&hellip; adds a pack you made yourself from a zip, with the same checks as a catalog download; a zip you install is read once on this PC and never sent anywhere.</p>
       </div>
       <div class="card">
         <h3>Livelier bars</h3>
@@ -1052,7 +1056,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     <div class="panel ok">
       <h3>✓ No data comes back to us.</h3>
       <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.</p>
-      <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Since 4.0, Settings &rarr; Privacy lists every destination, when Sanduhr contacts it, what it carries and the switch that turns it off, Google&rsquo;s sign-in page and the embedded browser&rsquo;s SmartScreen check included. Settings &rarr; Mods &amp; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. CI watchers read your runner containers' logs through Docker's local pipe and send nothing anywhere. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.</p>
+      <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Since 4.0, Settings &rarr; Privacy lists every destination, when Sanduhr contacts it, what it carries and the switch that turns it off, Google&rsquo;s sign-in page and the embedded browser&rsquo;s SmartScreen check included. Settings &rarr; Mods &amp; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. CI watchers read your runner containers' logs through Docker's local pipe and send nothing anywhere. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. To keep widgets clickable under your icons, Sanduhr watches for mouse presses over the Desk and acts only on those; it never records a press and never sees the keyboard. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.</p>
       <p>Claude sees your usage, your Desk messages and how your Desk looks only if you install Sanduhr's MCP server. It can open a picture of your wallpaper only if you let Claude Code read that file. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
       <p><a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md">Security policy</a> &middot; <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md">Privacy policy</a></p>
     </div>

@@ -163,7 +163,7 @@
           "ogImage": "/assets/video/rororo/rororo-launch-poster.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/ROROROblox@v1.35.0.0"
+          "estevanhernandez-stack-ed/ROROROblox@v1.36.0.0"
         ],
         "nav": [
           {
@@ -334,7 +334,7 @@
                   {
                     "key": "07 · ROUTING",
                     "title": "A library for games and servers",
-                    "body": "Keep saved games and private servers, set defaults, and route different alts into different servers in one batch. Local renames and tags keep a deep roster legible — Roblox-side names untouched."
+                    "body": "The Library holds every game you've played, favourited or saved as a private server, as tiles or a list. Search it, filter it, paste any game link, and pick which account plays with Play as. Set defaults and route different alts into different servers in one batch. Local renames and tags keep a deep roster legible — Roblox-side names untouched."
                   },
                   {
                     "key": "08 · PRESENCE",
@@ -409,7 +409,12 @@
                   {
                     "key": "22 · ITS OWN WINDOW",
                     "title": "Every launch in its own window",
-                    "body": "Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RoRoRo closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. RoRoRo also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog."
+                    "body": "Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RoRoRo closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. Since 1.36, a leftover background Roblox process with no window closes on its own after two minutes. RoRoRo also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog."
+                  },
+                  {
+                    "key": "23 · ACCOUNT AT A GLANCE",
+                    "title": "Every account, at a glance",
+                    "body": "Each row shows its Robux, a Plus badge, how many friends are online and a note you write yourself. Open an account for its recent games, favourites and private servers, and play any of them in one click. When an account can't launch, a badge says why (Session expired, Needs verification or Limited by Roblox) and one click starts the fix. RoRoRo reads the facts from Roblox with that account's own login, about every ten minutes, and keeps them in the same encrypted file as your accounts. Streamer mode hides the numbers and the note."
                   }
                 ]
               }
@@ -771,7 +776,7 @@
           "ogImage": "/sanduhr/screenshot-desk-full.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.38.0-mac"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.41.0-mac"
         ],
         "nav": [
           {
@@ -839,7 +844,7 @@
                 "type": "lead",
                 "paragraphs": [
                   "A fresh install starts with Desk on and your meters already there, drawn under your windows in a handwritten face. The widget becomes the toolbox you open for the deep tools.",
-                  "Since 2.29.0, <strong>Just the Desk</strong> on the welcome sheet starts with the Desk and a three-step tour, no Claude subscription needed. Pacing still needs one."
+                  "Since 2.41.0, <strong>Set up Sanduhr</strong> asks three things on a new install: <strong>A nicer desktop</strong>, <strong>Tidy my files</strong> and <strong>Track my AI usage</strong>. Leave usage off and Sanduhr makes no usage requests, so no Claude subscription is needed; pacing still needs one. Reopen it any time from the menu bar item."
                 ]
               },
               {
@@ -862,6 +867,10 @@
                     "body": "Desk Look's <strong>Plate behind the text</strong> draws a soft dark plate behind each piece, for a desktop with files under it. On for a new install, untouched for an existing one."
                   },
                   {
+                    "title": "Drawers",
+                    "body": "Since 2.40.0, Settings, Drawers, <strong>Drawers on the Desk</strong> puts folders on the Desk as panels, each showing a real folder. <strong>Sort my desktop now</strong> builds a review first, and nothing moves until you press Apply; Undo reverses a run. Every move is a rename that never replaces a file, and Sanduhr never deletes anything. macOS asks for access to your Desktop folder when you turn it on, never at launch. Off by default."
+                  },
+                  {
                     "title": "Arrange Desk",
                     "body": "Drag each piece where you want it. While arranging, every piece has Hide and a Hidden strip brings one back; Done writes the layout once, Cancel drops it."
                   },
@@ -871,7 +880,7 @@
                   },
                   {
                     "title": "A line on the lock screen",
-                    "body": "Settings &rarr; Desktop &rarr; Lock Screen puts one short line under the lock screen clock: your Claude usage, when it resets, and how many watchers are waiting for you, after a prefix of your own if you like. Anyone at the screen can read it, so only counts, percents and times get through; paths, emails, addresses and tokens are dropped, and the page previews the exact line. Turning it on asks for an administrator password once, for a small helper that sets the message. Off by default, and turning it off brings back any message you had there before."
+                    "body": "Settings &rarr; Desktop &rarr; Lock Screen puts one short line under the lock screen clock: your Claude usage, when it resets, and how many watchers are waiting for you, after a prefix of your own if you like. Anyone at the screen can read it, so only counts, percents and times get through; paths, emails, addresses and tokens are dropped, and the page previews the exact line. Turning it on asks for an administrator password once, for a small helper that sets the message. Off by default, and turning it off brings back any message you had there before. If macOS stops the helper, for example after an update, Settings says so and lists the steps to restart it."
                   },
                   {
                     "title": "The fold",
@@ -936,7 +945,7 @@
                   },
                   {
                     "title": "Now playing",
-                    "body": "The song or video playing on your Mac, from Spotify, Apple Music, YouTube Music, Pandora or a browser tab, on a notch wing or a Desk corner with a moving position bar. Click it to play or pause. Titles never leave your Mac and are never saved."
+                    "body": "The song or video playing on your Mac, from Spotify, Apple Music, YouTube Music, Pandora or a browser tab, on a notch wing or a Desk corner with a moving position bar. Click it to play or pause. Titles never leave your Mac and are never saved. Since 2.39.0, <strong>Live audio bars</strong> (off by default, macOS 14.2 or newer) move 16 bars with how loud the playing app is; macOS asks once for System Audio Recording. Sanduhr keeps one loudness number in memory and records, saves and sends no audio."
                   },
                   {
                     "title": "Watchers",
@@ -1142,7 +1151,7 @@
                   },
                   {
                     "title": "Use my own art",
-                    "body": "Since 2.36.0, on a sprite made here, Use my own art&hellip; takes one PNG per stage, checks each one and says why when it doesn't fit, and reinstalls the widget as your own. The picture never leaves your Mac."
+                    "body": "Since 2.36.0, on a sprite made here, Use my own art&hellip; takes one PNG per stage, checks each one and says why when it doesn't fit, and reinstalls the widget as your own. The picture never leaves your Mac. Since 2.39.0, <strong>New sprite from an image&hellip;</strong> makes a sprite from a single PNG you cut into cells and tag walk, sit, nap, cheer and worry. With the MCP server, Claude can suggest the motion without seeing the art, and nothing applies until you press Apply."
                   }
                 ]
               }
@@ -1287,7 +1296,7 @@
                 "paragraphs": [
                   "No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.",
                   "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you open Settings &rarr; Widgets, it also asks GitHub for the signed widget catalog, and downloads a pack only when you press Install; nothing about you goes with either. With the Weather piece placed, it asks Open-Meteo for a forecast: the city name you typed, then the place's coordinates rounded to about 1 km. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. Your cookie stays in the macOS Keychain. Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain; Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote.",
-                  "Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default. With the server installed, Claude can also read how your Desk is laid out, to suggest a design you approve; your weather place and its coordinates stay out of it. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
+                  "Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default. With the server installed, Claude can also read how your Desk is laid out, to suggest a design you approve; your weather place and its coordinates stay out of it. Drawer file names never reach Claude, and the MCP server has no drawer tool. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
                   "<a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md\">Security policy</a> &middot; <a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md\">Privacy policy</a>"
                 ]
               }
@@ -2149,7 +2158,7 @@
           "ogImage": "/assets/video/mod-launcher/mod-launcher-launch-poster.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/626-mod-launcher@v0.25.0"
+          "estevanhernandez-stack-ed/626-mod-launcher@v0.26.0"
         ],
         "nav": [
           {
@@ -3842,13 +3851,13 @@
       "pageSpec": {
         "meta": {
           "title": "Sanduhr für Claude on Windows: your claude.ai usage, paced, from the Microsoft Store · 626 Labs",
-          "description": "The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a Desk Claude can design with you, with widgets and a companion to go on it. Free on the Microsoft Store.",
+          "description": "The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a Desk Claude can design with you, drawers for your files, and widgets and a companion to go on it. Works without a Claude account. Free on the Microsoft Store.",
           "ogTitle": "Sanduhr für Claude on Windows",
           "ogDescription": "A native Windows widget that paces your claude.ai usage, now with a Desk Claude can design with you. Free on the Microsoft Store. By 626 Labs.",
           "ogImage": "/sanduhr/icon.png"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v4.0.1"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v4.7.0"
         ],
         "nav": [
           {
@@ -3975,7 +3984,7 @@
               {
                 "type": "lead",
                 "paragraphs": [
-                  "Sanduhr draws on your desktop, under your windows. It's off by default; turn it on in Settings &rarr; Desk."
+                  "Sanduhr draws on your desktop, under your windows and, since 4.6, under your desktop icons. It's off by default; turn it on in Settings &rarr; Desk."
                 ]
               },
               {
@@ -3990,8 +3999,12 @@
                     "body": "Arrange Desk&hellip; dims the screen so you can drag each piece to one of eight places, on all monitors, the main one or one you pick, and hide a piece you don't want. Automatic ink picks light or dark from your wallpaper, never the screen, and a plate behind the text keeps it readable over desktop icons. Pieces keep clear of the taskbar and pause while a window covers them."
                   },
                   {
-                    "title": "Just the Desk",
-                    "body": "No Claude account? Choose Just the Desk on the first-run card and use the Desk on its own; the tray icon brings the widget back, and signing in later brings the meters."
+                    "title": "No Claude account needed",
+                    "body": "No Claude account? Since 4.5 a new install opens Set up Sanduhr: a nicer desktop, drawers for your files, your AI usage, or any mix, with no sign-in screen and no meter unless you want one. Change it any time from the tray or Settings; signing in later brings the meters."
+                  },
+                  {
+                    "title": "Drawers",
+                    "body": "Themed panels on your desktop, each a real folder. Built-in rules sort screenshots, pictures, documents, installers, archives, shortcuts and old files, but only after you review the plan, and Undo puts them back. Pick Solid, Glass, Outline or Bare and an opacity; drawers snap to each other and the screen edges, and Tidy drawers lines them up. Turning drawers off returns every file to the Desktop."
                   },
                   {
                     "title": "Weather, and only what it needs",
@@ -4031,7 +4044,7 @@
                   },
                   {
                     "title": "Widgets, from a signed catalog",
-                    "body": "Settings &rarr; Mods &amp; Widgets lists the 626 Labs catalog: the hourglass sprite, plus the OLED Neon theme, palettes and effects to start. Packs are data only, never code. The catalog's signature and every pack are checked on your PC before anything installs, and the catalog is fetched only when you open the page or ask. A pack's themes, palettes and fonts join the theme list and the Desk's ink and font pickers; effects packs install and preview, and drawing them comes later."
+                    "body": "Settings &rarr; Mods &amp; Widgets lists the 626 Labs catalog: the hourglass sprite, plus the OLED Neon theme, palettes and effects to start. Packs are data only, never code. The catalog's signature and every pack are checked on your PC before anything installs, and the catalog is fetched only when you open the page or ask. A pack's themes, palettes and fonts join the theme list and the Desk's ink and font pickers; effects packs install and preview, and drawing them comes later. Since 4.7, Install widget from file&hellip; adds a pack you made yourself from a zip, with the same checks as a catalog download; a zip you install is read once on this PC and never sent anywhere."
                   },
                   {
                     "title": "Livelier bars",
@@ -4302,7 +4315,7 @@
                 "title": "✓ No data comes back to us.",
                 "paragraphs": [
                   "No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.",
-                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Since 4.0, Settings &rarr; Privacy lists every destination, when Sanduhr contacts it, what it carries and the switch that turns it off, Google&rsquo;s sign-in page and the embedded browser&rsquo;s SmartScreen check included. Settings &rarr; Mods &amp; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. CI watchers read your runner containers' logs through Docker's local pipe and send nothing anywhere. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.",
+                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Since 4.0, Settings &rarr; Privacy lists every destination, when Sanduhr contacts it, what it carries and the switch that turns it off, Google&rsquo;s sign-in page and the embedded browser&rsquo;s SmartScreen check included. Settings &rarr; Mods &amp; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. CI watchers read your runner containers' logs through Docker's local pipe and send nothing anywhere. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. To keep widgets clickable under your icons, Sanduhr watches for mouse presses over the Desk and acts only on those; it never records a press and never sees the keyboard. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.",
                   "Claude sees your usage, your Desk messages and how your Desk looks only if you install Sanduhr's MCP server. It can open a picture of your wallpaper only if you let Claude Code read that file. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
                   "<a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md\">Security policy</a> &middot; <a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md\">Privacy policy</a>"
                 ]

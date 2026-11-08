@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.38.0-mac" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.41.0-mac" />
 <title>Sanduhr für Claude for Mac: your claude.ai meters on the desktop, and your Claude Code setup carried · 626 Labs</title>
 <meta name="description" content="The Mac build of Sanduhr für Claude: your claude.ai usage meters living on the desktop and around the notch, and one Settings page that reads and carries your whole Claude Code setup. Notarized, on Homebrew, macOS 14 or newer." />
 <link rel="canonical" href="https://626labs.dev/sanduhr/" />
@@ -735,7 +735,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     </div>
 
     <p class="lead">A fresh install starts with Desk on and your meters already there, drawn under your windows in a handwritten face. The widget becomes the toolbox you open for the deep tools.</p>
-    <p class="lead">Since 2.29.0, <strong>Just the Desk</strong> on the welcome sheet starts with the Desk and a three-step tour, no Claude subscription needed. Pacing still needs one.</p>
+    <p class="lead">Since 2.41.0, <strong>Set up Sanduhr</strong> asks three things on a new install: <strong>A nicer desktop</strong>, <strong>Tidy my files</strong> and <strong>Track my AI usage</strong>. Leave usage off and Sanduhr makes no usage requests, so no Claude subscription is needed; pacing still needs one. Reopen it any time from the menu bar item.</p>
 
     <div class="cards">
       <div class="card">
@@ -755,6 +755,10 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
         <p>Desk Look's <strong>Plate behind the text</strong> draws a soft dark plate behind each piece, for a desktop with files under it. On for a new install, untouched for an existing one.</p>
       </div>
       <div class="card">
+        <h3>Drawers</h3>
+        <p>Since 2.40.0, Settings, Drawers, <strong>Drawers on the Desk</strong> puts folders on the Desk as panels, each showing a real folder. <strong>Sort my desktop now</strong> builds a review first, and nothing moves until you press Apply; Undo reverses a run. Every move is a rename that never replaces a file, and Sanduhr never deletes anything. macOS asks for access to your Desktop folder when you turn it on, never at launch. Off by default.</p>
+      </div>
+      <div class="card">
         <h3>Arrange Desk</h3>
         <p>Drag each piece where you want it. While arranging, every piece has Hide and a Hidden strip brings one back; Done writes the layout once, Cancel drops it.</p>
       </div>
@@ -764,7 +768,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div class="card">
         <h3>A line on the lock screen</h3>
-        <p>Settings &rarr; Desktop &rarr; Lock Screen puts one short line under the lock screen clock: your Claude usage, when it resets, and how many watchers are waiting for you, after a prefix of your own if you like. Anyone at the screen can read it, so only counts, percents and times get through; paths, emails, addresses and tokens are dropped, and the page previews the exact line. Turning it on asks for an administrator password once, for a small helper that sets the message. Off by default, and turning it off brings back any message you had there before.</p>
+        <p>Settings &rarr; Desktop &rarr; Lock Screen puts one short line under the lock screen clock: your Claude usage, when it resets, and how many watchers are waiting for you, after a prefix of your own if you like. Anyone at the screen can read it, so only counts, percents and times get through; paths, emails, addresses and tokens are dropped, and the page previews the exact line. Turning it on asks for an administrator password once, for a small helper that sets the message. Off by default, and turning it off brings back any message you had there before. If macOS stops the helper, for example after an update, Settings says so and lists the steps to restart it.</p>
       </div>
       <div class="card">
         <h3>The fold</h3>
@@ -820,7 +824,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div class="card">
         <h3>Now playing</h3>
-        <p>The song or video playing on your Mac, from Spotify, Apple Music, YouTube Music, Pandora or a browser tab, on a notch wing or a Desk corner with a moving position bar. Click it to play or pause. Titles never leave your Mac and are never saved.</p>
+        <p>The song or video playing on your Mac, from Spotify, Apple Music, YouTube Music, Pandora or a browser tab, on a notch wing or a Desk corner with a moving position bar. Click it to play or pause. Titles never leave your Mac and are never saved. Since 2.39.0, <strong>Live audio bars</strong> (off by default, macOS 14.2 or newer) move 16 bars with how loud the playing app is; macOS asks once for System Audio Recording. Sanduhr keeps one loudness number in memory and records, saves and sends no audio.</p>
       </div>
       <div class="card">
         <h3>Watchers</h3>
@@ -974,7 +978,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div class="card">
         <h3>Use my own art</h3>
-        <p>Since 2.36.0, on a sprite made here, Use my own art&hellip; takes one PNG per stage, checks each one and says why when it doesn't fit, and reinstalls the widget as your own. The picture never leaves your Mac.</p>
+        <p>Since 2.36.0, on a sprite made here, Use my own art&hellip; takes one PNG per stage, checks each one and says why when it doesn't fit, and reinstalls the widget as your own. The picture never leaves your Mac. Since 2.39.0, <strong>New sprite from an image&hellip;</strong> makes a sprite from a single PNG you cut into cells and tag walk, sit, nap, cheer and worry. With the MCP server, Claude can suggest the motion without seeing the art, and nothing applies until you press Apply.</p>
       </div>
     </div>
   </section>
@@ -1090,7 +1094,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       <h3>✓ No data comes back to us.</h3>
       <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.</p>
       <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you open Settings &rarr; Widgets, it also asks GitHub for the signed widget catalog, and downloads a pack only when you press Install; nothing about you goes with either. With the Weather piece placed, it asks Open-Meteo for a forecast: the city name you typed, then the place's coordinates rounded to about 1 km. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. Your cookie stays in the macOS Keychain. Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain; Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote.</p>
-      <p>Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default. With the server installed, Claude can also read how your Desk is laid out, to suggest a design you approve; your weather place and its coordinates stay out of it. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
+      <p>Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default. With the server installed, Claude can also read how your Desk is laid out, to suggest a design you approve; your weather place and its coordinates stay out of it. Drawer file names never reach Claude, and the MCP server has no drawer tool. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
       <p><a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md">Security policy</a> &middot; <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md">Privacy policy</a></p>
     </div>
   </section>
