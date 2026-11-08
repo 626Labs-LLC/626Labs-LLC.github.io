@@ -249,8 +249,8 @@
               {
                 "type": "showcase",
                 "wide": true,
-                "src": "assets/screenshots/rororo/win-main.png",
-                "alt": "RoRoRo main window — saved accounts list with per-account Launch As, the singleton-lock toggle, and the state-coloured tray ring"
+                "src": "assets/screenshots/rororo/1794149372858-01-accounts-running.png",
+                "alt": "RoRoRo's Accounts window with three Roblox clients running: each row shows its game and time in it, Robux, a Plus badge, friends online and a note"
               }
             ]
           },
@@ -482,19 +482,29 @@
                 "align": "start",
                 "items": [
                   {
-                    "src": "assets/screenshots/rororo/win-welcome.png",
-                    "alt": "RoRoRo welcome screen",
-                    "caption": "Welcome · first run"
+                    "src": "assets/screenshots/rororo/1794149373858-02-accounts-panel.png",
+                    "alt": "An account opened in RoRoRo: its note, then recent games, favourites and private servers, each one click to play",
+                    "caption": "Open an account · its games"
+                  },
+                  {
+                    "src": "assets/screenshots/rororo/1794149374858-03-accounts-health.png",
+                    "alt": "Health badges on account rows: Needs verification, Session expired and Limited by Roblox, with Re-authenticate on the affected rows",
+                    "caption": "Health badges · one-click fix"
+                  },
+                  {
+                    "src": "assets/screenshots/rororo/1794149375858-04-library-grid.png",
+                    "alt": "The Library as a grid of game tiles with Play and Play as, including private servers",
+                    "caption": "The Library · grid"
+                  },
+                  {
+                    "src": "assets/screenshots/rororo/1794149376858-05-library-list.png",
+                    "alt": "The Library as a list with kind, last played and total time per game",
+                    "caption": "The Library · list"
                   },
                   {
                     "src": "assets/screenshots/rororo/win-add-account.png",
                     "alt": "RoRoRo add-account flow with embedded Roblox login",
                     "caption": "Add an account"
-                  },
-                  {
-                    "src": "assets/screenshots/rororo/win-add-game.png",
-                    "alt": "RoRoRo default-game configuration",
-                    "caption": "Set a default game"
                   },
                   {
                     "src": "assets/screenshots/rororo/win-squad-launch.png",
