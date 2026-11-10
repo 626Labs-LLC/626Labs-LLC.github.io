@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-03T15:25:16.541Z",
+  "generated": "2026-11-10T15:42:45.244Z",
   "entries": [
     {
       "id": "m01",
@@ -650,11 +650,35 @@
       "source": "curated"
     },
     {
-      "id": "t791523",
-      "title": "Wildwood",
+      "id": "t687163",
+      "title": "Project Hail Mary",
       "year": 2026,
-      "tagline": "How far would you go for those you love?",
-      "posterPath": "/8g7q6o54WfKWRmUQ0Ye8OskevUY.jpg",
+      "tagline": "Believe in the Hail Mary.",
+      "posterPath": "/iOb2fjXLbpJgyQXe46n1WtGCnaa.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1423191",
+      "title": "Resident Evil",
+      "year": 2026,
+      "tagline": "A new era of evil.",
+      "posterPath": "/gAgWJhUSQWCgtKR8170nMkYlBda.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1368337",
+      "title": "The Odyssey",
+      "year": 2026,
+      "tagline": "Defy the gods.",
+      "posterPath": "/krVa7rKCQb4OBfsr2LTJv4rTz5q.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1263337",
+      "title": "Heart of the Beast",
+      "year": 2026,
+      "tagline": "Survival depends on their bond.",
+      "posterPath": "/6sYemVUn79UPKz1ZsSG6kPU4RVy.jpg",
       "source": "tmdb"
     },
     {
@@ -674,19 +698,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t1101412",
-      "title": "Fall 2: Deadpoint",
-      "year": 2026,
-      "tagline": "Are you down?",
-      "posterPath": "/fgSm5ylwiXbIHn8UbUXDjk9RRu4.jpg",
+      "id": "t11308",
+      "title": "The Hotel New Hampshire",
+      "year": 1984,
+      "tagline": "The successes and failures of an American family.",
+      "posterPath": "/9XGGGniMtBqhox7JAV5JujlUqFz.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1657630",
-      "title": "The Awakening",
+      "id": "t1381071",
+      "title": "Godzilla Minus Zero",
       "year": 2026,
-      "tagline": "Old sins. New blood.",
-      "posterPath": "/7pUGiRg9Gq1JqmmNSJLLSonOKum.jpg",
+      "tagline": "There is no third time. Everything ends here.",
+      "posterPath": "/hSmIJluOJmTWvJs4d7kHRxjc8s8.jpg",
       "source": "tmdb"
     },
     {
@@ -698,11 +722,51 @@
       "source": "tmdb"
     },
     {
-      "id": "t1368337",
-      "title": "The Odyssey",
+      "id": "t1657630",
+      "title": "The Awakening",
       "year": 2026,
-      "tagline": "Defy the gods.",
-      "posterPath": "/9EJDqzAQ0HoNvMDkOQuirXt1RCg.jpg",
+      "tagline": "Old sins. New blood.",
+      "posterPath": "/7pUGiRg9Gq1JqmmNSJLLSonOKum.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1101412",
+      "title": "Fall 2: Deadpoint",
+      "year": 2026,
+      "tagline": "Are you down?",
+      "posterPath": "/fgSm5ylwiXbIHn8UbUXDjk9RRu4.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1244523",
+      "title": "Beware Boiúna",
+      "year": 2026,
+      "tagline": "Witness terror on a gigantic scale.",
+      "posterPath": "/uW5YMPxJUzT9bkafrCKHXjPTCoQ.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t656908",
+      "title": "Ramayana: Rise of a Legend",
+      "year": 2026,
+      "tagline": "Our truth. Our history",
+      "posterPath": "/dPrtk4iNf6T5w8fWfg4uxDDbJSW.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1422041",
+      "title": "La Bola Negra",
+      "year": 2026,
+      "tagline": "Love leaves a legacy.",
+      "posterPath": "/7HwFQTMghL6HOvzEnXYUvyuZXeh.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1570488",
+      "title": "A Dog's Perfect Christmas",
+      "year": 2026,
+      "tagline": "Sit. Stay. Love.",
+      "posterPath": "/zvsNAohDHRWcGvbPSD7r3WojpKb.jpg",
       "source": "tmdb"
     },
     {
@@ -714,35 +778,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1384216",
-      "title": "The Dog Stars",
-      "year": 2026,
-      "tagline": "At the end of the world, no one survives alone.",
-      "posterPath": "/5O616X9vmRzQdB68PHzBewPittd.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t1232569",
       "title": "Pinocchio: Unstrung",
       "year": 2026,
       "tagline": "He has no strings to hold him back now.",
       "posterPath": "/hJNdizFlxOW89edX3Rzr6OliSFI.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1291595",
-      "title": "Insidious: Out of the Further",
-      "year": 2026,
-      "tagline": "Evil found a way out.",
-      "posterPath": "/4tTrW9dXCByS5wt2pXVWb58zNjz.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1400940",
-      "title": "Clayface",
-      "year": 2026,
-      "tagline": "Look fear in the face.",
-      "posterPath": "/9l1NuFjel2j89hiuiJbsxfblqjy.jpg",
       "source": "tmdb"
     },
     {
@@ -754,6 +794,30 @@
       "source": "tmdb"
     },
     {
+      "id": "t1375441",
+      "title": "Primetime",
+      "year": 2026,
+      "tagline": "Are you ready to make television history?",
+      "posterPath": "/lmrulvLbmaejTix1YaMxo1oGhH1.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t791523",
+      "title": "Wildwood",
+      "year": 2026,
+      "tagline": "How far would you go for those you love?",
+      "posterPath": "/snFM00mpNAfUzUtkdEW0uDEvXA0.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1291595",
+      "title": "Insidious: Out of the Further",
+      "year": 2026,
+      "tagline": "Evil found a way out.",
+      "posterPath": "/4tTrW9dXCByS5wt2pXVWb58zNjz.jpg",
+      "source": "tmdb"
+    },
+    {
       "id": "t1148365",
       "title": "Matchbox the Movie",
       "year": 2026,
@@ -762,27 +826,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t1376400",
-      "title": "Crawlers",
+      "id": "t1339713",
+      "title": "Obsession",
       "year": 2026,
-      "tagline": "Skin will crawl.",
-      "posterPath": "/lNXeEpg4yLSRwXwOeR5lbPgwbqL.jpg",
+      "tagline": "You only get one wish.",
+      "posterPath": "/bRwnj8WEKBCvmfeUNOukJPwB43K.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t9479",
-      "title": "The Nightmare Before Christmas",
-      "year": 1993,
-      "tagline": "A holiday film for the whole family... except yours.",
-      "posterPath": "/oQffRNjK8e19rF7xVYEN8ew0j7b.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1465063",
-      "title": "Forgotten Island",
+      "id": "t1003596",
+      "title": "Avengers: Doomsday",
       "year": 2026,
-      "tagline": "No memory left behind.",
-      "posterPath": "/myd1K3gefdNAWFsGNRDdMeiK9Qg.jpg",
+      "tagline": "Meet your doom.",
+      "posterPath": "/9jlZ59UALLLOE279HMT19rP9XQs.jpg",
       "source": "tmdb"
     },
     {
@@ -794,59 +850,27 @@
       "source": "tmdb"
     },
     {
-      "id": "t1204680",
-      "title": "Coyote vs. Acme",
-      "year": 2026,
-      "tagline": "The movie ACME doesn't want you to see.",
-      "posterPath": "/kYDCl2y0VPvhT5eYWbMRInPoB03.jpg",
+      "id": "t1595325",
+      "title": "The Anacondas",
+      "year": 2025,
+      "tagline": "You're hisstory!",
+      "posterPath": "/yphysF14qWFvrIbFVg3vEnbudwT.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1003596",
-      "title": "Avengers: Doomsday",
+      "id": "t1400940",
+      "title": "Clayface",
       "year": 2026,
-      "tagline": "Meet your doom.",
-      "posterPath": "/jzPwsojjFStf5lR5Nm07w2hH56G.jpg",
+      "tagline": "Look fear in the face.",
+      "posterPath": "/9l1NuFjel2j89hiuiJbsxfblqjy.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1727734",
-      "title": "Ali G: Who Iz I?",
-      "year": 2026,
-      "tagline": "Livin XXX large.",
-      "posterPath": "/uTyVxPeWX8Ai30IQoyDDQONNcq.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1339713",
-      "title": "Obsession",
-      "year": 2026,
-      "tagline": "Be careful who you wish for…",
-      "posterPath": "/bRwnj8WEKBCvmfeUNOukJPwB43K.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1422041",
-      "title": "LA BOLA NEGRA",
-      "year": 2026,
-      "tagline": "Love leaves a legacy.",
-      "posterPath": "/jT5SR5qc9KvVg7HUEmjMWEUYMce.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1423191",
-      "title": "Resident Evil",
-      "year": 2026,
-      "tagline": "A new era of evil.",
-      "posterPath": "/i7UyjfPio0VFHB9rBUZSFyhOoM8.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1302904",
-      "title": "Practical Magic 2",
-      "year": 2026,
-      "tagline": "Everything you've witched for.",
-      "posterPath": "/ogwQOLbCfncjvBhFb5l0OmQH8KC.jpg",
+      "id": "t9479",
+      "title": "The Nightmare Before Christmas",
+      "year": 1993,
+      "tagline": "A holiday film for the whole family... except yours.",
+      "posterPath": "/oQffRNjK8e19rF7xVYEN8ew0j7b.jpg",
       "source": "tmdb"
     },
     {
@@ -858,35 +882,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t1712451",
-      "title": "Resident Dead",
+      "id": "t1474226",
+      "title": "Evil Dress",
       "year": 2026,
-      "tagline": "You're next",
-      "posterPath": "/qKhMVWwFikSUzOpkhOl35GBLkGH.jpg",
+      "tagline": "You can't run away from it.",
+      "posterPath": "/voXT2JWo6XTohm4rFLygJkik8Ja.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1236045",
-      "title": "Animals",
+      "id": "t1376400",
+      "title": "Crawlers",
       "year": 2026,
-      "tagline": "Power can't protect you.",
-      "posterPath": "/iISM36voS1E8gX9BM0DVK0kgi3E.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1290418",
-      "title": "The Cycle",
-      "year": 2026,
-      "tagline": "You can't bury the past forever.",
-      "posterPath": "/n5gSNf55KWfDc9hqP4H1KCCSutE.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1084244",
-      "title": "Toy Story 5",
-      "year": 2026,
-      "tagline": "It's on.",
-      "posterPath": "/sfQtVlIHljToOwYjhe21KPGzZWK.jpg",
+      "tagline": "Skin will crawl.",
+      "posterPath": "/lNXeEpg4yLSRwXwOeR5lbPgwbqL.jpg",
       "source": "tmdb"
     },
     {
@@ -922,14 +930,6 @@
       "source": "tmdb"
     },
     {
-      "id": "t687163",
-      "title": "Project Hail Mary",
-      "year": 2026,
-      "tagline": "Believe in the Hail Mary.",
-      "posterPath": "/iOb2fjXLbpJgyQXe46n1WtGCnaa.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t936075",
       "title": "Michael",
       "year": 2026,
@@ -954,14 +954,6 @@
       "source": "tmdb"
     },
     {
-      "id": "t1630423",
-      "title": "My Dearest Assassin",
-      "year": 2026,
-      "tagline": "Love, Sacrifice and Vengeance.",
-      "posterPath": "/ul4dQcA68mtSx8J56N5gEcaCCtP.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t424",
       "title": "Schindler's List",
       "year": 1993,
@@ -970,11 +962,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1218925",
-      "title": "Chainsaw Man - The Movie: Reze Arc",
-      "year": 2025,
-      "tagline": "Lost Love, Flower, Chainsaw.",
-      "posterPath": "/pHyxb2RV5wLlboAwm9ZJ9qTVEDw.jpg",
+      "id": "t1630423",
+      "title": "My Dearest Assassin",
+      "year": 2026,
+      "tagline": "Love, Sacrifice and Vengeance.",
+      "posterPath": "/ul4dQcA68mtSx8J56N5gEcaCCtP.jpg",
       "source": "tmdb"
     },
     {
@@ -986,19 +978,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t497",
-      "title": "The Green Mile",
-      "year": 1999,
-      "tagline": "Paul Edgecomb didn't believe in miracles. Until the day he met one.",
-      "posterPath": "/8VG8fDNiy50H4FedGwdSVUPoaJe.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t122",
       "title": "The Lord of the Rings: The Return of the King",
       "year": 2003,
       "tagline": "The journey ends.",
       "posterPath": "/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t497",
+      "title": "The Green Mile",
+      "year": 1999,
+      "tagline": "Paul Edgecomb didn't believe in miracles. Until the day he met one.",
+      "posterPath": "/8VG8fDNiy50H4FedGwdSVUPoaJe.jpg",
       "source": "tmdb"
     },
     {
@@ -1050,19 +1042,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t13",
-      "title": "Forrest Gump",
-      "year": 1994,
-      "tagline": "The world will never be the same once you've seen it through the eyes of Forrest Gump.",
-      "posterPath": "/saHP97rTPS5eLmrLQEcANmKrsFl.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t667257",
       "title": "Impossible Things",
       "year": 2021,
       "tagline": "There are encounters that change your life",
       "posterPath": "/t2Ew8NZ8Ci2kqmoecZUNQUFDJnQ.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t13",
+      "title": "Forrest Gump",
+      "year": 1994,
+      "tagline": "The world will never be the same once you've seen it through the eyes of Forrest Gump.",
+      "posterPath": "/saHP97rTPS5eLmrLQEcANmKrsFl.jpg",
       "source": "tmdb"
     },
     {
@@ -1082,19 +1074,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t12477",
-      "title": "Grave of the Fireflies",
-      "year": 1988,
-      "tagline": "Why do fireflies have to die so soon?",
-      "posterPath": "/k9tv1rXZbOhH7eiCk378x61kNQ1.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t120",
       "title": "The Lord of the Rings: The Fellowship of the Ring",
       "year": 2001,
       "tagline": "One ring to rule them all.",
       "posterPath": "/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t12477",
+      "title": "Grave of the Fireflies",
+      "year": 1988,
+      "tagline": "Why do fireflies have to die so soon?",
+      "posterPath": "/k9tv1rXZbOhH7eiCk378x61kNQ1.jpg",
       "source": "tmdb"
     },
     {
