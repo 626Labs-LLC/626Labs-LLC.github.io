@@ -147,3 +147,31 @@ test("loadCache returns {} for missing, non-JSON and non-object files; the objec
     console.warn = warn;
   }
 });
+
+test("malformed cache entries never throw and count as not fresh", () => {
+  const bad = { 1: { stored: 3, reachable: false } };
+  assert.equal(isFresh(bad[1], 3, "2026-11-10"), false);
+  assert.equal(isFresh({ stored: 3, reachable: false, checkedAt: 5 }, 3, "2026-11-10"), false);
+  assert.equal(isFresh(7, 3, "2026-11-10"), false);
+  assert.equal(hubReachableFor({ id: 1, baconNumber: 3 }, bad, "2026-11-10"), undefined);
+  const q = buildQueue([{ id: 1, baconNumber: 3 }, { id: 2, baconNumber: 2 }], { ...bad, 2: 7 }, "2026-11-10");
+  assert.deepEqual(q.map((r) => r.id).sort(), [1, 2]);
+});
+
+test("loadCache returns {} for null and 42", async () => {
+  const { mkdtemp, writeFile } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const pathMod = await import("node:path");
+  const dir = await mkdtemp(pathMod.join(tmpdir(), "hubreach-"));
+  const warn = console.warn;
+  console.warn = () => {};
+  try {
+    for (const body of ["null", "42"]) {
+      const f = pathMod.join(dir, `${body}.json`);
+      await writeFile(f, body);
+      assert.deepEqual(await loadCache(f), {});
+    }
+  } finally {
+    console.warn = warn;
+  }
+});

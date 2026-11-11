@@ -73,6 +73,8 @@ export function createSearch({ getFilms, getCast }) {
 
 export const FALSE_MAX_AGE_DAYS = 28;
 
+const validDay = (iso) => typeof iso === "string" && /^\d{4}-\d{2}-\d{2}$/.test(iso);
+
 const dayNumber = (iso) => {
   const [y, m, d] = iso.split("-").map(Number);
   return Date.UTC(y, m - 1, d) / 86400000;
@@ -83,9 +85,9 @@ const hasNumber = (actor) => Number.isInteger(actor.baconNumber) && actor.baconN
 // A cached verdict is usable when it exists, was made against the same stored
 // number, and (for a false) is no more than 28 days old. True never expires.
 export function isFresh(entry, stored, today) {
-  if (!entry || entry.stored !== stored) return false;
+  if (!entry || typeof entry !== "object" || entry.stored !== stored) return false;
   if (entry.reachable === true) return true;
-  if (entry.reachable !== false) return false;
+  if (entry.reachable !== false || !validDay(entry.checkedAt)) return false;
   return dayNumber(today) - dayNumber(entry.checkedAt) <= FALSE_MAX_AGE_DAYS;
 }
 
@@ -105,8 +107,9 @@ export function buildQueue(actors, cache, today) {
     seen.add(actor.id);
     const entry = cache[actor.id];
     if (isFresh(entry, actor.baconNumber, today)) continue;
-    const tier = !entry ? 0 : entry.stored !== actor.baconNumber ? 1 : 2;
-    rows.push({ id: actor.id, stored: actor.baconNumber, tier, age: tier === 2 ? dayNumber(entry.checkedAt) : 0 });
+    const usable = entry && typeof entry === "object";
+    const tier = !usable ? 0 : entry.stored !== actor.baconNumber ? 1 : 2;
+    rows.push({ id: actor.id, stored: actor.baconNumber, tier, age: tier === 2 ? (validDay(entry.checkedAt) ? dayNumber(entry.checkedAt) : -Infinity) : 0 });
   }
   rows.sort((a, b) => a.tier - b.tier || a.age - b.age || a.stored - b.stored || a.id - b.id);
   return rows.map(({ id, stored }) => ({ id, stored }));
