@@ -626,6 +626,12 @@
   color: var(--gw-fg-2);
   font-size: var(--gw-t-body);
 }
+.btw-result-invite a {
+  color: var(--gw-brand-cyan);
+}
+.btw-result-invite a:hover {
+  color: var(--gw-brand-cyan-bright);
+}
 .btw-result-shortest {
   color: var(--gw-success);
 }

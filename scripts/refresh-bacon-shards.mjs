@@ -19,6 +19,7 @@ import { getFirestore } from 'firebase-admin/firestore';
 import { writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { hubReachableFor, loadCache } from './hub-reach-lib.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, '..');
@@ -26,6 +27,8 @@ const SRC_DIR = path.join(REPO_ROOT, 'apps', 'widget-bacon-trail', 'data', 'birt
 const OUT_DIR = path.join(REPO_ROOT, 'widget-bacon-trail', 'data', 'birthdays');
 const STATS_SRC = path.join(REPO_ROOT, 'apps', 'widget-bacon-trail', 'data', 'stats.json');
 const STATS_OUT = path.join(REPO_ROOT, 'widget-bacon-trail', 'data', 'stats.json');
+
+const CACHE_PATH = path.join(REPO_ROOT, 'apps', 'widget-bacon-trail', 'data', 'hub-reach.json');
 
 const COLLECTION = 'actorDatabase';
 const STATS_DOC = 'stats/play-counters';
@@ -55,6 +58,10 @@ async function main() {
   const snap = await db.collection(COLLECTION).get();
   console.log(`[refresh-bacon-shards] fetched ${snap.size} actor docs`);
 
+  // Hub reachability cache; missing or malformed means every actor is unknown.
+  const cache = await loadCache(CACHE_PATH);
+  const today = new Date().toISOString().slice(0, 10);
+
   // Group by birthDateKey
   const byKey = new Map();
   for (const doc of snap.docs) {
@@ -69,6 +76,8 @@ async function main() {
       popularity: typeof data.popularity === 'number' ? data.popularity : undefined,
       baconNumber: typeof data.baconNumber === 'number' ? data.baconNumber : undefined,
     };
+    const hubReachable = hubReachableFor(actor, cache, today);
+    if (typeof hubReachable === 'boolean') actor.hubReachable = hubReachable;
     if (!byKey.has(bday)) byKey.set(bday, []);
     byKey.get(bday).push(actor);
   }

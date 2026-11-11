@@ -1,0 +1,212 @@
+// Run: node --test scripts/hub-reach-lib.test.mjs
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { KEVIN_BACON_ID, FILMS_PER_ACTOR, CAST_PER_FILM, topFilms, topCast, BudgetExceeded, createSearch, isFresh, hubReachableFor, buildQueue, serializeCache, loadCache, gaveUpEntry } from "./hub-reach-lib.mjs";
+
+const A = 1, B = 2, C = 3;
+const films = { [A]: [10, 11], [B]: [12], [C]: [13] };
+const cast = { 10: [A, B], 11: [A], 12: [B, C], 13: [C, 4724] };
+
+const graph = () => {
+  const calls = { films: {}, cast: {} };
+  return {
+    calls,
+    getFilms: async (a) => { calls.films[a] = (calls.films[a] ?? 0) + 1; return films[a] ?? []; },
+    getCast: async (m) => { calls.cast[m] = (calls.cast[m] ?? 0) + 1; return cast[m] ?? []; },
+  };
+};
+
+test("constants match the widget", () => {
+  assert.equal(KEVIN_BACON_ID, 4724);
+  assert.equal(FILMS_PER_ACTOR, 45);
+  assert.equal(CAST_PER_FILM, 27);
+});
+
+test("topFilms ranks by popularity*ln(1+votes) and keeps 45", () => {
+  const entries = Array.from({ length: 50 }, (_, i) => ({ id: i, popularity: 1, vote_count: 1 }));
+  entries.push({ id: 900, popularity: 100, vote_count: 0 });
+  entries.push({ id: 901, popularity: 2, vote_count: 1000 });
+  const ids = topFilms(entries);
+  assert.equal(ids.length, 45);
+  assert.equal(ids[0], 901);
+  assert.ok(!ids.includes(900), "zero-vote film scores 0 and falls off");
+});
+
+test("topFilms tolerates missing popularity and vote_count", () => {
+  assert.deepEqual(topFilms([{ id: 1 }, { id: 2, popularity: 5, vote_count: 3 }]), [2, 1]);
+});
+
+test("topCast sorts by order, missing order last, keeps 27", () => {
+  const orders = Array.from({ length: 28 }, (_, i) => i);
+  const shuffled = orders.map((o, i) => orders[(i * 11) % 28]);
+  const entries = shuffled.map((o) => ({ id: 100 + o, order: o }));
+  entries.push({ id: 7000 }, { id: 7001 });
+  const ids = topCast(entries);
+  assert.equal(ids.length, 27);
+  assert.equal(ids[0], 100);
+  assert.ok(!ids.includes(7000) && !ids.includes(7001));
+});
+
+test("topCast keeps missing-order entries after ordered ones", () => {
+  assert.deepEqual(topCast([{ id: 1 }, { id: 2, order: 3 }, { id: 3, order: 0 }]), [3, 2, 1]);
+});
+
+test("direct route is 1 film", async () => {
+  const g = graph();
+  assert.equal(await createSearch(g).reachableWithin(C, 1), true);
+});
+
+test("route length is bounded by maxFilms", async () => {
+  const s = createSearch(graph());
+  assert.equal(await s.reachableWithin(B, 1), false);
+  assert.equal(await s.reachableWithin(B, 2), true);
+  assert.equal(await s.reachableWithin(A, 2), false);
+  assert.equal(await s.reachableWithin(A, 3), true);
+});
+
+test("memoizes getter calls", async () => {
+  const g = graph();
+  const s = createSearch(g);
+  await s.reachableWithin(A, 3);
+  await s.reachableWithin(A, 3);
+  for (const n of Object.values(g.calls.films)) assert.ok(n <= 1);
+  for (const n of Object.values(g.calls.cast)) assert.ok(n <= 1);
+});
+
+test("a getter error propagates", async () => {
+  const s = createSearch({
+    getFilms: async () => { throw new BudgetExceeded(); },
+    getCast: async () => [],
+  });
+  await assert.rejects(() => s.reachableWithin(A, 3), BudgetExceeded);
+});
+
+const TODAY = "2026-11-10";
+
+test("fresh true never expires", () => {
+  assert.equal(isFresh({ stored: 2, reachable: true, checkedAt: "2025-01-01" }, 2, TODAY), true);
+});
+
+test("false expires after 28 days", () => {
+  assert.equal(isFresh({ stored: 2, reachable: false, checkedAt: "2026-10-13" }, 2, TODAY), true);
+  assert.equal(isFresh({ stored: 2, reachable: false, checkedAt: "2026-10-12" }, 2, TODAY), false);
+});
+
+test("stored change makes an entry stale", () => {
+  assert.equal(isFresh({ stored: 3, reachable: true, checkedAt: TODAY }, 2, TODAY), false);
+  assert.equal(isFresh(undefined, 2, TODAY), false);
+});
+
+test("hubReachableFor returns undefined for Kevin (0), no number, or stale", () => {
+  const cache = { 1: { stored: 2, reachable: false, checkedAt: TODAY }, 2: { stored: 2, reachable: true, checkedAt: TODAY }, 3: { stored: 2, reachable: true, checkedAt: TODAY } };
+  assert.equal(hubReachableFor({ id: 1, baconNumber: 2 }, cache, TODAY), false);
+  assert.equal(hubReachableFor({ id: 2, baconNumber: 0 }, cache, TODAY), undefined);
+  assert.equal(hubReachableFor({ id: 3 }, cache, TODAY), undefined);
+  assert.equal(hubReachableFor({ id: 2, baconNumber: 3 }, cache, TODAY), undefined);
+  assert.equal(hubReachableFor({ id: 9, baconNumber: 2 }, cache, TODAY), undefined);
+});
+
+test("buildQueue order", () => {
+  const actors = [1, 2, 3, 4, 5].map((id) => ({ id, baconNumber: 2 }));
+  const cache = {
+    2: { stored: 3, reachable: true, checkedAt: TODAY },
+    3: { stored: 2, reachable: false, checkedAt: "2026-09-01" },
+    4: { stored: 2, reachable: false, checkedAt: "2026-08-01" },
+    5: { stored: 2, reachable: true, checkedAt: TODAY },
+  };
+  assert.deepEqual(buildQueue(actors, cache, TODAY).map((q) => q.id), [1, 2, 4, 3]);
+  assert.deepEqual(buildQueue([...actors, { id: 1, baconNumber: 2 }, { id: 6, baconNumber: 0 }], cache, TODAY).length, 4);
+});
+
+test("serializeCache sorts keys numerically", () => {
+  const out = serializeCache({ 10: { stored: 2, reachable: true, checkedAt: TODAY }, 9: { checkedAt: TODAY, reachable: false, stored: 3 } });
+  assert.ok(out.indexOf('"9"') < out.indexOf('"10"'));
+  assert.ok(out.endsWith("}\n"));
+  assert.ok(out.indexOf('"stored"') < out.indexOf('"reachable"'));
+});
+
+test("loadCache returns {} for missing, non-JSON and non-object files; the object when valid", async () => {
+  const { mkdtemp, writeFile } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const pathMod = await import("node:path");
+  const dir = await mkdtemp(pathMod.join(tmpdir(), "hubreach-"));
+  const warn = console.warn;
+  console.warn = () => {};
+  try {
+    assert.deepEqual(await loadCache(pathMod.join(dir, "missing.json")), {});
+    const bad = pathMod.join(dir, "bad.json");
+    await writeFile(bad, "not json");
+    assert.deepEqual(await loadCache(bad), {});
+    const arr = pathMod.join(dir, "arr.json");
+    await writeFile(arr, "[]");
+    assert.deepEqual(await loadCache(arr), {});
+    const ok = pathMod.join(dir, "ok.json");
+    await writeFile(ok, '{"1":{"a":2}}');
+    assert.deepEqual(await loadCache(ok), { 1: { a: 2 } });
+  } finally {
+    console.warn = warn;
+  }
+});
+
+test("malformed cache entries never throw and count as not fresh", () => {
+  const bad = { 1: { stored: 3, reachable: false } };
+  assert.equal(isFresh(bad[1], 3, "2026-11-10"), false);
+  assert.equal(isFresh({ stored: 3, reachable: false, checkedAt: 5 }, 3, "2026-11-10"), false);
+  assert.equal(isFresh(7, 3, "2026-11-10"), false);
+  assert.equal(hubReachableFor({ id: 1, baconNumber: 3 }, bad, "2026-11-10"), undefined);
+  const q = buildQueue([{ id: 1, baconNumber: 3 }, { id: 2, baconNumber: 2 }], { ...bad, 2: 7 }, "2026-11-10");
+  assert.deepEqual(q.map((r) => r.id).sort(), [1, 2]);
+});
+
+test("loadCache returns {} for null and 42", async () => {
+  const { mkdtemp, writeFile } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const pathMod = await import("node:path");
+  const dir = await mkdtemp(pathMod.join(tmpdir(), "hubreach-"));
+  const warn = console.warn;
+  console.warn = () => {};
+  try {
+    for (const body of ["null", "42"]) {
+      const f = pathMod.join(dir, `${body}.json`);
+      await writeFile(f, body);
+      assert.deepEqual(await loadCache(f), {});
+    }
+  } finally {
+    console.warn = warn;
+  }
+});
+
+test("a gave-up marker (reachable: null) is not fresh and makes no claim", () => {
+  const marker = { stored: 3, reachable: null, checkedAt: TODAY };
+  assert.equal(isFresh(marker, 3, TODAY), false);
+  assert.equal(hubReachableFor({ id: 1, baconNumber: 3 }, { 1: marker }, TODAY), undefined);
+});
+
+test("buildQueue order: no entry, stored changed, stale false, markers oldest-first", () => {
+  const actors = [1, 2, 3, 4, 5, 6].map((id) => ({ id, baconNumber: 2 }));
+  const cache = {
+    2: { stored: 3, reachable: true, checkedAt: TODAY },
+    3: { stored: 2, reachable: false, checkedAt: "2026-09-01" },
+    4: { stored: 2, reachable: null, checkedAt: "2026-11-09" },
+    5: { stored: 2, reachable: null, checkedAt: "2026-08-01" },
+    6: { stored: 2, reachable: true, checkedAt: TODAY },
+  };
+  assert.deepEqual(buildQueue(actors, cache, TODAY).map((q) => q.id), [1, 2, 3, 5, 4]);
+});
+
+test("serializeCache writes reachable: null faithfully and skips null or non-object entries", () => {
+  const out = JSON.parse(serializeCache({ 1: { stored: 2, reachable: null, checkedAt: TODAY }, 2: null, 3: 7, 4: "x" }));
+  assert.deepEqual(out, { 1: { stored: 2, reachable: null, checkedAt: TODAY } });
+});
+
+test("gaveUpEntry keeps a prior fresh true or fresh false for the same stored number, else writes the marker", () => {
+  const T = { stored: 3, reachable: true, checkedAt: "2026-11-01" };
+  const F = { stored: 3, reachable: false, checkedAt: "2026-11-01" };
+  assert.deepEqual(gaveUpEntry(T, 3, TODAY), T);
+  assert.deepEqual(gaveUpEntry(F, 3, TODAY), F);
+  const marker = { stored: 3, reachable: null, checkedAt: TODAY };
+  assert.deepEqual(gaveUpEntry({ ...F, checkedAt: "2026-01-01" }, 3, TODAY), marker);
+  assert.deepEqual(gaveUpEntry(T, 4, TODAY), { stored: 4, reachable: null, checkedAt: TODAY });
+  assert.deepEqual(gaveUpEntry(undefined, 3, TODAY), marker);
+  assert.deepEqual(gaveUpEntry({ stored: 3, reachable: null, checkedAt: "2026-11-01" }, 3, TODAY), marker);
+});
