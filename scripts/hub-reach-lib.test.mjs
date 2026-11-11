@@ -1,7 +1,7 @@
 // Run: node --test scripts/hub-reach-lib.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { KEVIN_BACON_ID, FILMS_PER_ACTOR, CAST_PER_FILM, topFilms, topCast, BudgetExceeded, createSearch, isFresh, hubReachableFor, buildQueue, serializeCache } from "./hub-reach-lib.mjs";
+import { KEVIN_BACON_ID, FILMS_PER_ACTOR, CAST_PER_FILM, topFilms, topCast, BudgetExceeded, createSearch, isFresh, hubReachableFor, buildQueue, serializeCache, loadCache } from "./hub-reach-lib.mjs";
 
 const A = 1, B = 2, C = 3;
 const films = { [A]: [10, 11], [B]: [12], [C]: [13] };
@@ -123,4 +123,27 @@ test("serializeCache sorts keys numerically", () => {
   assert.ok(out.indexOf('"9"') < out.indexOf('"10"'));
   assert.ok(out.endsWith("}\n"));
   assert.ok(out.indexOf('"stored"') < out.indexOf('"reachable"'));
+});
+
+test("loadCache returns {} for missing, non-JSON and non-object files; the object when valid", async () => {
+  const { mkdtemp, writeFile } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const pathMod = await import("node:path");
+  const dir = await mkdtemp(pathMod.join(tmpdir(), "hubreach-"));
+  const warn = console.warn;
+  console.warn = () => {};
+  try {
+    assert.deepEqual(await loadCache(pathMod.join(dir, "missing.json")), {});
+    const bad = pathMod.join(dir, "bad.json");
+    await writeFile(bad, "not json");
+    assert.deepEqual(await loadCache(bad), {});
+    const arr = pathMod.join(dir, "arr.json");
+    await writeFile(arr, "[]");
+    assert.deepEqual(await loadCache(arr), {});
+    const ok = pathMod.join(dir, "ok.json");
+    await writeFile(ok, '{"1":{"a":2}}');
+    assert.deepEqual(await loadCache(ok), { 1: { a: 2 } });
+  } finally {
+    console.warn = warn;
+  }
 });

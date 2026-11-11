@@ -1,6 +1,7 @@
 // The hub's Bacon-number ranking rules and a bounded route search.
 // Mirrors apps/widget-bacon-trail/src/services/tmdbService.ts so a route the
 // job finds is a route a player can actually walk on the hub.
+import { readFile } from "node:fs/promises";
 
 export const KEVIN_BACON_ID = 4724;
 export const FILMS_PER_ACTOR = 45;
@@ -118,4 +119,18 @@ export function serializeCache(cache) {
     out[key] = { stored: e.stored, reachable: e.reachable, checkedAt: e.checkedAt };
   }
   return JSON.stringify(out, null, 2) + "\n";
+}
+
+export async function loadCache(cachePath) {
+  try {
+    const parsed = JSON.parse(await readFile(cachePath, "utf8"));
+    if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+      console.warn(`[hub-reach] cache at ${cachePath} is not an object; treating as empty`);
+      return {};
+    }
+    return parsed;
+  } catch (err) {
+    console.warn(`[hub-reach] cache unavailable (${err?.message ?? err}); treating as empty`);
+    return {};
+  }
 }
