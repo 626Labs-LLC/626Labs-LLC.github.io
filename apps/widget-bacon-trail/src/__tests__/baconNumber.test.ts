@@ -64,6 +64,14 @@ describe('displayBaconNumber', () => {
     });
   });
 
+  it('a win under the stored number shows the player count with no caveat, whatever the cache says', () => {
+    expect(displayBaconNumber({ stored: 3, won: true, steps: 2, hubReachable: false })).toEqual({
+      baconNumber: 2,
+      shortestRoute: false,
+      notHere: false,
+    });
+  });
+
   it('unknown reach makes no claim', () => {
     expect(displayBaconNumber({ stored: 2, won: false, steps: 6 }).notHere).toBe(false);
   });

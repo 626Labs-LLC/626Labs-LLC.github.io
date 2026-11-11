@@ -4,7 +4,7 @@
 
 **Goal:** Precompute whether each birthday actor's stored Bacon number is reachable under the hub widget's rules, carry that onto the shards as `hubReachable`, and have the result card say "(path not available here)" plus an invite to the full game at wsyatm.626labs.dev.
 
-**Architecture:** A pure Node module (`scripts/hub-reach-lib.mjs`) holds the hub's ranking rules, a memoized depth-limited route search over injected TMDB getters, and the cache freshness rules. A weekly CLI (`scripts/refresh-hub-reach.mjs`) drives it against live TMDB with pacing and a budget and writes `widget-bacon-trail/data/hub-reach.json`. The nightly shard refresh merges that cache into each shard actor. The widget reads one more field and picks its copy.
+**Architecture:** A pure Node module (`scripts/hub-reach-lib.mjs`) holds the hub's ranking rules, a memoized depth-limited route search over injected TMDB getters, and the cache freshness rules. A weekly CLI (`scripts/refresh-hub-reach.mjs`) drives it against live TMDB with pacing and a budget and writes `apps/widget-bacon-trail/data/hub-reach.json`. The nightly shard refresh merges that cache into each shard actor. The widget reads one more field and picks its copy.
 
 **Tech Stack:** Node 20 ESM, `node:test`, pytest (CI gate) wrapping node tests, GitHub Actions, Vite + React + TS + vitest in the widget.
 
@@ -14,7 +14,7 @@
 
 - Hub rules, mirrored exactly from `apps/widget-bacon-trail/src/services/tmdbService.ts`: an actor's films are `person/{id}/movie_credits` `cast`, scored `(popularity ?? 0) * Math.log(1 + Math.max(0, vote_count ?? 0))`, sorted desc, first 45. A film's cast is `movie/{id}/credits` `cast` sorted by `order` asc (missing order = `Number.MAX_SAFE_INTEGER`), first 27. Kevin Bacon is TMDB `4724`.
 - The question per actor is only: a hub route with at most `stored` films? Search depth is bounded by `stored` (1, 2 or 3 today).
-- Cache file: `widget-bacon-trail/data/hub-reach.json`, shape `{ "<actorId>": { "stored": 2, "reachable": true, "checkedAt": "YYYY-MM-DD" } }`, keys sorted numerically ascending, 2-space JSON, one trailing newline.
+- Cache file: `apps/widget-bacon-trail/data/hub-reach.json`, shape `{ "<actorId>": { "stored": 2, "reachable": true, "checkedAt": "YYYY-MM-DD" } }`, keys sorted numerically ascending, 2-space JSON, one trailing newline.
 - Staleness: an entry is stale when missing, when `entry.stored !== stored`, or when `reachable === false` and `checkedAt` is more than 28 days before today. A stale entry merges as unknown (field absent). `reachable: true` never expires on age.
 - Recheck order each run: unchecked, then stored-number changed, then oldest `false`.
 - Unknown means no claim: no caveat, light invite.
@@ -113,7 +113,7 @@
 - Produces:
   - `createTmdb({ apiKey, fetchImpl = fetch, minIntervalMs = 30, maxCalls = Infinity, sleep }): { getFilms, getCast, calls() }` — paces requests at least `minIntervalMs` apart; on 429 or 5xx retries up to 4 times with backoff (honor `Retry-After` seconds when present); on 404 returns `[]`; every attempt counts toward `maxCalls`, and the call that would exceed it throws `BudgetExceeded` before fetching.
   - `run({ shardDir, cachePath, today, tmdb, deadline: number /* epoch ms */, perActorMaxCalls = 20000, log = console.log }): Promise<{ checked, reachable, unreachable, skipped }>` — loads shards and cache (missing cache = `{}`), builds the queue, and for each actor runs `reachableWithin(id, stored)` on a fresh `createSearch` whose getters share one run-wide response cache; writes `{stored, reachable, checkedAt: today}` on an answer; on `BudgetExceeded` from the per-actor cap, leaves that actor's prior entry untouched and continues; stops the loop when `Date.now() > deadline` or the run-wide cap trips. Writes the cache with `serializeCache` once at the end (and after every 25 answers, so a killed job keeps its progress).
-  - CLI: `node scripts/refresh-hub-reach.mjs [--max-minutes 330] [--max-calls N] [--only <id,id>]`; reads `VITE_TMDB_API_KEY`; shard dir `apps/widget-bacon-trail/data/birthdays`; cache `widget-bacon-trail/data/hub-reach.json`; exits 1 with a clear message if the key is missing.
+  - CLI: `node scripts/refresh-hub-reach.mjs [--max-minutes 330] [--max-calls N] [--only <id,id>]`; reads `VITE_TMDB_API_KEY`; shard dir `apps/widget-bacon-trail/data/birthdays`; cache `apps/widget-bacon-trail/data/hub-reach.json`; exits 1 with a clear message if the key is missing.
 
 - [ ] **Step 1: Write failing tests** in `scripts/refresh-hub-reach.test.mjs` with a fake `fetchImpl` serving the Task 1 fixture graph as TMDB-shaped JSON and a no-op `sleep`:
   - `404 reads as empty`: person 99 returns 404 → `getFilms(99)` resolves `[]`.
@@ -124,9 +124,9 @@
 - [ ] **Step 2: Run to verify fail.** `node --test scripts/refresh-hub-reach.test.mjs` → FAIL.
 - [ ] **Step 3: Implement** `createTmdb`, `run`, and the CLI guard (`if (import.meta.url === pathToFileURL(process.argv[1]).href)`). Per-actor cap: wrap the shared getters in a counter that throws `BudgetExceeded` past `perActorMaxCalls` *uncached* calls for the current actor. Log one line per actor: `id stored -> reachable|unreachable|over-budget`, and a summary.
 - [ ] **Step 4: Add the test file to the pytest wrapper**; run `python -m pytest tests/test_hub_reach.py -q` → passed.
-- [ ] **Step 5: Write `.github/workflows/refresh-hub-reach.yml`**: `schedule: cron '30 8 * * 0'` (Sundays 08:30 UTC) + `workflow_dispatch` with optional `max_minutes` (default `330`); `concurrency: refresh-hub-reach`; `timeout-minutes: 350`; `if: github.actor != 'github-actions[bot]'`; `permissions: contents: write`; Node 20; `env: VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}`; run the CLI with `--max-minutes`; commit only `widget-bacon-trail/data/hub-reach.json` as `chore(bacon-reach): refresh $(date -u +%Y-%m-%d)` using the exact retry+rebase loop from `refresh-bacon-shards.yml`. No `pull_request` trigger.
-- [ ] **Step 6: Local smoke run** (needs a TMDB key in env): `node scripts/refresh-hub-reach.mjs --only 1903874,4175 --max-minutes 5` → two log lines with answers and a cache file containing both ids. Do **not** commit the smoke cache; delete it (`git checkout -- widget-bacon-trail/data/hub-reach.json` or remove if new). Record the call counts in the PR body: they are the first real budget data.
-- [ ] **Step 7: Update `CLAUDE.md`**: add the CI table row (weekly Sun 08:30 UTC, reads shards + TMDB, writes `widget-bacon-trail/data/hub-reach.json`, reuses `VITE_TMDB_API_KEY`, budgeted and resumable, a `false` older than 28 days merges as unknown) and fix the three counts named in Files.
+- [ ] **Step 5: Write `.github/workflows/refresh-hub-reach.yml`**: `schedule: cron '30 8 * * 0'` (Sundays 08:30 UTC) + `workflow_dispatch` with optional `max_minutes` (default `330`); `concurrency: refresh-hub-reach`; `timeout-minutes: 350`; `if: github.actor != 'github-actions[bot]'`; `permissions: contents: write`; Node 20; `env: VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}`; run the CLI with `--max-minutes`; commit only `apps/widget-bacon-trail/data/hub-reach.json` as `chore(bacon-reach): refresh $(date -u +%Y-%m-%d)` using the exact retry+rebase loop from `refresh-bacon-shards.yml`. No `pull_request` trigger.
+- [ ] **Step 6: Local smoke run** (needs a TMDB key in env): `node scripts/refresh-hub-reach.mjs --only 1903874,4175 --max-minutes 5` → two log lines with answers and a cache file containing both ids. Do **not** commit the smoke cache; delete it (`git checkout -- apps/widget-bacon-trail/data/hub-reach.json` or remove if new). Record the call counts in the PR body: they are the first real budget data.
+- [ ] **Step 7: Update `CLAUDE.md`**: add the CI table row (weekly Sun 08:30 UTC, reads shards + TMDB, writes `apps/widget-bacon-trail/data/hub-reach.json`, reuses `VITE_TMDB_API_KEY`, budgeted and resumable, a `false` older than 28 days merges as unknown) and fix the three counts named in Files.
 - [ ] **Step 8: Commit.** `git add scripts/refresh-hub-reach.mjs scripts/refresh-hub-reach.test.mjs tests/test_hub_reach.py .github/workflows/refresh-hub-reach.yml CLAUDE.md && git commit -m "feat(bacon-reach): weekly job checks each actor's number against the hub's rules"`
 
 ### Task 4: Shards carry `hubReachable`
@@ -143,7 +143,7 @@
 
 - [ ] **Step 1: Write failing tests:** `loadCache returns {} for a missing file`, `for "not json"`, `for "[]"`; returns the object for a valid file.
 - [ ] **Step 2: Run to verify fail.** `node --test scripts/hub-reach-lib.test.mjs` → FAIL.
-- [ ] **Step 3: Implement `loadCache`**, then in `refresh-bacon-shards.mjs` load `widget-bacon-trail/data/hub-reach.json` once before grouping, compute `today` as the UTC date, and set `actor.hubReachable` from `hubReachableFor(actor, cache, today)` when it's a boolean. Place the key last in the actor object.
+- [ ] **Step 3: Implement `loadCache`**, then in `refresh-bacon-shards.mjs` load `apps/widget-bacon-trail/data/hub-reach.json` once before grouping, compute `today` as the UTC date, and set `actor.hubReachable` from `hubReachableFor(actor, cache, today)` when it's a boolean. Place the key last in the actor object.
 - [ ] **Step 4: Run.** `node --test scripts/hub-reach-lib.test.mjs` → pass; `python -m pytest tests/test_hub_reach.py -q` → passed. `node --check scripts/refresh-bacon-shards.mjs` → no output.
 - [ ] **Step 5: Commit.** `git commit -am "feat(bacon-shards): merge hub reachability into each shard actor"`
 

@@ -28,7 +28,7 @@ const OUT_DIR = path.join(REPO_ROOT, 'widget-bacon-trail', 'data', 'birthdays');
 const STATS_SRC = path.join(REPO_ROOT, 'apps', 'widget-bacon-trail', 'data', 'stats.json');
 const STATS_OUT = path.join(REPO_ROOT, 'widget-bacon-trail', 'data', 'stats.json');
 
-const CACHE_PATH = path.join(REPO_ROOT, 'widget-bacon-trail', 'data', 'hub-reach.json');
+const CACHE_PATH = path.join(REPO_ROOT, 'apps', 'widget-bacon-trail', 'data', 'hub-reach.json');
 
 const COLLECTION = 'actorDatabase';
 const STATS_DOC = 'stats/play-counters';

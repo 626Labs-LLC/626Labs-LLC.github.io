@@ -1,7 +1,7 @@
 // Run: node --test scripts/hub-reach-lib.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { KEVIN_BACON_ID, FILMS_PER_ACTOR, CAST_PER_FILM, topFilms, topCast, BudgetExceeded, createSearch, isFresh, hubReachableFor, buildQueue, serializeCache, loadCache } from "./hub-reach-lib.mjs";
+import { KEVIN_BACON_ID, FILMS_PER_ACTOR, CAST_PER_FILM, topFilms, topCast, BudgetExceeded, createSearch, isFresh, hubReachableFor, buildQueue, serializeCache, loadCache, gaveUpEntry } from "./hub-reach-lib.mjs";
 
 const A = 1, B = 2, C = 3;
 const films = { [A]: [10, 11], [B]: [12], [C]: [13] };
@@ -174,4 +174,39 @@ test("loadCache returns {} for null and 42", async () => {
   } finally {
     console.warn = warn;
   }
+});
+
+test("a gave-up marker (reachable: null) is not fresh and makes no claim", () => {
+  const marker = { stored: 3, reachable: null, checkedAt: TODAY };
+  assert.equal(isFresh(marker, 3, TODAY), false);
+  assert.equal(hubReachableFor({ id: 1, baconNumber: 3 }, { 1: marker }, TODAY), undefined);
+});
+
+test("buildQueue order: no entry, stored changed, stale false, markers oldest-first", () => {
+  const actors = [1, 2, 3, 4, 5, 6].map((id) => ({ id, baconNumber: 2 }));
+  const cache = {
+    2: { stored: 3, reachable: true, checkedAt: TODAY },
+    3: { stored: 2, reachable: false, checkedAt: "2026-09-01" },
+    4: { stored: 2, reachable: null, checkedAt: "2026-11-09" },
+    5: { stored: 2, reachable: null, checkedAt: "2026-08-01" },
+    6: { stored: 2, reachable: true, checkedAt: TODAY },
+  };
+  assert.deepEqual(buildQueue(actors, cache, TODAY).map((q) => q.id), [1, 2, 3, 5, 4]);
+});
+
+test("serializeCache writes reachable: null faithfully and skips null or non-object entries", () => {
+  const out = JSON.parse(serializeCache({ 1: { stored: 2, reachable: null, checkedAt: TODAY }, 2: null, 3: 7, 4: "x" }));
+  assert.deepEqual(out, { 1: { stored: 2, reachable: null, checkedAt: TODAY } });
+});
+
+test("gaveUpEntry keeps a prior fresh true or fresh false for the same stored number, else writes the marker", () => {
+  const T = { stored: 3, reachable: true, checkedAt: "2026-11-01" };
+  const F = { stored: 3, reachable: false, checkedAt: "2026-11-01" };
+  assert.deepEqual(gaveUpEntry(T, 3, TODAY), T);
+  assert.deepEqual(gaveUpEntry(F, 3, TODAY), F);
+  const marker = { stored: 3, reachable: null, checkedAt: TODAY };
+  assert.deepEqual(gaveUpEntry({ ...F, checkedAt: "2026-01-01" }, 3, TODAY), marker);
+  assert.deepEqual(gaveUpEntry(T, 4, TODAY), { stored: 4, reachable: null, checkedAt: TODAY });
+  assert.deepEqual(gaveUpEntry(undefined, 3, TODAY), marker);
+  assert.deepEqual(gaveUpEntry({ stored: 3, reachable: null, checkedAt: "2026-11-01" }, 3, TODAY), marker);
 });

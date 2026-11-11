@@ -87,6 +87,7 @@ const hasNumber = (actor) => Number.isInteger(actor.baconNumber) && actor.baconN
 export function isFresh(entry, stored, today) {
   if (!entry || typeof entry !== "object" || entry.stored !== stored) return false;
   if (entry.reachable === true) return true;
+  // reachable: null is a gave-up marker, never a usable verdict.
   if (entry.reachable !== false || !validDay(entry.checkedAt)) return false;
   return dayNumber(today) - dayNumber(entry.checkedAt) <= FALSE_MAX_AGE_DAYS;
 }
@@ -98,7 +99,8 @@ export function hubReachableFor(actor, cache, today) {
   return isFresh(entry, actor.baconNumber, today) ? entry.reachable : undefined;
 }
 
-// Recheck order: unchecked, then stored-number changed, then oldest false.
+// Recheck order: unchecked, then stored-number changed, then oldest stale
+// false, then gave-up markers (reachable: null) oldest first so they rotate.
 export function buildQueue(actors, cache, today) {
   const seen = new Set();
   const rows = [];
@@ -108,17 +110,25 @@ export function buildQueue(actors, cache, today) {
     const entry = cache[actor.id];
     if (isFresh(entry, actor.baconNumber, today)) continue;
     const usable = entry && typeof entry === "object";
-    const tier = !usable ? 0 : entry.stored !== actor.baconNumber ? 1 : 2;
-    rows.push({ id: actor.id, stored: actor.baconNumber, tier, age: tier === 2 ? (validDay(entry.checkedAt) ? dayNumber(entry.checkedAt) : -Infinity) : 0 });
+    const tier = !usable ? 0 : entry.stored !== actor.baconNumber ? 1 : entry.reachable === null ? 3 : 2;
+    rows.push({ id: actor.id, stored: actor.baconNumber, tier, age: tier >= 2 ? (validDay(entry.checkedAt) ? dayNumber(entry.checkedAt) : -Infinity) : 0 });
   }
   rows.sort((a, b) => a.tier - b.tier || a.age - b.age || a.stored - b.stored || a.id - b.id);
   return rows.map(({ id, stored }) => ({ id, stored }));
+}
+
+// What to record when an actor trips the per-actor cap: keep a prior answer
+// that is still usable for this stored number, else a gave-up marker.
+export function gaveUpEntry(prior, stored, today) {
+  if (isFresh(prior, stored, today)) return { stored: prior.stored, reachable: prior.reachable, checkedAt: prior.checkedAt };
+  return { stored, reachable: null, checkedAt: today };
 }
 
 export function serializeCache(cache) {
   const out = {};
   for (const key of Object.keys(cache).sort((a, b) => Number(a) - Number(b))) {
     const e = cache[key];
+    if (e === null || typeof e !== "object") continue;
     out[key] = { stored: e.stored, reachable: e.reachable, checkedAt: e.checkedAt };
   }
   return JSON.stringify(out, null, 2) + "\n";
