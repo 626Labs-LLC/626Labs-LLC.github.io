@@ -1,7 +1,7 @@
 // Run: node --test scripts/hub-reach-lib.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { KEVIN_BACON_ID, FILMS_PER_ACTOR, CAST_PER_FILM, topFilms, topCast, BudgetExceeded, createSearch } from "./hub-reach-lib.mjs";
+import { KEVIN_BACON_ID, FILMS_PER_ACTOR, CAST_PER_FILM, topFilms, topCast, BudgetExceeded, createSearch, isFresh, hubReachableFor, buildQueue, serializeCache } from "./hub-reach-lib.mjs";
 
 const A = 1, B = 2, C = 3;
 const films = { [A]: [10, 11], [B]: [12], [C]: [13] };
@@ -79,4 +79,49 @@ test("a getter error propagates", async () => {
     getCast: async () => [],
   });
   await assert.rejects(() => s.reachableWithin(A, 3), BudgetExceeded);
+});
+
+const TODAY = "2026-11-10";
+
+test("fresh true never expires", () => {
+  assert.equal(isFresh({ stored: 2, reachable: true, checkedAt: "2025-01-01" }, 2, TODAY), true);
+});
+
+test("false expires after 28 days", () => {
+  assert.equal(isFresh({ stored: 2, reachable: false, checkedAt: "2026-10-13" }, 2, TODAY), true);
+  assert.equal(isFresh({ stored: 2, reachable: false, checkedAt: "2026-10-12" }, 2, TODAY), false);
+});
+
+test("stored change makes an entry stale", () => {
+  assert.equal(isFresh({ stored: 3, reachable: true, checkedAt: TODAY }, 2, TODAY), false);
+  assert.equal(isFresh(undefined, 2, TODAY), false);
+});
+
+test("hubReachableFor returns undefined for Kevin (0), no number, or stale", () => {
+  const cache = { 1: { stored: 2, reachable: false, checkedAt: TODAY }, 2: { stored: 2, reachable: true, checkedAt: TODAY }, 3: { stored: 2, reachable: true, checkedAt: TODAY } };
+  assert.equal(hubReachableFor({ id: 1, baconNumber: 2 }, cache, TODAY), false);
+  assert.equal(hubReachableFor({ id: 2, baconNumber: 0 }, cache, TODAY), undefined);
+  assert.equal(hubReachableFor({ id: 3 }, cache, TODAY), undefined);
+  assert.equal(hubReachableFor({ id: 2, baconNumber: 3 }, cache, TODAY), undefined);
+  assert.equal(hubReachableFor({ id: 9, baconNumber: 2 }, cache, TODAY), undefined);
+});
+
+test("buildQueue order", () => {
+  const actors = [1, 2, 3, 4, 5].map((id) => ({ id, baconNumber: 2 }));
+  const cache = {
+    2: { stored: 3, reachable: true, checkedAt: TODAY },
+    3: { stored: 2, reachable: false, checkedAt: "2026-09-01" },
+    4: { stored: 2, reachable: false, checkedAt: "2026-08-01" },
+    5: { stored: 2, reachable: true, checkedAt: TODAY },
+  };
+  assert.deepEqual(buildQueue(actors, cache, TODAY).map((q) => q.id), [1, 2, 4, 3]);
+  assert.deepEqual(buildQueue([...actors, { id: 1, baconNumber: 2 }, { id: 6, baconNumber: 0 }], cache, TODAY).length, 4);
+});
+
+test("serializeCache sorts keys numerically", () => {
+  const out = serializeCache({ 10: { stored: 2, reachable: true, checkedAt: TODAY }, 9: { checkedAt: TODAY, reachable: false, stored: 3 } });
+  assert.ok(out.indexOf('"9"') < out.indexOf('"10"'));
+  assert.ok(out.endsWith("}
+"));
+  assert.ok(out.indexOf('"stored"') < out.indexOf('"reachable"'));
 });

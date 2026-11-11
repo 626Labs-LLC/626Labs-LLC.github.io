@@ -67,3 +67,56 @@ export function createSearch({ getFilms, getCast }) {
 
   return { reachableWithin };
 }
+
+// ---- cache freshness, recheck queue, serialization ----
+
+export const FALSE_MAX_AGE_DAYS = 28;
+
+const dayNumber = (iso) => {
+  const [y, m, d] = iso.split("-").map(Number);
+  return Date.UTC(y, m - 1, d) / 86400000;
+};
+
+const hasNumber = (actor) => Number.isInteger(actor.baconNumber) && actor.baconNumber >= 1;
+
+// A cached verdict is usable when it exists, was made against the same stored
+// number, and (for a false) is no more than 28 days old. True never expires.
+export function isFresh(entry, stored, today) {
+  if (!entry || entry.stored !== stored) return false;
+  if (entry.reachable === true) return true;
+  if (entry.reachable !== false) return false;
+  return dayNumber(today) - dayNumber(entry.checkedAt) <= FALSE_MAX_AGE_DAYS;
+}
+
+// undefined means no claim: no usable number, or no fresh verdict.
+export function hubReachableFor(actor, cache, today) {
+  if (!hasNumber(actor)) return undefined;
+  const entry = cache[actor.id];
+  return isFresh(entry, actor.baconNumber, today) ? entry.reachable : undefined;
+}
+
+// Recheck order: unchecked, then stored-number changed, then oldest false.
+export function buildQueue(actors, cache, today) {
+  const seen = new Set();
+  const rows = [];
+  for (const actor of actors) {
+    if (!hasNumber(actor) || seen.has(actor.id)) continue;
+    seen.add(actor.id);
+    const entry = cache[actor.id];
+    if (isFresh(entry, actor.baconNumber, today)) continue;
+    const tier = !entry ? 0 : entry.stored !== actor.baconNumber ? 1 : 2;
+    rows.push({ id: actor.id, stored: actor.baconNumber, tier, age: tier === 2 ? dayNumber(entry.checkedAt) : 0 });
+  }
+  rows.sort((a, b) => a.tier - b.tier || a.age - b.age || a.stored - b.stored || a.id - b.id);
+  return rows.map(({ id, stored }) => ({ id, stored }));
+}
+
+export function serializeCache(cache) {
+  const out = {};
+  for (const key of Object.keys(cache).sort((a, b) => Number(a) - Number(b))) {
+    const e = cache[key];
+    out[key] = { stored: e.stored, reachable: e.reachable, checkedAt: e.checkedAt };
+  }
+  return JSON.stringify(out, null, 2) + "
+";
+}
