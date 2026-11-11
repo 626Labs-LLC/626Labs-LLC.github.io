@@ -626,6 +626,9 @@
   color: var(--gw-fg-2);
   font-size: var(--gw-t-body);
 }
+.btw-result-shortest {
+  color: var(--gw-success);
+}
 .btw-bacon-confetti {
   position: absolute;
   inset: 0;

@@ -368,3 +368,44 @@ describe('ResultCard, Kevin Bacon on his birthday', () => {
     expect(screen.queryByTestId('bacon-confetti')).toBeNull();
   });
 });
+
+describe('ResultCard, the Bacon number line', () => {
+  const start = (baconNumber?: number): TrailStep[] => [
+    { kind: 'actor', actor: { id: 1903874, name: 'Maya Hawke', profilePath: null, baconNumber } },
+  ];
+  const card = (outcome: 'found' | 'out-of-films', filmCount: number, trail: TrailStep[]) =>
+    render(
+      <ResultCard outcome={outcome} filmCount={filmCount} trail={trail} ctaUrl="/" ctaLabel="More" onPlayAgain={() => {}} />
+    );
+
+  it('calls a win at the stored number the shortest route', () => {
+    card('found', 2, start(2));
+    expect(screen.getByTestId('bacon-number-line')).toHaveTextContent(
+      "Maya Hawke has a Bacon number of 2. That's the shortest route."
+    );
+  });
+
+  it('shows the stored number on a longer win, without shortest', () => {
+    card('found', 4, start(2));
+    const line = screen.getByTestId('bacon-number-line');
+    expect(line).toHaveTextContent('Maya Hawke has a Bacon number of 2.');
+    expect(line).not.toHaveTextContent(/shortest/i);
+  });
+
+  it("shows the player's count when the win beats the stored number", () => {
+    card('found', 2, start(3));
+    const line = screen.getByTestId('bacon-number-line');
+    expect(line).toHaveTextContent('Maya Hawke has a Bacon number of 2.');
+    expect(line).not.toHaveTextContent(/shortest/i);
+  });
+
+  it('shows the stored number on a loss', () => {
+    card('out-of-films', 6, start(2));
+    expect(screen.getByTestId('bacon-number-line')).toHaveTextContent('Maya Hawke has a Bacon number of 2.');
+  });
+
+  it('hides the line when the shard has no number', () => {
+    card('found', 3, start(undefined));
+    expect(screen.queryByTestId('bacon-number-line')).toBeNull();
+  });
+});

@@ -1,5 +1,6 @@
 import { CheckCircle2, Clock } from 'lucide-react';
 import type { Outcome, TrailStep } from '../types';
+import { displayBaconNumber } from '../lib/baconNumber';
 import { BaconConfetti } from './BaconConfetti';
 import { TrailBreadcrumb } from './TrailBreadcrumb';
 
@@ -42,6 +43,12 @@ export function ResultCard({ outcome, filmCount, trail, ctaUrl, ctaLabel, onPlay
     );
   }
 
+  // The starting actor is always trail[0]; filmCount is the path's length.
+  const start = trail[0]?.kind === 'actor' ? trail[0].actor : null;
+  const line = start
+    ? displayBaconNumber({ stored: start.baconNumber, won: found, steps: filmCount })
+    : { baconNumber: null, shortestRoute: false };
+
   return (
     <div className={`btw-result ${found ? 'is-found' : 'is-miss'}`} role="status" aria-live="polite">
       {found ? (
@@ -56,6 +63,13 @@ export function ResultCard({ outcome, filmCount, trail, ctaUrl, ctaLabel, onPlay
         </h3>
       ) : (
         <h3 className="btw-result-headline">Didn't find Bacon in 6 films. Try a different starting actor?</h3>
+      )}
+
+      {start && line.baconNumber !== null && (
+        <p className="btw-result-sub" data-testid="bacon-number-line">
+          {start.name} has a Bacon number of {line.baconNumber}.
+          {line.shortestRoute && <span className="btw-result-shortest"> That's the shortest route.</span>}
+        </p>
       )}
 
       <TrailBreadcrumb trail={trail} />
