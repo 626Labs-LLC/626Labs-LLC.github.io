@@ -64,7 +64,7 @@ references and one-off design artifacts.
 | `tools/bgremove/` | Standalone CV background remover with a Claude-vision agent loop. See *Tools* below. |
 | `repo-meter/` | The repo meter: `meter.css` + `meter.js`, a 26-week commit grid on every showcased project (home rows, the 15 plugin pages, the generated product pages). Renderers emit an empty `<div class="repo-meter" data-repo="owner/repo">`; the script fills it from `data/repo-activity.json` at runtime. The stylesheet reads contract tokens only, so every theme dresses it. Spec: `docs/superpowers/specs/2026-10-01-repo-meter-design.md`. |
 | `mcp-portfolio-server/` | Local stdio MCP server exposing portfolio content (resume, projects, Field Notes) to AI assistants. Read tools hit `site.json`/`content/stories`; write tools wrap the guarded `scripts/site.py`. See its README. |
-| `.github/workflows/` | 18 files: 13 bot workflows that push to main, plus 5 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, 1 release review, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
+| `.github/workflows/` | 19 files: 14 bot workflows that push to main, plus 5 that never commit here — 1 dashboard API bot, 1 link checker, 1 content-health run, 1 release review, and 1 on-demand visual-diff sweep. All push-to-main workflows have retry+rebase loops. |
 | `fonts/` | Variable TTFs for the brand (Space Grotesk, Inter, Inter Italic, JetBrains Mono). SIL OFL. |
 | `themes/`, `content/themes.json`, `themes.html` | The monthly theme rotation: theme source dirs, the active/queue/archive registry, and the gallery page rendered from it. See **Theme rotation** below. |
 
@@ -81,7 +81,7 @@ references and one-off design artifacts.
 
 ## CI workflows
 
-The 13 bot workflows that push to main:
+The 14 bot workflows that push to main:
 
 | Workflow | Trigger | Notes |
 |---|---|---|
@@ -89,6 +89,7 @@ The 13 bot workflows that push to main:
 | `build-movie-games.yml` | Push to `apps/widget-movie-games/src/**` | Vite-builds Box Office Heads Up + Tag That Line (one app, two IIFE bundles), commits them to `widget-box-office/` and `widget-tag-that-line/`. No secrets — both games are fully client-side. |
 | `refresh-game-data.yml` | Weekly Tue 07:30 UTC | Regenerates the movie-game runtime datasets from `apps/widget-movie-games/data/roster.json` (the hand-verified source of truth): resolves TMDB poster paths for new roster entries, writes `widget-box-office/data/movies.json`, and rebuilds the Tag That Line pool (curated classics + TMDB popular/top-rated sweep) at `widget-tag-that-line/data/pool.json`. Reuses `VITE_TMDB_API_KEY`. Data commits only — never rebuilds bundles. Opening-weekend numbers are never fetched; TMDB doesn't carry them. |
 | `refresh-bacon-shards.yml` | Daily 06:00 UTC | Pulls bacon shard data from Firestore (uses `FIREBASE_SA_JSON` secret). |
+| `refresh-hub-reach.yml` | Weekly Sun 08:30 UTC | Reads the birthday shards, then asks TMDB whether the hub's own ranking rules (top 45 films by popularity*ln(1+votes), top 27 cast) can walk a route as short as each actor's stored Bacon number → `widget-bacon-trail/data/hub-reach.json`. Reuses `VITE_TMDB_API_KEY`, no new secret. Budgeted (`--max-minutes`, default 330) and resumable: an actor it can't answer keeps its prior entry or stays unknown, never false. A `false` older than 28 days merges as unknown. |
 | `rebuild-hub.yml` | Push to `content/site.json` or `content/stories/**` | Builds Field Note social cards (`build-og-cards.py` → `assets/og/`) then re-runs render-hub.py and commits drift. Needs `Pillow`+`numpy` (in `requirements.txt`). |
 | `track-traffic.yml` | Daily 06:00 UTC | Auto-discovers all public, non-fork, non-archived repos under `estevanhernandez-stack-ed` (user) and `626Labs-LLC` (org), then pulls GitHub traffic metrics for each. Uses `TRAFFIC_PAT` (user-scope, needs Administration:Read on every tracked repo) and `TRAFFIC_PAT_ORG` (optional org-scope override — without it, org repos fall back to GH_TOKEN and 403 on the Traffic API). |
 | `track-downloads.yml` | Daily 06:15 UTC | Snapshots release-asset `download_count` for every repo in `data/repos.json` that ships release assets → `data/download-stats.json` (current detail) + `data/downloads.csv` (`date,repo,downloads,installers`). **`downloads` is not an audience number:** installed apps fetch manifests from their own release (ROROROblox on 2026-09-29: ~50,300 of ~50,800 counts were polling, 384 were installers). Quote `installers` (people getting the app), classified by `scripts/asset-kind.mjs`; Store installs and daily users are the other real signals. History before 2026-09-29 has no `installers` value. Public data — implicit `GITHUB_TOKEN` only. |
@@ -101,7 +102,7 @@ The 13 bot workflows that push to main:
 
 **Full secrets inventory:** `FIREBASE_SA_JSON`, `TRAFFIC_PAT`, `TRAFFIC_PAT_ORG`, `GOATCOUNTER_TOKEN`, `VITE_TMDB_API_KEY`, `VITE_STATS_ENDPOINT`, `MCP_VERSION_TRUTH_KEY`, `STORE_TENANT_ID`, `STORE_CLIENT_ID`, `STORE_CLIENT_SECRET`. Plus the implicit `GITHUB_TOKEN` that GH Actions injects per-job.
 
-All thirteen use a retry+rebase loop on `git push` to handle the race where two
+All fourteen use a retry+rebase loop on `git push` to handle the race where two
 bots try to push to main simultaneously.
 
 Plus five that never commit to this repo:
