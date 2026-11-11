@@ -409,6 +409,28 @@ describe('ResultCard, the Bacon number line', () => {
     expect(screen.queryByTestId('bacon-number-line')).toBeNull();
   });
 
+  it('shows one bacon strip per film of the Bacon number, hidden from screen readers', () => {
+    card('found', 4, start(2));
+    const row = screen.getByTestId('bacon-count');
+    expect(row.getAttribute('aria-hidden')).toBe('true');
+    expect(row.querySelectorAll('.btw-bacon-chip')).toHaveLength(2);
+  });
+
+  it("counts the player's strips when the win beats the stored number", () => {
+    card('found', 2, start(3));
+    expect(screen.getByTestId('bacon-count').querySelectorAll('.btw-bacon-chip')).toHaveLength(2);
+  });
+
+  it('shows the strips on a loss and on an unreachable number', () => {
+    card('out-of-films', 6, start(3, false));
+    expect(screen.getByTestId('bacon-count').querySelectorAll('.btw-bacon-chip')).toHaveLength(3);
+  });
+
+  it('shows no strips when the shard has no number', () => {
+    card('found', 3, start(undefined));
+    expect(screen.queryByTestId('bacon-count')).toBeNull();
+  });
+
   it('unreachable loss shows the caveat and the full-game invite', () => {
     card('out-of-films', 6, start(2, false));
     expect(screen.getByTestId('bacon-number-line')).toHaveTextContent(
