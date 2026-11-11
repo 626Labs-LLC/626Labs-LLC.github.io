@@ -121,7 +121,6 @@ test("buildQueue order", () => {
 test("serializeCache sorts keys numerically", () => {
   const out = serializeCache({ 10: { stored: 2, reachable: true, checkedAt: TODAY }, 9: { checkedAt: TODAY, reachable: false, stored: 3 } });
   assert.ok(out.indexOf('"9"') < out.indexOf('"10"'));
-  assert.ok(out.endsWith("}
-"));
+  assert.ok(out.endsWith("}\n"));
   assert.ok(out.indexOf('"stored"') < out.indexOf('"reachable"'));
 });

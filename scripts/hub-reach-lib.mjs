@@ -117,6 +117,5 @@ export function serializeCache(cache) {
     const e = cache[key];
     out[key] = { stored: e.stored, reachable: e.reachable, checkedAt: e.checkedAt };
   }
-  return JSON.stringify(out, null, 2) + "
-";
+  return JSON.stringify(out, null, 2) + "\n";
 }
