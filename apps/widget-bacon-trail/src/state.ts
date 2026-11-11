@@ -76,6 +76,17 @@ export function reducer(state: WidgetState, action: Action): WidgetState {
     case 'ACTOR_PICKED': {
       if (state.status !== 'pick-actor' && state.status !== 'pick-co-actor') return state;
       const trail: TrailStep[] = [...state.trail, { kind: 'actor', actor: action.actor }];
+      if (state.status === 'pick-actor' && action.actor.id === KEVIN_BACON_TMDB_ID) {
+        // Easter egg: starting on Kevin Bacon himself, on his birthday (he
+        // only appears in the 07-08 shard). Bacon number 0, no films walked.
+        return {
+          status: 'result',
+          outcome: 'found',
+          trail,
+          filmCount: 0,
+          baconBirthday: true,
+        };
+      }
       return {
         status: 'pick-movie',
         subject: action.actor,

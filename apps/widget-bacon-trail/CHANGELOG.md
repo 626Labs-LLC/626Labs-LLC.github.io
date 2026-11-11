@@ -2,6 +2,21 @@
 
 All notable changes to the Birthday Bacon Trail widget. Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.0] — 2026-11-10
+
+Kevin Bacon on his birthday.
+
+### Added
+
+- Picking Kevin Bacon (TMDB 4724) as the starting actor ends the round on the spot: "You found Kevin Bacon in 0 films. Bacon number 0. Happy birthday, Kevin." He only appears in the 07-08 shard, so the moment only exists on his birthday. The trail is his card alone, the banner reads "It's Kevin Bacon's birthday. 0 films needed.", and the screen-reader line says the same.
+- Bacon confetti on that card: 18 CSS-drawn strips with fixed per-index positions, so a render is deterministic. Decorative (`aria-hidden`), hidden outright under `prefers-reduced-motion`. A halo in the card's field keeps the copy legible while strips fall behind it.
+
+### Changed
+
+- The birthday round is not logged to `logPlay`. The endpoint accepts `filmCount` 1 to 6 only, and 0 films isn't a trail.
+
+WeSeeYouAtTheMovies drops Bacon from its July 8 picker instead, because there a one-tap start would pay XP and reach the leaderboard. The widget has no scores, so the hub keeps him as the egg.
+
 ## [0.2.0] — 2026-04-24
 
 Anonymous lifetime play counters. No visitor identity captured — the beacon payload is strictly `{outcome, filmCount}` and the Cloud Function rejects anything else with a 400. See [`PRIVACY.md`](./PRIVACY.md) for the full posture.

@@ -281,3 +281,25 @@ describe('reducer', () => {
     });
   });
 });
+
+describe('Kevin Bacon on his birthday', () => {
+  const bacon = mkActor(KEVIN_BACON_TMDB_ID, 'Kevin Bacon');
+
+  it('picking Bacon as the starting actor ends the round found in 0 films', () => {
+    const loaded = reducer(initialState, { type: 'SHARD_LOADED', actors: [bacon, mkActor(2)] });
+    const next = reducer(loaded, { type: 'ACTOR_PICKED', actor: bacon });
+    expect(next.status).toBe('result');
+    if (next.status === 'result') {
+      expect(next.outcome).toBe('found');
+      expect(next.filmCount).toBe(0);
+      expect(next.baconBirthday).toBe(true);
+      expect(next.trail).toEqual([{ kind: 'actor', actor: bacon }]);
+    }
+  });
+
+  it('any other starting actor still goes to the film pick', () => {
+    const loaded = reducer(initialState, { type: 'SHARD_LOADED', actors: [bacon, mkActor(2)] });
+    const next = reducer(loaded, { type: 'ACTOR_PICKED', actor: mkActor(2) });
+    expect(next.status).toBe('pick-movie');
+  });
+});

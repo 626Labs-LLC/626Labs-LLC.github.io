@@ -122,6 +122,9 @@ export function Widget({ ctaUrl = DEFAULT_CTA_URL, ctaLabel = DEFAULT_CTA_LABEL,
     if (state.status !== 'result') return;
     if (loggedRoundRef.current === roundRef.current) return;
     loggedRoundRef.current = roundRef.current;
+    // The birthday egg walks 0 films; logPlay's endpoint accepts 1-6 only,
+    // and it isn't a trail anyway, so it stays out of the stats.
+    if (state.baconBirthday) return;
     logPlay(state.outcome, state.filmCount);
   }, [state.status]);
 
@@ -145,7 +148,7 @@ function Header({ state }: { state: WidgetState }) {
         <FilmCounter filmCount={filmCount} />
       </div>
       {state.status === 'result' ? (
-        <ResultBanner outcome={state.outcome} filmCount={state.filmCount} />
+        <ResultBanner outcome={state.outcome} filmCount={state.filmCount} baconBirthday={state.baconBirthday} />
       ) : (
         <TrailBreadcrumb trail={trail} />
       )}
@@ -238,6 +241,7 @@ function ScreenRouter({
           ctaUrl={ctaUrl}
           ctaLabel={ctaLabel}
           onPlayAgain={onPlayAgain}
+          baconBirthday={state.baconBirthday}
         />
       );
   }
@@ -261,8 +265,9 @@ function LiveRegion({ state }: { state: WidgetState }) {
       message = `Kevin Bacon not in ${state.movie.title}. Pick a co-actor to continue.`;
       break;
     case 'result':
-      message =
-        state.outcome === 'found'
+      message = state.baconBirthday
+        ? 'You picked Kevin Bacon. Bacon number 0. Happy birthday, Kevin.'
+        : state.outcome === 'found'
           ? `Found Kevin Bacon in ${state.filmCount} film${state.filmCount === 1 ? '' : 's'}.`
           : `Didn't find Kevin Bacon in 6 films.`;
       break;
