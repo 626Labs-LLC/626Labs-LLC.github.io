@@ -66,6 +66,9 @@ export type WidgetState =
       outcome: Outcome;
       trail: TrailStep[];
       filmCount: number;
+      // Kevin Bacon picked as the starting actor. He's only in the 07-08
+      // shard, so this is his birthday by construction: found in 0 films.
+      baconBirthday?: boolean;
     };
 
 // ─── Config (public API) ─────────────────────────────────────────────

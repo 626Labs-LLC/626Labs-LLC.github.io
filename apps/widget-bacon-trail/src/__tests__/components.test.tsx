@@ -340,3 +340,31 @@ describe('ResultCard', () => {
     expect(link).toHaveAttribute('href', 'https://626labs.dev/#work');
   });
 });
+
+describe('ResultCard, Kevin Bacon on his birthday', () => {
+  const bacon: Actor = { id: 4724, name: 'Kevin Bacon', profilePath: null };
+
+  it('says 0 films, wishes him happy birthday, and drops bacon confetti', () => {
+    render(
+      <ResultCard
+        outcome="found"
+        filmCount={0}
+        trail={[{ kind: 'actor', actor: bacon }]}
+        ctaUrl="/"
+        ctaLabel="More"
+        onPlayAgain={() => {}}
+        baconBirthday
+      />
+    );
+    expect(screen.getByRole('heading').textContent).toBe('You found Kevin Bacon in 0 films.');
+    expect(screen.getByText('Bacon number 0. Happy birthday, Kevin.')).toBeTruthy();
+    expect(screen.getByTestId('bacon-confetti').getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('a normal win has no confetti', () => {
+    render(
+      <ResultCard outcome="found" filmCount={2} trail={[]} ctaUrl="/" ctaLabel="More" onPlayAgain={() => {}} />
+    );
+    expect(screen.queryByTestId('bacon-confetti')).toBeNull();
+  });
+});

@@ -4,12 +4,23 @@ import type { Outcome } from '../types';
 interface Props {
   outcome: Outcome;
   filmCount: number;
+  baconBirthday?: boolean;
 }
 
 // One-line celebratory banner shown in the top slot when the round ends.
 // Replaces the TrailBreadcrumb box since the ResultCard below already
 // shows the full trail. No frame, no padding box — just a voice line.
-export function ResultBanner({ outcome, filmCount }: Props) {
+export function ResultBanner({ outcome, filmCount, baconBirthday = false }: Props) {
+  if (baconBirthday) {
+    return (
+      <p className="btw-banner success">
+        <Sparkles size={14} strokeWidth={2} aria-hidden="true" />
+        <span>
+          It's Kevin Bacon's birthday. <strong>0</strong> films needed.
+        </span>
+      </p>
+    );
+  }
   if (outcome === 'found') {
     return (
       <p className="btw-banner success">
