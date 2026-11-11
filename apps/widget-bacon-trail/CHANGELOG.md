@@ -2,6 +2,16 @@
 
 All notable changes to the Birthday Bacon Trail widget. Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.0] — 2026-11-10
+
+Say when the true route isn't walkable here, and invite to the full game.
+
+### Added
+
+- The Bacon line carries a caveat when the hub can't walk the route: "Maya Hawke has a Bacon number of 2 (path not available here)." It shows on a loss or a win longer than the stored number, never on a win at or under it (that win proves a route), and never when reach is unknown.
+- Every result card, the Kevin birthday card included, ends with an invite to the full game at wsyatm.626labs.dev. Light ("Having fun? Play the full game at wsyatm.626labs.dev.") by default; when the caveat shows, "The full game has more films and fuller casts. Sign up at wsyatm.626labs.dev." Both link to https://wsyatm.626labs.dev/bacon-trail in the same tab.
+- Where `hubReachable` comes from: the weekly `refresh-hub-reach.yml` job checks each actor's number against the hub's edge rules, and the nightly shard run merges the result into each shard actor. Absent means unknown.
+
 ## [0.4.0] — 2026-11-10
 
 The starting actor's Bacon number.

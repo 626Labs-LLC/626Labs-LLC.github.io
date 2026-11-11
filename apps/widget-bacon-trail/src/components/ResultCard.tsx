@@ -1,8 +1,17 @@
 import { CheckCircle2, Clock } from 'lucide-react';
-import type { Outcome, TrailStep } from '../types';
+import { FULL_GAME_URL, type Outcome, type TrailStep } from '../types';
 import { displayBaconNumber } from '../lib/baconNumber';
 import { BaconConfetti } from './BaconConfetti';
 import { TrailBreadcrumb } from './TrailBreadcrumb';
+
+function FullGameInvite({ full }: { full: boolean }) {
+  return (
+    <p className="btw-result-sub btw-result-invite" data-testid="bacon-invite">
+      {full ? 'The full game has more films and fuller casts. Sign up at ' : 'Having fun? Play the full game at '}
+      <a href={FULL_GAME_URL}>wsyatm.626labs.dev</a>.
+    </p>
+  );
+}
 
 interface Props {
   outcome: Outcome;
@@ -30,6 +39,7 @@ export function ResultCard({ outcome, filmCount, trail, ctaUrl, ctaLabel, onPlay
           You found Kevin Bacon in <span className="count">0</span> films.
         </h3>
         <p className="btw-result-sub">Bacon number 0. Happy birthday, Kevin.</p>
+        <FullGameInvite full={false} />
         <TrailBreadcrumb trail={trail} />
         <div className="btw-result-ctas">
           <button type="button" className="btw-btn primary" onClick={onPlayAgain}>
@@ -46,8 +56,13 @@ export function ResultCard({ outcome, filmCount, trail, ctaUrl, ctaLabel, onPlay
   // The starting actor is always trail[0]; filmCount is the path's length.
   const start = trail[0]?.kind === 'actor' ? trail[0].actor : null;
   const line = start
-    ? displayBaconNumber({ stored: start.baconNumber, won: found, steps: filmCount })
-    : { baconNumber: null, shortestRoute: false };
+    ? displayBaconNumber({
+        stored: start.baconNumber,
+        won: found,
+        steps: filmCount,
+        hubReachable: start.hubReachable,
+      })
+    : { baconNumber: null, shortestRoute: false, notHere: false };
 
   return (
     <div className={`btw-result ${found ? 'is-found' : 'is-miss'}`} role="status" aria-live="polite">
@@ -67,10 +82,13 @@ export function ResultCard({ outcome, filmCount, trail, ctaUrl, ctaLabel, onPlay
 
       {start && line.baconNumber !== null && (
         <p className="btw-result-sub" data-testid="bacon-number-line">
-          {start.name} has a Bacon number of {line.baconNumber}.
+          {start.name} has a Bacon number of {line.baconNumber}
+          {line.notHere ? ' (path not available here)' : ''}.
           {line.shortestRoute && <span className="btw-result-shortest"> That's the shortest route.</span>}
         </p>
       )}
+
+      <FullGameInvite full={line.notHere} />
 
       <TrailBreadcrumb trail={trail} />
 

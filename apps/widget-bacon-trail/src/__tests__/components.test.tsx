@@ -370,8 +370,8 @@ describe('ResultCard, Kevin Bacon on his birthday', () => {
 });
 
 describe('ResultCard, the Bacon number line', () => {
-  const start = (baconNumber?: number): TrailStep[] => [
-    { kind: 'actor', actor: { id: 1903874, name: 'Maya Hawke', profilePath: null, baconNumber } },
+  const start = (baconNumber?: number, hubReachable?: boolean): TrailStep[] => [
+    { kind: 'actor', actor: { id: 1903874, name: 'Maya Hawke', profilePath: null, baconNumber, hubReachable } },
   ];
   const card = (outcome: 'found' | 'out-of-films', filmCount: number, trail: TrailStep[]) =>
     render(
@@ -407,5 +407,55 @@ describe('ResultCard, the Bacon number line', () => {
   it('hides the line when the shard has no number', () => {
     card('found', 3, start(undefined));
     expect(screen.queryByTestId('bacon-number-line')).toBeNull();
+  });
+
+  it('unreachable loss shows the caveat and the full-game invite', () => {
+    card('out-of-films', 6, start(2, false));
+    expect(screen.getByTestId('bacon-number-line')).toHaveTextContent(
+      'Maya Hawke has a Bacon number of 2 (path not available here).'
+    );
+    expect(screen.getByTestId('bacon-invite')).toHaveTextContent(
+      'The full game has more films and fuller casts. Sign up at wsyatm.626labs.dev.'
+    );
+    expect(screen.getByRole('link', { name: 'wsyatm.626labs.dev' })).toHaveAttribute(
+      'href',
+      'https://wsyatm.626labs.dev/bacon-trail'
+    );
+  });
+
+  it('reachable win shows the light invite', () => {
+    card('found', 2, start(2, true));
+    expect(screen.getByTestId('bacon-invite')).toHaveTextContent(
+      'Having fun? Play the full game at wsyatm.626labs.dev.'
+    );
+    expect(screen.getByRole('link', { name: 'wsyatm.626labs.dev' })).toHaveAttribute(
+      'href',
+      'https://wsyatm.626labs.dev/bacon-trail'
+    );
+    expect(document.body).not.toHaveTextContent('(path not available here)');
+  });
+
+  it('no number still shows the light invite', () => {
+    card('found', 3, start(undefined));
+    expect(screen.getByTestId('bacon-invite')).toHaveTextContent(
+      'Having fun? Play the full game at wsyatm.626labs.dev.'
+    );
+  });
+
+  it('the birthday card shows the light invite', () => {
+    render(
+      <ResultCard
+        outcome="found"
+        filmCount={0}
+        trail={start(0)}
+        ctaUrl="/"
+        ctaLabel="More"
+        onPlayAgain={() => {}}
+        baconBirthday
+      />
+    );
+    expect(screen.getByTestId('bacon-invite')).toHaveTextContent(
+      'Having fun? Play the full game at wsyatm.626labs.dev.'
+    );
   });
 });

@@ -11,7 +11,11 @@ export interface Actor {
   birthday?: string;
   popularity?: number;
   baconNumber?: number;
+  /** Whether the hub's own edge rules can walk to Kevin from here. Absent means unknown. */
+  hubReachable?: boolean;
 }
+
+export const FULL_GAME_URL = 'https://wsyatm.626labs.dev/bacon-trail';
 
 export interface Movie {
   id: number;

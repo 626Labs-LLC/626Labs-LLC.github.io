@@ -14,21 +14,29 @@ export interface BaconNumberLine {
   baconNumber: number | null;
   /** The win matched the stored number exactly. */
   shortestRoute: boolean;
+  /** The stored number is shown, but the hub's rules can't walk that route. */
+  notHere: boolean;
 }
 
 export function displayBaconNumber({
   stored,
   won,
   steps,
+  hubReachable,
 }: {
   stored: unknown;
   won: boolean;
   steps: number;
+  /** Shard flag; undefined means unknown, which makes no claim. */
+  hubReachable?: boolean;
 }): BaconNumberLine {
   if (typeof stored !== 'number' || !Number.isInteger(stored) || stored < 0) {
-    return { baconNumber: null, shortestRoute: false };
+    return { baconNumber: null, shortestRoute: false, notHere: false };
   }
-  if (!won) return { baconNumber: stored, shortestRoute: false };
-  if (steps >= stored) return { baconNumber: stored, shortestRoute: steps === stored };
-  return { baconNumber: steps, shortestRoute: false };
+  // A win at or under the stored number proves a route here, whatever the cache says.
+  const proven = won && steps <= stored;
+  const notHere = hubReachable === false && !proven;
+  if (!won) return { baconNumber: stored, shortestRoute: false, notHere };
+  if (steps >= stored) return { baconNumber: stored, shortestRoute: steps === stored, notHere };
+  return { baconNumber: steps, shortestRoute: false, notHere };
 }
