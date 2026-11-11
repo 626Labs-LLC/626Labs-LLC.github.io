@@ -2,6 +2,15 @@
 
 All notable changes to the Birthday Bacon Trail widget. Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.0] — 2026-11-10
+
+The starting actor's Bacon number.
+
+### Added
+
+- The result card names the starting actor's Bacon number, on a win and on a loss: "Maya Hawke has a Bacon number of 2." A win at exactly that number adds "That's the shortest route." Ported from WeSeeYouAtTheMovies PR #84 (its D74 part 1), same display rule: a shown number is never one the player just beat. A win shorter than the stored number shows the player's count instead, and never claims shortest.
+- The number comes from the shard's `baconNumber` (CinePerks actorDatabase, copied nightly), computed client-side in `src/lib/baconNumber.ts`. Actors with no number get no line. The sibling app's recheck flag on a beat has no hub equivalent: the hub has no write path to that database.
+
 ## [0.3.0] — 2026-11-10
 
 Kevin Bacon on his birthday.
