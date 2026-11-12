@@ -2,6 +2,14 @@
 
 All notable changes to the Birthday Bacon Trail widget. Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.6.0] — 2026-11-11
+
+See the bacons.
+
+### Added
+
+- A row of bacon strips under the Bacon line, one per film of the number the line names: two strips for a Bacon number of 2, the player's own count when they beat the stored number. Same strip drawing as the Kevin birthday confetti, no emoji. Decorative (`aria-hidden`); the sentence carries the number. No row when the line doesn't show.
+
 ## [0.5.0] — 2026-11-10
 
 Say when the true route isn't walkable here, and invite to the full game.

@@ -88,6 +88,16 @@ export function ResultCard({ outcome, filmCount, trail, ctaUrl, ctaLabel, onPlay
         </p>
       )}
 
+      {start && line.baconNumber !== null && line.baconNumber > 0 && (
+        // One strip per film of the number the line just named. Decorative:
+        // the sentence above already says the number.
+        <div className="btw-bacon-count" aria-hidden="true" data-testid="bacon-count">
+          {Array.from({ length: line.baconNumber }, (_, i) => (
+            <span key={i} className="btw-bacon-chip" />
+          ))}
+        </div>
+      )}
+
       <FullGameInvite full={line.notHere} />
 
       <TrailBreadcrumb trail={trail} />

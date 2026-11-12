@@ -641,12 +641,13 @@
   pointer-events: none;
   z-index: 0;
 }
-.btw-bacon-strip {
+/* One drawing of a bacon strip, shared by the birthday confetti and the
+   Bacon-number count row. */
+.btw-bacon-strip,
+.btw-bacon-chip {
   --btw-bacon-lean: #c8423a;
   --btw-bacon-fat: #f3d2b3;
   --btw-bacon-dark: #8e2a22;
-  position: absolute;
-  top: -24px;
   width: 36px;
   height: 12px;
   border-radius: 3px 5px 3px 5px;
@@ -658,6 +659,22 @@
     var(--btw-bacon-fat) 64% 80%,
     var(--btw-bacon-dark) 80% 100%
   );
+}
+.btw-bacon-count {
+  display: flex;
+  justify-content: center;
+  gap: var(--gw-s-2);
+}
+.btw-bacon-chip {
+  display: block;
+  transform: rotate(-6deg);
+}
+.btw-bacon-chip:nth-child(even) {
+  transform: rotate(5deg);
+}
+.btw-bacon-strip {
+  position: absolute;
+  top: -24px;
   opacity: 0;
   animation-name: btw-bacon-fall;
   animation-timing-function: cubic-bezier(0.3, 0.1, 0.6, 1);
