@@ -7,7 +7,8 @@
       "profilePath": "/iFY6t7Ux9r70WB7Sp0TTVz6eGtm.jpg",
       "birthday": "1986-10-23",
       "popularity": 8.7764,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 10859,
@@ -15,7 +16,8 @@
       "profilePath": "/trzgptffGvAlAT6MEu01fz47cLW.jpg",
       "birthday": "1976-10-23",
       "popularity": 7.6725,
-      "baconNumber": 1
+      "baconNumber": 1,
+      "hubReachable": true
     },
     {
       "id": 1392137,
@@ -23,7 +25,8 @@
       "profilePath": "/9bfJ5jHKDEuBWxiH0s6MSxIkOPn.jpg",
       "birthday": "1994-10-23",
       "popularity": 6.0634,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 237045,
@@ -31,7 +34,8 @@
       "profilePath": "/6naZ3oybdCtfggc5pTrcBDxOXrP.jpg",
       "birthday": "1979-10-23",
       "popularity": 4.6114,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 561869,
@@ -39,7 +43,8 @@
       "profilePath": "/1Kv2sVVUkNSXyvmma8RBAX0CNGA.jpg",
       "birthday": "1998-10-23",
       "popularity": 3.8941,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 2491204,
@@ -47,7 +52,8 @@
       "profilePath": "/nFYd25ZreLJOQO1WcVoF4UftYV.jpg",
       "birthday": "1994-10-23",
       "popularity": 2.1772,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": false
     },
     {
       "id": 1803480,
@@ -55,7 +61,8 @@
       "profilePath": "/eRJbOFMP9TmBH6QoQWHweeMrkYK.jpg",
       "birthday": "1996-10-23",
       "popularity": 1.9844,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 147705,
@@ -79,7 +86,8 @@
       "profilePath": "/i4VFdmtrRrQoagTlHHlC1klwJAE.jpg",
       "birthday": "1947-10-23",
       "popularity": 1.6945,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 1344947,
@@ -87,7 +95,8 @@
       "profilePath": null,
       "birthday": "1981-10-23",
       "popularity": 1.6668,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 2931470,

@@ -7,7 +7,8 @@
       "profilePath": "/8DAd9knKivHR4CCStxlNEQXzjIh.jpg",
       "birthday": "1962-11-19",
       "popularity": 5.7968,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 5344,
@@ -15,7 +16,8 @@
       "profilePath": "/pxfTSfJ4yJWq52uomSWKzigngOa.jpg",
       "birthday": "1961-11-19",
       "popularity": 3.0409,
-      "baconNumber": 1
+      "baconNumber": 1,
+      "hubReachable": false
     },
     {
       "id": 19,
@@ -23,7 +25,8 @@
       "profilePath": "/hpBKWV1jjoXQbr1s0iUZTSvw582.jpg",
       "birthday": "1959-11-19",
       "popularity": 2.7091,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 1023139,
@@ -31,7 +34,8 @@
       "profilePath": "/me7eifBie8S7gFwhZfkF3jROL99.jpg",
       "birthday": "1983-11-19",
       "popularity": 2.4419,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 65345,
@@ -39,7 +43,8 @@
       "profilePath": "/qvuH2mRmfG2yIchpsHefprcKYLK.jpg",
       "birthday": "1972-11-19",
       "popularity": 2.2739,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 8183,
@@ -47,7 +52,8 @@
       "profilePath": "/ggzY1JfGsNfLa1UdnUiQWem0zMq.jpg",
       "birthday": "1954-11-19",
       "popularity": 2.1179,
-      "baconNumber": 1
+      "baconNumber": 1,
+      "hubReachable": true
     },
     {
       "id": 1231402,
@@ -55,7 +61,8 @@
       "profilePath": "/qEOp1lj0HGAVy1wpqIxMNkxIzn7.jpg",
       "birthday": "1968-11-19",
       "popularity": 1.8998,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 68759,
@@ -63,7 +70,8 @@
       "profilePath": "/yQtKmCN8u3FpioGcytjgTZyVz0a.jpg",
       "birthday": "1963-11-19",
       "popularity": 1.813,
-      "baconNumber": 2
+      "baconNumber": 2,
+      "hubReachable": true
     },
     {
       "id": 85523,
