@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T14:46:41.651Z",
+  "generatedAt": "2026-11-13T14:05:19.111Z",
   "count": 59,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-11-12T14:02:11Z",
+      "pushed_at": "2026-11-13T13:28:51Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -121,7 +121,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-11-12T04:15:31Z",
+      "pushed_at": "2026-11-13T13:13:01Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -145,7 +145,7 @@
       "description": "Structured AI-assisted workspace template for short-form technical/dev blogging with vibe-coding lean — write once, publish to markdown, Hugo, Ghost, Substack, and Jekyll.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/BlogStudio",
       "language": "JavaScript",
-      "pushed_at": "2026-05-29T18:43:54Z",
+      "pushed_at": "2026-11-13T05:51:05Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -229,7 +229,7 @@
       "description": "Homebrew tap for Sanduhr and other Estevan Hernandez Mac apps",
       "html_url": "https://github.com/estevanhernandez-stack-ed/homebrew-tap",
       "language": "Ruby",
-      "pushed_at": "2026-11-12T03:46:10Z",
+      "pushed_at": "2026-11-13T12:33:12Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -397,7 +397,7 @@
       "description": "Native Windows 11 + macOS glass widget that projects when you'll hit your Claude usage cap — burn-rate, pace markers, live token-burn from local Claude Code sessions, and five glass themes. Independent third-party tool. MIT.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
       "language": "C#",
-      "pushed_at": "2026-11-12T14:10:53Z",
+      "pushed_at": "2026-11-13T13:58:07Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -457,7 +457,7 @@
       "description": "Structured AI-assisted workspace template for long-form academic writing — dissertation, journal article, or master's thesis from one root with research-phase agent swarms.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ThesisStudio",
       "language": "JavaScript",
-      "pushed_at": "2026-04-26T22:31:06Z",
+      "pushed_at": "2026-11-13T05:47:07Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -589,7 +589,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-11-12T14:05:05Z",
+      "pushed_at": "2026-11-13T14:05:07Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
@@ -709,7 +709,7 @@
       "description": "A VS Code workspace template for AI-assisted iterative fiction writing. Fork it, fill it, write.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/WriterStudio",
       "language": null,
-      "pushed_at": "2026-04-30T04:00:33Z",
+      "pushed_at": "2026-11-13T05:46:13Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
