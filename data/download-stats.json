@@ -748,8 +748,8 @@
       ]
     },
     "estevanhernandez-stack-ed/RBX15-Shirt-and-Pants": {
-      "total": 25,
-      "installers": 25,
+      "total": 26,
+      "installers": 26,
       "updates": 0,
       "polling": 0,
       "other": 0,
@@ -757,13 +757,13 @@
         {
           "tag": "v5.0.0",
           "published": "2026-11-03",
-          "total": 2,
-          "installer": 2,
+          "total": 3,
+          "installer": 3,
           "update": 0,
           "polling": 0,
           "other": 0,
           "assets": {
-            "RBX15-Maker-v5.0.0.0-portable-win-x64.zip": 1,
+            "RBX15-Maker-v5.0.0.0-portable-win-x64.zip": 2,
             "RBX15-Maker-v5.0.0.0.msix": 1
           }
         },
@@ -809,43 +809,43 @@
       ]
     },
     "estevanhernandez-stack-ed/ROROROblox": {
-      "total": 355688,
-      "installers": 833,
-      "updates": 484,
-      "polling": 354322,
+      "total": 366829,
+      "installers": 856,
+      "updates": 490,
+      "polling": 365434,
       "other": 49,
       "releases": [
         {
           "tag": "v1.37.0.0",
           "published": "2026-11-12",
-          "total": 14079,
-          "installer": 38,
-          "update": 25,
-          "polling": 14015,
+          "total": 24948,
+          "installer": 61,
+          "update": 30,
+          "polling": 24856,
           "other": 1,
           "assets": {
             "dev-cert.cer": 1,
-            "known-issues.json": 5182,
-            "known-issues.json.sig": 5152,
-            "plugins-catalog.json": 25,
-            "RELEASES": 2,
-            "releases.win.json": 40,
-            "roblox-compat.json": 1846,
-            "roblox-compat.json.sig": 1768,
-            "RORORO-1.37.0-delta.nupkg": 20,
+            "known-issues.json": 9025,
+            "known-issues.json.sig": 8970,
+            "plugins-catalog.json": 35,
+            "RELEASES": 3,
+            "releases.win.json": 70,
+            "roblox-compat.json": 3446,
+            "roblox-compat.json.sig": 3307,
+            "RORORO-1.37.0-delta.nupkg": 25,
             "RORORO-1.37.0-full.nupkg": 5,
-            "RORORO-Sideload-x64-1.37.0.0.msix": 2,
-            "RORORO-win-Portable.zip": 2,
-            "RORORO-win-Setup.exe": 34
+            "RORORO-Sideload-x64-1.37.0.0.msix": 3,
+            "RORORO-win-Portable.zip": 4,
+            "RORORO-win-Setup.exe": 54
           }
         },
         {
           "tag": "v1.36.0.0",
           "published": "2026-11-06",
-          "total": 58012,
+          "total": 58043,
           "installer": 45,
-          "update": 44,
-          "polling": 57919,
+          "update": 45,
+          "polling": 57949,
           "other": 4,
           "assets": {
             "dev-cert.cer": 4,
@@ -853,10 +853,10 @@
             "known-issues.json.sig": 21056,
             "plugins-catalog.json": 63,
             "RELEASES": 6,
-            "releases.win.json": 136,
+            "releases.win.json": 166,
             "roblox-compat.json": 7746,
             "roblox-compat.json.sig": 7433,
-            "RORORO-1.36.0-delta.nupkg": 36,
+            "RORORO-1.36.0-delta.nupkg": 37,
             "RORORO-1.36.0-full.nupkg": 8,
             "RORORO-Sideload-x64-1.36.0.0.msix": 2,
             "RORORO-win-Portable.zip": 7,
@@ -866,10 +866,10 @@
         {
           "tag": "v1.35.0.0",
           "published": "2026-10-26",
-          "total": 92299,
+          "total": 92329,
           "installer": 74,
           "update": 52,
-          "polling": 92165,
+          "polling": 92195,
           "other": 8,
           "assets": {
             "dev-cert.cer": 8,
@@ -877,7 +877,7 @@
             "known-issues.json.sig": 33036,
             "plugins-catalog.json": 126,
             "RELEASES": 13,
-            "releases.win.json": 303,
+            "releases.win.json": 333,
             "roblox-compat.json": 12895,
             "roblox-compat.json.sig": 12469,
             "RORORO-1.35.0-delta.nupkg": 40,
@@ -890,10 +890,10 @@
         {
           "tag": "v1.34.0.0",
           "published": "2026-10-23",
-          "total": 22972,
+          "total": 23002,
           "installer": 32,
           "update": 37,
-          "polling": 22901,
+          "polling": 22931,
           "other": 2,
           "assets": {
             "dev-cert.cer": 2,
@@ -901,7 +901,7 @@
             "known-issues.json.sig": 8039,
             "plugins-catalog.json": 33,
             "RELEASES": 2,
-            "releases.win.json": 348,
+            "releases.win.json": 378,
             "roblox-compat.json": 3263,
             "roblox-compat.json.sig": 3134,
             "RORORO-1.34.0-delta.nupkg": 31,
@@ -914,10 +914,10 @@
         {
           "tag": "v1.33.0.0",
           "published": "2026-10-08",
-          "total": 83323,
+          "total": 83353,
           "installer": 90,
           "update": 45,
-          "polling": 83184,
+          "polling": 83214,
           "other": 4,
           "assets": {
             "dev-cert.cer": 4,
@@ -925,7 +925,7 @@
             "known-issues.json.sig": 29734,
             "plugins-catalog.json": 103,
             "RELEASES": 6,
-            "releases.win.json": 524,
+            "releases.win.json": 554,
             "roblox-compat.json": 11686,
             "roblox-compat.json.sig": 11282,
             "RORORO-1.33.0-delta.nupkg": 27,
@@ -938,10 +938,10 @@
         {
           "tag": "v1.32.1.0",
           "published": "2026-10-06",
-          "total": 5411,
+          "total": 5441,
           "installer": 7,
           "update": 33,
-          "polling": 5369,
+          "polling": 5399,
           "other": 2,
           "assets": {
             "dev-cert.cer": 2,
@@ -949,7 +949,7 @@
             "known-issues.json.sig": 1699,
             "plugins-catalog.json": 8,
             "RELEASES": 2,
-            "releases.win.json": 529,
+            "releases.win.json": 559,
             "roblox-compat.json": 721,
             "roblox-compat.json.sig": 705,
             "RORORO-1.32.1-delta.nupkg": 28,
@@ -962,10 +962,10 @@
         {
           "tag": "v1.32.0.0",
           "published": "2026-09-30",
-          "total": 22510,
+          "total": 22541,
           "installer": 22,
           "update": 25,
-          "polling": 22461,
+          "polling": 22492,
           "other": 2,
           "assets": {
             "dev-cert.cer": 2,
@@ -973,7 +973,7 @@
             "known-issues.json.sig": 7526,
             "plugins-catalog.json": 5,
             "RELEASES": 3,
-            "releases.win.json": 579,
+            "releases.win.json": 610,
             "roblox-compat.json": 3455,
             "roblox-compat.json.sig": 3323,
             "RORORO-1.32.0-delta.nupkg": 20,
@@ -986,10 +986,10 @@
         {
           "tag": "v1.31.0.0",
           "published": "2026-09-24",
-          "total": 16887,
+          "total": 16917,
           "installer": 28,
           "update": 22,
-          "polling": 16834,
+          "polling": 16864,
           "other": 3,
           "assets": {
             "dev-cert.cer": 3,
@@ -997,7 +997,7 @@
             "known-issues.json.sig": 4715,
             "plugins-catalog.json": 5,
             "RELEASES": 5,
-            "releases.win.json": 628,
+            "releases.win.json": 658,
             "roblox-compat.json": 3435,
             "roblox-compat.json.sig": 3286,
             "RORORO-1.31.0-delta.nupkg": 16,
@@ -1010,10 +1010,10 @@
         {
           "tag": "v1.30.0.0",
           "published": "2026-09-21",
-          "total": 884,
+          "total": 914,
           "installer": 11,
           "update": 21,
-          "polling": 850,
+          "polling": 880,
           "other": 2,
           "assets": {
             "dev-cert.cer": 2,
@@ -1021,7 +1021,7 @@
             "known-issues.json.sig": 3,
             "plugins-catalog.json": 4,
             "RELEASES": 3,
-            "releases.win.json": 650,
+            "releases.win.json": 680,
             "roblox-compat.json": 93,
             "roblox-compat.json.sig": 94,
             "RORORO-1.30.0-delta.nupkg": 16,
@@ -1034,15 +1034,15 @@
         {
           "tag": "v1.29.0.0",
           "published": "2026-09-16",
-          "total": 5782,
+          "total": 5812,
           "installer": 24,
           "update": 15,
-          "polling": 5743,
+          "polling": 5773,
           "other": 0,
           "assets": {
             "plugins-catalog.json": 28,
             "RELEASES": 3,
-            "releases.win.json": 700,
+            "releases.win.json": 730,
             "roblox-compat.json": 2574,
             "roblox-compat.json.sig": 2438,
             "RORORO-1.29.0-delta.nupkg": 10,
@@ -1691,11 +1691,11 @@
       ]
     },
     "estevanhernandez-stack-ed/Sanduhr_f-r_Claude": {
-      "total": 520,
-      "installers": 327,
+      "total": 525,
+      "installers": 330,
       "updates": 59,
-      "polling": 94,
-      "other": 40,
+      "polling": 95,
+      "other": 41,
       "releases": [
         {
           "tag": "v4.8.0",
@@ -1717,7 +1717,7 @@
           }
         },
         {
-          "tag": "v2.43.1-mac",
+          "tag": "v2.43.2-mac",
           "published": "2026-11-13",
           "total": 2,
           "installer": 2,
@@ -1725,19 +1725,31 @@
           "polling": 0,
           "other": 0,
           "assets": {
-            "Sanduhr-2.43.1.dmg": 2
+            "Sanduhr-2.43.2.dmg": 2
+          }
+        },
+        {
+          "tag": "v2.43.1-mac",
+          "published": "2026-11-13",
+          "total": 3,
+          "installer": 3,
+          "update": 0,
+          "polling": 0,
+          "other": 0,
+          "assets": {
+            "Sanduhr-2.43.1.dmg": 3
           }
         },
         {
           "tag": "v0.3.1-time",
           "published": "2026-11-13",
-          "total": 2,
+          "total": 3,
           "installer": 0,
           "update": 0,
           "polling": 0,
-          "other": 2,
+          "other": 3,
           "assets": {
-            "sanduhr-time-0.3.1.vsix": 2
+            "sanduhr-time-0.3.1.vsix": 3
           }
         },
         {
@@ -2441,10 +2453,10 @@
         {
           "tag": "v3.4.3",
           "published": "2026-10-11",
-          "total": 10,
+          "total": 11,
           "installer": 3,
           "update": 3,
-          "polling": 4,
+          "polling": 5,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.4.2-full.nupkg": 1,
@@ -2453,7 +2465,7 @@
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 1,
             "assets.win.json": 1,
-            "RELEASES": 1,
+            "RELEASES": 2,
             "releases.win.json": 2,
             "Sanduhr-Store-v3.4.3.0.msix": 1
           }
@@ -2982,24 +2994,24 @@
       ]
     },
     "estevanhernandez-stack-ed/Ur-OCR": {
-      "total": 207,
-      "installers": 72,
+      "total": 209,
+      "installers": 73,
       "updates": 0,
       "polling": 0,
-      "other": 135,
+      "other": 136,
       "releases": [
         {
           "tag": "v0.4.0",
           "published": "2026-07-03",
-          "total": 143,
-          "installer": 48,
+          "total": 145,
+          "installer": 49,
           "update": 0,
           "polling": 0,
-          "other": 95,
+          "other": 96,
           "assets": {
-            "manifest.json": 54,
+            "manifest.json": 55,
             "manifest.sha256": 41,
-            "plugin.zip": 48
+            "plugin.zip": 49
           }
         },
         {
@@ -3705,8 +3717,8 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-mac": {
-      "total": 601,
-      "installers": 601,
+      "total": 611,
+      "installers": 611,
       "updates": 0,
       "polling": 0,
       "other": 0,
@@ -3714,13 +3726,13 @@
         {
           "tag": "v0.8.0",
           "published": "2026-09-13",
-          "total": 222,
-          "installer": 222,
+          "total": 232,
+          "installer": 232,
           "update": 0,
           "polling": 0,
           "other": 0,
           "assets": {
-            "RORORO.pkg": 222
+            "RORORO.pkg": 232
           }
         },
         {
@@ -3966,24 +3978,24 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-afk": {
-      "total": 863,
-      "installers": 289,
+      "total": 879,
+      "installers": 295,
       "updates": 0,
       "polling": 0,
-      "other": 574,
+      "other": 584,
       "releases": [
         {
           "tag": "v0.5.2",
           "published": "2026-07-07",
-          "total": 802,
-          "installer": 271,
+          "total": 818,
+          "installer": 277,
           "update": 0,
           "polling": 0,
-          "other": 531,
+          "other": 541,
           "assets": {
-            "manifest.json": 271,
-            "manifest.sha256": 260,
-            "plugin.zip": 271
+            "manifest.json": 276,
+            "manifest.sha256": 265,
+            "plugin.zip": 277
           }
         },
         {
@@ -4194,24 +4206,24 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-task": {
-      "total": 778,
-      "installers": 274,
+      "total": 785,
+      "installers": 277,
       "updates": 0,
       "polling": 0,
-      "other": 504,
+      "other": 508,
       "releases": [
         {
           "tag": "v0.13.0",
           "published": "2026-10-26",
-          "total": 105,
-          "installer": 33,
+          "total": 112,
+          "installer": 36,
           "update": 0,
           "polling": 0,
-          "other": 72,
+          "other": 76,
           "assets": {
-            "manifest.json": 40,
-            "manifest.sha256": 32,
-            "plugin.zip": 33
+            "manifest.json": 42,
+            "manifest.sha256": 34,
+            "plugin.zip": 36
           }
         },
         {
