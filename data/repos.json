@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T13:07:08.464Z",
+  "generatedAt": "2026-11-15T13:36:50.077Z",
   "count": 59,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-11-14T12:33:59Z",
+      "pushed_at": "2026-11-15T12:59:55Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -121,7 +121,7 @@
       "description": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice announcements. Imagine Something Else.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/6deux6",
       "language": "JavaScript",
-      "pushed_at": "2026-11-13T22:11:39Z",
+      "pushed_at": "2026-11-15T01:28:33Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -349,7 +349,7 @@
       "description": "RoRoRo: run several Roblox clients side by side on Windows, each signed in as a different saved account. Account manager, game Library, Squad Launch, FPS caps, phone alerts, themes, plugins. Free and open source, on the Microsoft Store. Not affiliated with Roblox Corporation.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
-      "pushed_at": "2026-11-12T02:56:59Z",
+      "pushed_at": "2026-11-15T01:02:10Z",
       "stargazers_count": 10,
       "archived": false,
       "fork": false
@@ -409,7 +409,7 @@
       "description": "Claude Code mods, published from Sanduhr. claude plugin marketplace add estevanhernandez-stack-ed/sanduhr-mods",
       "html_url": "https://github.com/estevanhernandez-stack-ed/sanduhr-mods",
       "language": "TypeScript",
-      "pushed_at": "2026-11-13T15:30:35Z",
+      "pushed_at": "2026-11-14T13:31:16Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -589,7 +589,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-11-14T08:10:26Z",
+      "pushed_at": "2026-11-15T08:11:37Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
