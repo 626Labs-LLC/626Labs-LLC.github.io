@@ -25,7 +25,8 @@
       "profilePath": null,
       "birthday": "1930-05-21",
       "popularity": 2.9441,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 1590280,
@@ -33,7 +34,8 @@
       "profilePath": "/3JMac2dAdRtYWZ9ddfsyIZAyU6z.jpg",
       "birthday": "1984-05-21",
       "popularity": 2.3692,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 82732,
@@ -50,7 +52,8 @@
       "profilePath": "/b8u5SAMAg0p1x7D4wXbr8F1JWJT.jpg",
       "birthday": "1989-05-21",
       "popularity": 2.1613,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 16619,
@@ -67,7 +70,8 @@
       "profilePath": "/rXCKDR3H5D7SeHCEP7YAU8WfGGu.jpg",
       "birthday": "1969-05-21",
       "popularity": 1.942,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 8537,

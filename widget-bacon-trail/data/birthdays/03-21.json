@@ -25,7 +25,8 @@
       "profilePath": "/dKWtZXEnTOedUUnDwBCZZN7w2uG.jpg",
       "birthday": "1989-03-21",
       "popularity": 3.2433,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 928572,
@@ -42,7 +43,8 @@
       "profilePath": "/yoeUvAcXXxy0fY1EOk9D1Qp7zsO.jpg",
       "birthday": "2000-03-21",
       "popularity": 3.045,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 4756,

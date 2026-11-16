@@ -88,7 +88,8 @@
       "profilePath": "/58DGEXFyWfaFdqL7yKKW0VdEg3R.jpg",
       "birthday": "1973-05-13",
       "popularity": 1.7345,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 1354093,
@@ -96,7 +97,8 @@
       "profilePath": "/5aNS45scpoLx2NXpaAZx1v9zbdT.jpg",
       "birthday": "1938-05-13",
       "popularity": 1.6681,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 1186941,

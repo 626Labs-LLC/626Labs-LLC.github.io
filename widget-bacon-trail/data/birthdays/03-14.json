@@ -34,7 +34,8 @@
       "profilePath": "/u0jomXe2hnmDRRu4bnTVD6BkCKl.jpg",
       "birthday": "1958-03-14",
       "popularity": 2.7638,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 27260,
@@ -60,7 +61,8 @@
       "profilePath": "/tJdqL4BRSAWVFX1W6cmwxFs9IFh.jpg",
       "birthday": "1949-03-14",
       "popularity": 2.4893,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 19154,

@@ -52,7 +52,8 @@
       "profilePath": "/u7GllU8dO2bkAvRC0i8yszogYqY.jpg",
       "birthday": "1965-09-03",
       "popularity": 2.0497,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 1957145,
@@ -78,7 +79,8 @@
       "profilePath": "/8bkl6B8i8cgW5xVjCoHQkxEqqke.jpg",
       "birthday": "1958-09-03",
       "popularity": 1.8574,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 2948828,

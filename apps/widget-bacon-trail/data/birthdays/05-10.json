@@ -43,7 +43,8 @@
       "profilePath": null,
       "birthday": "1928-05-10",
       "popularity": 2.0836,
-      "baconNumber": 3
+      "baconNumber": 3,
+      "hubReachable": true
     },
     {
       "id": 40311,
