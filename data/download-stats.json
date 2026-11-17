@@ -809,43 +809,67 @@
       ]
     },
     "estevanhernandez-stack-ed/ROROROblox": {
-      "total": 392359,
-      "installers": 898,
-      "updates": 530,
-      "polling": 390879,
-      "other": 52,
+      "total": 403370,
+      "installers": 920,
+      "updates": 563,
+      "polling": 401834,
+      "other": 53,
       "releases": [
+        {
+          "tag": "v1.39.0.0",
+          "published": "2026-11-16",
+          "total": 8869,
+          "installer": 18,
+          "update": 19,
+          "polling": 8831,
+          "other": 1,
+          "assets": {
+            "dev-cert.cer": 1,
+            "known-issues.json": 3291,
+            "known-issues.json.sig": 3266,
+            "plugins-catalog.json": 7,
+            "RELEASES": 3,
+            "releases.win.json": 24,
+            "roblox-compat.json": 1141,
+            "roblox-compat.json.sig": 1099,
+            "RORORO-1.39.0-delta.nupkg": 15,
+            "RORORO-1.39.0-full.nupkg": 4,
+            "RORORO-Sideload-x64-1.39.0.0.msix": 2,
+            "RORORO-win-Portable.zip": 2,
+            "RORORO-win-Setup.exe": 14
+          }
+        },
         {
           "tag": "v1.38.0.0",
           "published": "2026-11-16",
-          "total": 6991,
-          "installer": 16,
-          "update": 20,
-          "polling": 6953,
+          "total": 8902,
+          "installer": 20,
+          "update": 32,
+          "polling": 8848,
           "other": 2,
           "assets": {
             "dev-cert.cer": 2,
-            "known-issues.json": 2583,
-            "known-issues.json.sig": 2568,
-            "plugins-catalog.json": 10,
+            "known-issues.json": 3271,
+            "known-issues.json.sig": 3251,
+            "plugins-catalog.json": 11,
             "RELEASES": 2,
-            "releases.win.json": 23,
-            "roblox-compat.json": 902,
-            "roblox-compat.json.sig": 865,
-            "RORORO-1.38.0-delta.nupkg": 16,
-            "RORORO-1.38.0-full.nupkg": 4,
+            "releases.win.json": 51,
+            "roblox-compat.json": 1152,
+            "roblox-compat.json.sig": 1110,
+            "RORORO-1.38.0-delta.nupkg": 27,
+            "RORORO-1.38.0-full.nupkg": 5,
             "RORORO-Sideload-x64-1.38.0.0.msix": 2,
             "RORORO-win-Portable.zip": 3,
-            "RORORO-win-Setup.exe": 11
+            "RORORO-win-Setup.exe": 15
           }
         },
         {
           "tag": "v1.37.0.0",
           "published": "2026-11-12",
-          "total": 42966,
+          "total": 42995,
           "installer": 87,
-          "update": 40,
-          "polling": 42837,
+          "update": 41,
+          "polling": 42865,
           "other": 2,
           "assets": {
             "dev-cert.cer": 2,
@@ -853,10 +877,10 @@
             "known-issues.json.sig": 15472,
             "plugins-catalog.json": 56,
             "RELEASES": 5,
-            "releases.win.json": 131,
+            "releases.win.json": 159,
             "roblox-compat.json": 5906,
             "roblox-compat.json.sig": 5693,
-            "RORORO-1.37.0-delta.nupkg": 33,
+            "RORORO-1.37.0-delta.nupkg": 34,
             "RORORO-1.37.0-full.nupkg": 7,
             "RORORO-Sideload-x64-1.37.0.0.msix": 3,
             "RORORO-win-Portable.zip": 6,
@@ -866,10 +890,10 @@
         {
           "tag": "v1.36.0.0",
           "published": "2026-11-06",
-          "total": 58110,
+          "total": 58139,
           "installer": 45,
-          "update": 49,
-          "polling": 58012,
+          "update": 50,
+          "polling": 58040,
           "other": 4,
           "assets": {
             "dev-cert.cer": 4,
@@ -877,10 +901,10 @@
             "known-issues.json.sig": 21056,
             "plugins-catalog.json": 64,
             "RELEASES": 6,
-            "releases.win.json": 226,
+            "releases.win.json": 254,
             "roblox-compat.json": 7747,
             "roblox-compat.json.sig": 7433,
-            "RORORO-1.36.0-delta.nupkg": 41,
+            "RORORO-1.36.0-delta.nupkg": 42,
             "RORORO-1.36.0-full.nupkg": 8,
             "RORORO-Sideload-x64-1.36.0.0.msix": 2,
             "RORORO-win-Portable.zip": 7,
@@ -890,10 +914,10 @@
         {
           "tag": "v1.35.0.0",
           "published": "2026-10-26",
-          "total": 92394,
+          "total": 92422,
           "installer": 74,
           "update": 54,
-          "polling": 92258,
+          "polling": 92286,
           "other": 8,
           "assets": {
             "dev-cert.cer": 8,
@@ -901,7 +925,7 @@
             "known-issues.json.sig": 33036,
             "plugins-catalog.json": 127,
             "RELEASES": 13,
-            "releases.win.json": 393,
+            "releases.win.json": 421,
             "roblox-compat.json": 12896,
             "roblox-compat.json.sig": 12469,
             "RORORO-1.35.0-delta.nupkg": 42,
@@ -914,10 +938,10 @@
         {
           "tag": "v1.34.0.0",
           "published": "2026-10-23",
-          "total": 23063,
+          "total": 23091,
           "installer": 32,
           "update": 39,
-          "polling": 22990,
+          "polling": 23018,
           "other": 2,
           "assets": {
             "dev-cert.cer": 2,
@@ -925,7 +949,7 @@
             "known-issues.json.sig": 8039,
             "plugins-catalog.json": 33,
             "RELEASES": 2,
-            "releases.win.json": 437,
+            "releases.win.json": 465,
             "roblox-compat.json": 3263,
             "roblox-compat.json.sig": 3134,
             "RORORO-1.34.0-delta.nupkg": 33,
@@ -938,10 +962,10 @@
         {
           "tag": "v1.33.0.0",
           "published": "2026-10-08",
-          "total": 83412,
+          "total": 83440,
           "installer": 90,
           "update": 46,
-          "polling": 83272,
+          "polling": 83300,
           "other": 4,
           "assets": {
             "dev-cert.cer": 4,
@@ -949,7 +973,7 @@
             "known-issues.json.sig": 29734,
             "plugins-catalog.json": 103,
             "RELEASES": 6,
-            "releases.win.json": 612,
+            "releases.win.json": 640,
             "roblox-compat.json": 11686,
             "roblox-compat.json.sig": 11282,
             "RORORO-1.33.0-delta.nupkg": 28,
@@ -962,10 +986,10 @@
         {
           "tag": "v1.32.1.0",
           "published": "2026-10-06",
-          "total": 5500,
+          "total": 5528,
           "installer": 7,
           "update": 34,
-          "polling": 5457,
+          "polling": 5485,
           "other": 2,
           "assets": {
             "dev-cert.cer": 2,
@@ -973,7 +997,7 @@
             "known-issues.json.sig": 1699,
             "plugins-catalog.json": 8,
             "RELEASES": 2,
-            "releases.win.json": 617,
+            "releases.win.json": 645,
             "roblox-compat.json": 721,
             "roblox-compat.json.sig": 705,
             "RORORO-1.32.1-delta.nupkg": 29,
@@ -986,10 +1010,10 @@
         {
           "tag": "v1.32.0.0",
           "published": "2026-09-30",
-          "total": 22599,
+          "total": 22627,
           "installer": 22,
           "update": 25,
-          "polling": 22550,
+          "polling": 22578,
           "other": 2,
           "assets": {
             "dev-cert.cer": 2,
@@ -997,7 +1021,7 @@
             "known-issues.json.sig": 7526,
             "plugins-catalog.json": 5,
             "RELEASES": 3,
-            "releases.win.json": 668,
+            "releases.win.json": 696,
             "roblox-compat.json": 3455,
             "roblox-compat.json.sig": 3323,
             "RORORO-1.32.0-delta.nupkg": 20,
@@ -1010,10 +1034,10 @@
         {
           "tag": "v1.31.0.0",
           "published": "2026-09-24",
-          "total": 16975,
+          "total": 17002,
           "installer": 28,
           "update": 22,
-          "polling": 16922,
+          "polling": 16949,
           "other": 3,
           "assets": {
             "dev-cert.cer": 3,
@@ -1021,7 +1045,7 @@
             "known-issues.json.sig": 4715,
             "plugins-catalog.json": 5,
             "RELEASES": 5,
-            "releases.win.json": 716,
+            "releases.win.json": 743,
             "roblox-compat.json": 3435,
             "roblox-compat.json.sig": 3286,
             "RORORO-1.31.0-delta.nupkg": 16,
@@ -1034,10 +1058,10 @@
         {
           "tag": "v1.30.0.0",
           "published": "2026-09-21",
-          "total": 971,
+          "total": 977,
           "installer": 11,
           "update": 21,
-          "polling": 937,
+          "polling": 943,
           "other": 2,
           "assets": {
             "dev-cert.cer": 2,
@@ -1045,7 +1069,7 @@
             "known-issues.json.sig": 3,
             "plugins-catalog.json": 4,
             "RELEASES": 3,
-            "releases.win.json": 737,
+            "releases.win.json": 743,
             "roblox-compat.json": 93,
             "roblox-compat.json.sig": 94,
             "RORORO-1.30.0-delta.nupkg": 16,
@@ -1715,38 +1739,38 @@
       ]
     },
     "estevanhernandez-stack-ed/Sanduhr_f-r_Claude": {
-      "total": 528,
-      "installers": 333,
+      "total": 549,
+      "installers": 334,
       "updates": 59,
-      "polling": 95,
+      "polling": 115,
       "other": 41,
       "releases": [
         {
           "tag": "v2.44.0-mac",
           "published": "2026-11-16",
-          "total": 3,
-          "installer": 3,
+          "total": 4,
+          "installer": 4,
           "update": 0,
           "polling": 0,
           "other": 0,
           "assets": {
-            "Sanduhr-2.44.0.dmg": 3
+            "Sanduhr-2.44.0.dmg": 4
           }
         },
         {
           "tag": "v4.8.0",
           "published": "2026-11-13",
-          "total": 8,
+          "total": 9,
           "installer": 3,
           "update": 2,
-          "polling": 3,
+          "polling": 4,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-4.8.0-delta.nupkg": 1,
             "626Labs.Sanduhr-4.8.0-full.nupkg": 1,
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 1,
-            "assets.win.json": 1,
+            "assets.win.json": 2,
             "RELEASES": 1,
             "releases.win.json": 1,
             "Sanduhr-Store-v4.8.0.0.msix": 1
@@ -1875,10 +1899,10 @@
         {
           "tag": "v4.7.0",
           "published": "2026-11-07",
-          "total": 8,
+          "total": 10,
           "installer": 3,
           "update": 2,
-          "polling": 3,
+          "polling": 5,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-4.5.0-full.nupkg": 0,
@@ -1888,8 +1912,8 @@
             "626Labs.Sanduhr-4.7.0-full.nupkg": 1,
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 1,
-            "assets.win.json": 1,
-            "RELEASES": 1,
+            "assets.win.json": 2,
+            "RELEASES": 2,
             "releases.win.json": 1,
             "Sanduhr-Store-v4.7.0.0.msix": 1
           }
@@ -1945,10 +1969,10 @@
         {
           "tag": "v4.6.0",
           "published": "2026-11-03",
-          "total": 9,
+          "total": 11,
           "installer": 3,
           "update": 2,
-          "polling": 4,
+          "polling": 6,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-4.5.0-full.nupkg": 0,
@@ -1956,8 +1980,8 @@
             "626Labs.Sanduhr-4.6.0-full.nupkg": 1,
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 1,
-            "assets.win.json": 1,
-            "RELEASES": 1,
+            "assets.win.json": 2,
+            "RELEASES": 2,
             "releases.win.json": 2,
             "Sanduhr-Store-v4.6.0.0.msix": 1
           }
@@ -1977,10 +2001,10 @@
         {
           "tag": "v4.5.0",
           "published": "2026-11-02",
-          "total": 10,
+          "total": 12,
           "installer": 3,
           "update": 3,
-          "polling": 4,
+          "polling": 6,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.9.1-full.nupkg": 0,
@@ -1989,8 +2013,8 @@
             "626Labs.Sanduhr-4.5.0-full.nupkg": 2,
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 1,
-            "assets.win.json": 1,
-            "RELEASES": 1,
+            "assets.win.json": 2,
+            "RELEASES": 2,
             "releases.win.json": 2,
             "Sanduhr-Store-v4.5.0.0.msix": 1
           }
@@ -2034,10 +2058,10 @@
         {
           "tag": "v4.0.1",
           "published": "2026-10-29",
-          "total": 15,
+          "total": 17,
           "installer": 7,
           "update": 3,
-          "polling": 5,
+          "polling": 7,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.9.1-full.nupkg": 0,
@@ -2045,8 +2069,8 @@
             "626Labs.Sanduhr-4.0.1-full.nupkg": 1,
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 2,
-            "assets.win.json": 1,
-            "RELEASES": 1,
+            "assets.win.json": 2,
+            "RELEASES": 2,
             "releases.win.json": 3,
             "Sanduhr-Store-v4.0.1.0.msix": 4
           }
@@ -2138,10 +2162,10 @@
         {
           "tag": "v3.9.1",
           "published": "2026-10-24",
-          "total": 16,
+          "total": 17,
           "installer": 8,
           "update": 4,
-          "polling": 4,
+          "polling": 5,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.9.0-full.nupkg": 1,
@@ -2150,7 +2174,7 @@
             "626Labs.Sanduhr-win-Portable.zip": 2,
             "626Labs.Sanduhr-win-Setup.exe": 3,
             "assets.win.json": 1,
-            "RELEASES": 1,
+            "RELEASES": 2,
             "releases.win.json": 2,
             "Sanduhr-Store-v3.9.1.0.msix": 3
           }
@@ -2158,10 +2182,10 @@
         {
           "tag": "v3.9.0",
           "published": "2026-10-24",
-          "total": 15,
+          "total": 16,
           "installer": 6,
           "update": 3,
-          "polling": 6,
+          "polling": 7,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.8.0-full.nupkg": 1,
@@ -2170,7 +2194,7 @@
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 3,
             "assets.win.json": 1,
-            "RELEASES": 2,
+            "RELEASES": 3,
             "releases.win.json": 3,
             "Sanduhr-Store-v3.9.0.0.msix": 2
           }
@@ -2223,10 +2247,10 @@
         {
           "tag": "v3.7.1",
           "published": "2026-10-22",
-          "total": 16,
+          "total": 17,
           "installer": 5,
           "update": 4,
-          "polling": 7,
+          "polling": 8,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.5.0-full.nupkg": 1,
@@ -2236,7 +2260,7 @@
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 3,
             "assets.win.json": 1,
-            "RELEASES": 1,
+            "RELEASES": 2,
             "releases.win.json": 5,
             "Sanduhr-Store-v3.7.1.0.msix": 1
           }
@@ -2244,10 +2268,10 @@
         {
           "tag": "v3.6.0",
           "published": "2026-10-21",
-          "total": 12,
+          "total": 13,
           "installer": 3,
           "update": 3,
-          "polling": 6,
+          "polling": 7,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.5.0-full.nupkg": 1,
@@ -2256,7 +2280,7 @@
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 1,
             "assets.win.json": 1,
-            "RELEASES": 1,
+            "RELEASES": 2,
             "releases.win.json": 4,
             "Sanduhr-Store-v3.6.0.0.msix": 1
           }
@@ -2264,10 +2288,10 @@
         {
           "tag": "v3.5.0",
           "published": "2026-10-21",
-          "total": 13,
+          "total": 14,
           "installer": 3,
           "update": 4,
-          "polling": 6,
+          "polling": 7,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.4.2-full.nupkg": 1,
@@ -2277,7 +2301,7 @@
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 1,
             "assets.win.json": 1,
-            "RELEASES": 1,
+            "RELEASES": 2,
             "releases.win.json": 4,
             "Sanduhr-Store-v3.5.0.0.msix": 1
           }
@@ -2489,10 +2513,10 @@
         {
           "tag": "v3.4.3",
           "published": "2026-10-11",
-          "total": 11,
+          "total": 12,
           "installer": 3,
           "update": 3,
-          "polling": 5,
+          "polling": 6,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.4.2-full.nupkg": 1,
@@ -2501,7 +2525,7 @@
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 1,
             "assets.win.json": 1,
-            "RELEASES": 2,
+            "RELEASES": 3,
             "releases.win.json": 2,
             "Sanduhr-Store-v3.4.3.0.msix": 1
           }
@@ -2851,10 +2875,10 @@
         {
           "tag": "v3.4.0",
           "published": "2026-09-13",
-          "total": 19,
+          "total": 20,
           "installer": 7,
           "update": 5,
-          "polling": 7,
+          "polling": 8,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.2.0-full.nupkg": 1,
@@ -2865,7 +2889,7 @@
             "626Labs.Sanduhr-win-Portable.zip": 2,
             "626Labs.Sanduhr-win-Setup.exe": 2,
             "assets.win.json": 2,
-            "RELEASES": 2,
+            "RELEASES": 3,
             "releases.win.json": 3,
             "Sanduhr-Store-v3.4.0.0.msix": 3
           }
@@ -2873,10 +2897,10 @@
         {
           "tag": "v3.3.0.0",
           "published": "2026-07-19",
-          "total": 11,
+          "total": 12,
           "installer": 5,
           "update": 0,
-          "polling": 6,
+          "polling": 7,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.3.0-delta.nupkg": 0,
@@ -2884,25 +2908,25 @@
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 4,
             "assets.win.json": 2,
-            "RELEASES": 2,
+            "RELEASES": 3,
             "releases.win.json": 2
           }
         },
         {
           "tag": "v3.2.0.0",
           "published": "2026-07-14",
-          "total": 8,
+          "total": 11,
           "installer": 3,
           "update": 0,
-          "polling": 5,
+          "polling": 8,
           "other": 0,
           "assets": {
             "626Labs.Sanduhr-3.2.0-full.nupkg": 0,
             "626Labs.Sanduhr-win-Portable.zip": 1,
             "626Labs.Sanduhr-win-Setup.exe": 2,
-            "assets.win.json": 2,
-            "RELEASES": 1,
-            "releases.win.json": 2
+            "assets.win.json": 3,
+            "RELEASES": 2,
+            "releases.win.json": 3
           }
         },
         {
@@ -3030,24 +3054,24 @@
       ]
     },
     "estevanhernandez-stack-ed/Ur-OCR": {
-      "total": 218,
-      "installers": 76,
+      "total": 223,
+      "installers": 77,
       "updates": 0,
       "polling": 0,
-      "other": 142,
+      "other": 146,
       "releases": [
         {
           "tag": "v0.4.0",
           "published": "2026-07-03",
-          "total": 154,
-          "installer": 52,
+          "total": 159,
+          "installer": 53,
           "update": 0,
           "polling": 0,
-          "other": 102,
+          "other": 106,
           "assets": {
-            "manifest.json": 59,
-            "manifest.sha256": 43,
-            "plugin.zip": 52
+            "manifest.json": 62,
+            "manifest.sha256": 44,
+            "plugin.zip": 53
           }
         },
         {
@@ -3198,28 +3222,28 @@
       ]
     },
     "estevanhernandez-stack-ed/Ur-Score": {
-      "total": 143,
-      "installers": 40,
+      "total": 148,
+      "installers": 41,
       "updates": 0,
       "polling": 0,
-      "other": 103,
+      "other": 107,
       "releases": [
         {
           "tag": "v0.7.0",
           "published": "2026-10-06",
-          "total": 27,
-          "installer": 5,
+          "total": 32,
+          "installer": 6,
           "update": 0,
           "polling": 0,
-          "other": 22,
+          "other": 26,
           "assets": {
             "install.ps1": 0,
-            "manifest.json": 17,
-            "manifest.sha256": 5,
+            "manifest.json": 20,
+            "manifest.sha256": 6,
             "pet-sim-99-clan-battle.recipe.json": 0,
             "pet-sim-99-profile.recipe.json": 0,
             "pet-sim-99-top-clans.recipe.json": 0,
-            "plugin.zip": 5
+            "plugin.zip": 6
           }
         },
         {
@@ -3753,8 +3777,8 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-mac": {
-      "total": 626,
-      "installers": 626,
+      "total": 631,
+      "installers": 631,
       "updates": 0,
       "polling": 0,
       "other": 0,
@@ -3762,13 +3786,13 @@
         {
           "tag": "v0.8.0",
           "published": "2026-09-13",
-          "total": 246,
-          "installer": 246,
+          "total": 251,
+          "installer": 251,
           "update": 0,
           "polling": 0,
           "other": 0,
           "assets": {
-            "RORORO.pkg": 246
+            "RORORO.pkg": 251
           }
         },
         {
@@ -4014,24 +4038,24 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-afk": {
-      "total": 902,
-      "installers": 302,
+      "total": 907,
+      "installers": 303,
       "updates": 0,
       "polling": 0,
-      "other": 600,
+      "other": 604,
       "releases": [
         {
           "tag": "v0.5.2",
           "published": "2026-07-07",
-          "total": 841,
-          "installer": 284,
+          "total": 846,
+          "installer": 285,
           "update": 0,
           "polling": 0,
-          "other": 557,
+          "other": 561,
           "assets": {
-            "manifest.json": 285,
-            "manifest.sha256": 272,
-            "plugin.zip": 284
+            "manifest.json": 288,
+            "manifest.sha256": 273,
+            "plugin.zip": 285
           }
         },
         {
@@ -4149,22 +4173,22 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-mcp": {
-      "total": 107,
+      "total": 109,
       "installers": 33,
       "updates": 0,
       "polling": 0,
-      "other": 74,
+      "other": 76,
       "releases": [
         {
           "tag": "v0.5.0",
           "published": "2026-10-26",
-          "total": 37,
+          "total": 39,
           "installer": 9,
           "update": 0,
           "polling": 0,
-          "other": 28,
+          "other": 30,
           "assets": {
-            "manifest.json": 19,
+            "manifest.json": 21,
             "manifest.sha256": 9,
             "plugin.zip": 9
           }
@@ -4242,24 +4266,24 @@
       ]
     },
     "estevanhernandez-stack-ed/rororo-ur-task": {
-      "total": 808,
-      "installers": 284,
+      "total": 830,
+      "installers": 292,
       "updates": 0,
       "polling": 0,
-      "other": 524,
+      "other": 538,
       "releases": [
         {
           "tag": "v0.13.0",
           "published": "2026-10-26",
-          "total": 135,
-          "installer": 43,
+          "total": 157,
+          "installer": 51,
           "update": 0,
           "polling": 0,
-          "other": 92,
+          "other": 106,
           "assets": {
-            "manifest.json": 51,
-            "manifest.sha256": 41,
-            "plugin.zip": 43
+            "manifest.json": 59,
+            "manifest.sha256": 47,
+            "plugin.zip": 51
           }
         },
         {
