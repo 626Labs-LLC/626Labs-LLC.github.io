@@ -1,0 +1,73 @@
+/* On the bench: the public repos with the most commits lately, opening the
+   products zone on the home page. Filled by /repo-meter/bench.js.
+
+   Reads CONTRACT TOKENS ONLY (archetypes.REQUIRED_TOKENS), so every theme
+   dresses it without knowing it exists. No fills: type, hairlines and one
+   bar in --cyan, which holds on a dark field and a light one alike. A
+   theme may override .bench in its own dress; none has to.
+
+   Before bench.js fills it, and if the fetch fails, the element is empty
+   and takes no height. `grid-column` keeps it a full row in a theme whose
+   .products is a grid. */
+.bench { display: block; grid-column: 1 / -1; margin: 0 0 var(--s-8); }
+.bench:empty { display: none; }
+.bench .bench-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px;
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--border-2);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+}
+.bench .bench-eyebrow { color: var(--fg-1); font-weight: 600; }
+.bench .bench-note { color: var(--fg-3); }
+.bench .bench-stamp { color: var(--fg-3); margin-left: auto; }
+.bench .bench-list {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0 var(--s-6);
+}
+.bench .bench-list > li { margin: 0; padding: 0; min-width: 0; }
+.bench .bench-item {
+  display: block; height: 100%; box-sizing: border-box;
+  padding: var(--s-4) 0;
+  border-bottom: 1px solid var(--border-1);
+  color: inherit; text-decoration: none;
+}
+.bench .bench-line { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.bench .bench-rank { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); }
+.bench .bench-title {
+  font-family: var(--font-display); font-size: 17px; font-weight: 600; line-height: 1.25; color: var(--fg-1);
+  overflow-wrap: anywhere;
+}
+.bench a.bench-item:hover .bench-title,
+.bench a.bench-item:focus-visible .bench-title { text-decoration: underline; text-underline-offset: 3px; }
+.bench .bench-blurb {
+  margin: 6px 0 0; font-family: var(--font-body); font-size: 13px; line-height: 1.5; color: var(--fg-2);
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.bench .bench-bar {
+  display: block; height: 3px; margin: 12px 0 0;
+  width: var(--bench-share, 100%); min-width: 6px; max-width: 100%;
+  background: var(--cyan);
+}
+.bench .bench-stat { margin: 6px 0 0; font-family: var(--font-body); font-size: 12px; line-height: 1.4; color: var(--fg-3); }
+.bench .bench-stat b { font-weight: 600; color: var(--fg-2); }
+.bench .bench-new {
+  display: inline-block; margin: 8px 0 0; padding: 2px 6px;
+  border: 1px solid var(--magenta); color: var(--magenta);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+}
+
+/* On a phone the strip sits between the section heading and the first
+   product, so it has to stay short: one line per repo (rank, name, count),
+   no blurb and no bar. Full cards measured 832px at 390 wide and pushed the
+   first product down by that much. */
+@media (max-width: 640px) {
+  .bench { margin-bottom: var(--s-6); }
+  .bench .bench-list { grid-template-columns: minmax(0, 1fr); }
+  .bench .bench-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; padding: 10px 0; }
+  .bench .bench-line { flex: 1 1 auto; }
+  .bench .bench-title { font-size: 15px; }
+  .bench .bench-blurb, .bench .bench-bar { display: none; }
+  .bench .bench-stat { margin: 0; white-space: nowrap; }
+  .bench .bench-new { margin: 0; flex-basis: 100%; border: 0; padding: 0; }
+  .bench .bench-stamp { display: none; }
+}
