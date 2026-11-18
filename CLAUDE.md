@@ -562,6 +562,10 @@ Each of these cost real measurement time to find, and would again.
   `productPage` then `liveUrl` then `storeUrl`, `banner` (else
   `assets/brand/plugins/<id>-banner-1280x640.png`), and the versions file as
   `{ id: "vX.Y.Z" }`. Renaming any of those breaks it with no signal here.
+- **`BingSiteAuth.xml` at the repo root is not a stray.** It is the Bing
+  Webmaster Tools verification for `https://626labs.dev/` (added 2026-11-17).
+  Delete or move it and Bing unverifies the site, and Bing's index sends
+  several times the search traffic Google does.
 - **`data/site-stats.json` and `data/downloads.csv` have a reader outside
   this repo too.** The 626 dashboard's bulletin (Project-626Labs,
   `functions/src/domains/bulletin/reachSection.ts`, since 2026-10-16)
