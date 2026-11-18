@@ -136,6 +136,34 @@ def test_a_repo_with_no_catalog_entry_falls_back_to_its_name_and_github():
     assert out[0]["featured"] is False and out[0]["blurb"] == ""
 
 
+@needs_node
+def test_a_workflow_committing_as_the_actions_org_is_not_a_person():
+    """6deux6 (a release-feed bot) commits its own state file as `actions`,
+    which GitHub links to an ORGANIZATION account, not a Bot one. The first
+    bench ranked it at 27 commits; 3 were a person's."""
+    commits = [
+        {"author": {"login": "actions", "type": "Organization"},
+         "commit": {"author": {"name": "6deux6", "date": "2026-11-16T19:11:43Z"},
+                    "committer": {"name": "6deux6"}}},
+        {"author": {"login": "someone", "type": "User"},
+         "commit": {"author": {"name": "Someone", "date": "2026-11-14T10:00:00Z"},
+                    "committer": {"name": "GitHub"}}},
+        {"author": {"login": "dependabot[bot]", "type": "Bot"},
+         "commit": {"author": {"name": "dependabot[bot]", "date": "2026-11-14T11:00:00Z"},
+                    "committer": {"name": "GitHub"}}},
+        {"author": None,
+         "commit": {"author": {"name": "github-actions", "date": "2026-11-14T12:00:00Z"},
+                    "committer": {"name": "github-actions"}}},
+    ]
+    js = (
+        "import {bucket} from './scripts/refresh-repo-activity.mjs';"
+        f"console.log(JSON.stringify(bucket({json.dumps(commits)})))"
+    )
+    out = subprocess.run(["node", "--input-type=module", "-e", js], cwd=ROOT,
+                         capture_output=True, text=True, check=True)
+    assert json.loads(out.stdout) == {"2026-11-14": 1}
+
+
 # ── the renderer emits the empty element, and only the element ───────────
 
 BENCH = {"enabled": True, "eyebrow": "On the bench", "note": "Most commits, last 14 days."}

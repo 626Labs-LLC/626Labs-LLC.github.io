@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-18T01:41:29.258Z",
+ "generatedAt": "2026-11-18T03:22:41.264Z",
  "windowDays": 14,
  "minCommits": 3,
  "items": [
@@ -31,15 +31,6 @@
    "lastCommit": "2026-11-12"
   },
   {
-   "repo": "estevanhernandez-stack-ed/6deux6",
-   "title": "6deux6",
-   "href": "https://github.com/estevanhernandez-stack-ed/6deux6",
-   "blurb": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice…",
-   "featured": false,
-   "commits": 27,
-   "lastCommit": "2026-11-17"
-  },
-  {
    "repo": "estevanhernandez-stack-ed/sanduhr-mods",
    "title": "sanduhr-mods",
    "href": "https://github.com/estevanhernandez-stack-ed/sanduhr-mods",
@@ -47,6 +38,15 @@
    "featured": false,
    "commits": 7,
    "lastCommit": "2026-11-16"
+  },
+  {
+   "repo": "estevanhernandez-stack-ed/ThesisStudio",
+   "title": "ThesisStudio",
+   "href": "https://github.com/estevanhernandez-stack-ed/ThesisStudio",
+   "blurb": "Structured AI-assisted workspace template for long-form academic writing — dissertation, journal article, or master's…",
+   "featured": false,
+   "commits": 6,
+   "lastCommit": "2026-11-13"
   }
  ]
 }

@@ -24,7 +24,8 @@
  * HOW COUNTED. GET /repos/{r}/commits?since=<today minus windowDays> paged
  * at 100, up to MAX_PAGES. Bot commits are dropped: the hub repo alone
  * commits by bot several times a day, and the point of the meter is the
- * person. The rule matches the timeline's: author.type == "Bot", a login
+ * person. The rule: author.type == "Bot" or "Organization" (a workflow
+ * committing as "actions" links to that org account), a login
  * ending in "[bot]", or no linked GitHub author and a committer name
  * mentioning github-actions. Days bucket on the commit AUTHOR date, UTC.
  * /stats/commit_activity was rejected because it counts the bots.
@@ -70,6 +71,11 @@ const headers = {
 export function isBot(commit) {
   const login = commit.author?.login || "";
   if (commit.author?.type === "Bot") return true;
+  // A workflow that commits as "actions" links to the `actions` ORGANIZATION
+  // account, not a Bot one: 6deux6 writes its state file that way, and 24 of
+  // the 27 commits first counted for it were its own. An organization is
+  // never the person at the keyboard.
+  if (commit.author?.type === "Organization") return true;
   if (/\[bot\]$/i.test(login)) return true;
   const name = commit.commit?.committer?.name || "";
   const aname = commit.commit?.author?.name || "";
