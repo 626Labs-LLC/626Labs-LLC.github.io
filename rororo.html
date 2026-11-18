@@ -697,10 +697,10 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
   <div class="topnav-inner">
     <a class="brand" href="/"><span class="mark"></span>626 Labs</a>
     <div class="links">
-      <a class="hide-sm" href="/">The lab</a>
+      <a href="/" data-track="lab-nav">The lab</a>
       <a href="rororo-plugins.html">Plugins</a>
       <a class="hide-sm" href="https://github.com/estevanhernandez-stack-ed/ROROROblox">Source</a>
-      <a class="cta" href="https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product">Get RoRoRo</a>
+      <a class="cta" href="https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product" data-track="store-nav">Get RoRoRo</a>
     </div>
   </div>
 </nav>
@@ -749,8 +749,8 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     <div class="get-strip" id="get-it">
       <span class="gs-key">Get RoRoRo</span>
       <span class="spacer"></span>
-      <a class="btn primary" href="https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zM12.5 3H21v8.5h-8.5zM3 12.5h8.5V21H3zM12.5 12.5H21V21h-8.5z"/></svg>Get it on Microsoft Store</a>
-      <a class="btn" href="https://github.com/estevanhernandez-stack-ed/ROROROblox">View source on GitHub</a>
+      <a class="btn primary" href="https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product" data-track="store-hero"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8.5v8.5H3zM12.5 3H21v8.5h-8.5zM3 12.5h8.5V21H3zM12.5 12.5H21V21h-8.5z"/></svg>Get it on Microsoft Store</a>
+      <a class="btn" href="https://github.com/estevanhernandez-stack-ed/ROROROblox" data-track="source-hero">View source on GitHub</a>
     </div>
     <div class="repo-meter" data-repo="estevanhernandez-stack-ed/ROROROblox" aria-label="Commit activity for RoRoRo"></div>
   </section>
@@ -776,13 +776,13 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
         <span class="plat">Windows</span>
         <h3>Microsoft Store</h3>
         <p>Signed by Microsoft, bypasses SmartScreen entirely, auto-updates through the Store. One click and you are in — the best path for most people.</p>
-        <a class="go" href="https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product">Open the Store listing <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        <a class="go" href="https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product" data-track="store-install">Open the Store listing <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
       </div>
       <div class="install-card">
         <span class="plat">Windows</span>
         <h3>GitHub Releases</h3>
         <p>Grab <code>rororo-win-Setup.exe</code> — one click, installs to your user profile. SmartScreen warns once because the installer is unsigned; choose <b>More info → Run anyway</b>. Velopack auto-updates it from there.</p>
-        <a class="go" href="https://github.com/estevanhernandez-stack-ed/ROROROblox/releases">Open Releases <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        <a class="go" href="https://github.com/estevanhernandez-stack-ed/ROROROblox/releases" data-track="releases-install">Open Releases <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
       </div>
       <div class="install-card">
         <span class="plat">macOS 14+</span>
@@ -790,7 +790,35 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
         <p>The Mac-native sibling — signed and notarized by Apple, Sparkle auto-update. Install with one tap:</p>
         <code>brew tap estevanhernandez-stack-ed/rororo
 brew install --cask rororo</code>
-        <a class="go" href="https://github.com/estevanhernandez-stack-ed/rororo-mac">RoRoRo Mac on GitHub <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        <a class="go" href="https://github.com/estevanhernandez-stack-ed/rororo-mac" data-track="mac-install">RoRoRo Mac on GitHub <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-hd split">
+      <div>
+        <h2>More from the same bench</h2>
+        <p class="sub">RoRoRo comes from 626Labs, one builder in Fort Worth. If you play on a PC, these are yours too. All free.</p>
+      </div>
+      <div class="r">626Labs</div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="tag">Roblox · Windows</span>
+        <h3>RBX15 Classic Shirt and Pants Maker</h3>
+        <p>Paint Roblox Classic shirts and pants on the exact 585×559 template, with layers, one-click collars and cuffs, and a 3D preview on an avatar while you work. Works offline, with no account. <a href="rbx15.html" data-track="lab-rbx15">See RBX15</a></p>
+      </div>
+      <div class="card">
+        <span class="tag">PC games · Windows</span>
+        <h3>626 Mod Launcher</h3>
+        <p>Turn mods on and off for Bethesda, Unreal, FromSoft, BepInEx and Stardew games. A disabled mod moves to a holding folder instead of being deleted, so every toggle is reversible. No ads, no telemetry, no account. <a href="mod-launcher-games.html" data-track="lab-mod-launcher">See the supported games</a></p>
+      </div>
+      <div class="card">
+        <span class="tag">In your browser</span>
+        <h3>Three movie games</h3>
+        <p>Birthday Bacon Trail, Box Office Heads Up and Tag That Line. Each one is about a coffee break long. <a href="/play/" data-track="lab-play">Pick one and play</a></p>
       </div>
     </div>
   </section>
@@ -1106,11 +1134,12 @@ brew install --cask rororo</code>
     </div>
   </section>
 
-  <section>
+  <section id="safe">
     <div class="section-hd split">
       <div>
-        <h2>The honest part</h2>
-        <p class="sub">What this is, what the risk is, and whose work it builds on — said plainly, because it should be.</p>
+        <p class="eyebrow">The honest part</p>
+        <h2>Is RoRoRo safe?</h2>
+        <p class="sub">RoRoRo doesn't inject into or modify the Roblox client: it launches the official one, untouched. The Microsoft Store build is signed by Microsoft, and the source is public under the MIT license. What's left is Roblox's own stance on multi-instancing, so the chance of a ban looks low and isn't zero. What this is, what the risk is, and whose work it builds on, said plainly, because it should be.</p>
       </div>
       <div class="r">Owned, not hidden</div>
     </div>
@@ -1157,7 +1186,7 @@ brew install --cask rororo</code>
     </div>
 
     <div class="cta-arrow">
-      <a class="arrow-link" href="/">See everything 626 Labs makes <svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a class="arrow-link" href="/" data-track="lab-footer">See everything 626 Labs makes <svg class="ic arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
     </div>
   </section>
 
@@ -1174,6 +1203,16 @@ brew install --cask rororo</code>
 <script src="/assets/video-langs.js" defer></script>
 <script src="/assets/rororo-plugins.js" defer></script>
 <script src="/assets/reach-map.js" defer></script>
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[data-track]') : null;
+    if (!a || !window.goatcounter || !window.goatcounter.count) return;
+    var slug = a.getAttribute('data-track');
+    window.goatcounter.count({ path: "rororo-click/" + slug, title: "RoRoRo click: " + slug, event: true });
+  });
+})();
+</script>
 <!-- GoatCounter — privacy-friendly, cookieless analytics. See goatcounter.com. -->
 <script data-goatcounter="https://626labs.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>

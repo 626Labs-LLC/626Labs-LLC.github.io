@@ -165,11 +165,15 @@
         "releaseReviewed": [
           "estevanhernandez-stack-ed/ROROROblox@v1.36.0.0"
         ],
+        "clickTrack": {
+          "prefix": "rororo-click/",
+          "titlePrefix": "RoRoRo click: "
+        },
         "nav": [
           {
             "label": "The lab",
             "href": "/",
-            "hideSm": true
+            "track": "lab-nav"
           },
           {
             "label": "Plugins",
@@ -183,7 +187,8 @@
           {
             "label": "Get RoRoRo",
             "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product",
-            "cta": true
+            "cta": true,
+            "track": "store-nav"
           }
         ],
         "sections": [
@@ -234,11 +239,13 @@
                   "label": "Get it on Microsoft Store",
                   "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product",
                   "primary": true,
-                  "store": true
+                  "store": true,
+                  "track": "store-hero"
                 },
                 {
                   "label": "View source on GitHub",
-                  "href": "https://github.com/estevanhernandez-stack-ed/ROROROblox"
+                  "href": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
+                  "track": "source-hero"
                 }
               ]
             }
@@ -270,14 +277,16 @@
                     "title": "Microsoft Store",
                     "body": "Signed by Microsoft, bypasses SmartScreen entirely, auto-updates through the Store. One click and you are in — the best path for most people.",
                     "href": "https://apps.microsoft.com/detail/9NMJCS390KWB?cid=site-product",
-                    "label": "Open the Store listing"
+                    "label": "Open the Store listing",
+                    "track": "store-install"
                   },
                   {
                     "plat": "Windows",
                     "title": "GitHub Releases",
                     "body": "Grab <code>rororo-win-Setup.exe</code> — one click, installs to your user profile. SmartScreen warns once because the installer is unsigned; choose <b>More info → Run anyway</b>. Velopack auto-updates it from there.",
                     "href": "https://github.com/estevanhernandez-stack-ed/ROROROblox/releases",
-                    "label": "Open Releases"
+                    "label": "Open Releases",
+                    "track": "releases-install"
                   },
                   {
                     "plat": "macOS 14+",
@@ -285,7 +294,36 @@
                     "body": "The Mac-native sibling — signed and notarized by Apple, Sparkle auto-update. Install with one tap:",
                     "code": "brew tap estevanhernandez-stack-ed/rororo\nbrew install --cask rororo",
                     "href": "https://github.com/estevanhernandez-stack-ed/rororo-mac",
-                    "label": "RoRoRo Mac on GitHub"
+                    "label": "RoRoRo Mac on GitHub",
+                    "track": "mac-install"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "heading": "More from the same bench",
+            "sub": "RoRoRo comes from 626Labs, one builder in Fort Worth. If you play on a PC, these are yours too. All free.",
+            "aside": "626Labs",
+            "blocks": [
+              {
+                "type": "cards",
+                "items": [
+                  {
+                    "tag": "Roblox · Windows",
+                    "title": "RBX15 Classic Shirt and Pants Maker",
+                    "body": "Paint Roblox Classic shirts and pants on the exact 585×559 template, with layers, one-click collars and cuffs, and a 3D preview on an avatar while you work. Works offline, with no account. <a href=\"rbx15.html\" data-track=\"lab-rbx15\">See RBX15</a>"
+                  },
+                  {
+                    "tag": "PC games · Windows",
+                    "title": "626 Mod Launcher",
+                    "body": "Turn mods on and off for Bethesda, Unreal, FromSoft, BepInEx and Stardew games. A disabled mod moves to a holding folder instead of being deleted, so every toggle is reversible. No ads, no telemetry, no account. <a href=\"mod-launcher-games.html\" data-track=\"lab-mod-launcher\">See the supported games</a>"
+                  },
+                  {
+                    "tag": "In your browser",
+                    "title": "Three movie games",
+                    "body": "Birthday Bacon Trail, Box Office Heads Up and Tag That Line. Each one is about a coffee break long. <a href=\"/play/\" data-track=\"lab-play\">Pick one and play</a>"
                   }
                 ]
               }
@@ -667,8 +705,10 @@
           },
           {
             "type": "section",
-            "heading": "The honest part",
-            "sub": "What this is, what the risk is, and whose work it builds on — said plainly, because it should be.",
+            "eyebrow": "The honest part",
+            "heading": "Is RoRoRo safe?",
+            "id": "safe",
+            "sub": "RoRoRo doesn't inject into or modify the Roblox client: it launches the official one, untouched. The Microsoft Store build is signed by Microsoft, and the source is public under the MIT license. What's left is Roblox's own stance on multi-instancing, so the chance of a ban looks low and isn't zero. What this is, what the risk is, and whose work it builds on, said plainly, because it should be.",
             "aside": "Owned, not hidden",
             "blocks": [
               {
@@ -719,7 +759,8 @@
                 "type": "cta",
                 "style": "arrow",
                 "label": "See everything 626 Labs makes",
-                "href": "/"
+                "href": "/",
+                "track": "lab-footer"
               }
             ]
           }
