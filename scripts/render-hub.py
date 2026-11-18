@@ -1167,13 +1167,44 @@ def _with_repo_meter_assets(cards_html: str, products: list[dict]) -> str:
     return cards_html
 
 
-def render_products(products: list[dict], plugin_family: dict | None = None) -> str:
+BENCH_ASSETS = (
+    '      <!-- on the bench: filled in the browser from data/bench.json -->\n'
+    '      <link rel="stylesheet" href="/repo-meter/bench.css" />\n'
+    '      <script src="/repo-meter/bench.js" defer></script>'
+)
+
+
+def render_bench(bench: dict | None) -> str:
+    """The empty "on the bench" strip that opens the products zone: public
+    repos ranked by recent commits. /repo-meter/bench.js fills it at runtime
+    from data/bench.json (written by refresh-repo-activity.yml), so nothing
+    from that file is rendered here and the bot's daily write never dirties
+    --check. Its two lines of copy ride as data- attributes, because an
+    element with children is no longer :empty and would take height before
+    (or without) the data. No `bench` block, or `enabled: false`, renders
+    nothing at all."""
+    if not bench or not bench.get("enabled"):
+        return ""
+    return (
+        f'      <div class="bench" data-bench data-eyebrow="{attr(bench.get("eyebrow") or "On the bench")}" '
+        f'data-note="{attr(bench.get("note") or "")}"></div>\n\n'
+        f"{BENCH_ASSETS}\n\n"
+    )
+
+
+def render_products(products: list[dict], plugin_family: dict | None = None,
+                    bench: dict | None = None) -> str:
     """Product cards, with an optional presentation-level family collapse.
 
     plugin_family = {"memberIds": [...], "card": {...}} folds every member
     into one card, emitted at the FIRST member's grid position. products[]
     data is never mutated — facts, star map, and plugin pages keep deriving.
+    `bench` is site.json's bench block; see render_bench.
     """
+    return render_bench(bench) + _render_product_cards(products, plugin_family)
+
+
+def _render_product_cards(products: list[dict], plugin_family: dict | None = None) -> str:
     if not plugin_family:
         return _with_repo_meter_assets("\n\n".join(render_product(p) for p in products), products)
     members = set(plugin_family.get("memberIds") or [])
@@ -2457,7 +2488,8 @@ def main(argv: list[str]) -> int:
     out = substitute_zone(out, "hero", render_hero(content["hero"]))
     out = substitute_zone(out, "hero-chips", render_chips(content["hero"]["chips"], content["hero"]))
     out = substitute_zone(out, "products",
-                          render_products(content["products"], content.get("pluginFamily")))
+                          render_products(content["products"], content.get("pluginFamily"),
+                                          content.get("bench")))
     out = substitute_zone(out, "lab-pool", render_lab_pool(content["lab"]), js=True)
     out = substitute_zone(
         out, "thinking",

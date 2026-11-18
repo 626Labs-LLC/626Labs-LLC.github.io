@@ -1,0 +1,52 @@
+{
+ "generatedAt": "2026-11-18T01:41:29.258Z",
+ "windowDays": 14,
+ "minCommits": 3,
+ "items": [
+  {
+   "repo": "estevanhernandez-stack-ed/Sanduhr_f-r_Claude",
+   "title": "Sanduhr für Claude",
+   "href": "/sanduhr/",
+   "blurb": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with…",
+   "featured": true,
+   "commits": 250,
+   "lastCommit": "2026-11-16"
+  },
+  {
+   "repo": "estevanhernandez-stack-ed/ROROROblox",
+   "title": "RoRoRo",
+   "href": "/rororo.html",
+   "blurb": "A free multi-launcher for Roblox: run several clients side by side, each signed in as a different saved account.",
+   "featured": true,
+   "commits": 112,
+   "lastCommit": "2026-11-17"
+  },
+  {
+   "repo": "estevanhernandez-stack-ed/626-mod-launcher",
+   "title": "626 Mod Launcher",
+   "href": "/mod-launcher-games.html",
+   "blurb": "A reversible, atomic mod toggler for PC games — Bethesda, Unreal, FromSoft, BepInEx, Stardew SMAPI, and more.",
+   "featured": true,
+   "commits": 45,
+   "lastCommit": "2026-11-12"
+  },
+  {
+   "repo": "estevanhernandez-stack-ed/6deux6",
+   "title": "6deux6",
+   "href": "https://github.com/estevanhernandez-stack-ed/6deux6",
+   "blurb": "The 626 Labs release feed for Discord. Watches GitHub Releases and the Microsoft Store; posts branded, in-voice…",
+   "featured": false,
+   "commits": 27,
+   "lastCommit": "2026-11-17"
+  },
+  {
+   "repo": "estevanhernandez-stack-ed/sanduhr-mods",
+   "title": "sanduhr-mods",
+   "href": "https://github.com/estevanhernandez-stack-ed/sanduhr-mods",
+   "blurb": "Claude Code mods, published from Sanduhr. claude plugin marketplace add estevanhernandez-stack-ed/sanduhr-mods",
+   "featured": false,
+   "commits": 7,
+   "lastCommit": "2026-11-16"
+  }
+ ]
+}

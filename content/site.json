@@ -125,6 +125,21 @@
       "href": "https://dash.626labs.dev/examples/"
     }
   },
+  "bench": {
+    "enabled": true,
+    "eyebrow": "On the bench",
+    "note": "Public repos with the most commits in the last 14 days",
+    "count": 5,
+    "windowDays": 14,
+    "minCommits": 3,
+    "exclude": [
+      "626Labs-LLC/626Labs-LLC.github.io",
+      "estevanhernandez-stack-ed/estevanhernandez-stack-ed",
+      "estevanhernandez-stack-ed/homebrew-tap",
+      "estevanhernandez-stack-ed/homebrew-rororo",
+      "estevanhernandez-stack-ed/626-game-manifest"
+    ]
+  },
   "products": [
     {
       "id": "rororo",
