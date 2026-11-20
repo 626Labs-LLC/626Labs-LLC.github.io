@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-19T16:01:42.225Z",
+ "generatedAt": "2026-11-20T15:44:37.576Z",
  "windowDays": 14,
  "minCommits": 3,
  "items": [
@@ -9,8 +9,8 @@
    "href": "/sanduhr/",
    "blurb": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with…",
    "featured": true,
-   "commits": 264,
-   "lastCommit": "2026-11-19"
+   "commits": 315,
+   "lastCommit": "2026-11-20"
   },
   {
    "repo": "estevanhernandez-stack-ed/ROROROblox",
@@ -18,7 +18,7 @@
    "href": "/rororo.html",
    "blurb": "A free multi-launcher for Roblox: run several clients side by side, each signed in as a different saved account.",
    "featured": true,
-   "commits": 141,
+   "commits": 119,
    "lastCommit": "2026-11-18"
   },
   {
