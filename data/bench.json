@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-20T15:44:37.576Z",
+ "generatedAt": "2026-11-21T14:55:33.807Z",
  "windowDays": 14,
  "minCommits": 3,
  "items": [
@@ -9,8 +9,8 @@
    "href": "/sanduhr/",
    "blurb": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with…",
    "featured": true,
-   "commits": 315,
-   "lastCommit": "2026-11-20"
+   "commits": 325,
+   "lastCommit": "2026-11-21"
   },
   {
    "repo": "estevanhernandez-stack-ed/ROROROblox",
@@ -18,7 +18,7 @@
    "href": "/rororo.html",
    "blurb": "A free multi-launcher for Roblox: run several clients side by side, each signed in as a different saved account.",
    "featured": true,
-   "commits": 119,
+   "commits": 117,
    "lastCommit": "2026-11-18"
   },
   {
@@ -27,8 +27,17 @@
    "href": "/mod-launcher-games.html",
    "blurb": "A reversible, atomic mod toggler for PC games — Bethesda, Unreal, FromSoft, BepInEx, Stardew SMAPI, and more.",
    "featured": true,
-   "commits": 56,
+   "commits": 37,
    "lastCommit": "2026-11-19"
+  },
+  {
+   "repo": "estevanhernandez-stack-ed/rororo-mac",
+   "title": "rororo-mac",
+   "href": "https://github.com/estevanhernandez-stack-ed/rororo-mac",
+   "blurb": "Mac-native multi-Roblox launcher. Account vault + multi-instance support. Sibling to ROROROblox (Windows).",
+   "featured": true,
+   "commits": 7,
+   "lastCommit": "2026-11-20"
   },
   {
    "repo": "estevanhernandez-stack-ed/sanduhr-mods",
@@ -38,15 +47,6 @@
    "featured": false,
    "commits": 7,
    "lastCommit": "2026-11-16"
-  },
-  {
-   "repo": "estevanhernandez-stack-ed/ThesisStudio",
-   "title": "ThesisStudio",
-   "href": "https://github.com/estevanhernandez-stack-ed/ThesisStudio",
-   "blurb": "Structured AI-assisted workspace template for long-form academic writing — dissertation, journal article, or master's…",
-   "featured": false,
-   "commits": 6,
-   "lastCommit": "2026-11-13"
   }
  ]
 }
