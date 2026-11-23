@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v4.7.0" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v4.9.0" />
 <title>Sanduhr für Claude on Windows: your claude.ai usage, paced, from the Microsoft Store · 626 Labs</title>
 <meta name="description" content="The Windows build of Sanduhr für Claude: a native .NET widget with Win11 Mica glass that paces your claude.ai usage, plus a Desk Claude can design with you, drawers for your files, and widgets and a companion to go on it. Works without a Claude account. Free on the Microsoft Store." />
 <link rel="canonical" href="https://626labs.dev/sanduhr/windows/" />
@@ -753,8 +753,12 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
         <p>Each per-model weekly allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed.</p>
       </div>
       <div class="card">
+        <h3>Codex limits, beside Claude&#x27;s</h3>
+        <p>Since 4.8, tick Codex in Set up Sanduhr or Settings &rarr; Usage &rarr; Sources and the widget shows Codex's 5-hour and weekly limits under Claude's, with the same pace marker and burn projection. Sanduhr reads them from the logs Codex already writes on your PC, never <code>auth.json</code>, so there's no sign-in and nothing is sent anywhere. Each limit says when Codex last wrote, and dims after 30 quiet minutes so an old number never reads as current. With both on, combined bars fill to your primary plan and carry on in the other plan's color when it's further along; the tray follows your primary.</p>
+      </div>
+      <div class="card">
         <h3>Claude Usage tab + local vault</h3>
-        <p>Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export, and an opt-in vault that outlives the CLI's 30-day log cleanup. Since 4.0 it opens on four views: Meters, Overview, Trends and Sessions.</p>
+        <p>Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export, and an opt-in vault that outlives the CLI's 30-day log cleanup. Since 4.0 it opens on four views: Meters, Overview, Trends and Sessions. Since 4.9, Codex and the Antigravity CLI count beside Claude Code: the 30-day strip stacks each day by agent, every session is labeled with its agent, the CSV has an agent column, and the widget footer shows each agent's new tokens since the last check. The Antigravity CLI has its own switch, off by default; the Antigravity IDE's usage can't be read.</p>
       </div>
       <div class="card">
         <h3>Threshold alerts</h3>
@@ -820,7 +824,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div class="card">
         <h3>Meter styles</h3>
-        <p>The Claude line, the Claude limits and the CPU, memory and disk readings each take a style: bars, slim (half the height, one line), rings (small arc gauges side by side) or ticks (ten cells, the OLED-friendly one). Pace marks stay on every style. Pick them in Settings &rarr; Desk, or ask for them in a Desk design.</p>
+        <p>The Claude line, the Claude limits and the CPU, memory and disk readings each take a style: bars, slim (half the height, one line), rings (small arc gauges side by side) or ticks (ten cells, the OLED-friendly one). Pace marks stay on every style. Pick them in Settings &rarr; Desk, or ask for them in a Desk design. Since 4.8 a meter piece shows Combined, Claude or Codex.</p>
       </div>
       <div class="card">
         <h3>One theme for both</h3>
@@ -953,11 +957,11 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     <div class="cards">
       <div class="card">
         <h3>A statusline under the prompt</h3>
-        <p>Your usage percentages and reset times under Claude Code's prompt. Already have a statusline? <strong>Combine</strong> runs yours first, then Sanduhr's line, with a segment picker; <strong>Replace</strong> backs yours up so Remove can restore it. The line starts with a short label from the folder's name (<code>.claude-personal</code> shows <code>personal |</code>), or a <code>SANDUHR_LABEL</code> you set.</p>
+        <p>Your usage percentages and reset times under Claude Code's prompt. Already have a statusline? <strong>Combine</strong> runs yours first, then Sanduhr's line, with a segment picker; <strong>Replace</strong> backs yours up so Remove can restore it. The line starts with a short label from the folder's name (<code>.claude-personal</code> shows <code>personal |</code>), or a <code>SANDUHR_LABEL</code> you set. With Codex on, the line adds its limits too: <code>cx 5h 40% wk 12%</code>.</p>
       </div>
       <div class="card">
         <h3>An MCP server Claude can ask</h3>
-        <p><code>sanduhr-mcp</code> lets Claude ask for your usage, your model mix, your history and your burn by project. It reads a folder only after you tick it, none by default, and makes no network calls. The same server carries Claude's Desk designs, watchers, messages and song looks.</p>
+        <p><code>sanduhr-mcp</code> lets Claude ask for your usage, your model mix, your history and your burn by project. It reads a folder only after you tick it, none by default, and makes no network calls. The same server carries Claude's Desk designs, watchers, messages and song looks. Since 4.8, installing it checks that it starts and says why when it doesn't, and its usage answer includes Codex. Since 4.9, Claude can read Codex's or the Antigravity CLI's project totals only after you turn on a switch for each, off by default.</p>
       </div>
       <div class="card">
         <h3>Meters above the prompt</h3>
@@ -1017,7 +1021,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div class="card">
         <h3>Streamer mode</h3>
-        <p>Off by default, in Settings &rarr; Privacy and the tray and widget menus. Accounts, emails, Claude Code folders, projects, repos, CI runners, the weather place and pack names show as codenames on the widget, the Desk, the tray, Settings and Claude Code&rsquo;s statusline; the numbers stay. <strong>Show the real name</strong> per name, or <strong>Shuffle codenames</strong>. What it can&rsquo;t hide is listed under the switch.</p>
+        <p>Off by default, in Settings &rarr; Privacy and the tray and widget menus. Accounts, emails, Claude Code folders, projects, repos, CI runners, the weather place and pack names show as codenames on the widget, the Desk, the tray, Settings and Claude Code&rsquo;s statusline; the numbers stay. <strong>Show the real name</strong> per name, <strong>Shuffle codenames</strong>, or since 4.8 pick a codename yourself with <strong>Rename&hellip;</strong>. What it can&rsquo;t hide is listed under the switch.</p>
       </div>
       <div class="card">
         <h3>What&#x27;s New and a welcome tour</h3>
@@ -1056,8 +1060,8 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
     <div class="panel ok">
       <h3>✓ No data comes back to us.</h3>
       <p>No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.</p>
-      <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Since 4.0, Settings &rarr; Privacy lists every destination, when Sanduhr contacts it, what it carries and the switch that turns it off, Google&rsquo;s sign-in page and the embedded browser&rsquo;s SmartScreen check included. Settings &rarr; Mods &amp; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. CI watchers read your runner containers' logs through Docker's local pipe and send nothing anywhere. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. To keep widgets clickable under your icons, Sanduhr watches for mouse presses over the Desk and acts only on those; it never records a press and never sees the keyboard. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.</p>
-      <p>Claude sees your usage, your Desk messages and how your Desk looks only if you install Sanduhr's MCP server. It can open a picture of your wallpaper only if you let Claude Code read that file. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
+      <p>The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Since 4.0, Settings &rarr; Privacy lists every destination, when Sanduhr contacts it, what it carries and the switch that turns it off, Google&rsquo;s sign-in page and the embedded browser&rsquo;s SmartScreen check included. Settings &rarr; Mods &amp; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. CI watchers read your runner containers' logs through Docker's local pipe and send nothing anywhere. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. To keep widgets clickable under your icons, Sanduhr watches for mouse presses over the Desk and acts only on those; it never records a press and never sees the keyboard. Codex's limits and the Antigravity CLI's activity are read from the logs those tools write on this PC, with no sign-in, and are sent nowhere. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.</p>
+      <p>Claude sees your usage, your Desk messages and how your Desk looks only if you install Sanduhr's MCP server. Codex's and the Antigravity CLI's project totals need a switch of their own each, off by default. It can open a picture of your wallpaper only if you let Claude Code read that file. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.</p>
       <p><a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md">Security policy</a> &middot; <a href="https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md">Privacy policy</a></p>
     </div>
   </section>
@@ -1083,7 +1087,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
 
 <footer>
   <span>626 Labs · Sanduhr für Claude on Windows</span>
-  <span class="disclaimer">© 2026 626Labs LLC. Independent studio. “Claude” and “claude.ai” are trademarks of Anthropic PBC, used nominatively to describe integration. Sanduhr für Claude is an independent third-party tool.</span>
+  <span class="disclaimer">© 2026 626Labs LLC. Independent studio. “Claude” and “claude.ai” are trademarks of Anthropic PBC, “Codex” is a trademark of OpenAI, and “Antigravity” is a trademark of Google LLC, used nominatively to describe integration. Sanduhr für Claude is an independent third-party tool.</span>
   <span><a href="/">626labs.dev</a> · Imagine Something Else.</span>
   <a class="site-signature" href="/" aria-label="626Labs, home"></a>
 </footer>

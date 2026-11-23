@@ -178,7 +178,7 @@
           "ogImage": "/assets/video/rororo/rororo-launch-poster.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/ROROROblox@v1.36.0.0"
+          "estevanhernandez-stack-ed/ROROROblox@v1.40.0.0"
         ],
         "clickTrack": {
           "prefix": "rororo-click/",
@@ -231,7 +231,7 @@
               },
               {
                 "key": "Latest · Windows",
-                "value": "v1.14",
+                "value": "v1.40",
                 "id": "win-latest"
               },
               {
@@ -362,12 +362,12 @@
                   {
                     "key": "02 · VAULT",
                     "title": "Saved-account vault",
-                    "body": "Add your alts once via an embedded login window. Cookies are encrypted at rest and tied to your machine — DPAPI on Windows, Keychain on macOS — with a passphrase-encrypted export when you move PCs."
+                    "body": "Add your alts once via an embedded login window. Cookies are encrypted at rest and tied to your machine — DPAPI on Windows, Keychain on macOS — with a passphrase-encrypted export when you move PCs. On Windows, since 1.39, RoRoRo keeps a second copy of the vault beside it, encrypted the same way, and repairs itself from that copy if the file is ever damaged. Adding an account you already saved refreshes its sign-in instead of making a second row."
                   },
                   {
                     "key": "03 · LAUNCH AS",
                     "title": "Launch As",
-                    "body": "One click spawns each saved account straight into your default game, a saved private server, or any pasted share link. Set it once; every alt lands where you pointed it."
+                    "body": "One click spawns each saved account straight into your default game, a saved private server, or any pasted share link. Set it once; every alt lands where you pointed it. RoRoRo starts the Roblox you install from roblox.com. The Microsoft Store edition of Roblox can't be started by other apps, so since 1.37, if that is the only Roblox on your PC, RoRoRo says so and offers the download. Both can stay installed."
                   },
                   {
                     "key": "04 · LOGIN",
@@ -412,7 +412,7 @@
                   {
                     "key": "12 · UPDATES",
                     "title": "Auto-update built in",
-                    "body": "Velopack on Windows, Sparkle on macOS. When Roblox shifts under the launcher, the fix ships to you without a reinstall — the compat config even updates remotely, no new binary needed."
+                    "body": "Velopack on Windows, Sparkle on macOS. When Roblox shifts under the launcher, the fix ships to you without a reinstall — the compat config even updates remotely, no new binary needed. Since 1.40 on Windows, a button in the main window says when an update is waiting: <b>Quit to update</b> on the direct download, and <b>Update available</b> on a Store install, where one click opens RoRoRo's Store page. Quit RoRoRo from the tray before a Store update, because a running RoRoRo can hold one back."
                   },
                   {
                     "key": "13 · WATCHDOG",
@@ -462,12 +462,12 @@
                   {
                     "key": "22 · ITS OWN WINDOW",
                     "title": "Every launch in its own window",
-                    "body": "Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RoRoRo closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. Since 1.36, a leftover background Roblox process with no window closes on its own after two minutes. RoRoRo also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog."
+                    "body": "Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RoRoRo closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. Since 1.36, a leftover background Roblox process with no window closes on its own after two minutes. RoRoRo also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog. Since 1.38, the next start after a crash says so, with a button to Diagnostics, where you can save a support bundle. Nothing is sent unless you send it."
                   },
                   {
                     "key": "23 · ACCOUNT AT A GLANCE",
                     "title": "Every account, at a glance",
-                    "body": "Each row shows its Robux, a Plus badge, how many friends are online and a note you write yourself. Open an account for its recent games, favourites and private servers, and play any of them in one click. When an account can't launch, a badge says why (Session expired, Needs verification or Limited by Roblox) and one click starts the fix. RoRoRo reads the facts from Roblox with that account's own login, about every ten minutes, and keeps them in the same encrypted file as your accounts. Streamer mode hides the numbers and the note."
+                    "body": "Each row shows its Robux, a Plus badge, how many friends are online and a note you write yourself. Open an account for its recent games, favourites and private servers, and play any of them in one click. When an account can't launch, a badge says why (Session expired, Needs verification or Limited by Roblox) and one click starts the fix. Since 1.38, a launch that fails for another reason says which one, in your language: no internet, Roblox slow to answer, Roblox asking RoRoRo to slow down, or Roblox having trouble, each with what to do next. RoRoRo reads the facts from Roblox with that account's own login, about every ten minutes, and keeps them in the same encrypted file as your accounts. Streamer mode hides the numbers and the note."
                   }
                 ]
               }
@@ -842,7 +842,7 @@
           "ogImage": "/sanduhr/screenshot-desk-full.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.41.0-mac"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.47.1-mac"
         ],
         "nav": [
           {
@@ -938,7 +938,7 @@
                   },
                   {
                     "title": "Arrange Desk",
-                    "body": "Drag each piece where you want it. While arranging, every piece has Hide and a Hidden strip brings one back; Done writes the layout once, Cancel drops it."
+                    "body": "Drag each piece where you want it. While arranging, every piece has Hide and a Hidden strip brings one back; Done writes the layout once, Cancel drops it. Since 2.44.0 each piece has a display: the main one, all of them, or one you pick, and with more than one connected you can drag a piece from one display to another. A display you unplug leaves its pieces on the main display until it comes back. Since 2.45.0 the companion lives on the display you put it on."
                   },
                   {
                     "title": "Limits that come and go",
@@ -946,7 +946,7 @@
                   },
                   {
                     "title": "A line on the lock screen",
-                    "body": "Settings &rarr; Desktop &rarr; Lock Screen puts one short line under the lock screen clock: your Claude usage, when it resets, and how many watchers are waiting for you, after a prefix of your own if you like. Anyone at the screen can read it, so only counts, percents and times get through; paths, emails, addresses and tokens are dropped, and the page previews the exact line. Turning it on asks for an administrator password once, for a small helper that sets the message. Off by default, and turning it off brings back any message you had there before. If macOS stops the helper, for example after an update, Settings says so and lists the steps to restart it."
+                    "body": "Settings &rarr; Desktop &rarr; Lock Screen puts one short line under the lock screen clock: your Claude usage, when it resets, and how many watchers are waiting for you, after a prefix of your own if you like. Anyone at the screen can read it, so only counts, percents and times get through; paths, emails, addresses and tokens are dropped, and the page previews the exact line. Turning it on asks for an administrator password once, for a small helper that sets the message. Off by default, and turning it off brings back any message you had there before. If macOS stops running the helper, Settings says so with a <strong>Turn it on again</strong> button, and since 2.47.1 a notification says when the line has stopped updating, at most once a day."
                   },
                   {
                     "title": "The fold",
@@ -1007,7 +1007,7 @@
                 "items": [
                   {
                     "title": "Each wing, your pick",
-                    "body": "On MacBooks with a camera notch, pick what the left wing, the right wing and the strip under the camera show: your next meeting, the time, your meters, your message, what's playing, or nothing. A camera light around the notch lights your face when any app turns the camera on. Off until you switch it on, no camera permission needed. Test Glow in Settings shows you the notch glow once before you turn any of it on. With the Claude Code integration, the notch can also glow when a Claude session is waiting on you. Since 2.28.0 a Mac without a notch, a Mac mini, an iMac, an external display, can draw the same wing text as a pill at the top center of the menu bar, with the same clicks, menu and glow; off by default. Since 2.30.0 the camera and mic indicators draw beside the pill's text, and since 2.31.0 Sanduhr idles at about half a percent of one core."
+                    "body": "On MacBooks with a camera notch, pick what the left wing, the right wing and the strip under the camera show: your next meeting, the time, your meters, your message, what's playing, or nothing. A camera light around the notch lights your face when any app turns the camera on. Off until you switch it on, no camera permission needed. Test Glow in Settings shows you the notch glow once before you turn any of it on. With the Claude Code integration, the notch can also glow when a Claude session is waiting on you, and since 2.47.0 when Claude Code, Codex or the Antigravity CLI finishes a long turn. Since 2.28.0 a Mac without a notch, a Mac mini, an iMac, an external display, can draw the same wing text as a pill at the top center of the menu bar, with the same clicks, menu and glow; off by default. Since 2.30.0 the camera and mic indicators draw beside the pill's text, and since 2.31.0 Sanduhr idles at about half a percent of one core."
                   },
                   {
                     "title": "Now playing",
@@ -1060,7 +1060,7 @@
                   },
                   {
                     "title": "Meters above the prompt",
-                    "body": "The page opens on one row per folder with its state and a switch. Behind it, the rest of the integration: a statusline that can combine with yours, keeping the segments you pick, instead of replacing it; the notch glow when a session needs you; and an MCP server so Claude can ask about your usage. Remove takes out only what Sanduhr added and restores anything it replaced. Link an account to a folder and that folder's sessions show its meters, with the statusline naming the account."
+                    "body": "The page opens on one row per folder with its state and a switch. Behind it, the rest of the integration: a statusline that can combine with yours, keeping the segments you pick, instead of replacing it; the notch glow when a session needs you; and an MCP server so Claude can ask about your usage. Remove takes out only what Sanduhr added and restores anything it replaced. Link an account to a folder and that folder's sessions show its meters, with the statusline naming the account. Installing the MCP server checks that it starts and says why when it doesn't, and <strong>Check</strong> runs that again on an installed one."
                   },
                   {
                     "title": "Carry it to another Mac",
@@ -1076,7 +1076,7 @@
                   },
                   {
                     "title": "Claude designs your Desk",
-                    "body": "Since 2.37.0, Claude can read how your Desk is set up and suggest a whole look: where each piece sits, its size, slant and style, the font, the ink, the plate and the shadow. It waits at the top of Settings &rarr; Desk with what it changes; preview it, then Apply or Dismiss, and after Apply, Put my Desk back undoes it. What Claude reads for this is a small note of those settings, never your usage, message text, paths or account names."
+                    "body": "Since 2.37.0, Claude can read how your Desk is set up and suggest a whole look: where each piece sits, its size, slant and style, the font, the ink, the plate and the shadow. It waits at the top of Settings &rarr; Desk with what it changes; preview it, then Apply or Dismiss, and after Apply, Put my Desk back undoes it. What Claude reads for this is a small note of those settings, never your usage, message text, paths or account names. Since 2.44.0 that note lists your displays too, each with an id, a size and a position, so Claude can place a piece on one."
                   },
                   {
                     "title": "Receipts, with exact undo",
@@ -1217,7 +1217,11 @@
                   },
                   {
                     "title": "Use my own art",
-                    "body": "Since 2.36.0, on a sprite made here, Use my own art&hellip; takes one PNG per stage, checks each one and says why when it doesn't fit, and reinstalls the widget as your own. The picture never leaves your Mac. Since 2.39.0, <strong>New sprite from an image&hellip;</strong> makes a sprite from a single PNG you cut into cells and tag walk, sit, nap, cheer and worry. With the MCP server, Claude can suggest the motion without seeing the art, and nothing applies until you press Apply."
+                    "body": "Since 2.36.0, on a sprite made here, Use my own art&hellip; takes one PNG per stage, checks each one and says why when it doesn't fit, and reinstalls the widget as your own. The picture never leaves your Mac. Since 2.39.0, <strong>New sprite from an image&hellip;</strong> makes a sprite from a single PNG you cut into cells and tag walk, sit, nap, cheer and worry. With the MCP server, Claude can suggest the motion without seeing the art, and nothing applies until you press Apply. Since 2.43.0, New sprite from an image&hellip; also takes an animated GIF, each frame a cell, or the sheet and JSON that Aseprite exports, and Use my own art&hellip; shows a column for each growth stage. All of it is read on this Mac and never shown to Claude."
+                  },
+                  {
+                    "title": "From a file, and back out",
+                    "body": "Since 2.42.0, Settings &rarr; Widgets has <strong>Install widget from file&hellip;</strong> for a pack zip you made or were sent, held to the same checks as a catalog download; a pack that fails installs nothing and says why. Since 2.43.0, a widget made here has <strong>Export&hellip;</strong>, which saves a zip that installs back as the same pack. The file is only read, and nothing is uploaded."
                   }
                 ]
               }
@@ -1253,8 +1257,12 @@
                     "body": "Each per-model weekly allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed."
                   },
                   {
+                    "title": "Codex limits, beside Claude's",
+                    "body": "Since 2.46.0, tick Codex in Set up Sanduhr or Settings &rarr; Usage &rarr; Sources and its 5-hour and weekly limits show under Claude's, with the same pace mark and burn projection. Sanduhr reads them from the session logs Codex already writes on this Mac, never <code>auth.json</code>, so there's no sign-in and nothing is sent anywhere. Each limit says when Codex last wrote, and dims after 30 quiet minutes so an old number never reads as current. Each source has its own color and alerts, and the menu bar follows the one you make primary."
+                  },
+                  {
                     "title": "Claude Usage page + local vault",
-                    "body": "Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export, and an opt-in vault that outlives the CLI's 30-day log cleanup."
+                    "body": "Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export, and an opt-in vault that outlives the CLI's 30-day log cleanup. Since 2.46.0 Codex and the Antigravity CLI count beside Claude Code: the 30-day strip stacks each day by agent, every session is labeled with its agent, and the CSV has an agent column. The Antigravity CLI has its own switch, off by default; the Antigravity IDE's usage can't be read."
                   },
                   {
                     "title": "Your usage, per account",
@@ -1277,7 +1285,7 @@
                   },
                   {
                     "title": "More than one account",
-                    "body": "Add each Claude login under a name, like Work or Team, and switch from the widget's account chip, any Sanduhr menu, or the account name on Desk. Each account keeps its own history, so the sparklines never mix. Follow the account I'm using, off by default, switches for you when the signal is clear. Since 2.34.0 Settings &rarr; Accounts shows each account's plan beside its name, and the widget's footer shows yours, from the answer Sanduhr already fetches."
+                    "body": "Add each Claude login under a name, like Work or Team, and switch from the widget's account chip, any Sanduhr menu, or the account name on Desk. Each account keeps its own history, so the sparklines never mix. Follow the account I'm using, off by default, switches for you when the signal is clear. Since 2.34.0 Settings &rarr; Accounts shows each account's plan beside its name, and the widget's footer shows yours, from the answer Sanduhr already fetches. Since 2.42.5 an account you aren't using that needs a new sign-in shows Session expired there, and since 2.43.1 a notification says so once."
                   },
                   {
                     "title": "Smarter alerts, one Settings window",
@@ -1286,6 +1294,10 @@
                   {
                     "title": "Threshold alerts",
                     "body": "A toast and a soft procedural chime when a pool crosses your warn or urgent line. Per-model meters stay politely silent by default."
+                  },
+                  {
+                    "title": "Know when your agent is done",
+                    "body": "Since 2.47.0, Settings &rarr; Notifications sends a macOS notification, a card on the Desk or the notch glow when Claude Code, Codex or the Antigravity CLI finishes a long turn, and when Claude Code is waiting on you. It names the agent, the project and how long the turn ran, never anything that was said. Finished turns shorter than a minute are held back by default, and a switch holds everything back while the agent's app is in front. Claude Code's notices come from its hook, which you update in Settings &rarr; Claude Code: Claude Code hands the hook each prompt, and the hook keeps only the folder and the session. Nothing is sent anywhere."
                   }
                 ]
               },
@@ -1361,8 +1373,8 @@
                 "title": "✓ No data comes back to us.",
                 "paragraphs": [
                   "No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.",
-                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you open Settings &rarr; Widgets, it also asks GitHub for the signed widget catalog, and downloads a pack only when you press Install; nothing about you goes with either. With the Weather piece placed, it asks Open-Meteo for a forecast: the city name you typed, then the place's coordinates rounded to about 1 km. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. Your cookie stays in the macOS Keychain. Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain; Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote.",
-                  "Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default. With the server installed, Claude can also read how your Desk is laid out, to suggest a design you approve; your weather place and its coordinates stay out of it. Drawer file names never reach Claude, and the MCP server has no drawer tool. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
+                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. When you open Settings &rarr; Widgets, it also asks GitHub for the signed widget catalog, and downloads a pack only when you press Install; nothing about you goes with either. With the Weather piece placed, it asks Open-Meteo for a forecast: the city name you typed, then the place's coordinates rounded to about 1 km. When you ask it to, it also runs Claude Code's own install commands and pushes a mod to your own marketplace repo; none of that reaches 626 Labs. With Codex or the Antigravity CLI switched on, it reads the logs they write on this Mac and sends nothing anywhere. Your cookie stays in the macOS Keychain. Settings &rarr; Accounts &rarr; Sign Out removes it from this machine; your claude.ai session itself stays signed in. Uninstalling doesn't clear the Keychain; Settings &rarr; About &rarr; Reset Sanduhr&hellip; removes your keys and everything else Sanduhr wrote.",
+                  "Claude sees your usage only if you install Sanduhr's MCP server and choose, per account, to share meters or activity. Sharing is off by default. Codex's and the Antigravity CLI's project totals have a switch of their own each, also off by default. With the server installed, Claude can also read how your Desk is laid out, to suggest a design you approve; your weather place and its coordinates stay out of it. Drawer file names never reach Claude, and the MCP server has no drawer tool. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
                   "<a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md\">Security policy</a> &middot; <a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md\">Privacy policy</a>"
                 ]
               }
@@ -1371,7 +1383,7 @@
         ],
         "footer": {
           "label": "626 Labs · Sanduhr für Claude",
-          "disclaimer": "© 2026 626Labs LLC. Independent studio. “Claude” and “claude.ai” are trademarks of Anthropic PBC, used nominatively to describe integration. Sanduhr für Claude is an independent third-party tool."
+          "disclaimer": "© 2026 626Labs LLC. Independent studio. “Claude” and “claude.ai” are trademarks of Anthropic PBC, “Codex” is a trademark of OpenAI, and “Antigravity” is a trademark of Google LLC, used nominatively to describe integration. Sanduhr für Claude is an independent third-party tool."
         }
       },
       "screenshots": []
@@ -2224,7 +2236,7 @@
           "ogImage": "/assets/video/mod-launcher/mod-launcher-launch-poster.jpg"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/626-mod-launcher@v0.26.0"
+          "estevanhernandez-stack-ed/626-mod-launcher@v0.28.1"
         ],
         "nav": [
           {
@@ -3923,7 +3935,7 @@
           "ogImage": "/sanduhr/icon.png"
         },
         "releaseReviewed": [
-          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v4.7.0"
+          "estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v4.9.0"
         ],
         "nav": [
           {
@@ -4011,8 +4023,12 @@
                     "body": "Each per-model weekly allowance, tracked automatically. When Anthropic adds a limit for any new model, its meter just appears, no update needed."
                   },
                   {
+                    "title": "Codex limits, beside Claude's",
+                    "body": "Since 4.8, tick Codex in Set up Sanduhr or Settings &rarr; Usage &rarr; Sources and the widget shows Codex's 5-hour and weekly limits under Claude's, with the same pace marker and burn projection. Sanduhr reads them from the logs Codex already writes on your PC, never <code>auth.json</code>, so there's no sign-in and nothing is sent anywhere. Each limit says when Codex last wrote, and dims after 30 quiet minutes so an old number never reads as current. With both on, combined bars fill to your primary plan and carry on in the other plan's color when it's further along; the tray follows your primary."
+                  },
+                  {
                     "title": "Claude Usage tab + local vault",
-                    "body": "Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export, and an opt-in vault that outlives the CLI's 30-day log cleanup. Since 4.0 it opens on four views: Meters, Overview, Trends and Sessions."
+                    "body": "Local Claude Code logs become a dashboard: sessions by project with agent roll-up, weekly trends, a clickable calendar, sent/received splits, CSV export, and an opt-in vault that outlives the CLI's 30-day log cleanup. Since 4.0 it opens on four views: Meters, Overview, Trends and Sessions. Since 4.9, Codex and the Antigravity CLI count beside Claude Code: the 30-day strip stacks each day by agent, every session is labeled with its agent, the CSV has an agent column, and the widget footer shows each agent's new tokens since the last check. The Antigravity CLI has its own switch, off by default; the Antigravity IDE's usage can't be read."
                   },
                   {
                     "title": "Threshold alerts",
@@ -4090,7 +4106,7 @@
                   },
                   {
                     "title": "Meter styles",
-                    "body": "The Claude line, the Claude limits and the CPU, memory and disk readings each take a style: bars, slim (half the height, one line), rings (small arc gauges side by side) or ticks (ten cells, the OLED-friendly one). Pace marks stay on every style. Pick them in Settings &rarr; Desk, or ask for them in a Desk design."
+                    "body": "The Claude line, the Claude limits and the CPU, memory and disk readings each take a style: bars, slim (half the height, one line), rings (small arc gauges side by side) or ticks (ten cells, the OLED-friendly one). Pace marks stay on every style. Pick them in Settings &rarr; Desk, or ask for them in a Desk design. Since 4.8 a meter piece shows Combined, Claude or Codex."
                   },
                   {
                     "title": "One theme for both",
@@ -4258,11 +4274,11 @@
                 "items": [
                   {
                     "title": "A statusline under the prompt",
-                    "body": "Your usage percentages and reset times under Claude Code's prompt. Already have a statusline? <strong>Combine</strong> runs yours first, then Sanduhr's line, with a segment picker; <strong>Replace</strong> backs yours up so Remove can restore it. The line starts with a short label from the folder's name (<code>.claude-personal</code> shows <code>personal |</code>), or a <code>SANDUHR_LABEL</code> you set."
+                    "body": "Your usage percentages and reset times under Claude Code's prompt. Already have a statusline? <strong>Combine</strong> runs yours first, then Sanduhr's line, with a segment picker; <strong>Replace</strong> backs yours up so Remove can restore it. The line starts with a short label from the folder's name (<code>.claude-personal</code> shows <code>personal |</code>), or a <code>SANDUHR_LABEL</code> you set. With Codex on, the line adds its limits too: <code>cx 5h 40% wk 12%</code>."
                   },
                   {
                     "title": "An MCP server Claude can ask",
-                    "body": "<code>sanduhr-mcp</code> lets Claude ask for your usage, your model mix, your history and your burn by project. It reads a folder only after you tick it, none by default, and makes no network calls. The same server carries Claude's Desk designs, watchers, messages and song looks."
+                    "body": "<code>sanduhr-mcp</code> lets Claude ask for your usage, your model mix, your history and your burn by project. It reads a folder only after you tick it, none by default, and makes no network calls. The same server carries Claude's Desk designs, watchers, messages and song looks. Since 4.8, installing it checks that it starts and says why when it doesn't, and its usage answer includes Codex. Since 4.9, Claude can read Codex's or the Antigravity CLI's project totals only after you turn on a switch for each, off by default."
                   },
                   {
                     "title": "Meters above the prompt",
@@ -4329,7 +4345,7 @@
                   },
                   {
                     "title": "Streamer mode",
-                    "body": "Off by default, in Settings &rarr; Privacy and the tray and widget menus. Accounts, emails, Claude Code folders, projects, repos, CI runners, the weather place and pack names show as codenames on the widget, the Desk, the tray, Settings and Claude Code&rsquo;s statusline; the numbers stay. <strong>Show the real name</strong> per name, or <strong>Shuffle codenames</strong>. What it can&rsquo;t hide is listed under the switch."
+                    "body": "Off by default, in Settings &rarr; Privacy and the tray and widget menus. Accounts, emails, Claude Code folders, projects, repos, CI runners, the weather place and pack names show as codenames on the widget, the Desk, the tray, Settings and Claude Code&rsquo;s statusline; the numbers stay. <strong>Show the real name</strong> per name, <strong>Shuffle codenames</strong>, or since 4.8 pick a codename yourself with <strong>Rename&hellip;</strong>. What it can&rsquo;t hide is listed under the switch."
                   },
                   {
                     "title": "What's New and a welcome tour",
@@ -4381,8 +4397,8 @@
                 "title": "✓ No data comes back to us.",
                 "paragraphs": [
                   "No telemetry. No analytics. No crash reporter. No usage metrics. 626 Labs has no server and no pipeline to receive data from Sanduhr, even in principle.",
-                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Since 4.0, Settings &rarr; Privacy lists every destination, when Sanduhr contacts it, what it carries and the switch that turns it off, Google&rsquo;s sign-in page and the embedded browser&rsquo;s SmartScreen check included. Settings &rarr; Mods &amp; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. CI watchers read your runner containers' logs through Docker's local pipe and send nothing anywhere. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. To keep widgets clickable under your icons, Sanduhr watches for mouse presses over the Desk and acts only on those; it never records a press and never sees the keyboard. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.",
-                  "Claude sees your usage, your Desk messages and how your Desk looks only if you install Sanduhr's MCP server. It can open a picture of your wallpaper only if you let Claude Code read that file. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
+                  "The app talks to <code>claude.ai</code> over HTTPS, using <strong>your own session cookie</strong>, to read <strong>your own</strong> usage numbers, and checks for its own updates. Since 4.0, Settings &rarr; Privacy lists every destination, when Sanduhr contacts it, what it carries and the switch that turns it off, Google&rsquo;s sign-in page and the embedded browser&rsquo;s SmartScreen check included. Settings &rarr; Mods &amp; Widgets asks GitHub for the widget catalog only when you open it or press Check the catalog again, with no account or identifier in the request. CI watchers read your runner containers' logs through Docker's local pipe and send nothing anywhere. If you set up the Desk's weather, it asks Open-Meteo for a forecast with the city name you typed and rounded coordinates, nothing else. To keep widgets clickable under your icons, Sanduhr watches for mouse presses over the Desk and acts only on those; it never records a press and never sees the keyboard. Codex's limits and the Antigravity CLI's activity are read from the logs those tools write on this PC, with no sign-in, and are sent nowhere. Your cookie stays in Windows Credential Manager. Uninstalling doesn't clear it: run Settings &rarr; About &rarr; Reset Sanduhr&hellip; first, which removes what you leave checked: your keys, your Claude Code entries and the rest.",
+                  "Claude sees your usage, your Desk messages and how your Desk looks only if you install Sanduhr's MCP server. Codex's and the Antigravity CLI's project totals need a switch of their own each, off by default. It can open a picture of your wallpaper only if you let Claude Code read that file. What Claude Code reads goes to Anthropic like the rest of your conversation, not to us.",
                   "<a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/SECURITY.md\">Security policy</a> &middot; <a href=\"https://github.com/estevanhernandez-stack-ed/Sanduhr_f-r_Claude/blob/main/docs/PRIVACY.md\">Privacy policy</a>"
                 ]
               }
@@ -4418,7 +4434,7 @@
         ],
         "footer": {
           "label": "626 Labs · Sanduhr für Claude on Windows",
-          "disclaimer": "© 2026 626Labs LLC. Independent studio. “Claude” and “claude.ai” are trademarks of Anthropic PBC, used nominatively to describe integration. Sanduhr für Claude is an independent third-party tool."
+          "disclaimer": "© 2026 626Labs LLC. Independent studio. “Claude” and “claude.ai” are trademarks of Anthropic PBC, “Codex” is a trademark of OpenAI, and “Antigravity” is a trademark of Google LLC, used nominatively to describe integration. Sanduhr für Claude is an independent third-party tool."
         }
       }
     }
