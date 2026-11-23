@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="release-reviewed" content="estevanhernandez-stack-ed/ROROROblox@v1.36.0.0" />
+<meta name="release-reviewed" content="estevanhernandez-stack-ed/ROROROblox@v1.40.0.0" />
 <title>RoRoRo — multi-launcher for Roblox · 626 Labs</title>
 <meta name="description" content="Run multiple Roblox clients side by side, each signed in as a different saved account. Native on Windows and macOS, plugin-extensible, free. An independent third-party tool — not affiliated with Roblox Corporation." />
 <link rel="canonical" href="https://626labs.dev/rororo.html" />
@@ -730,7 +730,7 @@ ol.steps li::before{ content:counter(step); position:absolute; left:0; top:-1px;
       </div>
       <div>
         <span class="k">Latest · Windows</span>
-        <span class="v" id="win-latest">v1.14</span>
+        <span class="v" id="win-latest">v1.40</span>
       </div>
       <div>
         <span class="k">Plugin host</span>
@@ -841,12 +841,12 @@ brew install --cask rororo</code>
       <div class="feature">
         <div class="key">02 · VAULT</div>
         <h3>Saved-account vault</h3>
-        <p>Add your alts once via an embedded login window. Cookies are encrypted at rest and tied to your machine — DPAPI on Windows, Keychain on macOS — with a passphrase-encrypted export when you move PCs.</p>
+        <p>Add your alts once via an embedded login window. Cookies are encrypted at rest and tied to your machine — DPAPI on Windows, Keychain on macOS — with a passphrase-encrypted export when you move PCs. On Windows, since 1.39, RoRoRo keeps a second copy of the vault beside it, encrypted the same way, and repairs itself from that copy if the file is ever damaged. Adding an account you already saved refreshes its sign-in instead of making a second row.</p>
       </div>
       <div class="feature">
         <div class="key">03 · LAUNCH AS</div>
         <h3>Launch As</h3>
-        <p>One click spawns each saved account straight into your default game, a saved private server, or any pasted share link. Set it once; every alt lands where you pointed it.</p>
+        <p>One click spawns each saved account straight into your default game, a saved private server, or any pasted share link. Set it once; every alt lands where you pointed it. RoRoRo starts the Roblox you install from roblox.com. The Microsoft Store edition of Roblox can't be started by other apps, so since 1.37, if that is the only Roblox on your PC, RoRoRo says so and offers the download. Both can stay installed.</p>
       </div>
       <div class="feature">
         <div class="key">04 · LOGIN</div>
@@ -891,7 +891,7 @@ brew install --cask rororo</code>
       <div class="feature">
         <div class="key">12 · UPDATES</div>
         <h3>Auto-update built in</h3>
-        <p>Velopack on Windows, Sparkle on macOS. When Roblox shifts under the launcher, the fix ships to you without a reinstall — the compat config even updates remotely, no new binary needed.</p>
+        <p>Velopack on Windows, Sparkle on macOS. When Roblox shifts under the launcher, the fix ships to you without a reinstall — the compat config even updates remotely, no new binary needed. Since 1.40 on Windows, a button in the main window says when an update is waiting: <b>Quit to update</b> on the direct download, and <b>Update available</b> on a Store install, where one click opens RoRoRo's Store page. Quit RoRoRo from the tray before a Store update, because a running RoRoRo can hold one back.</p>
       </div>
       <div class="feature">
         <div class="key">13 · WATCHDOG</div>
@@ -941,12 +941,12 @@ brew install --cask rororo</code>
       <div class="feature">
         <div class="key">22 · ITS OWN WINDOW</div>
         <h3>Every launch in its own window</h3>
-        <p>Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RoRoRo closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. Since 1.36, a leftover background Roblox process with no window closes on its own after two minutes. RoRoRo also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog.</p>
+        <p>Roblox leaves a small process in the tray after a game closes, and it used to swallow the next launch. Since 1.35 RoRoRo closes an idle one right before it launches, so every account opens in its own named window and stays on its row; a game, or an account still loading, is never touched. Since 1.36, a leftover background Roblox process with no window closes on its own after two minutes. RoRoRo also asks Windows to bring it back if it closes unexpectedly or the Store updates it (after a crash, only while Windows Error Reporting is on, as it is by default), and picks the open games back up without waiting on a dialog. Since 1.38, the next start after a crash says so, with a button to Diagnostics, where you can save a support bundle. Nothing is sent unless you send it.</p>
       </div>
       <div class="feature">
         <div class="key">23 · ACCOUNT AT A GLANCE</div>
         <h3>Every account, at a glance</h3>
-        <p>Each row shows its Robux, a Plus badge, how many friends are online and a note you write yourself. Open an account for its recent games, favourites and private servers, and play any of them in one click. When an account can't launch, a badge says why (Session expired, Needs verification or Limited by Roblox) and one click starts the fix. RoRoRo reads the facts from Roblox with that account's own login, about every ten minutes, and keeps them in the same encrypted file as your accounts. Streamer mode hides the numbers and the note.</p>
+        <p>Each row shows its Robux, a Plus badge, how many friends are online and a note you write yourself. Open an account for its recent games, favourites and private servers, and play any of them in one click. When an account can't launch, a badge says why (Session expired, Needs verification or Limited by Roblox) and one click starts the fix. Since 1.38, a launch that fails for another reason says which one, in your language: no internet, Roblox slow to answer, Roblox asking RoRoRo to slow down, or Roblox having trouble, each with what to do next. RoRoRo reads the facts from Roblox with that account's own login, about every ten minutes, and keeps them in the same encrypted file as your accounts. Streamer mode hides the numbers and the note.</p>
       </div>
     </div>
   </section>

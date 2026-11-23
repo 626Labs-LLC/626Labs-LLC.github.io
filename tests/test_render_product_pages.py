@@ -346,7 +346,13 @@ def test_sanduhr_is_generated_with_its_furniture():
     assert 'href="/sanduhr/windows/"' in html
     _assert_shots_match(html, _declared_shots(_sanduhr()))
     assert 'class="panel ok"' in html
-    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v2.41.0-mac"' in html
+    # The tag FAMILY is the contract (this page watches `-mac` releases), not
+    # the version: a release review moves the version every time, and pinning
+    # it here failed the suite on each one.
+    assert re.search(
+        r'<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v\d+\.\d+\.\d+-mac"',
+        html,
+    )
 
 
 def test_sanduhr_windows_is_generated_beside_the_mac_page():
@@ -357,7 +363,11 @@ def test_sanduhr_windows_is_generated_beside_the_mac_page():
     assert '<img class="app-icon" src="icon.png"' in html and (ROOT / "sanduhr/windows/icon.png").is_file()
     assert 'href="/sanduhr/"' in html  # the Mac page, root-relative
     assert 'data-app="9NH3NK2RGCF5"' in html  # the reach map moved here
-    assert '<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v4.7.0"' in html
+    # Bare `vX.Y.Z` is the Windows family; the version moves with each review.
+    assert re.search(
+        r'<meta name="release-reviewed" content="estevanhernandez-stack-ed/Sanduhr_f-r_Claude@v\d+\.\d+\.\d+"',
+        html,
+    )
     assert 'class="hand"' not in html
 
 
