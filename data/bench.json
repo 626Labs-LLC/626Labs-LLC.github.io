@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-22T14:52:17.162Z",
+ "generatedAt": "2026-11-23T18:42:53.879Z",
  "windowDays": 14,
  "minCommits": 3,
  "items": [
@@ -9,8 +9,8 @@
    "href": "/sanduhr/",
    "blurb": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with…",
    "featured": true,
-   "commits": 309,
-   "lastCommit": "2026-11-22"
+   "commits": 302,
+   "lastCommit": "2026-11-23"
   },
   {
    "repo": "estevanhernandez-stack-ed/ROROROblox",
@@ -18,8 +18,8 @@
    "href": "/rororo.html",
    "blurb": "A free multi-launcher for Roblox: run several clients side by side, each signed in as a different saved account.",
    "featured": true,
-   "commits": 119,
-   "lastCommit": "2026-11-21"
+   "commits": 124,
+   "lastCommit": "2026-11-22"
   },
   {
    "repo": "estevanhernandez-stack-ed/626-mod-launcher",
@@ -27,7 +27,7 @@
    "href": "/mod-launcher-games.html",
    "blurb": "A reversible, atomic mod toggler for PC games — Bethesda, Unreal, FromSoft, BepInEx, Stardew SMAPI, and more.",
    "featured": true,
-   "commits": 30,
+   "commits": 22,
    "lastCommit": "2026-11-19"
   },
   {

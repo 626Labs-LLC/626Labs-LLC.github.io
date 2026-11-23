@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-22T14:51:31.716Z",
+ "fetchedAt": "2026-11-23T18:41:48.580Z",
  "windowDays": 182,
  "repos": {
   "626Labs-LLC/626labs-pod-pipeline": {
@@ -237,10 +237,11 @@
     "2026-11-16": 44,
     "2026-11-17": 27,
     "2026-11-18": 3,
-    "2026-11-21": 2
+    "2026-11-21": 2,
+    "2026-11-22": 5
    },
-   "total": 1346,
-   "lastCommit": "2026-11-21",
+   "total": 1351,
+   "lastCommit": "2026-11-22",
    "truncated": false
   },
   "estevanhernandez-stack-ed/RTClickPng": {
@@ -257,7 +258,7 @@
   },
   "estevanhernandez-stack-ed/Sanduhr_f-r_Claude": {
    "days": {
-    "2026-10-19": 14,
+    "2026-10-19": 2,
     "2026-10-20": 36,
     "2026-10-21": 90,
     "2026-10-22": 62,
@@ -291,21 +292,21 @@
     "2026-11-19": 18,
     "2026-11-20": 57,
     "2026-11-21": 10,
-    "2026-11-22": 22
+    "2026-11-22": 28,
+    "2026-11-23": 4
    },
-   "total": 1471,
-   "lastCommit": "2026-11-22",
+   "total": 1469,
+   "lastCommit": "2026-11-23",
    "truncated": true
   },
   "estevanhernandez-stack-ed/Thesis-Engine": {
    "days": {
-    "2026-05-25": 2,
     "2026-05-29": 3,
     "2026-06-09": 1,
     "2026-06-10": 1,
     "2026-07-10": 1
    },
-   "total": 8,
+   "total": 6,
    "lastCommit": "2026-07-10",
    "truncated": false
   },
@@ -364,7 +365,6 @@
   },
   "estevanhernandez-stack-ed/vibe-cartographer": {
    "days": {
-    "2026-05-25": 3,
     "2026-06-09": 7,
     "2026-06-10": 3,
     "2026-07-06": 4,
@@ -375,20 +375,19 @@
     "2026-10-17": 4,
     "2026-10-19": 3
    },
-   "total": 62,
+   "total": 59,
    "lastCommit": "2026-10-19",
    "truncated": false
   },
   "estevanhernandez-stack-ed/Vibe-Doc": {
    "days": {
-    "2026-05-25": 3,
     "2026-06-10": 3,
     "2026-07-10": 1,
     "2026-07-25": 1,
     "2026-09-11": 1,
     "2026-10-01": 1
    },
-   "total": 10,
+   "total": 7,
    "lastCommit": "2026-10-01",
    "truncated": false
   },
@@ -404,8 +403,6 @@
   },
   "estevanhernandez-stack-ed/vibe-insights": {
    "days": {
-    "2026-05-24": 17,
-    "2026-05-25": 1,
     "2026-05-29": 1,
     "2026-06-01": 21,
     "2026-06-09": 1,
@@ -414,13 +411,12 @@
     "2026-07-10": 1,
     "2026-09-11": 1
    },
-   "total": 47,
+   "total": 29,
    "lastCommit": "2026-09-11",
    "truncated": false
   },
   "estevanhernandez-stack-ed/vibe-iterate": {
    "days": {
-    "2026-05-25": 2,
     "2026-05-26": 11,
     "2026-05-28": 1,
     "2026-06-09": 4,
@@ -429,19 +425,18 @@
     "2026-07-06": 3,
     "2026-07-10": 1
    },
-   "total": 24,
+   "total": 22,
    "lastCommit": "2026-07-10",
    "truncated": false
   },
   "estevanhernandez-stack-ed/vibe-Keystone": {
    "days": {
-    "2026-05-25": 2,
     "2026-06-09": 2,
     "2026-07-10": 1,
     "2026-07-25": 18,
     "2026-10-01": 1
    },
-   "total": 24,
+   "total": 22,
    "lastCommit": "2026-10-01",
    "truncated": false
   },
@@ -461,8 +456,6 @@
   },
   "estevanhernandez-stack-ed/vibe-plugins": {
    "days": {
-    "2026-05-24": 6,
-    "2026-05-25": 6,
     "2026-05-28": 3,
     "2026-05-29": 5,
     "2026-05-30": 2,
@@ -489,7 +482,7 @@
     "2026-10-17": 2,
     "2026-10-19": 1
    },
-   "total": 110,
+   "total": 98,
    "lastCommit": "2026-10-19",
    "truncated": false
   },
@@ -537,7 +530,6 @@
   },
   "estevanhernandez-stack-ed/vibe-sec": {
    "days": {
-    "2026-05-25": 4,
     "2026-06-09": 2,
     "2026-06-10": 3,
     "2026-07-04": 1,
@@ -546,25 +538,23 @@
     "2026-10-01": 2,
     "2026-10-02": 2
    },
-   "total": 18,
+   "total": 14,
    "lastCommit": "2026-10-02",
    "truncated": false
   },
   "estevanhernandez-stack-ed/vibe-taker": {
    "days": {
-    "2026-05-25": 2,
     "2026-06-09": 3,
     "2026-07-06": 4,
     "2026-07-10": 1,
     "2026-10-17": 5
    },
-   "total": 15,
+   "total": 13,
    "lastCommit": "2026-10-17",
    "truncated": false
   },
   "estevanhernandez-stack-ed/vibe-test": {
    "days": {
-    "2026-05-25": 3,
     "2026-06-09": 8,
     "2026-06-10": 2,
     "2026-07-04": 1,
@@ -572,26 +562,24 @@
     "2026-07-10": 1,
     "2026-10-17": 5
    },
-   "total": 23,
+   "total": 20,
    "lastCommit": "2026-10-17",
    "truncated": false
   },
   "estevanhernandez-stack-ed/Vibe-Thesis": {
    "days": {
-    "2026-05-25": 3,
     "2026-07-10": 1,
     "2026-07-25": 1,
     "2026-09-11": 1,
     "2026-10-01": 1,
     "2026-10-17": 5
    },
-   "total": 12,
+   "total": 9,
    "lastCommit": "2026-10-17",
    "truncated": false
   },
   "estevanhernandez-stack-ed/Vibe-Walk": {
    "days": {
-    "2026-05-25": 2,
     "2026-05-27": 19,
     "2026-05-28": 10,
     "2026-06-09": 5,
@@ -599,19 +587,18 @@
     "2026-07-10": 1,
     "2026-10-01": 1
    },
-   "total": 40,
+   "total": 38,
    "lastCommit": "2026-10-01",
    "truncated": false
   },
   "estevanhernandez-stack-ed/vibe-wrap": {
    "days": {
-    "2026-05-25": 1,
     "2026-06-09": 8,
     "2026-07-04": 1,
     "2026-07-06": 3,
     "2026-07-10": 1
    },
-   "total": 14,
+   "total": 13,
    "lastCommit": "2026-07-10",
    "truncated": false
   }
