@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-17T16:59:35.102Z",
+  "generated": "2026-11-24T19:00:30.359Z",
   "entries": [
     {
       "id": "m01",
@@ -650,6 +650,14 @@
       "source": "curated"
     },
     {
+      "id": "t1368337",
+      "title": "The Odyssey",
+      "year": 2026,
+      "tagline": "Defy the gods.",
+      "posterPath": "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg",
+      "source": "tmdb"
+    },
+    {
       "id": "t1263337",
       "title": "Heart of the Beast",
       "year": 2026,
@@ -658,11 +666,19 @@
       "source": "tmdb"
     },
     {
-      "id": "t1368337",
-      "title": "The Odyssey",
+      "id": "t1300968",
+      "title": "The Hunger Games: Sunrise on the Reaping",
       "year": 2026,
-      "tagline": "Defy the gods.",
-      "posterPath": "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg",
+      "tagline": "Welcome to the Second Quarter Quell.",
+      "posterPath": "/jNcZH8yplxttRlf0wwqfGGMKHxX.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t969681",
+      "title": "Spider-Man: Brand New Day",
+      "year": 2026,
+      "tagline": "A brand new day starts now.",
+      "posterPath": "/bjiS5ipwxb9JFy3XRRN4OAilSeX.jpg",
       "source": "tmdb"
     },
     {
@@ -682,35 +698,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t969681",
-      "title": "Spider-Man: Brand New Day",
-      "year": 2026,
-      "tagline": "A brand new day starts now.",
-      "posterPath": "/bjiS5ipwxb9JFy3XRRN4OAilSeX.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t687163",
-      "title": "Project Hail Mary",
-      "year": 2026,
-      "tagline": "Believe in the Hail Mary.",
-      "posterPath": "/iOb2fjXLbpJgyQXe46n1WtGCnaa.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t1058424",
       "title": "Hope",
       "year": 2026,
       "tagline": "Is this how it ends?",
       "posterPath": "/6VY1ZKgpsc8CfGsQcCGiYEgHdH0.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1244523",
-      "title": "Beware Boiúna",
-      "year": 2026,
-      "tagline": "Witness terror on a gigantic scale.",
-      "posterPath": "/7mI13sTZcuwWEIUK9fckAb8Zmba.jpg",
       "source": "tmdb"
     },
     {
@@ -722,35 +714,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1381071",
-      "title": "Godzilla Minus Zero",
+      "id": "t1244523",
+      "title": "Beware Boiúna",
       "year": 2026,
-      "tagline": "There is no third time. Everything ends here.",
-      "posterPath": "/hSmIJluOJmTWvJs4d7kHRxjc8s8.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1562642",
-      "title": "Ghost Soldier",
-      "year": 2026,
-      "tagline": "Heaven sent. Hell to pay.",
-      "posterPath": "/8Y4oJ5iUs3hgPcDB3SIEmsNYjZk.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1567605",
-      "title": "Ebenezer",
-      "year": 2026,
-      "tagline": "Before he was Scrooge, he was…",
-      "posterPath": "/6H2N59jJW1hZEzn2ZdrMvJw5vNI.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1422041",
-      "title": "La Bola Negra",
-      "year": 2026,
-      "tagline": "Love leaves a legacy.",
-      "posterPath": "/7HwFQTMghL6HOvzEnXYUvyuZXeh.jpg",
+      "tagline": "Witness terror on a gigantic scale.",
+      "posterPath": "/tENVMxKvOkslv8kagVNdIEQ13RT.jpg",
       "source": "tmdb"
     },
     {
@@ -762,6 +730,14 @@
       "source": "tmdb"
     },
     {
+      "id": "t1562642",
+      "title": "Ghost Soldier",
+      "year": 2026,
+      "tagline": "Heaven sent. Hell to pay.",
+      "posterPath": "/8Y4oJ5iUs3hgPcDB3SIEmsNYjZk.jpg",
+      "source": "tmdb"
+    },
+    {
       "id": "t1101412",
       "title": "Fall 2: Deadpoint",
       "year": 2026,
@@ -770,19 +746,27 @@
       "source": "tmdb"
     },
     {
-      "id": "t1283515",
-      "title": "Verity",
+      "id": "t1381071",
+      "title": "Godzilla Minus Zero",
       "year": 2026,
-      "tagline": "There is no light where we're going.",
-      "posterPath": "/rmaNMA1seHqpjtnYKzyynFAr1g8.jpg",
+      "tagline": "There is no third time. Everything ends here.",
+      "posterPath": "/hSmIJluOJmTWvJs4d7kHRxjc8s8.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1543469",
-      "title": "Heartland",
+      "id": "t1595124",
+      "title": "Steps",
       "year": 2026,
-      "tagline": "The brightest stars hide the darkest secrets.",
-      "posterPath": "/zhxlzxBlO1sWB1rPn7RmAoeQ2na.jpg",
+      "tagline": "At midnight, we ride.",
+      "posterPath": "/jtfCcWZ3ZyKdgi0u7JVOxEOSSJP.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1422041",
+      "title": "LA BOLA NEGRA",
+      "year": 2026,
+      "tagline": "Love leaves a legacy.",
+      "posterPath": "/7HwFQTMghL6HOvzEnXYUvyuZXeh.jpg",
       "source": "tmdb"
     },
     {
@@ -794,83 +778,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1514026",
-      "title": "Buddy",
-      "year": 2026,
-      "tagline": "It's Buddy!",
-      "posterPath": "/1BdZbNvl1SfrrX8J9X5tQzN6Ivu.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1432306",
-      "title": "Sleepwalker",
-      "year": 2026,
-      "tagline": "When night falls, every memory can be a nightmare.",
-      "posterPath": "/760SP4VsZagpyB9WLfeZykE3DFg.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t1185344",
       "title": "The Beast",
       "year": 2026,
       "tagline": "You know Air Force One. Now meet...",
       "posterPath": "/ocg5JfJP19fodcv5uQUApkmZMdI.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1300968",
-      "title": "The Hunger Games: Sunrise on the Reaping",
-      "year": 2026,
-      "tagline": "Welcome to the Second Quarter Quell.",
-      "posterPath": "/kONfwpf0AZzvL1zqjZV9C89g1PY.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1657630",
-      "title": "The Awakening",
-      "year": 2026,
-      "tagline": "Old sins. New blood.",
-      "posterPath": "/AhP971WogMHbF5iKJPKi6e6oaya.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1570488",
-      "title": "A Dog's Perfect Christmas",
-      "year": 2026,
-      "tagline": "Sit. Stay. Love.",
-      "posterPath": "/zvsNAohDHRWcGvbPSD7r3WojpKb.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t940721",
-      "title": "Godzilla Minus One",
-      "year": 2023,
-      "tagline": "戦後、日本。無（ゼロ）から負（マイナス）へ。",
-      "posterPath": "/2E2WTX0TJEflAged6kzErwqX1kt.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1595325",
-      "title": "The Anacondas",
-      "year": 2025,
-      "tagline": "You're hisstory!",
-      "posterPath": "/yphysF14qWFvrIbFVg3vEnbudwT.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t755898",
-      "title": "War of the Worlds",
-      "year": 2025,
-      "tagline": "Your data is deadly.",
-      "posterPath": "/yvirUYrva23IudARHn3mMGVxWqM.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t1153576",
-      "title": "Street Fighter",
-      "year": 2026,
-      "tagline": "Ready. Set. Fight.",
-      "posterPath": "/8nP4lF51Ea861YfHEEqhZBLYv3e.jpg",
       "source": "tmdb"
     },
     {
@@ -882,27 +794,67 @@
       "source": "tmdb"
     },
     {
-      "id": "t1291595",
-      "title": "Insidious: Out of the Further",
-      "year": 2026,
-      "tagline": "Evil found a way out.",
-      "posterPath": "/4tTrW9dXCByS5wt2pXVWb58zNjz.jpg",
+      "id": "t509467",
+      "title": "The Vanished",
+      "year": 2018,
+      "tagline": "I killed my wife and her body disappeared.",
+      "posterPath": "/lTo5AEHuZwTjrn9Sk5quioEP7FS.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t1474226",
-      "title": "Evil Dress",
+      "id": "t1283515",
+      "title": "Verity",
       "year": 2026,
-      "tagline": "You can't run away from it.",
-      "posterPath": "/4346oRUfjNtBezOQoKiu31J34L9.jpg",
+      "tagline": "There is no light where we're going.",
+      "posterPath": "/rmaNMA1seHqpjtnYKzyynFAr1g8.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t791523",
-      "title": "Wildwood",
+      "id": "t1567605",
+      "title": "Ebenezer",
       "year": 2026,
-      "tagline": "How far would you go for those you love?",
-      "posterPath": "/snFM00mpNAfUzUtkdEW0uDEvXA0.jpg",
+      "tagline": "Before he was Scrooge, he was…",
+      "posterPath": "/6H2N59jJW1hZEzn2ZdrMvJw5vNI.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1514026",
+      "title": "Buddy",
+      "year": 2026,
+      "tagline": "It's Buddy!",
+      "posterPath": "/1BdZbNvl1SfrrX8J9X5tQzN6Ivu.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t687163",
+      "title": "Project Hail Mary",
+      "year": 2026,
+      "tagline": "Believe in the Hail Mary.",
+      "posterPath": "/iOb2fjXLbpJgyQXe46n1WtGCnaa.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t27",
+      "title": "9 Songs",
+      "year": 2004,
+      "tagline": "2 lovers, one summer, and the 9 songs that defined them.",
+      "posterPath": "/91O7z0vo7MiNWd5xD2BoivwbQsb.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1339713",
+      "title": "Obsession",
+      "year": 2026,
+      "tagline": "You only get one wish.",
+      "posterPath": "/bRwnj8WEKBCvmfeUNOukJPwB43K.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1543469",
+      "title": "Heartland",
+      "year": 2026,
+      "tagline": "The brightest stars hide the darkest secrets.",
+      "posterPath": "/zhxlzxBlO1sWB1rPn7RmAoeQ2na.jpg",
       "source": "tmdb"
     },
     {
@@ -938,14 +890,6 @@
       "source": "tmdb"
     },
     {
-      "id": "t936075",
-      "title": "Michael",
-      "year": 2026,
-      "tagline": "Discover the making of a king.",
-      "posterPath": "/dueFqKLvjftnELZaGYwY7xinfaI.jpg",
-      "source": "tmdb"
-    },
-    {
       "id": "t389",
       "title": "12 Angry Men",
       "year": 1957,
@@ -970,19 +914,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t1630423",
-      "title": "My Dearest Assassin",
+      "id": "t936075",
+      "title": "Michael",
       "year": 2026,
-      "tagline": "Love, Sacrifice and Vengeance.",
-      "posterPath": "/ul4dQcA68mtSx8J56N5gEcaCCtP.jpg",
-      "source": "tmdb"
-    },
-    {
-      "id": "t129",
-      "title": "Spirited Away",
-      "year": 2001,
-      "tagline": "Prepare to be spirited away.",
-      "posterPath": "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+      "tagline": "Discover the making of a king.",
+      "posterPath": "/dueFqKLvjftnELZaGYwY7xinfaI.jpg",
       "source": "tmdb"
     },
     {
@@ -990,7 +926,23 @@
       "title": "Chainsaw Man - The Movie: Reze Arc",
       "year": 2025,
       "tagline": "A heart caught between the warmth of love and the blast of destruction.",
-      "posterPath": "/i69jR67amezdJ3sx6OOvOGn7HAR.jpg",
+      "posterPath": "/jRCu8F0nypHTj9O2ofVZ42FcPER.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t129",
+      "title": "Spirited Away",
+      "year": 2001,
+      "tagline": "Prepare to be spirited away.",
+      "posterPath": "/jUo8cNmU400WtZiJss45HNXlQ2e.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t1630423",
+      "title": "My Dearest Assassin",
+      "year": 2026,
+      "tagline": "Love, Sacrifice and Vengeance.",
+      "posterPath": "/ul4dQcA68mtSx8J56N5gEcaCCtP.jpg",
       "source": "tmdb"
     },
     {
@@ -1070,15 +1022,23 @@
       "title": "Forrest Gump",
       "year": 1994,
       "tagline": "The world will never be the same once you've seen it through the eyes of Forrest Gump.",
-      "posterPath": "/saHP97rTPS5eLmrLQEcANmKrsFl.jpg",
+      "posterPath": "/Cw4hIUIAmSYfK9QfaUW5igp9La.jpg",
       "source": "tmdb"
     },
     {
-      "id": "t346",
-      "title": "Seven Samurai",
-      "year": 1954,
-      "tagline": "Unmatched for suspense and spectacle!",
-      "posterPath": "/lOMGc8bnSwQhS4XyE1S99uH8NXf.jpg",
+      "id": "t791523",
+      "title": "Wildwood",
+      "year": 2026,
+      "tagline": "How far would you go for those you love?",
+      "posterPath": "/snFM00mpNAfUzUtkdEW0uDEvXA0.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": "t120",
+      "title": "The Lord of the Rings: The Fellowship of the Ring",
+      "year": 2001,
+      "tagline": "One ring to rule them all.",
+      "posterPath": "/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg",
       "source": "tmdb"
     },
     {
@@ -1090,11 +1050,11 @@
       "source": "tmdb"
     },
     {
-      "id": "t120",
-      "title": "The Lord of the Rings: The Fellowship of the Ring",
-      "year": 2001,
-      "tagline": "One ring to rule them all.",
-      "posterPath": "/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg",
+      "id": "t346",
+      "title": "Seven Samurai",
+      "year": 1954,
+      "tagline": "Unmatched for suspense and spectacle!",
+      "posterPath": "/lOMGc8bnSwQhS4XyE1S99uH8NXf.jpg",
       "source": "tmdb"
     },
     {
