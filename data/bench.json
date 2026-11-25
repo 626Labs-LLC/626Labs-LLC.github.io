@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-24T18:15:23.134Z",
+ "generatedAt": "2026-11-25T17:35:34.003Z",
  "windowDays": 14,
  "minCommits": 3,
  "items": [
@@ -9,7 +9,7 @@
    "href": "/sanduhr/",
    "blurb": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with…",
    "featured": true,
-   "commits": 301,
+   "commits": 279,
    "lastCommit": "2026-11-24"
   },
   {
@@ -18,7 +18,7 @@
    "href": "/rororo.html",
    "blurb": "A free multi-launcher for Roblox: run several clients side by side, each signed in as a different saved account.",
    "featured": true,
-   "commits": 116,
+   "commits": 98,
    "lastCommit": "2026-11-24"
   },
   {
@@ -27,8 +27,8 @@
    "href": "/mod-launcher-games.html",
    "blurb": "A reversible, atomic mod toggler for PC games — Bethesda, Unreal, FromSoft, BepInEx, Stardew SMAPI, and more.",
    "featured": true,
-   "commits": 23,
-   "lastCommit": "2026-11-24"
+   "commits": 31,
+   "lastCommit": "2026-11-25"
   },
   {
    "repo": "estevanhernandez-stack-ed/rororo-mac",
