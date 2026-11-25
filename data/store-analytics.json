@@ -1,17 +1,10 @@
 {
- "fetchedAt": "2026-11-24T18:23:10.874Z",
+ "fetchedAt": "2026-11-25T17:39:25.546Z",
  "windowDays": 30,
  "apps": {
   "9NMJCS390KWB": {
    "name": "RoRoRo",
    "usageDaily": {
-    "2026-10-25": {
-     "dailyActiveUsers": 334,
-     "dailyActiveDevices": 330,
-     "dailyNewUsers": 107,
-     "dailySessionCount": 939,
-     "engagementDurationMinutes": 953.8
-    },
     "2026-10-26": {
      "dailyActiveUsers": 289,
      "dailyActiveDevices": 285,
@@ -214,12 +207,16 @@
      "dailyNewUsers": 57,
      "dailySessionCount": 972,
      "engagementDurationMinutes": 1516
+    },
+    "2026-11-24": {
+     "dailyActiveUsers": 420,
+     "dailyActiveDevices": 415,
+     "dailyNewUsers": 44,
+     "dailySessionCount": 907,
+     "engagementDurationMinutes": 1241.9
     }
    },
    "installsDaily": {
-    "2026-10-25": {
-     "successfulInstallCount": 166
-    },
     "2026-10-26": {
      "successfulInstallCount": 105
     },
@@ -306,12 +303,12 @@
     },
     "2026-11-23": {
      "successfulInstallCount": 119
+    },
+    "2026-11-24": {
+     "successfulInstallCount": 104
     }
    },
    "acquisitionsDaily": {
-    "2026-10-25": {
-     "acquisitionQuantity": 85
-    },
     "2026-10-26": {
      "acquisitionQuantity": 40
     },
@@ -400,66 +397,69 @@
      "acquisitionQuantity": 50
     },
     "2026-11-24": {
+     "acquisitionQuantity": 49
+    },
+    "2026-11-25": {
      "acquisitionQuantity": 13
     }
    },
    "installsByMarket": {
-    "US": 1646,
-    "PH": 743,
-    "BR": 517,
-    "RU": 473,
-    "GB": 376,
-    "PL": 337,
-    "DE": 278,
-    "FR": 276,
-    "CA": 213,
-    "IN": 212,
-    "ID": 200,
+    "US": 1677,
+    "PH": 754,
+    "BR": 522,
+    "RU": 483,
+    "GB": 379,
+    "PL": 340,
+    "DE": 279,
+    "FR": 279,
+    "IN": 218,
+    "CA": 215,
+    "ID": 202,
     "AU": 194,
-    "UA": 137,
-    "NL": 121,
-    "VN": 111,
+    "UA": 138,
+    "NL": 124,
+    "VN": 113,
     "TH": 109,
-    "JP": 103,
-    "TR": 90,
-    "MY": 90,
+    "JP": 105,
+    "TR": 92,
+    "MY": 91,
     "CZ": 81,
     "RO": 76,
-    "KR": 73,
-    "DK": 73,
+    "KR": 74,
+    "DK": 74,
     "BE": 69,
-    "SG": 63,
-    "TW": 62,
+    "SG": 65,
+    "TW": 63,
     "IT": 61,
     "SE": 60,
     "ZA": 48,
+    "NO": 47,
     "ES": 46,
-    "NO": 46,
-    "MX": 44,
+    "MX": 45,
+    "PK": 43,
     "NZ": 42,
-    "PK": 42,
     "AR": 41,
     "KZ": 38,
+    "HK": 38,
     "PT": 37,
-    "HK": 36,
     "AE": 34,
     "BY": 32,
-    "CO": 30,
+    "CO": 31,
     "BD": 28,
     "SA": 28,
     "IL": 28,
     "PE": 27,
     "NP": 27,
     "FI": 27,
-    "SK": 26,
-    "LT": 25,
+    "SK": 27,
+    "LT": 26,
     "MA": 24,
     "GR": 22,
     "AT": 22,
     "KH": 20,
-    "EE": 19,
+    "EE": 20,
+    "HU": 20,
     "HR": 19,
-    "HU": 19,
     "KE": 18,
     "EG": 17,
     "IE": 17,
@@ -485,10 +485,10 @@
     "JM": 6,
     "UZ": 6,
     "KW": 6,
+    "CR": 6,
     "BH": 5,
     "GH": 5,
     "TN": 5,
-    "CR": 5,
     "MV": 5,
     "MM": 5,
     "KG": 5,
@@ -556,6 +556,17 @@
     "TG": 1
    },
    "reviews": [
+    {
+     "reviewerName": "ㅤ",
+     "rating": 5,
+     "reviewTitle": "perfect",
+     "reviewText": null,
+     "market": "IT",
+     "date": "11/24/2026 9:05:04 PM",
+     "packageVersion": "1.40.0.0",
+     "isRevised": false,
+     "id": "754d0506-54a3-3083-667b-c1ff6f170ab6"
+    },
     {
      "reviewerName": "Ronav",
      "rating": 5,
@@ -859,23 +870,23 @@
     "twoStars": 0,
     "threeStars": 2,
     "fourStars": 1,
-    "fiveStars": 22,
-    "total": 27,
-    "average": 4.52,
+    "fiveStars": 23,
+    "total": 28,
+    "average": 4.54,
     "oneStarWithText": 2
    },
    "failuresWindow": [
-    {
-     "failureName": "APPLICATION_HANG_ENDTASK_HungThreadIsIdle_cfffffff_626LabsLLC.RoRoRoBlox_ROROROblox!unknown_error_in_application",
-     "failureHash": "bac8dbe3-eb0a-9cb0-8e8e-7158ff79b9bb",
-     "eventCount": 25,
-     "deviceCount": 19
-    },
     {
      "failureName": "CLR_EXCEPTION_80263001_626LabsLLC.RoRoRoBlox_ROROROblox!unknown_function",
      "failureHash": "459271eb-3397-7bb2-e68e-559fc6bb203d",
      "eventCount": 23,
      "deviceCount": 15
+    },
+    {
+     "failureName": "APPLICATION_HANG_ENDTASK_HungThreadIsIdle_cfffffff_626LabsLLC.RoRoRoBlox_ROROROblox!unknown_error_in_application",
+     "failureHash": "bac8dbe3-eb0a-9cb0-8e8e-7158ff79b9bb",
+     "eventCount": 16,
+     "deviceCount": 16
     },
     {
      "failureName": "CLR_EXCEPTION_80070005_626LabsLLC.RoRoRoBlox_ROROROblox!unknown_function",
@@ -897,8 +908,8 @@
     }
    ],
    "unclassifiedHits": {
-    "eventCount": 746,
-    "deviceCount": 313
+    "eventCount": 737,
+    "deviceCount": 295
    }
   },
   "9N53V6RRJK95": {
@@ -1057,6 +1068,13 @@
      "dailyNewUsers": 3,
      "dailySessionCount": 10,
      "engagementDurationMinutes": 13.1
+    },
+    "2026-11-24": {
+     "dailyActiveUsers": 2,
+     "dailyActiveDevices": 2,
+     "dailyNewUsers": 2,
+     "dailySessionCount": 6,
+     "engagementDurationMinutes": 4.4
     }
    },
    "installsDaily": {
@@ -1140,6 +1158,9 @@
     },
     "2026-11-23": {
      "successfulInstallCount": 3
+    },
+    "2026-11-24": {
+     "successfulInstallCount": 3
     }
    },
    "acquisitionsDaily": {
@@ -1214,10 +1235,13 @@
     },
     "2026-11-23": {
      "acquisitionQuantity": 2
+    },
+    "2026-11-24": {
+     "acquisitionQuantity": 2
     }
    },
    "installsByMarket": {
-    "US": 59,
+    "US": 61,
     "IN": 35,
     "DE": 11,
     "GB": 11,
@@ -1229,7 +1253,7 @@
     "TR": 7,
     "NG": 6,
     "ZA": 5,
-    "DZ": 4,
+    "DZ": 5,
     "KE": 4,
     "HU": 4,
     "UG": 3,
@@ -1326,6 +1350,9 @@
     },
     "2026-11-16": {
      "successfulInstallCount": 1
+    },
+    "2026-11-24": {
+     "successfulInstallCount": 1
     }
    },
    "acquisitionsDaily": {
@@ -1339,6 +1366,9 @@
      "acquisitionQuantity": 1
     },
     "2026-11-16": {
+     "acquisitionQuantity": 1
+    },
+    "2026-11-24": {
      "acquisitionQuantity": 1
     }
    },
@@ -1359,7 +1389,8 @@
     "RU": 1,
     "TG": 1,
     "TL": 1,
-    "HR": 1
+    "HR": 1,
+    "MU": 1
    },
    "reviews": [],
    "ratingsLifetime": {
@@ -1464,9 +1495,6 @@
     }
    },
    "installsDaily": {
-    "2026-10-25": {
-     "successfulInstallCount": 1
-    },
     "2026-10-26": {
      "successfulInstallCount": 1
     },
@@ -1529,9 +1557,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-10-25": {
-     "acquisitionQuantity": 1
-    },
     "2026-10-26": {
      "acquisitionQuantity": 1
     },
@@ -1642,13 +1667,6 @@
   "9MV9G4XFJ8S0": {
    "name": "RBX15 Classic Shirt and Pants Maker",
    "usageDaily": {
-    "2026-10-25": {
-     "dailyActiveUsers": 5,
-     "dailyActiveDevices": 5,
-     "dailyNewUsers": 0,
-     "dailySessionCount": 40,
-     "engagementDurationMinutes": 106
-    },
     "2026-10-26": {
      "dailyActiveUsers": 7,
      "dailyActiveDevices": 7,
@@ -1851,12 +1869,16 @@
      "dailyNewUsers": 2,
      "dailySessionCount": 15,
      "engagementDurationMinutes": 98.2
+    },
+    "2026-11-24": {
+     "dailyActiveUsers": 6,
+     "dailyActiveDevices": 6,
+     "dailyNewUsers": 1,
+     "dailySessionCount": 13,
+     "engagementDurationMinutes": 94.8
     }
    },
    "installsDaily": {
-    "2026-10-25": {
-     "successfulInstallCount": 4
-    },
     "2026-10-26": {
      "successfulInstallCount": 11
     },
@@ -1946,9 +1968,6 @@
     }
    },
    "acquisitionsDaily": {
-    "2026-10-25": {
-     "acquisitionQuantity": 2
-    },
     "2026-10-26": {
      "acquisitionQuantity": 7
     },
@@ -2028,6 +2047,12 @@
      "acquisitionQuantity": 6
     },
     "2026-11-23": {
+     "acquisitionQuantity": 1
+    },
+    "2026-11-24": {
+     "acquisitionQuantity": 1
+    },
+    "2026-11-25": {
      "acquisitionQuantity": 1
     }
    },
@@ -2417,8 +2442,8 @@
    },
    "failuresWindow": [],
    "unclassifiedHits": {
-    "eventCount": 9,
-    "deviceCount": 4
+    "eventCount": 5,
+    "deviceCount": 3
    }
   }
  }
