@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-25T17:35:34.003Z",
+ "generatedAt": "2026-11-26T17:17:28.398Z",
  "windowDays": 14,
  "minCommits": 3,
  "items": [
@@ -9,7 +9,7 @@
    "href": "/sanduhr/",
    "blurb": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with…",
    "featured": true,
-   "commits": 279,
+   "commits": 253,
    "lastCommit": "2026-11-24"
   },
   {
@@ -18,8 +18,17 @@
    "href": "/rororo.html",
    "blurb": "A free multi-launcher for Roblox: run several clients side by side, each signed in as a different saved account.",
    "featured": true,
-   "commits": 98,
+   "commits": 95,
    "lastCommit": "2026-11-24"
+  },
+  {
+   "repo": "estevanhernandez-stack-ed/rororo-ur-task",
+   "title": "rororo-ur-task",
+   "href": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
+   "blurb": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't…",
+   "featured": true,
+   "commits": 71,
+   "lastCommit": "2026-11-26"
   },
   {
    "repo": "estevanhernandez-stack-ed/626-mod-launcher",
@@ -27,7 +36,7 @@
    "href": "/mod-launcher-games.html",
    "blurb": "A reversible, atomic mod toggler for PC games — Bethesda, Unreal, FromSoft, BepInEx, Stardew SMAPI, and more.",
    "featured": true,
-   "commits": 31,
+   "commits": 22,
    "lastCommit": "2026-11-25"
   },
   {
@@ -38,15 +47,6 @@
    "featured": true,
    "commits": 7,
    "lastCommit": "2026-11-20"
-  },
-  {
-   "repo": "estevanhernandez-stack-ed/sanduhr-mods",
-   "title": "sanduhr-mods",
-   "href": "https://github.com/estevanhernandez-stack-ed/sanduhr-mods",
-   "blurb": "Claude Code mods, published from Sanduhr. claude plugin marketplace add estevanhernandez-stack-ed/sanduhr-mods",
-   "featured": false,
-   "commits": 7,
-   "lastCommit": "2026-11-16"
   }
  ]
 }
