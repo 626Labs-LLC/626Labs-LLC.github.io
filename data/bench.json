@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-26T17:17:28.398Z",
+ "generatedAt": "2026-11-27T16:57:44.535Z",
  "windowDays": 14,
  "minCommits": 3,
  "items": [
@@ -9,7 +9,7 @@
    "href": "/sanduhr/",
    "blurb": "On the Mac, your claude.ai usage meters live on the desktop and around the notch: session and weekly limits drawn under your windows with…",
    "featured": true,
-   "commits": 253,
+   "commits": 207,
    "lastCommit": "2026-11-24"
   },
   {
