@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T16:18:35.285Z",
+  "generatedAt": "2026-11-28T15:11:41.533Z",
   "count": 59,
   "owners": [
     "user:estevanhernandez-stack-ed",
@@ -13,7 +13,7 @@
       "description": "626 Labs LLC — native apps & Claude Code plugins. Portfolio site at 626labs.dev.",
       "html_url": "https://github.com/626Labs-LLC/626Labs-LLC.github.io",
       "language": "HTML",
-      "pushed_at": "2026-11-27T15:40:23Z",
+      "pushed_at": "2026-11-28T14:36:34Z",
       "stargazers_count": 0,
       "archived": false,
       "fork": false
@@ -337,7 +337,7 @@
       "description": "Per-window-aware macro recording plugin for RoRoRo. Record once on one alt; playback refuses any window that isn't bound. A 626 Labs product.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/rororo-ur-task",
       "language": "C#",
-      "pushed_at": "2026-11-27T12:58:09Z",
+      "pushed_at": "2026-11-27T22:10:55Z",
       "stargazers_count": 2,
       "archived": false,
       "fork": false
@@ -349,7 +349,7 @@
       "description": "RoRoRo: run several Roblox clients side by side on Windows, each signed in as a different saved account. Account manager, game Library, Squad Launch, FPS caps, phone alerts, themes, plugins. Free and open source, on the Microsoft Store. Not affiliated with Roblox Corporation.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/ROROROblox",
       "language": "C#",
-      "pushed_at": "2026-11-27T13:06:28Z",
+      "pushed_at": "2026-11-27T23:11:38Z",
       "stargazers_count": 11,
       "archived": false,
       "fork": false
@@ -589,7 +589,7 @@
       "description": "The 626 Labs plugin marketplace for Claude Code — a coordinated family of plugins for spec-driven building, iteration, docs, tests, security, and research. Paste this repo into Claude Code to install the whole Vibe ecosystem.",
       "html_url": "https://github.com/estevanhernandez-stack-ed/vibe-plugins",
       "language": "Python",
-      "pushed_at": "2026-11-27T14:05:04Z",
+      "pushed_at": "2026-11-28T14:04:13Z",
       "stargazers_count": 1,
       "archived": false,
       "fork": false
